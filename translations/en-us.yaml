@@ -15,3 +15,11 @@ abb:
   name: National Administration Agency
 
 
+roadsignconcept:
+  imageurl: Image
+  meaning: Meaning
+  code: Code
+  app: Road Sign
+  new: New Road Sign
+  search: Looking for...
+  nodata: No Road Signs

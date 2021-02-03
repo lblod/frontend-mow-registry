@@ -1,0 +1,36 @@
+{{page-title "Index"}}
+
+<AuDataTable @content={{this.model}} @fields="Image Meaning Code" @noDataMessage={{t "roadsignconcept.nodata"}} @sort={{sort}} as
+    |s|>
+    <s.menu as |menu|>
+        <menu.general>
+            <AuToolbar class="au-o-box">
+                <AuToolbarGroup>
+                    <AuHeading @skin="2">
+                        {{t "roadsignconcept.app"}}
+                    </AuHeading>
+                </AuToolbarGroup>
+                <AuToolbarGroup class="au-c-toolbar__group--center">
+                    <AuDataTableTextSearch @filter={{title}} @placeholder={{t "roadsignconcept.search"}} />
+                    <AuButton>
+                        {{t "roadsignconcept.new"}}
+                    </AuButton>
+                </AuToolbarGroup>
+            </AuToolbar>
+        </menu.general>
+    </s.menu>
+    <s.content as |c|>
+        <c.header>
+            <th class="data-table__header-title" > {{t "roadsignconcept.imageurl"}}</th>
+            <AuDataTableThSortable @field="meaning" @currentSorting={{sort}} @label={{t "roadsignconcept.meaning"}}
+                @class="data-table__header-title" />
+            <AuDataTableThSortable @field="code" @currentSorting={{sort}} @label={{t "roadsignconcept.code"}}
+                @class="data-table__header-title" />
+        </c.header>
+        <c.body as |row|>
+            <td><img src={{row.image}}></td>
+            <td>{{row.meaning}}</td>
+            <td>{{row.roadsignconceptcode}}</td>
+        </c.body>
+    </s.content>
+</AuDataTable>
