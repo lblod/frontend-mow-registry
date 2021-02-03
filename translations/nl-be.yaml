@@ -1,2 +1,15 @@
 hello:
   world: Hallo Team Rocket!
+
+header:
+  titlePartOne: Vlaanderen
+  titlePartTwo: is lokaal bestuur
+
+footer:
+  header: MOW Registry is een officiële website van de Vlaamse overheid
+  content1: Uitgegeven door
+  disclaimer: Disclaimer
+  cookie: Cookieverklaring 
+
+abb:
+  name: Agentschap Binnenlands Bestuur

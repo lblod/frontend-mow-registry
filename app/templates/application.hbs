@@ -1,5 +1,35 @@
 {{page-title "MowRegistry"}}
 
-<h2 id="title">{{t "hello.world"}}</h2>
+{{!-- <h2 id="title">{{t "hello.world"}}</h2> --}}
+  <AuMainHeader @brandLink="https://www.vlaanderen.be/nl" @homeRoute="index" @appTitle="MOW Registry"/>
+    
+  <div class="au-o-layout">
+    <AuContentHeader @titlePartOne={{t "header.titlePartOne"}} @titlePartTwo={{t "header.titlePartTwo"}}>
+      <img class="header-fit" src="/assets/images/logo_vlaanderen_verbeelding werkt_naakt.png" alt="" role="presentation">
+    </AuContentHeader>
 
-{{outlet}}
+    <div class="au-c-body-container">
+      <div class="au-d-component-block body-height">
+        {{outlet}}
+      </div>
+    </div>
+
+    <AuMainFooter>
+      <AuHeading @level="3" @skin="4">
+        {{t "footer.header"}}
+      </AuHeading>
+      <AuContent @skin="small">
+        <p>{{t "footer.content1" }} <a class="au-c-link" href="https://www.vlaanderen.be/organisaties/administratieve-diensten-van-de-vlaamse-overheid/beleidsdomein-kanselarij-en-bestuur/agentschap-binnenlands-bestuur">{{ t "abb.name" }}</a></p>
+        <ul class="au-c-list-horizontal">
+          <li class="au-c-list-horizontal__item">
+            <AuLink @linkRoute="index" @skin="secondary">{{t "footer.disclaimer"}}</AuLink>
+          </li>
+          <li class="au-c-list-horizontal__item">
+            <AuLink @linkRoute="index" @skin="secondary">{{t "footer.cookie"}}</AuLink>
+          </li>
+        </ul>
+      </AuContent>
+    </AuMainFooter>
+  </div>
+
+

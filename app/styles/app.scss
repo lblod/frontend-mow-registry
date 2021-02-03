@@ -101,3 +101,11 @@
 @import "appuniversum/u-spacings";
 @import "appuniversum/u-visible";
 @import "appuniversum/u-widths";
+
+.header-fit {
+  object-fit:contain;
+}
+
+.body-height {
+  height: 60rem;
+}
