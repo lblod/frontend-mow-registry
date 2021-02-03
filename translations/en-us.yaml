@@ -1,2 +1,17 @@
 hello:
   world: Hello Team Rocket!
+
+header:
+  titlePartOne: Flanders
+  titlePartTwo: is local government
+
+footer:
+  header: MOW Registry is an official website from the Flemish Government
+  content1: Published by
+  disclaimer: Disclaimer
+  cookie: Cookie Policy 
+
+abb:
+  name: National Administration Agency
+
+
