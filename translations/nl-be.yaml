@@ -13,3 +13,12 @@ footer:
 
 abb:
   name: Agentschap Binnenlands Bestuur
+
+roadsignconcept:
+  imageurl: Afbeelding
+  meaning: Betekenis
+  code: Code
+  app: Verkeersbord
+  new: Nieuw verkeersbord
+  search: Zoek...
+  nodata: Geen Verkeersborden
