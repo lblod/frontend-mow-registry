@@ -24,3 +24,14 @@ roadsignconcept:
   edit: Edit Road Sign
   search: Looking for...
   nodata: No Road Signs
+
+
+newRoadSign:
+  pageTitle: New Road Sign
+  backToOverview: Back to overview
+  imageUrl: Image URL
+  roadSignConceptCode: Code
+  meaning: Meaning
+  categories: Categories
+  noData: No results
+  create: Create new road sign
