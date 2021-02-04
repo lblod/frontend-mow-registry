@@ -1,6 +1,7 @@
 {{page-title "Index"}}
 
 <AuDataTable @content={{this.model}} @fields="Image Meaning Code" @noDataMessage={{t "roadsignconcept.nodata" }}
+        @size={{this.size}} @page={{this.page}}
   @sort={{this.sort}} as |s|>
   <s.menu as |menu|>
     <menu.general>
@@ -25,11 +26,17 @@
         @class="data-table__header-title" />
       <th class="data-table__header-title"> {{t "roadsignconcept.imageurl"}}</th>
       <th class="data-table__header-title"> {{t "roadsignconcept.meaning"}}</th>
+      <th class="data-table__header-title">
+
+      </th>
     </c.header>
     <c.body as |row|>
       <td>{{row.roadsignconceptcode}}</td>
       <td><img src={{row.image}} alt="" role="presentation"></td>
       <td>{{row.meaning}}</td>
+      <td><LinkTo @route="roadsign-concepts.roadsign-concept" @model={{row}}>
+        <AuIcon @icon="info-circle" @alignment="left" @size="large" @ariaHidden={{true}} />
+      </LinkTo></td>
     </c.body>
   </s.content>
 </AuDataTable>

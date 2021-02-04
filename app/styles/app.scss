@@ -109,3 +109,21 @@
 .body-height {
   height: 60rem;
 }
+
+.no-flex-shrink {
+  flex-shrink: 0;
+}
+
+.flex-content-between {
+  display:flex;
+  justify-content: space-between
+}
+
+td {
+  vertical-align: top;
+}
+
+td > img {
+  object-fit: cover;
+  width: 80px;
+}
