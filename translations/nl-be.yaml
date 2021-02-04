@@ -22,6 +22,7 @@ roadsignconcept:
   app: Verkeersbord
   new: Nieuw verkeersbord
   edit: Verkeersbord bewerken
+  delete: Verwijder verkeersbord
   search: Zoek...
   nodata: Geen Verkeersborden
 
@@ -34,3 +35,5 @@ newRoadSign:
   categories: Categorieën
   noData: Geen resultaten
   create: Verkeersbord aanmaken
+
+confirmation: Ben je zeker?

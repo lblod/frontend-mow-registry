@@ -21,6 +21,7 @@
       </c.content>
       <c.footer>
         <AuButton>{{t "roadsignconcept.edit"}}</AuButton>
+        <AuButton @alert={{true}} {{on "click" (fn this.removeRoadSignConcept @model)}}>{{t "roadsignconcept.delete"}}</AuButton>
       </c.footer>
     </AuCard>
   </div>

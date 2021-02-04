@@ -22,6 +22,7 @@ roadsignconcept:
   app: Road Sign
   new: New Road Sign
   edit: Edit Road Sign
+  delete: Delete Road Sign
   search: Looking for...
   nodata: No Road Signs
 
@@ -35,3 +36,5 @@ newRoadSign:
   categories: Categories
   noData: No results
   create: Create new road sign
+
+confirmation: Are you sure?
