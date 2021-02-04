@@ -9,7 +9,7 @@ footer:
   header: MOW Registry is een officiële website van de Vlaamse overheid
   content1: Uitgegeven door
   disclaimer: Disclaimer
-  cookie: Cookieverklaring 
+  cookie: Cookieverklaring
 
 abb:
   name: Agentschap Binnenlands Bestuur
@@ -20,5 +20,6 @@ roadsignconcept:
   code: Code
   app: Verkeersbord
   new: Nieuw verkeersbord
+  edit: Verkeersbord bewerken
   search: Zoek...
   nodata: Geen Verkeersborden
