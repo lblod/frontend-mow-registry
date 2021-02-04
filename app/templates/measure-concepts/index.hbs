@@ -1,0 +1,41 @@
+{{page-title "Index"}}
+<AuDataTable @content={{this.model}} @fields="description roadsigncombinations" @noDataMessage={{t
+        "measureconcept.nodata" }}
+             @size={{this.size}} @page={{this.page}}
+             @sort={{this.sort}} as |s|>
+  <s.menu as |menu|>
+    <menu.general>
+      <AuToolbar class="au-o-box">
+        <AuToolbarGroup>
+          <AuHeading @skin="2">
+            {{t "measureconcept.app"}}
+          </AuHeading>
+        </AuToolbarGroup>
+        <AuToolbarGroup class="au-c-toolbar__group--center">
+          <AuDataTableTextSearch @filter={{this.filter}} @placeholder={{t "measureconcept.search" }} />
+          <AuButton>
+            {{t "measureconcept.new"}}
+          </AuButton>
+        </AuToolbarGroup>
+      </AuToolbar>
+    </menu.general>
+  </s.menu>
+  <s.content as |c|>
+    <c.header>
+      <th class="data-table__header-title"> {{t "roadsignconcept.imageurl"}}</th>
+
+      <AuDataTableThSortable @field="description" @currentSorting={{this.sort}} @label={{t
+              "measureconcept.description" }}
+                             @class="data-table__header-title"/>
+      <th class="data-table__header-title">
+      </th>
+    </c.header>
+    <c.body as |row|>
+      <td><img src={{row.roadsignconcept.image}} alt="" role="presentation"></td>
+      <td>{{row.description}}</td>
+      <td>
+        <AuIcon @icon="info-circle" @alignment="left" @size="large" @ariaHidden={{true}} />
+      </td>
+    </c.body>
+  </s.content>
+</AuDataTable>

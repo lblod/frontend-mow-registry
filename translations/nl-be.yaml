@@ -27,6 +27,16 @@ roadsignconcept:
   nodata: Geen Verkeersborden
   backToOverview: Terug naar het overzicht
 
+measureconcept:
+  description: Description
+  roadsigncombinations: Combinaties
+  identifiers: Identifiers
+  app: MeasureConcept
+  new: Nieuw MeasureConcept
+  edit: MeasureConcept bewerken
+  search: Zoek...
+  nodata: Geen MeasureConcepts
+
 newRoadSign:
   pageTitle: Nieuw verkeersbord
   backToOverview: Terug naar het overzicht

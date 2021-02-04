@@ -1,4 +1,4 @@
-import Model, { attr, hasMany } from '@ember-data/model';
+import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
 
 export default class MeasureconceptModel extends Model {
   @attr description;
@@ -6,4 +6,5 @@ export default class MeasureconceptModel extends Model {
     inverse: 'measureconcepts',
   })
   roadsigncombinations;
+  @belongsTo('roadsignconcept') roadsignconcept;
 }

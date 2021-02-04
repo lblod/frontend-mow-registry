@@ -27,6 +27,16 @@ roadsignconcept:
   nodata: No Road Signs
   backToOverview: Back to overview
 
+measureconcept:
+  description: Description
+  roadsigncombinations: Combinaties
+  identifiers: Identifiers
+  app: MeasureConcept
+  new: Nieuw MeasureConcept
+  edit: MeasureConcept bewerken
+  search: Zoek...
+  nodata: Geen MeasureConcepts
+
 
 newRoadSign:
   pageTitle: New Road Sign
