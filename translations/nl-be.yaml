@@ -20,6 +20,6 @@ roadsignconcept:
   code: Code
   app: Verkeersbord
   new: Nieuw verkeersbord
-  edit: Edit verkersbord
+  edit: Verkeersbord bewerken
   search: Zoek...
   nodata: Geen Verkeersborden
