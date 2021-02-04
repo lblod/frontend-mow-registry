@@ -1,0 +1,8 @@
+<hr>
+<img alt={{t 'abb.name'}} src={{@model.image}}>
+<p>{{@model.meaning}}</p>
+<p>{{ @model.roadsignconceptcode}}</p>
+{{#each @model.categories as |category|}}
+  <p>{{ category.label}}</p>
+{{/each}}
+{{outlet}}
