@@ -13,9 +13,9 @@
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
           <AuDataTableTextSearch @filter={{this.filter}} @placeholder={{t "roadsignconcept.search" }} />
-          <AuButton>
+          <LinkTo class="au-c-button" @route="roadsign-concepts.new">
             {{t "roadsignconcept.new"}}
-          </AuButton>
+          </LinkTo>
         </AuToolbarGroup>
       </AuToolbar>
     </menu.general>

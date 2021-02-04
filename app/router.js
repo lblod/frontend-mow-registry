@@ -9,5 +9,6 @@ export default class Router extends EmberRouter {
 Router.map(function () {
   this.route('roadsign-concepts', function () {
     this.route('roadsign-concept', { path: '/:id' });
+    this.route('new');
   });
 });

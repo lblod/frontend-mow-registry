@@ -1,0 +1,57 @@
+{{page-title (t "newRoadSign.pageTitle")}}
+
+<div class="au-u-padding-top au-o-layout">
+  <AuLink @linkRoute="roadsign-concepts.index" @icon="nav-left" @iconAlignment="left">
+    {{t "newRoadSign.backToOverview"}}
+  </AuLink>
+</div>
+
+{{#let @model.newRoadSignConcept as |roadSignConcept|}}
+  <form
+    class="au-c-form au-o-layout au-u-padding-top-large"
+    {{on "submit" this.createRoadSignConcept}}
+  >
+    <p>
+      <AuLabel for="image-url">{{t "newRoadSign.imageUrl"}}</AuLabel>
+      <AuInput type="url" id="image-url" required="required" {{on "input" (fn this.setRoadSignConceptValue "image")}} />
+    </p>
+
+    <p>
+      <AuLabel for="road-sign-concept-code">{{t "newRoadSign.roadSignConceptCode"}}</AuLabel>
+      <AuInput id="road-sign-concept-code" required="required" {{on "input" (fn this.setRoadSignConceptValue "roadsignconceptcode")}} />
+    </p>
+
+    <p>
+      <AuLabel for="meaning">{{t "newRoadSign.meaning"}}</AuLabel>
+      <AuTextarea
+        id="meaning"
+        {{on "input" (fn this.setRoadSignConceptValue "meaning")}}
+        required="required"
+      ></AuTextarea>
+    </p>
+
+    <p>
+      <AuLabel for="categories">{{t "newRoadSign.categories"}}</AuLabel>
+      <PowerSelectMultiple
+        @allowClear={{true}}
+        @searchEnabled={{true}}
+        @noMatchesMessage={{t "newRoadSign.noData"}}
+        @searchField="label"
+        @options={{@model.categories}}
+        @selected={{roadSignConcept.categories}}
+        @onChange={{this.setRoadSignConceptCategory}}
+        @triggerId="categories"
+        as |category|
+      >
+        {{category.label}}
+      </PowerSelectMultiple>
+    </p>
+
+
+    <p>
+      <AuButton type="submit" @loading={{this.isSaving}} @disabled={{this.isSaving}}>
+        {{t "newRoadSign.create"}}
+      </AuButton>
+    </p>
+  </form>
+{{/let}}
