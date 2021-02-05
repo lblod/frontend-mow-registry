@@ -46,6 +46,15 @@ newMeasureConcept:
   noData: Geen resultaten
   create: Maatregel aanmaken
 
+editMeasureConcept:
+  pageTitle: Maatregel bewerken
+  backToOverview: Terug naar het overzicht
+  description: Beschrijving
+  roadSignConcept: Verkeersbord
+  noData: Geen resultaten
+  edit: Opslaan
+
+
 newRoadSign:
   pageTitle: Nieuw verkeersbord
   backToOverview: Terug naar het overzicht

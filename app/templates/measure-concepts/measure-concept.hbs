@@ -1,3 +1,8 @@
+<div class="au-u-padding-top au-o-layout">
+  <AuLink @linkRoute="measure-concepts.index" @icon="nav-left" @iconAlignment="left">
+    {{t "measureconcept.backToOverview"}}
+  </AuLink>
+</div>
 <div class="au-o-grid au-u-margin-top">
   <div class="au-o-grid__item au-u-1-2">
     <AuCard @flex={{true}} as |c|>
@@ -12,7 +17,10 @@
         </div>
       </c.header>
       <c.footer>
-        <AuButton>{{t "roadsignconcept.edit"}}</AuButton>
+        <LinkTo class="au-c-button" @route="measure-concepts.edit" @model={{@model.id}}>
+          {{t "measureconcept.edit"}}
+        </LinkTo>
+        <AuButton @alert={{true}} {{on "click" (fn this.removeMeasureConcept @model)}}>{{t "measureconcept.delete"}}</AuButton>
       </c.footer>
     </AuCard>
   </div>

@@ -46,6 +46,14 @@ newMeasureConcept:
   noData: No results
   create: Create new measure
 
+editMeasureConcept:
+  pageTitle: Edit Measure
+  backToOverview: Back to overview
+  description: Description
+  roadSignConcept: Road Sign
+  noData: No results
+  edit: Save
+
 newRoadSign:
   pageTitle: New Road Sign
   backToOverview: Back to overview

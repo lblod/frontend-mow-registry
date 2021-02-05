@@ -1,0 +1,48 @@
+{{page-title (t "editMeasureConcept.pageTitle")}}
+
+<div class="au-u-padding-top au-o-layout">
+  <AuLink @linkRoute="measure-concepts.index" @icon="nav-left" @iconAlignment="left">
+    {{t "measureconcept.backToOverview"}}
+  </AuLink>
+</div>
+
+{{#let @model.measureConcept as |measureConcept|}}
+  <form
+    class="au-c-form au-o-layout au-u-padding-top-large"
+    {{on "submit" this.editMeasureConcept}}
+  >
+    <p>
+      <AuLabel for="description">{{t "editMeasureConcept.description"}}</AuLabel>
+      <AuTextarea
+              id="description"
+              value={{measureConcept.description}}
+        {{on "input" (fn this.setMeasureConceptValue "description")}}
+              required="required"
+      ></AuTextarea>
+    </p>
+
+    <p>
+      <AuLabel for="roadSignConcept">{{t "editMeasureConcept.roadSignConcept"}}</AuLabel>
+      <PowerSelect
+        @allowClear={{true}}
+        @searchEnabled={{true}}
+        @noMatchesMessage={{t "editMeasureConcept.noData"}}
+        @searchField="roadsignconceptcode"
+        @options={{@model.roadSignConcepts}}
+        @selected={{measureConcept.roadsignconcept}}
+        @onChange={{this.setMeasureConceptRoadSignConcept}}
+        @triggerId="roadSignConcept"
+        as |concept|
+      >
+        {{concept.roadsignconceptcode}}
+      </PowerSelect>
+    </p>
+
+
+    <p>
+      <AuButton type="submit" @loading={{this.isSaving}} @disabled={{this.isSaving}}>
+        {{t "editMeasureConcept.edit"}}
+      </AuButton>
+    </p>
+  </form>
+{{/let}}
