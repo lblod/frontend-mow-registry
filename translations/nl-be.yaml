@@ -28,14 +28,23 @@ roadsignconcept:
   backToOverview: Terug naar het overzicht
 
 measureconcept:
-  description: Description
-  roadsigncombinations: Combinaties
-  identifiers: Identifiers
-  app: MeasureConcept
-  new: Nieuw MeasureConcept
-  edit: MeasureConcept bewerken
+  description: Beschrijving
+  identifier: Identifier
+  app: Maatregel
+  new: Nieuw maatregel
+  edit: Maatregel bewerken
   search: Zoek...
-  nodata: Geen MeasureConcepts
+  delete: Verwijder maatregel
+  nodata: Geen maatregel
+  backToOverview: Terug naar het overzicht
+
+newMeasureConcept:
+  pageTitle: Nieuw maatregel
+  backToOverview: Terug naar het overzicht
+  description: Beschrijving
+  roadSignConcept: Verkeersbord
+  noData: Geen resultaten
+  create: Maatregel aanmaken
 
 newRoadSign:
   pageTitle: Nieuw verkeersbord

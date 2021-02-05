@@ -1,8 +1,8 @@
-{{page-title (t "newRoadSign.pageTitle")}}
+{{page-title (t "newMeasureConcept.pageTitle")}}
 
 <div class="au-u-padding-top au-o-layout">
-  <AuLink @linkRoute="roadsign-concepts.index" @icon="nav-left" @iconAlignment="left">
-    {{t "newRoadSign.backToOverview"}}
+  <AuLink @linkRoute="measure-concepts.index" @icon="nav-left" @iconAlignment="left">
+    {{t "measureconcept.backToOverview"}}
   </AuLink>
 </div>
 
@@ -12,7 +12,7 @@
     {{on "submit" this.createMeasureConcept}}
   >
     <p>
-      <AuLabel for="description">{{t "measureConcept.description"}}</AuLabel>
+      <AuLabel for="description">{{t "newMeasureConcept.description"}}</AuLabel>
       <AuTextarea
               id="description"
         {{on "input" (fn this.setMeasureConceptValue "description")}}
@@ -21,11 +21,11 @@
     </p>
 
     <p>
-      <AuLabel for="roadSignConcept">{{t "measureConcept.roadSignConcept"}}</AuLabel>
+      <AuLabel for="roadSignConcept">{{t "newMeasureConcept.roadSignConcept"}}</AuLabel>
       <PowerSelect
         @allowClear={{true}}
         @searchEnabled={{true}}
-        @noMatchesMessage={{t "newRoadSign.noData"}}
+        @noMatchesMessage={{t "newMeasureConcept.noData"}}
         @searchField="roadsignconceptcode"
         @options={{@model.roadSignConcepts}}
         @selected={{measureConcept.roadsignconcept}}
@@ -40,7 +40,7 @@
 
     <p>
       <AuButton type="submit" @loading={{this.isSaving}} @disabled={{this.isSaving}}>
-        {{t "newRoadSign.create"}}
+        {{t "newMeasureConcept.create"}}
       </AuButton>
     </p>
   </form>
