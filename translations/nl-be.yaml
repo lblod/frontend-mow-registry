@@ -25,6 +25,7 @@ roadsignconcept:
   delete: Verwijder verkeersbord
   search: Zoek...
   nodata: Geen Verkeersborden
+  backToOverview: Terug naar het overzicht
 
 newRoadSign:
   pageTitle: Nieuw verkeersbord
@@ -35,5 +36,15 @@ newRoadSign:
   categories: Categorieën
   noData: Geen resultaten
   create: Verkeersbord aanmaken
+
+editRoadSign:
+  pageTitle: Verkeersbord bewerken
+  backToOverview: Terug naar het overzicht
+  imageUrl: Afbeelding URL
+  roadSignConceptCode: Code
+  meaning: Betekenis
+  categories: Categorieën
+  noData: Geen resultaten
+  edit: Opslaan
 
 confirmation: Ben je zeker?

@@ -25,6 +25,7 @@ roadsignconcept:
   delete: Delete Road Sign
   search: Looking for...
   nodata: No Road Signs
+  backToOverview: Back to overview
 
 
 newRoadSign:
@@ -36,5 +37,16 @@ newRoadSign:
   categories: Categories
   noData: No results
   create: Create new road sign
+
+editRoadSign:
+  pageTitle: Edit Road Sign
+  backToOverview: Back to overview
+  imageUrl: Image URL
+  roadSignConceptCode: Code
+  meaning: Meaning
+  categories: Categories
+  noData: No results
+  edit: Save
+
 
 confirmation: Are you sure?

@@ -10,5 +10,6 @@ Router.map(function () {
   this.route('roadsign-concepts', function () {
     this.route('roadsign-concept', { path: '/:id' });
     this.route('new');
+    this.route('edit', { path: '/edit/:id' });
   });
 });
