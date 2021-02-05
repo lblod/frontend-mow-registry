@@ -13,7 +13,7 @@
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
           <AuDataTableTextSearch @filter={{this.filter}} @placeholder={{t "roadsignconcept.search" }} />
-          <LinkTo class="au-c-button" @route="roadsign-concepts.new">
+          <LinkTo class="au-c-button" @route="road-sign-concepts.new">
             {{t "roadsignconcept.new"}}
           </LinkTo>
         </AuToolbarGroup>
@@ -22,7 +22,7 @@
   </s.menu>
   <s.content as |c|>
     <c.header>
-      <AuDataTableThSortable @field="roadsignconceptcode" @currentSorting={{this.sort}} @label={{t "roadsignconcept.code" }}
+      <AuDataTableThSortable @field="roadSignConceptCode" @currentSorting={{this.sort}} @label={{t "roadsignconcept.code" }}
         @class="data-table__header-title" />
       <th class="data-table__header-title"> {{t "roadsignconcept.imageurl"}}</th>
       <th class="data-table__header-title"> {{t "roadsignconcept.meaning"}}</th>
@@ -31,10 +31,10 @@
       </th>
     </c.header>
     <c.body as |row|>
-      <td>{{row.roadsignconceptcode}}</td>
+      <td>{{row.roadSignConceptCode}}</td>
       <td><img src={{row.image}} alt="" role="presentation"></td>
       <td>{{row.meaning}}</td>
-      <td><LinkTo @route="roadsign-concepts.roadsign-concept" @model={{row}}>
+      <td><LinkTo @route="road-sign-concepts.road-sign-concept" @model={{row}}>
         <AuIcon @icon="info-circle" @alignment="left" @size="large" @ariaHidden={{true}} />
       </LinkTo></td>
     </c.body>

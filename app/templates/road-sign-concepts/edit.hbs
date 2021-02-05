@@ -1,7 +1,7 @@
 {{page-title (t "editRoadSign.pageTitle")}}
 
 <div class="au-u-padding-top au-o-layout">
-  <AuLink @linkRoute="roadsign-concepts.index" @icon="nav-left" @iconAlignment="left">
+  <AuLink @linkRoute="road-sign-concepts.index" @icon="nav-left" @iconAlignment="left">
     {{t "editRoadSign.backToOverview"}}
   </AuLink>
 </div>
@@ -18,7 +18,7 @@
 
     <p>
       <AuLabel for="road-sign-concept-code">{{t "editRoadSign.roadSignConceptCode"}}</AuLabel>
-      <AuInput id="road-sign-concept-code" required="required" value={{roadSignConcept.roadsignconceptcode}} {{on "input" (fn this.setRoadSignConceptValue "roadsignconceptcode")}} />
+      <AuInput id="road-sign-concept-code" required="required" value={{roadSignConcept.roadSignConceptCode}} {{on "input" (fn this.setRoadSignConceptValue "roadSignConceptCode")}} />
     </p>
 
     <p>

@@ -7,8 +7,8 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function () {
-  this.route('roadsign-concepts', function () {
-    this.route('roadsign-concept', { path: '/:id' });
+  this.route('road-sign-concepts', function () {
+    this.route('road-sign-concept', { path: '/:id' });
     this.route('new');
     this.route('edit', { path: '/edit/:id' });
   });

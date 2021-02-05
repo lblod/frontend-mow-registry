@@ -29,7 +29,7 @@ export default class RoadsignConceptsNewController extends Controller {
       this.isSaving = false;
 
       this.router.transitionTo(
-        'roadsign-concepts.roadsign-concept',
+        'road-sign-concepts.road-sign-concept',
         this.model.newRoadSignConcept.id
       );
     }
