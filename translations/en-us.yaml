@@ -27,6 +27,32 @@ roadsignconcept:
   nodata: No Road Signs
   backToOverview: Back to overview
 
+measureconcept:
+  description: Description
+  identifiers: Identifiers
+  app: Measure
+  new: New Measure
+  edit: Edit Measure
+  search: Looking for...
+  delete: Delete Measure
+  nodata: No Measures
+  backToOverview: Back to overview
+
+newMeasureConcept:
+  pageTitle: New Measure
+  backToOverview: Back to overview
+  description: Description
+  roadSignConcept: Road Sign
+  noData: No results
+  create: Create new measure
+
+editMeasureConcept:
+  pageTitle: Edit Measure
+  backToOverview: Back to overview
+  description: Description
+  roadSignConcept: Road Sign
+  noData: No results
+  edit: Save
 
 newRoadSign:
   pageTitle: New Road Sign
