@@ -1,5 +1,5 @@
 <div class="au-u-padding-top au-o-layout">
-  <AuLink @linkRoute="roadsign-concepts.index" @icon="nav-left" @iconAlignment="left">
+  <AuLink @linkRoute="road-sign-concepts.index" @icon="nav-left" @iconAlignment="left">
     {{t "roadsignconcept.backToOverview"}}
   </AuLink>
 </div>
@@ -14,7 +14,7 @@
           </div>
           <div>
             <AuHeading @level="2" @skin="4">
-              {{ @model.roadsignconceptcode}} -
+              {{ @model.roadSignConceptCode}} -
               {{#each @model.categories as |category|}}
                 <span>{{ category.label}}</span>
               {{/each}}
@@ -26,7 +26,7 @@
       <c.content>
       </c.content>
       <c.footer>
-        <LinkTo class="au-c-button" @route="roadsign-concepts.edit" @model={{@model.id}}>
+        <LinkTo class="au-c-button" @route="road-sign-concepts.edit" @model={{@model.id}}>
             {{t "roadsignconcept.edit"}}
           </LinkTo>
         <AuButton @alert={{true}} {{on "click" (fn this.removeRoadSignConcept @model)}}>{{t "roadsignconcept.delete"}}</AuButton>

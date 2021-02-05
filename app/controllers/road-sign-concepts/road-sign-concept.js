@@ -7,12 +7,12 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @service intl;
 
   @action
-  async removeRoadSignConcept(roadsignconcept, event) {
+  async removeRoadSignConcept(roadSignConcept, event) {
     event.preventDefault();
 
     if (confirm(this.intl.t('confirmation'))) {
-      await roadsignconcept.destroyRecord();
-      this.router.transitionTo('roadsign-concepts');
+      await roadSignConcept.destroyRecord();
+      this.router.transitionTo('road-sign-concepts');
     }
   }
 }

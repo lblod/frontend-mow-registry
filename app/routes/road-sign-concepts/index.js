@@ -5,5 +5,5 @@ import DataTableRouteMixin from 'ember-data-table/mixins/route';
 export default class RoadsignConceptsIndexRoute extends Route.extend(
   DataTableRouteMixin
 ) {
-  modelName = 'roadsignconcept';
+  modelName = 'road-sign-concept';
 }
