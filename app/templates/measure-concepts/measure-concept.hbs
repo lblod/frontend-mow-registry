@@ -1,0 +1,19 @@
+<div class="au-o-grid au-u-margin-top">
+  <div class="au-o-grid__item au-u-1-2">
+    <AuCard @flex={{true}} as |c|>
+      <c.header @badgeSkin="brand">
+        <div class="flex-content-between">
+          <div class="no-flex-shrink">
+            <img class="au-u-margin-right" alt={{t 'abb.name'}} src={{@model.roadsignconcept.image}}>
+          </div>
+          <div>
+            <p>{{@model.description}}</p>
+          </div>
+        </div>
+      </c.header>
+      <c.footer>
+        <AuButton>{{t "roadsignconcept.edit"}}</AuButton>
+      </c.footer>
+    </AuCard>
+  </div>
+</div>

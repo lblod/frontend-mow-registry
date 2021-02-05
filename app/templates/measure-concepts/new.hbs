@@ -1,0 +1,47 @@
+{{page-title (t "newRoadSign.pageTitle")}}
+
+<div class="au-u-padding-top au-o-layout">
+  <AuLink @linkRoute="roadsign-concepts.index" @icon="nav-left" @iconAlignment="left">
+    {{t "newRoadSign.backToOverview"}}
+  </AuLink>
+</div>
+
+{{#let @model.newMeasureConcept as |measureConcept|}}
+  <form
+    class="au-c-form au-o-layout au-u-padding-top-large"
+    {{on "submit" this.createMeasureConcept}}
+  >
+    <p>
+      <AuLabel for="description">{{t "measureConcept.description"}}</AuLabel>
+      <AuTextarea
+              id="description"
+        {{on "input" (fn this.setMeasureConceptValue "description")}}
+              required="required"
+      ></AuTextarea>
+    </p>
+
+    <p>
+      <AuLabel for="roadSignConcept">{{t "measureConcept.roadSignConcept"}}</AuLabel>
+      <PowerSelect
+        @allowClear={{true}}
+        @searchEnabled={{true}}
+        @noMatchesMessage={{t "newRoadSign.noData"}}
+        @searchField="roadsignconceptcode"
+        @options={{@model.roadSignConcepts}}
+        @selected={{measureConcept.roadsignconcept}}
+        @onChange={{this.setMeasureConceptRoadSignConcept}}
+        @triggerId="roadSignConcept"
+        as |concept|
+      >
+        {{concept.roadsignconceptcode}}
+      </PowerSelect>
+    </p>
+
+
+    <p>
+      <AuButton type="submit" @loading={{this.isSaving}} @disabled={{this.isSaving}}>
+        {{t "newRoadSign.create"}}
+      </AuButton>
+    </p>
+  </form>
+{{/let}}

@@ -12,5 +12,8 @@ Router.map(function () {
     this.route('new');
     this.route('edit', { path: '/edit/:id' });
   });
-  this.route('measure-concepts', function () {});
+  this.route('measure-concepts', function () {
+    this.route('measure-concept', { path: '/:id' });
+    this.route('new');
+  });
 });

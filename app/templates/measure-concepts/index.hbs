@@ -13,9 +13,9 @@
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
           <AuDataTableTextSearch @filter={{this.filter}} @placeholder={{t "measureconcept.search" }} />
-          <AuButton>
+          <LinkTo class="au-c-button" @route="measure-concepts.new">
             {{t "measureconcept.new"}}
-          </AuButton>
+          </LinkTo>
         </AuToolbarGroup>
       </AuToolbar>
     </menu.general>
@@ -34,7 +34,9 @@
       <td><img src={{row.roadsignconcept.image}} alt="" role="presentation"></td>
       <td>{{row.description}}</td>
       <td>
-        <AuIcon @icon="info-circle" @alignment="left" @size="large" @ariaHidden={{true}} />
+        <LinkTo @route="measure-concepts.measure-concept" @model={{row}}>
+          <AuIcon @icon="info-circle" @alignment="left" @size="large" @ariaHidden={{true}} />
+        </LinkTo>
       </td>
     </c.body>
   </s.content>
