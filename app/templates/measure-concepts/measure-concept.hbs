@@ -21,6 +21,22 @@
             <p>{{@model.description}}</p>
           </div>
         </div>
+        <hr>
+        <h2>{{t 'measureconcept.linkedTo'}}</h2>
+        {{#each @model.roadSignCombination.measureConcepts as |linkedMeasure|}}
+          {{#if (not-eq linkedMeasure.id @model.id)}}
+            <div class="flex-content-between">
+              <div class="no-flex-shrink">
+                <img class="au-u-margin-right" alt={{t 'abb.name'}} src={{linkedMeasure.roadSignConcept.image}}>
+              </div>
+              <div>
+                <p>{{linkedMeasure.description}}</p>
+              </div>
+            </div>
+          {{/if}}
+        {{/each}}
+
+
       </c.header>
       <c.footer>
         <LinkTo class="au-c-button" @route="measure-concepts.edit" @model={{@model.id}}>
