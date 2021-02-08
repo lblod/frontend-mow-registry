@@ -9,6 +9,14 @@ export default class MeasureConceptsEditRoute extends Route {
     return hash({
       measureConcept: this.store.findRecord('measureConcept', params.id),
       roadSignConcepts: this.store.findAll('roadSignConcept'),
+      measureConcepts: this.store
+        .query('measureConcept', {
+          page: {
+            // TODO: technical debt. This is a work around to pagination. We need all the measureConcepts
+            size: 100000,
+          },
+        })
+        .then((concepts) => concepts.filter((c) => c.id !== params.id)),
     });
   }
 }

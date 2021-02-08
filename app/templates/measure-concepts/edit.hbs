@@ -54,6 +54,23 @@
       </p>
     {{/let}}
 
+    <p>
+      <AuLabel for="linkedMeasureConcept">{{t "editMeasureConcept.linkedMeasureConcept"}}</AuLabel>
+      <PowerSelectMultiple
+        @allowClear={{true}}
+        @searchEnabled={{true}}
+        @noMatchesMessage={{t "linkedMeasureConcept.noData"}}
+        @searchField="description"
+        @options={{@model.measureConcepts}}
+        @selected={{measureConcept.roadSignCombination.measureConcepts}}
+        @onChange={{this.setMeasureConceptRoadSignConcept}}
+        @triggerId="linkedMeasureConcept"
+        as |concept|
+      >
+        {{concept.description}}
+      </PowerSelectMultiple>
+    </p>
+
 
     <p>
       <AuButton type="submit" @loading={{this.isSaving}} @disabled={{or this.isSaving this.notValid}}>
