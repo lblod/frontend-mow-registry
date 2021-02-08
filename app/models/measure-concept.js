@@ -1,10 +1,10 @@
-import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
 
 export default class MeasureConceptModel extends Model {
   @attr description;
-  @hasMany('road-sign-combination', {
+  @belongsTo('road-sign-combination', {
     inverse: 'measureConcepts',
   })
-  roadSignCombinations;
+  roadSignCombination;
   @belongsTo('road-sign-concept') roadSignConcept;
 }
