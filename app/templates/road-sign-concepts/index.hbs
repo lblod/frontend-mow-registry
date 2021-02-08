@@ -1,8 +1,14 @@
 {{page-title "Index"}}
 
-<AuDataTable @content={{this.model}} @fields="Image Meaning Code" @noDataMessage={{t "roadsignconcept.nodata" }}
-        @size={{this.size}} @page={{this.page}}
-  @sort={{this.sort}} as |s|>
+<AuDataTable
+  @content={{this.model}}
+  @fields="Image Meaning Code"
+  @noDataMessage={{t "roadsignconcept.nodata" }}
+  @size={{this.size}}
+  @page={{this.page}}
+  @sort={{this.sort}}
+  as |s|
+>
   <s.menu as |menu|>
     <menu.general>
       <AuToolbar class="au-o-box">
@@ -22,21 +28,25 @@
   </s.menu>
   <s.content as |c|>
     <c.header>
-      <AuDataTableThSortable @field="roadSignConceptCode" @currentSorting={{this.sort}} @label={{t "roadsignconcept.code" }}
-        @class="data-table__header-title" />
+      <AuDataTableThSortable
+        @field="roadSignConceptCode"
+        @currentSorting={{this.sort}}
+        @label={{t "roadsignconcept.code" }}
+        @class="data-table__header-title"
+      />
       <th class="data-table__header-title"> {{t "roadsignconcept.imageurl"}}</th>
       <th class="data-table__header-title"> {{t "roadsignconcept.meaning"}}</th>
-      <th class="data-table__header-title">
-
-      </th>
     </c.header>
-    <c.body as |row|>
-      <td>{{row.roadSignConceptCode}}</td>
-      <td><img src={{row.image}} alt="" role="presentation"></td>
-      <td>{{row.meaning}}</td>
-      <td><LinkTo @route="road-sign-concepts.road-sign-concept" @model={{row}}>
-        <AuIcon @icon="info-circle" @alignment="left" @size="large" @ariaHidden={{true}} />
-      </LinkTo></td>
+    <c.body as |roadSignConcept|>
+      <td>
+        <AuLink @linkRoute="road-sign-concepts.road-sign-concept" @model={{roadSignConcept}}>
+          {{roadSignConcept.roadSignConceptCode}}
+        </AuLink>
+      </td>
+      <td>
+        <img src={{roadSignConcept.image}} alt="" role="presentation">
+      </td>
+      <td>{{roadSignConcept.meaning}}</td>
     </c.body>
   </s.content>
 </AuDataTable>
