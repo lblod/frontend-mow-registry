@@ -1,8 +1,13 @@
-<div class="au-u-padding-top au-o-layout">
-  <AuLink @linkRoute="measure-concepts.index" @icon="nav-left" @iconAlignment="left">
-    {{t "measureconcept.backToOverview"}}
-  </AuLink>
-</div>
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo @route="measure-concepts.measure-concept" @model={{@model.id}} class={{linkClass}}>
+    {{!-- TODO: Find a better thing to display in the breadcrumb --}}
+    {{@model.description}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<NavigationBar />
+
 <div class="au-o-grid au-u-margin-top">
   <div class="au-o-grid__item au-u-1-2">
     <AuCard @flex={{true}} as |c|>

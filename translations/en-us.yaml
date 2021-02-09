@@ -76,3 +76,6 @@ editRoadSign:
 
 
 confirmation: Are you sure?
+
+navigationBar:
+  backToOverview: Back to overview

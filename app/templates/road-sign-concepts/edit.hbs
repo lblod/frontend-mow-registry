@@ -1,12 +1,14 @@
 {{page-title (t "editRoadSign.pageTitle")}}
 
-<div class="au-u-padding-top au-o-layout">
-  <AuLink @linkRoute="road-sign-concepts.index" @icon="nav-left" @iconAlignment="left">
-    {{t "editRoadSign.backToOverview"}}
-  </AuLink>
-</div>
-
 {{#let @model.roadSignConcept as |roadSignConcept|}}
+  <BreadcrumbsItem as |linkClass|>
+    <LinkTo @route="road-sign-concepts.edit" @model={{roadSignConcept.id}} class={{linkClass}}>
+      {{roadSignConcept.roadSignConceptCode}}
+    </LinkTo>
+  </BreadcrumbsItem>
+
+  <NavigationBar />
+
   <form
     class="au-c-form au-o-layout au-u-padding-top-large"
     {{on "submit" this.editRoadSignConcept}}

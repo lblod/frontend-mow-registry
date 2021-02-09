@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@appuniversum/ember-appuniversum": "^0.1.3",
+    "@bagaar/ember-breadcrumbs": "^1.0.0-beta.3",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.1.4",
     "@glimmer/component": "^1.0.3",
