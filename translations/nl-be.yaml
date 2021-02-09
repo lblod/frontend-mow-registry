@@ -75,6 +75,19 @@ editRoadSign:
   noData: Geen resultaten
   edit: Opslaan
 
+landingPage:
+  appName: MOW Registry
+  roadSigns:
+    title: Verkeersborden
+    subtitle: Ondertitel voor kaart
+    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    button: Ga naar Verkeersborden
+  measures:
+    title: Maatregelen
+    subtitle: Ondertitel voor kaart
+    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    button: Ga naar Maatregelen
+
 confirmation: Ben je zeker?
 
 navigationBar:
