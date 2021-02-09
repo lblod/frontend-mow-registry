@@ -26,12 +26,8 @@
   <s.content as |c|>
     <c.header>
       <th class="data-table__header-title"> {{t "roadsignconcept.imageurl"}}</th>
-
-      <AuDataTableThSortable @field="description" @currentSorting={{this.sort}} @label={{t
-              "measureconcept.description" }}
-                             @class="data-table__header-title"/>
-      <th class="data-table__header-title">
-      </th>
+      <th class="data-table__header-title"> {{t "measureconcept.description" }}</th>
+      <th class="data-table__header-title"></th>
     </c.header>
     <c.body as |row|>
       <td><img src={{row.roadSignConcept.image}} alt="" role="presentation"></td>
