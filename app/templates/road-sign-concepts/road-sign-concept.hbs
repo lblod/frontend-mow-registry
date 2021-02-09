@@ -1,8 +1,10 @@
-<div class="au-u-padding-top au-o-layout">
-  <AuLink @linkRoute="road-sign-concepts.index" @icon="nav-left" @iconAlignment="left">
-    {{t "roadsignconcept.backToOverview"}}
-  </AuLink>
-</div>
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo @route="road-sign-concepts.road-sign-concept" @model={{@model.id}} class={{linkClass}}>
+    {{@model.roadSignConceptCode}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<NavigationBar />
 
 <div class="au-o-grid au-u-margin-top">
   <div class="au-o-grid__item au-u-1-2">

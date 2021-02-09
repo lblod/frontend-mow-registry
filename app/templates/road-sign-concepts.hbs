@@ -1,2 +1,9 @@
-{{page-title "RoadsignConcepts"}}
+{{page-title (t "roadsignconcept.app")}}
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo @route="road-sign-concepts.index" class={{linkClass}}>
+    {{t "roadsignconcept.app"}}
+  </LinkTo>
+</BreadcrumbsItem>
+
 {{outlet}}

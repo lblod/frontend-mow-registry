@@ -1,12 +1,15 @@
 {{page-title (t "newMeasureConcept.pageTitle")}}
 
-<div class="au-u-padding-top au-o-layout">
-  <AuLink @linkRoute="measure-concepts.index" @icon="nav-left" @iconAlignment="left">
-    {{t "measureconcept.backToOverview"}}
-  </AuLink>
-</div>
 
 {{#let @model.newMeasureConcept as |measureConcept|}}
+  <BreadcrumbsItem as |linkClass|>
+    <LinkTo @route="measure-concepts.new" @model={{measureConcept.id}} class={{linkClass}}>
+      {{t "newMeasureConcept.pageTitle"}}
+    </LinkTo>
+  </BreadcrumbsItem>
+
+  <NavigationBar />
+
   <form
     class="au-c-form au-o-layout au-u-padding-top-large"
     {{on "submit" this.createMeasureConcept}}
