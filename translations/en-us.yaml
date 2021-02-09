@@ -14,12 +14,11 @@ footer:
 abb:
   name: National Administration Agency
 
-
 roadsignconcept:
   imageurl: Image
   meaning: Meaning
   code: Code
-  app: Road Sign
+  details: Road Sign
   new: New Road Sign
   edit: Edit Road Sign
   delete: Delete Road Sign
@@ -30,7 +29,7 @@ roadsignconcept:
 measureconcept:
   description: Description
   identifiers: Identifiers
-  app: Measure
+  details: Measure
   new: New Measure
   edit: Edit Measure
   search: Looking for...
