@@ -1,100 +1,49 @@
-hello:
-  world: Hallo Team Rocket!
-
-header:
-  titlePartOne: Vlaanderen
-  titlePartTwo: is lokaal bestuur
-
-footer:
-  header: MOW Registry is een officiële website van de Vlaamse overheid
-  content1: Uitgegeven door
-  disclaimer: Disclaimer
-  cookie: Cookieverklaring
-
-abb:
-  name: Agentschap Binnenlands Bestuur
-
-roadsignconcept:
-  imageurl: Afbeelding
-  meaning: Betekenis
-  code: Code
-  details: Verkeersbord details
-  new: Nieuw verkeersbord
-  edit: Verkeersbord bewerken
-  delete: Verwijder verkeersbord
-  search: Zoek...
-  nodata: Geen Verkeersborden
-  backToOverview: Terug naar het overzicht
-
-measureconcept:
-  description: Beschrijving
-  identifier: Identifier
-  details: Maatregel details
-  new: Nieuw maatregel
-  edit: Maatregel bewerken
-  search: Zoek...
-  delete: Verwijder maatregel
-  nodata: Geen maatregel
-  backToOverview: Terug naar het overzicht
-
-newMeasureConcept:
-  pageTitle: Nieuw maatregel
-  backToOverview: Terug naar het overzicht
-  description: Beschrijving
-  roadSignConcept: Verkeersbord
-  noData: Geen resultaten
-  create: Maatregel aanmaken
-
-editMeasureConcept:
-  pageTitle: Maatregel bewerken
-  backToOverview: Terug naar het overzicht
-  description: Beschrijving
-  roadSignConcept: Verkeersbord
-  noData: Geen resultaten
-  edit: Opslaan
-
-newRoadSign:
-  pageTitle: Nieuw verkeersbord
-  backToOverview: Terug naar het overzicht
-  imageUrl: Afbeelding URL
-  roadSignConceptCode: Code
-  meaning: Betekenis
-  categories: Categorieën
-  noData: Geen resultaten
-  create: Verkeersbord aanmaken
-
-editRoadSign:
-  pageTitle: Verkeersbord bewerken
-  backToOverview: Terug naar het overzicht
-  imageUrl: Afbeelding URL
-  roadSignConceptCode: Code
-  meaning: Betekenis
-  categories: Categorieën
-  noData: Geen resultaten
-  edit: Opslaan
-
-landingPage:
-  appName: MOW Registry
-  roadSigns:
-    title: Verkeersborden
-    subtitle: Ondertitel voor kaart
-    content: Informatie op de kaart die onder de kop komt. Inhoud.
-    button: Ga naar Verkeersborden
-  measures:
-    title: Maatregelen
-    subtitle: Ondertitel voor kaart
-    content: Informatie op de kaart die onder de kop komt. Inhoud.
-    button: Ga naar Maatregelen
-
 utility:
+  backToOverview: Naar het overzicht
+  save: Opslaan
   confirmation:
     title: Bevestig
     body: Ben je zeker?
-
-navigationBar:
-  backToOverview: Naar het overzicht
-
-utility:
   required: Verplicht
   fieldRequired: Verplicht veld
+  appName: MOW Registry
 
+roadSignConcept:
+  name: Verkeersborden
+  details: Verkeersbord details
+  attr:
+    imageHeader: Afbeelding
+    imageUrl: Afbeelding URL
+    meaning: Betekenis
+    code: Code
+    categories: Categorieën
+  crud:
+    create: Verkeersbord aanmaken
+    new: Nieuw verkeersbord
+    search: Zoek naar verkeersbord
+    noData: Geen Verkeersborden
+    edit: Verkeersbord bewerken
+    delete: Verwijder verkeersbord
+  landingPage:
+    subtitle: Ondertitel voor kaart
+    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    button: Ga naar Verkeersborden
+      
+measureConcept:
+  name: Maatregelen
+  details: Maatregel details
+  attr:
+    roadSignConceptImage: Verkeersbord Afbeelding
+    roadSignConceptCode: Verkeersbord Code
+    description: Beschrijving
+  crud:
+    create: Maatregel aanmaken
+    new: Nieuw maatregel
+    search: Zoek naar maatregel
+    noData: Geen maatregel
+    edit: Maatregel bewerken
+    delete: Verwijder maatregel
+  landingPage:
+    subtitle: Ondertitel voor kaart
+    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    button: Ga naar Maatregelen

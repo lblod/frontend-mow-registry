@@ -1,9 +1,9 @@
-{{page-title (t "editMeasureConcept.pageTitle")}}
+{{page-title (t "measureConcept.crud.edit")}}
 
 {{#let @model.measureConcept as |measureConcept|}}
   <BreadcrumbsItem as |linkClass|>
     <LinkTo @route="measure-concepts.edit" @model={{measureConcept.id}} class={{linkClass}}>
-      {{t "editMeasureConcept.pageTitle"}}
+      {{t "measureConcept.crud.edit"}}
     </LinkTo>
   </BreadcrumbsItem>
 
@@ -14,7 +14,7 @@
     {{on "submit" this.editMeasureConcept}}
   >
     <p>
-      <AuLabel for="description">{{t "editMeasureConcept.description"}}</AuLabel>
+      <AuLabel for="description">{{t "measureConcept.attr.description"}}</AuLabel>
       <AuTextarea
               id="description"
               value={{measureConcept.description}}
@@ -24,11 +24,11 @@
     </p>
 
     <p>
-      <AuLabel for="roadSignConcept">{{t "editMeasureConcept.roadSignConcept"}}</AuLabel>
+      <AuLabel for="roadSignConcept">{{t "measureConcept.attr.roadSignConceptCode"}}</AuLabel>
       <PowerSelect
         @allowClear={{true}}
         @searchEnabled={{true}}
-        @noMatchesMessage={{t "editMeasureConcept.noData"}}
+        @noMatchesMessage={{t "measureConcept.crud.noData"}}
         @searchField="roadsignconceptcode"
         @options={{@model.roadSignConcepts}}
         @selected={{measureConcept.roadSignConcept}}
@@ -43,7 +43,7 @@
 
     <p>
       <AuButton type="submit" @loading={{this.isSaving}} @disabled={{this.isSaving}}>
-        {{t "editMeasureConcept.edit"}}
+        {{t "utility.save"}}
       </AuButton>
     </p>
   </form>

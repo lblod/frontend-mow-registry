@@ -4,7 +4,7 @@
       <div class="au-o-grid__item au-u-2-5@medium">
         <div class="au-c-content  au-u-margin-bottom">
           <AuHeading @skin="2">
-            {{t "landingPage.appName"}}
+            {{t "utility.appName"}}
           </AuHeading>
           <p></p>
         </div>
@@ -15,18 +15,18 @@
         <AuCard @flex={{true}} as |c|>
           <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">
             <AuHeading @level="2" @skin="4">
-              {{t "landingPage.roadSigns.title"}}
+              {{t "roadSignConcept.name"}}
             </AuHeading>
             <p>
-              {{t "landingPage.roadSigns.subtitle"}}
+              {{t "roadSignConcept.landingPage.subtitle"}}
             </p>
           </c.header>
           <c.content>
-            <p>{{t "landingPage.roadSigns.content"}}</p>
+            <p>{{t "roadSignConcept.landingPage.content"}}</p>
           </c.content>
           <c.footer>
             <LinkTo class="au-c-button" @route="road-sign-concepts">
-              {{t "landingPage.roadSigns.button"}}
+              {{t "roadSignConcept.landingPage.button"}}
             </LinkTo>
           </c.footer>
         </AuCard>
@@ -35,18 +35,18 @@
         <AuCard @flex={{true}} as |c|>
           <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">
             <AuHeading @level="2" @skin="4">
-              {{t "landingPage.measures.title"}} 
+              {{t "measureConcept.name"}} 
             </AuHeading>
             <p>
-              {{t "landingPage.measures.subtitle"}}
+              {{t "measureConcept.landingPage.subtitle"}}
             </p>
           </c.header>
           <c.content>
-            <p>{{t "landingPage.measures.content"}}</p>
+            <p>{{t "measureConcept.landingPage.content"}}</p>
           </c.content>
           <c.footer>
             <LinkTo class="au-c-button" @route="measure-concepts">
-              {{t "landingPage.measures.button"}}
+              {{t "measureConcept.landingPage.button"}}
             </LinkTo>
           </c.footer>
         </AuCard>

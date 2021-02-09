@@ -1,7 +1,7 @@
 <NavigationBar />
 
-<AuDataTable @content={{this.model}} @fields="description roadsignconcept" @noDataMessage={{t
-        "measureconcept.nodata" }}
+<AuDataTable @content={{this.model}} @fields="description roadsignconcept" 
+             @noDataMessage={{t "measureConcept.crud.noData" }}
              @size={{this.size}} @page={{this.page}}
              @sort={{this.sort}} as |s|>
   <s.menu as |menu|>
@@ -9,13 +9,13 @@
       <AuToolbar class="au-o-box">
         <AuToolbarGroup>
           <AuHeading @skin="2">
-            {{t "landingPage.measures.title"}}
+            {{t "measureConcept.name"}}
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
-          <AuDataTableTextSearch @filter={{this.filter}} @placeholder={{t "measureconcept.search" }} />
+          <AuDataTableTextSearch @filter={{this.filter}} @placeholder={{t "measureConcept.crud.search" }} />
           <LinkTo class="au-c-button" @route="measure-concepts.new">
-            {{t "measureconcept.new"}}
+            {{t "measureConcept.crud.new"}}
           </LinkTo>
         </AuToolbarGroup>
       </AuToolbar>
@@ -23,8 +23,8 @@
   </s.menu>
   <s.content as |c|>
     <c.header>
-      <th class="data-table__header-title"> {{t "roadsignconcept.imageurl"}}</th>
-      <th class="data-table__header-title"> {{t "measureconcept.description" }}</th>
+      <th class="data-table__header-title"> {{t "measureConcept.attr.roadSignConceptImage"}}</th>
+      <th class="data-table__header-title"> {{t "measureConcept.attr.description" }}</th>
       <th class="data-table__header-title"></th>
     </c.header>
     <c.body as |row|>

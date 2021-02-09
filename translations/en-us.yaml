@@ -1,100 +1,49 @@
-hello:
-  world: Hello Team Rocket!
-
-header:
-  titlePartOne: Flanders
-  titlePartTwo: is local government
-
-footer:
-  header: MOW Registry is an official website from the Flemish Government
-  content1: Published by
-  disclaimer: Disclaimer
-  cookie: Cookie Policy
-
-abb:
-  name: National Administration Agency
-
-roadsignconcept:
-  imageurl: Image
-  meaning: Meaning
-  code: Code
-  details: Road Sign details
-  new: New Road Sign
-  edit: Edit Road Sign
-  delete: Delete Road Sign
-  search: Looking for...
-  nodata: No Road Signs
-  backToOverview: Back to overview
-
-measureconcept:
-  description: Description
-  identifiers: Identifiers
-  details: Measure details
-  new: New Measure
-  edit: Edit Measure
-  search: Looking for...
-  delete: Delete Measure
-  nodata: No Measures
-  backToOverview: Back to overview
-
-newMeasureConcept:
-  pageTitle: New Measure
-  backToOverview: Back to overview
-  description: Description
-  roadSignConcept: Road Sign
-  noData: No results
-  create: Create new measure
-
-editMeasureConcept:
-  pageTitle: Edit Measure
-  backToOverview: Back to overview
-  description: Description
-  roadSignConcept: Road Sign
-  noData: No results
-  edit: Save
-
-newRoadSign:
-  pageTitle: New Road Sign
-  backToOverview: Back to overview
-  imageUrl: Image URL
-  roadSignConceptCode: Code
-  meaning: Meaning
-  categories: Categories
-  noData: No results
-  create: Create new road sign
-
 utility:
-  required: Required
-  fieldRequired: Field required
-
-
-editRoadSign:
-  pageTitle: Edit Road Sign
   backToOverview: Back to overview
-  imageUrl: Image URL
-  roadSignConceptCode: Code
-  meaning: Meaning
-  categories: Categories
-  noData: No results
-  edit: Save
-
-landingPage:
-  appName: MOW Registry
-  roadSigns:
-    title: Road Signs
-    subtitle: Subtitle for card
-    content: Information in the card that comes below the header. Content.
-    button: Go to Road Signs
-  measures:
-    title: Measures
-    subtitle: Subtitle for card
-    content: Information in the card that comes below the header. Content.
-    button: Go to Measures
-
-utility:
+  save: Save
   confirmation:
     title: Confirm
     body: Are you sure?
+  required: Required
+  fieldRequired: Field required
+  appName: MOW Registry
 
-navigationBar:
-  backToOverview: Back to overview
+roadSignConcept:
+  name: Road Signs
+  details: Road Sign details
+  attr:
+    imageHeader: Image
+    imageUrl: Image URL
+    meaning: Meaning
+    code: Code
+    categories: Categories
+  crud:
+    create: Create road sign   
+    new: New Road Sign
+    search: Search for road sign
+    noData: No Road Signs
+    edit: Edit Road Sign
+    delete: Delete Road Sign
+  landingPage:
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to Road Signs
+    
+measureConcept:
+  name: Measures
+  details: Measure details
+  attr:
+    roadSignConceptImage: Road Sign Image
+    roadSignConceptCode: Road Sign Code
+    description: Description
+  crud:
+    create: Create measure
+    new: New Measure
+    search: Search for mesure
+    noData: No Measures
+    edit: Edit Measure
+    delete: Delete Measure
+  landingPage:
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to Measures
