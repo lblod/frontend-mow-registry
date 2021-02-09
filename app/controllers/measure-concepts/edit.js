@@ -18,11 +18,32 @@ export default class MeasureConceptsEditController extends Controller {
   }
 
   @action
+  async setMeasureConceptCombination(selection) {
+    // let roadSignCombination = await this.store.findRecord(
+    //   'road-sign-combination',
+    //   this.model.measureConcept.roadSignCombination.get('id')
+    // );
+    // roadSignCombination.measureConcepts = selection;
+    // await roadSignCombination.save();
+    // this.model.measureConcept.roadSignCombination = roadSignCombination;
+
+    const roadSignCombination = await this.model.measureConcept.get(
+      'roadSignCombination'
+    );
+    roadSignCombination.set('measureConcepts', selection);
+  }
+
+  @action
   async editMeasureConcept(event) {
     event.preventDefault();
 
     if (!this.isSaving) {
       this.isSaving = true;
+
+      const roadSignCombination = await this.model.measureConcept.get(
+        'roadSignCombination'
+      );
+      await roadSignCombination.save();
 
       await this.model.measureConcept.save();
 
