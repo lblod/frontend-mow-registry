@@ -10,9 +10,7 @@ export default class MeasureConceptsMeasureConceptController extends Controller 
   async removeMeasureConcept(measureconcept, event) {
     event.preventDefault();
 
-    if (confirm(this.intl.t('confirmation'))) {
-      await measureconcept.destroyRecord();
-      this.router.transitionTo('measure-concepts');
-    }
+    await measureconcept.destroyRecord();
+    this.router.transitionTo('measure-concepts');
   }
 }

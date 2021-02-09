@@ -88,7 +88,10 @@ landingPage:
     content: Informatie op de kaart die onder de kop komt. Inhoud.
     button: Ga naar Maatregelen
 
-confirmation: Ben je zeker?
+utility:
+  confirmation:
+    title: Bevestig
+    body: Ben je zeker?
 
 navigationBar:
   backToOverview: Naar het overzicht

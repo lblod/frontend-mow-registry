@@ -87,7 +87,10 @@ landingPage:
     content: Information in the card that comes below the header. Content.
     button: Go to Measures
 
-confirmation: Are you sure?
+utility:
+  confirmation:
+    title: Confirm
+    body: Are you sure?
 
 navigationBar:
   backToOverview: Back to overview
