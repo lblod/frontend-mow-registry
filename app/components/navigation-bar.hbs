@@ -1,0 +1,15 @@
+<AuToolbar  @border="bottom" @size="medium" @skin="tint">
+  <AuToolbarGroup>
+    <BreadcrumbsContainer
+      class="breadcrumbs au-c-list-horizontal"
+      @itemClass="breadcrumbs__item au-c-list-horizontal__item"
+      @linkClass="breadcrumbs__link au-c-link"
+    >
+      <li class="au-c-list-horizontal__item">
+        <AuLink @linkRoute="index" @icon="arrow-left" @iconAlignment="left">
+          {{t "navigationBar.backToOverview"}}
+        </AuLink>
+      </li>
+    </BreadcrumbsContainer>
+  </AuToolbarGroup>
+</AuToolbar>

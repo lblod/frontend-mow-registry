@@ -76,3 +76,6 @@ editRoadSign:
   edit: Opslaan
 
 confirmation: Ben je zeker?
+
+navigationBar:
+  backToOverview: Naar het overzicht
