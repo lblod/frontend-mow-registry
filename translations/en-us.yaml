@@ -74,5 +74,17 @@ editRoadSign:
   noData: No results
   edit: Save
 
+landingPage:
+  appName: MOW Registry
+  roadSigns:
+    title: Road Signs
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to Road Signs
+  measures:
+    title: Measures
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to Measures
 
 confirmation: Are you sure?
