@@ -18,7 +18,7 @@ roadsignconcept:
   imageurl: Afbeelding
   meaning: Betekenis
   code: Code
-  details: Verkeersbord
+  details: Verkeersbord details
   new: Nieuw verkeersbord
   edit: Verkeersbord bewerken
   delete: Verwijder verkeersbord
@@ -29,7 +29,7 @@ roadsignconcept:
 measureconcept:
   description: Beschrijving
   identifier: Identifier
-  details: Maatregel
+  details: Maatregel details
   new: Nieuw maatregel
   edit: Maatregel bewerken
   search: Zoek...
