@@ -7,51 +7,77 @@
     </LinkTo>
   </BreadcrumbsItem>
 
-  <NavigationBar />
+  <NavigationBar/>
 
   <form
-    class="au-c-form au-o-layout au-u-padding-top-large"
+          class="au-c-form au-o-layout au-u-padding-top-large"
     {{on "submit" this.createRoadSignConcept}}
   >
-    <p>
-      <AuLabel for="image-url">{{t "newRoadSign.imageUrl"}}</AuLabel>
-      <AuInput type="url" id="image-url" required="required" {{on "input" (fn this.setRoadSignConceptValue "image")}} />
-    </p>
+  {{#let (is-empty @model.newRoadSignConcept.image) as |isInvalid|}}
+      <p>
+      <AuLabel @error={{isInvalid}} for="image-url">{{t "newRoadSign.imageUrl"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
+      </AuLabel>
+      <AuInput @error={{isInvalid}} type="url" id="image-url" required="required" {{on
+              "input" (fn this.setRoadSignConceptValue "image")}} />
+      {{#if isInvalid}}
+        <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
+      {{/if}}
 
-    <p>
-      <AuLabel for="road-sign-concept-code">{{t "newRoadSign.roadSignConceptCode"}}</AuLabel>
-      <AuInput id="road-sign-concept-code" required="required" {{on "input" (fn this.setRoadSignConceptValue "roadSignConceptCode")}} />
     </p>
-
+  {{/let}}
+  {{#let (is-empty @model.newRoadSignConcept.roadSignConceptCode) as |isInvalid|}}
     <p>
-      <AuLabel for="meaning">{{t "newRoadSign.meaning"}}</AuLabel>
+      <AuLabel @error={{isInvalid}} for="road-sign-concept-code">{{t "newRoadSign.roadSignConceptCode"}}&nbsp;<AuPill>{{t
+              "utility.required"}}</AuPill>
+      </AuLabel>
+      <AuInput @error={{isInvalid}}  id="road-sign-concept-code"
+               required="required" {{on "input" (fn this.setRoadSignConceptValue "roadSignConceptCode")}} />
+      {{#if isInvalid}}
+        <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
+      {{/if}}
+
+    </p>
+  {{/let}}
+  {{#let (is-empty @model.newRoadSignConcept.meaning) as |isInvalid|}}
+    <p>
+      <AuLabel @error={{isInvalid}}  for="meaning">{{t "newRoadSign.meaning"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
+      </AuLabel>
       <AuTextarea
-        id="meaning"
+              id="meaning"
         {{on "input" (fn this.setRoadSignConceptValue "meaning")}}
-        required="required"
+              required="required"
+              @error={{isInvalid}}
       ></AuTextarea>
-    </p>
+      {{#if isInvalid}}
+        <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
+      {{/if}}
 
+    </p>
+  {{/let}}
+  {{#let (is-empty @model.newRoadSignConcept.categories) as |isInvalid|}}
     <p>
-      <AuLabel for="categories">{{t "newRoadSign.categories"}}</AuLabel>
+      <AuLabel  @error={{isInvalid}}  for="categories">{{t "newRoadSign.categories"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
+      </AuLabel>
       <PowerSelectMultiple
-        @allowClear={{true}}
-        @searchEnabled={{true}}
-        @noMatchesMessage={{t "newRoadSign.noData"}}
-        @searchField="label"
-        @options={{@model.categories}}
-        @selected={{roadSignConcept.categories}}
-        @onChange={{this.setRoadSignConceptCategory}}
-        @triggerId="categories"
-        as |category|
+              @allowClear={{true}}
+              @searchEnabled={{true}}
+              @noMatchesMessage={{t "newRoadSign.noData"}}
+              @searchField="label"
+              @options={{@model.categories}}
+              @selected={{roadSignConcept.categories}}
+              @onChange={{this.setRoadSignConceptCategory}}
+              @triggerId="categories"
+              as |category|
       >
         {{category.label}}
       </PowerSelectMultiple>
+      {{#if isInvalid}}
+        <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
+      {{/if}}
     </p>
-
-
+  {{/let}}
     <p>
-      <AuButton type="submit" @loading={{this.isSaving}} @disabled={{this.isSaving}}>
+      <AuButton type="submit" @loading={{this.isSaving}} @disabled={{or this.isSaving this.notValid}}>
         {{t "newRoadSign.create"}}
       </AuButton>
     </p>

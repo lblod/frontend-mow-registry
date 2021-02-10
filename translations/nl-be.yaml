@@ -53,7 +53,6 @@ editMeasureConcept:
   noData: Geen resultaten
   edit: Opslaan
 
-
 newRoadSign:
   pageTitle: Nieuw verkeersbord
   backToOverview: Terug naar het overzicht
@@ -87,7 +86,15 @@ landingPage:
     content: Informatie op de kaart die onder de kop komt. Inhoud.
     button: Ga naar Maatregelen
 
-confirmation: Ben je zeker?
+utility:
+  confirmation:
+    title: Bevestig
+    body: Ben je zeker?
 
 navigationBar:
   backToOverview: Naar het overzicht
+
+utility:
+  required: Verplicht
+  fieldRequired: Verplicht veld
+
