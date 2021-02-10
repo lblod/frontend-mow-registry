@@ -17,6 +17,15 @@ export default class RoadsignConceptsNewController extends Controller {
     this.model.newRoadSignConcept.categories = selection;
   }
 
+  get notValid() {
+    return (
+      !this.model.newRoadSignConcept.image ||
+      !this.model.newRoadSignConcept.roadSignConceptCode ||
+      !this.model.newRoadSignConcept.meaning ||
+      !this.model.newRoadSignConcept.categories?.length
+    );
+  }
+
   @action
   async createRoadSignConcept(event) {
     event.preventDefault();

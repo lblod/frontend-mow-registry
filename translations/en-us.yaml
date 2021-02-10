@@ -64,6 +64,11 @@ newRoadSign:
   noData: No results
   create: Create new road sign
 
+utility:
+  required: Required
+  fieldRequired: Field required
+
+
 editRoadSign:
   pageTitle: Edit Road Sign
   backToOverview: Back to overview

@@ -54,7 +54,6 @@ editMeasureConcept:
   noData: Geen resultaten
   edit: Opslaan
 
-
 newRoadSign:
   pageTitle: Nieuw verkeersbord
   backToOverview: Terug naar het overzicht
@@ -92,3 +91,8 @@ confirmation: Ben je zeker?
 
 navigationBar:
   backToOverview: Naar het overzicht
+
+utility:
+  required: Verplicht
+  fieldRequired: Verplicht veld
+
