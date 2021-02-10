@@ -14,12 +14,11 @@ footer:
 abb:
   name: Agentschap Binnenlands Bestuur
 
-
 roadsignconcept:
   imageurl: Afbeelding
   meaning: Betekenis
   code: Code
-  app: Verkeersbord
+  details: Verkeersbord details
   new: Nieuw verkeersbord
   edit: Verkeersbord bewerken
   delete: Verwijder verkeersbord
@@ -30,7 +29,7 @@ roadsignconcept:
 measureconcept:
   description: Beschrijving
   identifier: Identifier
-  app: Maatregel
+  details: Maatregel details
   new: Nieuw maatregel
   edit: Maatregel bewerken
   search: Zoek...
