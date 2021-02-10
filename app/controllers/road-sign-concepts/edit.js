@@ -12,6 +12,15 @@ export default class RoadsignConceptsEditController extends Controller {
     this.model.roadSignConcept[attributeName] = event.target.value;
   }
 
+  get notValid() {
+    return (
+      !this.model.roadSignConcept.image ||
+      !this.model.roadSignConcept.roadSignConceptCode ||
+      !this.model.roadSignConcept.meaning ||
+      !this.model.roadSignConcept.categories?.length
+    );
+  }
+
   @action
   setRoadSignConceptCategory(selection) {
     this.model.roadSignConcept.categories = selection;

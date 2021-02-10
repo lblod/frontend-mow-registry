@@ -10,10 +10,10 @@
   <NavigationBar/>
 
   <form
-          class="au-c-form au-o-layout au-u-padding-top-large"
+    class="au-c-form au-o-layout au-u-padding-top-large"
     {{on "submit" this.createRoadSignConcept}}
   >
-  {{#let (is-empty @model.newRoadSignConcept.image) as |isInvalid|}}
+  {{#let (is-empty roadSignConcept.image) as |isInvalid|}}
       <p>
       <AuLabel @error={{isInvalid}} for="image-url">{{t "roadSignConcept.attr.imageUrl"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
       </AuLabel>
@@ -25,7 +25,7 @@
 
     </p>
   {{/let}}
-  {{#let (is-empty @model.newRoadSignConcept.roadSignConceptCode) as |isInvalid|}}
+  {{#let (is-empty roadSignConcept.roadSignConceptCode) as |isInvalid|}}
     <p>
       <AuLabel @error={{isInvalid}} for="road-sign-concept-code">{{t "roadSignConcept.attr.code"}}&nbsp;<AuPill>{{t
               "utility.required"}}</AuPill>
@@ -38,7 +38,7 @@
 
     </p>
   {{/let}}
-  {{#let (is-empty @model.newRoadSignConcept.meaning) as |isInvalid|}}
+  {{#let (is-empty roadSignConcept.meaning) as |isInvalid|}}
     <p>
       <AuLabel @error={{isInvalid}}  for="meaning">{{t "roadSignConcept.attr.meaning"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
       </AuLabel>
@@ -54,9 +54,9 @@
 
     </p>
   {{/let}}
-  {{#let (is-empty @model.newRoadSignConcept.categories) as |isInvalid|}}
+  {{#let (is-empty roadSignConcept.categories) as |isInvalid|}}
     <p>
-      <AuLabel  @error={{isInvalid}}  for="categories">{{t "roadSignConcept.attr.categories"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
+      <AuLabel @error={{isInvalid}} for="categories">{{t "roadSignConcept.attr.categories"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
       </AuLabel>
       <PowerSelectMultiple
               @allowClear={{true}}

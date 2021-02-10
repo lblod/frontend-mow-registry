@@ -34,4 +34,11 @@ export default class MeasureConceptsEditController extends Controller {
       );
     }
   }
+
+  get notValid() {
+    return (
+      !this.model.measureConcept.description ||
+      !this.model.measureConcept.get('roadSignConcept.id')
+    );
+  }
 }

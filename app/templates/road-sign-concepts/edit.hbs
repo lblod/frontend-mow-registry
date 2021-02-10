@@ -13,28 +13,43 @@
     class="au-c-form au-o-layout au-u-padding-top-large"
     {{on "submit" this.editRoadSignConcept}}
   >
-    <p>
-      <AuLabel for="image-url">{{t "roadSignConcept.attr.imageUrl"}}</AuLabel>
-      <AuInput type="url" id="image-url" value={{roadSignConcept.image}} required="required" {{on "input" (fn this.setRoadSignConceptValue "image")}} />
-    </p>
+  {{#let (is-empty roadSignConcept.image) as |isInvalid|}}
 
+      <p>
+      <AuLabel @error={{isInvalid}} for="image-url">{{t "roadSignConcept.attr.imageUrl"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill></AuLabel>
+      <AuInput @error={{isInvalid}} type="url" id="image-url" value={{roadSignConcept.image}} required="required" {{on "input" (fn this.setRoadSignConceptValue "image")}} />
+        {{#if isInvalid}}
+          <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
+        {{/if}}
+      </p>
+  {{/let}}
+  {{#let (is-empty roadSignConcept.roadSignConceptCode) as |isInvalid|}}
     <p>
-      <AuLabel for="road-sign-concept-code">{{t "roadSignConcept.attr.code"}}</AuLabel>
-      <AuInput id="road-sign-concept-code" required="required" value={{roadSignConcept.roadSignConceptCode}} {{on "input" (fn this.setRoadSignConceptValue "roadSignConceptCode")}} />
+      <AuLabel @error={{isInvalid}} for="road-sign-concept-code">{{t "roadSignConcept.attr.code"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill></AuLabel>
+      <AuInput @error={{isInvalid}} id="road-sign-concept-code" required="required" value={{roadSignConcept.roadSignConceptCode}} {{on "input" (fn this.setRoadSignConceptValue "roadSignConceptCode")}} />
+      {{#if isInvalid}}
+        <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
+      {{/if}}
     </p>
-
+  {{/let}}
+  {{#let (is-empty roadSignConcept.meaning) as |isInvalid|}}
     <p>
-      <AuLabel for="meaning">{{t "roadSignConcept.attr.meaning"}}</AuLabel>
+      <AuLabel @error={{isInvalid}} for="meaning">{{t "roadSignConcept.attr.meaning"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill></AuLabel>
       <AuTextarea
+        @error={{isInvalid}}
         id="meaning"
         {{on "input" (fn this.setRoadSignConceptValue "meaning")}}
         required="required"
         value={{roadSignConcept.meaning}}
       ></AuTextarea>
+      {{#if isInvalid}}
+        <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
+      {{/if}}
     </p>
-
+  {{/let}}
+  {{#let (is-empty roadSignConcept.categories) as |isInvalid|}}
     <p>
-      <AuLabel for="categories">{{t "roadSignConcept.attr.categories"}}</AuLabel>
+      <AuLabel @error={{isInvalid}} for="categories">{{t "roadSignConcept.attr.categories"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill></AuLabel>
       <PowerSelectMultiple
         @allowClear={{true}}
         @searchEnabled={{true}}
@@ -48,11 +63,15 @@
       >
         {{category.label}}
       </PowerSelectMultiple>
+      {{#if isInvalid}}
+        <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
+      {{/if}}
     </p>
+  {{/let}}
 
 
     <p>
-      <AuButton type="submit" @loading={{this.isSaving}} @disabled={{this.isSaving}}>
+      <AuButton type="submit" @loading={{this.isSaving}} @disabled={{or this.isSaving this.notValid}}>
         {{t "utility.save"}}
       </AuButton>
     </p>
