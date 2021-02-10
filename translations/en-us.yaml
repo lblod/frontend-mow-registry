@@ -45,7 +45,6 @@ newMeasureConcept:
   roadSignConcept: Road Sign
   noData: No results
   create: Create new measure
-  required: Required
 
 editMeasureConcept:
   pageTitle: Edit Measure
@@ -54,7 +53,6 @@ editMeasureConcept:
   roadSignConcept: Road Sign
   noData: No results
   edit: Save
-  required: Required
 
 newRoadSign:
   pageTitle: New Road Sign
@@ -65,8 +63,11 @@ newRoadSign:
   categories: Categories
   noData: No results
   create: Create new road sign
+
+utility:
   required: Required
   fieldRequired: Field required
+
 
 editRoadSign:
   pageTitle: Edit Road Sign
@@ -77,7 +78,6 @@ editRoadSign:
   categories: Categories
   noData: No results
   edit: Save
-  required: Required
 
 landingPage:
   appName: MOW Registry

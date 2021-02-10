@@ -45,7 +45,6 @@ newMeasureConcept:
   roadSignConcept: Verkeersbord
   noData: Geen resultaten
   create: Maatregel aanmaken
-  required: Verplicht
 
 editMeasureConcept:
   pageTitle: Maatregel bewerken
@@ -54,7 +53,6 @@ editMeasureConcept:
   roadSignConcept: Verkeersbord
   noData: Geen resultaten
   edit: Opslaan
-  required: Verplicht
 
 newRoadSign:
   pageTitle: Nieuw verkeersbord
@@ -65,8 +63,6 @@ newRoadSign:
   categories: Categorieën
   noData: Geen resultaten
   create: Verkeersbord aanmaken
-  required: Verplicht
-  fieldRequired: Verplicht veld
 
 editRoadSign:
   pageTitle: Verkeersbord bewerken
@@ -77,7 +73,6 @@ editRoadSign:
   categories: Categorieën
   noData: Geen resultaten
   edit: Opslaan
-  required: Verplicht
 
 landingPage:
   appName: MOW Registry
@@ -96,3 +91,8 @@ confirmation: Ben je zeker?
 
 navigationBar:
   backToOverview: Naar het overzicht
+
+utility:
+  required: Verplicht
+  fieldRequired: Verplicht veld
+
