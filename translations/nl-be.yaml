@@ -1,11 +1,12 @@
 utility:
   backToOverview: Naar het overzicht
   save: Opslaan
+  cancel: Annuleer
   confirmation:
     title: Bevestig
     body: Ben je zeker?
   required: Verplicht
-  fieldRequired: Verplicht veld
+  fieldRequired: Dit veld is verplicht
   appName: MOW Registry
 
 roadSignConcept:
@@ -28,7 +29,7 @@ roadSignConcept:
     subtitle: Ondertitel voor kaart
     content: Informatie op de kaart die onder de kop komt. Inhoud.
     button: Ga naar Verkeersborden
-      
+
 measureConcept:
   name: Maatregelen
   details: Maatregel details
