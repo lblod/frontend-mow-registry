@@ -17,14 +17,15 @@
     </AuToolbarGroup>
   </AuToolbar>
 
-  <form
-    class="au-c-form"
-    {{on "submit" this.createRoadSignConcept}}
-  >
-    <div class="au-c-body-container au-c-body-container--scroll">
-      <div class="au-o-box">
-        <div class="au-o-grid">
-          <div class="au-o-grid__item au-u-2-3@medium au-u-2-5@large">
+  <div class="au-c-body-container au-c-body-container--scroll">
+    <div class="au-o-box">
+      <div class="au-o-grid">
+        <div class="au-o-grid__item au-u-2-3@medium au-u-2-5@large">
+          <form
+            class="au-c-form"
+            id="new-road-sign-form"
+            {{on "submit" this.createRoadSignConcept}}
+          >
             {{#let (is-empty roadSignConcept.image) as |isInvalid|}}
               <p>
                 <AuLabel
@@ -120,22 +121,27 @@
                 {{/if}}
               </p>
             {{/let}}
-          </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-    <AuToolbar @border="top" @size="large">
-      <AuToolbarGroup>
-        <AuButtonGroup>
-          <AuButton type="submit" @loading={{this.isSaving}} @disabled={{or this.isSaving this.notValid}}>
-            {{t "roadSignConcept.crud.create"}}
-          </AuButton>
-          <LinkTo @route="road-sign-concepts" class="au-c-button au-c-button--secondary">
-            {{t "utility.cancel"}}
-          </LinkTo>
-        </AuButtonGroup>
-      </AuToolbarGroup>
-    </AuToolbar>
-  </form>
+  <AuToolbar @border="top" @size="large">
+    <AuToolbarGroup>
+      <AuButtonGroup>
+        <AuButton
+          @disabled={{or this.isSaving this.notValid}}
+          @loading={{this.isSaving}}
+          form="new-road-sign-form"
+          type="submit"
+        >
+          {{t "roadSignConcept.crud.create"}}
+        </AuButton>
+        <LinkTo @route="road-sign-concepts" class="au-c-button au-c-button--secondary">
+          {{t "utility.cancel"}}
+        </LinkTo>
+      </AuButtonGroup>
+    </AuToolbarGroup>
+  </AuToolbar>
 {{/let}}
