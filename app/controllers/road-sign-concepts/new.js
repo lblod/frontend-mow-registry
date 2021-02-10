@@ -7,6 +7,19 @@ export default class RoadsignConceptsNewController extends Controller {
   @tracked isSaving = false;
   @service router;
 
+  get notValid() {
+    return (
+      !this.roadSignConcept.image ||
+      !this.roadSignConcept.roadSignConceptCode ||
+      !this.roadSignConcept.meaning ||
+      !this.roadSignConcept.categories?.length
+    );
+  }
+
+  get roadSignConcept() {
+    return this.model.newRoadSignConcept;
+  }
+
   @action
   setRoadSignConceptValue(attributeName, event) {
     this.model.newRoadSignConcept[attributeName] = event.target.value;
@@ -15,15 +28,6 @@ export default class RoadsignConceptsNewController extends Controller {
   @action
   setRoadSignConceptCategory(selection) {
     this.model.newRoadSignConcept.categories = selection;
-  }
-
-  get notValid() {
-    return (
-      !this.model.newRoadSignConcept.image ||
-      !this.model.newRoadSignConcept.roadSignConceptCode ||
-      !this.model.newRoadSignConcept.meaning ||
-      !this.model.newRoadSignConcept.categories?.length
-    );
   }
 
   @action
