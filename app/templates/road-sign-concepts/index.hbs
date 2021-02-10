@@ -3,7 +3,7 @@
 <AuDataTable
   @content={{this.model}}
   @fields="Image Meaning Code"
-  @noDataMessage={{t "roadsignconcept.nodata" }}
+  @noDataMessage={{t "roadSignConcept.crud.noData" }}
   @size={{this.size}}
   @page={{this.page}}
   @sort={{this.sort}}
@@ -14,13 +14,13 @@
       <AuToolbar class="au-o-box">
         <AuToolbarGroup>
           <AuHeading @skin="2">
-            {{t "landingPage.roadSigns.title"}}
+            {{t "roadSignConcept.name"}}
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
-          <AuDataTableTextSearch @filter={{this.filter}} @placeholder={{t "roadsignconcept.search" }} />
+          <AuDataTableTextSearch @filter={{this.filter}} @placeholder={{t "roadSignConcept.crud.search" }} />
           <LinkTo class="au-c-button" @route="road-sign-concepts.new">
-            {{t "roadsignconcept.new"}}
+            {{t "roadSignConcept.crud.new"}}
           </LinkTo>
         </AuToolbarGroup>
       </AuToolbar>
@@ -31,11 +31,11 @@
       <AuDataTableThSortable
         @field="roadSignConceptCode"
         @currentSorting={{this.sort}}
-        @label={{t "roadsignconcept.code" }}
+        @label={{t "roadSignConcept.attr.code" }}
         @class="data-table__header-title"
       />
-      <th class="data-table__header-title"> {{t "roadsignconcept.imageurl"}}</th>
-      <th class="data-table__header-title"> {{t "roadsignconcept.meaning"}}</th>
+      <th class="data-table__header-title"> {{t "roadSignConcept.attr.imageHeader"}}</th>
+      <th class="data-table__header-title"> {{t "roadSignConcept.attr.meaning"}}</th>
     </c.header>
     <c.body as |roadSignConcept|>
       <td>

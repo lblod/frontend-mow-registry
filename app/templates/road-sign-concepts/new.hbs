@@ -1,9 +1,9 @@
-{{page-title (t "newRoadSign.pageTitle")}}
+{{page-title (t "roadSignConcept.crud.new")}}
 
 {{#let @model.newRoadSignConcept as |roadSignConcept|}}
   <BreadcrumbsItem as |linkClass|>
     <LinkTo @route="road-sign-concepts.new" @model={{roadSignConcept.id}} class={{linkClass}}>
-      {{t "newRoadSign.pageTitle"}}
+      {{t "roadSignConcept.crud.new"}}
     </LinkTo>
   </BreadcrumbsItem>
 
@@ -15,7 +15,7 @@
   >
   {{#let (is-empty @model.newRoadSignConcept.image) as |isInvalid|}}
       <p>
-      <AuLabel @error={{isInvalid}} for="image-url">{{t "newRoadSign.imageUrl"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
+      <AuLabel @error={{isInvalid}} for="image-url">{{t "roadSignConcept.attr.imageUrl"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
       </AuLabel>
       <AuInput @error={{isInvalid}} type="url" id="image-url" required="required" {{on
               "input" (fn this.setRoadSignConceptValue "image")}} />
@@ -27,7 +27,7 @@
   {{/let}}
   {{#let (is-empty @model.newRoadSignConcept.roadSignConceptCode) as |isInvalid|}}
     <p>
-      <AuLabel @error={{isInvalid}} for="road-sign-concept-code">{{t "newRoadSign.roadSignConceptCode"}}&nbsp;<AuPill>{{t
+      <AuLabel @error={{isInvalid}} for="road-sign-concept-code">{{t "roadSignConcept.attr.code"}}&nbsp;<AuPill>{{t
               "utility.required"}}</AuPill>
       </AuLabel>
       <AuInput @error={{isInvalid}}  id="road-sign-concept-code"
@@ -40,7 +40,7 @@
   {{/let}}
   {{#let (is-empty @model.newRoadSignConcept.meaning) as |isInvalid|}}
     <p>
-      <AuLabel @error={{isInvalid}}  for="meaning">{{t "newRoadSign.meaning"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
+      <AuLabel @error={{isInvalid}}  for="meaning">{{t "roadSignConcept.attr.meaning"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
       </AuLabel>
       <AuTextarea
               id="meaning"
@@ -56,12 +56,12 @@
   {{/let}}
   {{#let (is-empty @model.newRoadSignConcept.categories) as |isInvalid|}}
     <p>
-      <AuLabel  @error={{isInvalid}}  for="categories">{{t "newRoadSign.categories"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
+      <AuLabel  @error={{isInvalid}}  for="categories">{{t "roadSignConcept.attr.categories"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill>
       </AuLabel>
       <PowerSelectMultiple
               @allowClear={{true}}
               @searchEnabled={{true}}
-              @noMatchesMessage={{t "newRoadSign.noData"}}
+              @noMatchesMessage={{t "roadSignConcept.crud.noData"}}
               @searchField="label"
               @options={{@model.categories}}
               @selected={{roadSignConcept.categories}}
@@ -78,7 +78,7 @@
   {{/let}}
     <p>
       <AuButton type="submit" @loading={{this.isSaving}} @disabled={{or this.isSaving this.notValid}}>
-        {{t "newRoadSign.create"}}
+        {{t "roadSignConcept.crud.create"}}
       </AuButton>
     </p>
   </form>
