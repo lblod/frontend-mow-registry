@@ -8,41 +8,52 @@
     </LinkTo>
   </BreadcrumbsItem>
 
-  <NavigationBar />
+  <NavigationBar/>
 
-  <form
-    class="au-c-form au-o-layout au-u-padding-top-large"
+  <form class="au-c-form au-o-layout au-u-padding-top-large"
     {{on "submit" this.createMeasureConcept}}
   >
-    <p>
-      <AuLabel for="description">{{t "measureConcept.attr.description"}}</AuLabel>
-      <AuTextarea
-              id="description"
-        {{on "input" (fn this.setMeasureConceptValue "description")}}
-              required="required"
-      ></AuTextarea>
-    </p>
+    {{#let (is-empty measureConcept.description) as |isInvalid|}}
+      <p>
+        <AuLabel @error={{isInvalid}}  for="description">{{t "measureConcept.attr.description"}}&nbsp;<AuPill>{{t
+                "utility.required"}}</AuPill>
+        </AuLabel>
+        <AuTextarea @error={{isInvalid}}
+                    id="description"
+          {{on "input" (fn this.setMeasureConceptValue "description")}}
+                    required="required"
+        ></AuTextarea>
+        {{#if isInvalid}}
+          <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
+        {{/if}}
+      </p>
+    {{/let}}
+    {{#let (is-empty measureConcept.roadSignConcept.id) as |isInvalid|}}
+      <p>
+        <AuLabel @error={{isInvalid}}  for="roadSignConcept">{{t "measureConcept.attr.roadSignConceptCode"}}&nbsp;<AuPill>{{t
+                "utility.required"}}</AuPill>
+        </AuLabel>
+        <PowerSelect
+                @allowClear={{true}}
+                @searchEnabled={{true}}
+                @noMatchesMessage={{t "measureConcept.crud.noData"}}
+                @searchField="roadsignconceptcode"
+                @options={{@model.roadSignConcepts}}
+                @selected={{measureConcept.roadSignConcept}}
+                @onChange={{this.setMeasureConceptRoadSignConcept}}
+                @triggerId="roadSignConcept"
+                as |concept|
+        >
+          {{concept.roadSignConceptCode}}
+        </PowerSelect>
+        {{#if isInvalid}}
+          <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
+        {{/if}}
+      </p>
+    {{/let}}
 
     <p>
-      <AuLabel for="roadSignConcept">{{t "measureConcept.attr.roadSignConceptCode"}}</AuLabel>
-      <PowerSelect
-        @allowClear={{true}}
-        @searchEnabled={{true}}
-        @noMatchesMessage={{t "measureConcept.crud.noData"}}
-        @searchField="roadsignconceptcode"
-        @options={{@model.roadSignConcepts}}
-        @selected={{measureConcept.roadSignConcept}}
-        @onChange={{this.setMeasureConceptRoadSignConcept}}
-        @triggerId="roadSignConcept"
-        as |concept|
-      >
-        {{concept.roadSignConceptCode}}
-      </PowerSelect>
-    </p>
-
-
-    <p>
-      <AuButton type="submit" @loading={{this.isSaving}} @disabled={{this.isSaving}}>
+      <AuButton type="submit" @loading={{this.isSaving}} @disabled={{or this.isSaving this.notValid}}>
         {{t "measureConcept.crud.create"}}
       </AuButton>
     </p>
