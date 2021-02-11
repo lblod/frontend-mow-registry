@@ -11,4 +11,9 @@ export default class RoadsignConceptsNewRoute extends Route {
       categories: this.store.findAll('road-sign-category'),
     });
   }
+  resetController(controller) {
+    const roadSignConcept = controller.model.newRoadSignConcept;
+    roadSignConcept.rollbackAttributes();
+    roadSignConcept.hasMany('categories').reload();
+  }
 }

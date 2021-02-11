@@ -11,4 +11,10 @@ export default class MeasureConceptsNewRoute extends Route {
       roadSignConcepts: this.store.findAll('road-sign-concept'),
     });
   }
+  resetController(controller) {
+    const measureConcept = controller.model.newMeasureConcept;
+    measureConcept.rollbackAttributes();
+    measureConcept.belongsTo('roadSignConcept').reload();
+    measureConcept.belongsTo('roadSignCombination').reload();
+  }
 }
