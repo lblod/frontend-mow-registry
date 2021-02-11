@@ -31,10 +31,9 @@
       <td><img src={{row.roadSignConcept.image}} alt="" role="presentation"></td>
       <td>{{row.description}}</td>
       <td>
-        <LinkTo @route="measure-concepts.measure-concept" @model={{row}}>
+        <LinkTo class=".au-c-link" @route="measure-concepts.measure-concept" @model={{row}}>
           {{t "utility.view"}}
         </LinkTo>
-
       </td>
     </c.body>
   </s.content>
