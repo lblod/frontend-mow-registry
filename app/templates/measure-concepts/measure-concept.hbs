@@ -22,12 +22,12 @@
           </div>
         </div>
         <hr>
-        <h2>{{t 'measureconcept.linkedTo'}}</h2>
+        <h2>{{t 'measureConcept.attr.roadSignConceptCombination'}}</h2>
         {{#each @model.roadSignCombination.measureConcepts as |linkedMeasure|}}
           {{#if (not-eq linkedMeasure.id @model.id)}}
             <div class="flex-content-between">
               <div class="no-flex-shrink">
-                <img class="au-u-margin-right" alt={{t 'abb.name'}} src={{linkedMeasure.roadSignConcept.image}}>
+                <img class="au-u-margin-right" alt="" role="presentation" src={{linkedMeasure.roadSignConcept.image}}>
               </div>
               <div>
                 <p>{{linkedMeasure.description}}</p>
