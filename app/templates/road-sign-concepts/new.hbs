@@ -22,7 +22,7 @@
       <div class="au-o-grid__item au-u-2-3@medium au-u-2-5@large">
         <form
           class="au-c-form"
-          id="new-road-sign-form"
+          id="new-road-sign-concept-form"
           {{on "submit" this.createRoadSignConcept}}
         >
           {{#let (is-empty this.roadSignConcept.image) as |isInvalid|}}
@@ -132,7 +132,7 @@
       <AuButton
         @disabled={{or this.isSaving this.notValid}}
         @loading={{this.isSaving}}
-        form="new-road-sign-form"
+        form="new-road-sign-concept-form"
         type="submit"
       >
         {{t "roadSignConcept.crud.create"}}
