@@ -36,6 +36,7 @@ measureConcept:
   attr:
     roadSignConceptImage: Road Sign Image
     roadSignConceptCode: Road Sign Code
+    roadSignConceptCombination: Related measures
     description: Description
   crud:
     create: Create measure

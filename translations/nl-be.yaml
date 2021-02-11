@@ -36,6 +36,7 @@ measureConcept:
   attr:
     roadSignConceptImage: Verkeersbord Afbeelding
     roadSignConceptCode: Verkeersbord Code
+    roadSignConceptCombination: Gerelateerde maatregelen
     description: Beschrijving
   crud:
     create: Maatregel aanmaken

@@ -30,7 +30,6 @@
       </p>
     {{/let}}
     {{#let (is-empty measureConcept.roadSignConcept.id) as |isInvalid|}}
-
       <p>
         <AuLabel @error={{isInvalid}} for="roadSignConcept">{{t "measureConcept.attr.roadSignConceptCode"}}&nbsp;<AuPill>{{t
                 "utility.required"}}</AuPill>
@@ -53,6 +52,23 @@
         {{/if}}
       </p>
     {{/let}}
+
+    <p>
+      <AuLabel for="linkedMeasureConcept">{{t "measureConcept.attr.roadSignConceptCombination"}}</AuLabel>
+      <PowerSelectMultiple
+        @allowClear={{true}}
+        @searchEnabled={{true}}
+        @noMatchesMessage={{t "measureConcept.crud.noData"}}
+        @searchField="description"
+        @options={{@model.measureConcepts}}
+        @selected={{measureConcept.roadSignCombination.measureConcepts}}
+        @onChange={{this.setMeasureConceptCombination}}
+        @triggerId="linkedMeasureConcept"
+        as |concept|
+      >
+        {{concept.description}}
+      </PowerSelectMultiple>
+    </p>
 
 
     <p>
