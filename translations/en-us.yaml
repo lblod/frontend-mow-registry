@@ -1,11 +1,12 @@
 utility:
   backToOverview: Back to overview
   save: Save
+  cancel: Cancel
   confirmation:
     title: Confirm
     body: Are you sure?
   required: Required
-  fieldRequired: Field required
+  fieldRequired: This field is required
   appName: MOW Registry
 
 roadSignConcept:
@@ -18,7 +19,7 @@ roadSignConcept:
     code: Code
     categories: Categories
   crud:
-    create: Create road sign   
+    create: Create road sign
     new: New Road Sign
     search: Search for road sign
     noData: No Road Signs
@@ -28,7 +29,7 @@ roadSignConcept:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.
     button: Go to Road Signs
-    
+
 measureConcept:
   name: Measures
   details: Measure details
