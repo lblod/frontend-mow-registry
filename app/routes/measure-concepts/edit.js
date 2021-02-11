@@ -19,4 +19,11 @@ export default class MeasureConceptsEditRoute extends Route {
         .then((concepts) => concepts.filter((c) => c.id !== params.id)),
     });
   }
+
+  resetController(controller) {
+    const measureConcept = controller.model.measureConcept;
+    measureConcept.rollbackAttributes();
+    measureConcept.belongsTo('roadSignConcept').reload();
+    measureConcept.belongsTo('roadSignCombination').reload();
+  }
 }
