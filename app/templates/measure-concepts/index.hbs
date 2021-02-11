@@ -1,6 +1,6 @@
 <NavigationBar />
 
-<AuDataTable @content={{this.model}} @fields="description roadsignconcept" 
+<AuDataTable @content={{this.model}} @fields="description roadsignconcept"
              @noDataMessage={{t "measureConcept.crud.noData" }}
              @size={{this.size}} @page={{this.page}}
              @sort={{this.sort}} as |s|>
@@ -32,7 +32,7 @@
       <td>{{row.description}}</td>
       <td>
         <LinkTo @route="measure-concepts.measure-concept" @model={{row}}>
-          <AuIcon @icon="info-circle" @alignment="left" @size="large" @ariaHidden={{true}} />
+          {{t "utility.view"}}
         </LinkTo>
 
       </td>
