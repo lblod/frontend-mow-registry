@@ -15,7 +15,7 @@
 
 <div class="au-o-box">
   <div class="au-o-grid au-u-margin-top">
-    <div class="au-o-grid__item au-u-1-2">
+    <div class="au-o-grid__item au-u-1-2@medium">
       <AuCard @flex={{true}} as |c|>
         <c.header @badgeSkin="brand">
           <div class="flex-content-between">
@@ -37,8 +37,7 @@
           <h2>
             {{t "measureConcept.attr.roadSignConceptCombination"}}
           </h2>
-          {{#each @model.roadSignCombination.measureConcepts as |linkedMeasure|
-          }}
+          {{#each @model.roadSignCombination.measureConcepts as |linkedMeasure|}}
             {{#if (not-eq linkedMeasure.id @model.id)}}
               <div class="flex-content-between">
                 <div class="no-flex-shrink">
