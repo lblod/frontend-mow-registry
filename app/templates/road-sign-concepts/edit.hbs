@@ -1,79 +1,161 @@
 {{page-title (t "roadSignConcept.crud.edit")}}
 
-{{#let @model.roadSignConcept as |roadSignConcept|}}
-  <BreadcrumbsItem as |linkClass|>
-    <LinkTo @route="road-sign-concepts.edit" @model={{roadSignConcept.id}} class={{linkClass}}>
-      {{roadSignConcept.roadSignConceptCode}}
-    </LinkTo>
-  </BreadcrumbsItem>
-
-  <NavigationBar />
-
-  <form
-    class="au-c-form au-o-layout au-u-padding-top-large"
-    {{on "submit" this.editRoadSignConcept}}
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo
+    @route="road-sign-concepts.edit"
+    @model={{this.roadSignConcept.id}}
+    class={{linkClass}}
   >
-  {{#let (is-empty roadSignConcept.image) as |isInvalid|}}
+    {{this.roadSignConcept.roadSignConceptCode}}
+  </LinkTo>
+</BreadcrumbsItem>
 
-      <p>
-      <AuLabel @error={{isInvalid}} for="image-url">{{t "roadSignConcept.attr.imageUrl"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill></AuLabel>
-      <AuInput @error={{isInvalid}} type="url" id="image-url" value={{roadSignConcept.image}} required="required" {{on "input" (fn this.setRoadSignConceptValue "image")}} />
-        {{#if isInvalid}}
-          <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
-        {{/if}}
-      </p>
-  {{/let}}
-  {{#let (is-empty roadSignConcept.roadSignConceptCode) as |isInvalid|}}
-    <p>
-      <AuLabel @error={{isInvalid}} for="road-sign-concept-code">{{t "roadSignConcept.attr.code"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill></AuLabel>
-      <AuInput @error={{isInvalid}} id="road-sign-concept-code" required="required" value={{roadSignConcept.roadSignConceptCode}} {{on "input" (fn this.setRoadSignConceptValue "roadSignConceptCode")}} />
-      {{#if isInvalid}}
-        <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
-      {{/if}}
-    </p>
-  {{/let}}
-  {{#let (is-empty roadSignConcept.meaning) as |isInvalid|}}
-    <p>
-      <AuLabel @error={{isInvalid}} for="meaning">{{t "roadSignConcept.attr.meaning"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill></AuLabel>
-      <AuTextarea
-        @error={{isInvalid}}
-        id="meaning"
-        {{on "input" (fn this.setRoadSignConceptValue "meaning")}}
-        required="required"
-        value={{roadSignConcept.meaning}}
-      ></AuTextarea>
-      {{#if isInvalid}}
-        <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
-      {{/if}}
-    </p>
-  {{/let}}
-  {{#let (is-empty roadSignConcept.categories) as |isInvalid|}}
-    <p>
-      <AuLabel @error={{isInvalid}} for="categories">{{t "roadSignConcept.attr.categories"}}&nbsp;<AuPill>{{t "utility.required"}}</AuPill></AuLabel>
-      <PowerSelectMultiple
-        @allowClear={{true}}
-        @searchEnabled={{true}}
-        @noMatchesMessage={{t "roadSignConcept.crud.noData"}}
-        @searchField="label"
-        @options={{@model.categories}}
-        @selected={{roadSignConcept.categories}}
-        @onChange={{this.setRoadSignConceptCategory}}
-        @triggerId="categories"
-        as |category|
+<NavigationBar />
+
+<AuToolbar @border="bottom" @size="large">
+  <AuToolbarGroup>
+    <AuHeading @skin="2">
+      {{t "roadSignConcept.crud.edit"}}
+    </AuHeading>
+  </AuToolbarGroup>
+</AuToolbar>
+
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box">
+    <div class="au-o-grid">
+      <div class="au-o-grid__item au-u-2-3@medium au-u-2-5@large">
+        <form
+          class="au-c-form"
+          id="edit-road-sign-concept-form"
+          {{on "submit" this.editRoadSignConcept}}
+        >
+          {{#let (is-empty this.roadSignConcept.image) as |isInvalid|}}
+            <p>
+              <AuLabel @error={{isInvalid}} for="image-url">
+                {{t "roadSignConcept.attr.imageUrl"}}&nbsp;
+                <AuPill>
+                  {{t "utility.required"}}
+                </AuPill>
+              </AuLabel>
+              <AuInput
+                @error={{isInvalid}}
+                id="image-url"
+                required="required"
+                type="url"
+                value={{this.roadSignConcept.image}}
+                {{on "input" (fn this.setRoadSignConceptValue "image")}}
+              />
+              {{#if isInvalid}}
+                <AuHelpText>
+                  {{t "utility.fieldRequired"}}
+                </AuHelpText>
+              {{/if}}
+            </p>
+          {{/let}}
+          {{#let
+            (is-empty this.roadSignConcept.roadSignConceptCode) as |isInvalid|
+          }}
+            <p>
+              <AuLabel @error={{isInvalid}} for="road-sign-concept-code">
+                {{t "roadSignConcept.attr.code"}}&nbsp;
+                <AuPill>
+                  {{t "utility.required"}}
+                </AuPill>
+              </AuLabel>
+              <AuInput
+                @error={{isInvalid}}
+                id="road-sign-concept-code"
+                required="required"
+                value={{this.roadSignConcept.roadSignConceptCode}}
+                {{on
+                  "input"
+                  (fn this.setRoadSignConceptValue "roadSignConceptCode")
+                }}
+              />
+              {{#if isInvalid}}
+                <AuHelpText>
+                  {{t "utility.fieldRequired"}}
+                </AuHelpText>
+              {{/if}}
+            </p>
+          {{/let}}
+          {{#let (is-empty this.roadSignConcept.meaning) as |isInvalid|}}
+            <p>
+              <AuLabel @error={{isInvalid}} for="meaning">
+                {{t "roadSignConcept.attr.meaning"}}&nbsp;
+                <AuPill>
+                  {{t "utility.required"}}
+                </AuPill>
+              </AuLabel>
+              <AuTextarea
+                @error={{isInvalid}}
+                @width="block"
+                class="u-min-h-20"
+                id="meaning"
+                required="required"
+                value={{this.roadSignConcept.meaning}}
+                {{on "input" (fn this.setRoadSignConceptValue "meaning")}}
+              />
+              {{#if isInvalid}}
+                <AuHelpText>
+                  {{t "utility.fieldRequired"}}
+                </AuHelpText>
+              {{/if}}
+            </p>
+          {{/let}}
+          {{#let (is-empty this.roadSignConcept.categories) as |isInvalid|}}
+            <p>
+              <AuLabel @error={{isInvalid}} for="categories">
+                {{t "roadSignConcept.attr.categories"}}&nbsp;
+                <AuPill>
+                  {{t "utility.required"}}
+                </AuPill>
+              </AuLabel>
+              <div class={{if isInvalid "ember-power-select--error"}}>
+                <PowerSelectMultiple
+                  @allowClear={{true}}
+                  @searchEnabled={{true}}
+                  @noMatchesMessage={{t "roadSignConcept.crud.noData"}}
+                  @searchField="label"
+                  @options={{@model.categories}}
+                  @selected={{this.roadSignConcept.categories}}
+                  @onChange={{this.setRoadSignConceptCategory}}
+                  @triggerId="categories" as |category|
+                >
+                  {{category.label}}
+                </PowerSelectMultiple>
+              </div>
+              {{#if isInvalid}}
+                <AuHelpText>
+                  {{t "utility.fieldRequired"}}
+                </AuHelpText>
+              {{/if}}
+            </p>
+          {{/let}}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<AuToolbar @border="top" @size="large">
+  <AuToolbarGroup>
+    <AuButtonGroup>
+      <AuButton
+        @disabled={{or this.isSaving this.notValid}}
+        @loading={{this.isSaving}}
+        form="edit-road-sign-concept-form"
+        type="submit"
       >
-        {{category.label}}
-      </PowerSelectMultiple>
-      {{#if isInvalid}}
-        <AuHelpText @error={{true}}>{{t "utility.fieldRequired"}}</AuHelpText>
-      {{/if}}
-    </p>
-  {{/let}}
-
-
-    <p>
-      <AuButton type="submit" @loading={{this.isSaving}} @disabled={{or this.isSaving this.notValid}}>
         {{t "utility.save"}}
       </AuButton>
-    </p>
-  </form>
-{{/let}}
+      <LinkTo
+        @route="road-sign-concepts.road-sign-concept"
+        @model={{this.roadSignConcept.id}}
+        class="au-c-button au-c-button--secondary"
+      >
+        {{t "utility.cancel"}}
+      </LinkTo>
+    </AuButtonGroup>
+  </AuToolbarGroup>
+</AuToolbar>

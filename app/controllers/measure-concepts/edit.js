@@ -7,6 +7,17 @@ export default class MeasureConceptsEditController extends Controller {
   @tracked isSaving = false;
   @service router;
 
+  get measureConcept() {
+    return this.model.measureConcept;
+  }
+
+  get notValid() {
+    return (
+      !this.measureConcept.description ||
+      !this.measureConcept.get('roadSignConcept.id')
+    );
+  }
+
   @action
   setMeasureConceptValue(attributeName, event) {
     this.model.measureConcept[attributeName] = event.target.value;
@@ -54,12 +65,5 @@ export default class MeasureConceptsEditController extends Controller {
         this.model.measureConcept.id
       );
     }
-  }
-
-  get notValid() {
-    return (
-      !this.model.measureConcept.description ||
-      !this.model.measureConcept.get('roadSignConcept.id')
-    );
   }
 }

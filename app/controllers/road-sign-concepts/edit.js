@@ -7,18 +7,22 @@ export default class RoadsignConceptsEditController extends Controller {
   @tracked isSaving = false;
   @service router;
 
+  get notValid() {
+    return (
+      !this.roadSignConcept.image ||
+      !this.roadSignConcept.roadSignConceptCode ||
+      !this.roadSignConcept.meaning ||
+      !this.roadSignConcept.categories?.length
+    );
+  }
+
+  get roadSignConcept() {
+    return this.model.roadSignConcept;
+  }
+
   @action
   setRoadSignConceptValue(attributeName, event) {
     this.model.roadSignConcept[attributeName] = event.target.value;
-  }
-
-  get notValid() {
-    return (
-      !this.model.roadSignConcept.image ||
-      !this.model.roadSignConcept.roadSignConceptCode ||
-      !this.model.roadSignConcept.meaning ||
-      !this.model.roadSignConcept.categories?.length
-    );
   }
 
   @action
