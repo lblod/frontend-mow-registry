@@ -8,7 +8,7 @@ utility:
     body: Ben je zeker?
   required: Verplicht
   fieldRequired: Dit veld is verplicht
-  appName: MOW Registry
+  appName: MOW Register
 
 roadSignConcept:
   name: Verkeersborden
@@ -22,10 +22,10 @@ roadSignConcept:
   crud:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
-    search: Zoek naar verkeersbord
-    noData: Geen Verkeersborden
+    search: Verkeersborden zoeken
+    noData: Geen verkeersborden gevonden
     edit: Verkeersbord bewerken
-    delete: Verwijder verkeersbord
+    delete: Verkeersbord verwijderen
   landingPage:
     subtitle: Ondertitel voor kaart
     content: Informatie op de kaart die onder de kop komt. Inhoud.
@@ -41,11 +41,11 @@ measureConcept:
     description: Beschrijving
   crud:
     create: Maatregel aanmaken
-    new: Nieuw maatregel
-    search: Zoek naar maatregel
-    noData: Geen maatregel
+    new: Nieuwe maatregel
+    search: Maatregelen zoeken
+    noData: Geen maatregelen gevonden
     edit: Maatregel bewerken
-    delete: Verwijder maatregel
+    delete: Maatregel verwijderen
   landingPage:
     subtitle: Ondertitel voor kaart
     content: Informatie op de kaart die onder de kop komt. Inhoud.
