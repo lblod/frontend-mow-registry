@@ -1,50 +1,80 @@
 {{page-title (t "roadSignConcept.details")}}
 
 <BreadcrumbsItem as |linkClass|>
-  <LinkTo @route="road-sign-concepts.road-sign-concept" @model={{@model.id}} class={{linkClass}}>
+  <LinkTo
+    @route="road-sign-concepts.road-sign-concept"
+    @model={{@model.id}}
+    class={{linkClass}}
+  >
     {{@model.roadSignConceptCode}}
   </LinkTo>
 </BreadcrumbsItem>
 
 <NavigationBar />
 
-<div class="au-o-grid au-u-margin-top">
-  <div class="au-o-grid__item au-u-1-2">
-    <AuCard @flex={{true}} as |c|>
-      <c.header @badgeSkin="brand">
-        <div class="flex-content-between">
-          <div class="no-flex-shrink">
-            <img class="au-u-margin-right" alt="" role="presentation" src={{@model.image}}>
+<div class="au-o-box">
+  <div class="au-o-grid au-u-margin-top">
+    <div class="au-o-grid__item au-u-1-2@medium">
+      <AuCard @flex={{true}} as |c|>
+        <c.header @badgeSkin="brand">
+          <div class="flex-content-between">
+            <div class="no-flex-shrink">
+              <img
+                class="au-u-margin-right"
+                alt=""
+                role="presentation"
+                src={{@model.image}}
+              />
+            </div>
+            <div>
+              <AuHeading @level="2" @skin="4">
+                {{@model.roadSignConceptCode}} -
+                {{#each @model.categories as |category|}}
+                  <span>
+                    {{category.label}}
+                  </span>
+                {{/each}}
+              </AuHeading>
+              <p>
+                {{@model.meaning}}
+              </p>
+            </div>
           </div>
-          <div>
-            <AuHeading @level="2" @skin="4">
-              {{ @model.roadSignConceptCode}} -
-              {{#each @model.categories as |category|}}
-              <span>{{ category.label}}</span>
-              {{/each}}
-            </AuHeading>
-            <p>{{@model.meaning}}</p>
-          </div>
-        </div>
-      </c.header>
-      <c.content>
-      </c.content>
-      <c.footer>
-        <LinkTo class="au-c-button" @route="road-sign-concepts.edit" @model={{@model.id}}>
-          {{t "roadSignConcept.crud.edit"}}
-        </LinkTo>
+        </c.header>
+        <c.content />
+        <c.footer>
+          <LinkTo
+            class="au-c-button"
+            @route="road-sign-concepts.edit"
+            @model={{@model.id}}
+          >
+            {{t "roadSignConcept.crud.edit"}}
+          </LinkTo>
 
-        <AuButton @alert={{true}} {{on "click" (fn (mut this.isOpen) true) }}>{{t "roadSignConcept.crud.delete"}}</AuButton>
-        <AuModal @modalTitle={{t "utility.confirmation.title"}} @modalOpen={{this.isOpen}} @closeModal={{fn (mut this.isOpen) false}} as
-          |Modal|>
-          <Modal.Body>
-            <p>{{t "utility.confirmation.body"}}</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <AuButton @alert={{true}} {{on "click" (fn this.removeRoadSignConcept @model)}}>{{t "roadSignConcept.crud.delete"}}</AuButton>
-          </Modal.Footer>
-        </AuModal>
-      </c.footer>
-    </AuCard>
+          <AuButton @alert={{true}} {{on "click" (fn (mut this.isOpen) true)}}>
+            {{t "roadSignConcept.crud.delete"}}
+          </AuButton>
+          <AuModal
+            @modalTitle={{t "utility.confirmation.title"}}
+            @modalOpen={{this.isOpen}}
+            @closeModal={{fn (mut this.isOpen) false}} as |Modal|
+          >
+            <Modal.Body>
+              <p>
+                {{t "utility.confirmation.body"}}
+              </p>
+            </Modal.Body>
+            <Modal.Footer>
+              <AuButton
+                @alert={{true}}
+                {{on "click" (fn this.removeRoadSignConcept @model)}}
+              >
+                {{t "roadSignConcept.crud.delete"}}
+              </AuButton>
+            </Modal.Footer>
+          </AuModal>
+        </c.footer>
+      </AuCard>
+    </div>
   </div>
 </div>
