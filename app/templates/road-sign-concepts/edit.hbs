@@ -46,7 +46,7 @@
                 {{on "input" this.setImageUrl}}
               />
               <span>{{t "utility.or"}}</span>
-              <FileUploader @accept={{"image/png,image/jpg"}} @onFileSet={{this.setImageUpload}}></FileUploader>
+              <FileUploader @accept={{"image/png,image/jpg"}} @onFileSet={{this.setImageUpload}}/>
               {{#if isInvalid}}
                 <AuHelpText>
                   {{t "utility.fieldRequired"}}

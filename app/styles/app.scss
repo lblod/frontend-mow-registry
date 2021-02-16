@@ -83,6 +83,7 @@
 @import "ember-appuniversum/c-textarea";
 @import "ember-appuniversum/c-toolbar";
 @import "breadcrumbs";
+@import "input-file";
 
 
 // PLUGINS
@@ -104,7 +105,6 @@
 @import "appuniversum/u-widths";
 @import "u-heights";
 @import "shame";
-@import "input-file";
 
 .no-flex-shrink {
   flex-shrink: 0;
