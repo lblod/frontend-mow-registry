@@ -6,6 +6,8 @@ import { inject as service } from '@ember/service';
 export default class RoadsignConceptsEditController extends Controller {
   @tracked isSaving = false;
   @service router;
+  @service fileService;
+  file;
 
   get notValid() {
     return (
@@ -14,6 +16,12 @@ export default class RoadsignConceptsEditController extends Controller {
       !this.roadSignConcept.meaning ||
       !this.roadSignConcept.categories?.length
     );
+  }
+
+  @action
+  setImageUpload(event) {
+    this.file = event.target.files[0];
+    this.model.roadSignConcept.image = this.file.name;
   }
 
   get roadSignConcept() {
@@ -36,6 +44,10 @@ export default class RoadsignConceptsEditController extends Controller {
 
     if (!this.isSaving) {
       this.isSaving = true;
+
+      this.model.roadSignConcept.image = await this.fileService.upload(
+        this.file
+      );
 
       await this.model.roadSignConcept.save();
 

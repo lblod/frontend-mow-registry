@@ -7,6 +7,8 @@ utility:
     title: Confirm
     body: Are you sure?
   required: Required
+  upload: Upload
+  or: Or
   fieldRequired: This field is required
   appName: MOW Registry
 
