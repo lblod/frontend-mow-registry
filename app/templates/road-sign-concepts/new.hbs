@@ -38,13 +38,17 @@
                 @error={{isInvalid}}
                 id="image-url"
                 required="required"
-                type="url"
-                {{on "input" (fn this.setRoadSignConceptValue "image")}}
+                type="text"
+                value={{this.roadSignConcept.image}}
+                {{on "input" this.setImageUrl}}
               />
+              <span>{{t "utility.or"}}</span>
+              <FileUploader @accept={{"image/png,image/jpg"}} @onFileSet={{this.setImageUpload}}/>
               {{#if isInvalid}}
                 <AuHelpText>{{t "utility.fieldRequired"}}</AuHelpText>
               {{/if}}
             </p>
+
           {{/let}}
 
           {{#let (is-empty this.roadSignConcept.roadSignConceptCode) as |isInvalid|}}

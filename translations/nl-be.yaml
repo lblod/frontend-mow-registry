@@ -7,6 +7,8 @@ utility:
     title: Bevestig
     body: Ben je zeker?
   required: Verplicht
+  upload: Uploaden
+  or: Of
   fieldRequired: Dit veld is verplicht
   appName: MOW Register
 
