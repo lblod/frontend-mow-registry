@@ -4,7 +4,7 @@ export default class FileModel extends Model {
   @attr name;
   @attr format;
   @attr size;
-  @attr('string') extension;
+  @attr extension;
   @attr('datetime') created;
 
   get downloadLink() {
