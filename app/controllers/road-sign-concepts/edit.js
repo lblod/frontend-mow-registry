@@ -19,6 +19,12 @@ export default class RoadsignConceptsEditController extends Controller {
   }
 
   @action
+  setImageUrl(event) {
+    this.model.roadSignConcept.image = event.target.value;
+    this.file = null;
+  }
+
+  @action
   setImageUpload(event) {
     this.file = event.target.files[0];
     this.model.roadSignConcept.image = this.file.name;
@@ -45,9 +51,10 @@ export default class RoadsignConceptsEditController extends Controller {
     if (!this.isSaving) {
       this.isSaving = true;
 
-      this.model.roadSignConcept.image = await this.fileService.upload(
-        this.file
-      );
+      if (this.file) {
+        let fileResponse = await this.fileService.upload(this.file);
+        this.model.roadSignConcept.image = fileResponse.downloadLink;
+      }
 
       await this.model.roadSignConcept.save();
 

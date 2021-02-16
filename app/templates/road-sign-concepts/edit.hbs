@@ -43,10 +43,10 @@
                 required="required"
                 type="text"
                 value={{this.roadSignConcept.image}}
-                {{on "input" (fn this.setRoadSignConceptValue "image")}}
+                {{on "input" this.setImageUrl}}
               />
               <span>{{t "utility.or"}}</span>
-              <FileUploader @accept={{"image/png,image/**"}} @onFileSet={{this.setImageUpload}}></FileUploader>
+              <FileUploader @accept={{"image/png,image/jpg"}} @onFileSet={{this.setImageUpload}}></FileUploader>
               {{#if isInvalid}}
                 <AuHelpText>
                   {{t "utility.fieldRequired"}}
