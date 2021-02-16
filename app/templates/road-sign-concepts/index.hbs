@@ -9,7 +9,7 @@
   @sort={{this.sort}}
   as |s|
 >
-  <s.menu as |menu|>
+<s.menu as |menu|>
     <menu.general>
       <AuToolbar class="au-o-box">
         <AuToolbarGroup>
@@ -28,25 +28,25 @@
   </s.menu>
   <s.content as |c|>
     <c.header>
-      <AuDataTableThSortable
-        @field="roadSignConceptCode"
-        @currentSorting={{this.sort}}
-        @label={{t "roadSignConcept.attr.code" }}
-        @class="data-table__header-title"
-      />
+      <AuDataTableThSortable @field="roadSignConceptCode" @currentSorting={{this.sort}}
+        @label={{t "roadSignConcept.attr.code" }} @class="data-table__header-title" />
       <th class="data-table__header-title"> {{t "roadSignConcept.attr.imageHeader"}}</th>
       <th class="data-table__header-title"> {{t "roadSignConcept.attr.meaning"}}</th>
+      <th class="data-table__header-title"></th>
     </c.header>
     <c.body as |roadSignConcept|>
       <td>
-        <AuLink @linkRoute="road-sign-concepts.road-sign-concept" @model={{roadSignConcept}}>
-          {{roadSignConcept.roadSignConceptCode}}
-        </AuLink>
+        {{roadSignConcept.roadSignConceptCode}}
       </td>
       <td>
         <img src={{roadSignConcept.image}} alt="" role="presentation">
       </td>
       <td>{{roadSignConcept.meaning}}</td>
+      <td>
+        <LinkTo class="au-c-link" @route="road-sign-concepts.road-sign-concept" @model={{roadSignConcept}}>
+          {{t "utility.view"}}
+        </LinkTo>
+      </td>
     </c.body>
   </s.content>
 </AuDataTable>
