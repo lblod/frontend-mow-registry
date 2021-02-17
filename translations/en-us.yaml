@@ -42,7 +42,7 @@ measureConcept:
   crud:
     create: Create measure
     new: New Measure
-    search: Search for mesure
+    search: Search for measure
     noData: No Measures
     edit: Edit Measure
     delete: Delete Measure
