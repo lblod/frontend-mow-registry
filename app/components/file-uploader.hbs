@@ -2,5 +2,11 @@
   <label for="upload">
     {{t "utility.upload"}}
   </label>
-  <input id="upload" type="file" class="file-upload__input" accept={{this.accept}} {{on "change" @onFileSet }}>
+  <input
+    id="upload"
+    type="file"
+    class="file-upload__input"
+    accept={{this.accept}}
+    {{on "change" @onFileSet}}
+  />
 </div>
