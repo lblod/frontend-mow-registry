@@ -1,8 +1,11 @@
-
-<AuDataTable @content={{this.model}} @fields="description roadsignconcept"
-             @noDataMessage={{t "measureConcept.crud.noData" }}
-             @size={{this.size}} @page={{this.page}}
-             @sort={{this.sort}} as |s|>
+<AuDataTable
+  @content={{this.model}}
+  @fields="description roadsignconcept"
+  @noDataMessage={{t "measureConcept.crud.noData"}}
+  @size={{this.size}}
+  @page={{this.page}}
+  @sort={{this.sort}} as |s|
+>
   <s.menu as |menu|>
     <menu.general>
       <AuToolbar class="au-o-box">
@@ -12,7 +15,10 @@
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
-          <AuDataTableTextSearch @filter={{this.filter}} @placeholder={{t "measureConcept.crud.search" }} />
+          <AuDataTableTextSearch
+            @filter={{this.filter}}
+            @placeholder={{t "measureConcept.crud.search"}}
+          />
           <LinkTo class="au-c-button" @route="measure-concepts.new">
             {{t "measureConcept.crud.new"}}
           </LinkTo>
@@ -22,15 +28,31 @@
   </s.menu>
   <s.content as |c|>
     <c.header>
-      <th class="data-table__header-title"> {{t "measureConcept.attr.roadSignConceptImage"}}</th>
-      <th class="data-table__header-title"> {{t "measureConcept.attr.description" }}</th>
+      <th class="data-table__header-title">
+        {{t "measureConcept.attr.roadSignConceptImage"}}
+      </th>
+      <th class="data-table__header-title">
+        {{t "measureConcept.attr.description"}}
+      </th>
       <th class="data-table__header-title"></th>
     </c.header>
     <c.body as |measureConcept|>
-      <td><img src={{measureConcept.roadSignConcept.image}} alt="" role="presentation"></td>
-      <td>{{measureConcept.description}}</td>
       <td>
-        <LinkTo class="au-c-link" @route="measure-concepts.measure-concept" @model={{measureConcept.id}}>
+        <img
+          src={{measureConcept.roadSignConcept.image}}
+          alt=""
+          role="presentation"
+        />
+      </td>
+      <td>
+        {{measureConcept.description}}
+      </td>
+      <td>
+        <LinkTo
+          class="au-c-link"
+          @route="measure-concepts.measure-concept"
+          @model={{measureConcept.id}}
+        >
           {{t "utility.view"}}
         </LinkTo>
       </td>
