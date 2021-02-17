@@ -4,6 +4,6 @@ export default class RoadsignconceptModel extends Model {
   @attr image;
   @attr meaning;
   @attr roadSignConceptCode;
-  @belongsTo('road-sign-concept-status-code') status;
+  @belongsTo('road-sign-concept-status') status;
   @hasMany('road-sign-category') categories;
 }
