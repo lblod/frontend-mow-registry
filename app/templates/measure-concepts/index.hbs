@@ -1,4 +1,3 @@
-<NavigationBar />
 
 <AuDataTable @content={{this.model}} @fields="description roadsignconcept"
              @noDataMessage={{t "measureConcept.crud.noData" }}
@@ -27,11 +26,11 @@
       <th class="data-table__header-title"> {{t "measureConcept.attr.description" }}</th>
       <th class="data-table__header-title"></th>
     </c.header>
-    <c.body as |row|>
-      <td><img src={{row.roadSignConcept.image}} alt="" role="presentation"></td>
-      <td>{{row.description}}</td>
+    <c.body as |measureConcept|>
+      <td><img src={{measureConcept.roadSignConcept.image}} alt="" role="presentation"></td>
+      <td>{{measureConcept.description}}</td>
       <td>
-        <LinkTo class="au-c-link" @route="measure-concepts.measure-concept" @model={{row}}>
+        <LinkTo class="au-c-link" @route="measure-concepts.measure-concept" @model={{measureConcept.id}}>
           {{t "utility.view"}}
         </LinkTo>
       </td>

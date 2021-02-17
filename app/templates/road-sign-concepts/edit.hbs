@@ -10,8 +10,6 @@
   </LinkTo>
 </BreadcrumbsItem>
 
-<NavigationBar />
-
 <AuToolbar @border="bottom" @size="large">
   <AuToolbarGroup>
     <AuHeading @skin="2">
@@ -41,10 +39,12 @@
                 @error={{isInvalid}}
                 id="image-url"
                 required="required"
-                type="url"
+                type="text"
                 value={{this.roadSignConcept.image}}
-                {{on "input" (fn this.setRoadSignConceptValue "image")}}
+                {{on "input" this.setImageUrl}}
               />
+              <span>{{t "utility.or"}}</span>
+              <FileUploader @accept={{"image/png,image/jpg"}} @onFileSet={{this.setImageUpload}}/>
               {{#if isInvalid}}
                 <AuHelpText>
                   {{t "utility.fieldRequired"}}

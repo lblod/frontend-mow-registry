@@ -6,7 +6,8 @@ import { inject as service } from '@ember/service';
 export default class RoadsignConceptsNewController extends Controller {
   @tracked isSaving = false;
   @service router;
-
+  @service fileService;
+  file;
   get notValid() {
     return (
       !this.roadSignConcept.image ||
@@ -26,8 +27,20 @@ export default class RoadsignConceptsNewController extends Controller {
   }
 
   @action
+  setImageUpload(event) {
+    this.file = event.target.files[0];
+    this.model.newRoadSignConcept.image = this.file.name;
+  }
+
+  @action
   setRoadSignConceptCategory(selection) {
     this.model.newRoadSignConcept.categories = selection;
+  }
+
+  @action
+  setImageUrl(event) {
+    this.model.newRoadSignConcept.image = event.target.value;
+    this.file = null;
   }
 
   @action
@@ -36,6 +49,11 @@ export default class RoadsignConceptsNewController extends Controller {
 
     if (!this.isSaving) {
       this.isSaving = true;
+
+      if (this.file) {
+        let fileResponse = await this.fileService.upload(this.file);
+        this.model.newRoadSignConcept.image = fileResponse.downloadLink;
+      }
 
       await this.model.newRoadSignConcept.save();
 
