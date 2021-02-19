@@ -1,5 +1,6 @@
 import EmberRouter from '@ember/routing/router';
 import config from 'mow-registry/config/environment';
+import metisFallbackRoute from 'metis/utils/fallback-route';
 
 export default class Router extends EmberRouter {
   location = config.locationType;
@@ -17,4 +18,6 @@ Router.map(function () {
     this.route('new');
     this.route('edit', { path: '/edit/:id' });
   });
+
+  metisFallbackRoute(this);
 });
