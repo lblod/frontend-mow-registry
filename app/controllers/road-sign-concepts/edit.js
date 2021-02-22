@@ -1,13 +1,16 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { dropTask } from 'ember-concurrency';
 
 export default class RoadsignConceptsEditController extends Controller {
-  @tracked isSaving = false;
   @service router;
   @service fileService;
   file;
+
+  get isSaving() {
+    return this.editRoadSignConceptTask.isRunning;
+  }
 
   get notValid() {
     return (
@@ -44,26 +47,20 @@ export default class RoadsignConceptsEditController extends Controller {
     this.model.roadSignConcept.categories = selection;
   }
 
-  @action
-  async editRoadSignConcept(event) {
+  @dropTask
+  *editRoadSignConceptTask(event) {
     event.preventDefault();
 
-    if (!this.isSaving) {
-      this.isSaving = true;
-
-      if (this.file) {
-        let fileResponse = await this.fileService.upload(this.file);
-        this.model.roadSignConcept.image = fileResponse.downloadLink;
-      }
-
-      await this.model.roadSignConcept.save();
-
-      this.isSaving = false;
-
-      this.router.transitionTo(
-        'road-sign-concepts.road-sign-concept',
-        this.model.roadSignConcept.id
-      );
+    if (this.file) {
+      let fileResponse = yield this.fileService.upload(this.file);
+      this.model.roadSignConcept.image = fileResponse.downloadLink;
     }
+
+    yield this.model.roadSignConcept.save();
+
+    this.router.transitionTo(
+      'road-sign-concepts.road-sign-concept',
+      this.model.roadSignConcept.id
+    );
   }
 }

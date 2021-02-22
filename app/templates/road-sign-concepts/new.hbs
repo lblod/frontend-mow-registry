@@ -25,7 +25,7 @@
         <form
           class="au-c-form"
           id="new-road-sign-concept-form"
-          {{on "submit" this.createRoadSignConcept}}
+          {{on "submit" (perform this.createRoadSignConceptTask)}}
         >
           {{#let (is-empty this.roadSignConcept.image) as |isInvalid|}}
             <p>
