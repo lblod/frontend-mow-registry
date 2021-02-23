@@ -32,23 +32,3 @@ roadSignConcept:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.
     button: Go to Road Signs
-
-measureConcept:
-  name: Measures
-  details: Measure details
-  attr:
-    roadSignConceptImage: Road Sign Image
-    roadSignConceptCode: Road Sign Code
-    roadSignConceptCombination: Related measures
-    description: Description
-  crud:
-    create: Create measure
-    new: New Measure
-    search: Search for measure
-    noData: No Measures
-    edit: Edit Measure
-    delete: Delete Measure
-  landingPage:
-    subtitle: Subtitle for card
-    content: Information in the card that comes below the header. Content.
-    button: Go to Measures
