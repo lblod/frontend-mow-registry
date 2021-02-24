@@ -32,3 +32,9 @@ roadSignConcept:
     subtitle: Ondertitel voor kaart
     content: Informatie op de kaart die onder de kop komt. Inhoud.
     button: Ga naar Verkeersborden
+  subSign:
+    name: Sub Signs
+    edit: Edit Sub Signs
+  relatedSign:
+    name: Related Road Signs
+    edit: Edit Related Road Signs

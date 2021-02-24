@@ -32,3 +32,9 @@ roadSignConcept:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.
     button: Go to Road Signs
+  subSign:
+    name: Sub Signs
+    edit: Edit Sub Signs
+  relatedSign:
+    name: Related Road Signs
+    edit: Edit Related Road Signs
