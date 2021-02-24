@@ -6,6 +6,13 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @service router;
   @service intl;
 
+  get hasActiveChildRoute() {
+    return (
+      this.router.currentRouteName.startsWith('road-sign-concepts.') &&
+      this.router.currentRouteName != 'road-sign-concepts.road-sign-concept'
+    );
+  }
+
   @action
   async removeRoadSignConcept(roadSignConcept, event) {
     event.preventDefault();

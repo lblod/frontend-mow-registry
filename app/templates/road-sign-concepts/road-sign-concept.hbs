@@ -13,8 +13,40 @@
 <AuToolbar @size="large">
   <AuToolbarGroup>
     <AuHeading @skin="2">
-      {{!-- {{ @model.roadSignConceptCode }} --}}
+      Road Sign Details
     </AuHeading>
+  </AuToolbarGroup>
+  <AuToolbarGroup>
+    <LinkTo
+      class="au-c-button"
+      @route="road-sign-concepts.edit"
+      @model={{@model.id}}
+    >
+      {{t "roadSignConcept.crud.edit"}}
+    </LinkTo>
+
+    <AuButton @alert={{true}} {{on "click" (fn (mut this.isOpen) true)}}>
+      {{t "roadSignConcept.crud.delete"}}
+    </AuButton>
+    <AuModal
+      @modalTitle={{t "utility.confirmation.title"}}
+      @modalOpen={{this.isOpen}}
+      @closeModal={{fn (mut this.isOpen) false}} as |Modal|
+    >
+      <Modal.Body>
+        <p>
+          {{t "utility.confirmation.body"}}
+        </p>
+      </Modal.Body>
+      <Modal.Footer>
+        <AuButton
+          @alert={{true}}
+          {{on "click" (fn this.removeRoadSignConcept @model)}}
+        >
+          {{t "roadSignConcept.crud.delete"}}
+        </AuButton>
+      </Modal.Footer>
+    </AuModal>
   </AuToolbarGroup>
 </AuToolbar>
 <AuToolbar @size="large">
@@ -62,14 +94,65 @@
   </AuToolbarGroup>
 </AuToolbar>
 
-<AuToolbar @size="large">
-  <AuToolbarGroup>
-    <AuHeading @skin="2">
-      Sub Signs
-    </AuHeading>
-  </AuToolbarGroup>
-</AuToolbar>
+<div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
+  <div
+    class="au-o-grid__item {{
+      if
+      this.hasActiveChildRoute
+      "au-u-3-5@medium au-u-visible-medium-up"
+      "au-u-1-1@medium"
+    }}"
+  >
+    <div class="au-c-body-container">
+      <AuToolbar @size="large">
+        <AuToolbarGroup>
+          <AuHeading @skin="2">
+            Sub Signs
+          </AuHeading>
+        </AuToolbarGroup>
 
+        <LinkTo
+          class="au-c-button"
+          @route="road-sign-concepts.subsigns.edit"
+          @model={{@model.id}}
+        >
+          Edit Sub Signs
+        </LinkTo>
+      </AuToolbar>
+    </div>
+  </div>
+  {{outlet}}
+</div>
+
+<div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
+  <div
+    class="au-o-grid__item {{
+      if
+      this.hasActiveChildRoute
+      "au-u-3-5@medium au-u-visible-medium-up"
+      "au-u-1-1@medium"
+    }}"
+  >
+    <div class="au-c-body-container">
+      <AuToolbar @size="large">
+        <AuToolbarGroup>
+          <AuHeading @skin="2">
+            Related Road Signs
+          </AuHeading>
+        </AuToolbarGroup>
+        <LinkTo
+          class="au-c-button"
+          @route="road-sign-concepts.edit"
+          @model={{@model.id}}
+        >
+          Edit Related Road Signs
+        </LinkTo>
+      </AuToolbar>
+    </div>
+  </div>
+</div>
+
+{{!-- 
 <AuToolbar @size="large">
   <AuToolbarGroup>
     {{#each @model.subSigns as |subSign|}}
@@ -77,7 +160,7 @@
         <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
           {{!-- <AuLabel>
             {{t "roadSignConcept.attr.imageHeader"}}
-          </AuLabel> --}}
+          </AuLabel> 
           <img alt="" role="presentation" src={{subSign.image}} />
         </li>
         <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
@@ -128,7 +211,7 @@
         <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
           {{!-- <AuLabel>
             {{t "roadSignConcept.attr.imageHeader"}}
-          </AuLabel> --}}
+          </AuLabel> 
           <img
             alt=""
             role="presentation"
@@ -164,7 +247,7 @@
       </ul>
     </AuToolbarGroup>
     {{/each}}
-</AuToolbar>
+</AuToolbar> --}}
 
 {{!-- <div class="au-o-box">
   <div class="au-o-grid au-u-margin-top">
@@ -217,38 +300,3 @@
     </div>
   </div>
 </div> --}}
-
-<AuToolbar @border="top" @size="large">
-  <AuToolbarGroup>
-    <LinkTo
-      class="au-c-button"
-      @route="road-sign-concepts.edit"
-      @model={{@model.id}}
-    >
-      {{t "roadSignConcept.crud.edit"}}
-    </LinkTo>
-
-    <AuButton @alert={{true}} {{on "click" (fn (mut this.isOpen) true)}}>
-      {{t "roadSignConcept.crud.delete"}}
-    </AuButton>
-    <AuModal
-      @modalTitle={{t "utility.confirmation.title"}}
-      @modalOpen={{this.isOpen}}
-      @closeModal={{fn (mut this.isOpen) false}} as |Modal|
-    >
-      <Modal.Body>
-        <p>
-          {{t "utility.confirmation.body"}}
-        </p>
-      </Modal.Body>
-      <Modal.Footer>
-        <AuButton
-          @alert={{true}}
-          {{on "click" (fn this.removeRoadSignConcept @model)}}
-        >
-          {{t "roadSignConcept.crud.delete"}}
-        </AuButton>
-      </Modal.Footer>
-    </AuModal>
-  </AuToolbarGroup>
-</AuToolbar>

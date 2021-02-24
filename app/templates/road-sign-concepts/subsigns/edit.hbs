@@ -1,0 +1,80 @@
+<div class="au-o-grid__item au-u-2-5@medium">
+  <div
+    class="au-c-body-container au-c-action-sidebar"
+    {{auto-focus ".au-c-action-sidebar__header"}}
+  >
+    <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
+      <AuToolbar class="au-u-margin-bottom-small">
+        <AuToolbarGroup>
+          <AuHeading @level="2" @skin="3">
+            Edit Sub Signs
+          </AuHeading>
+        </AuToolbarGroup>
+        <button
+          type="button"
+          class="au-c-close au-c-close--large"
+          {{on "click" this.clickCloseCross}}
+        >
+          <AuIcon @icon="cross" @size="large" />
+          <span class="au-u-hidden-visually">
+            Close
+          </span>
+        </button>
+      </AuToolbar>
+      <AuContent @skin="small">
+        <p>
+          Select or unselect sub signs
+        </p>
+      </AuContent>
+    </div>
+
+    <div class="au-o-box au-c-body-container au-c-body-container--scroll">
+      <div class="au-o-flow">
+        {{#each @model.subSigns as |subSign|}}
+          <div class="au-o-grid au-o-grid--tiny">
+            <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
+              <AuControlCheckbox
+                @identifier={{subSign.roadSignConceptCode}}
+                @checked={{true}}
+              />
+              <img alt="" role="presentation" src={{subSign.image}} />
+            </div>
+            <div class="au-o-grid__item au-u-1-1">
+              <p>
+                {{subSign.meaning}}
+              </p>
+            </div>
+          </div>
+          <AuHr @size="large" />
+        {{/each}}
+      </div>
+      {{#if this.showError}}
+        <AuAlert
+          @alertIcon="alert-triangle"
+          @alertTitle="Er is een fout opgetreden tijdens het opslaan, gelieve opnieuw te proberen of de systeembeheerder te contacteren."
+          @alertskin="error"
+          class="au-u-margin-top-tiny"
+        />
+      {{/if}}
+    </div>
+
+    <div
+      class="au-o-box au-c-action-sidebar__footer"
+      data-test-loket="bbcdr-report-edit-buttons"
+    >
+      <AuButtonGroup>
+        <AuButton @skin="secondary" {{on "click" this.saveAndExitModal}}>
+          Save
+        </AuButton>
+        <LinkTo
+          @route="road-sign-concepts.road-sign-concept"
+          @model={{@model.id}}
+          class="au-c-button au-c-button--secondary"
+        >
+          {{t "utility.cancel"}}
+        </LinkTo>
+      </AuButtonGroup>
+    </div>
+  </div>
+</div>
+
