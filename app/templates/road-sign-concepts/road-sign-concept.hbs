@@ -79,8 +79,9 @@
   </s.menu>
   <s.content as |c|>
     <c.header>
-      <AuDataTableThSortable @field="roadSignConceptCode" @currentSorting={{this.sort}}
-        @label={{t "roadSignConcept.attr.code" }} @class="data-table__header-title" />
+      <th class="data-table__header-title">
+        {{t "roadSignConcept.attr.code" }}
+      </th>
       <th class="data-table__header-title">
         {{t "roadSignConcept.attr.imageHeader"}}
       </th>
@@ -124,8 +125,9 @@
   </s.menu>
   <s.content as |c|>
     <c.header>
-      <AuDataTableThSortable @field="roadSignConceptCode" @currentSorting={{this.sort}}
-        @label={{t "roadSignConcept.attr.code" }} @class="data-table__header-title" />
+      <th class="data-table__header-title">
+        {{t "roadSignConcept.attr.code" }}
+      </th>
       <th class="data-table__header-title">
         {{t "roadSignConcept.attr.imageHeader"}}
       </th>
@@ -146,7 +148,6 @@
     </c.body>
   </s.content>
 </AuDataTable>
-
 
 
 <AuToolbar @border="top" @size="large">
