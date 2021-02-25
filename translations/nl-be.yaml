@@ -33,11 +33,11 @@ roadSignConcept:
     content: Informatie op de kaart die onder de kop komt. Inhoud.
     button: Ga naar Verkeersborden
   subSign:
-    name: Sub Signs
-    edit: Edit Sub Signs
+    name: Mogelijke onderborden
+    edit: Mogelijke onderborden bewerken
   relatedSign:
-    name: Related Road Signs
-    edit: Edit Related Road Signs
+    name: Gerelateerde verkeersborden
+    edit: Gerelateerde verkeersborden aanpassen
 
 measureConcept:
   name: Maatregelen
