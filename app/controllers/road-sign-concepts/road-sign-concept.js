@@ -13,4 +13,20 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     await roadSignConcept.destroyRecord();
     this.router.transitionTo('road-sign-concepts');
   }
+
+  @action
+  async removeSubSign(subSign, event) {
+    event.preventDefault();
+    let subSigns = await this.model.subSigns;
+    subSigns.removeObject(subSign);
+    this.model.save();
+  }
+
+  @action
+  async removeRelatedRoadSignConcept(relatedRoadSignConcept, event) {
+    event.preventDefault();
+    let relatedRoadSignConcepts = await this.model.relatedRoadSignConcepts;
+    relatedRoadSignConcepts.removeObject(relatedRoadSignConcept);
+    this.model.save();
+  }
 }
