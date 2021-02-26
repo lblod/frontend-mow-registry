@@ -34,7 +34,5 @@ roadSignConcept:
     button: Go to Road Signs
   subSign:
     name: Possible subsigns
-    edit: Edit possible subsigns
   relatedSign:
     name: Related road signs
-    edit: Edit related road signs

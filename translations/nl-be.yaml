@@ -34,7 +34,5 @@ roadSignConcept:
     button: Ga naar Verkeersborden
   subSign:
     name: Mogelijke onderborden
-    edit: Mogelijke onderborden bewerken
   relatedSign:
     name: Gerelateerde verkeersborden
-    edit: Gerelateerde verkeersborden aanpassen
