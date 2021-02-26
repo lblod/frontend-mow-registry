@@ -2,53 +2,43 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
+import RoadSignConceptValidations from 'mow-registry/validations/road-sign-concept';
 
 export default class RoadsignConceptsEditController extends Controller {
   @service router;
   @service fileService;
+
+  RoadSignConceptValidations = RoadSignConceptValidations;
   file;
 
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
   }
 
-  get notValid() {
-    return (
-      !this.roadSignConcept.image ||
-      !this.roadSignConcept.roadSignConceptCode ||
-      !this.roadSignConcept.meaning ||
-      !this.roadSignConcept.categories?.length
-    );
-  }
-
   @action
-  setImageUrl(event) {
-    this.model.roadSignConcept.image = event.target.value;
+  setImageUrl(roadSignConcept, event) {
+    roadSignConcept.image = event.target.value;
     this.file = null;
   }
 
   @action
-  setImageUpload(event) {
+  setImageUpload(roadSignConcept, event) {
     this.file = event.target.files[0];
-    this.model.roadSignConcept.image = this.file.name;
-  }
-
-  get roadSignConcept() {
-    return this.model.roadSignConcept;
+    roadSignConcept.image = this.file.name;
   }
 
   @action
-  setRoadSignConceptValue(attributeName, event) {
-    this.model.roadSignConcept[attributeName] = event.target.value;
+  setRoadSignConceptValue(roadSignConcept, attributeName, event) {
+    roadSignConcept[attributeName] = event.target.value;
   }
 
   @action
-  setRoadSignConceptCategory(selection) {
-    this.model.roadSignConcept.categories = selection;
+  setRoadSignConceptCategory(roadSignConcept, selection) {
+    roadSignConcept.categories = selection;
   }
 
   @dropTask
-  *editRoadSignConceptTask(event) {
+  *editRoadSignConceptTask(roadSignConcept, event) {
     event.preventDefault();
 
     if (this.file) {
@@ -56,11 +46,15 @@ export default class RoadsignConceptsEditController extends Controller {
       this.model.roadSignConcept.image = fileResponse.downloadLink;
     }
 
-    yield this.model.roadSignConcept.save();
+    yield roadSignConcept.validate();
 
-    this.router.transitionTo(
-      'road-sign-concepts.road-sign-concept',
-      this.model.roadSignConcept.id
-    );
+    if (roadSignConcept.isValid) {
+      yield roadSignConcept.save();
+
+      this.router.transitionTo(
+        'road-sign-concepts.road-sign-concept',
+        roadSignConcept.id
+      );
+    }
   }
 }
