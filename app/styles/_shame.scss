@@ -1,3 +1,23 @@
 .au-c-textarea--error {
   border: .3rem solid $au-red-600;
 }
+
+// Loket seems to add this class so we mimic it here, but I'm sure there is a solution we can add to Appuniversum
+.au-c-toolbar__group--row {
+  display: block;
+  width: 100%;
+}
+
+.no-flex-shrink {
+  flex-shrink: 0;
+}
+
+.flex-content-between {
+  display:flex;
+  align-items: center;
+  justify-content: space-between
+}
+
+td {
+  vertical-align: top;
+}

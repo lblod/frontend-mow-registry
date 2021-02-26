@@ -84,6 +84,7 @@
 @import "ember-appuniversum/c-toolbar";
 @import "breadcrumbs";
 @import "input-file";
+@import "road-sign-image";
 
 
 // PLUGINS
@@ -105,22 +106,3 @@
 @import "appuniversum/u-widths";
 @import "u-heights";
 @import "shame";
-
-.no-flex-shrink {
-  flex-shrink: 0;
-}
-
-.flex-content-between {
-  display:flex;
-  align-items: center;
-  justify-content: space-between
-}
-
-td {
-  vertical-align: top;
-}
-
-td > img {
-  object-fit: cover;
-  width: 80px;
-}

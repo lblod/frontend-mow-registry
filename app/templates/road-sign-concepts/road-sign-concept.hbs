@@ -14,10 +14,10 @@
   </AuToolbarGroup>
 </AuToolbar>
 <AuToolbar @size="large">
-  <AuToolbarGroup>
+  <AuToolbarGroup class="au-c-toolbar__group--row">
     <ul class="au-o-grid">
       <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-        <img alt="" role="presentation" src={{@model.image}} />
+        <img class="road-sign-image" alt="" role="presentation" src={{@model.image}} />
       </li>
       <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
         <AuLabel>
@@ -105,7 +105,7 @@
         {{subSign.roadSignConceptCode}}
       </td>
       <td>
-        <img src={{subSign.image}} alt="" role="presentation" />
+        <img class="road-sign-image" src={{subSign.image}} alt="" role="presentation" />
       </td>
       <td>
         {{subSign.meaning}}
@@ -151,7 +151,7 @@
         {{relatedRoadSignConcept.roadSignConceptCode}}
       </td>
       <td>
-        <img src={{relatedRoadSignConcept.image}} alt="" role="presentation" />
+        <img class="road-sign-image" src={{relatedRoadSignConcept.image}} alt="" role="presentation" />
       </td>
       <td>
         {{relatedRoadSignConcept.meaning}}
