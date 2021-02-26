@@ -1,11 +1,19 @@
 'use strict';
 
+const supportedLocales = {
+  nl: 'nl-be',
+  en: 'en-us',
+};
+
 module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'mow-registry',
     environment,
     rootURL: '/',
     locationType: 'auto',
+    defaultLocale:
+      environment === 'production' ? supportedLocales.nl : supportedLocales.en,
+    supportedLocales,
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
