@@ -2,65 +2,63 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
+import RoadSignConceptValidations from 'mow-registry/validations/road-sign-concept';
 
 export default class RoadsignConceptsNewController extends Controller {
   @service router;
   @service fileService;
-  file;
+
+  RoadSignConceptValidations = RoadSignConceptValidations;
+  file = null;
 
   get isSaving() {
     return this.createRoadSignConceptTask.isRunning;
   }
 
-  get notValid() {
-    return (
-      !this.roadSignConcept.image ||
-      !this.roadSignConcept.roadSignConceptCode ||
-      !this.roadSignConcept.meaning ||
-      !this.roadSignConcept.categories?.length
-    );
-  }
-
-  get roadSignConcept() {
-    return this.model.newRoadSignConcept;
+  @action
+  setRoadSignConceptValue(roadSignConcept, attributeName, event) {
+    roadSignConcept[attributeName] = event.target.value;
   }
 
   @action
-  setRoadSignConceptValue(attributeName, event) {
-    this.model.newRoadSignConcept[attributeName] = event.target.value;
-  }
-
-  @action
-  setImageUpload(event) {
+  setImageUpload(roadSignConcept, event) {
     this.file = event.target.files[0];
-    this.model.newRoadSignConcept.image = this.file.name;
+    roadSignConcept.image = this.file.name;
   }
 
   @action
-  setRoadSignConceptCategory(selection) {
-    this.model.newRoadSignConcept.categories = selection;
+  setRoadSignConceptCategory(roadSignConcept, selection) {
+    roadSignConcept.categories = selection;
   }
 
   @action
-  setImageUrl(event) {
-    this.model.newRoadSignConcept.image = event.target.value;
+  setImageUrl(roadSignConcept, event) {
+    roadSignConcept.image = event.target.value;
     this.file = null;
   }
 
   @dropTask
-  *createRoadSignConceptTask(event) {
+  *createRoadSignConceptTask(roadSignConcept, event) {
     event.preventDefault();
 
     if (this.file) {
       let fileResponse = yield this.fileService.upload(this.file);
-      this.model.newRoadSignConcept.image = fileResponse.downloadLink;
+      roadSignConcept.image = fileResponse.downloadLink;
     }
 
-    yield this.model.newRoadSignConcept.save();
+    yield roadSignConcept.validate();
 
-    this.router.transitionTo(
-      'road-sign-concepts.road-sign-concept',
-      this.model.newRoadSignConcept.id
-    );
+    if (roadSignConcept.isValid) {
+      yield roadSignConcept.save();
+
+      this.router.transitionTo(
+        'road-sign-concepts.road-sign-concept',
+        roadSignConcept.id
+      );
+    }
+  }
+
+  reset() {
+    this.file = null;
   }
 }
