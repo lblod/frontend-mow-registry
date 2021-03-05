@@ -1,7 +1,10 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 import { hash } from 'rsvp';
 
 export default class RoadsignConcept extends Route {
+  @service store;
+
   model(params) {
     return hash({
       roadSignConcept: this.store.findRecord('road-sign-concept', params.id),
@@ -13,6 +16,7 @@ export default class RoadsignConcept extends Route {
         .then(function (subSigns) {
           return subSigns.firstObject;
         }),
+      categories: this.store.findAll('road-sign-category'),
     });
   }
 }

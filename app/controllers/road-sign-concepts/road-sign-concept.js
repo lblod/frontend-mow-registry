@@ -6,6 +6,10 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked isToShowSubSigns = false;
   @tracked isToShowRelated = false;
 
+  queryParams = ['label'];
+  @tracked category = null;
+  @tracked model;
+
   @action
   async editSubSignRelation(subSign, event) {
     event.preventDefault();
@@ -29,8 +33,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     event.preventDefault();
     let relatedRoadSigns = await this.model.roadSignConcept
       .relatedRoadSignConcepts;
-    if (event.target.checked) {
-      relatedRoadSigns.pushObject(relatedRoadSign);
+    if (!event.target.checked) {
+      relatedRoadSigns.removeObject(relatedRoadSign);
       this.model.roadSignConcept.save();
     }
   }
@@ -47,5 +51,16 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   get showSidebar() {
     return this.isToShowRelated || this.isToShowSubSigns;
+  }
+
+  get filteredCategoryLabel() {
+    let category = this.category;
+    let categories = this.model.categories;
+
+    if (category) {
+      return categories.filterBy('label', category.label);
+    } else {
+      return false;
+    }
   }
 }
