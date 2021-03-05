@@ -14,7 +14,7 @@
   <div
     class="au-o-grid__item {{
       if
-      this.isClicked
+      this.showSidebar
       "au-u-3-5@medium au-u-visible-medium-up"
       "au-u-1-1@medium"
     }}"
@@ -112,7 +112,7 @@
         </AuToolbar>
 
         <AuDataTable
-          @content={{this.model.roadSignConcept.subSigns}}
+          @content={{@model.roadSignConcept.subSigns}}
           @fields="Image Meaning Code"
           @noDataMessage={{t "roadSignConcept.crud.noData"}}
           class="container-flex--contain table-no-overflow" as |s|
@@ -125,13 +125,11 @@
                     {{t "roadSignConcept.attr.subSign"}}
                   </AuHeading>
                 </AuToolbarGroup>
-                {{#if this.model.roadSignConcept.subSigns.length}}
-                  <AuToolbarGroup>
-                    <AuButton {{on "click" this.showEditSubSigns}}>
-                      {{t "roadSignConcept.crud.editSubsigns"}}
-                    </AuButton>
-                  </AuToolbarGroup>
-                {{/if}}
+                <AuToolbarGroup>
+                  <AuButton {{on "click" this.showEditSubSigns}}>
+                    {{t "roadSignConcept.crud.editSubsigns"}}
+                  </AuButton>
+                </AuToolbarGroup>
               </AuToolbar>
             </menu.general>
           </s.menu>
@@ -167,7 +165,7 @@
         </AuDataTable>
 
         <AuDataTable
-          @content={{this.model.roadSignConcept.relatedRoadSignConcepts}}
+          @content={{@model.roadSignConcept.relatedRoadSignConcepts}}
           @fields="Image Meaning Code Categories"
           @noDataMessage={{t "roadSignConcept.crud.noData"}}
           class="container-flex--contain table-no-overflow" as |s|
@@ -180,13 +178,11 @@
                     {{t "roadSignConcept.attr.relatedSign"}}
                   </AuHeading>
                 </AuToolbarGroup>
-                {{#if this.model.roadSignConcept.relatedRoadSignConcepts.length}}
-                  <AuToolbarGroup>
-                    <AuButton {{on "click" this.showEditRelatedRoadSigns}}>
-                      {{t "roadSignConcept.crud.editRelated"}}
-                    </AuButton>
-                  </AuToolbarGroup>
-                {{/if}}
+                <AuToolbarGroup>
+                  <AuButton {{on "click" this.showEditRelatedRoadSigns}}>
+                    {{t "roadSignConcept.crud.editRelated"}}
+                  </AuButton>
+                </AuToolbarGroup>
               </AuToolbar>
             </menu.general>
           </s.menu>
@@ -222,8 +218,8 @@
               </td>
               <td>
                 {{#each relatedRoadSignConcept.categories as |category|}}
-                  {{category.label}} 
-                {{/each}}  
+                  {{category.label}}
+                {{/each}}
               </td>
             </c.body>
           </s.content>
@@ -247,7 +243,7 @@
             <button
               type="button"
               class="au-c-close au-c-close--large"
-              {{on "click" this.showEditSubSign}}
+              {{on "click" this.showEditSubSigns}}
             >
               <AuIcon @icon="cross" @size="large" />
               <span class="au-u-hidden-visually">
@@ -313,7 +309,7 @@
       </div>
     </div>
   {{/if}}
-  {{!-- {{#if this.isToShowRelated}}
+  {{#if this.isToShowRelated}}
     <div class="au-o-grid__item au-u-2-5@medium">
       <div
         class="au-c-body-container au-c-action-sidebar"
@@ -345,15 +341,24 @@
         </div>
         <div class="au-o-box au-c-body-container au-c-body-container--scroll">
           <div class="au-o-flow">
-            {{#each @model.roadSignConcept.relatedRoadSignConcepts as |relatedRoadSign|}}
+            {{#each
+              @model.roadSignConcept.relatedRoadSignConcepts as |relatedRoadSign|
+            }}
               <div class="au-o-grid au-o-grid--tiny">
                 <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
                   <AuControlCheckbox
                     @identifier={{relatedSign.roadSignConceptCode}}
                     @checked={{true}}
-                    {{on "input" (fn this.editRelatedRoadSignRelation relatedRoadSign)}}
+                    {{on
+                      "input"
+                      (fn this.editRelatedRoadSignRelation relatedRoadSign)
+                    }}
                   />
-                  <img alt="" role="presentation" src={{relatedRoadSign.image}} />
+                  <img
+                    alt=""
+                    role="presentation"
+                    src={{relatedRoadSign.image}}
+                  />
                 </div>
                 <div class="au-o-grid__item au-u-1-1">
                   <p>
@@ -368,7 +373,7 @@
               </div>
               <AuHr @size="large" />
             {{/each}}
-            {{#each @model.allSubSigns.roadSignConcepts as |subSignOut|}}
+            {{!-- {{#each @model.allSubSigns.roadSignConcepts as |subSignOut|}}
               <div class="au-o-grid au-o-grid--tiny">
                 <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
                   <AuControlCheckbox
@@ -389,10 +394,10 @@
                 </div>
               </div>
               <AuHr @size="large" />
-            {{/each}}
+            {{/each}} --}}
           </div>
         </div>
       </div>
     </div>
-  {{/if}} --}}
+  {{/if}}
 </div>
