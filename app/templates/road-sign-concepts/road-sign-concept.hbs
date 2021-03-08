@@ -126,7 +126,7 @@
                   </AuHeading>
                 </AuToolbarGroup>
                 <AuToolbarGroup>
-                  <AuButton {{on "click" this.showEditSubSigns}}>
+                  <AuButton {{on "click" this.toggleEditSubSigns}}>
                     {{t "subSign.crud.edit"}}
                   </AuButton>
                 </AuToolbarGroup>
@@ -179,7 +179,7 @@
                   </AuHeading>
                 </AuToolbarGroup>
                 <AuToolbarGroup>
-                  <AuButton {{on "click" this.showEditRelatedRoadSigns}}>
+                  <AuButton {{on "click" this.toggleEditRelatedRoadSigns}}>
                     {{t "relatedRoadSign.crud.edit"}}
                   </AuButton>
                 </AuToolbarGroup>
@@ -227,7 +227,7 @@
       </div>
     </div>
   </div>
-  {{#if this.isToShowSubSigns}}
+  {{#if this.isEditingSubSigns}}
     <div class="au-o-grid__item au-u-2-5@medium">
       <div
         class="au-c-body-container au-c-action-sidebar"
@@ -243,7 +243,7 @@
             <button
               type="button"
               class="au-c-close au-c-close--large"
-              {{on "click" this.showEditSubSigns}}
+              {{on "click" this.toggleEditSubSigns}}
             >
               <AuIcon @icon="cross" @size="large" />
               <span class="au-u-hidden-visually">
@@ -262,6 +262,7 @@
             {{#each @model.roadSignConcept.subSigns as |subSign|}}
               <div class="au-o-grid au-o-grid--tiny">
                 <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
+                  {{!-- TODO: use @onChange --}}
                   <AuControlCheckbox
                     @identifier={{subSign.roadSignConceptCode}}
                     @checked={{true}}
@@ -282,9 +283,10 @@
               </div>
               <AuHr @size="large" />
             {{/each}}
-            {{#each @model.allSubSigns.roadSignConcepts as |subSignOut|}}
+            {{#each @model.allSubSigns as |subSignOut|}}
               <div class="au-o-grid au-o-grid--tiny">
                 <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
+                  {{!-- TODO: use @onChange --}}
                   <AuControlCheckbox
                     @identifier={{subSignOut.roadSignConceptCode}}
                     {{on "input" (fn this.editSubSignRelation subSignOut)}}
@@ -309,7 +311,7 @@
       </div>
     </div>
   {{/if}}
-  {{#if this.isToShowRelated}}
+  {{#if this.isEditingRelated}}
     <div class="au-o-grid__item au-u-2-5@medium">
       <div
         class="au-c-body-container au-c-action-sidebar"
@@ -325,7 +327,7 @@
             <button
               type="button"
               class="au-c-close au-c-close--large"
-              {{on "click" this.showEditRelatedRoadSigns}}
+              {{on "click" this.toggleEditRelatedRoadSigns}}
             >
               <AuIcon @icon="cross" @size="large" />
               <span class="au-u-hidden-visually">
@@ -363,6 +365,7 @@
             }}
               <div class="au-o-grid au-o-grid--tiny">
                 <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
+                  {{!-- TODO: use @onChange --}}
                   <AuControlCheckbox
                     @identifier={{relatedRoadSign.roadSignConceptCode}}
                     @checked={{true}}
@@ -397,6 +400,7 @@
               }}
                 <div class="au-o-grid au-o-grid--tiny">
                   <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
+                    {{!-- TODO: use @onChange --}}
                     <AuControlCheckbox
                       @identifier={{
                         relatedRoadSignByCategory.roadSignConceptCode

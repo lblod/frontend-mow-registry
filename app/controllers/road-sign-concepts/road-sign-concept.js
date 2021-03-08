@@ -3,8 +3,8 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
-  @tracked isToShowSubSigns = false;
-  @tracked isToShowRelated = false;
+  @tracked isEditingSubSigns = false;
+  @tracked isEditingRelated = false;
 
   @tracked category = null;
 
@@ -12,17 +12,12 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   async editSubSignRelation(subSign, event) {
     event.preventDefault();
     let subSigns = await this.model.roadSignConcept.subSigns;
-    let roadSigns = await this.model.allSubSigns.roadSignConcepts;
     if (event.target.checked) {
       subSigns.pushObject(subSign);
       this.model.roadSignConcept.save();
-      roadSigns.removeObject(subSign);
-      this.model.allSubSigns.save();
     } else {
       subSigns.removeObject(subSign);
       this.model.roadSignConcept.save();
-      roadSigns.pushObject(subSign);
-      this.model.allSubSigns.save();
     }
   }
 
@@ -41,19 +36,19 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action
-  showEditSubSigns() {
-    this.isToShowSubSigns = !this.isToShowSubSigns;
-    if (this.isToShowRelated) this.isToShowRelated = false;
+  toggleEditSubSigns() {
+    this.isEditingSubSigns = !this.isEditingSubSigns;
+    this.isEditingRelated = false;
   }
 
   @action
-  showEditRelatedRoadSigns() {
-    this.isToShowRelated = !this.isToShowRelated;
-    if (this.isToShowSubSigns) this.isToShowSubSigns = false;
+  toggleEditRelatedRoadSigns() {
+    this.isEditingRelated = !this.isEditingRelated;
+    this.isEditingSubSigns = false;
   }
 
   get showSidebar() {
-    return this.isToShowRelated || this.isToShowSubSigns;
+    return this.isEditingRelated || this.isEditingSubSigns;
   }
 
   get filteredCategoryLabel() {
