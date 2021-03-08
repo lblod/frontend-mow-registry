@@ -16,7 +16,13 @@ export default class RoadsignConcept extends Route {
         .then(function (subSigns) {
           return subSigns.firstObject;
         }),
-      categories: this.store.findAll('road-sign-category'),
+      categories: this.store
+        .findAll('road-sign-category', {
+          include: 'roadSignConcepts',
+        })
+        .then((category) => {
+          return category.filter(({ label }) => label !== 'Onderbord');
+        }),
     });
   }
 }

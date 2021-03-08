@@ -31,9 +31,20 @@ roadSignConcept:
     noData: No Road Signs
     edit: Edit Road Sign
     delete: Delete Road Sign
-    editSubsigns: Edit Subsigns
-    editRelated: Edit Related Road Signs
   landingPage:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.
     button: Go to Road Signs
+
+subSign:
+  crud:
+    edit: Edit Subsigns
+    editText: Select or unselect sub signs
+
+relatedRoadSign:
+  attr:
+    category: Search road signs by category
+  crud:
+    edit: Edit Related Road Signs
+    editText: Select or unselect related road signs
+    

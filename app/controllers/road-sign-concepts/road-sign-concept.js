@@ -6,9 +6,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked isToShowSubSigns = false;
   @tracked isToShowRelated = false;
 
-  queryParams = ['label'];
   @tracked category = null;
-  @tracked model;
 
   @action
   async editSubSignRelation(subSign, event) {
@@ -33,7 +31,10 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     event.preventDefault();
     let relatedRoadSigns = await this.model.roadSignConcept
       .relatedRoadSignConcepts;
-    if (!event.target.checked) {
+    if (event.target.checked) {
+      relatedRoadSigns.pushObject(relatedRoadSign);
+      this.model.roadSignConcept.save();
+    } else {
       relatedRoadSigns.removeObject(relatedRoadSign);
       this.model.roadSignConcept.save();
     }
@@ -42,11 +43,13 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @action
   showEditSubSigns() {
     this.isToShowSubSigns = !this.isToShowSubSigns;
+    if (this.isToShowRelated) this.isToShowRelated = false;
   }
 
   @action
   showEditRelatedRoadSigns() {
     this.isToShowRelated = !this.isToShowRelated;
+    if (this.isToShowSubSigns) this.isToShowSubSigns = false;
   }
 
   get showSidebar() {
@@ -56,9 +59,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   get filteredCategoryLabel() {
     let category = this.category;
     let categories = this.model.categories;
-
     if (category) {
-      return categories.filterBy('label', category.label);
+      let filteredRoadSignsByCategory = categories.filter(function (cat) {
+        return cat.label.indexOf(category.label) !== -1;
+      });
+      return filteredRoadSignsByCategory.firstObject;
     } else {
       return false;
     }

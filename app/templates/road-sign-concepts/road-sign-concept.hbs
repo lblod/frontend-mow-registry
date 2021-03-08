@@ -127,7 +127,7 @@
                 </AuToolbarGroup>
                 <AuToolbarGroup>
                   <AuButton {{on "click" this.showEditSubSigns}}>
-                    {{t "roadSignConcept.crud.editSubsigns"}}
+                    {{t "subSign.crud.edit"}}
                   </AuButton>
                 </AuToolbarGroup>
               </AuToolbar>
@@ -180,7 +180,7 @@
                 </AuToolbarGroup>
                 <AuToolbarGroup>
                   <AuButton {{on "click" this.showEditRelatedRoadSigns}}>
-                    {{t "roadSignConcept.crud.editRelated"}}
+                    {{t "relatedRoadSign.crud.edit"}}
                   </AuButton>
                 </AuToolbarGroup>
               </AuToolbar>
@@ -237,7 +237,7 @@
           <AuToolbar class="au-u-margin-bottom-small">
             <AuToolbarGroup>
               <AuHeading @level="2" @skin="3">
-                {{t "roadSignConcept.crud.editSubsigns"}}
+                {{t "subSign.crud.edit"}}
               </AuHeading>
             </AuToolbarGroup>
             <button
@@ -253,7 +253,7 @@
           </AuToolbar>
           <AuContent @skin="small">
             <p>
-              Select or unselect sub signs
+              {{t "subSign.crud.editText"}}
             </p>
           </AuContent>
         </div>
@@ -319,7 +319,7 @@
           <AuToolbar class="au-u-margin-bottom-small">
             <AuToolbarGroup>
               <AuHeading @level="2" @skin="3">
-                {{t "roadSignConcept.crud.editRelated"}}
+                {{t "relatedRoadSign.crud.edit"}}
               </AuHeading>
             </AuToolbarGroup>
             <button
@@ -335,8 +335,25 @@
           </AuToolbar>
           <AuContent @skin="small">
             <p>
-              Select or unselect related road signs
+              {{t "relatedRoadSign.crud.editText"}}
             </p>
+
+            <p>
+              <strong>
+                {{t "relatedRoadSign.attr.category"}}
+              </strong>
+            </p>
+            <PowerSelect
+              @allowClear={{true}}
+              @searchEnabled={{true}}
+              @noMatchesMessage={{t "roadSignConcept.crud.noData"}}
+              @searchField="label"
+              @options={{@model.categories}}
+              @selected={{this.category}}
+              @onChange={{fn (mut this.category)}} as |category|
+            >
+              {{category.label}}
+            </PowerSelect>
           </AuContent>
         </div>
         <div class="au-o-box au-c-body-container au-c-body-container--scroll">
@@ -347,7 +364,7 @@
               <div class="au-o-grid au-o-grid--tiny">
                 <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
                   <AuControlCheckbox
-                    @identifier={{relatedSign.roadSignConceptCode}}
+                    @identifier={{relatedRoadSign.roadSignConceptCode}}
                     @checked={{true}}
                     {{on
                       "input"
@@ -373,40 +390,39 @@
               </div>
               <AuHr @size="large" />
             {{/each}}
-            <p>
-              <strong>
-                Search for a category
-              </strong>
-            </p>
-            <PowerSelect
-              @allowClear={{true}}
-              @searchEnabled={{true}}
-              @noMatchesMessage={{t "roadSignConcept.crud.noData"}}
-              @searchField="label"
-              @options={{@model.categories}}
-              @selected={{this.category}}
-              @onChange={{fn (mut this.category)}} as |category|
-            >
-              {{category.label}}
-            </PowerSelect>
+
             {{#if this.category}}
-              {{#each this.filteredCategoryLabel.roadSignConcepts as |relatedRoadSign|}}
+              {{#each
+                this.filteredCategoryLabel.roadSignConcepts as |relatedRoadSignByCategory|
+              }}
                 <div class="au-o-grid au-o-grid--tiny">
                   <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
                     <AuControlCheckbox
-                      @identifier={{relatedRoadSign.roadSignConceptCode}}
-                      {{on "input" (fn this.editSubSignRelation subSignOut)}}
+                      @identifier={{
+                        relatedRoadSignByCategory.roadSignConceptCode
+                      }}
+                      {{on
+                        "input"
+                        (fn
+                          this.editRelatedRoadSignRelation
+                          relatedRoadSignByCategory
+                        )
+                      }}
                     />
-                    <img alt="" role="presentation" src={{relatedRoadSign.image}} />
+                    <img
+                      alt=""
+                      role="presentation"
+                      src={{relatedRoadSignByCategory.image}}
+                    />
                   </div>
                   <div class="au-o-grid__item au-u-1-1">
                     <p>
                       <strong>
-                        {{relatedRoadSign.roadSignConceptCode}}
+                        {{relatedRoadSignByCategory.roadSignConceptCode}}
                       </strong>
                     </p>
                     <p>
-                      {{relatedRoadSign.meaning}}
+                      {{relatedRoadSignByCategory.meaning}}
                     </p>
                   </div>
                 </div>
