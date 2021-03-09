@@ -3,220 +3,439 @@
 <BreadcrumbsItem as |linkClass|>
   <LinkTo
     @route="road-sign-concepts.road-sign-concept"
-    @model={{@model.id}}
+    @model={{@model.roadSignConcept.id}}
     class={{linkClass}}
   >
-    {{@model.roadSignConceptCode}}
+    {{@model.roadSignConcept.roadSignConceptCode}}
   </LinkTo>
 </BreadcrumbsItem>
 
-<AuToolbar @size="large">
-  <AuToolbarGroup>
-    <AuHeading @skin="2">
-      {{t "roadSignConcept.details"}}
-    </AuHeading>
-  </AuToolbarGroup>
-</AuToolbar>
-<AuToolbar @size="large">
-  <AuToolbarGroup class="au-c-toolbar__group--row">
-    <ul class="au-o-grid">
-      <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-        <img
-          class="road-sign-image"
-          alt=""
-          role="presentation"
-          src={{@model.image}}
-        />
-      </li>
-      <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-        <AuLabel>
-          {{t "roadSignConcept.attr.code"}}
-        </AuLabel>
-        <p>
-          {{@model.roadSignConceptCode}}
-        </p>
-      </li>
-      <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-        <AuLabel>
-          {{t "roadSignConcept.attr.categories"}}
-        </AuLabel>
-        {{#each @model.categories as |category|}}
-          <p>
-            {{category.label}}
-          </p>
-        {{/each}}
-      </li>
-      <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
-        <AuLabel>
-          {{t "roadSignConcept.attr.meaning"}}
-        </AuLabel>
-        <p>
-          {{@model.meaning}}
-        </p>
-      </li>
-    </ul>
-  </AuToolbarGroup>
-</AuToolbar>
-<AuToolbar @border="bottom" @size="large">
-  <AuToolbarGroup>
-    <LinkTo
-      class="au-c-button"
-      @route="road-sign-concepts.edit"
-      @model={{@model.id}}
-    >
-      {{t "roadSignConcept.crud.edit"}}
-    </LinkTo>
+<div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
+  <div
+    class="au-o-grid__item {{
+      if
+      this.showSidebar
+      "au-u-3-5@medium au-u-visible-medium-up"
+      "au-u-1-1@medium"
+    }}"
+  >
+    <div class="au-c-body-container">
+      <div
+        class="au-c-body-container au-c-body-container--scroll road-sign-concept-details"
+      >
+        <AuToolbar @size="large">
+          <AuToolbarGroup>
+            <AuHeading @skin="2">
+              {{t "roadSignConcept.details"}}
+            </AuHeading>
+          </AuToolbarGroup>
+        </AuToolbar>
+        <AuToolbar @size="medium">
+          <AuToolbarGroup class="au-c-toolbar__group--row">
+            <ul class="au-o-grid">
+              <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+                <img
+                  class="road-sign-image"
+                  alt=""
+                  role="presentation"
+                  src={{@model.roadSignConcept.image}}
+                />
+              </li>
+              <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+                <AuLabel>
+                  {{t "roadSignConcept.attr.code"}}
+                </AuLabel>
+                <p>
+                  {{@model.roadSignConcept.roadSignConceptCode}}
+                </p>
+              </li>
+              <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+                <AuLabel>
+                  {{t "roadSignConcept.attr.categories"}}
+                </AuLabel>
+                {{#each @model.roadSignConcept.categories as |category|}}
+                  <p>
+                    {{category.label}}
+                  </p>
+                {{/each}}
+              </li>
+              <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
+                <AuLabel>
+                  {{t "roadSignConcept.attr.meaning"}}
+                </AuLabel>
+                <p>
+                  {{@model.roadSignConcept.meaning}}
+                </p>
+              </li>
+            </ul>
+          </AuToolbarGroup>
+        </AuToolbar>
+        <AuToolbar @border="bottom" @size="large">
+          <AuToolbarGroup>
+            <LinkTo
+              class="au-c-button"
+              @route="road-sign-concepts.edit"
+              @model={{@model.roadSignConcept.id}}
+            >
+              {{t "roadSignConcept.crud.edit"}}
+            </LinkTo>
 
-    <AuButton @alert={{true}} {{on "click" (fn (mut this.isOpen) true)}}>
-      {{t "roadSignConcept.crud.delete"}}
-    </AuButton>
-    <AuModal
-      @modalTitle={{t "utility.confirmation.title"}}
-      @modalOpen={{this.isOpen}}
-      @closeModal={{fn (mut this.isOpen) false}} as |Modal|
-    >
-      <Modal.Body>
-        <p>
-          {{t "utility.confirmation.body"}}
-        </p>
-      </Modal.Body>
-      <Modal.Footer>
-        <AuButton
-          @alert={{true}}
-          {{on "click" (fn this.removeRoadSignConcept @model)}}
+            <AuButton
+              @alert={{true}}
+              {{on "click" (fn (mut this.isOpen) true)}}
+            >
+              {{t "roadSignConcept.crud.delete"}}
+            </AuButton>
+            <AuModal
+              @modalTitle={{t "utility.confirmation.title"}}
+              @modalOpen={{this.isOpen}}
+              @closeModal={{fn (mut this.isOpen) false}} as |Modal|
+            >
+              <Modal.Body>
+                <p>
+                  {{t "utility.confirmation.body"}}
+                </p>
+              </Modal.Body>
+              <Modal.Footer>
+                <AuButton
+                  @alert={{true}}
+                  {{on
+                    "click"
+                    (fn this.removeRoadSignConcept @model.roadSignConcept)
+                  }}
+                >
+                  {{t "roadSignConcept.crud.delete"}}
+                </AuButton>
+              </Modal.Footer>
+            </AuModal>
+          </AuToolbarGroup>
+        </AuToolbar>
+
+        <AuDataTable
+          @content={{@model.roadSignConcept.subSigns}}
+          @fields="Image Meaning Code"
+          @noDataMessage={{t "roadSignConcept.crud.noData"}}
+          class="container-flex--contain table-no-overflow" as |s|
         >
-          {{t "roadSignConcept.crud.delete"}}
-        </AuButton>
-      </Modal.Footer>
-    </AuModal>
-  </AuToolbarGroup>
-</AuToolbar>
+          <s.menu as |menu|>
+            <menu.general>
+              <AuToolbar class="au-o-box">
+                <AuToolbarGroup>
+                  <AuHeading @level="2" @skin="3">
+                    {{t "roadSignConcept.attr.subSign"}}
+                  </AuHeading>
+                </AuToolbarGroup>
+                <AuToolbarGroup>
+                  <AuButton {{on "click" this.toggleEditSubSigns}}>
+                    {{t "subSign.crud.edit"}}
+                  </AuButton>
+                </AuToolbarGroup>
+              </AuToolbar>
+            </menu.general>
+          </s.menu>
+          <s.content as |c|>
+            <c.header>
+              <th class="data-table__header-title">
+                {{t "roadSignConcept.attr.code"}}
+              </th>
+              <th class="data-table__header-title">
+                {{t "roadSignConcept.attr.imageHeader"}}
+              </th>
+              <th class="data-table__header-title">
+                {{t "roadSignConcept.attr.meaning"}}
+              </th>
+            </c.header>
+            <c.body as |subSign|>
+              <td>
+                {{subSign.roadSignConceptCode}}
+              </td>
+              <td>
+                <img
+                  class="road-sign-image"
+                  src={{subSign.image}}
+                  alt=""
+                  role="presentation"
+                />
+              </td>
+              <td>
+                {{subSign.meaning}}
+              </td>
+            </c.body>
+          </s.content>
+        </AuDataTable>
 
-<div class="au-c-body-container au-c-body-container--scroll road-sign-concept-details">
-  <AuDataTable
-    @content={{this.model.subSigns}}
-    @fields="Image Meaning Code"
-    @noDataMessage={{t "roadSignConcept.crud.noData"}}
-    class="table-no-overflow"
-    as |s|
-  >
-    <s.menu as |menu|>
-      <menu.general>
-        <AuToolbar class="au-o-box">
-          <AuToolbarGroup>
-            <AuHeading @level="2" @skin="3">
-              {{t "roadSignConcept.subSign.name"}}
-            </AuHeading>
-          </AuToolbarGroup>
-        </AuToolbar>
-      </menu.general>
-    </s.menu>
-    <s.content as |c|>
-      <c.header>
-        <th class="data-table__header-title">
-          {{t "roadSignConcept.attr.code"}}
-        </th>
-        <th class="data-table__header-title">
-          {{t "roadSignConcept.attr.imageHeader"}}
-        </th>
-        <th class="data-table__header-title">
-          {{t "roadSignConcept.attr.meaning"}}
-        </th>
-        <th class="data-table__header-title"></th>
-      </c.header>
-      <c.body as |subSign|>
-        <td>
-          {{subSign.roadSignConceptCode}}
-        </td>
-        <td>
-          <img
-            class="road-sign-image"
-            src={{subSign.image}}
-            alt=""
-            role="presentation"
-          />
-        </td>
-        <td>
-          {{subSign.meaning}}
-        </td>
-        <td>
-          <AuButton
-            @alert={{true}}
-            {{on "click" (fn this.removeSubSign subSign)}}
-          >
-            <AuIcon
-              @icon="bin"
-              @alignment="center"
-              @size="large"
-              @ariaHidden={{true}}
-            />
-          </AuButton>
-        </td>
-      </c.body>
-    </s.content>
-  </AuDataTable>
+        <AuDataTable
+          @content={{@model.roadSignConcept.relatedRoadSignConcepts}}
+          @fields="Image Meaning Code Categories"
+          @noDataMessage={{t "roadSignConcept.crud.noData"}}
+          class="container-flex--contain table-no-overflow" as |s|
+        >
+          <s.menu as |menu|>
+            <menu.general>
+              <AuToolbar class="au-o-box">
+                <AuToolbarGroup>
+                  <AuHeading @level="2" @skin="3">
+                    {{t "roadSignConcept.attr.relatedSign"}}
+                  </AuHeading>
+                </AuToolbarGroup>
+                <AuToolbarGroup>
+                  <AuButton {{on "click" this.toggleEditRelatedRoadSigns}}>
+                    {{t "relatedRoadSign.crud.edit"}}
+                  </AuButton>
+                </AuToolbarGroup>
+              </AuToolbar>
+            </menu.general>
+          </s.menu>
+          <s.content as |c|>
+            <c.header>
+              <th class="data-table__header-title">
+                {{t "roadSignConcept.attr.code"}}
+              </th>
+              <th class="data-table__header-title">
+                {{t "roadSignConcept.attr.imageHeader"}}
+              </th>
+              <th class="data-table__header-title">
+                {{t "roadSignConcept.attr.meaning"}}
+              </th>
+              <th class="data-table__header-title">
+                {{t "roadSignConcept.attr.categories"}}
+              </th>
+            </c.header>
+            <c.body as |relatedRoadSignConcept|>
+              <td>
+                {{relatedRoadSignConcept.roadSignConceptCode}}
+              </td>
+              <td>
+                <img
+                  class="road-sign-image"
+                  src={{relatedRoadSignConcept.image}}
+                  alt=""
+                  role="presentation"
+                />
+              </td>
+              <td>
+                {{relatedRoadSignConcept.meaning}}
+              </td>
+              <td>
+                {{#each relatedRoadSignConcept.categories as |category|}}
+                  {{category.label}}
+                {{/each}}
+              </td>
+            </c.body>
+          </s.content>
+        </AuDataTable>
+      </div>
+    </div>
+  </div>
+  {{#if this.isEditingSubSigns}}
+    <div class="au-o-grid__item au-u-2-5@medium">
+      <div
+        class="au-c-body-container au-c-action-sidebar"
+        {{auto-focus ".au-c-action-sidebar__header"}}
+      >
+        <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
+          <AuToolbar class="au-u-margin-bottom-small">
+            <AuToolbarGroup>
+              <AuHeading @level="2" @skin="3">
+                {{t "subSign.crud.edit"}}
+              </AuHeading>
+            </AuToolbarGroup>
+            <button
+              type="button"
+              class="au-c-close au-c-close--large"
+              {{on "click" this.toggleEditSubSigns}}
+            >
+              <AuIcon @icon="cross" @size="large" />
+              <span class="au-u-hidden-visually">
+                {{t "utility.close"}}
+              </span>
+            </button>
+          </AuToolbar>
+          <AuContent @skin="small">
+            <p>
+              {{t "subSign.crud.editText"}}
+            </p>
+          </AuContent>
+        </div>
+        <div class="au-o-box au-c-body-container au-c-body-container--scroll">
+          <div class="au-o-flow">
+            {{#each @model.roadSignConcept.subSigns as |subSign|}}
+              <div class="au-o-grid au-o-grid--tiny">
+                <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
+                  {{!-- TODO: use @onChange --}}
+                  <AuControlCheckbox
+                    @identifier={{subSign.roadSignConceptCode}}
+                    @checked={{true}}
+                    {{on "input" (fn this.editSubSignRelation subSign)}}
+                  />
+                  <img alt="" role="presentation" src={{subSign.image}} />
+                </div>
+                <div class="au-o-grid__item au-u-1-1">
+                  <p>
+                    <strong>
+                      {{subSign.roadSignConceptCode}}
+                    </strong>
+                  </p>
+                  <p>
+                    {{subSign.meaning}}
+                  </p>
+                </div>
+              </div>
+              <AuHr @size="large" />
+            {{/each}}
+            {{#each @model.allSubSigns as |subSignOut|}}
+              <div class="au-o-grid au-o-grid--tiny">
+                <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
+                  {{!-- TODO: use @onChange --}}
+                  <AuControlCheckbox
+                    @identifier={{subSignOut.roadSignConceptCode}}
+                    {{on "input" (fn this.editSubSignRelation subSignOut)}}
+                  />
+                  <img alt="" role="presentation" src={{subSignOut.image}} />
+                </div>
+                <div class="au-o-grid__item au-u-1-1">
+                  <p>
+                    <strong>
+                      {{subSignOut.roadSignConceptCode}}
+                    </strong>
+                  </p>
+                  <p>
+                    {{subSignOut.meaning}}
+                  </p>
+                </div>
+              </div>
+              <AuHr @size="large" />
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+  {{#if this.isEditingRelated}}
+    <div class="au-o-grid__item au-u-2-5@medium">
+      <div
+        class="au-c-body-container au-c-action-sidebar"
+        {{auto-focus ".au-c-action-sidebar__header"}}
+      >
+        <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
+          <AuToolbar class="au-u-margin-bottom-small">
+            <AuToolbarGroup>
+              <AuHeading @level="2" @skin="3">
+                {{t "relatedRoadSign.crud.edit"}}
+              </AuHeading>
+            </AuToolbarGroup>
+            <button
+              type="button"
+              class="au-c-close au-c-close--large"
+              {{on "click" this.toggleEditRelatedRoadSigns}}
+            >
+              <AuIcon @icon="cross" @size="large" />
+              <span class="au-u-hidden-visually">
+                {{t "utility.close"}}
+              </span>
+            </button>
+          </AuToolbar>
+          <AuContent @skin="small">
+            <p>
+              {{t "relatedRoadSign.crud.editText"}}
+            </p>
 
-  <AuDataTable
-    @content={{this.model.relatedRoadSignConcepts}}
-    @fields="Image Meaning Code"
-    @noDataMessage={{t "roadSignConcept.crud.noData"}} as |s|
-  >
-    <s.menu as |menu|>
-      <menu.general>
-        <AuToolbar class="au-o-box">
-          <AuToolbarGroup>
-            <AuHeading @level="2" @skin="3">
-              {{t "roadSignConcept.relatedSign.name"}}
-            </AuHeading>
-          </AuToolbarGroup>
-        </AuToolbar>
-      </menu.general>
-    </s.menu>
-    <s.content as |c|>
-      <c.header>
-        <th class="data-table__header-title">
-          {{t "roadSignConcept.attr.code"}}
-        </th>
-        <th class="data-table__header-title">
-          {{t "roadSignConcept.attr.imageHeader"}}
-        </th>
-        <th class="data-table__header-title">
-          {{t "roadSignConcept.attr.meaning"}}
-        </th>
-        <th class="data-table__header-title"></th>
-      </c.header>
-      <c.body as |relatedRoadSignConcept|>
-        <td>
-          {{relatedRoadSignConcept.roadSignConceptCode}}
-        </td>
-        <td>
-          <img
-            class="road-sign-image"
-            src={{relatedRoadSignConcept.image}}
-            alt=""
-            role="presentation"
-          />
-        </td>
-        <td>
-          {{relatedRoadSignConcept.meaning}}
-        </td>
-        <td>
-          <AuButton
-            @alert={{true}}
-            {{on
-              "click"
-              (fn this.removeRelatedRoadSignConcept relatedRoadSignConcept)
+            <p>
+              <strong>
+                {{t "relatedRoadSign.attr.category"}}
+              </strong>
+            </p>
+            <PowerSelect
+              @allowClear={{true}}
+              @searchEnabled={{true}}
+              @noMatchesMessage={{t "roadSignConcept.crud.noData"}}
+              @searchField="label"
+              @options={{@model.categories}}
+              @selected={{this.category}}
+              @onChange={{this.handleCategorySelection}} as |category|
+            >
+              {{category.label}}
+            </PowerSelect>
+          </AuContent>
+        </div>
+        <div class="au-o-box au-c-body-container au-c-body-container--scroll">
+          <div class="au-o-flow">
+            {{#each
+              @model.roadSignConcept.relatedRoadSignConcepts as |relatedRoadSign|
             }}
-          >
-            <AuIcon
-              @icon="bin"
-              @alignment="center"
-              @size="large"
-              @ariaHidden={{true}}
-            />
-          </AuButton>
-        </td>
-      </c.body>
-    </s.content>
-  </AuDataTable>
+              <div class="au-o-grid au-o-grid--tiny">
+                <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
+                  {{!-- TODO: use @onChange --}}
+                  <AuControlCheckbox
+                    @identifier={{relatedRoadSign.roadSignConceptCode}}
+                    @checked={{true}}
+                    {{on
+                      "input"
+                      (fn this.editRelatedRoadSignRelation relatedRoadSign)
+                    }}
+                  />
+                  <img
+                    alt=""
+                    role="presentation"
+                    src={{relatedRoadSign.image}}
+                  />
+                </div>
+                <div class="au-o-grid__item au-u-1-1">
+                  <p>
+                    <strong>
+                      {{relatedRoadSign.roadSignConceptCode}}
+                    </strong>
+                  </p>
+                  <p>
+                    {{relatedRoadSign.meaning}}
+                  </p>
+                </div>
+              </div>
+              <AuHr @size="large" />
+            {{/each}}
+
+            {{#if this.category}}
+              {{#each
+                this.categoryRoadSigns as |relatedRoadSignByCategory|
+              }}
+                <div class="au-o-grid au-o-grid--tiny">
+                  <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
+                    {{!-- TODO: use @onChange --}}
+                    <AuControlCheckbox
+                      @identifier={{
+                        relatedRoadSignByCategory.roadSignConceptCode
+                      }}
+                      {{on
+                        "input"
+                        (fn
+                          this.editRelatedRoadSignRelation
+                          relatedRoadSignByCategory
+                        )
+                      }}
+                    />
+                    <img
+                      alt=""
+                      role="presentation"
+                      src={{relatedRoadSignByCategory.image}}
+                    />
+                  </div>
+                  <div class="au-o-grid__item au-u-1-1">
+                    <p>
+                      <strong>
+                        {{relatedRoadSignByCategory.roadSignConceptCode}}
+                      </strong>
+                    </p>
+                    <p>
+                      {{relatedRoadSignByCategory.meaning}}
+                    </p>
+                  </div>
+                </div>
+                <AuHr @size="large" />
+              {{/each}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/if}}
 </div>

@@ -1,32 +1,85 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
-  @service router;
-  @service intl;
+  @tracked isEditingSubSigns = false;
+  @tracked isEditingRelated = false;
+
+  @tracked category = null;
+  @tracked categoryRoadSigns = null;
 
   @action
-  async removeRoadSignConcept(roadSignConcept, event) {
+  async editSubSignRelation(subSign, event) {
     event.preventDefault();
-
-    await roadSignConcept.destroyRecord();
-    this.router.transitionTo('road-sign-concepts');
+    let subSigns = await this.model.roadSignConcept.subSigns;
+    if (event.target.checked) {
+      subSigns.pushObject(subSign);
+      this.model.roadSignConcept.save();
+      this.model.allSubSigns.removeObject(subSign);
+    } else {
+      subSigns.removeObject(subSign);
+      this.model.roadSignConcept.save();
+      this.model.allSubSigns.pushObject(subSign);
+    }
   }
 
   @action
-  async removeSubSign(subSign, event) {
+  async editRelatedRoadSignRelation(relatedRoadSign, event) {
     event.preventDefault();
-    let subSigns = await this.model.subSigns;
-    subSigns.removeObject(subSign);
-    this.model.save();
+    let relatedRoadSigns = await this.model.roadSignConcept
+      .relatedRoadSignConcepts;
+    if (event.target.checked) {
+      relatedRoadSigns.pushObject(relatedRoadSign);
+      this.model.roadSignConcept.save();
+      this.categoryRoadSigns.removeObject(relatedRoadSign);
+    } else {
+      relatedRoadSigns.removeObject(relatedRoadSign);
+      this.model.roadSignConcept.save();
+      this.categoryRoadSigns.pushObject(relatedRoadSign);
+    }
   }
 
   @action
-  async removeRelatedRoadSignConcept(relatedRoadSignConcept, event) {
-    event.preventDefault();
-    let relatedRoadSignConcepts = await this.model.relatedRoadSignConcepts;
-    relatedRoadSignConcepts.removeObject(relatedRoadSignConcept);
-    this.model.save();
+  toggleEditSubSigns() {
+    this.isEditingSubSigns = !this.isEditingSubSigns;
+    this.isEditingRelated = false;
+  }
+
+  @action
+  toggleEditRelatedRoadSigns() {
+    this.isEditingRelated = !this.isEditingRelated;
+    this.isEditingSubSigns = false;
+  }
+
+  @action
+  async handleCategorySelection(category) {
+    if (category) {
+      this.category = category;
+      let categoryRoadSigns = await category.roadSignConcepts;
+      let relatedRoadSigns = await this.model.roadSignConcept
+        .relatedRoadSignConcepts;
+
+      this.categoryRoadSigns = categoryRoadSigns.filter((roadSign) => {
+        return (
+          roadSign.id !== this.model.roadSignConcept.id &&
+          !relatedRoadSigns.includes(roadSign)
+        );
+      });
+    } else {
+      this.category = null;
+      this.categoryRoadSigns = null;
+    }
+  }
+
+  get showSidebar() {
+    return this.isEditingRelated || this.isEditingSubSigns;
+  }
+
+  reset() {
+    this.isEditingSubSigns = false;
+    this.isEditingRelated = false;
+    this.category = null;
+    this.categoryRoadSigns = null;
   }
 }

@@ -3,6 +3,7 @@ utility:
   view: Bekijk
   save: Opslaan
   cancel: Annuleer
+  close: Sluiten
   confirmation:
     title: Bevestig
     body: Ben je zeker?
@@ -21,6 +22,8 @@ roadSignConcept:
     meaning: Betekenis
     code: Code
     categories: Categorieën
+    subSign: Mogelijke onderborden
+    relatedSign: Gerelateerde verkeersborden
   crud:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
@@ -32,7 +35,16 @@ roadSignConcept:
     subtitle: Ondertitel voor kaart
     content: Informatie op de kaart die onder de kop komt. Inhoud.
     button: Ga naar Verkeersborden
-  subSign:
-    name: Mogelijke onderborden
-  relatedSign:
-    name: Gerelateerde verkeersborden
+
+subSign:
+  crud:
+    edit: Beheer onderborden
+    editText: Selecteer of verwijder onderborden
+
+relatedRoadSign:
+  attr:
+    category: Zoek verkeersborden op category
+  crud:
+    edit: Beheer gerelateerde verkeersborden
+    editText: Selecteer of verwijder gerelateerde verkeersborden
+    

@@ -3,6 +3,7 @@ utility:
   view: View
   save: Save
   cancel: Cancel
+  close: Close
   confirmation:
     title: Confirm
     body: Are you sure?
@@ -21,6 +22,8 @@ roadSignConcept:
     meaning: Meaning
     code: Code
     categories: Categories
+    subSign: Possible subsigns
+    relatedSign: Related road signs
   crud:
     create: Create road sign
     new: New Road Sign
@@ -32,7 +35,16 @@ roadSignConcept:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.
     button: Go to Road Signs
-  subSign:
-    name: Possible subsigns
-  relatedSign:
-    name: Related road signs
+
+subSign:
+  crud:
+    edit: Edit Subsigns
+    editText: Select or unselect sub signs
+
+relatedRoadSign:
+  attr:
+    category: Search road signs by category
+  crud:
+    edit: Edit Related Road Signs
+    editText: Select or unselect related road signs
+    
