@@ -16,9 +16,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     if (event.target.checked) {
       subSigns.pushObject(subSign);
       this.model.roadSignConcept.save();
+      this.model.allSubSigns.removeObject(subSign);
     } else {
       subSigns.removeObject(subSign);
       this.model.roadSignConcept.save();
+      this.model.allSubSigns.pushObject(subSign);
     }
   }
 
