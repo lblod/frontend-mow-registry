@@ -20,4 +20,8 @@ export default class RoadsignConcept extends Route {
       }),
     });
   }
+
+  resetController(controller) {
+    controller.reset();
+  }
 }

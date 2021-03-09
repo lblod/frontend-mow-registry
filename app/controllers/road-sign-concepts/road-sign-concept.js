@@ -7,6 +7,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked isEditingRelated = false;
 
   @tracked category = null;
+  @tracked categoryRoadSigns = null;
 
   @action
   async editSubSignRelation(subSign, event) {
@@ -29,9 +30,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     if (event.target.checked) {
       relatedRoadSigns.pushObject(relatedRoadSign);
       this.model.roadSignConcept.save();
+      this.categoryRoadSigns.removeObject(relatedRoadSign);
     } else {
       relatedRoadSigns.removeObject(relatedRoadSign);
       this.model.roadSignConcept.save();
+      this.categoryRoadSigns.pushObject(relatedRoadSign);
     }
   }
 
@@ -47,20 +50,34 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isEditingSubSigns = false;
   }
 
+  @action
+  async handleCategorySelection(category) {
+    if (category) {
+      this.category = category;
+      let categoryRoadSigns = await category.roadSignConcepts;
+      let relatedRoadSigns = await this.model.roadSignConcept
+        .relatedRoadSignConcepts;
+
+      this.categoryRoadSigns = categoryRoadSigns.filter((roadSign) => {
+        return (
+          roadSign.id !== this.model.roadSignConcept.id &&
+          !relatedRoadSigns.includes(roadSign)
+        );
+      });
+    } else {
+      this.category = null;
+      this.categoryRoadSigns = null;
+    }
+  }
+
   get showSidebar() {
     return this.isEditingRelated || this.isEditingSubSigns;
   }
 
-  get filteredCategoryLabel() {
-    let category = this.category;
-    let categories = this.model.categories;
-    if (category) {
-      let filteredRoadSignsByCategory = categories.filter(function (cat) {
-        return cat.label.indexOf(category.label) !== -1;
-      });
-      return filteredRoadSignsByCategory.firstObject;
-    } else {
-      return false;
-    }
+  reset() {
+    this.isEditingSubSigns = false;
+    this.isEditingRelated = false;
+    this.category = null;
+    this.categoryRoadSigns = null;
   }
 }
