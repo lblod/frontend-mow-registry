@@ -5,12 +5,6 @@
                 <div class="au-o-layout">
                     <AuHeading @skin="4">{{t 'mockLogin.pick'}}</AuHeading>
                     <MockLogin as |login|>
-                        {{#if this.queryStore.isRunning}}
-                        <AuLoader @size="small" />
-                        {{else}}
-                        {{#if login.errorMessage}}
-                        <AuAlert @alertIcon="alert-triangle" @alertTitle={{login.errorMessage}} @alertskin="warning" />
-                        {{/if}}
                         <login.each-account @accounts={{this.model}} as |account|>
                             <div class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small">
                                 <p>
@@ -20,7 +14,6 @@
                         </login.each-account>
                         <NumberPagination @page={{this.page}} @size={{this.size}} @nbOfItems={{this.model.length}}
                             @total={{this.model.meta.count}} @links={{this.model.meta.pagination}} />
-                        {{/if}}
                     </MockLogin>
                 </div>
             </div>
