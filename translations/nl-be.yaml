@@ -47,4 +47,6 @@ relatedRoadSign:
   crud:
     edit: Beheer gerelateerde verkeersborden
     editText: Selecteer of verwijder gerelateerde verkeersborden
-    
+
+mockLogin:
+    pick: Kies een bestuurseenheid om mee in te loggen.

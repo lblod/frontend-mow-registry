@@ -48,3 +48,5 @@ relatedRoadSign:
     edit: Edit Related Road Signs
     editText: Select or unselect related road signs
     
+mockLogin:
+    pick: Choose an account to log in with.
