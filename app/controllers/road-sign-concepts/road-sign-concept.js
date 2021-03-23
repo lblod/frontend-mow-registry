@@ -1,13 +1,20 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
+  @service('router') routerService;
+
   @tracked isEditingSubSigns = false;
   @tracked isEditingRelated = false;
 
   @tracked category = null;
   @tracked categoryRoadSigns = null;
+
+  get showSidebar() {
+    return this.isEditingRelated || this.isEditingSubSigns;
+  }
 
   @action
   async editSubSignRelation(subSign, event) {
@@ -72,8 +79,12 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     }
   }
 
-  get showSidebar() {
-    return this.isEditingRelated || this.isEditingSubSigns;
+  @action
+  async removeRoadSignConcept(roadSignConcept, event) {
+    event.preventDefault();
+
+    await roadSignConcept.destroyRecord();
+    this.routerService.transitionTo('road-sign-concepts');
   }
 
   reset() {
