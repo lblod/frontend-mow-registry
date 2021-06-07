@@ -1,7 +1,21 @@
 import Controller from '@ember/controller';
-// eslint-disable-next-line ember/no-mixins
-import DefaultQueryParamsMixin from 'ember-data-table/mixins/default-query-params';
+import { restartableTask, timeout } from 'ember-concurrency';
+import { tracked } from '@glimmer/tracking';
 
-export default class RoadsignConceptsIndexController extends Controller.extend(
-  DefaultQueryParamsMixin
-) {}
+export default class RoadsignConceptsIndexController extends Controller {
+  @tracked page = 0;
+  @tracked size = 10;
+  @tracked filter = '';
+
+  @restartableTask
+  *updateSearchFilterTask(event) {
+    yield timeout(300);
+
+    this.filter = event.target.value;
+    this.resetPagination();
+  }
+
+  resetPagination() {
+    this.page = 0;
+  }
+}
