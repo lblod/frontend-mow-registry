@@ -6,6 +6,7 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked page = 0;
   @tracked size = 10;
   @tracked filter = '';
+  @tracked sort = 'road-sign-concept-code';
 
   @restartableTask
   *updateSearchFilterTask(event) {
