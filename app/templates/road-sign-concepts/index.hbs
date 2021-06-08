@@ -1,5 +1,5 @@
 <AuDataTable
-  @content={{this.model}}
+  @content={{this.model.roadSignConcepts}}
   @fields="Image Meaning Code"
   @noDataMessage={{t "roadSignConcept.crud.noData"}}
   @size={{this.size}}
@@ -15,6 +15,20 @@
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
+          <label>
+            <span class="au-u-hidden-visually">{{t "roadSignConcept.crud.categoryFilter"}}</span>
+            <PowerSelect
+              @allowClear={{true}}
+              @options={{this.model.categories}}
+              @selected={{this.selectedCategory}}
+              @placeholder={{t "roadSignConcept.crud.categoryFilter"}}
+              @onChange={{this.updateCategoryFilter}}
+              @triggerClass="category-select"
+              as |category|
+            >
+              {{category.label}}
+            </PowerSelect>
+          </label>
           {{!-- Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input--}}
           <div class="au-c-data-table__search">
             <input
