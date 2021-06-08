@@ -6,4 +6,8 @@ export default class RoadsignConceptsIndexRoute extends Route.extend(
   DataTableRouteMixin
 ) {
   modelName = 'road-sign-concept';
+
+  mergeQueryOptions() {
+    return { include: 'categories' };
+  }
 }

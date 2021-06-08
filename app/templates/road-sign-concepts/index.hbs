@@ -40,15 +40,19 @@
         @field="roadSignConceptCode"
         @currentSorting={{this.sort}}
         @label={{t "roadSignConcept.attr.code"}}
-        @class="data-table__header-title"
       />
-      <th class="data-table__header-title">
+      <th>
         {{t "roadSignConcept.attr.imageHeader"}}
       </th>
-      <th class="data-table__header-title">
+      <th>
         {{t "roadSignConcept.attr.meaning"}}
       </th>
-      <th class="data-table__header-title"></th>
+      <AuDataTableThSortable
+        @field="categories.label"
+        @currentSorting={{this.sort}}
+        @label={{t "roadSignConcept.attr.categories"}}
+      />
+      <th></th>
     </c.header>
     <c.body as |roadSignConcept|>
       <td>
@@ -59,6 +63,14 @@
       </td>
       <td>
         {{roadSignConcept.meaning}}
+      </td>
+      <td>
+        {{#each roadSignConcept.categories as |category index|}}
+          {{#if (gt index 0)}}
+            <br>
+          {{/if}}
+          {{category.label}}
+        {{/each}}
       </td>
       <td>
         <LinkTo
