@@ -1,5 +1,5 @@
 <AuDataTable
-  @content={{this.model}}
+  @content={{this.model.roadSignConcepts}}
   @fields="Image Meaning Code"
   @noDataMessage={{t "roadSignConcept.crud.noData"}}
   @size={{this.size}}
@@ -15,10 +15,32 @@
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
-          <AuDataTableTextSearch
-            @filter={{this.filter}}
-            @placeholder={{t "roadSignConcept.crud.search"}}
-          />
+          <label>
+            <span class="au-u-hidden-visually">{{t "roadSignConcept.crud.categoryFilter"}}</span>
+            <PowerSelect
+              @allowClear={{true}}
+              @options={{this.model.categories}}
+              @selected={{this.selectedCategory}}
+              @placeholder={{t "roadSignConcept.crud.categoryFilter"}}
+              @onChange={{this.updateCategoryFilter}}
+              @triggerClass="category-select"
+              as |category|
+            >
+              {{category.label}}
+            </PowerSelect>
+          </label>
+          {{!-- Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input--}}
+          <div class="au-c-data-table__search">
+            <input
+              value={{this.filter}}
+              placeholder={{t "roadSignConcept.crud.search"}}
+              class="au-c-input au-c-input--block"
+              {{on "input" (perform this.updateSearchFilterTask)}}
+            />
+            <span class="au-c-data-table__search-icon">
+              <AuIcon @icon="search" @size="large" />
+            </span>
+          </div>
           <LinkTo class="au-c-button" @route="road-sign-concepts.new">
             {{t "roadSignConcept.crud.new"}}
           </LinkTo>
@@ -32,15 +54,19 @@
         @field="roadSignConceptCode"
         @currentSorting={{this.sort}}
         @label={{t "roadSignConcept.attr.code"}}
-        @class="data-table__header-title"
       />
-      <th class="data-table__header-title">
+      <th>
         {{t "roadSignConcept.attr.imageHeader"}}
       </th>
-      <th class="data-table__header-title">
+      <th>
         {{t "roadSignConcept.attr.meaning"}}
       </th>
-      <th class="data-table__header-title"></th>
+      <AuDataTableThSortable
+        @field="categories.label"
+        @currentSorting={{this.sort}}
+        @label={{t "roadSignConcept.attr.categories"}}
+      />
+      <th></th>
     </c.header>
     <c.body as |roadSignConcept|>
       <td>
@@ -51,6 +77,14 @@
       </td>
       <td>
         {{roadSignConcept.meaning}}
+      </td>
+      <td>
+        {{#each roadSignConcept.categories as |category index|}}
+          {{#if (gt index 0)}}
+            <br>
+          {{/if}}
+          {{category.label}}
+        {{/each}}
       </td>
       <td>
         <LinkTo

@@ -31,6 +31,7 @@ roadSignConcept:
     noData: No Road Signs
     edit: Edit Road Sign
     delete: Delete Road Sign
+    categoryFilter: Filter by category
   landingPage:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.
@@ -47,6 +48,6 @@ relatedRoadSign:
   crud:
     edit: Edit Related Road Signs
     editText: Select or unselect related road signs
-    
+
 mockLogin:
     pick: Choose an account to log in with.

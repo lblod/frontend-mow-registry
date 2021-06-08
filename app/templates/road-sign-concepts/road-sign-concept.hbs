@@ -112,7 +112,7 @@
         </AuToolbar>
 
         <AuDataTable
-          @content={{@model.roadSignConcept.subSigns}}
+          @content={{sort-by-road-sign-code @model.roadSignConcept.subSigns}}
           @fields="Image Meaning Code"
           @noDataMessage={{t "roadSignConcept.crud.noData"}}
           class="container-flex--contain table-no-overflow" as |s|
@@ -165,7 +165,7 @@
         </AuDataTable>
 
         <AuDataTable
-          @content={{@model.roadSignConcept.relatedRoadSignConcepts}}
+          @content={{sort-by-road-sign-code @model.roadSignConcept.relatedRoadSignConcepts}}
           @fields="Image Meaning Code Categories"
           @noDataMessage={{t "roadSignConcept.crud.noData"}}
           class="container-flex--contain table-no-overflow" as |s|
@@ -259,7 +259,7 @@
         </div>
         <div class="au-o-box au-c-body-container au-c-body-container--scroll">
           <div class="au-o-flow">
-            {{#each @model.roadSignConcept.subSigns as |subSign|}}
+            {{#each (sort-by-road-sign-code @model.roadSignConcept.subSigns) as |subSign|}}
               <div class="au-o-grid au-o-grid--tiny">
                 <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
                   {{!-- TODO: use @onChange --}}
@@ -283,7 +283,7 @@
               </div>
               <AuHr @size="large" />
             {{/each}}
-            {{#each @model.allSubSigns as |subSignOut|}}
+            {{#each (sort-by-road-sign-code @model.allSubSigns) as |subSignOut|}}
               <div class="au-o-grid au-o-grid--tiny">
                 <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
                   {{!-- TODO: use @onChange --}}
@@ -361,7 +361,7 @@
         <div class="au-o-box au-c-body-container au-c-body-container--scroll">
           <div class="au-o-flow">
             {{#each
-              @model.roadSignConcept.relatedRoadSignConcepts as |relatedRoadSign|
+              (sort-by-road-sign-code @model.roadSignConcept.relatedRoadSignConcepts) as |relatedRoadSign|
             }}
               <div class="au-o-grid au-o-grid--tiny">
                 <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">
@@ -396,7 +396,7 @@
 
             {{#if this.category}}
               {{#each
-                this.categoryRoadSigns as |relatedRoadSignByCategory|
+                (sort-by-road-sign-code this.categoryRoadSigns) as |relatedRoadSignByCategory|
               }}
                 <div class="au-o-grid au-o-grid--tiny">
                   <div class="au-o-grid__item au-u-1-2@small au-u-1-3@medium">

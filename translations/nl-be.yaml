@@ -31,6 +31,7 @@ roadSignConcept:
     noData: Geen verkeersborden gevonden
     edit: Verkeersbord bewerken
     delete: Verkeersbord verwijderen
+    categoryFilter: Filteren op categorie
   landingPage:
     subtitle: Ondertitel voor kaart
     content: Informatie op de kaart die onder de kop komt. Inhoud.
