@@ -39,16 +39,20 @@ roadSignConcept:
     button: Ga naar Verkeersborden
 
 subSign:
+  filter:
+    code: Zoek onderborden op code
   crud:
-    edit: Beheer onderborden
-    editText: Selecteer of verwijder onderborden
+    add: Onderborden toevoegen
+    addOne: Onderbord toevoegen
+    delete: Onderbord verwijderen
 
 relatedRoadSign:
   attr:
     category: Zoek verkeersborden op category
   crud:
-    edit: Beheer gerelateerde verkeersborden
-    editText: Selecteer of verwijder gerelateerde verkeersborden
+    add: Gerelateerde verkeersborden toevoegen
+    addOne: Gerelateerd verkeersbord toevoegen
+    delete: Gerelateerd verkeersbord verwijderen
 
 mockLogin:
     pick: Kies een bestuurseenheid om mee in te loggen.

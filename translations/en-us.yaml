@@ -39,16 +39,21 @@ roadSignConcept:
     button: Go to Road Signs
 
 subSign:
+  filter:
+    code: Search sub signs by code
   crud:
-    edit: Edit Subsigns
-    editText: Select or unselect sub signs
+    add: Add subsigns
+    addOne: Add subsign
+    delete: Remove subsign
+
 
 relatedRoadSign:
   attr:
     category: Search road signs by category
   crud:
-    edit: Edit Related Road Signs
-    editText: Select or unselect related road signs
+    add: Add related road signs
+    addOne: Add related road sign
+    delete: Remove related road sign
 
 mockLogin:
     pick: Choose an account to log in with.
