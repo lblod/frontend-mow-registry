@@ -27,10 +27,11 @@ roadSignConcept:
   crud:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
-    search: Verkeersborden zoeken
     noData: Geen verkeersborden gevonden
     edit: Verkeersbord bewerken
     delete: Verkeersbord verwijderen
+    codeFilter: Code
+    meaningFilter: Zoeken op betekenis
     categoryFilter: Filteren op categorie
   landingPage:
     subtitle: Ondertitel voor kaart

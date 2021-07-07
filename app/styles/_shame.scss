@@ -54,6 +54,15 @@ td {
   right: $au-unit;
 }
 
+.road-sign-code-search {
+  width: 10rem;
+  min-width: unset;
+}
+
+.road-sign-meaning-search {
+  min-width: unset;
+}
+
 .category-select {
   min-width: 24rem;
 }

@@ -27,10 +27,11 @@ roadSignConcept:
   crud:
     create: Create road sign
     new: New Road Sign
-    search: Search for road sign
     noData: No Road Signs
     edit: Edit Road Sign
     delete: Delete Road Sign
+    codeFilter: Code
+    meaningFilter: Search by meaning
     categoryFilter: Filter by category
   landingPage:
     subtitle: Subtitle for card
