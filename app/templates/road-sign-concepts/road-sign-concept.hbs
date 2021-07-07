@@ -259,7 +259,6 @@
     <div class="au-o-grid__item au-u-2-5@medium">
       <div
         class="au-c-body-container au-c-action-sidebar"
-        {{auto-focus ".au-c-action-sidebar__header"}}
       >
         <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
           <AuToolbar class="au-u-margin-bottom-small">
@@ -279,9 +278,21 @@
               </span>
             </button>
           </AuToolbar>
+          <div class="au-c-data-table__search">
+            <input
+              value={{this.subSignCodeFilter}}
+              placeholder={{t "subSign.filter.code"}}
+              class="au-c-input au-c-input--block"
+              {{on "input" this.setSubSignCodeFilter}}
+              {{auto-focus}}
+            />
+            <span class="au-c-data-table__search-icon">
+              <AuIcon @icon="search" @size="large" />
+            </span>
+          </div>
         </div>
         <div class="au-c-body-container au-c-body-container--scroll">
-          {{#each (sort-by-road-sign-code @model.allSubSigns) as |subSign|}}
+          {{#each (sort-by-road-sign-code this.subSigns) as |subSign|}}
             <SidebarRoadSign
               @imageUrl={{subSign.image}}
               @code={{subSign.roadSignConceptCode}}

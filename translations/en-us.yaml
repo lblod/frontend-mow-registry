@@ -39,6 +39,8 @@ roadSignConcept:
     button: Go to Road Signs
 
 subSign:
+  filter:
+    code: Search sub signs by code
   crud:
     add: Add subsigns
     addOne: Add subsign

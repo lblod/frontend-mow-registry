@@ -39,6 +39,8 @@ roadSignConcept:
     button: Ga naar Verkeersborden
 
 subSign:
+  filter:
+    code: Zoek onderborden op code
   crud:
     add: Onderborden toevoegen
     addOne: Onderbord toevoegen

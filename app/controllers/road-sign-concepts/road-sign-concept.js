@@ -12,8 +12,27 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked category = null;
   @tracked categoryRoadSigns = null;
 
+  @tracked subSignCodeFilter = '';
+
   get showSidebar() {
     return this.isAddingRelatedRoadSigns || this.isAddingSubSigns;
+  }
+
+  get subSigns() {
+    if (!this.subSignCodeFilter.trim()) {
+      return this.model.allSubSigns;
+    }
+
+    return this.model.allSubSigns.filter((subSign) => {
+      return subSign.roadSignConceptCode
+        .toLowerCase()
+        .includes(this.subSignCodeFilter.toLowerCase().trim());
+    });
+  }
+
+  @action
+  setSubSignCodeFilter(event) {
+    this.subSignCodeFilter = event.target.value.trim();
   }
 
   @action
@@ -60,6 +79,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   toggleAddSubSigns() {
     this.isAddingSubSigns = !this.isAddingSubSigns;
     this.isAddingRelatedRoadSigns = false;
+    this.subSignCodeFilter = '';
   }
 
   @action
