@@ -6,7 +6,8 @@ export default class RoadsignConceptsIndexRoute extends Route {
   @service store;
 
   queryParams = {
-    search: { refreshModel: true },
+    code: { refreshModel: true },
+    meaning: { refreshModel: true },
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
@@ -23,8 +24,12 @@ export default class RoadsignConceptsIndexRoute extends Route {
       },
     };
 
-    if (params.search) {
-      query.filter = params.search;
+    if (params.code) {
+      query['filter[road-sign-concept-code]'] = params.code;
+    }
+
+    if (params.meaning) {
+      query['filter[meaning]'] = params.meaning;
     }
 
     if (params.category) {

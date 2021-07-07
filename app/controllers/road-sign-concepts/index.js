@@ -4,19 +4,20 @@ import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 
 export default class RoadsignConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'search', 'sort', 'category'];
+  queryParams = ['page', 'size', 'code', 'meaning', 'sort', 'category'];
 
   @tracked page = 0;
   @tracked size = 30;
-  @tracked search = '';
+  @tracked code = '';
+  @tracked meaning = '';
   @tracked category = null;
   @tracked sort = 'road-sign-concept-code';
 
   @restartableTask
-  *updateSearchFilterTask(event) {
+  *updateSearchFilterTask(queryParamProperty, event) {
     yield timeout(300);
 
-    this.search = event.target.value;
+    this[queryParamProperty] = event.target.value.trim();
     this.resetPagination();
   }
 

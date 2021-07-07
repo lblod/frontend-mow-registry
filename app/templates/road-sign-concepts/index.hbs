@@ -15,6 +15,29 @@
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
+          {{!-- Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input--}}
+          <div class="au-c-data-table__search road-sign-code-search">
+            <input
+              value={{this.code}}
+              placeholder={{t "roadSignConcept.crud.codeFilter"}}
+              class="au-c-input au-c-input--block"
+              {{on "input" (perform this.updateSearchFilterTask "code")}}
+            />
+            <span class="au-c-data-table__search-icon">
+              <AuIcon @icon="search" @size="large" />
+            </span>
+          </div>
+          <div class="au-c-data-table__search road-sign-meaning-search">
+            <input
+              value={{this.meaning}}
+              placeholder={{t "roadSignConcept.crud.meaningFilter"}}
+              class="au-c-input au-c-input--block"
+              {{on "input" (perform this.updateSearchFilterTask "meaning")}}
+            />
+            <span class="au-c-data-table__search-icon">
+              <AuIcon @icon="search" @size="large" />
+            </span>
+          </div>
           <label>
             <span class="au-u-hidden-visually">{{t "roadSignConcept.crud.categoryFilter"}}</span>
             <PowerSelect
@@ -29,18 +52,6 @@
               {{category.label}}
             </PowerSelect>
           </label>
-          {{!-- Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input--}}
-          <div class="au-c-data-table__search">
-            <input
-              value={{this.filter}}
-              placeholder={{t "roadSignConcept.crud.search"}}
-              class="au-c-input au-c-input--block"
-              {{on "input" (perform this.updateSearchFilterTask)}}
-            />
-            <span class="au-c-data-table__search-icon">
-              <AuIcon @icon="search" @size="large" />
-            </span>
-          </div>
           <LinkTo class="au-c-button" @route="road-sign-concepts.new">
             {{t "roadSignConcept.crud.new"}}
           </LinkTo>
