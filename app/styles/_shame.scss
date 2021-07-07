@@ -67,3 +67,31 @@ td {
   min-width: 24rem;
 }
 
+// Utilities based on Tailwind <3
+.flex {
+  display: flex !important;
+}
+
+.flex-grow {
+  flex-grow: 1 !important;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0 !important;
+}
+
+.self-center {
+  align-self: center !important;
+}
+
+.au-c-action-sidebar__item {
+  border-bottom: 1px solid $au-sidebar-border;
+}
+
+.max-w-prose {
+  max-width: 65ch !important;
+}
+
+.w-px {
+  width: 1px !important;
+}
