@@ -83,7 +83,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     let mainSigns = await this.model.roadSignConcept.mainSigns;
 
     mainSigns.removeObject(mainSign);
-    this.categoryRoadSigns.pushObject(mainSign);
+
+    if (this.categoryRoadSigns) {
+      this.categoryRoadSigns.pushObject(mainSign);
+    }
+
     this.model.roadSignConcept.save();
   }
 
