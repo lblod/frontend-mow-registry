@@ -70,7 +70,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   async removeMainSign(mainSign) {
     let mainSigns = await this.model.roadSignConcept.mainSigns;
     mainSigns.removeObject(mainSign);
-    this.model.allMainSigns.pushObject(mainSign);
     this.model.roadSignConcept.save();
   }
 
