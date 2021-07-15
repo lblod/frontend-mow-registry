@@ -23,6 +23,7 @@ roadSignConcept:
     code: Code
     categories: Categories
     subSign: Possible subsigns
+    mainSign: Possible main signs
     relatedSign: Related road signs
   crud:
     create: Create road sign
@@ -45,6 +46,16 @@ subSign:
     add: Add subsigns
     addOne: Add subsign
     delete: Remove subsign
+
+mainSign:
+  attr:
+    category: Search road signs by category
+  filter:
+    code: Search main signs by code
+  crud:
+    add: Add main signs
+    addOne: Add main sign
+    delete: Remove main sign
 
 
 relatedRoadSign:

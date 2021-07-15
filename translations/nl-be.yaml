@@ -23,6 +23,7 @@ roadSignConcept:
     code: Code
     categories: Categorieën
     subSign: Mogelijke onderborden
+    mainSign: Mogelijke hoofdborden
     relatedSign: Gerelateerde verkeersborden
   crud:
     create: Verkeersbord aanmaken
@@ -45,6 +46,16 @@ subSign:
     add: Onderborden toevoegen
     addOne: Onderbord toevoegen
     delete: Onderbord verwijderen
+
+mainSign:
+  filter:
+    code: Zoek hoofdborden op code
+  attr:
+    category: Zoek verkeersborden op category
+  crud:
+    add: Hoofdborden toevoegen
+    addOne: Hoofdbord toevoegen
+    delete: Hoofdbord verwijderen
 
 relatedRoadSign:
   attr:

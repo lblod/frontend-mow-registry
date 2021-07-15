@@ -7,6 +7,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @service('router') routerService;
 
   @tracked isAddingSubSigns = false;
+  @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedRoadSigns = false;
 
   @tracked category = null;
@@ -52,6 +53,35 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action
+  setMainSignCodeFilter(event) {
+    this.mainSignCodeFilter = event.target.value.trim();
+  }
+
+  // @action
+  // async addMainSign(mainSign) {
+  //   let mainSigns = await this.model.roadSignConcept.mainSigns;
+  //   mainSigns.pushObject(mainSign);
+  //   this.model.allMainSigns.removeObject(mainSign);
+  //   this.model.roadSignConcept.save();
+  // }
+  @action
+  async addMainSign(mainSign) {
+    let mainSigns = await this.model.roadSignConcept.mainSigns;
+
+    mainSigns.pushObject(mainSign);
+    this.categoryRoadSigns.removeObject(mainSign);
+    this.model.roadSignConcept.save();
+  }
+
+  @action
+  async removeMainSign(mainSign) {
+    let mainSigns = await this.model.roadSignConcept.mainSigns;
+    mainSigns.removeObject(mainSign);
+    this.model.allMainSigns.pushObject(mainSign);
+    this.model.roadSignConcept.save();
+  }
+
+  @action
   async addRelatedRoadSign(relatedRoadSign) {
     let relatedRoadSigns = await this.model.roadSignConcept
       .relatedRoadSignConcepts;
@@ -80,6 +110,13 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingSubSigns = !this.isAddingSubSigns;
     this.isAddingRelatedRoadSigns = false;
     this.subSignCodeFilter = '';
+  }
+
+  @action
+  toggleAddMainSigns() {
+    this.isAddingMainSigns = !this.isAddingMainSigns;
+    this.isAddingRelatedRoadSigns = false;
+    this.mainSignCodeFilter = '';
   }
 
   @action
@@ -118,6 +155,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   reset() {
     this.isAddingSubSigns = false;
+    this.isAddingMainSigns = false;
     this.isAddingRelatedRoadSigns = false;
     this.category = null;
     this.categoryRoadSigns = null;

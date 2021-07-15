@@ -18,6 +18,11 @@ export default class RoadsignConcept extends Route {
           size: 10000,
         },
       }),
+      allMainSigns: this.store.findAll('road-sign-concept').then((mainSign) => {
+        return mainSign.filter(
+          ({ categories }) => categories.label !== 'Onderbord'
+        );
+      }),
       categories: this.store.findAll('road-sign-category').then((category) => {
         return category.filter(({ label }) => label !== 'Onderbord');
       }),
