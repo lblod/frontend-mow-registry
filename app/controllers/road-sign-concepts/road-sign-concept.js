@@ -133,7 +133,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
       let categoryRoadSigns = await category.roadSignConcepts;
       let relatedRoadSigns = await this.model.roadSignConcept
         .relatedRoadSignConcepts;
-      let mainRoadSigns =  await this.model.roadSignConcept.mainSigns;
+      let mainRoadSigns = await this.model.roadSignConcept.mainSigns;
 
       this.categoryRoadSigns = categoryRoadSigns.filter((roadSign) => {
         return (
