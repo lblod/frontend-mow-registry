@@ -35,6 +35,14 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     });
   }
 
+  get isSubSign() {
+    return (
+      this.model.roadSignConcept.categories.filter((category) => {
+        return category.label === 'Onderbord';
+      }).length === 1
+    );
+  }
+
   @action
   setSubSignCodeFilter(event) {
     this.subSignCodeFilter = event.target.value.trim();
