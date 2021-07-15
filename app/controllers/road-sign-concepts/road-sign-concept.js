@@ -16,7 +16,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked subSignCodeFilter = '';
 
   get showSidebar() {
-    return this.isAddingRelatedRoadSigns || this.isAddingSubSigns;
+    return (
+      this.isAddingRelatedRoadSigns ||
+      this.isAddingMainSigns ||
+      this.isAddingSubSigns
+    );
   }
 
   get subSigns() {
