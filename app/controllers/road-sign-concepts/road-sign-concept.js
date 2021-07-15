@@ -7,6 +7,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @service('router') routerService;
 
   @tracked isAddingSubSigns = false;
+  @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedRoadSigns = false;
 
   @tracked category = null;
@@ -15,7 +16,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked subSignCodeFilter = '';
 
   get showSidebar() {
-    return this.isAddingRelatedRoadSigns || this.isAddingSubSigns;
+    return (
+      this.isAddingRelatedRoadSigns ||
+      this.isAddingMainSigns ||
+      this.isAddingSubSigns
+    );
   }
 
   get subSigns() {
@@ -28,6 +33,14 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
         .toLowerCase()
         .includes(this.subSignCodeFilter.toLowerCase().trim());
     });
+  }
+
+  get isSubSign() {
+    return (
+      this.model.roadSignConcept.categories.filter((category) => {
+        return category.label === 'Onderbord';
+      }).length === 1
+    );
   }
 
   @action
@@ -48,6 +61,29 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     let subSigns = await this.model.roadSignConcept.subSigns;
     subSigns.removeObject(subSign);
     this.model.allSubSigns.pushObject(subSign);
+    this.model.roadSignConcept.save();
+  }
+
+  @action
+  setMainSignCodeFilter(event) {
+    this.mainSignCodeFilter = event.target.value.trim();
+  }
+
+  @action
+  async addMainSign(mainSign) {
+    let mainSigns = await this.model.roadSignConcept.mainSigns;
+
+    mainSigns.pushObject(mainSign);
+    this.categoryRoadSigns.removeObject(mainSign);
+    this.model.roadSignConcept.save();
+  }
+
+  @action
+  async removeMainSign(mainSign) {
+    let mainSigns = await this.model.roadSignConcept.mainSigns;
+
+    mainSigns.removeObject(mainSign);
+    this.categoryRoadSigns.pushObject(mainSign);
     this.model.roadSignConcept.save();
   }
 
@@ -79,13 +115,23 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   toggleAddSubSigns() {
     this.isAddingSubSigns = !this.isAddingSubSigns;
     this.isAddingRelatedRoadSigns = false;
+    this.isAddingMainSigns = false;
     this.subSignCodeFilter = '';
+  }
+
+  @action
+  toggleAddMainSigns() {
+    this.isAddingMainSigns = !this.isAddingMainSigns;
+    this.isAddingRelatedRoadSigns = false;
+    this.isAddingSubSigns = false;
+    this.mainSignCodeFilter = '';
   }
 
   @action
   toggleAddRelatedRoadSigns() {
     this.isAddingRelatedRoadSigns = !this.isAddingRelatedRoadSigns;
     this.isAddingSubSigns = false;
+    this.isAddingMainSigns = false;
   }
 
   @action
@@ -95,11 +141,13 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
       let categoryRoadSigns = await category.roadSignConcepts;
       let relatedRoadSigns = await this.model.roadSignConcept
         .relatedRoadSignConcepts;
+      let mainRoadSigns = await this.model.roadSignConcept.mainSigns;
 
       this.categoryRoadSigns = categoryRoadSigns.filter((roadSign) => {
         return (
           roadSign.id !== this.model.roadSignConcept.id &&
-          !relatedRoadSigns.includes(roadSign)
+          !relatedRoadSigns.includes(roadSign) &&
+          !mainRoadSigns.includes(roadSign)
         );
       });
     } else {
@@ -118,6 +166,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   reset() {
     this.isAddingSubSigns = false;
+    this.isAddingMainSigns = false;
     this.isAddingRelatedRoadSigns = false;
     this.category = null;
     this.categoryRoadSigns = null;

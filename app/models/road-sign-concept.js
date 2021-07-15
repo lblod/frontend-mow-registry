@@ -7,5 +7,6 @@ export default class RoadSignConceptModel extends Model {
   @belongsTo('road-sign-concept-status-code') status;
   @hasMany('road-sign-category') categories;
   @hasMany('road-sign-concept', { inverse: null }) relatedRoadSignConcepts;
-  @hasMany('road-sign-concept', { inverse: null }) subSigns;
+  @hasMany('road-sign-concept', { inverse: 'mainSigns' }) subSigns;
+  @hasMany('road-sign-concept', { inverse: 'subSigns' }) mainSigns;
 }
