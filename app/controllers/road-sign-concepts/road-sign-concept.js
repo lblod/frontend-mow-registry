@@ -57,13 +57,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.mainSignCodeFilter = event.target.value.trim();
   }
 
-  // @action
-  // async addMainSign(mainSign) {
-  //   let mainSigns = await this.model.roadSignConcept.mainSigns;
-  //   mainSigns.pushObject(mainSign);
-  //   this.model.allMainSigns.removeObject(mainSign);
-  //   this.model.roadSignConcept.save();
-  // }
   @action
   async addMainSign(mainSign) {
     let mainSigns = await this.model.roadSignConcept.mainSigns;
@@ -109,6 +102,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   toggleAddSubSigns() {
     this.isAddingSubSigns = !this.isAddingSubSigns;
     this.isAddingRelatedRoadSigns = false;
+    this.isAddingMainSigns = false;
     this.subSignCodeFilter = '';
   }
 
@@ -116,6 +110,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   toggleAddMainSigns() {
     this.isAddingMainSigns = !this.isAddingMainSigns;
     this.isAddingRelatedRoadSigns = false;
+    this.isAddingSubSigns = false;
     this.mainSignCodeFilter = '';
   }
 
@@ -123,6 +118,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   toggleAddRelatedRoadSigns() {
     this.isAddingRelatedRoadSigns = !this.isAddingRelatedRoadSigns;
     this.isAddingSubSigns = false;
+    this.isAddingMainSigns = false;
   }
 
   @action
