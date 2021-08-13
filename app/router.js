@@ -13,4 +13,14 @@ Router.map(function () {
     this.route('new');
     this.route('edit', { path: '/edit/:id' });
   });
+  this.route('road-marking-concepts', function () {
+    this.route('road-marking-concept', { path: '/:id' });
+    this.route('new');
+    this.route('edit', { path: '/edit/:id' });
+  });
+  this.route('traffic-light-concepts', function () {
+    this.route('traffic-light-concept', { path: '/:id' });
+    this.route('new');
+    this.route('edit', { path: '/edit/:id' });
+  });
 });

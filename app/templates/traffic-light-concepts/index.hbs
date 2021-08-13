@@ -1,0 +1,117 @@
+<AuDataTable
+  @content={{this.model.trafficLightConcepts}}
+  @fields="Image Meaning Code"
+  @noDataMessage={{t "trafficLightConcept.crud.noData"}}
+  @size={{this.size}}
+  @page={{this.page}}
+  @sort={{this.sort}} as |s|
+>
+  <s.menu as |menu|>
+    <menu.general>
+      <AuToolbar class="au-o-box">
+        <AuToolbarGroup>
+          <AuHeading @skin="2">
+            {{t "trafficLightConcept.name"}}
+          </AuHeading>
+        </AuToolbarGroup>
+        <AuToolbarGroup class="au-c-toolbar__group--center">
+          {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
+          <div class="au-c-data-table__search traffic-light-code-search">
+            <input
+              value={{this.code}}
+              placeholder={{t "trafficLightConcept.crud.codeFilter"}}
+              class="au-c-input au-c-input--block"
+              {{on "input" (perform this.updateSearchFilterTask "code")}}
+            />
+            <span class="au-c-data-table__search-icon">
+              <AuIcon @icon="search" @size="large" />
+            </span>
+          </div>
+          <div class="au-c-data-table__search traffic-light-meaning-search">
+            <input
+              value={{this.meaning}}
+              placeholder={{t "trafficLightConcept.crud.meaningFilter"}}
+              class="au-c-input au-c-input--block"
+              {{on "input" (perform this.updateSearchFilterTask "meaning")}}
+            />
+            <span class="au-c-data-table__search-icon">
+              <AuIcon @icon="search" @size="large" />
+            </span>
+          </div>
+          {{!-- <label>
+            <span class="au-u-hidden-visually">
+              {{t "trafficLightConcept.crud.categoryFilter"}}
+            </span>
+            <PowerSelect
+              @allowClear={{true}}
+              @options={{this.model.categories}}
+              @selected={{this.selectedCategory}}
+              @placeholder={{t "trafficLightConcept.crud.categoryFilter"}}
+              @onChange={{this.updateCategoryFilter}}
+              @triggerClass="category-select" as |category|
+            >
+              {{category.label}}
+            </PowerSelect>
+          </label> --}}
+          <LinkTo class="au-c-button" @route="traffic-light-concepts.new">
+            {{t "trafficLightConcept.crud.new"}}
+          </LinkTo>
+        </AuToolbarGroup>
+      </AuToolbar>
+    </menu.general>
+  </s.menu>
+  <s.content as |c|>
+    <c.header>
+      <AuDataTableThSortable
+        @field="trafficLightConceptCode"
+        @currentSorting={{this.sort}}
+        @label={{t "trafficLightConcept.attr.code"}}
+      />
+      <th>
+        {{t "trafficLightConcept.attr.imageHeader"}}
+      </th>
+      <th>
+        {{t "trafficLightConcept.attr.meaning"}}
+      </th>
+      {{!-- <AuDataTableThSortable
+        @field="categories.label"
+        @currentSorting={{this.sort}}
+        @label={{t "trafficLightConcept.attr.categories"}}
+      /> --}}
+      <th></th>
+    </c.header>
+    <c.body as |trafficLightConcept|>
+      <td>
+        {{trafficLightConcept.trafficLightConceptCode}}
+      </td>
+      <td>
+        <img
+          class="traffic-light-image"
+          src={{trafficLightConcept.image}}
+          alt=""
+          role="presentation"
+        />
+      </td>
+      <td>
+        {{trafficLightConcept.meaning}}
+      </td>
+      {{!-- <td>
+        {{#each trafficLightConcept.categories as |category index|}}
+          {{#if (gt index 0)}}
+            <br />
+          {{/if}}
+          {{category.label}}
+        {{/each}}
+      </td> --}}
+      <td>
+        <LinkTo
+          class="au-c-link"
+          @route="traffic-light-concepts.traffic-light-concept"
+          @model={{trafficLightConcept.id}}
+        >
+          {{t "utility.view"}}
+        </LinkTo>
+      </td>
+    </c.body>
+  </s.content>
+</AuDataTable>

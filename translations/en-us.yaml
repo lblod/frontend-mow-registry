@@ -39,6 +39,61 @@ roadSignConcept:
     content: Information in the card that comes below the header. Content.
     button: Go to Road Signs
 
+trafficLightConcept:
+  name: Traffic Lights
+  details: Traffic Light details
+  attr:
+    imageHeader: Image
+    imageUrl: Image URL
+    meaning: Meaning
+    code: Code
+    categories: Categories
+    relatedSign: Related traffic light
+  crud:
+    create: Create traffic light
+    new: New traffic light
+    noData: No traffic light
+    edit: Edit traffic light
+    delete: Delete traffic light
+    codeFilter: Code
+    meaningFilter: Search by meaning
+    categoryFilter: Filter by category
+  landingPage:
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to Road Signs
+
+relatedTrafficLight:
+  crud:
+    add: Add related traffic light
+    addOne: Add related traffic light
+    delete: Remove related traffic light
+
+
+roadMarkingConcept:
+  name: Road marking
+  details: Road marking details
+  attr:
+    imageHeader: Image
+    imageUrl: Image URL
+    meaning: Meaning
+    code: Code
+    categories: Categories
+  crud:
+    create: Create road marking
+    new: New Road marking
+    noData: No Road markings
+    edit: Edit Road marking
+    delete: Delete Road marking
+    codeFilter: Code
+    meaningFilter: Search by meaning
+    categoryFilter: Filter by category
+  landingPage:
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to Road Signs
+
+
 subSign:
   filter:
     code: Search sub signs by code

@@ -1,0 +1,216 @@
+{{page-title (t "trafficLightConcept.details")}}
+
+{{log @model}}
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo
+    @route="traffic-light-concepts.traffic-light-concept"
+    @model={{@model.trafficLightConcept.id}}
+    class={{linkClass}}
+  >
+    {{@model.trafficLightConcept.trafficLightConceptCode}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
+  <div
+    class="au-o-grid__item {{
+      if
+      this.showSidebar
+      "au-u-3-5@medium au-u-visible-medium-up"
+      "au-u-1-1@medium"
+    }}"
+  >
+    <div class="au-c-body-container">
+      <div
+        class="au-c-body-container au-c-body-container--scroll traffic-light-concept-details"
+      >
+        <AuToolbar @size="large">
+          <AuToolbarGroup>
+            <AuHeading @skin="2">
+              {{t "trafficLightConcept.details"}}
+            </AuHeading>
+          </AuToolbarGroup>
+        </AuToolbar>
+        <AuToolbar @size="medium">
+          <AuToolbarGroup class="au-c-toolbar__group--row">
+            <ul class="au-o-grid">
+              <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+                <img
+                  class="traffic-light-image"
+                  alt=""
+                  role="presentation"
+                  src={{@model.trafficLightConcept.image}}
+                />
+              </li>
+              <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+                <AuLabel>
+                  {{t "trafficLightConcept.attr.code"}}
+                </AuLabel>
+                <p>
+                  {{@model.trafficLightConcept.trafficLightConceptCode}}
+                </p>
+              </li>
+              <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
+                <AuLabel>
+                  {{t "trafficLightConcept.attr.meaning"}}
+                </AuLabel>
+                <p>
+                  {{@model.trafficLightConcept.meaning}}
+                </p>
+              </li>
+            </ul>
+          </AuToolbarGroup>
+        </AuToolbar>
+        <AuToolbar @border="bottom" @size="large">
+          <AuToolbarGroup>
+            <LinkTo
+              class="au-c-button"
+              @route="traffic-light-concepts.edit"
+              @model={{@model.trafficLightConcept.id}}
+            >
+              {{t "trafficLightConcept.crud.edit"}}
+            </LinkTo>
+
+            <AuButton
+              @alert={{true}}
+              {{on "click" (fn (mut this.isOpen) true)}}
+            >
+              {{t "trafficLightConcept.crud.delete"}}
+            </AuButton>
+            <AuModal
+              @modalTitle={{t "utility.confirmation.title"}}
+              @modalOpen={{this.isOpen}}
+              @closeModal={{fn (mut this.isOpen) false}} as |Modal|
+            >
+              <Modal.Body>
+                <p>
+                  {{t "utility.confirmation.body"}}
+                </p>
+              </Modal.Body>
+              <Modal.Footer>
+                <AuButton
+                  @alert={{true}}
+                  {{on
+                    "click"
+                    (fn
+                      this.removeTrafficLightConcept @model.trafficLightConcept
+                    )
+                  }}
+                >
+                  {{t "trafficLightConcept.crud.delete"}}
+                </AuButton>
+              </Modal.Footer>
+            </AuModal>
+          </AuToolbarGroup>
+        </AuToolbar>
+        <AuDataTable
+          @content={{
+            sort-by-traffic-light-code
+            @model.trafficLightConcept.relatedTrafficLightConcepts
+          }}
+          @fields="Image Meaning Code"
+          @noDataMessage={{t "trafficLightConcept.crud.noData"}}
+          class="container-flex--contain table-no-overflow" as |s|
+        >
+          <s.menu as |menu|>
+            <menu.general>
+              <AuToolbar class="au-o-box">
+                <AuToolbarGroup>
+                  <AuHeading @level="2" @skin="3">
+                    {{t "trafficLightConcept.attr.relatedSign"}}
+                  </AuHeading>
+                </AuToolbarGroup>
+                <AuToolbarGroup>
+                  <AuButton {{on "click" this.toggleAddRelatedTrafficLights}}>
+                    {{t "relatedTrafficLight.crud.add"}}
+                  </AuButton>
+                </AuToolbarGroup>
+              </AuToolbar>
+            </menu.general>
+          </s.menu>
+          <s.content as |c|>
+            <c.header>
+              <th class="data-table__header-title">
+                {{t "trafficLightConcept.attr.code"}}
+              </th>
+              <th class="data-table__header-title">
+                {{t "trafficLightConcept.attr.imageHeader"}}
+              </th>
+              <th class="data-table__header-title">
+                {{t "trafficLightConcept.attr.meaning"}}
+              </th>
+              <th>
+                <span class="au-u-hidden-visually">
+                  {{t "relatedTrafficLight.crud.delete"}}
+                </span>
+              </th>
+            </c.header>
+            <c.body as |relatedTrafficLightConcept|>
+              <td>
+                {{relatedTrafficLightConcept.trafficLightConceptCode}}
+              </td>
+              <td>
+                <img
+                  class="traffic-light-image"
+                  src={{relatedTrafficLightConcept.image}}
+                  alt=""
+                  role="presentation"
+                />
+              </td>
+              <td>
+                <p class="max-w-prose">
+                  {{relatedTrafficLightConcept.meaning}}
+                </p>
+              </td>
+              <td class="w-px au-u-padding-right-small">
+                <AuButton
+                  @icon="bin"
+                  @alert={{true}}
+                  @skin="secondary"
+                  @hideText={{true}}
+                  {{on
+                    "click"
+                    (fn
+                      this.removeRelatedTrafficLight relatedTrafficLightConcept
+                    )
+                  }}
+                >
+                  {{t "relatedTrafficLight.crud.delete"}}
+                </AuButton>
+              </td>
+            </c.body>
+          </s.content>
+        </AuDataTable>
+      </div>
+    </div>
+  </div>
+  {{#if this.isAddingRelatedTrafficLights}}
+    <div class="au-o-grid__item au-u-2-5@medium">
+      <div
+        class="au-c-body-container au-c-action-sidebar"
+        {{auto-focus ".au-c-action-sidebar__header"}}
+      >
+        <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
+          <AuToolbar class="au-u-margin-bottom-small">
+            <AuToolbarGroup>
+              <AuHeading @level="2" @skin="3">
+                {{t "relatedTrafficLight.crud.add"}}
+              </AuHeading>
+            </AuToolbarGroup>
+            <button
+              type="button"
+              class="au-c-close au-c-close--large"
+              {{on "click" this.toggleAddRelatedTrafficLights}}
+            >
+              <AuIcon @icon="cross" @size="large" />
+              <span class="au-u-hidden-visually">
+                {{t "utility.close"}}
+              </span>
+            </button>
+          </AuToolbar>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+</div>
