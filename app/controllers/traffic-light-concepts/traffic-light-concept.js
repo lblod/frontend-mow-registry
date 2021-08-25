@@ -13,7 +13,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked category = null;
   @tracked categoryTrafficLights = null;
 
-  @tracked subSignCodeFilter = '';
+  @tracked relatedTrafficLightCodeFilter = '';
 
   get showSidebar() {
     return (
@@ -23,29 +23,21 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     );
   }
 
-  get subSigns() {
-    if (!this.subSignCodeFilter.trim()) {
-      return this.model.allSubSigns;
+  get trafficLights() {
+    if (!this.relatedTrafficLightCodeFilter.trim()) {
+      return this.model.allTrafficLights;
     }
 
-    return this.model.allSubSigns.filter((subSign) => {
-      return subSign.trafficLightConceptCode
+    return this.model.allTrafficLights.filter((trafficLight) => {
+      return trafficLight.definition
         .toLowerCase()
-        .includes(this.subSignCodeFilter.toLowerCase().trim());
+        .includes(this.relatedTrafficLightCodeFilter.toLowerCase().trim());
     });
   }
 
-  get isSubSign() {
-    return (
-      this.model.trafficLightConcept.categories.filter((category) => {
-        return category.label === 'Onderbord';
-      }).length === 1
-    );
-  }
-
   @action
-  setSubSignCodeFilter(event) {
-    this.subSignCodeFilter = event.target.value.trim();
+  setRelatedTrafficLightCodeFilter(event) {
+    this.relatedTrafficLightCodeFilter = event.target.value.trim();
   }
 
   @action
@@ -75,7 +67,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
       .relatedTrafficLightConcepts;
 
     relatedTrafficLights.pushObject(relatedTrafficLight);
-    this.categoryTrafficLights.removeObject(relatedTrafficLight);
+    // this.categoryTrafficLights.removeObject(relatedTrafficLight);
     this.model.trafficLightConcept.save();
   }
 
@@ -86,9 +78,9 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
     relatedTrafficLights.removeObject(relatedTrafficLight);
 
-    if (this.categoryTrafficLights) {
-      this.categoryTrafficLights.pushObject(relatedTrafficLight);
-    }
+    // if (this.categoryTrafficLights) {
+    //   this.categoryTrafficLights.pushObject(relatedTrafficLight);
+    // }
 
     this.model.trafficLightConcept.save();
   }
@@ -134,7 +126,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
     this.isAddingRelatedTrafficLights = false;
-    this.category = null;
-    this.categoryTrafficLights = null;
+    // this.category = null;
+    // this.categoryTrafficLights = null;
   }
 }

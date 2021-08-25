@@ -51,6 +51,14 @@
               </li>
               <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
                 <AuLabel>
+                  {{t "trafficLightConcept.attr.definition"}}
+                </AuLabel>
+                <p>
+                  {{@model.trafficLightConcept.definition}}
+                </p>
+              </li>
+              <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
+                <AuLabel>
                   {{t "trafficLightConcept.attr.meaning"}}
                 </AuLabel>
                 <p>
@@ -136,7 +144,7 @@
                 {{t "trafficLightConcept.attr.imageHeader"}}
               </th>
               <th class="data-table__header-title">
-                {{t "trafficLightConcept.attr.meaning"}}
+                {{t "trafficLightConcept.attr.definition"}}
               </th>
               <th>
                 <span class="au-u-hidden-visually">
@@ -158,7 +166,7 @@
               </td>
               <td>
                 <p class="max-w-prose">
-                  {{relatedTrafficLightConcept.meaning}}
+                  {{relatedTrafficLightConcept.definition}}
                 </p>
               </td>
               <td class="w-px au-u-padding-right-small">
@@ -207,6 +215,54 @@
               </span>
             </button>
           </AuToolbar>
+          <div class="au-c-data-table__search">
+            <input
+              value={{this.relatedTrafficLightCodeFilter}}
+              placeholder={{t "relatedTrafficLight.filter.code"}}
+              class="au-c-input au-c-input--block"
+              {{on "input" this.setRelatedTrafficLightCodeFilter}}
+              {{auto-focus}}
+            />
+            <span class="au-c-data-table__search-icon">
+              <AuIcon @icon="search" @size="large" />
+            </span>
+          </div>
+        </div>
+        <div class="au-c-body-container au-c-body-container--scroll">
+          {{#each
+            (sort-by-traffic-light-code
+              this.trafficLights
+            ) as |relatedTrafficLight|
+          }}
+            <SidebarRoadSign
+              @imageUrl={{relatedTrafficLight.image}}
+              @code={{relatedTrafficLight.roadSignConceptCode}}
+              @meaning={{relatedTrafficLight.definition}}
+              @onAdd={{fn this.addRelatedTrafficLight relatedTrafficLight}}
+              @addText={{t "relatedTrafficLight.crud.addOne"}}
+              class="au-c-action-sidebar__item"
+            />
+          {{/each}}
+        </div>
+        <div class="au-c-body-container au-c-body-container--scroll">
+          {{#if this.category}}
+            {{#each
+              (sort-by-traffic-light-code
+                this.categoryTrafficLights
+              ) as |relatedTrafficLightByCategory|
+            }}
+              <SidebarTrafficLight
+                @imageUrl={{relatedTrafficLightByCategory.image}}
+                @code={{relatedTrafficLightByCategory.TrafficLightConceptCode}}
+                @meaning={{relatedTrafficLightByCategory.meaning}}
+                @onAdd={{
+                  fn this.addRelatedTrafficLight relatedTrafficLightByCategory
+                }}
+                @addText={{t "relatedTrafficLight.crud.addOne"}}
+                class="au-c-action-sidebar__item"
+              />
+            {{/each}}
+          {{/if}}
         </div>
       </div>
     </div>

@@ -11,6 +11,11 @@ export default class TrafficlightConcept extends Route {
         'traffic-light-concept',
         params.id
       ),
+      allTrafficLights: this.store.query('traffic-light-concept', {
+        page: {
+          size: 10000,
+        },
+      }),
     });
 
     // let relatedSubSigns = await model.roadSignConcept.subSigns;

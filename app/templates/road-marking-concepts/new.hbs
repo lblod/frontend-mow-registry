@@ -1,24 +1,20 @@
-{{page-title (t "trafficLightConcept.crud.edit")}}
+{{page-title (t "roadMarkingConcept.crud.new")}}
 
 {{#let
   (changeset
-    this.model.trafficLightConcept this.TrafficLightConceptValidations
-  ) as |trafficLightConcept|
+    this.model.newRoadMarkingConcept this.RoadMarkingConceptValidations
+  ) as |roadMarkingConcept|
 }}
   <BreadcrumbsItem as |linkClass|>
-    <LinkTo
-      @route="traffic-light-concepts.edit"
-      @model={{trafficLightConcept.id}}
-      class={{linkClass}}
-    >
-      {{trafficLightConcept.trafficLightConceptCode}}
+    <LinkTo @route="road-marking-concepts.new" class={{linkClass}}>
+      {{t "roadMarkingConcept.crud.new"}}
     </LinkTo>
   </BreadcrumbsItem>
 
   <AuToolbar @border="bottom" @size="large">
     <AuToolbarGroup>
       <AuHeading @skin="2">
-        {{t "trafficLightConcept.crud.edit"}}
+        {{t "roadMarkingConcept.crud.new"}}
       </AuHeading>
     </AuToolbarGroup>
   </AuToolbar>
@@ -29,17 +25,17 @@
         <div class="au-o-grid__item au-u-2-3@medium au-u-2-5@large">
           <form
             class="au-c-form"
-            id="edit-traffic-light-concept-form"
+            id="new-road-marking-concept-form"
             novalidate
             {{on
               "submit"
-              (perform this.editTrafficLightConceptTask trafficLightConcept)
+              (perform this.createRoadMarkingConceptTask roadMarkingConcept)
             }}
           >
-            {{#let trafficLightConcept.error.image as |isInvalid|}}
+            {{#let roadMarkingConcept.error.image as |isInvalid|}}
               <p>
                 <AuLabel @error={{isInvalid}} for="image-url">
-                  {{t "trafficLightConcept.attr.imageUrl"}}&nbsp;
+                  {{t "roadMarkingConcept.attr.imageUrl"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -49,15 +45,15 @@
                   id="image-url"
                   required="required"
                   type="text"
-                  value={{trafficLightConcept.image}}
-                  {{on "input" (fn this.setImageUrl trafficLightConcept)}}
+                  value={{roadMarkingConcept.image}}
+                  {{on "input" (fn this.setImageUrl roadMarkingConcept)}}
                 />
                 <span>
                   {{t "utility.or"}}
                 </span>
                 <FileUploader
                   @accept={{"image/png,image/jpg"}}
-                  @onFileSet={{fn this.setImageUpload trafficLightConcept}}
+                  @onFileSet={{fn this.setImageUpload roadMarkingConcept}}
                 />
                 {{#if isInvalid}}
                   <AuHelpText>
@@ -66,27 +62,27 @@
                 {{/if}}
               </p>
             {{/let}}
+
             {{#let
-              trafficLightConcept.error.trafficLightConceptCode as |isInvalid|
+              roadMarkingConcept.error.roadMarkingConceptCode as |isInvalid|
             }}
               <p>
-                <AuLabel @error={{isInvalid}} for="traffic-light-concept-code">
-                  {{t "trafficLightConcept.attr.code"}}&nbsp;
+                <AuLabel @error={{isInvalid}} for="road-marking-concept-code">
+                  {{t "roadMarkingConcept.attr.code"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
                 </AuLabel>
                 <AuInput
                   @error={{isInvalid}}
-                  id="traffic-light-concept-code"
+                  id="road-marking-concept-code"
                   required="required"
-                  value={{trafficLightConcept.trafficLightConceptCode}}
                   {{on
                     "input"
                     (fn
-                      this.setTrafficLightConceptValue
-                      trafficLightConcept
-                      "trafficLightConceptCode"
+                      this.setRoadMarkingConceptValue
+                      roadMarkingConcept
+                      "roadMarkingConceptCode"
                     )
                   }}
                 />
@@ -97,41 +93,11 @@
                 {{/if}}
               </p>
             {{/let}}
-            {{#let trafficLightConcept.error.definition as |isInvalid|}}
-              <p>
-                <AuLabel @error={{isInvalid}} for="definition">
-                  {{t "trafficLightConcept.attr.definition"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
-                </AuLabel>
-                <AuTextarea
-                  @error={{isInvalid}}
-                  @width="block"
-                  class="u-min-h-20"
-                  id="definition"
-                  required="required"
-                  value={{trafficLightConcept.definition}}
-                  {{on
-                    "input"
-                    (fn
-                      this.setTrafficLightConceptValue
-                      trafficLightConcept
-                      "definition"
-                    )
-                  }}
-                />
-                {{#if isInvalid}}
-                  <AuHelpText>
-                    {{t "utility.fieldRequired"}}
-                  </AuHelpText>
-                {{/if}}
-              </p>
-            {{/let}}
-            {{#let trafficLightConcept.error.meaning as |isInvalid|}}
+
+            {{#let roadMarkingConcept.error.meaning as |isInvalid|}}
               <p>
                 <AuLabel @error={{isInvalid}} for="meaning">
-                  {{t "trafficLightConcept.attr.meaning"}}&nbsp;
+                  {{t "roadMarkingConcept.attr.meaning"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -142,12 +108,11 @@
                   class="u-min-h-20"
                   id="meaning"
                   required="required"
-                  value={{trafficLightConcept.meaning}}
                   {{on
                     "input"
                     (fn
-                      this.setTrafficLightConceptValue
-                      trafficLightConcept
+                      this.setRoadMarkingConceptValue
+                      roadMarkingConcept
                       "meaning"
                     )
                   }}
@@ -169,16 +134,15 @@
     <AuToolbarGroup>
       <AuButtonGroup>
         <AuButton
-          @disabled={{or trafficLightConcept.isPristine this.isSaving}}
+          @disabled={{or roadMarkingConcept.isPristine this.isSaving}}
           @loading={{this.isSaving}}
-          form="edit-traffic-light-concept-form"
+          form="new-road-marking-concept-form"
           type="submit"
         >
-          {{t "utility.save"}}
+          {{t "roadMarkingConcept.crud.create"}}
         </AuButton>
         <LinkTo
-          @route="traffic-light-concepts.traffic-light-concept"
-          @model={{trafficLightConcept.id}}
+          @route="road-marking-concepts"
           class="au-c-button au-c-button--secondary"
         >
           {{t "utility.cancel"}}

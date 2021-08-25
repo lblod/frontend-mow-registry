@@ -2,58 +2,58 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import RoadSignConceptValidations from 'mow-registry/validations/traffic-light-concept';
+import TrafficLightConceptValidations from 'mow-registry/validations/traffic-light-concept';
 
-export default class RoadsignConceptsEditController extends Controller {
+export default class TrafficlightConceptsEditController extends Controller {
   @service router;
   @service fileService;
 
-  RoadSignConceptValidations = RoadSignConceptValidations;
+  TrafficLightConceptValidations = TrafficLightConceptValidations;
   file;
 
   get isSaving() {
-    return this.editRoadSignConceptTask.isRunning;
+    return this.editTrafficLightConceptTask.isRunning;
   }
 
   @action
-  setImageUrl(roadSignConcept, event) {
-    roadSignConcept.image = event.target.value;
+  setImageUrl(trafficLightConcept, event) {
+    trafficLightConcept.image = event.target.value;
     this.file = null;
   }
 
   @action
-  setImageUpload(roadSignConcept, event) {
+  setImageUpload(trafficLightConcept, event) {
     this.file = event.target.files[0];
-    roadSignConcept.image = this.file.name;
+    trafficLightConcept.image = this.file.name;
   }
 
   @action
-  setRoadSignConceptValue(roadSignConcept, attributeName, event) {
-    roadSignConcept[attributeName] = event.target.value;
+  setTrafficLightConceptValue(trafficLightConcept, attributeName, event) {
+    trafficLightConcept[attributeName] = event.target.value;
   }
 
   @action
-  setRoadSignConceptCategory(roadSignConcept, selection) {
-    roadSignConcept.categories = selection;
+  setTrafficLightConceptCategory(trafficLightConcept, selection) {
+    trafficLightConcept.categories = selection;
   }
 
   @dropTask
-  *editRoadSignConceptTask(roadSignConcept, event) {
+  *editTrafficLightConceptTask(trafficLightConcept, event) {
     event.preventDefault();
 
     if (this.file) {
       let fileResponse = yield this.fileService.upload(this.file);
-      this.model.roadSignConcept.image = fileResponse.downloadLink;
+      this.model.trafficLightConcept.image = fileResponse.downloadLink;
     }
 
-    yield roadSignConcept.validate();
+    yield trafficLightConcept.validate();
 
-    if (roadSignConcept.isValid) {
-      yield roadSignConcept.save();
+    if (trafficLightConcept.isValid) {
+      yield trafficLightConcept.save();
 
       this.router.transitionTo(
         'traffic-light-concepts.traffic-light-concept',
-        roadSignConcept.id
+        trafficLightConcept.id
       );
     }
   }
