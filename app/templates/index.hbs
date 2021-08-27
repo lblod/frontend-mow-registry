@@ -27,8 +27,64 @@
             </p>
           </c.content>
           <c.footer>
-            <LinkTo class="au-c-button" @route="road-sign-concepts" @query={{hash page=0 search="" category=null}}>
+            <LinkTo
+              class="au-c-button"
+              @route="road-sign-concepts"
+              @query={{hash page=0 search="" category=null}}
+            >
               {{t "roadSignConcept.landingPage.button"}}
+            </LinkTo>
+          </c.footer>
+        </AuCard>
+      </li>
+      <li class="au-o-grid__item au-u-1-2@medium au-u-1-3@large">
+        <AuCard @flex={{true}} as |c|>
+          <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">
+            <AuHeading @level="2" @skin="4">
+              {{t "roadMarkingConcept.name"}}
+            </AuHeading>
+            <p>
+              {{t "roadMarkingConcept.landingPage.subtitle"}}
+            </p>
+          </c.header>
+          <c.content>
+            <p>
+              {{t "roadMarkingConcept.landingPage.content"}}
+            </p>
+          </c.content>
+          <c.footer>
+            <LinkTo
+              class="au-c-button"
+              @route="road-marking-concepts"
+              @query={{hash page=0 search="" category=null}}
+            >
+              {{t "roadMarkingConcept.landingPage.button"}}
+            </LinkTo>
+          </c.footer>
+        </AuCard>
+      </li>
+      <li class="au-o-grid__item au-u-1-2@medium au-u-1-3@large">
+        <AuCard @flex={{true}} as |c|>
+          <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">
+            <AuHeading @level="2" @skin="4">
+              {{t "trafficLightConcept.name"}}
+            </AuHeading>
+            <p>
+              {{t "trafficLightConcept.landingPage.subtitle"}}
+            </p>
+          </c.header>
+          <c.content>
+            <p>
+              {{t "trafficLightConcept.landingPage.content"}}
+            </p>
+          </c.content>
+          <c.footer>
+            <LinkTo
+              class="au-c-button"
+              @route="traffic-light-concepts"
+              @query={{hash page=0 search="" category=null}}
+            >
+              {{t "trafficLightConcept.landingPage.button"}}
             </LinkTo>
           </c.footer>
         </AuCard>

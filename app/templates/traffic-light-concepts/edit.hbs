@@ -1,0 +1,189 @@
+{{page-title (t "trafficLightConcept.crud.edit")}}
+
+{{#let
+  (changeset
+    this.model.trafficLightConcept this.TrafficLightConceptValidations
+  ) as |trafficLightConcept|
+}}
+  <BreadcrumbsItem as |linkClass|>
+    <LinkTo
+      @route="traffic-light-concepts.edit"
+      @model={{trafficLightConcept.id}}
+      class={{linkClass}}
+    >
+      {{trafficLightConcept.trafficLightConceptCode}}
+    </LinkTo>
+  </BreadcrumbsItem>
+
+  <AuToolbar @border="bottom" @size="large">
+    <AuToolbarGroup>
+      <AuHeading @skin="2">
+        {{t "trafficLightConcept.crud.edit"}}
+      </AuHeading>
+    </AuToolbarGroup>
+  </AuToolbar>
+
+  <div class="au-c-body-container au-c-body-container--scroll">
+    <div class="au-o-box">
+      <div class="au-o-grid">
+        <div class="au-o-grid__item au-u-2-3@medium au-u-2-5@large">
+          <form
+            class="au-c-form"
+            id="edit-traffic-light-concept-form"
+            novalidate
+            {{on
+              "submit"
+              (perform this.editTrafficLightConceptTask trafficLightConcept)
+            }}
+          >
+            {{#let trafficLightConcept.error.image as |isInvalid|}}
+              <p>
+                <AuLabel @error={{isInvalid}} for="image-url">
+                  {{t "trafficLightConcept.attr.imageUrl"}}&nbsp;
+                  <AuPill>
+                    {{t "utility.required"}}
+                  </AuPill>
+                </AuLabel>
+                <AuInput
+                  @error={{isInvalid}}
+                  id="image-url"
+                  required="required"
+                  type="text"
+                  value={{trafficLightConcept.image}}
+                  {{on "input" (fn this.setImageUrl trafficLightConcept)}}
+                />
+                <span>
+                  {{t "utility.or"}}
+                </span>
+                <FileUploader
+                  @accept={{"image/png,image/jpg"}}
+                  @onFileSet={{fn this.setImageUpload trafficLightConcept}}
+                />
+                {{#if isInvalid}}
+                  <AuHelpText>
+                    {{t "utility.fieldRequired"}}
+                  </AuHelpText>
+                {{/if}}
+              </p>
+            {{/let}}
+            {{#let
+              trafficLightConcept.error.trafficLightConceptCode as |isInvalid|
+            }}
+              <p>
+                <AuLabel @error={{isInvalid}} for="traffic-light-concept-code">
+                  {{t "trafficLightConcept.attr.code"}}&nbsp;
+                  <AuPill>
+                    {{t "utility.required"}}
+                  </AuPill>
+                </AuLabel>
+                <AuInput
+                  @error={{isInvalid}}
+                  id="traffic-light-concept-code"
+                  required="required"
+                  value={{trafficLightConcept.trafficLightConceptCode}}
+                  {{on
+                    "input"
+                    (fn
+                      this.setTrafficLightConceptValue
+                      trafficLightConcept
+                      "trafficLightConceptCode"
+                    )
+                  }}
+                />
+                {{#if isInvalid}}
+                  <AuHelpText>
+                    {{t "utility.fieldRequired"}}
+                  </AuHelpText>
+                {{/if}}
+              </p>
+            {{/let}}
+            {{#let trafficLightConcept.error.definition as |isInvalid|}}
+              <p>
+                <AuLabel @error={{isInvalid}} for="definition">
+                  {{t "trafficLightConcept.attr.definition"}}&nbsp;
+                  <AuPill>
+                    {{t "utility.required"}}
+                  </AuPill>
+                </AuLabel>
+                <AuTextarea
+                  @error={{isInvalid}}
+                  @width="block"
+                  class="u-min-h-20"
+                  id="definition"
+                  required="required"
+                  value={{trafficLightConcept.definition}}
+                  {{on
+                    "input"
+                    (fn
+                      this.setTrafficLightConceptValue
+                      trafficLightConcept
+                      "definition"
+                    )
+                  }}
+                />
+                {{#if isInvalid}}
+                  <AuHelpText>
+                    {{t "utility.fieldRequired"}}
+                  </AuHelpText>
+                {{/if}}
+              </p>
+            {{/let}}
+            {{#let trafficLightConcept.error.meaning as |isInvalid|}}
+              <p>
+                <AuLabel @error={{isInvalid}} for="meaning">
+                  {{t "trafficLightConcept.attr.meaning"}}&nbsp;
+                  <AuPill>
+                    {{t "utility.required"}}
+                  </AuPill>
+                </AuLabel>
+                <AuTextarea
+                  @error={{isInvalid}}
+                  @width="block"
+                  class="u-min-h-20"
+                  id="meaning"
+                  required="required"
+                  value={{trafficLightConcept.meaning}}
+                  {{on
+                    "input"
+                    (fn
+                      this.setTrafficLightConceptValue
+                      trafficLightConcept
+                      "meaning"
+                    )
+                  }}
+                />
+                {{#if isInvalid}}
+                  <AuHelpText>
+                    {{t "utility.fieldRequired"}}
+                  </AuHelpText>
+                {{/if}}
+              </p>
+            {{/let}}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <AuToolbar @border="top" @size="large">
+    <AuToolbarGroup>
+      <AuButtonGroup>
+        <AuButton
+          @disabled={{or trafficLightConcept.isPristine this.isSaving}}
+          @loading={{this.isSaving}}
+          form="edit-traffic-light-concept-form"
+          type="submit"
+        >
+          {{t "utility.save"}}
+        </AuButton>
+        <LinkTo
+          @route="traffic-light-concepts.traffic-light-concept"
+          @model={{trafficLightConcept.id}}
+          class="au-c-button au-c-button--secondary"
+        >
+          {{t "utility.cancel"}}
+        </LinkTo>
+      </AuButtonGroup>
+    </AuToolbarGroup>
+  </AuToolbar>
+{{/let}}

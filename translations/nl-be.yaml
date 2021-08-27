@@ -39,6 +39,79 @@ roadSignConcept:
     content: Informatie op de kaart die onder de kop komt. Inhoud.
     button: Ga naar Verkeersborden
 
+trafficLightConcept:
+  name: Traffic Lights
+  details: Traffic Light details
+  attr:
+    imageHeader: Afbeelding
+    imageUrl: Afbeelding URL
+    meaning: Betekenis
+    definition: Definitie
+    code: Code
+    categories: Categorieën
+    subSign: Mogelijke onderborden
+    mainSign: Mogelijke hoofdborden
+    relatedSign: Gerelateerde verkeersborden
+  crud:
+    create: Verkeerslicht aanmaken
+    new: Nieuw verkeerslicht
+    noData: Geen verkeerslichten gevonden
+    edit: Verkeerslicht bewerken
+    delete: Verkeerslicht verwijderen
+    codeFilter: Code
+    meaningFilter: Zoeken op betekenis
+    categoryFilter: Filteren op categorie
+  landingPage:
+    subtitle: Ondertitel voor kaart
+    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    button: Ga naar Verkeerslichten
+
+relatedTrafficLight:
+  crud:
+    add: Add related traffic light
+    addOne: Add related traffic light
+    delete: Remove related traffic light
+  filter:
+    code: Search
+
+
+roadMarkingConcept:
+  name: Road Markings
+  details: Road marking details
+  attr:
+    imageHeader: Afbeelding
+    imageUrl: Afbeelding URL
+    meaning: Betekenis
+    code: Code
+    categories: Categorieën
+    subSign: Mogelijke onderborden
+    mainSign: Mogelijke hoofdborden
+    relatedSign: Gerelateerde verkeersborden
+    relatedMarking: Gerelateerde wegmarkeringen
+  crud:
+    create: Wegmarkering aanmaken
+    new: Nieuwe wegmarkering
+    noData: Geen wegmarkeringen gevonden
+    edit: Wegmarkering bewerken
+    delete: Wegmarkering verwijderen
+    codeFilter: Code
+    meaningFilter: Zoeken op betekenis
+    categoryFilter: Filteren op categorie
+  landingPage:
+    subtitle: Ondertitel voor kaart
+    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    button: Ga naar Wegmarkeringen
+
+relatedRoadMarking:
+  attr:
+    category: Categorie
+  crud:
+    add: Add related traffic light
+    addOne: Add related traffic light
+    delete: Remove related traffic light
+  filter:
+    code: Search
+
 subSign:
   filter:
     code: Zoek onderborden op code
@@ -48,10 +121,11 @@ subSign:
     delete: Onderbord verwijderen
 
 mainSign:
-  filter:
-    code: Zoek hoofdborden op code
   attr:
     category: Zoek verkeersborden op category
+  filter:
+    code: Zoek hoofdborden op code
+
   crud:
     add: Hoofdborden toevoegen
     addOne: Hoofdbord toevoegen

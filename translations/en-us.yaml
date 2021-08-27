@@ -39,6 +39,69 @@ roadSignConcept:
     content: Information in the card that comes below the header. Content.
     button: Go to Road Signs
 
+trafficLightConcept:
+  name: Traffic Lights
+  details: Traffic Light details
+  attr:
+    imageHeader: Image
+    imageUrl: Image URL
+    meaning: Meaning
+    definition: Definition
+    code: Code
+    categories: Categories
+    subSign: Possible sub signs
+    mainSign: Possible main signs
+    relatedSign: Related traffic light
+  crud:
+    create: Create traffic light
+    new: New traffic light
+    noData: No traffic light
+    edit: Edit traffic light
+    delete: Delete traffic light
+    codeFilter: Code
+    meaningFilter: Search by meaning
+    categoryFilter: Filter by category
+  landingPage:
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to Road Signs
+
+relatedTrafficLight:
+  crud:
+    add: Add related traffic light
+    addOne: Add related traffic light
+    delete: Remove related traffic light
+  filter:
+    code: Search
+
+
+roadMarkingConcept:
+  name: Road Markings
+  details: Road marking details
+  attr:
+    imageHeader: Image
+    imageUrl: Image URL
+    meaning: Meaning
+    code: Code
+    categories: Categories
+    relatedSign: Related road signs
+    subSign: Possible sub signs
+    mainSign: Possible main signs
+    relatedMarking: Related road marking
+  crud:
+    create: Create road marking
+    new: New Road marking
+    noData: No Road markings
+    edit: Edit Road marking
+    delete: Delete Road marking
+    codeFilter: Code
+    meaningFilter: Search by meaning
+    categoryFilter: Filter by category
+  landingPage:
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to Road Signs
+
 subSign:
   filter:
     code: Search sub signs by code
@@ -65,6 +128,17 @@ relatedRoadSign:
     add: Add related road signs
     addOne: Add related road sign
     delete: Remove related road sign
+
+
+relatedRoadMarking:
+  attr:
+    category: Search road marking by category
+  crud:
+    add: Add related road marking
+    addOne: Add related road marking
+    delete: Remove related road marking
+  filter:
+    code: Search
 
 mockLogin:
     pick: Choose an account to log in with.
