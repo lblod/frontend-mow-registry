@@ -83,6 +83,7 @@ roadMarkingConcept:
     imageHeader: Afbeelding
     imageUrl: Afbeelding URL
     meaning: Betekenis
+    definition: Definitie
     code: Code
     categories: Categorieën
     subSign: Mogelijke onderborden
