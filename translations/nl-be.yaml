@@ -20,6 +20,7 @@ roadSignConcept:
     imageHeader: Afbeelding
     imageUrl: Afbeelding URL
     meaning: Betekenis
+    definition: Definitie
     code: Code
     categories: Categorieën
     subSign: Mogelijke onderborden
@@ -68,16 +69,16 @@ trafficLightConcept:
 
 relatedTrafficLight:
   crud:
-    add: Add related traffic light
-    addOne: Add related traffic light
-    delete: Remove related traffic light
+    add: Gerelateerd verkeerslicht toevoegen
+    addOne: Gerelateerd verkeerslicht toevoegen
+    delete: Gerelateerd verkeerslicht verwijderen
   filter:
-    code: Search
+    code: Zoek
 
 
 roadMarkingConcept:
-  name: Road Markings
-  details: Road marking details
+  name: Wegmarkeringen
+  details: Details wegmarkering
   attr:
     imageHeader: Afbeelding
     imageUrl: Afbeelding URL
@@ -106,11 +107,11 @@ relatedRoadMarking:
   attr:
     category: Categorie
   crud:
-    add: Add related traffic light
-    addOne: Add related traffic light
-    delete: Remove related traffic light
+    add: Gerelateerde wegmarkering toevoegen
+    addOne: Gerelateerde wegmarkering toevoegen
+    delete: Gerelateerde wegmarkering verwijderen
   filter:
-    code: Search
+    code: Zoek
 
 subSign:
   filter:
