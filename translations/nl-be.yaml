@@ -114,6 +114,34 @@ relatedRoadMarking:
   filter:
     code: Zoek
 
+TrafficMeasureConcept:
+  name: Traffic measure
+  details: Traffic mesure details
+  attr:
+    imageHeader: Image
+    imageUrl: Image URL
+    meaning: Meaning
+    definition: Definitie
+    code: Code
+    categories: Categories
+    relatedSign: Related road signs
+    subSign: Possible sub signs
+    mainSign: Possible main signs
+    relatedMarking: Related road marking
+  crud:
+    create: Create traffic measure
+    new: New traffic measure
+    noData: No traffic measures
+    edit: Edit traffic measure
+    delete: Delete traffic measure
+    codeFilter: Code
+    meaningFilter: Search by meaning
+    categoryFilter: Filter by category
+  landingPage:
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to Road Markings
+
 subSign:
   filter:
     code: Zoek onderborden op code
