@@ -17,56 +17,47 @@
       <img src={{sign.image}} height="50">
     {{/each}}
     <br><br>
+    {{#if this.signs}}
+      <AuLabel for="textarea-regular">Template</AuLabel>
+      <AuTextarea id="textarea-regular" @width="block" {{on "change" this.updateTemplate}}  style="resize: none; height: 300px;"></AuTextarea>
+      <AuButton {{on "click" this.parseTemplate}}>Update</AuButton>
+    {{/if}}
+    {{#if this.variables.length}}
+    <table>
+      <thead>
 
-
-
-
-
-    {{#if this.signs.length}}
-      <AuHeading @level="3" @skin="3">
-        Sections:
-      </AuHeading>
-      {{#each this.content as |section|}}
-        <div style="margin-left: 30px; background-color: #eee">
-          <AuHeading @level="4" @skin="4">
-            Items:
-          </AuHeading>
-          {{#each section as |item|}}
-
-            <div style="margin-left: 30px; background-color: #ddd">
-              <strong>{{item.type}}</strong>
-            </div>
-          {{/each}}
-          <div class="au-o-grid">
-            <div class="au-o-grid__item au-u-1-3">
-              <PowerSelect
-                @allowClear={{false}}
-                @disabled={{disabled}}
-                @searchEnabled={{false}}
-                @loadingMessage="Aan het laden..."
-                @noMatchesMessage="Geen resultaten"
-                @searchMessage="Typ om te zoeken"
-                @options={{this.itemTypes}}
-                @selected={{this.selectedType}}
-                @onChange={{fn (mut this.selectedType)}} as |selectedType|>
-                {{selectedType}}
-              </PowerSelect>
-            </div>
-            <div class="au-o-grid__item au-u-1-3">
-              {{#if (eq this.selectedType "Constant: Text")}}
-                  <AuInput  {{on "change" this.updateTempText}} @width="block"/>
-              {{/if}}
-            </div>
-            <div class="au-o-grid__item au-u-1-3">
-              <AuButton {{on "click" (fn this.addItem section)}}>Add Item</AuButton>
-            </div>
-          </div>
-        </div>
+      </thead>
+        <tr>
+          <th>Variable</th>
+          <th>Type</th>
+        </tr>
+      <tbody>
+      {{#each this.variables as |var|}}
+        <tr>
+          <td>{{var.varName}}</td>
+          <td>
+            <PowerSelect
+              @allowClear={{false}}
+              @disabled={{disabled}}
+              @searchEnabled={{false}}
+              @loadingMessage="Aan het laden..."
+              @noMatchesMessage="Geen resultaten"
+              @searchMessage="Typ om te zoeken"
+              @options={{this.inputTypes}}
+              @selected={{var.type}}
+              @onChange={{fn (mut var.type)}} as |type|>
+                {{type}}
+            </PowerSelect>
+          </td>
+        </tr>
       {{/each}}
-      <br>
-      <AuButton {{on "click" this.addSection}}>Add Section</AuButton>
+      </tbody>
+    </table>
+    <AuButton {{on "click" this.parseTemplate}}>Update</AuButton>
     {{/if}}
   </div>
+
+
 
   <div class="au-o-grid__item au-u-1-2">
     <AuHeading @level="3" @skin="3">
@@ -76,23 +67,6 @@
       <img src={{sign.image}} height="50">
     {{/each}}
     <br><br>
-    {{#each this.content as |section|}}
-      <div style="margin-left: 30px; background-color: #eee">
-          <strong>-
-          {{#each section as |item|}}
-            {{#if (eq item.type "Constant: Text")}}
-              {{item.content}}
-            {{else if (eq item.type "Variable: Location")}}
-              <Input @type="text"/>
-            {{else if (eq item.type "Variable: Number")}}
-              <Input @type="number"/>
-            {{else if (eq item.type "Variable: Text")}}
-              <Input @type="text"/>
-            {{/if}}
-          {{/each}}
-          </strong>
-      </div>
-      <br>
-    {{/each}}
+    {{{this.preview}}}
   </div>
 </div>

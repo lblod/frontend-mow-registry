@@ -9,16 +9,17 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked signs=[];
   @tracked searchString;
   @tracked error;
-  @tracked content=[];
-  @tracked selectedType=this.itemTypes[0];
-  @tracked itemTypes=[
-    "Constant: Text",
-    "Variable: Location",
-    "Variable: Number",
-    "Variable: Text"
+  @tracked template;
+  @tracked variables=[];
+  @tracked preview;
+  @tracked inputTypes=[
+    "text",
+    "number",
+    "date",
+    "location",
+    "codelist"
   ];
-  @tracked tempText;
-
+  
   @task
   *addSign(){
     let result;
@@ -34,36 +35,54 @@ export default class TrafficMeasureIndexComponent extends Component {
     }
   }
 
-  @action 
-  addSection(){
-    this.content.pushObject([]);
-  }
-  
-  @action 
-  addItem(section){
-    
-    if(this.selectedType=="Constant: Text"){
-      section.pushObject({
-        type: this.selectedType,
-        content: this.tempText
-      });
-    }
-    else{
-      section.pushObject({
-        type: this.selectedType,
-        content: null
-      });
-    }
-    this.tempText=null;
-  }
-
   @action
   updateSearchString(event){
     this.searchString=event.target.value;
   }
 
-  @action
-  updateTempText(event){
-    this.tempText=event.target.value;
+  @action parseTemplate(){
+    const regex = new RegExp(/\${(\S+?)}/g);
+    const regexResult=[...this.template.matchAll(regex)];
+    if(regexResult.length){
+      regexResult.forEach(e=>{
+        if(!this.variables.find(variable=>variable.varIdentifier===e[0])){
+          this.variables.pushObject({
+            varName: e[1],
+            varIdentifier: e[0],
+            varIdentifierIndex: e[2],
+            varIdentifierLength: e[0].length,
+            type: "text"
+          })
+        }
+      });
+    }
+    this.generatePreview();
+  }
+
+  @action updateTemplate(event){
+    this.template=event.target.value;
+  }
+
+  @action generatePreview(){
+    this.preview=this.template;
+    this.variables.forEach(e=>{
+      let replaceString;
+      if(e.type==='text'){
+        replaceString="<input type='text'></input>"
+      }
+      else if(e. type==='number'){
+        replaceString="<input type='number'></input>"
+      }
+      else if(e.type==='date'){
+        replaceString="<input type='date'></input>";
+      }
+      else if(e.type==='location'){
+        replaceString="<input type='text'></input>"
+      }
+      else if(e.type==='codelist'){
+        replaceString="<input type='text'></input>";
+      }
+      this.preview=this.preview.replaceAll(e.varIdentifier, replaceString)
+    });
   }
 }
