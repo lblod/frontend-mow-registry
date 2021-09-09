@@ -41,6 +41,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   }
 
   @action parseTemplate(){
+    //finds non-whitespase characters between ${ and }
     const regex = new RegExp(/\${(\S+?)}/g);
     const regexResult=[...this.template.matchAll(regex)];
 
@@ -51,8 +52,6 @@ export default class TrafficMeasureIndexComponent extends Component {
         filteredRegexResult.push(reg);
       }
     });
-
-    debugger;
 
     //remove non-existing variables
     this.variables=this.variables.filter(variable=>{

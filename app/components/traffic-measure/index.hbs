@@ -1,14 +1,14 @@
 <div class="au-o-grid">
-  <div class="au-o-grid__item au-u-1-2">
+  <div class="au-o-grid__item au-u-1-2" style="padding:50px">
     <AuHeading @level="3" @skin="3">
       Signs:
     </AuHeading>
     <div class="au-o-grid">
       <div class="au-o-grid__item au-u-1-2">
-        <AuInput {{on "change" this.updateSearchString}} id="input-signs" @width="block"/>
+        <AuInput @icon="search" {{on "change" this.updateSearchString}} id="input-signs" @width="block"/>
       </div>
       <div class="au-o-grid__item au-u-1-2">  
-        <AuButton {{on "click" (perform this.addSign)}}>Add Sign</AuButton>
+        <AuButton @skin="secondary"  @width="block" {{on "click" (perform this.addSign)}}>Add Sign</AuButton>
       </div>
     </div>
     <AuHelpText @error={{true}}>{{this.error}}</AuHelpText>
@@ -18,48 +18,55 @@
     {{/each}}
     <br><br>
     {{#if this.signs}}
-      <AuLabel for="textarea-regular">Template</AuLabel>
-      <AuTextarea id="textarea-regular" @width="block" {{on "change" this.updateTemplate}}  style="resize: none; height: 300px;"></AuTextarea>
-      <AuButton {{on "click" this.parseTemplate}}>Update</AuButton>
+      <AuHeading @level="3" @skin="3">
+        Template:
+      </AuHeading>
+      <AuTextarea id="textarea" @width="block" {{on "change" this.updateTemplate}}  style="resize: none; height: 200px;"></AuTextarea>
+      <AuButton @skin="secondary"  @width="block" {{on "click" this.parseTemplate}}>Update Preview / Variables</AuButton>
     {{/if}}
     {{#if this.variables.length}}
-    <table>
-      <thead>
-
-      </thead>
-        <tr>
-          <th>Variable</th>
-          <th>Type</th>
-        </tr>
-      <tbody>
-      {{#each this.variables as |var|}}
-        <tr>
-          <td>{{var.varName}}</td>
-          <td>
-            <PowerSelect
-              @allowClear={{false}}
-              @disabled={{disabled}}
-              @searchEnabled={{false}}
-              @loadingMessage="Aan het laden..."
-              @noMatchesMessage="Geen resultaten"
-              @searchMessage="Typ om te zoeken"
-              @options={{this.inputTypes}}
-              @selected={{var.type}}
-              @onChange={{fn (mut var.type)}} as |type|>
-                {{type}}
-            </PowerSelect>
-          </td>
-        </tr>
-      {{/each}}
-      </tbody>
-    </table>
-    <AuButton {{on "click" this.generatePreview}}>Update</AuButton>
+    <br><br>
+    <AuHeading @level="3" @skin="3">
+      Variables:
+    </AuHeading>
+      <div class="au-c-data-table__wrapper">
+        <table class="au-c-data-table__table">
+          <thead class="au-c-data-table__header">
+            <tr>
+              <th>Variable</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+          {{#each this.variables as |var|}}
+            <tr>
+              <td>{{var.varName}}</td>
+              <td style="width: 50%;">
+                <PowerSelect
+                  @allowClear={{false}}
+                  @disabled={{disabled}}
+                  @searchEnabled={{false}}
+                  @loadingMessage="Aan het laden..."
+                  @noMatchesMessage="Geen resultaten"
+                  @searchMessage="Typ om te zoeken"
+                  @options={{this.inputTypes}}
+                  @selected={{var.type}}
+                  @onChange={{fn (mut var.type)}} as |type|>
+                    {{type}}
+                </PowerSelect>
+              </td>
+            </tr>
+          {{/each}}
+          </tbody>
+        </table>
+      </div>
+    <AuButton @skin="secondary"  @width="block" {{on "click" this.generatePreview}}>Update Preview</AuButton>
     {{/if}}
   </div>
 
 
 
-  <div class="au-o-grid__item au-u-1-2">
+  <div class="au-o-grid__item au-u-1-2" style="padding:50px; background-color:#eeeeee">
     <AuHeading @level="3" @skin="3">
       Preview:
     </AuHeading>
