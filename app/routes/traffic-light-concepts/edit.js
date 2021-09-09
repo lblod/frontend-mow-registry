@@ -15,7 +15,5 @@ export default class TrafficLightConceptsEditRoute extends Route {
   }
   resetController(controller) {
     controller.reset();
-    const trafficLightConcept = controller.model.trafficLightConcept;
-    trafficLightConcept.rollbackAttributes();
   }
 }
