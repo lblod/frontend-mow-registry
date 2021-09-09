@@ -57,4 +57,8 @@ export default class TrafficlightConceptsEditController extends Controller {
       );
     }
   }
+
+  reset() {
+    this.file = null;
+  }
 }

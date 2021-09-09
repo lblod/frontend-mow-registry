@@ -52,4 +52,8 @@ export default class RoadmarkingConceptsEditController extends Controller {
       );
     }
   }
+
+  reset() {
+    this.file = null;
+  }
 }

@@ -57,4 +57,8 @@ export default class RoadsignConceptsEditController extends Controller {
       );
     }
   }
+
+  reset() {
+    this.file = null;
+  }
 }
