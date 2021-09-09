@@ -43,19 +43,35 @@ export default class TrafficMeasureIndexComponent extends Component {
   @action parseTemplate(){
     const regex = new RegExp(/\${(\S+?)}/g);
     const regexResult=[...this.template.matchAll(regex)];
-    if(regexResult.length){
-      regexResult.forEach(e=>{
-        if(!this.variables.find(variable=>variable.varIdentifier===e[0])){
-          this.variables.pushObject({
-            varName: e[1],
-            varIdentifier: e[0],
-            varIdentifierIndex: e[2],
-            varIdentifierLength: e[0].length,
-            type: "text"
-          })
-        }
-      });
-    }
+
+    //remove duplicates from regex result
+    const filteredRegexResult=[];
+    regexResult.forEach(reg=>{
+      if(!filteredRegexResult.find(fReg=>fReg[0]===reg[0])){
+        filteredRegexResult.push(reg);
+      }
+    });
+
+    debugger;
+
+    //remove non-existing variables
+    this.variables=this.variables.filter(variable=>{
+      return filteredRegexResult.find(fReg=>fReg[0]===variable.varIdentifier)
+    });
+
+    //add new variables
+    filteredRegexResult.forEach(reg=>{
+      if(!this.variables.find(variable=>variable.varIdentifier===reg[0])){
+        this.variables.pushObject({
+          varName: reg[1],
+          varIdentifier: reg[0],
+          varIdentifierIndex: reg[2],
+          varIdentifierLength: reg[0].length,
+          type: "text"
+        })
+      }
+    });
+
     this.generatePreview();
   }
 
