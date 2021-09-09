@@ -14,7 +14,6 @@ export default class RoadmarkingConceptsEditRoute extends Route {
     });
   }
   resetController(controller) {
-    const roadMarkingConcept = controller.model.roadMarkingConcept;
-    roadMarkingConcept.rollbackAttributes();
+    controller.reset();
   }
 }

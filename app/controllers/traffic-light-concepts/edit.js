@@ -57,4 +57,9 @@ export default class TrafficlightConceptsEditController extends Controller {
       );
     }
   }
+
+  reset() {
+    this.file = null;
+    this.model.trafficLightConcept.rollbackAttributes();
+  }
 }
