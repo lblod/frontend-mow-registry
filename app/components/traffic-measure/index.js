@@ -128,14 +128,36 @@ export default class TrafficMeasureIndexComponent extends Component {
           ex:variable "`+variable.varName+`" ;
           ex:expects [
             a sh:PropertyShape ;
-              sh:targetClass `+variable.type+` ;
+              sh:targetClass ex:`+variable.type+` ;
               sh:maxCount 1 ;
           ]
       `;
     });
 
+    let signString="";
+    let signIdentifier="";
+    this.signs.forEach(sign=>{
+      signIdentifier+=sign.roadSignConceptCode+'+';
+      signString+=`
+        [
+          a ex:MustUseRelation ;
+          ex:concept ex:`+sign.roadSignConceptCode+`Verkeerstekenconcept .
+        ],`;
+    });
+    
+    signString=signString.slice(0, -1);
+    signIdentifier=signIdentifier.slice(0, -1);
+
     this.model+=varString+`        
       ] .
-    `;
+
+      ex:Shape#TrafficMeasure a sh:NodeShape;
+        sh:targetClass oslo:Verkeersmaatregel ;
+        ex:targetHasConcept ex:`+signIdentifier+`MeasureConcept .
+        
+      ex:`+signIdentifier+`MeasureConcept a ex:Concept ;
+        ex:template ex:TrafficMeasureTemplate ;
+        ex:relation `;
+    this.model+=signString;
   }
 }
