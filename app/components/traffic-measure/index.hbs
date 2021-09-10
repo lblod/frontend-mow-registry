@@ -12,10 +12,14 @@
       </div>
     </div>
     <AuHelpText @error={{true}}>{{this.error}}</AuHelpText>
-
-    {{#each this.signs as |sign|}}
-      <img src={{sign.image}} height="50">
-    {{/each}}
+    <div class="signs-container">
+      {{#each this.signs as |sign|}}
+        <div class="sign-container">
+          <img src={{sign.image}} height="50">
+          <button {{on "click" (fn this.removeSign sign)}} class="delete-sign-button">X</button>
+        </div>
+      {{/each}}
+    </div>
     <br><br>
     {{#if this.signs}}
       <AuHeading @level="3" @skin="3">

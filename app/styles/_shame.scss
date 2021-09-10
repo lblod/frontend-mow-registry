@@ -95,3 +95,27 @@ td {
 .w-px {
   width: 1px !important;
 }
+
+.delete-sign-button {
+  position: absolute;
+  color: red;
+  font-weight: bold;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  margin: none;
+  right: 0;
+  top: 0;
+}
+
+.sign-container {
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+  padding: 10px;
+}
+
+.signs-container {
+  display: flex;
+  flex-direction: row;
+}
