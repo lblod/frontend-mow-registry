@@ -38,7 +38,7 @@ export default class RoadmarkingConceptsEditController extends Controller {
 
     if (this.file) {
       let fileResponse = yield this.fileService.upload(this.file);
-      this.model.roadMarkingConcept.image = fileResponse.downloadLink;
+      roadMarkingConcept.image = fileResponse.downloadLink;
     }
 
     yield roadMarkingConcept.validate();
