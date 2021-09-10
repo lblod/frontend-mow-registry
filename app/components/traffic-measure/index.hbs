@@ -22,7 +22,7 @@
         Template:
       </AuHeading>
       <AuTextarea id="textarea" @width="block" {{on "change" this.updateTemplate}}  style="resize: none; height: 200px;"></AuTextarea>
-      <AuButton @skin="secondary"  @width="block" {{on "click" this.parseTemplate}}>Update Preview / Variables</AuButton>
+      <AuButton @skin="secondary"  @width="block" {{on "click" this.parseTemplate}}>Update Preview / Variables / RDFA Model</AuButton>
     {{/if}}
     {{#if this.variables.length}}
     <br><br>
@@ -60,7 +60,7 @@
           </tbody>
         </table>
       </div>
-    <AuButton @skin="secondary"  @width="block" {{on "click" this.generatePreview}}>Update Preview</AuButton>
+    <AuButton @skin="secondary"  @width="block" {{on "click" this.generatePreview}}>Update Preview / RDFA Model</AuButton>
     {{/if}}
   </div>
 
@@ -75,5 +75,12 @@
     {{/each}}
     <br><br>
     {{{this.preview}}}
+    <br><br>
+    <AuHeading @level="3" @skin="3">
+      RDFA Model:
+    </AuHeading>
+    <pre>
+      {{this.model}}
+    </pre>
   </div>
 </div>

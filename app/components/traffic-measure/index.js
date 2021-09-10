@@ -12,6 +12,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked template;
   @tracked variables=[];
   @tracked preview;
+  @tracked model;
   @tracked inputTypes=[
     "text",
     "number",
@@ -99,5 +100,38 @@ export default class TrafficMeasureIndexComponent extends Component {
       }
       this.preview=this.preview.replaceAll(e.varIdentifier, replaceString)
     });
+
+    this.generateModel();
+  }
+
+  @action generateModel(){
+    this.model=`
+    ex:Shape#TrafficMeasure a sh:NodeShape;
+    sh:targetClass oslo:Verkeersmaatregel ;
+    ex:targetHasConcept ex:TrafficMeasureConcept .
+     
+    ex:TrafficMeasureConcept a ex:Concept;
+      ex:template ex:TrafficMeasureTemplate .
+      
+    ex:TrafficMeasureTemplate a ex:Template ;
+      ex:value "`+this.template+`";
+      ex:mapping [
+    `;
+    
+    let varString="";
+    this.variables.forEach(variable=>{
+      varString+=`
+          ex:variable "`+variable.varName+`" ;
+          ex:expects [
+            a sh:PropertyShape ;
+              sh:targetClass `+variable.type+` ;
+              sh:maxCount 1 ;
+          ]
+      `;
+    });
+
+    this.model+=varString+`        
+      ] .
+    `;
   }
 }
