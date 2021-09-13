@@ -43,7 +43,7 @@ export default class TrafficlightConceptsEditController extends Controller {
 
     if (this.file) {
       let fileResponse = yield this.fileService.upload(this.file);
-      this.model.trafficLightConcept.image = fileResponse.downloadLink;
+      trafficLightConcept.image = fileResponse.downloadLink;
     }
 
     yield trafficLightConcept.validate();
