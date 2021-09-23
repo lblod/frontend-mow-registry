@@ -26,6 +26,8 @@ roadSignConcept:
     subSign: Mogelijke onderborden
     mainSign: Mogelijke hoofdborden
     relatedSign: Gerelateerde verkeersborden
+    relatedTrafficLight: Gerelateerde verkeerslichten
+    relatedMarking: Gerelateerde wegmarkeringen
   crud:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
@@ -41,8 +43,8 @@ roadSignConcept:
     button: Ga naar Verkeersborden
 
 trafficLightConcept:
-  name: Traffic Lights
-  details: Traffic Light details
+  name: Verkeerslichten
+  details: Verkeerslicht details
   attr:
     imageHeader: Afbeelding
     imageUrl: Afbeelding URL
@@ -53,6 +55,8 @@ trafficLightConcept:
     subSign: Mogelijke onderborden
     mainSign: Mogelijke hoofdborden
     relatedSign: Gerelateerde verkeersborden
+    relatedTrafficLight: Gerelateerde verkeerslichten
+    relatedMarking: Gerelateerde wegmarkeringen
   crud:
     create: Verkeerslicht aanmaken
     new: Nieuw verkeerslicht
@@ -89,6 +93,7 @@ roadMarkingConcept:
     subSign: Mogelijke onderborden
     mainSign: Mogelijke hoofdborden
     relatedSign: Gerelateerde verkeersborden
+    relatedTrafficLight: Gerelateerde verkeerslichten
     relatedMarking: Gerelateerde wegmarkeringen
   crud:
     create: Wegmarkering aanmaken
