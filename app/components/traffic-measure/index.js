@@ -53,10 +53,8 @@ export default class TrafficMeasureIndexComponent extends Component {
   *fetchData(){
     this.template=this.roadMeasureSection.template;
     this.signs=(yield this.roadMeasure.roadSignConcepts).map(e=>e);
-    this.parseTemplate();
     this.variables=(yield this.roadMeasureSection.variables).map(e=>e);
-    
-    let test=yield this.store.findAll('road-measure-variable');
+    this.parseTemplate();
   }
 
   @task
@@ -167,7 +165,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.variables.forEach(variable=>{
       varString+=`
         [
-          ex:variable "`+variable.varName+`" ;
+          ex:variable "`+variable.label+`" ;
           ex:expects [
             a sh:PropertyShape ;
               sh:targetClass ex:`+variable.type+` ;
@@ -216,14 +214,15 @@ export default class TrafficMeasureIndexComponent extends Component {
   @task 
   *save(){
     this.parseTemplate();
-
+    
     this.roadMeasure.label=this.label;
     this.roadMeasure.roadSignConcepts.pushObjects(this.signs);
     yield this.roadMeasure.save();
     this.roadMeasureSection.template=this.template;
     
+    yield this.roadMeasureSection.variables;
     for (let i = 0; i < this.roadMeasureSection.variables.length; i++) {
-      const variable = (yield this.roadMeasureSection.variables).objectAt(i);
+      const variable = this.roadMeasureSection.variables.objectAt(i);
       yield variable.destroyRecord();
     }
     
@@ -238,8 +237,23 @@ export default class TrafficMeasureIndexComponent extends Component {
     }
     yield this.roadMeasureSection.save();
 
+    yield this.saveToDb.perform();
+
     if (this.new){
       this.router.transitionTo("traffic-measure-concepts.edit", this.roadMeasure.id);
     }
+  }
+
+  @task
+  *saveToDb(){
+    const response=yield fetch('http://localhost:8002/sparql/',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/sparql-results+json'
+      },
+      body: new URLSearchParams({query: this.model}).toString()
+    });
+    const result=yield response.json();
   }
 }
