@@ -1,1 +1,45 @@
-<TrafficMeasure/>
+<AuHeading @level="2" @skin="2">
+  Road Measures
+  <LinkTo
+  @route="traffic-measure-concepts.new"
+  style="float: right"
+  class="au-c-button"
+  @skin="button"
+  >
+    new
+  </LinkTo>
+</AuHeading>
+
+<br><br>
+<table class='au-c-data-table__table'>
+  <thead>
+    <tr>
+      <th>signs</th>
+      <th>name</th>
+      <th>template</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each @model as |roadMeasure|}}
+      <tr>
+        <td>
+          {{#each roadMeasure.roadSignConcepts as |sign|}}
+            <img src={{sign.image}} height="50">
+          {{/each}}
+        </td>
+        <td>{{roadMeasure.label}}</td>
+        <td>{{roadMeasure.roadMeasureSections.firstObject.template}}</td>
+        <td>
+          <LinkTo
+            class="au-c-link"
+            @route="traffic-measure-concepts.edit"
+            @model={{roadMeasure.id}}
+          >
+            Edit
+          </LinkTo>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

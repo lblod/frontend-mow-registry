@@ -3,12 +3,33 @@ import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-export default class TrafficMeasureIndexComponent extends Component {
-  @service store;
 
-  @tracked signs = [];
+export default class TrafficMeasureIndexComponent extends Component {
+  constructor(...args){
+    super(...args);
+    
+    this.roadMeasure=this.args.roadMeasure
+    this.roadMeasureSection=this.roadMeasure.roadMeasureSections.firstObject;
+    
+    this.new=this.args.new;
+    
+    if(!this.new){
+      this.fetchData.perform();
+    }
+  }
+
+  @service store;
+  @service router;
+
+  @tracked new;
+
+  @tracked roadMeasure;
+  @tracked roadMeasureSection;
+  @tracked signs=[];
+  @tracked variables=[];
+
   @tracked searchString;
-  @tracked error;
+  @tracked signError;
   @tracked template;
   @tracked variables = [];
   @tracked preview;
@@ -20,7 +41,24 @@ export default class TrafficMeasureIndexComponent extends Component {
     "location",
     "codelist"
   ];
-  
+
+  get label(){
+    let result='';
+    this.signs.forEach(e=>result+=(e.roadSignConceptCode+"-"));
+    result=result.slice(0, -1);
+    return result+=' Traffic Measure';
+  };
+
+  @task 
+  *fetchData(){
+    this.template=this.roadMeasureSection.template;
+    this.signs=(yield this.roadMeasure.roadSignConcepts).map(e=>e);
+    this.parseTemplate();
+    this.variables=(yield this.roadMeasureSection.variables).map(e=>e);
+    
+    let test=yield this.store.findAll('road-measure-variable');
+  }
+
   @task
   *addSign() {
     let result;
@@ -28,24 +66,32 @@ export default class TrafficMeasureIndexComponent extends Component {
       'filter[road-sign-concept-code]': this.searchString,
     });
     if (result.length == 0) {
-      this.error = "Couldn't find this sign";
+      this.signError = "Couldn't find this sign";
     } else {
-      this.error = ' ';
+      this.signError = ' ';
       this.signs.pushObject(result.firstObject);
     }
   }
 
-  @action
-  removeSign(sign) {
-    this.signs.removeObject(sign);
-  }
-
+  //ui stuff
   @action
   updateSearchString(event) {
     this.searchString = event.target.value;
   }
+  
+  @action
+  removeSign(sign) {
+    this.signs.removeObject(sign);
+  }
+  
+  @action 
+  updateTemplate(event) {
+    this.template = event.target.value;
+  }
 
-  @action parseTemplate() {
+  //parsing algo
+  @action
+  parseTemplate() {
     //finds non-whitespase characters between ${ and }
     const regex = new RegExp(/\${(\S+?)}/g);
     const regexResult = [...this.template.matchAll(regex)];
@@ -61,33 +107,27 @@ export default class TrafficMeasureIndexComponent extends Component {
     //remove non-existing variables
     this.variables = this.variables.filter((variable) => {
       return filteredRegexResult.find(
-        (fReg) => fReg[0] === variable.varIdentifier
+        (fReg) => fReg[1] === variable.label
       );
     });
 
     //add new variables
     filteredRegexResult.forEach((reg) => {
       if (
-        !this.variables.find((variable) => variable.varIdentifier === reg[0])
+        !this.variables.find((variable) => variable.label === reg[1])
       ) {
         this.variables.pushObject({
-          varName: reg[1],
-          varIdentifier: reg[0],
-          varIdentifierIndex: reg[2],
-          varIdentifierLength: reg[0].length,
+          label: reg[1],
           type: 'text',
+          roadMeasureSection: this.roadMeasureSection 
         });
       }
     });
-
     this.generatePreview();
   }
-
-  @action updateTemplate(event) {
-    this.template = event.target.value;
-  }
-
-  @action generatePreview() {
+  
+  @action 
+  generatePreview() {
     this.preview = this.template;
     this.variables.forEach((e) => {
       let replaceString;
@@ -102,62 +142,104 @@ export default class TrafficMeasureIndexComponent extends Component {
       } else if (e.type === 'codelist') {
         replaceString = "<input type='text'></input>";
       }
-      this.preview = this.preview.replaceAll(e.varIdentifier, replaceString);
+      this.preview = this.preview.replaceAll("${"+e.label+"}", replaceString);
     });
-
     this.generateModel();
   }
 
-  @action generateModel(){
+  @action 
+  generateModel(){
+    const templateUUid=this.roadMeasure.id;
     this.model=`
-    ex:Shape#TrafficMeasure a sh:NodeShape;
-    sh:targetClass oslo:Verkeersmaatregel ;
-    ex:targetHasConcept ex:TrafficMeasureConcept .
-     
-    ex:TrafficMeasureConcept a ex:Concept;
-      ex:template ex:TrafficMeasureTemplate .
-      
-    ex:TrafficMeasureTemplate a ex:Template ;
+    PREFIX ex: <http://example.org#>
+    PREFIX sh: <http://www.w3.org/ns/shacl#>
+    PREFIX oslo: <http://data.vlaanderen.be/ns#>
+
+    INSERT {
+    GRAPH <http://mu.semte.ch/application>{
+    
+    ex:`+templateUUid+` a ex:TrafficMeasureTemplate ;
       ex:value "`+this.template+`";
-      ex:mapping [
+      ex:mapping
     `;
     
     let varString="";
     this.variables.forEach(variable=>{
       varString+=`
+        [
           ex:variable "`+variable.varName+`" ;
           ex:expects [
             a sh:PropertyShape ;
               sh:targetClass ex:`+variable.type+` ;
               sh:maxCount 1 ;
           ]
-      `;
+        ],`;
     });
+    varString=varString.slice(0, -1)+'.';
+    
 
     let signString="";
     let signIdentifier="";
     this.signs.forEach(sign=>{
-      signIdentifier+=sign.roadSignConceptCode+'+';
+      signIdentifier+=sign.roadSignConceptCode+'-';
       signString+=`
         [
           a ex:MustUseRelation ;
-          ex:concept ex:`+sign.roadSignConceptCode+`Verkeerstekenconcept .
+          ex:signConcept <http://data.vlaanderen.be/id/concept/Verkeersbordconcept/`+sign.id+`> 
         ],`;
     });
     
     signString=signString.slice(0, -1);
     signIdentifier=signIdentifier.slice(0, -1);
 
-    this.model+=varString+`        
-      ] .
+    this.model+=varString+`
 
       ex:Shape#TrafficMeasure a sh:NodeShape;
         sh:targetClass oslo:Verkeersmaatregel ;
         ex:targetHasConcept ex:`+signIdentifier+`MeasureConcept .
         
       ex:`+signIdentifier+`MeasureConcept a ex:Concept ;
-        ex:template ex:TrafficMeasureTemplate ;
+        ex:label "`+signIdentifier+` traffic measure";
+        ex:template ex:`+templateUUid+` ;
         ex:relation `;
-    this.model+=signString;
+    this.model+=signString+`.
+    }}
+    `;
+  }
+
+  @task 
+  *delete(){
+    yield this.roadMeasure.destroyRecord();
+    this.router.transitionTo("traffic-measure-concepts.index");
+  }
+
+  @task 
+  *save(){
+    this.parseTemplate();
+
+    this.roadMeasure.label=this.label;
+    this.roadMeasure.roadSignConcepts.pushObjects(this.signs);
+    yield this.roadMeasure.save();
+    this.roadMeasureSection.template=this.template;
+    
+    for (let i = 0; i < this.roadMeasureSection.variables.length; i++) {
+      const variable = (yield this.roadMeasureSection.variables).objectAt(i);
+      yield variable.destroyRecord();
+    }
+    
+    for (let i = 0; i < this.variables.length; i++) {
+      const variable = this.variables[i];
+      const newVariable = yield this.store.createRecord('road-measure-variable');
+      
+      newVariable.label=variable.label;
+      newVariable.type=variable.type;
+      newVariable.roadMeasureSection=this.roadMeasureSection
+      newVariable.save();
+    }
+    yield this.roadMeasureSection.save();
+
+    if (this.new){
+      this.router.transitionTo("traffic-measure-concepts.edit", this.roadMeasure.id);
+    }
   }
 }

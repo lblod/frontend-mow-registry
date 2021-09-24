@@ -1,5 +1,9 @@
 <div class="au-o-grid">
   <div class="au-o-grid__item au-u-1-2" style="padding:50px">
+    <AuHeading @level="2" @skin="2">
+      {{this.label}}
+    </AuHeading>
+    <br><br>
     <AuHeading @level="3" @skin="3">
       Signs:
     </AuHeading>
@@ -25,7 +29,7 @@
       <AuHeading @level="3" @skin="3">
         Template:
       </AuHeading>
-      <AuTextarea id="textarea" @width="block" {{on "change" this.updateTemplate}}  style="resize: none; height: 200px;"></AuTextarea>
+      <AuTextarea id="textarea" @width="block" {{on "change" this.updateTemplate}} @value={{this.template}} style="resize: none; height: 200px;"></AuTextarea>
       <AuButton @skin="secondary"  @width="block" {{on "click" this.parseTemplate}}>Update Preview / Variables / RDFA Model</AuButton>
     {{/if}}
     {{#if this.variables.length}}
@@ -42,21 +46,18 @@
             </tr>
           </thead>
           <tbody>
-          {{#each this.variables as |var|}}
+          {{#each this.variables as |variable|}}
             <tr>
-              <td>{{var.varName}}</td>
+              <td>{{variable.label}}</td>
               <td style="width: 50%;">
                 <PowerSelect
                   @allowClear={{false}}
-                  @disabled={{disabled}}
                   @searchEnabled={{false}}
-                  @loadingMessage="Aan het laden..."
-                  @noMatchesMessage="Geen resultaten"
-                  @searchMessage="Typ om te zoeken"
                   @options={{this.inputTypes}}
-                  @selected={{var.type}}
-                  @onChange={{fn (mut var.type)}} as |type|>
-                    {{type}}
+                  @selected={{variable.type}}
+                  @onChange={{action (mut variable.type)}} as |type|
+                >
+                  {{type}}
                 </PowerSelect>
               </td>
             </tr>
@@ -64,7 +65,15 @@
           </tbody>
         </table>
       </div>
-    <AuButton @skin="secondary"  @width="block" {{on "click" this.generatePreview}}>Update Preview / RDFA Model</AuButton>
+    <AuButton  
+      @width="block" 
+      {{on "click" (perform this.save)}}
+      @loading={{if this.save.isRunning true false}}
+      @disabled={{if this.save.isRunning true false}}
+    >
+      Save
+    </AuButton>
+    <AuButton  @alert={{true}} @width="block" {{on "click" (perform this.delete)}}>Delete</AuButton>
     {{/if}}
   </div>
 

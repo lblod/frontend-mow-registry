@@ -60,6 +60,7 @@
     "ember-source": "~3.24.0",
     "ember-template-lint": "^2.15.0",
     "ember-truth-helpers": "^3.0.0",
+    "ember-uuid": "^2.1.0",
     "eslint": "^7.17.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-ember": "^10.1.1",
@@ -77,5 +78,6 @@
   },
   "ember": {
     "edition": "octane"
-  }
+  },
+  "dependencies": {}
 }
