@@ -86,6 +86,7 @@ roadMarkingConcept:
     imageHeader: Image
     imageUrl: Image URL
     meaning: Meaning
+    definition: Definition
     code: Code
     categories: Categories
     relatedSign: Related road signs

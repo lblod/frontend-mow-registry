@@ -6,17 +6,23 @@ import { tracked } from '@glimmer/tracking';
 export default class RoadmarkingConceptsRoadmarkingConceptController extends Controller {
   @service('router') routerService;
 
-  @tracked isAddingRelatedRoadMarkings = false;
   @tracked isAddingRelatedRoadSigns = false;
+  @tracked isAddingRelatedRoadMarkings = false;
+  @tracked isAddingRelatedTrafficLights = false;
 
   @tracked category = null;
   @tracked categoryRoadMarkings = null;
   @tracked categoryRoadSigns = null;
 
   @tracked relatedRoadMarkingCodeFilter = '';
+  @tracked relatedTrafficLightCodeFilter = '';
 
   get showSidebar() {
-    return this.isAddingRelatedRoadMarkings || this.isAddingRelatedRoadSigns;
+    return (
+      this.isAddingRelatedRoadSigns ||
+      this.isAddingRelatedRoadMarkings ||
+      this.isAddingRelatedTrafficLights
+    );
   }
 
   get roadMarkings() {
@@ -28,6 +34,18 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
       return roadMarking.definition
         .toLowerCase()
         .includes(this.relatedRoadMarkingCodeFilter.toLowerCase().trim());
+    });
+  }
+
+  get trafficLights() {
+    if (!this.relatedTrafficLightCodeFilter.trim()) {
+      return this.model.allTrafficLights;
+    }
+
+    return this.model.allTrafficLights.filter((trafficLight) => {
+      return trafficLight.definition
+        .toLowerCase()
+        .includes(this.relatedTrafficLightCodeFilter.toLowerCase().trim());
     });
   }
 
@@ -62,7 +80,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
   @action
   async removeRelatedRoadSign(relatedRoadSign) {
-    let relatedRoadSigns = await this.model.roadSignConcept
+    let relatedRoadSigns = await this.model.roadMarkingConcept
       .relatedRoadSignConcepts;
 
     relatedRoadSigns.removeObject(relatedRoadSign);
@@ -71,7 +89,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
       this.categoryRoadSigns.pushObject(relatedRoadSign);
     }
 
-    this.model.roadSignConcept.save();
+    this.model.roadMarkingConcept.save();
   }
 
   @action
@@ -88,20 +106,53 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   }
 
   @action
+  async addRelatedTrafficLight(relatedTrafficLight) {
+    let relatedTrafficLights = await this.model.roadMarkingConcept
+      .relatedTrafficLightConcepts;
+
+    relatedTrafficLights.pushObject(relatedTrafficLight);
+    this.model.roadMarkingConcept.save();
+  }
+
+  @action
+  async removeRelatedTrafficLight(relatedTrafficLight) {
+    let relatedTrafficLights = await this.model.roadMarkingConcept
+      .relatedTrafficLightConcepts;
+
+    relatedTrafficLights.removeObject(relatedTrafficLight);
+
+    this.model.roadMarkingConcept.save();
+  }
+
+  @action
   setRelatedRoadMarkingCodeFilter(event) {
     this.relatedRoadMarkingCodeFilter = event.target.value.trim();
   }
 
   @action
-  toggleAddRelatedRoadMarkings() {
-    this.isAddingRelatedRoadMarkings = !this.isAddingRelatedRoadMarkings;
-    this.isAddingRelatedRoadSigns = false;
+  setRelatedTrafficLightCodeFilter(event) {
+    this.relatedTrafficLightCodeFilter = event.target.value.trim();
   }
 
   @action
   toggleAddRelatedRoadSigns() {
     this.isAddingRelatedRoadSigns = !this.isAddingRelatedRoadSigns;
     this.isAddingRelatedRoadMarkings = false;
+    this.isAddingRelatedTrafficLights = false;
+  }
+
+  @action
+  toggleAddRelatedRoadMarkings() {
+    this.isAddingRelatedRoadSigns = false;
+    this.isAddingRelatedRoadMarkings = !this.isAddingRelatedRoadMarkings;
+    this.isAddingRelatedTrafficLights = false;
+  }
+
+  @action
+  toggleAddRelatedTrafficLights() {
+    this.isAddingRelatedRoadSigns = false;
+    this.isAddingRelatedRoadMarkings = false;
+    this.isAddingRelatedTrafficLights = !this.isAddingRelatedTrafficLights;
   }
 
   @action
