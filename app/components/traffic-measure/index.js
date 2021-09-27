@@ -193,7 +193,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.model+=varString+`
 
       ex:Shape#TrafficMeasure a sh:NodeShape;
-        sh:targetClass oslo:Verkeersmaatregel ;
+        sh:targetClass oslo:Verkeersmaatregel;
         ex:targetHasConcept ex:`+signIdentifier+`MeasureConcept .
         
       ex:`+signIdentifier+`MeasureConcept a ex:Concept ;
@@ -213,14 +213,15 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task 
   *save(){
+    debugger;
     this.parseTemplate();
     
     this.roadMeasure.label=this.label;
     this.roadMeasure.roadSignConcepts.pushObjects(this.signs);
     yield this.roadMeasure.save();
-    this.roadMeasureSection.template=this.template;
-    
+    this.roadMeasureSection.template=this.template;    
     yield this.roadMeasureSection.variables;
+
     for (let i = 0; i < this.roadMeasureSection.variables.length; i++) {
       const variable = this.roadMeasureSection.variables.objectAt(i);
       yield variable.destroyRecord();
@@ -237,7 +238,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     }
     yield this.roadMeasureSection.save();
 
-    yield this.saveToDb.perform();
+    //yield this.saveToDb.perform();
 
     if (this.new){
       this.router.transitionTo("traffic-measure-concepts.edit", this.roadMeasure.id);
