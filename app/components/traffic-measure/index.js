@@ -61,7 +61,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   *addSign() {
     let result;
     result = yield this.store.query('road-sign-concept', {
-      'filter[road-sign-concept-code]': this.searchString,
+      'filter[:exact:road-sign-concept-code]': this.searchString,
     });
     if (result.length == 0) {
       this.signError = "Couldn't find this sign";
