@@ -213,20 +213,27 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task 
   *save(){
-    debugger;
+    //1-parse everything again
     this.parseTemplate();
-    
+
+    //2-save road measure/section
     this.roadMeasure.label=this.label;
     this.roadMeasure.roadSignConcepts.pushObjects(this.signs);
     yield this.roadMeasure.save();
-    this.roadMeasureSection.template=this.template;    
+    this.roadMeasureSection.template=this.template;
+    //if new make sure section is created
+    if(this.new){
+      yield this.roadMeasureSection.save(); 
+    }   
+    
+    //3-handle variables
     yield this.roadMeasureSection.variables;
-
+    //delete existing ones
     for (let i = 0; i < this.roadMeasureSection.variables.length; i++) {
       const variable = this.roadMeasureSection.variables.objectAt(i);
       yield variable.destroyRecord();
     }
-    
+    //create new ones
     for (let i = 0; i < this.variables.length; i++) {
       const variable = this.variables[i];
       const newVariable = yield this.store.createRecord('road-measure-variable');
