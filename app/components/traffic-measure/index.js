@@ -87,7 +87,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.template = event.target.value;
   }
 
-  //parsing algo
+  //parsing algo that keeps ui changes in tact
   @action
   parseTemplate() {
     //finds non-whitespase characters between ${ and }
@@ -102,7 +102,7 @@ export default class TrafficMeasureIndexComponent extends Component {
       }
     });
 
-    //remove non-existing variables
+    //remove non-existing variables from current array
     this.variables = this.variables.filter((variable) => {
       return filteredRegexResult.find(
         (fReg) => fReg[1] === variable.label
@@ -121,6 +121,16 @@ export default class TrafficMeasureIndexComponent extends Component {
         });
       }
     });
+
+    //remove duplicates in case something went wrong
+    const filteredVariables = [];
+    this.variables.forEach((variable) => {
+      if (!filteredVariables.find((fVariable) => fVariable.label === variable.label)) {
+        filteredVariables.push(variable);
+      }
+    });
+    this.variables=filteredVariables;
+
     this.generatePreview();
   }
   
@@ -215,22 +225,19 @@ export default class TrafficMeasureIndexComponent extends Component {
   *save(){
     //1-parse everything again
     this.parseTemplate();
-
     //2-save road measure/section
     this.roadMeasure.label=this.label;
     this.roadMeasure.roadSignConcepts.pushObjects(this.signs);
     yield this.roadMeasure.save();
     this.roadMeasureSection.template=this.template;
-    //if new make sure section is created
-    if(this.new){
-      yield this.roadMeasureSection.save(); 
-    }   
+    yield this.roadMeasureSection.save();
     
     //3-handle variables
     yield this.roadMeasureSection.variables;
     //delete existing ones
-    for (let i = 0; i < this.roadMeasureSection.variables.length; i++) {
-      const variable = this.roadMeasureSection.variables.objectAt(i);
+    const varLength=this.roadMeasureSection.variables.length;
+    for (let i = 0; i < varLength; i++) {
+      const variable = yield this.roadMeasureSection.variables.objectAt(0);
       yield variable.destroyRecord();
     }
     //create new ones
@@ -243,7 +250,6 @@ export default class TrafficMeasureIndexComponent extends Component {
       newVariable.roadMeasureSection=this.roadMeasureSection
       newVariable.save();
     }
-    yield this.roadMeasureSection.save();
 
     //yield this.saveToDb.perform();
 
