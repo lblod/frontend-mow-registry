@@ -43,7 +43,7 @@ export default class RoadsignConceptsEditController extends Controller {
 
     if (this.file) {
       let fileResponse = yield this.fileService.upload(this.file);
-      this.model.roadSignConcept.image = fileResponse.downloadLink;
+      roadSignConcept.image = fileResponse.downloadLink;
     }
 
     yield roadSignConcept.validate();
@@ -56,5 +56,11 @@ export default class RoadsignConceptsEditController extends Controller {
         roadSignConcept.id
       );
     }
+  }
+
+  reset() {
+    this.file = null;
+    this.model.roadSignConcept.rollbackAttributes();
+    this.model.roadSignConcept.hasMany('categories').reload();
   }
 }

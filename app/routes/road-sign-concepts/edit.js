@@ -12,8 +12,6 @@ export default class RoadsignConceptsEditRoute extends Route {
     });
   }
   resetController(controller) {
-    const roadSignConcept = controller.model.roadSignConcept;
-    roadSignConcept.rollbackAttributes();
-    roadSignConcept.hasMany('categories').reload();
+    controller.reset();
   }
 }

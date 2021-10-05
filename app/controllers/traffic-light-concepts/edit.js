@@ -43,7 +43,7 @@ export default class TrafficlightConceptsEditController extends Controller {
 
     if (this.file) {
       let fileResponse = yield this.fileService.upload(this.file);
-      this.model.trafficLightConcept.image = fileResponse.downloadLink;
+      trafficLightConcept.image = fileResponse.downloadLink;
     }
 
     yield trafficLightConcept.validate();
@@ -56,5 +56,10 @@ export default class TrafficlightConceptsEditController extends Controller {
         trafficLightConcept.id
       );
     }
+  }
+
+  reset() {
+    this.file = null;
+    this.model.trafficLightConcept.rollbackAttributes();
   }
 }

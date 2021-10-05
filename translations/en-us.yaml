@@ -26,6 +26,8 @@ roadSignConcept:
     subSign: Possible subsigns
     mainSign: Possible main signs
     relatedSign: Related road signs
+    relatedTrafficLight: Related traffic lights
+    relatedMarking: Related road markings
   crud:
     create: Create road sign
     new: New Road Sign
@@ -61,6 +63,8 @@ trafficLightConcept:
     subSign: Possible sub signs
     mainSign: Possible main signs
     relatedSign: Related traffic light
+    relatedTrafficLight: Related traffic lights
+    relatedMarking: Related road markings
   crud:
     create: Create traffic light
     new: New traffic light
@@ -94,9 +98,10 @@ roadMarkingConcept:
     code: Code
     categories: Categories
     relatedSign: Related road signs
+    relatedTrafficLight: Related traffic lights
+    relatedMarking: Related road markings
     subSign: Possible sub signs
     mainSign: Possible main signs
-    relatedMarking: Related road marking
   crud:
     create: Create road marking
     new: New Road marking
