@@ -1,45 +1,77 @@
-<AuHeading @level="2" @skin="2">
-  Road Measures
-  <LinkTo
-  @route="traffic-measure-concepts.new"
-  style="float: right"
-  class="au-c-button"
-  @skin="button"
-  >
-    new
-  </LinkTo>
-</AuHeading>
-
-<br><br>
-<table class='au-c-data-table__table'>
-  <thead>
-    <tr>
-      <th>signs</th>
-      <th>name</th>
-      <th>template</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each @model as |roadMeasure|}}
-      <tr>
-        <td>
-          {{#each roadMeasure.roadSignConcepts as |sign|}}
-            <img src={{sign.image}} height="50">
-          {{/each}}
-        </td>
-        <td>{{roadMeasure.label}}</td>
-        <td>{{roadMeasure.roadMeasureSections.firstObject.template}}</td>
-        <td>
-          <LinkTo
-            class="au-c-link"
-            @route="traffic-measure-concepts.edit"
-            @model={{roadMeasure.id}}
-          >
-            Edit
+<AuDataTable
+  @content={{this.model}}
+  @fields="signs templates"
+  @noDataMessage="Nothing found"
+  @size={{this.size}}
+  @page={{this.page}}
+  @sort={{this.sort}} as |s|
+>
+<s.menu as |menu|>
+    <menu.general>
+      <AuToolbar class="au-o-box">
+        <AuToolbarGroup>
+          <AuHeading @skin="2">
+            Road Measures
+          </AuHeading>
+        </AuToolbarGroup>
+        <AuToolbarGroup class="au-c-toolbar__group--center">
+          {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
+          <div class="au-c-data-table__search traffic-light-code-search">
+            <input
+              value={{this.code}}
+              placeholder='code'
+              class="au-c-input au-c-input--block"
+              {{on "input" (perform this.updateSearchFilterTask "code")}}
+            />
+            <span class="au-c-data-table__search-icon">
+              <AuIcon @icon="search" @size="large" />
+            </span>
+          </div>
+          <LinkTo class="au-c-button" @route="traffic-measure-concepts.new">
+            New
           </LinkTo>
-        </td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
+        </AuToolbarGroup>
+      </AuToolbar>
+    </menu.general>
+  </s.menu>
+  <s.content as |c|>
+    <c.header>
+      <AuDataTableThSortable
+        @field="label"
+        @currentSorting={{this.sort}}
+        @label="name"
+      />
+      <th>
+        signs
+      </th>
+      <th>
+        template
+      </th>
+      <th>
+
+      </th>
+    </c.header>
+    <c.body as |roadMeasure|>
+      <td>
+        {{roadMeasure.label}}
+      </td>
+      <td>
+        {{#each roadMeasure.roadSignConcepts as |sign|}}
+          <img src={{sign.image}} height="50">
+        {{/each}}
+      </td>
+      <td>
+        {{roadMeasure.roadMeasureSections.firstObject.template}}
+      </td>
+      <td>
+        <LinkTo
+          class="au-c-link"
+          @route="traffic-measure-concepts.edit"
+          @model={{roadMeasure.id}}
+        >
+          Edit
+        </LinkTo>
+      </td>
+    </c.body>
+  </s.content>
+</AuDataTable>
