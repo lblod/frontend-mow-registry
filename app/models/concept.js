@@ -3,5 +3,5 @@ import ResourceModel from './resource';
 
 export default class ConceptModel extends ResourceModel {
   @hasMany('template') templates;
-  @hasMany('relation') relations;
+  @hasMany('relation', { polyMorphic: true }) relations;
 }
