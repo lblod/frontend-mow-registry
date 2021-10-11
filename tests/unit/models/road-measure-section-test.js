@@ -5,7 +5,7 @@ module('Unit | Model | road measure section', function (hooks) {
   setupTest(hooks);
 
   // Replace this with your real tests.
-  test('it exists', function(assert) {
+  test('it exists', function (assert) {
     let store = this.owner.lookup('service:store');
     let model = store.createRecord('road-measure-section', {});
     assert.ok(model);
