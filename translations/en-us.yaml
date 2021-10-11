@@ -141,13 +141,20 @@ trafficMeasureConcept:
     mainSign: Possible main signs
     relatedMarking: Related road marking
     sign: Sign
+    signs: Signs
+    addSign: Add sign
     template: Template
+    variable: Variable
+    variables: Variables
+    type: Type
+    updatePreviewEtc: Update Preview / Variables / RDFA Model
   crud:
     create: Create traffic measure
     new: New traffic measure
     noData: No traffic measures
     edit: Edit traffic measure
     delete: Delete traffic measure
+    save: Save traffic measure
     codeFilter: Code
     meaningFilter: Search by meaning
     categoryFilter: Filter by category

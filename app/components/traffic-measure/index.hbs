@@ -5,14 +5,16 @@
     </AuHeading>
     <br><br>
     <AuHeading @level="3" @skin="3">
-      Signs:
+      {{t "trafficMeasureConcept.attr.sign"}}
     </AuHeading>
     <div class="au-o-grid">
       <div class="au-o-grid__item au-u-1-2">
         <AuInput @icon="search" {{on "change" this.updateSearchString}} id="input-signs" @width="block"/>
       </div>
       <div class="au-o-grid__item au-u-1-2">  
-        <AuButton @skin="secondary"  @width="block" {{on "click" (perform this.addSign)}}>Add Sign</AuButton>
+        <AuButton @skin="secondary"  @width="block" {{on "click" (perform this.addSign)}}>
+          {{t "trafficMeasureConcept.attr.addSign"}}
+        </AuButton>
       </div>
     </div>
     <AuHelpText @error={{true}}>{{this.error}}</AuHelpText>
@@ -20,29 +22,33 @@
       {{#each this.signs as |sign|}}
         <div class="sign-container">
           <img src={{sign.image}} alt="" role="presentation" height="50">
-          <button {{on "click" (fn this.removeSign sign)}} class="delete-sign-button">X</button>
+          <button {{on "click" (fn this.removeSign sign)}} type="button" class="delete-sign-button">
+            X
+          </button>
         </div>
       {{/each}}
     </div>
     <br><br>
     {{#if this.signs}}
       <AuHeading @level="3" @skin="3">
-        Template:
+        {{t "trafficMeasureConcept.attr.template"}}
       </AuHeading>
       <AuTextarea id="textarea" @width="block" {{on "change" this.updateTemplate}} @value={{this.template}} style="resize: none; height: 200px;"></AuTextarea>
-      <AuButton @skin="secondary"  @width="block" {{on "click" this.parseTemplate}}>Update Preview / Variables / RDFA Model</AuButton>
+      <AuButton @skin="secondary"  @width="block" {{on "click" this.parseTemplate}}>
+        {{t "trafficMeasureConcept.attr.updatePreviewEtc"}}
+      </AuButton>
     {{/if}}
     {{#if this.variables.length}}
     <br><br>
     <AuHeading @level="3" @skin="3">
-      Variables:
+      {{t "trafficMeasureConcept.attr.variables"}}
     </AuHeading>
       <div class="au-c-data-table__wrapper">
         <table class="au-c-data-table__table">
           <thead class="au-c-data-table__header">
             <tr>
-              <th>Variable</th>
-              <th>Type</th>
+              <th>{{t "trafficMeasureConcept.attr.variable"}}</th>
+              <th>{{t "trafficMeasureConcept.attr.type"}}</th>
             </tr>
           </thead>
           <tbody>
@@ -71,10 +77,10 @@
       @loading={{if this.save.isRunning true false}}
       @disabled={{if this.save.isRunning true false}}
     >
-      Save
+      {{t "trafficMeasureConcept.crud.save"}}
     </AuButton>
     <AuButton  @alert={{true}} @width="block" {{on "click" (perform this.delete)}}>
-      Delete
+      {{t "trafficMeasureConcept.crud.delete"}}
     </AuButton>
     {{/if}}
   </div>
