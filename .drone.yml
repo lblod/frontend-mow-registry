@@ -28,6 +28,17 @@ trigger:
 ---
 kind: pipeline
 type: docker
+name: verify-build
+steps:
+- name: build-dry-run
+  image: plugins/docker
+  settings:
+    repo: lblod/frontend-mow-registry
+    dry_run: true
+    purge: true
+---
+kind: pipeline
+type: docker
 name: push-latest-build
 steps:
 - name: push-latest-build
@@ -41,7 +52,7 @@ steps:
     purge: true
 trigger:
   branch:
-    - main
+    - development
   event:
     exclude:
     - pull_request
@@ -50,12 +61,6 @@ kind: pipeline
 type: docker
 name: release
 steps:
-- name: build-dry-run
-  image: plugins/docker
-  settings:
-    repo: lblod/frontend-mow-registry
-    dry_run: true
-    purge: true
 - name: push-tagged-build
   image: plugins/docker
   settings:
