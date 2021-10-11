@@ -19,7 +19,7 @@
     <div class="signs-container">
       {{#each this.signs as |sign|}}
         <div class="sign-container">
-          <img src={{sign.image}} height="50">
+          <img src={{sign.image}} alt="" role="presentation" height="50">
           <button {{on "click" (fn this.removeSign sign)}} class="delete-sign-button">X</button>
         </div>
       {{/each}}

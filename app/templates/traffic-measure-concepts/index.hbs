@@ -1,7 +1,7 @@
 <AuDataTable
   @content={{this.model}}
   @fields="signs templates"
-  @noDataMessage="Nothing found"
+  @noDataMessage={{t "trafficMeasureConcept.crud.noData"}}
   @size={{this.size}}
   @page={{this.page}}
   @sort={{this.sort}} as |s|
@@ -11,7 +11,7 @@
       <AuToolbar class="au-o-box">
         <AuToolbarGroup>
           <AuHeading @skin="2">
-            Road Measures
+            {{t "trafficMeasureConcept.name"}}
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
@@ -19,7 +19,7 @@
           <div class="au-c-data-table__search traffic-light-code-search">
             <input
               value={{this.code}}
-              placeholder='code'
+              placeholder={{t "trafficMeasureConcept.attr.code"}}
               class="au-c-input au-c-input--block"
               {{on "input" (perform this.updateSearchFilterTask "code")}}
             />
@@ -28,7 +28,7 @@
             </span>
           </div>
           <LinkTo class="au-c-button" @route="traffic-measure-concepts.new">
-            New
+            {{t "trafficMeasureConcept.crud.new"}}
           </LinkTo>
         </AuToolbarGroup>
       </AuToolbar>
@@ -39,13 +39,13 @@
       <AuDataTableThSortable
         @field="label"
         @currentSorting={{this.sort}}
-        @label="name"
+        @label="Name"
       />
       <th>
-        signs
+        {{t "trafficMeasureConcept.attr.sign"}}
       </th>
       <th>
-        template
+        {{t "trafficMeasureConcept.attr.template"}}
       </th>
       <th>
 
@@ -57,7 +57,7 @@
       </td>
       <td>
         {{#each roadMeasure.roadSignConcepts as |sign|}}
-          <img src={{sign.image}} height="50">
+          <img src={{sign.image}} alt="" role="presentation" height="50">
         {{/each}}
       </td>
       <td>
@@ -69,7 +69,7 @@
           @route="traffic-measure-concepts.edit"
           @model={{roadMeasure.id}}
         >
-          Edit
+          {{t "trafficMeasureConcept.crud.edit"}}
         </LinkTo>
       </td>
     </c.body>

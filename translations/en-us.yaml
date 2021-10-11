@@ -140,6 +140,8 @@ trafficMeasureConcept:
     subSign: Possible sub signs
     mainSign: Possible main signs
     relatedMarking: Related road marking
+    sign: Sign
+    template: Template
   crud:
     create: Create traffic measure
     new: New traffic measure
