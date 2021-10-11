@@ -126,7 +126,7 @@ relatedRoadMarking:
   filter:
     code: Search
 
-TrafficMeasureConcept:
+trafficMeasureConcept:
   name: Traffic measure
   details: Traffic mesure details
   attr:

@@ -1,0 +1,12 @@
+{{page-title (t "trafficLightConcept.name")}}
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo @route="traffic-light-concepts.index" class={{linkClass}}>
+    {{t "trafficLightConcept.name"}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<div class="au-c-body-container au-c-body-container--scroll">
+  <NavigationBar />
+  {{outlet}}
+</div>

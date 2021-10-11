@@ -119,7 +119,7 @@ relatedRoadMarking:
   filter:
     code: Zoek
 
-TrafficMeasureConcept:
+trafficMeasureConcept:
   name: Traffic measure
   details: Traffic mesure details
   attr:
