@@ -5,15 +5,15 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default class TrafficMeasureIndexComponent extends Component {
-  constructor(...args){
+  constructor(...args) {
     super(...args);
-    
-    this.roadMeasure=this.args.roadMeasure
-    this.roadMeasureSection=this.roadMeasure.roadMeasureSections.firstObject;
-    
-    this.new=this.args.new;
-    
-    if(!this.new){
+
+    this.roadMeasure = this.args.roadMeasure;
+    this.roadMeasureSection = this.roadMeasure.roadMeasureSections.firstObject;
+
+    this.new = this.args.new;
+
+    if (!this.new) {
       this.fetchData.perform();
     }
   }
@@ -25,8 +25,8 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @tracked roadMeasure;
   @tracked roadMeasureSection;
-  @tracked signs=[];
-  @tracked variables=[];
+  @tracked signs = [];
+  @tracked variables = [];
 
   @tracked searchString;
   @tracked signError;
@@ -34,26 +34,20 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked variables = [];
   @tracked preview;
   @tracked model;
-  @tracked inputTypes=[
-    "text",
-    "number",
-    "date",
-    "location",
-    "codelist"
-  ];
+  @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
-  get label(){
-    let result='';
-    this.signs.forEach(e=>result+=(e.roadSignConceptCode+"-"));
-    result=result.slice(0, -1);
-    return result+=' Traffic Measure';
-  };
+  get label() {
+    let result = '';
+    this.signs.forEach((e) => (result += e.roadSignConceptCode + '-'));
+    result = result.slice(0, -1);
+    return (result += ' Traffic Measure');
+  }
 
-  @task 
-  *fetchData(){
-    this.template=this.roadMeasureSection.template;
-    this.signs=(yield this.roadMeasure.roadSignConcepts).map(e=>e);
-    this.variables=(yield this.roadMeasureSection.variables).map(e=>e);
+  @task
+  *fetchData() {
+    this.template = this.roadMeasureSection.template;
+    this.signs = (yield this.roadMeasure.roadSignConcepts).map((e) => e);
+    this.variables = (yield this.roadMeasureSection.variables).map((e) => e);
     this.parseTemplate();
   }
 
@@ -76,13 +70,13 @@ export default class TrafficMeasureIndexComponent extends Component {
   updateSearchString(event) {
     this.searchString = event.target.value;
   }
-  
+
   @action
   removeSign(sign) {
     this.signs.removeObject(sign);
   }
-  
-  @action 
+
+  @action
   updateTemplate(event) {
     this.template = event.target.value;
   }
@@ -104,20 +98,16 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     //remove non-existing variables from current array
     this.variables = this.variables.filter((variable) => {
-      return filteredRegexResult.find(
-        (fReg) => fReg[1] === variable.label
-      );
+      return filteredRegexResult.find((fReg) => fReg[1] === variable.label);
     });
 
     //add new variables
     filteredRegexResult.forEach((reg) => {
-      if (
-        !this.variables.find((variable) => variable.label === reg[1])
-      ) {
+      if (!this.variables.find((variable) => variable.label === reg[1])) {
         this.variables.pushObject({
           label: reg[1],
           type: 'text',
-          roadMeasureSection: this.roadMeasureSection 
+          roadMeasureSection: this.roadMeasureSection,
         });
       }
     });
@@ -125,16 +115,20 @@ export default class TrafficMeasureIndexComponent extends Component {
     //remove duplicates in case something went wrong
     const filteredVariables = [];
     this.variables.forEach((variable) => {
-      if (!filteredVariables.find((fVariable) => fVariable.label === variable.label)) {
+      if (
+        !filteredVariables.find(
+          (fVariable) => fVariable.label === variable.label
+        )
+      ) {
         filteredVariables.push(variable);
       }
     });
-    this.variables=filteredVariables;
+    this.variables = filteredVariables;
 
     this.generatePreview();
   }
-  
-  @action 
+
+  @action
   generatePreview() {
     this.preview = this.template;
     this.variables.forEach((e) => {
@@ -150,15 +144,19 @@ export default class TrafficMeasureIndexComponent extends Component {
       } else if (e.type === 'codelist') {
         replaceString = "<input type='text'></input>";
       }
-      this.preview = this.preview.replaceAll("${"+e.label+"}", replaceString);
+      this.preview = this.preview.replaceAll(
+        '${' + e.label + '}',
+        replaceString
+      );
     });
     this.generateModel();
   }
 
-  @action 
-  generateModel(){
-    const templateUUid=this.roadMeasure.id;
-    this.model=`
+  @action
+  generateModel() {
+    const templateUUid = this.roadMeasure.id;
+    this.model =
+      `
     PREFIX ex: <http://example.org#>
     PREFIX sh: <http://www.w3.org/ns/shacl#>
     PREFIX oslo: <http://data.vlaanderen.be/ns#>
@@ -166,76 +164,99 @@ export default class TrafficMeasureIndexComponent extends Component {
     INSERT {
     GRAPH <http://mu.semte.ch/application>{
     
-    ex:`+templateUUid+` a ex:TrafficMeasureTemplate ;
-      ex:value "`+this.template+`";
+    ex:` +
+      templateUUid +
+      ` a ex:TrafficMeasureTemplate ;
+      ex:value "` +
+      this.template +
+      `";
       ex:mapping
     `;
-    
-    let varString="";
-    this.variables.forEach(variable=>{
-      varString+=`
+
+    let varString = '';
+    this.variables.forEach((variable) => {
+      varString +=
+        `
         [
-          ex:variable "`+variable.label+`" ;
+          ex:variable "` +
+        variable.label +
+        `" ;
           ex:expects [
             a sh:PropertyShape ;
-              sh:targetClass ex:`+variable.type+` ;
+              sh:targetClass ex:` +
+        variable.type +
+        ` ;
               sh:maxCount 1 ;
           ]
         ],`;
     });
-    varString=varString.slice(0, -1)+'.';
-    
+    varString = varString.slice(0, -1) + '.';
 
-    let signString="";
-    let signIdentifier="";
-    this.signs.forEach(sign=>{
-      signIdentifier+=sign.roadSignConceptCode+'-';
-      signString+=`
+    let signString = '';
+    let signIdentifier = '';
+    this.signs.forEach((sign) => {
+      signIdentifier += sign.roadSignConceptCode + '-';
+      signString +=
+        `
         [
           a ex:MustUseRelation ;
-          ex:signConcept <http://data.vlaanderen.be/id/concept/Verkeersbordconcept/`+sign.id+`> 
+          ex:signConcept <http://data.vlaanderen.be/id/concept/Verkeersbordconcept/` +
+        sign.id +
+        `> 
         ],`;
     });
-    
-    signString=signString.slice(0, -1);
-    signIdentifier=signIdentifier.slice(0, -1);
 
-    this.model+=varString+`
+    signString = signString.slice(0, -1);
+    signIdentifier = signIdentifier.slice(0, -1);
+
+    this.model +=
+      varString +
+      `
 
       ex:Shape#TrafficMeasure a sh:NodeShape;
         sh:targetClass oslo:Verkeersmaatregel;
-        ex:targetHasConcept ex:`+signIdentifier+`MeasureConcept .
+        ex:targetHasConcept ex:` +
+      signIdentifier +
+      `MeasureConcept .
         
-      ex:`+signIdentifier+`MeasureConcept a ex:Concept ;
-        ex:label "`+signIdentifier+` traffic measure";
-        ex:template ex:`+templateUUid+` ;
+      ex:` +
+      signIdentifier +
+      `MeasureConcept a ex:Concept ;
+        ex:label "` +
+      signIdentifier +
+      ` traffic measure";
+        ex:template ex:` +
+      templateUUid +
+      ` ;
         ex:relation `;
-    this.model+=signString+`.
+    this.model +=
+      signString +
+      `.
     }}
     `;
   }
 
-  @task 
-  *delete(){
+  @task
+  *delete() {
     yield this.roadMeasure.destroyRecord();
-    this.router.transitionTo("traffic-measure-concepts.index");
+    this.router.transitionTo('traffic-measure-concepts.index');
   }
 
-  @task 
-  *save(){
+  @task
+  *save() {
     //1-parse everything again
     this.parseTemplate();
     //2-save road measure/section
-    this.roadMeasure.label=this.label;
+    this.roadMeasure.label = this.label;
     this.roadMeasure.roadSignConcepts.pushObjects(this.signs);
     yield this.roadMeasure.save();
-    this.roadMeasureSection.template=this.template;
+    this.roadMeasureSection.template = this.template;
     yield this.roadMeasureSection.save();
-    
+
     //3-handle variables
     yield this.roadMeasureSection.variables;
     //delete existing ones
-    const varLength=this.roadMeasureSection.variables.length;
+    const varLength = this.roadMeasureSection.variables.length;
     for (let i = 0; i < varLength; i++) {
       const variable = yield this.roadMeasureSection.variables.objectAt(0);
       yield variable.destroyRecord();
@@ -243,31 +264,36 @@ export default class TrafficMeasureIndexComponent extends Component {
     //create new ones
     for (let i = 0; i < this.variables.length; i++) {
       const variable = this.variables[i];
-      const newVariable = yield this.store.createRecord('road-measure-variable');
-      
-      newVariable.label=variable.label;
-      newVariable.type=variable.type;
-      newVariable.roadMeasureSection=this.roadMeasureSection
+      const newVariable = yield this.store.createRecord(
+        'road-measure-variable'
+      );
+
+      newVariable.label = variable.label;
+      newVariable.type = variable.type;
+      newVariable.roadMeasureSection = this.roadMeasureSection;
       newVariable.save();
     }
 
     //yield this.saveToDb.perform();
 
-    if (this.new){
-      this.router.transitionTo("traffic-measure-concepts.edit", this.roadMeasure.id);
+    if (this.new) {
+      this.router.transitionTo(
+        'traffic-measure-concepts.edit',
+        this.roadMeasure.id
+      );
     }
   }
 
   @task
-  *saveToDb(){
-    const response=yield fetch('http://localhost:8002/sparql/',{
+  *saveToDb() {
+    const response = yield fetch('http://localhost:8002/sparql/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'application/sparql-results+json'
+        Accept: 'application/sparql-results+json',
       },
-      body: new URLSearchParams({query: this.model}).toString()
+      body: new URLSearchParams({ query: this.model }).toString(),
     });
-    const result=yield response.json();
+    yield response.json();
   }
 }
