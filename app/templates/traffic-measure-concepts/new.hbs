@@ -1,27 +1,21 @@
 {{page-title (t "trafficMeasureConcept.crud.new")}}
 
-{{#let
-  (changeset
-    this.model.newTrafficMeasureConcept this.TrafficMeasureConceptValidations
-  ) as |trafficMeasureConcept|
-}}
-  <BreadcrumbsItem as |linkClass|>
-    <LinkTo @route="traffic-measure-concepts.new" class={{linkClass}}>
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo @route="traffic-measure-concepts.new" class={{linkClass}}>
+    {{t "trafficMeasureConcept.crud.new"}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<AuToolbar @border="bottom" @size="large">
+  <AuToolbarGroup>
+    <AuHeading @skin="2">
       {{t "trafficMeasureConcept.crud.new"}}
-    </LinkTo>
-  </BreadcrumbsItem>
+    </AuHeading>
+  </AuToolbarGroup>
+</AuToolbar>
 
-  <AuToolbar @border="bottom" @size="large">
-    <AuToolbarGroup>
-      <AuHeading @skin="2">
-        {{t "trafficMeasureConcept.crud.new"}}
-      </AuHeading>
-    </AuToolbarGroup>
-  </AuToolbar>
-
-  <div class="au-c-body-container au-c-body-container--scroll">
-    <div class="au-o-box">
-      <TrafficMeasure @roadMeasure={{@model}} @new={{true}}/>
-    </div>
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box">
+    <TrafficMeasure @roadMeasure={{@model}} @new={{true}}/>
   </div>
-{{/let}}
+</div>
