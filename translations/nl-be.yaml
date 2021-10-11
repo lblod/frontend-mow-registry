@@ -140,6 +140,8 @@ trafficMeasureConcept:
     variable: Variable
     variables: Variables
     type: Type
+    preview: Preview
+    rdfaModel: RDFA model
     updatePreviewEtc: Update Preview / Variables / RDFA Model
   crud:
     create: Create traffic measure
