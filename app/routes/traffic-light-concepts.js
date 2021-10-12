@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class RoadSignConceptsRoute extends Route {
+export default class TrafficLightConceptsRoute extends Route {
   @service() session;
 
   beforeModel(transition) {

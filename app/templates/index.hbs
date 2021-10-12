@@ -89,6 +89,32 @@
           </c.footer>
         </AuCard>
       </li>
+      <li class="au-o-grid__item au-u-1-2@medium au-u-1-3@large">
+        <AuCard @flex={{true}} as |c|>
+          <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">
+            <AuHeading @level="2" @skin="4">
+              {{t "trafficMeasureConcept.name"}}
+            </AuHeading>
+            <p>
+              {{t "trafficMeasureConcept.landingPage.subtitle"}}
+            </p>
+          </c.header>
+          <c.content>
+            <p>
+              {{t "trafficMeasureConcept.landingPage.content"}}
+            </p>
+          </c.content>
+          <c.footer>
+            <LinkTo
+              class="au-c-button"
+              @route="traffic-measure-concepts"
+              @query={{hash page=0 search="" category=null}}
+            >
+              {{t "trafficMeasureConcept.landingPage.button"}}
+            </LinkTo>
+          </c.footer>
+        </AuCard>
+      </li>
     </ul>
   </div>
 </div>

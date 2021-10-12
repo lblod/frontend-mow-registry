@@ -1,0 +1,17 @@
+{{page-title (t "trafficMeasureConcept.crud.edit")}}
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo @route="traffic-measure-concepts.edit" class={{linkClass}}>
+    {{t "trafficMeasureConcept.crud.edit"}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<AuToolbar @border="bottom" @size="large">
+  <AuToolbarGroup>
+    <AuHeading @skin="2">
+      {{t "trafficMeasureConcept.crud.edit"}}
+    </AuHeading>
+  </AuToolbarGroup>
+</AuToolbar>
+
+<TrafficMeasure @roadMeasure={{@model}} @new={{false}}/>

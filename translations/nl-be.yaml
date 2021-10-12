@@ -119,6 +119,45 @@ relatedRoadMarking:
   filter:
     code: Zoek
 
+trafficMeasureConcept:
+  name: Traffic measure
+  details: Traffic mesure details
+  attr:
+    imageHeader: Image
+    imageUrl: Image URL
+    meaning: Meaning
+    definition: Definitie
+    code: Code
+    categories: Categories
+    relatedSign: Related road signs
+    subSign: Possible sub signs
+    mainSign: Possible main signs
+    relatedMarking: Related road marking
+    sign: Sign
+    signs: Signs
+    addSign: Add sign
+    template: Template
+    variable: Variable
+    variables: Variables
+    type: Type
+    preview: Preview
+    rdfaModel: RDFA model
+    updatePreviewEtc: Update Preview / Variables / RDFA Model
+  crud:
+    create: Create traffic measure
+    new: New traffic measure
+    noData: No traffic measures
+    edit: Edit traffic measure
+    delete: Delete traffic measure
+    save: Save traffic measure
+    codeFilter: Code
+    meaningFilter: Search by meaning
+    categoryFilter: Filter by category
+  landingPage:
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to Road Markings
+
 subSign:
   filter:
     code: Zoek onderborden op code
