@@ -18,7 +18,7 @@
         </AuButton>
       </div>
     </div>
-    <AuHelpText @error={{true}}>{{this.error}}</AuHelpText>
+    <AuHelpText @error={{true}}>{{this.signError}}</AuHelpText>
     <div class="signs-container">
       {{#each this.signs as |sign|}}
         <div class="sign-container">
@@ -36,12 +36,12 @@
         {{t "trafficMeasureConcept.attr.template"}}
       </AuHeading>
       {{!-- template-lint-disable no-inline-styles --}}
-      <AuTextarea id="textarea" @width="block" {{on "change" this.updateTemplate}} @value={{this.template}} style="resize: none; height: 200px;"></AuTextarea>
+      <AuTextarea id="textarea" @width="block" {{on "change" this.updateTemplate}} @value={{this.template.value}} style="resize: none; height: 200px;"></AuTextarea>
       <AuButton @skin="secondary"  @width="block" {{on "click" this.parseTemplate}}>
         {{t "trafficMeasureConcept.attr.updatePreviewEtc"}}
       </AuButton>
     {{/if}}
-    {{#if this.variables.length}}
+    {{#if this.mappings.length}}
     <br><br>
     <AuHeading @level="3" @skin="3">
       {{t "trafficMeasureConcept.attr.variables"}}
@@ -55,17 +55,17 @@
             </tr>
           </thead>
           <tbody>
-          {{#each this.variables as |variable|}}
+          {{#each this.mappings as |mapping|}}
             <tr>
-              <td>{{variable.label}}</td>
+              <td>{{mapping.variable}}</td>
               {{!-- template-lint-disable no-inline-styles --}}
               <td style="width: 50%;">
                 <PowerSelect
                   @allowClear={{false}}
                   @searchEnabled={{false}}
                   @options={{this.inputTypes}}
-                  @selected={{variable.type}}
-                  @onChange={{fn (mut variable.type)}} as |type|
+                  @selected={{mapping.type}}
+                  @onChange={{fn (mut mapping.type)}} as |type|
                 >
                   {{type}}
                 </PowerSelect>

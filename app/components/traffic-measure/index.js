@@ -8,9 +8,8 @@ export default class TrafficMeasureIndexComponent extends Component {
   constructor(...args) {
     super(...args);
 
-    this.roadMeasure = this.args.roadMeasure;
-    this.roadMeasureSection = this.roadMeasure.roadMeasureSections.firstObject;
-
+    this.nodeShape = this.args.nodeShape;
+    this.template = this.nodeShape.targetHasConcept.get('template');
     this.new = this.args.new;
 
     if (!this.new) {
@@ -22,32 +21,37 @@ export default class TrafficMeasureIndexComponent extends Component {
   @service router;
 
   @tracked new;
-
-  @tracked roadMeasure;
-  @tracked roadMeasureSection;
+  @tracked nodeShape;
   @tracked signs = [];
-  @tracked variables = [];
-
+  @tracked mappings = [];
+  @tracked template;
   @tracked searchString;
   @tracked signError;
-  @tracked template;
-  @tracked variables = [];
   @tracked preview;
   @tracked model;
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
   get label() {
     let result = '';
-    this.signs.forEach((e) => (result += e.roadSignConceptCode + '-'));
+    this.signs.forEach(
+      (e) => (result = `${result}${e.get('roadSignConceptCode')}-`)
+    );
     result = result.slice(0, -1);
-    return (result += ' Traffic Measure');
+    return `${result} Traffic Measure`;
   }
 
   @task
   *fetchData() {
-    this.template = this.roadMeasureSection.template;
-    this.signs = (yield this.roadMeasure.roadSignConcepts).map((e) => e);
-    this.variables = (yield this.roadMeasureSection.variables).map((e) => e);
+    // Wait for data loading
+    const concept = yield this.nodeShape.targetHasConcept;
+    yield concept.relations;
+
+    this.template = yield concept.template;
+    this.signs = yield concept.orderedRelations.map(
+      (relation) => relation.concept
+    );
+    this.mappings = yield this.template.get('mappings');
+
     this.parseTemplate();
   }
 
@@ -60,7 +64,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     if (result.length == 0) {
       this.signError = "Couldn't find this sign";
     } else {
-      this.signError = ' ';
+      this.signError = '';
       this.signs.pushObject(result.firstObject);
     }
   }
@@ -78,7 +82,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @action
   updateTemplate(event) {
-    this.template = event.target.value;
+    this.template.value = event.target.value;
   }
 
   //parsing algo that keeps ui changes in tact
@@ -86,7 +90,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   parseTemplate() {
     //finds non-whitespase characters between ${ and }
     const regex = new RegExp(/\${(\S+?)}/g);
-    const regexResult = [...this.template.matchAll(regex)];
+    const regexResult = [...this.template.value.matchAll(regex)];
 
     //remove duplicates from regex result
     const filteredRegexResult = [];
@@ -96,42 +100,42 @@ export default class TrafficMeasureIndexComponent extends Component {
       }
     });
 
-    //remove non-existing variables from current array
-    this.variables = this.variables.filter((variable) => {
-      return filteredRegexResult.find((fReg) => fReg[1] === variable.label);
+    //remove non-existing variable mappings from current array
+    this.mappings = this.mappings.filter((mapping) => {
+      return filteredRegexResult.find((fReg) => fReg[1] === mapping.variable);
     });
 
-    //add new variables
+    //add new variable mappings
     filteredRegexResult.forEach((reg) => {
-      if (!this.variables.find((variable) => variable.label === reg[1])) {
-        this.variables.pushObject({
-          label: reg[1],
+      if (!this.mappings.find((mapping) => mapping.variable === reg[1])) {
+        this.mappings.pushObject({
+          variable: reg[1],
           type: 'text',
-          roadMeasureSection: this.roadMeasureSection,
+          expects: this.nodeShape,
         });
       }
     });
 
     //remove duplicates in case something went wrong
-    const filteredVariables = [];
-    this.variables.forEach((variable) => {
+    const filteredMappings = [];
+    this.mappings.forEach((mapping) => {
       if (
-        !filteredVariables.find(
-          (fVariable) => fVariable.label === variable.label
+        !filteredMappings.find(
+          (fMapping) => fMapping.variable === mapping.variable
         )
       ) {
-        filteredVariables.push(variable);
+        filteredMappings.push(mapping);
       }
     });
-    this.variables = filteredVariables;
+    this.mappings = filteredMappings;
 
     this.generatePreview();
   }
 
   @action
   generatePreview() {
-    this.preview = this.template;
-    this.variables.forEach((e) => {
+    this.preview = this.template.value;
+    this.mappings.forEach((e) => {
       let replaceString;
       if (e.type === 'text') {
         replaceString = "<input type='text'></input>";
@@ -145,7 +149,7 @@ export default class TrafficMeasureIndexComponent extends Component {
         replaceString = "<input type='text'></input>";
       }
       this.preview = this.preview.replaceAll(
-        '${' + e.label + '}',
+        '${' + e.variable + '}',
         replaceString
       );
     });
@@ -154,7 +158,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @action
   generateModel() {
-    const templateUUid = this.roadMeasure.id;
+    const templateUUid = this.nodeShape.id;
     this.model =
       `
     PREFIX ex: <http://example.org#>
@@ -168,23 +172,23 @@ export default class TrafficMeasureIndexComponent extends Component {
       templateUUid +
       ` a ex:TrafficMeasureTemplate ;
       ex:value "` +
-      this.template +
+      this.template.value +
       `";
       ex:mapping
     `;
 
     let varString = '';
-    this.variables.forEach((variable) => {
+    this.mappings.forEach((mapping) => {
       varString +=
         `
         [
           ex:variable "` +
-        variable.label +
+        mapping.variable +
         `" ;
           ex:expects [
             a sh:PropertyShape ;
               sh:targetClass ex:` +
-        variable.type +
+        mapping.type +
         ` ;
               sh:maxCount 1 ;
           ]
@@ -194,14 +198,15 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     let signString = '';
     let signIdentifier = '';
+
     this.signs.forEach((sign) => {
-      signIdentifier += sign.roadSignConceptCode + '-';
+      signIdentifier += sign.get('roadSignConceptCode') + '-';
       signString +=
         `
         [
           a ex:MustUseRelation ;
           ex:signConcept <http://data.vlaanderen.be/id/concept/Verkeersbordconcept/` +
-        sign.id +
+        sign.get('id') +
         `> 
         ],`;
     });
@@ -238,48 +243,42 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *delete() {
-    yield this.roadMeasure.destroyRecord();
+    yield (yield (yield this.nodeShape.targetHasConcept.get('template')).get(
+      'mappings'
+    )).forEach((mapping) => mapping.destroyRecord());
+    yield (yield this.nodeShape.targetHasConcept.get(
+      'template'
+    )).destroyRecord();
+    yield (yield this.nodeShape.targetHasConcept.get(
+      'relations'
+    )).forEach((relation) => relation.destroyRecord());
+    yield (yield this.nodeShape.targetHasConcept).destroyRecord();
+    yield this.nodeShape.destroyRecord();
     this.router.transitionTo('traffic-measure-concepts.index');
   }
 
   @task
   *save() {
+    const concept = yield this.nodeShape.targetHasConcept;
+    const template = yield concept.template;
+
     //1-parse everything again
     this.parseTemplate();
-    //2-save road measure/section
-    this.roadMeasure.label = this.label;
-    this.roadMeasure.roadSignConcepts.pushObjects(this.signs);
-    yield this.roadMeasure.save();
-    this.roadMeasureSection.template = this.template;
-    yield this.roadMeasureSection.save();
 
-    //3-handle variables
-    yield this.roadMeasureSection.variables;
-    //delete existing ones
-    const varLength = this.roadMeasureSection.variables.length;
-    for (let i = 0; i < varLength; i++) {
-      const variable = yield this.roadMeasureSection.variables.objectAt(0);
-      yield variable.destroyRecord();
-    }
-    //create new ones
-    for (let i = 0; i < this.variables.length; i++) {
-      const variable = this.variables[i];
-      const newVariable = yield this.store.createRecord(
-        'road-measure-variable'
-      );
+    //2-update node shape
+    this.nodeShape.label = this.label;
+    yield this.nodeShape.save();
 
-      newVariable.label = variable.label;
-      newVariable.type = variable.type;
-      newVariable.roadMeasureSection = this.roadMeasureSection;
-      newVariable.save();
-    }
+    //3-update roadsigns
+    yield this.saveRoadsigns.perform(concept);
 
-    //yield this.saveToDb.perform();
+    //4-handle variable mappings
+    yield this.saveMappings.perform(template);
 
     if (this.new) {
       this.router.transitionTo(
         'traffic-measure-concepts.edit',
-        this.roadMeasure.id
+        this.nodeShape.id
       );
     }
   }
@@ -295,5 +294,44 @@ export default class TrafficMeasureIndexComponent extends Component {
       body: new URLSearchParams({ query: this.model }).toString(),
     });
     yield response.json();
+  }
+
+  @task
+  *saveRoadsigns(concept) {
+    // delete existing ones
+    for (let i = 0; i < concept.relations.length; i++) {
+      const relation = concept.relations.objectAt(0);
+      yield relation.destroyRecord();
+    }
+    // creating signs
+    concept.relations = [];
+    for (let i = 0; i < this.signs.length; i++) {
+      const mustUseRelation = this.store.createRecord('must-use-relation');
+      mustUseRelation.concept = this.signs[i];
+      mustUseRelation.order = i;
+      concept.relations.pushObject(mustUseRelation);
+      yield mustUseRelation.save();
+    }
+    yield concept.save();
+  }
+
+  @task
+  *saveMappings(template) {
+    const mappings = yield template.mappings;
+    //delete existing ones
+    for (let i = 0; i < mappings.length; i++) {
+      const mapping = mappings.objectAt(0);
+      yield mapping.destroyRecord();
+    }
+    //create new ones
+    for (let i = 0; i < this.mappings.length; i++) {
+      const mapping = this.mappings[i];
+      const newMapping = yield this.store.createRecord('mapping');
+      newMapping.variable = mapping.variable;
+      newMapping.type = mapping.type;
+      template.mappings.pushObject(newMapping);
+      yield newMapping.save();
+    }
+    yield template.save();
   }
 }
