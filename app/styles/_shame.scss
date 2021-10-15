@@ -2,13 +2,6 @@
   border: .3rem solid $au-red-600;
 }
 
-// .road-sign-concept-details {
-//   .au-c-data-table {
-//     overflow: visible;
-//     height: auto;
-//   }
-// }
-
 // Loket seems to add this class so we mimic it here, but I'm sure there is a solution we can add to Appuniversum
 .au-c-toolbar__group--row {
   display: block;
@@ -96,8 +89,7 @@ td {
   width: 1px !important;
 }
 
-
-
+// Sign container
 .au-c-sign-container {
   position: relative;
   padding: $au-unit-small;
