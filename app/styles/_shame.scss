@@ -142,3 +142,14 @@ td {
 .au-c-pre {
   white-space: pre-wrap;
 }
+
+.au-o-grid--split {
+  @include mq(medium) {
+    height: 100%;
+    overflow: hidden;
+
+    > .au-o-grid__item {
+      height: 100%;
+    }
+  }
+}
