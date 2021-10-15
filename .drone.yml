@@ -16,12 +16,6 @@ steps:
   failure: ignore
   commands:
   - npm run test:ember
-- name: build-dry-run
-  image: plugins/docker
-  settings:
-    repo: lblod/frontend-mow-registry
-    dry_run: true
-    purge: true
 trigger:
   event:
     - pull_request
