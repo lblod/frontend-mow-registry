@@ -1,10 +1,16 @@
 {{page-title (t "utility.appName")}}
 
-<AuMainHeader
-  @brandLink="https://www.vlaanderen.be/nl"
-  @homeRoute="index"
-  @appTitle="MOW Registry"
-/>
+<AuMainHeader @brandLink="https://www.vlaanderen.be/nl" @homeRoute="index" @appTitle={{t "utility.appName"}}>
+    {{#if this.session.isAuthenticated}}
+      <AuButton @skin="tertiary" role="menuitem" {{on "click" this.logout}}>
+        <AuIcon @icon="logout" @alignment="left" />Afmelden
+      </AuButton>
+    {{else}}
+      <AuLink @route="mock-login">
+        Aanmelden
+      </AuLink>
+    {{/if}}
+</AuMainHeader>
 
 <main id="main" class="au-c-main-container">
   <div
