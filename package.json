@@ -79,5 +79,7 @@
   "ember": {
     "edition": "octane"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@triply/yasgui": "^4.2.20"
+  }
 }

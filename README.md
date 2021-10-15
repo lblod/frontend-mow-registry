@@ -55,3 +55,9 @@ Specify what it takes to deploy your app.
 * Development Browser Extensions
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+
+## Relavant Addons
+
+#### [@triply/yasgui](https://github.com/TriplyDB/yasgui)
+
+The  yasgui  addon that gives you a sparql interface when visiting  `http://localhost/sparql`  .

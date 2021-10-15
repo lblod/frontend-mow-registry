@@ -187,3 +187,6 @@ relatedRoadSign:
 
 mockLogin:
     pick: Kies een bestuurseenheid om mee in te loggen.
+
+sparql:
+    name: 'MOW Registry: SPARQL'

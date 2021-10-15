@@ -185,3 +185,6 @@ mainSign:
 
 mockLogin:
     pick: Choose an account to log in with.
+
+sparql:
+    name: 'MOW Registry: SPARQL'
