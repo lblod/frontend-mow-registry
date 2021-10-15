@@ -27,13 +27,12 @@
             </p>
           </c.content>
           <c.footer>
-            <LinkTo
-              class="au-c-button"
-              @route="road-sign-concepts"
+            <AuLink
+              @linkRoute="road-sign-concepts"
               @query={{hash page=0 search="" category=null}}
-            >
+              @skin="button">
               {{t "roadSignConcept.landingPage.button"}}
-            </LinkTo>
+            </AuLink>
           </c.footer>
         </AuCard>
       </li>
@@ -53,13 +52,12 @@
             </p>
           </c.content>
           <c.footer>
-            <LinkTo
-              class="au-c-button"
-              @route="road-marking-concepts"
+            <AuLink
+              @linkRoute="road-marking-concepts"
               @query={{hash page=0 search="" category=null}}
-            >
+              @skin="button">
               {{t "roadMarkingConcept.landingPage.button"}}
-            </LinkTo>
+            </AuLink>
           </c.footer>
         </AuCard>
       </li>
@@ -79,13 +77,12 @@
             </p>
           </c.content>
           <c.footer>
-            <LinkTo
-              class="au-c-button"
-              @route="traffic-light-concepts"
+            <AuLink
+              @linkRoute="traffic-light-concepts"
               @query={{hash page=0 search="" category=null}}
-            >
+              @skin="button">
               {{t "trafficLightConcept.landingPage.button"}}
-            </LinkTo>
+            </AuLink>
           </c.footer>
         </AuCard>
       </li>
@@ -105,13 +102,12 @@
             </p>
           </c.content>
           <c.footer>
-            <LinkTo
-              class="au-c-button"
-              @route="traffic-measure-concepts"
+            <AuLink
+              @linkRoute="traffic-measure-concepts"
               @query={{hash page=0 search="" category=null}}
-            >
+              @skin="button">
               {{t "trafficMeasureConcept.landingPage.button"}}
-            </LinkTo>
+            </AuLink>
           </c.footer>
         </AuCard>
       </li>

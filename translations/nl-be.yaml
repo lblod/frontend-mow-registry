@@ -123,6 +123,7 @@ trafficMeasureConcept:
   name: Traffic measure
   details: Traffic mesure details
   attr:
+    trafficSign: Verkeersteken
     imageHeader: Image
     imageUrl: Image URL
     meaning: Meaning

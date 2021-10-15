@@ -15,101 +15,110 @@
     class="au-o-grid__item {{
       if
       this.showSidebar
-      "au-u-3-5@medium au-u-visible-medium-up"
+      "au-u-3-5@medium au-u-visible-from@medium"
       "au-u-1-1@medium"
     }}"
   >
-    <div class="au-c-body-container">
+    <div class="au-c-body-container  au-c-body-container--scroll">
+      <AuToolbar @size="large">
+        <AuToolbarGroup>
+          <AuHeading @skin="2">
+            {{t "trafficLightConcept.details"}}
+          </AuHeading>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuToolbar @size="medium">
+        <AuToolbarGroup class="au-c-toolbar__group--row">
+          <ul class="au-o-grid">
+            <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+              <img
+                class="au-c-thumbnail au-c-thumbnail--full"
+                alt=""
+                role="presentation"
+                src={{@model.trafficLightConcept.image}}
+              />
+            </li>
+            <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+              <AuLabel>
+                {{t "trafficLightConcept.attr.code"}}
+              </AuLabel>
+              <p>
+                {{@model.trafficLightConcept.trafficLightConceptCode}}
+              </p>
+            </li>
+            <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
+              <AuLabel>
+                {{t "trafficLightConcept.attr.definition"}}
+              </AuLabel>
+              <p>
+                {{@model.trafficLightConcept.definition}}
+              </p>
+            </li>
+            <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
+              <AuLabel>
+                {{t "trafficLightConcept.attr.meaning"}}
+              </AuLabel>
+              <p>
+                {{@model.trafficLightConcept.meaning}}
+              </p>
+            </li>
+          </ul>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuToolbar @border="bottom" @size="large">
+        <AuToolbarGroup>
+          <AuLink
+            @skin="button"
+            @linkRoute="traffic-light-concepts.edit"
+            @model={{@model.trafficLightConcept.id}}
+          >
+            {{t "trafficLightConcept.crud.edit"}}
+          </AuLink>
+          <AuButton
+            @skin="secondary"
+            @alert={{true}}
+            {{on "click" (fn (mut this.isOpen) true)}}
+          >
+            {{t "trafficLightConcept.crud.delete"}}
+          </AuButton>
+          <AuModal
+            @modalTitle={{t "utility.confirmation.title"}}
+            @modalOpen={{this.isOpen}}
+            @closeModal={{fn (mut this.isOpen) false}} as |Modal|
+          >
+            <Modal.Body>
+              <p>
+                {{t "utility.confirmation.body"}}
+              </p>
+            </Modal.Body>
+            <Modal.Footer>
+              <AuButton
+                @alert={{true}}
+                {{on
+                  "click"
+                  (fn
+                    this.removeTrafficLightConcept @model.trafficLightConcept
+                  )
+                }}
+              >
+                {{t "trafficLightConcept.crud.delete"}}
+              </AuButton>
+              <AuButton
+                @skin="secondary"
+                {{on
+                  "click"
+                  (fn (mut this.isOpen) false)
+                }}
+              >
+                {{t "utility.cancel"}}
+              </AuButton>
+            </Modal.Footer>
+          </AuModal>
+        </AuToolbarGroup>
+      </AuToolbar>
       <div
-        class="au-c-body-container au-c-body-container--scroll traffic-light-concept-details"
+        class="au-c-body-container au-c-body-container--scroll"
       >
-        <AuToolbar @size="large">
-          <AuToolbarGroup>
-            <AuHeading @skin="2">
-              {{t "trafficLightConcept.details"}}
-            </AuHeading>
-          </AuToolbarGroup>
-        </AuToolbar>
-        <AuToolbar @size="medium">
-          <AuToolbarGroup class="au-c-toolbar__group--row">
-            <ul class="au-o-grid">
-              <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-                <img
-                  class="traffic-light-image"
-                  alt=""
-                  role="presentation"
-                  src={{@model.trafficLightConcept.image}}
-                />
-              </li>
-              <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-                <AuLabel>
-                  {{t "trafficLightConcept.attr.code"}}
-                </AuLabel>
-                <p>
-                  {{@model.trafficLightConcept.trafficLightConceptCode}}
-                </p>
-              </li>
-              <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
-                <AuLabel>
-                  {{t "trafficLightConcept.attr.definition"}}
-                </AuLabel>
-                <p>
-                  {{@model.trafficLightConcept.definition}}
-                </p>
-              </li>
-              <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
-                <AuLabel>
-                  {{t "trafficLightConcept.attr.meaning"}}
-                </AuLabel>
-                <p>
-                  {{@model.trafficLightConcept.meaning}}
-                </p>
-              </li>
-            </ul>
-          </AuToolbarGroup>
-        </AuToolbar>
-        <AuToolbar @border="bottom" @size="large">
-          <AuToolbarGroup>
-            <LinkTo
-              class="au-c-button"
-              @route="traffic-light-concepts.edit"
-              @model={{@model.trafficLightConcept.id}}
-            >
-              {{t "trafficLightConcept.crud.edit"}}
-            </LinkTo>
-
-            <AuButton
-              @alert={{true}}
-              {{on "click" (fn (mut this.isOpen) true)}}
-            >
-              {{t "trafficLightConcept.crud.delete"}}
-            </AuButton>
-            <AuModal
-              @modalTitle={{t "utility.confirmation.title"}}
-              @modalOpen={{this.isOpen}}
-              @closeModal={{fn (mut this.isOpen) false}} as |Modal|
-            >
-              <Modal.Body>
-                <p>
-                  {{t "utility.confirmation.body"}}
-                </p>
-              </Modal.Body>
-              <Modal.Footer>
-                <AuButton
-                  @alert={{true}}
-                  {{on
-                    "click"
-                    (fn
-                      this.removeTrafficLightConcept @model.trafficLightConcept
-                    )
-                  }}
-                >
-                  {{t "trafficLightConcept.crud.delete"}}
-                </AuButton>
-              </Modal.Footer>
-            </AuModal>
-          </AuToolbarGroup>
-        </AuToolbar>
         <AuDataTable
           @content={{
             sort-by-traffic-light-code
@@ -117,7 +126,7 @@
           }}
           @fields="Image Meaning Code"
           @noDataMessage={{t "trafficLightConcept.crud.noData"}}
-          class="container-flex--contain table-no-overflow" as |s|
+          as |s|
         >
           <s.menu as |menu|>
             <menu.general>
@@ -158,7 +167,7 @@
               </td>
               <td>
                 <img
-                  class="traffic-light-image"
+                  class="au-c-thumbnail"
                   src={{relatedTrafficLightConcept.image}}
                   alt=""
                   role="presentation"
@@ -243,8 +252,7 @@
               class="au-c-action-sidebar__item"
             />
           {{/each}}
-        </div>
-        <div class="au-c-body-container au-c-body-container--scroll">
+
           {{#if this.category}}
             {{#each
               (sort-by-traffic-light-code

@@ -130,6 +130,7 @@ trafficMeasureConcept:
   name: Traffic measure
   details: Traffic mesure details
   attr:
+    trafficSign: Traffic sign
     imageHeader: Image
     imageUrl: Image URL
     definition: Defenition
