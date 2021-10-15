@@ -96,9 +96,17 @@ td {
   width: 1px !important;
 }
 
-.delete-sign-button {
+
+
+.au-c-sign-container {
+  position: relative;
+  padding: $au-unit-small;
+  height: 100%;
+}
+
+.au-c-sign-container__delete {
   position: absolute;
-  color: red;
+  color: $au-red-600;
   font-weight: bold;
   font-size: 12px;
   border: none;
@@ -106,18 +114,6 @@ td {
   margin: none;
   right: 0;
   top: 0;
-}
-
-.sign-container {
-  width: fit-content;
-  height: fit-content;
-  position: relative;
-  padding: 10px;
-}
-
-.signs-container {
-  display: flex;
-  flex-direction: row;
 }
 
 
@@ -132,4 +128,17 @@ td {
 // Smaller font size for the breadcrumbs toolbar
 .au-c-toolbar--breadcrumbs {
   font-size: $au-base;
+}
+
+// Theme
+.au-c-theme-gray-100 {
+  background-color: $au-gray-100;
+}
+
+.au-c-theme-gray-200 {
+  background-color: $au-gray-200;
+}
+
+.au-c-pre {
+  white-space: pre-wrap;
 }

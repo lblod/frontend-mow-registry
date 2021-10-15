@@ -1,111 +1,144 @@
-<div class="au-o-grid">
+<div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
   {{!-- template-lint-disable no-inline-styles --}}
-  <div class="au-o-grid__item au-u-1-2" style="padding:50px">
-    <AuHeading @level="2" @skin="2">
-      {{this.label}}
-    </AuHeading>
-    <br><br>
-    <AuHeading @level="3" @skin="3">
-      {{t "trafficMeasureConcept.attr.sign"}}
-    </AuHeading>
-    <div class="au-o-grid">
-      <div class="au-o-grid__item au-u-1-2">
-        <AuInput @icon="search" {{on "change" this.updateSearchString}} id="input-signs" @width="block"/>
+  <div class="au-o-grid__item au-u-1-2@medium">
+    <div class="au-o-box au-c-body-container au-c-body-container--scroll au-c-body-container--table">
+      <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
+        {{this.label}}
+      </AuHeading>
+      <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
+        {{t "trafficMeasureConcept.attr.sign"}}
+      </AuHeading>
+      <div class="au-o-grid au-o-grid--tiny">
+        <div class="au-o-grid__item au-u-1-2">
+          <AuInput @icon="search" {{on "change" this.updateSearchString}} id="input-signs" @width="block"/>
+        </div>
+        <div class="au-o-grid__item au-u-1-2">
+          <AuButton @width="block" {{on "click" (perform this.addSign)}}>
+            {{t "trafficMeasureConcept.attr.addSign"}}
+          </AuButton>
+        </div>
       </div>
-      <div class="au-o-grid__item au-u-1-2">  
-        <AuButton @skin="secondary"  @width="block" {{on "click" (perform this.addSign)}}>
-          {{t "trafficMeasureConcept.attr.addSign"}}
+      <AuHelpText @error={{true}}>{{this.error}}</AuHelpText>
+      <div class="au-c-theme-gray-100 au-c-card au-o-box au-o-box--small au-u-margin-bottom">
+        <ul class="au-c-list-horizontal">
+          {{#each this.signs as |sign|}}
+          <li class="au-c-list-horizontal__item au-c-sign-container">
+            <img src={{sign.image}} alt="" role="presentation" class="au-c-thumbnail">
+            {{!-- template-lint-disable no-bare-strings --}}
+            <button {{on "click" (fn this.removeSign sign)}} type="button" class="au-c-sign-container__delete">
+              <AuIcon @icon="cross" />
+              <span class="au-u-hidden-visually">{{t "utility.delete"}}</span>
+            </button>
+          </li>
+          {{/each}}
+         </ul>
+      </div>
+      {{#if this.signs}}
+      <div class="au-u-margin-bottom">
+        <AuHeading @level="4" @skin="4"  class="au-u-margin-bottom-small">
+          {{t "trafficMeasureConcept.attr.template"}}
+        </AuHeading>
+        {{!-- template-lint-disable no-inline-styles --}}
+        <AuTextarea id="textarea" @width="block" {{on "change" this.updateTemplate}} @value={{this.template}} style="resize: none; height: 200px;" class="au-u-margin-bottom-small"></AuTextarea>
+        <AuButton @skin="secondary"  @width="block" {{on "click" this.parseTemplate}}>
+          {{t "trafficMeasureConcept.attr.updatePreviewEtc"}}
         </AuButton>
       </div>
-    </div>
-    <AuHelpText @error={{true}}>{{this.error}}</AuHelpText>
-    <div class="signs-container">
-      {{#each this.signs as |sign|}}
-        <div class="sign-container">
-          <img src={{sign.image}} alt="" role="presentation" height="50">
-          {{!-- template-lint-disable no-bare-strings --}}
-          <button {{on "click" (fn this.removeSign sign)}} type="button" class="delete-sign-button">
-            X
-          </button>
-        </div>
-      {{/each}}
-    </div>
-    <br><br>
-    {{#if this.signs}}
-      <AuHeading @level="3" @skin="3">
-        {{t "trafficMeasureConcept.attr.template"}}
+      {{/if}}
+      {{#if this.variables.length}}
+      <AuHeading @level="4" @skin="4"  class="au-u-margin-bottom-small">
+        {{t "trafficMeasureConcept.attr.variables"}}
       </AuHeading>
-      {{!-- template-lint-disable no-inline-styles --}}
-      <AuTextarea id="textarea" @width="block" {{on "change" this.updateTemplate}} @value={{this.template}} style="resize: none; height: 200px;"></AuTextarea>
-      <AuButton @skin="secondary"  @width="block" {{on "click" this.parseTemplate}}>
-        {{t "trafficMeasureConcept.attr.updatePreviewEtc"}}
-      </AuButton>
-    {{/if}}
-    {{#if this.variables.length}}
-    <br><br>
-    <AuHeading @level="3" @skin="3">
-      {{t "trafficMeasureConcept.attr.variables"}}
-    </AuHeading>
-      <div class="au-c-data-table__wrapper">
-        <table class="au-c-data-table__table">
-          <thead class="au-c-data-table__header">
-            <tr>
-              <th>{{t "trafficMeasureConcept.attr.variable"}}</th>
-              <th>{{t "trafficMeasureConcept.attr.type"}}</th>
-            </tr>
-          </thead>
-          <tbody>
-          {{#each this.variables as |variable|}}
-            <tr>
-              <td>{{variable.label}}</td>
-              {{!-- template-lint-disable no-inline-styles --}}
-              <td style="width: 50%;">
-                <PowerSelect
-                  @allowClear={{false}}
-                  @searchEnabled={{false}}
-                  @options={{this.inputTypes}}
-                  @selected={{variable.type}}
-                  @onChange={{fn (mut variable.type)}} as |type|
-                >
-                  {{type}}
-                </PowerSelect>
-              </td>
-            </tr>
-          {{/each}}
-          </tbody>
-        </table>
+      <div class="au-c-card">
+        <div class="au-data-table">
+          <div class="au-c-data-table__wrapper">
+            <table class="au-c-data-table__table">
+              <thead class="au-c-data-table__header">
+                <tr>
+                  <th>{{t "trafficMeasureConcept.attr.variable"}}</th>
+                  <th>{{t "trafficMeasureConcept.attr.type"}}</th>
+                </tr>
+              </thead>
+              <tbody>
+              {{#each this.variables as |variable|}}
+                <tr>
+                  <td>{{variable.label}}</td>
+                  {{!-- template-lint-disable no-inline-styles --}}
+                  <td style="width: 50%;">
+                    <PowerSelect
+                      @allowClear={{false}}
+                      @searchEnabled={{false}}
+                      @options={{this.inputTypes}}
+                      @selected={{variable.type}}
+                      @onChange={{fn (mut variable.type)}} as |type|
+                    >
+                      {{type}}
+                    </PowerSelect>
+                  </td>
+                </tr>
+              {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    <AuButton  
-      @width="block" 
-      {{on "click" (perform this.save)}}
-      @loading={{if this.save.isRunning true false}}
-      @disabled={{if this.save.isRunning true false}}
-    >
-      {{t "trafficMeasureConcept.crud.save"}}
-    </AuButton>
-    <AuButton  @alert={{true}} @width="block" {{on "click" (perform this.delete)}}>
-      {{t "trafficMeasureConcept.crud.delete"}}
-    </AuButton>
-    {{/if}}
+      {{/if}}
+    </div>
   </div>
 
   {{!-- template-lint-disable no-inline-styles --}}
-  <div class="au-o-grid__item au-u-1-2" style="padding:50px; background-color:#eeeeee">
-    <AuHeading @level="3" @skin="3">
-      {{t "trafficMeasureConcept.attr.preview"}}
-    </AuHeading>
-    {{#each this.signs as |sign|}}
-      <img src={{sign.image}} alt="" role="presentation" height="50">
-    {{/each}}
-    <br><br>
-    {{!-- template-lint-disable no-triple-curlies --}}
-    {{{this.preview}}}
-    <br><br>
-    <AuHeading @level="3" @skin="3">
-      {{t "trafficMeasureConcept.attr.rdfaModel"}}
-    </AuHeading>
-    <pre>
-      {{this.model}}
-    </pre>
+  <div class="au-o-grid__item au-u-1-2@medium">
+    <div class="au-o-box au-c-body-container au-c-body-container--scroll au-c-theme-gray-100">
+      <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
+        {{t "trafficMeasureConcept.attr.preview"}}
+      </AuHeading>
+      <div class="au-u-margin-bottom">
+      {{#each this.signs as |sign|}}
+        <img src={{sign.image}} alt="" role="presentation" class="au-c-thumbnail">
+      {{/each}}
+      </div>
+      {{!-- template-lint-disable no-triple-curlies --}}
+      <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
+        {{t "trafficMeasureConcept.attr.template"}}
+      </AuHeading>
+      <div class="au-o-box au-o-box--small au-c-theme-gray-200 au-u-margin-bottom">
+        {{{this.preview}}}
+      </div>
+      <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
+        {{t "trafficMeasureConcept.attr.rdfaModel"}}
+      </AuHeading>
+      <pre class="au-c-pre au-u-word-break-all au-c-theme-gray-200">
+        {{this.model}}
+      </pre>
+    </div>
   </div>
 </div>
+
+<AuToolbar @border="top" @size="large">
+  <AuToolbarGroup>
+    {{#if this.variables.length}}
+    <AuButtonGroup>
+      <AuButton
+        {{on "click" (perform this.save)}}
+        @loading={{if this.save.isRunning true false}}
+        @disabled={{if this.save.isRunning true false}}
+      >
+        {{t "trafficMeasureConcept.crud.save"}}
+      </AuButton>
+      <AuButton  @alert={{true}} @skin="secondary" {{on "click" (perform this.delete)}}>
+        {{t "trafficMeasureConcept.crud.delete"}}
+      </AuButton>
+    </AuButtonGroup>
+    {{/if}}
+  </AuToolbarGroup>
+  <AuToolbarGroup>
+    <AuButtonGroup>
+      <AuLink
+        @skin="button-secondary"
+        @linkRoute="traffic-measure-concepts.index"
+      >
+        {{t "utility.cancel"}}
+      </AuLink>
+    </AuButtonGroup>
+  </AuToolbarGroup>
+</AuToolbar>
