@@ -1,7 +1,8 @@
-import Model, { attr, hasMany } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
 
 export default class RelationModel extends Model {
-  @attr('integer') expectedNumber;
+  @attr('number') expectedNumber;
   @attr('string') reason;
-  @hasMany('concept') concept;
+  @attr('number') order;
+  @belongsTo('concept', { inverse: null }) concept;
 }

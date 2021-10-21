@@ -84,7 +84,7 @@
 @import "ember-appuniversum/c-toolbar";
 @import "breadcrumbs";
 @import "input-file";
-@import "road-sign-image";
+@import "thumbnail";
 
 
 // PLUGINS
@@ -94,6 +94,8 @@
 
 // UTILITIES
 @import "appuniversum/u-align-text";
+@import "appuniversum/u-background";
+@import "appuniversum/u-break-word";
 @import "appuniversum/u-headings";
 @import "appuniversum/u-hide";
 @import "appuniversum/u-font-family";

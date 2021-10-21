@@ -1,6 +1,8 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
+const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
+
 export default class TrafficMeasureConceptsIndexRoute extends Route {
   @service store;
 
@@ -25,6 +27,9 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
       query['filter[label]'] = params.code;
     }
 
-    return await this.store.query('road-measure', query);
+    // We only want node shapes that are targetting a traffic measure
+    query['filter[targetClass][:id:]'] = TRAFFIC_MEASURE_RESOURCE_UUID;
+
+    return await this.store.query('node-shape', query);
   }
 }

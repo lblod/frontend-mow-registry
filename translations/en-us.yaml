@@ -1,4 +1,6 @@
 utility:
+  login: Login
+  logout: Logout
   backToOverview: Back to overview
   view: View
   save: Save
@@ -130,6 +132,7 @@ trafficMeasureConcept:
   name: Traffic measure
   details: Traffic mesure details
   attr:
+    trafficSign: Traffic sign
     imageHeader: Image
     imageUrl: Image URL
     definition: Defenition

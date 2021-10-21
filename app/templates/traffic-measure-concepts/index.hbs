@@ -51,23 +51,23 @@
 
       </th>
     </c.header>
-    <c.body as |roadMeasure|>
+    <c.body as |nodeShape|>
       <td>
-        {{roadMeasure.label}}
+        {{nodeShape.label}}
       </td>
       <td>
-        {{#each roadMeasure.roadSignConcepts as |sign|}}
-          <img src={{sign.image}} alt="" role="presentation" height="50">
+        {{#each nodeShape.targetHasConcept.orderedRelations as |relation|}}
+          <img src={{relation.concept.image}} alt="" role="presentation" height="50">
         {{/each}}
       </td>
       <td>
-        {{roadMeasure.roadMeasureSections.firstObject.template}}
+        {{nodeShape.targetHasConcept.template.value}}
       </td>
       <td>
         <LinkTo
           class="au-c-link"
           @route="traffic-measure-concepts.edit"
-          @model={{roadMeasure.id}}
+          @model={{nodeShape.id}}
         >
           {{t "trafficMeasureConcept.crud.edit"}}
         </LinkTo>

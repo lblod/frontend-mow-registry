@@ -1,0 +1,11 @@
+<div class="au-o-grid au-o-grid--tiny">
+  <div class="au-o-grid__item au-u-1-5">
+    <AuInput @icon="search" {{on "change" @updateSearchString}} id="input-signs" @width="block"/>
+  </div>
+  <div class="au-o-grid__item au-u-1-2">
+    <AuButton @width="block" {{on "click" @addSign}}>
+      {{t "trafficMeasureConcept.attr.addSign"}}
+    </AuButton>
+  </div>
+</div>
+<AuHelpText @error={{true}}>{{@error}}</AuHelpText>
