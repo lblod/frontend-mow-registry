@@ -93,7 +93,6 @@
 </div>
 <AuToolbar @border="top" @size="large">
   <AuToolbarGroup>
-    {{#if this.variables.length}}
     <AuButtonGroup>
       <AuButton
         {{on "click" (perform this.save)}}
@@ -106,7 +105,6 @@
         {{t "trafficMeasureConcept.crud.delete"}}
       </AuButton>
     </AuButtonGroup>
-    {{/if}}
   </AuToolbarGroup>
   <AuToolbarGroup>
     <AuButtonGroup>
