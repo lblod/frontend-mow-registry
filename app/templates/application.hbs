@@ -3,11 +3,11 @@
 <AuMainHeader @brandLink="https://www.vlaanderen.be/nl" @homeRoute="index" @appTitle={{t "utility.appName"}}>
     {{#if this.session.isAuthenticated}}
       <AuButton @skin="tertiary" role="menuitem" {{on "click" this.logout}}>
-        <AuIcon @icon="logout" @alignment="left" />Afmelden
+        <AuIcon @icon="logout" @alignment="left" />{{t "utility.logout"}}
       </AuButton>
     {{else}}
       <AuLink @route="mock-login">
-        Aanmelden
+        {{t "utility.login"}}
       </AuLink>
     {{/if}}
 </AuMainHeader>

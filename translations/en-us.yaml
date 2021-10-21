@@ -1,4 +1,6 @@
 utility:
+  login: Login
+  logout: Logout
   backToOverview: Back to overview
   view: View
   save: Save

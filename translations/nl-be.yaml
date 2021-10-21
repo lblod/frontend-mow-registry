@@ -1,4 +1,6 @@
 utility:
+  login: Aanmelden
+  logout: Afmelden
   backToOverview: Naar het overzicht
   view: Bekijk
   save: Opslaan
