@@ -117,6 +117,27 @@ td {
   }
 }
 
+.signs-container {
+  display: flex;
+  flex-direction: row;
+}
+
+/* fix the table for the sparql querier */
+
+table.dataTable tbody td,
+table.dataTable tbody th {
+	min-width: 2rem;
+}
+
+.yasgui .controlbar {
+	justify-content: flex-end;
+	margin-bottom: 1rem;
+}
+
+.yasgui .autocompleteWrapper {
+  display: none !important;
+}
+
 // Smaller font size for the breadcrumbs toolbar
 .au-c-toolbar--breadcrumbs {
   font-size: $au-base;

@@ -149,4 +149,6 @@ mainSign:
     addOne: Add main sign
     delete: Remove main sign
 mockLogin:
-  pick: Choose an account to log in with.
+    pick: Choose an account to log in with.
+sparql:
+    name: 'MOW Registry: SPARQL'

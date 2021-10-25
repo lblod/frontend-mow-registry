@@ -149,4 +149,6 @@ relatedRoadSign:
     addOne: Gerelateerd verkeersbord toevoegen
     delete: Gerelateerd verkeersbord verwijderen
 mockLogin:
-  pick: Kies een bestuurseenheid om mee in te loggen.
+    pick: Kies een bestuurseenheid om mee in te loggen.
+sparql:
+    name: 'MOW Register: SPARQL'
