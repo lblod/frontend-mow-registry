@@ -89,7 +89,6 @@
 <AuToolbar @border="top" @size="large">
   <AuToolbarGroup>
     <AuButtonGroup>
-      {{#if this.signs.length}}
         <AuButton
           {{on "click" (perform this.save)}}
           @loading={{if this.save.isRunning true false}}
@@ -97,7 +96,6 @@
         >
           {{t "trafficMeasureConcept.crud.save"}}
         </AuButton>
-      {{/if}}
       {{#unless this.new}}
         <AuButton  @alert={{true}} @skin="secondary" {{on "click" (perform this.delete)}}>
           {{t "trafficMeasureConcept.crud.delete"}}
