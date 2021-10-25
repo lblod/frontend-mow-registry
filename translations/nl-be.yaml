@@ -123,17 +123,17 @@ relatedRoadMarking:
     code: Zoek
 
 trafficMeasureConcept:
-  name: Traffic measure
-  details: Traffic mesure details
+  name: Mobiliteitsmaatregel
+  details: Mobiliteitsmaatregel
   attr:
     trafficSign: Verkeersteken
-    imageHeader: Image
-    imageUrl: Image URL
-    meaning: Meaning
+    imageHeader: Afbeelding
+    imageUrl: Afbeelding URL
+    meaning: Betekenis
     definition: Definitie
     code: Code
-    categories: Categories
-    relatedSign: Related road signs
+    categories: Categorieën
+    relatedSign: gerelateerde verkeerstekens
     subSign: Possible sub signs
     mainSign: Possible main signs
     relatedMarking: Related road marking
@@ -148,22 +148,22 @@ trafficMeasureConcept:
     rdfaModel: RDFA model
     updatePreviewEtc: Update Preview / Variables / RDFA Model
   crud:
-    create: Create traffic measure
-    new: New traffic measure
-    noData: No traffic measures
-    edit: Edit traffic measure
-    delete: Delete traffic measure
-    save: Save traffic measure
+    create: Mobiliteitsmaatregel bewaren
+    new: Nieuwe mobiliteitsmaatregel
+    noData: Geen mobiliteitsmaatregelen
+    edit: Mobiliteitsmaatregel bewerken
+    delete: Mobiliteitsmaatregel verwijderen
+    save: Mobiliteitsmaatregel bewaren
     codeFilter: Code
-    meaningFilter: Search by meaning
-    typeFilter: Filter by type
-    noMatches: No results found
-    typeToSearch: Type to search
-    loading: Loading ...
+    meaningFilter: Zoek volgens betekenis
+    typeFilter: Filteren op type
+    noMatches: Geen resultaten gevonden
+    typeToSearch: Typ om te zoeken
+    loading: Laden ...
   landingPage:
-    subtitle: Subtitle for card
-    content: Information in the card that comes below the header. Content.
-    button: Go to Road Markings
+    subtitle: 
+    content: 
+    button: Mobiliteitsmaatregelen
 
 subSign:
   filter:
