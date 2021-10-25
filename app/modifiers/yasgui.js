@@ -1,11 +1,8 @@
 import { modifier } from 'ember-modifier';
 import Yasgui from '@triply/yasgui';
-import env from '../config/environment';
-
 
 export default modifier(function yasgui(element /*, params, hash*/) {
-
-  const config={
+  const config = {
     /**
      * Change the default request configuration, such as the headers
      * and default yasgui endpoint.
@@ -17,15 +14,13 @@ export default modifier(function yasgui(element /*, params, hash*/) {
     },
     // Allow resizing of the Yasqe editor
     resizeable: false,
-  
+
     // Whether to autofocus on Yasqe on page load
     autofocus: true,
-  
+
     // Use the default endpoint when a new tab is opened
     copyEndpointOnNewTab: true,
-  }
+  };
 
-
-  const yasgui = new Yasgui(element, config);
-  
+  new Yasgui(element, config);
 });
