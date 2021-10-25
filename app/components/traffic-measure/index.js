@@ -15,7 +15,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @service store;
   @service router;
-
+  
   @tracked new;
   @tracked nodeShape;
   @tracked signs = [];
