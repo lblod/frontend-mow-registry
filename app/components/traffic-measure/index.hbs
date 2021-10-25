@@ -8,21 +8,16 @@
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
         {{t "trafficMeasureConcept.attr.trafficSign"}}
       </AuHeading>
-      <TrafficMeasure::AddSign @updateSearchString={{this.updateSearchString}} @addSign={{perform this.addSign}} @error={{this.signError}} />
+      <TrafficMeasure::SelectType @selectedType={{this.selectedType}} @updateTypeFilter={{this.updateTypeFilter}} />
+      <TrafficMeasure::AddSign @selectedType={{this.selectedType}} @addSign={{this.addSign}} @error={{this.signError}} @disabled={{this.isSelectedTypeEmpty}}/>
       <TrafficMeasure::SignList @removeSign={{this.removeSign}} @signs={{this.signs}} />
-
-      {{#if this.signs}}
       <div class="au-u-margin-bottom">
         <AuHeading @level="4" @skin="4"  class="au-u-margin-bottom-small">
           {{t "trafficMeasureConcept.attr.template"}}
         </AuHeading>
         {{!-- template-lint-disable no-inline-styles --}}
-        <AuTextarea id="textarea" @width="block" {{on "change" this.updateTemplate}} @value={{this.template.value}} style="resize: none; height: 200px;" class="au-u-margin-bottom-small"></AuTextarea>
-        <AuButton @skin="secondary"  @width="block" {{on "click" this.parseTemplate}}>
-          {{t "trafficMeasureConcept.attr.updatePreviewEtc"}}
-        </AuButton>
+        <AuTextarea id="textarea" @width="block"  {{on "input" this.updateTemplate}} {{on "input" this.parseTemplate}} @value={{this.template.value}} style="resize: none; height: 200px;" class="au-u-margin-bottom-small"></AuTextarea>
       </div>
-      {{/if}}
       {{#if this.mappings.length}}
       <AuHeading @level="4" @skin="4"  class="au-u-margin-bottom-small">
         {{t "trafficMeasureConcept.attr.variables"}}
@@ -82,19 +77,12 @@
       <div class="au-o-box au-o-box--small au-c-theme-gray-200 au-u-margin-bottom">
         {{{this.preview}}}
       </div>
-      <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
-        {{t "trafficMeasureConcept.attr.rdfaModel"}}
-      </AuHeading>
-      <pre class="au-c-pre au-u-word-break-all au-c-theme-gray-200">
-        {{this.model}}
-      </pre>
     </div>
   </div>
 </div>
 <AuToolbar @border="top" @size="large">
   <AuToolbarGroup>
     <AuButtonGroup>
-      {{#if this.signs.length}}
         <AuButton
           {{on "click" (perform this.save)}}
           @loading={{if this.save.isRunning true false}}
@@ -102,7 +90,6 @@
         >
           {{t "trafficMeasureConcept.crud.save"}}
         </AuButton>
-      {{/if}}
       {{#unless this.new}}
         <AuButton  @alert={{true}} @skin="secondary" {{on "click" (perform this.delete)}}>
           {{t "trafficMeasureConcept.crud.delete"}}
