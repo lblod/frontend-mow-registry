@@ -11,7 +11,6 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.nodeShape = this.args.nodeShape;
     this.new = this.args.new;
     this.fetchData.perform();
-
   }
 
   @service store;
@@ -153,7 +152,6 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.generateModel();
   }
 
-
   @task
   *delete() {
     yield (yield (yield this.nodeShape.targetHasConcept.get('template')).get(
@@ -176,7 +174,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     const template = yield concept.template;
 
     //if new save relationships
-    if(this.new){
+    if (this.new) {
       yield template.save();
       yield concept.save();
       yield this.nodeShape.save();
