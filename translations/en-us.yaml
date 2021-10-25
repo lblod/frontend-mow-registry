@@ -15,7 +15,6 @@ utility:
   fieldRequired: This field is required
   appName: MOW Registry
   delete: delete
-
 roadSignConcept:
   name: Road Signs
   details: Road Sign details
@@ -25,12 +24,9 @@ roadSignConcept:
     meaning: Meaning
     code: Code
     categories: Categories
-    definition: Defenition
     subSign: Possible subsigns
     mainSign: Possible main signs
     relatedSign: Related road signs
-    relatedTrafficLight: Related traffic lights
-    relatedMarking: Related road markings
   crud:
     create: Create road sign
     new: New Road Sign
@@ -44,7 +40,6 @@ roadSignConcept:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.
     button: Go to Road Signs
-  
 relatedRoadSign:
   attr:
     category: Search road signs by category
@@ -52,7 +47,6 @@ relatedRoadSign:
     add: Add related road signs
     addOne: Add related road sign
     delete: Remove related road sign
-
 trafficLightConcept:
   name: Traffic Lights
   details: Traffic Light details
@@ -62,12 +56,7 @@ trafficLightConcept:
     meaning: Meaning
     definition: Definition
     code: Code
-    categories: Categories
-    subSign: Possible sub signs
-    mainSign: Possible main signs
-    relatedSign: Related traffic light
     relatedTrafficLight: Related traffic lights
-    relatedMarking: Related road markings
   crud:
     create: Create traffic light
     new: New traffic light
@@ -76,12 +65,10 @@ trafficLightConcept:
     delete: Delete traffic light
     codeFilter: Code
     meaningFilter: Search by meaning
-    categoryFilter: Filter by category
   landingPage:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.
     button: Go to Traffic Lights
-
 relatedTrafficLight:
   crud:
     add: Add related traffic light
@@ -89,7 +76,6 @@ relatedTrafficLight:
     delete: Remove related traffic light
   filter:
     code: Search
-
 roadMarkingConcept:
   name: Road Markings
   details: Road marking details
@@ -99,12 +85,8 @@ roadMarkingConcept:
     meaning: Meaning
     definition: Defenition
     code: Code
-    categories: Categories
     relatedSign: Related road signs
-    relatedTrafficLight: Related traffic lights
     relatedMarking: Related road markings
-    subSign: Possible sub signs
-    mainSign: Possible main signs
   crud:
     create: Create road marking
     new: New Road marking
@@ -113,39 +95,23 @@ roadMarkingConcept:
     delete: Delete Road marking
     codeFilter: Code
     meaningFilter: Search by meaning
-    categoryFilter: Filter by category
   landingPage:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.
     button: Go to Road Markings
-
 relatedRoadMarking:
-  attr:
-    category: Search road marking by category
   crud:
     add: Add related road marking
     addOne: Add related road marking
     delete: Remove related road marking
   filter:
     code: Search
-
 trafficMeasureConcept:
   name: Traffic measure
-  details: Traffic mesure details
   attr:
     trafficSign: Traffic sign
-    imageHeader: Image
-    imageUrl: Image URL
-    definition: Defenition
-    meaning: Meaning
     code: Code
-    categories: Categories
-    relatedSign: Related road signs
-    subSign: Possible sub signs
-    mainSign: Possible main signs
-    relatedMarking: Related road marking
     sign: Sign
-    signs: Signs
     addSign: Add sign
     template: Template
     variable: Variable
@@ -155,20 +121,19 @@ trafficMeasureConcept:
     rdfaModel: RDFA model
     updatePreviewEtc: Update Preview / Variables / RDFA Model
   crud:
-    create: Create traffic measure
     new: New traffic measure
     noData: No traffic measures
     edit: Edit traffic measure
     delete: Delete traffic measure
     save: Save traffic measure
-    codeFilter: Code
-    meaningFilter: Search by meaning
-    categoryFilter: Filter by category
+    typeFilter: Filter by type
+    noMatches: No results found
+    typeToSearch: Type to search
+    loading: Loading ...
   landingPage:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.
     button: Go to traffic measures
-
 subSign:
   filter:
     code: Search sub signs by code
@@ -176,16 +141,12 @@ subSign:
     add: Add subsigns
     addOne: Add subsign
     delete: Remove subsign
-
 mainSign:
   attr:
     category: Search road signs by category
-  filter:
-    code: Search main signs by code
   crud:
     add: Add main signs
     addOne: Add main sign
     delete: Remove main sign
-
 mockLogin:
-    pick: Choose an account to log in with.
+  pick: Choose an account to log in with.

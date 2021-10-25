@@ -1,6 +1,7 @@
-import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
+import { attr, hasMany, belongsTo } from '@ember-data/model';
+import ConceptModel from './concept';
 
-export default class RoadMarkingConceptModel extends Model {
+export default class RoadMarkingConceptModel extends ConceptModel {
   @attr image;
   @attr meaning;
   @attr definition;

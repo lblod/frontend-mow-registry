@@ -1,0 +1,11 @@
+<div class="au-c-form au-u-margin-bottom-small">
+  <PowerSelect
+    @options={{this.types}}
+    @selected={{@selectedType}}
+    @placeholder={{t "trafficMeasureConcept.crud.typeFilter"}}
+    @onChange={{@updateTypeFilter}}
+    @triggerClass="category-select"
+    as |type|>
+    {{type.label}}
+  </PowerSelect>
+</div>
