@@ -172,8 +172,6 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *save() {
-    debugger;
-    
     const concept = yield this.nodeShape.targetHasConcept;
     const template = yield concept.template;
 

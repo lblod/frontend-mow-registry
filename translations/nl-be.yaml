@@ -14,6 +14,7 @@ utility:
   or: Of
   fieldRequired: Dit veld is verplicht
   appName: MOW Register
+  delete: verwijderen
 
 roadSignConcept:
   name: Verkeersborden
