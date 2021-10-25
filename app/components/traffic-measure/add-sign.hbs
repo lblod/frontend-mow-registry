@@ -1,19 +1,19 @@
 <div class="au-c-form au-u-margin-bottom-small">
   <PowerSelect
     @loadingMessage={{t "trafficMeasureConcept.crud.loading"}}
-                    @noMatchesMessage={{t "trafficMeasureConcept.crud.noMatches"}}
+    @noMatchesMessage={{t "trafficMeasureConcept.crud.noMatches"}}
     @placeholder={{t "trafficMeasureConcept.crud.typeToSearch"}}
-                    @searchEnabled={{true}}
+    @searchEnabled={{true}}
     @allowClear={{@allowClear}}
-                    @disabled={{@disabled}}
+    @disabled={{@disabled}}
     @search={{perform this.search}}
-                    @selected={{this.selected}}
+    @selected={{this.selected}}
     @onChange={{this.select}}
-                    as |sign|>
+    as |sign|>
     <img
       class="au-c-thumbnail"
       src={{sign.image}}
-             alt="{{sign.label}}"
+      alt="" {{!-- actually required by linting  ¯\_(ツ)_/¯  --}}
       role="presentation"
     />
     {{sign.label}}
