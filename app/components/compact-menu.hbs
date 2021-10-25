@@ -1,0 +1,26 @@
+<AuDropdown @alignment="left" @dropdownTitle="Menu modules" @dropdownButtonLabel="Show modules">
+  <AuLink
+    role="menuitem"
+    @route="road-sign-concepts"
+    @query={{hash page=0 search="" category=null}}>
+    {{t "roadSignConcept.name"}}
+  </AuLink>
+  <AuLink
+    role="menuitem"
+    @route="road-marking-concepts"
+    @query={{hash page=0 search="" category=null}}>
+    {{t "roadMarkingConcept.name"}}
+  </AuLink>
+  <AuLink
+    role="menuitem"
+    @route="traffic-light-concepts"
+    @query={{hash page=0 search="" category=null}}>
+    {{t "trafficLightConcept.name"}}
+  </AuLink>
+  <AuLink
+    role="menuitem"
+    @route="traffic-measure-concepts"
+    @query={{hash page=0 search="" category=null}}>
+    {{t "trafficMeasureConcept.name"}}
+  </AuLink>
+</AuDropdown>

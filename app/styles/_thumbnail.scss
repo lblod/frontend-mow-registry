@@ -1,0 +1,10 @@
+.au-c-thumbnail {
+  object-fit: cover;
+  max-width: 8rem;
+  max-height: 8rem;
+}
+
+.au-c-thumbnail--full {
+  max-width: 100%;
+  max-height: 100%;
+}

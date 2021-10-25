@@ -1,14 +1,17 @@
-<AuToolbar @border="bottom" @size="medium" @skin="tint">
+<AuToolbar @border="bottom" @size="medium" @skin="tint" class="au-c-toolbar--breadcrumbs">
   <AuToolbarGroup>
     <BreadcrumbsContainer
-      class="breadcrumbs au-c-list-horizontal"
-      @itemClass="breadcrumbs__item au-c-list-horizontal__item"
-      @linkClass="breadcrumbs__link au-c-link"
+      class="au-c-breadcrumbs au-c-list-horizontal"
+      @itemClass="au-c-breadcrumbs__item au-c-list-horizontal__item"
+      @linkClass="au-c-breadcrumbs__link au-c-link"
     >
       <li class="au-c-list-horizontal__item">
-        <AuLink @linkRoute="index" @icon="arrow-left" @iconAlignment="left">
+        <AuLink @route="index" @icon="arrow-left" @iconAlignment="left">
           {{t "utility.backToOverview"}}
         </AuLink>
+      </li>
+      <li class="au-c-list-horizontal__item">
+        <CompactMenu/>
       </li>
     </BreadcrumbsContainer>
   </AuToolbarGroup>

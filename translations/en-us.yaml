@@ -1,4 +1,6 @@
 utility:
+  login: Login
+  logout: Logout
   backToOverview: Back to overview
   view: View
   save: Save
@@ -12,6 +14,7 @@ utility:
   or: Or
   fieldRequired: This field is required
   appName: MOW Registry
+  delete: delete
 
 roadSignConcept:
   name: Road Signs
@@ -130,6 +133,7 @@ trafficMeasureConcept:
   name: Traffic measure
   details: Traffic mesure details
   attr:
+    trafficSign: Traffic sign
     imageHeader: Image
     imageUrl: Image URL
     definition: Defenition

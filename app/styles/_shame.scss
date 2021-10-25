@@ -2,13 +2,6 @@
   border: .3rem solid $au-red-600;
 }
 
-.road-sign-concept-details {
-  .au-c-data-table {
-    overflow: visible;
-    height: auto;
-  }
-}
-
 // Loket seems to add this class so we mimic it here, but I'm sure there is a solution we can add to Appuniversum
 .au-c-toolbar__group--row {
   display: block;
@@ -96,9 +89,16 @@ td {
   width: 1px !important;
 }
 
-.delete-sign-button {
+// Sign container
+.au-c-sign-container {
+  position: relative;
+  padding: $au-unit-small;
+  height: 100%;
+}
+
+.au-c-sign-container__delete {
   position: absolute;
-  color: red;
+  color: $au-red-600;
   font-weight: bold;
   font-size: 12px;
   border: none;
@@ -108,13 +108,16 @@ td {
   top: 0;
 }
 
-.sign-container {
-  width: fit-content;
-  height: fit-content;
-  position: relative;
-  padding: 10px;
+
+// Quick fix for multiple tables inside a container
+.au-c-body-container--tables {
+  .au-c-data-table {
+    display: block;
+    overflow: initial;
+  }
 }
 
+<<<<<<< HEAD
 .signs-container {
   display: flex;
   flex-direction: row;
@@ -134,4 +137,33 @@ table.dataTable tbody th {
 
 .yasgui .autocompleteWrapper {
   display: none !important;
+=======
+// Smaller font size for the breadcrumbs toolbar
+.au-c-toolbar--breadcrumbs {
+  font-size: $au-base;
+}
+
+// Theme
+.au-c-theme-gray-100 {
+  background-color: $au-gray-100;
+}
+
+.au-c-theme-gray-200 {
+  background-color: $au-gray-200;
+}
+
+.au-c-pre {
+  white-space: pre-wrap;
+}
+
+.au-o-grid--split {
+  @include mq(medium) {
+    height: 100%;
+    overflow: hidden;
+
+    > .au-o-grid__item {
+      height: 100%;
+    }
+  }
+>>>>>>> 61117c0849f3f7635c32677f687db9054aa117cb
 }

@@ -1,0 +1,16 @@
+<div class="au-c-theme-gray-100 au-c-card au-o-box au-o-box--small au-u-margin-bottom">
+  <ul class="au-c-list-horizontal">
+    {{#each @signs as |sign|}}
+      <li class="au-c-list-horizontal__item au-c-sign-container">
+        <img src={{sign.image}} alt="" role="presentation" class="au-c-thumbnail">
+        {{!-- template-lint-disable no-bare-strings --}}
+        {{#if (gt @signs.length 1)}}  
+          <button {{on "click" (fn @removeSign sign)}} type="button" class="au-c-sign-container__delete">
+            <AuIcon @icon="cross" />
+            <span class="au-u-hidden-visually">{{t "utility.delete"}}</span>
+          </button>
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+</div>

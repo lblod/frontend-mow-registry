@@ -22,10 +22,6 @@ export default class TrafficMeasureConceptsNewRoute extends Route {
     nodeShape.targetClass = trafficMeasureResource;
     nodeShape.targetHasConcept = concept;
 
-    await template.save();
-    await concept.save();
-    await nodeShape.save();
-
     return nodeShape;
   }
 }
