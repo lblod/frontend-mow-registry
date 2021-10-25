@@ -25,15 +25,27 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked signError;
   @tracked preview;
   @tracked model;
+  @tracked selectedType;
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
   get label() {
     let result = '';
-    this.signs.forEach(
-      (e) => (result = `${result}${e.get('roadSignConceptCode')}-`)
-    );
+
+    this.signs.forEach((e) => {
+      if (e.get('roadSignConceptCode'))
+        result = `${result}${e.get('roadSignConceptCode')}-`;
+      else if (e.get('roadMarkingConceptCode'))
+        result = `${result}${e.get('roadMarkingConceptCode')}-`;
+      else if (e.get('trafficLightConceptCode'))
+        result = `${result}${e.get('trafficLightConceptCode')}-`;
+    });
+
     result = result.slice(0, -1);
     return `${result} Traffic Measure`;
+  }
+
+  get isSelectedTypeEmpty() {
+    return !this.selectedType;
   }
 
   @task
@@ -51,24 +63,9 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.parseTemplate();
   }
 
-  @task
-  *addSign() {
-    let result;
-    result = yield this.store.query('road-sign-concept', {
-      'filter[road-sign-concept-code]': this.searchString,
-    });
-    if (result.length == 0) {
-      this.signError = "Couldn't find this sign";
-    } else {
-      this.signError = '';
-      this.signs.pushObject(result.firstObject);
-    }
-  }
-
-  //ui stuff
   @action
-  updateSearchString(event) {
-    this.searchString = event.target.value;
+  addSign(sign) {
+    this.signs.pushObject(sign);
   }
 
   @action
@@ -323,5 +320,14 @@ export default class TrafficMeasureIndexComponent extends Component {
       `.
     }}
     `;
+  }
+
+  @action
+  updateTypeFilter(selectedType) {
+    if (selectedType) {
+      this.selectedType = selectedType;
+    } else {
+      this.selectedType = null;
+    }
   }
 }

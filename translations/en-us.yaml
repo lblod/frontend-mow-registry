@@ -163,7 +163,10 @@ trafficMeasureConcept:
     save: Save traffic measure
     codeFilter: Code
     meaningFilter: Search by meaning
-    categoryFilter: Filter by category
+    typeFilter: Filter by type
+    noMatches: No results found
+    typeToSearch: Type to search
+    loading: Loading ...
   landingPage:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.

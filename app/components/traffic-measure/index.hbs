@@ -8,7 +8,8 @@
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
         {{t "trafficMeasureConcept.attr.trafficSign"}}
       </AuHeading>
-      <TrafficMeasure::AddSign @updateSearchString={{this.updateSearchString}} @addSign={{perform this.addSign}} @error={{this.signError}} />
+      <TrafficMeasure::SelectType @selectedType={{this.selectedType}} @updateTypeFilter={{this.updateTypeFilter}} />
+      <TrafficMeasure::AddSign @selectedType={{this.selectedType}} @addSign={{this.addSign}} @error={{this.signError}} @disabled={{this.isSelectedTypeEmpty}}/>
       <TrafficMeasure::SignList @removeSign={{this.removeSign}} @signs={{this.signs}} />
 
       {{#if this.signs}}

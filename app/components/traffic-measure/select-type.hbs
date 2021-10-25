@@ -1,0 +1,10 @@
+<PowerSelect
+    @allowClear={{true}}
+    @options={{this.types}}
+    @selected={{@selectedType}}
+    @placeholder={{t "trafficMeasureConcept.crud.typeFilter"}}
+    @onChange={{@updateTypeFilter}}
+    @triggerClass="category-select"
+    as |type|>
+  {{type.label}}
+</PowerSelect>
