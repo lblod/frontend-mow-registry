@@ -66,6 +66,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   @action
   addSign(sign) {
     this.signs.pushObject(sign);
+    this.selectedType = null;
   }
 
   @action

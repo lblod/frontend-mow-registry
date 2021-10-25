@@ -1,29 +1,26 @@
-<div class="au-o-grid au-o-grid--tiny">
-  <div class="au-o-grid__item au-u-1-5">
-    <PowerSelect
-            @loadingMessage={{t "trafficMeasureConcept.crud.loading"}}
-            @noMatchesMessage={{t "trafficMeasureConcept.crud.noMatches"}}
-            @placeholder={{t "trafficMeasureConcept.crud.typeToSearch"}}
-            @searchEnabled={{true}}
-            @allowClear={{@allowClear}}
-            @disabled={{@disabled}}
-            @search={{perform this.search}}
-            @selected={{this.selected}}
-            @onChange={{this.select}}
-            as |sign|>
-      <img
-        class="au-c-thumbnail"
-        src={{sign.image}}
-        alt=""
-        role="presentation"
-      />
-      {{sign.label}}
-    </PowerSelect>
-  </div>
-  <div class="au-o-grid__item au-u-1-2">
-    <AuButton @width="block" {{on "click" (fn this.addSign this.selected)}}>
-      {{t "trafficMeasureConcept.attr.addSign"}}
-    </AuButton>
-  </div>
+<div class="au-c-form au-u-margin-bottom-small">
+  <PowerSelect
+    @loadingMessage={{t "trafficMeasureConcept.crud.loading"}}
+                    @noMatchesMessage={{t "trafficMeasureConcept.crud.noMatches"}}
+    @placeholder={{t "trafficMeasureConcept.crud.typeToSearch"}}
+                    @searchEnabled={{true}}
+    @allowClear={{@allowClear}}
+                    @disabled={{@disabled}}
+    @search={{perform this.search}}
+                    @selected={{this.selected}}
+    @onChange={{this.select}}
+                    as |sign|>
+    <img
+      class="au-c-thumbnail"
+      src={{sign.image}}
+             alt="{{sign.label}}"
+      role="presentation"
+    />
+    {{sign.label}}
+  </PowerSelect>
 </div>
+<AuButton @width="block" {{on "click" (fn this.addSign this.selected)}} class="au-u-margin-bottom-small">
+  {{t "trafficMeasureConcept.attr.addSign"}}
+</AuButton>
+
 <AuHelpText @error={{true}}>{{@error}}</AuHelpText>

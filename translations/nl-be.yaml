@@ -104,13 +104,13 @@ trafficMeasureConcept:
   attr:
     trafficSign: Verkeersteken
     code: Code
-    sign: Sign
-    addSign: Add sign
+    sign: Verkeersbord
+    addSign: Verkeersteken toevoegen
     template: Template
-    variable: Variable
-    variables: Variables
+    variable: Variabele
+    variables: Variabelen
     type: Type
-    preview: Preview
+    preview: Voorvertoning
     rdfaModel: RDFA model
     updatePreviewEtc: Update Preview / Variables / RDFA Model
   crud:

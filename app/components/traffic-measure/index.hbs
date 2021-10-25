@@ -11,19 +11,13 @@
       <TrafficMeasure::SelectType @selectedType={{this.selectedType}} @updateTypeFilter={{this.updateTypeFilter}} />
       <TrafficMeasure::AddSign @selectedType={{this.selectedType}} @addSign={{this.addSign}} @error={{this.signError}} @disabled={{this.isSelectedTypeEmpty}}/>
       <TrafficMeasure::SignList @removeSign={{this.removeSign}} @signs={{this.signs}} />
-
-      {{#if this.signs}}
       <div class="au-u-margin-bottom">
         <AuHeading @level="4" @skin="4"  class="au-u-margin-bottom-small">
           {{t "trafficMeasureConcept.attr.template"}}
         </AuHeading>
         {{!-- template-lint-disable no-inline-styles --}}
-        <AuTextarea id="textarea" @width="block" {{on "change" this.updateTemplate}} @value={{this.template.value}} style="resize: none; height: 200px;" class="au-u-margin-bottom-small"></AuTextarea>
-        <AuButton @skin="secondary"  @width="block" {{on "click" this.parseTemplate}}>
-          {{t "trafficMeasureConcept.attr.updatePreviewEtc"}}
-        </AuButton>
+        <AuTextarea id="textarea" @width="block"  {{on "input" this.updateTemplate}} {{on "input" this.parseTemplate}} @value={{this.template.value}} style="resize: none; height: 200px;" class="au-u-margin-bottom-small"></AuTextarea>
       </div>
-      {{/if}}
       {{#if this.mappings.length}}
       <AuHeading @level="4" @skin="4"  class="au-u-margin-bottom-small">
         {{t "trafficMeasureConcept.attr.variables"}}

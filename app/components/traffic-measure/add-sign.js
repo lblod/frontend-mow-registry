@@ -15,15 +15,16 @@ export default class TrafficMeasureAddSignComponent extends Component {
 
     let queryParams = {};
     queryParams[this.args.selectedType.searchFilter] = searchData;
-
+    queryParams['sort'] = this.args.selectedType.sortingField;
+    console.log(queryParams);
     let options = yield this.store.query(
       this.args.selectedType.modelName,
       queryParams
     );
 
+    console.log(options);
     options.map(
-      (option) =>
-        (option['label'] = option[this.args.selectedType.sortingField])
+      (option) => (option['label'] = option[this.args.selectedType.labelField])
     );
     return options;
   }
@@ -35,7 +36,9 @@ export default class TrafficMeasureAddSignComponent extends Component {
 
   @action
   addSign(selected) {
-    this.args.addSign(selected);
-    this.selected = null;
+    if (selected) {
+      this.args.addSign(selected);
+      this.selected = null;
+    }
   }
 }
