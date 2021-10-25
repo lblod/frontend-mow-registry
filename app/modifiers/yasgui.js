@@ -2,20 +2,30 @@ import { modifier } from 'ember-modifier';
 import Yasgui from '@triply/yasgui';
 import env from '../config/environment';
 
-const defaultQuery =
-  env.yasgui.defaultQuery !== 'EMBER_YASGUI_DEFAULT_QUERY'
-    ? env.yasgui.defaultQuery
-    : `SELECT DISTINCT ?type WHERE {
-  ?s a ?type .
-} LIMIT 10
-`;
 
 export default modifier(function yasgui(element /*, params, hash*/) {
-  const yasgui = new Yasgui(element, {
-    requestConfig: { endpoint: '/sparql' },
+
+  const config={
+    /**
+     * Change the default request configuration, such as the headers
+     * and default yasgui endpoint.
+     * Define these fields as plain values, or as a getter function
+     */
+    requestConfig: {
+      endpoint: '/sparql',
+      method: 'POST',
+    },
+    // Allow resizing of the Yasqe editor
+    resizeable: false,
+  
+    // Whether to autofocus on Yasqe on page load
     autofocus: true,
-  });
-  yasgui.config.yasqe.value = defaultQuery;
-  if (env.yasgui.extraPrefixes !== 'EMBER_YASGUI_EXTRA_PREFIXES')
-    yasgui.config.yasqe.addPrefixes(JSON.parse(env.yasgui.extraPrefixes));
+  
+    // Use the default endpoint when a new tab is opened
+    copyEndpointOnNewTab: true,
+  }
+
+
+  const yasgui = new Yasgui(element, config);
+  
 });
