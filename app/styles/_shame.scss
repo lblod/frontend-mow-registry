@@ -117,7 +117,6 @@ td {
   }
 }
 
-<<<<<<< HEAD
 .signs-container {
   display: flex;
   flex-direction: row;
@@ -137,7 +136,8 @@ table.dataTable tbody th {
 
 .yasgui .autocompleteWrapper {
   display: none !important;
-=======
+}
+
 // Smaller font size for the breadcrumbs toolbar
 .au-c-toolbar--breadcrumbs {
   font-size: $au-base;
@@ -165,5 +165,4 @@ table.dataTable tbody th {
       height: 100%;
     }
   }
->>>>>>> 61117c0849f3f7635c32677f687db9054aa117cb
 }
