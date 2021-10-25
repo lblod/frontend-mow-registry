@@ -9,12 +9,9 @@ export default class TrafficMeasureIndexComponent extends Component {
     super(...args);
 
     this.nodeShape = this.args.nodeShape;
-    this.template = this.nodeShape.targetHasConcept.get('template');
     this.new = this.args.new;
+    this.fetchData.perform();
 
-    if (!this.new) {
-      this.fetchData.perform();
-    }
   }
 
   @service store;
@@ -156,6 +153,97 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.generateModel();
   }
 
+
+  @task
+  *delete() {
+    yield (yield (yield this.nodeShape.targetHasConcept.get('template')).get(
+      'mappings'
+    )).forEach((mapping) => mapping.destroyRecord());
+    yield (yield this.nodeShape.targetHasConcept.get(
+      'template'
+    )).destroyRecord();
+    yield (yield this.nodeShape.targetHasConcept.get(
+      'relations'
+    )).forEach((relation) => relation.destroyRecord());
+    yield (yield this.nodeShape.targetHasConcept).destroyRecord();
+    yield this.nodeShape.destroyRecord();
+    this.router.transitionTo('traffic-measure-concepts.index');
+  }
+
+  @task
+  *save() {
+    debugger;
+    
+    const concept = yield this.nodeShape.targetHasConcept;
+    const template = yield concept.template;
+
+    //if new save relationships
+    if(this.new){
+      yield template.save();
+      yield concept.save();
+      yield this.nodeShape.save();
+    }
+
+    //1-parse everything again
+    this.parseTemplate();
+
+    //2-update node shape
+    this.nodeShape.label = this.label;
+    yield this.nodeShape.save();
+
+    //3-update roadsigns
+    yield this.saveRoadsigns.perform(concept);
+
+    //4-handle variable mappings
+    yield this.saveMappings.perform(template);
+
+    if (this.new) {
+      this.router.transitionTo(
+        'traffic-measure-concepts.edit',
+        this.nodeShape.id
+      );
+    }
+  }
+
+  @task
+  *saveRoadsigns(concept) {
+    // delete existing ones
+    for (let i = 0; i < concept.relations.length; i++) {
+      const relation = concept.relations.objectAt(0);
+      yield relation.destroyRecord();
+    }
+    // creating signs
+    concept.relations = [];
+    for (let i = 0; i < this.signs.length; i++) {
+      const mustUseRelation = this.store.createRecord('must-use-relation');
+      mustUseRelation.concept = this.signs[i];
+      mustUseRelation.order = i;
+      concept.relations.pushObject(mustUseRelation);
+      yield mustUseRelation.save();
+    }
+    yield concept.save();
+  }
+
+  @task
+  *saveMappings(template) {
+    const mappings = yield template.mappings;
+    //delete existing ones
+    for (let i = 0; i < mappings.length; i++) {
+      const mapping = mappings.objectAt(0);
+      yield mapping.destroyRecord();
+    }
+    //create new ones
+    for (let i = 0; i < this.mappings.length; i++) {
+      const mapping = this.mappings[i];
+      const newMapping = yield this.store.createRecord('mapping');
+      newMapping.variable = mapping.variable;
+      newMapping.type = mapping.type;
+      template.mappings.pushObject(newMapping);
+      yield newMapping.save();
+    }
+    yield template.save();
+  }
+
   @action
   generateModel() {
     const templateUUid = this.nodeShape.id;
@@ -239,99 +327,5 @@ export default class TrafficMeasureIndexComponent extends Component {
       `.
     }}
     `;
-  }
-
-  @task
-  *delete() {
-    yield (yield (yield this.nodeShape.targetHasConcept.get('template')).get(
-      'mappings'
-    )).forEach((mapping) => mapping.destroyRecord());
-    yield (yield this.nodeShape.targetHasConcept.get(
-      'template'
-    )).destroyRecord();
-    yield (yield this.nodeShape.targetHasConcept.get(
-      'relations'
-    )).forEach((relation) => relation.destroyRecord());
-    yield (yield this.nodeShape.targetHasConcept).destroyRecord();
-    yield this.nodeShape.destroyRecord();
-    this.router.transitionTo('traffic-measure-concepts.index');
-  }
-
-  @task
-  *save() {
-    const concept = yield this.nodeShape.targetHasConcept;
-    const template = yield concept.template;
-
-    //1-parse everything again
-    this.parseTemplate();
-
-    //2-update node shape
-    this.nodeShape.label = this.label;
-    yield this.nodeShape.save();
-
-    //3-update roadsigns
-    yield this.saveRoadsigns.perform(concept);
-
-    //4-handle variable mappings
-    yield this.saveMappings.perform(template);
-
-    if (this.new) {
-      this.router.transitionTo(
-        'traffic-measure-concepts.edit',
-        this.nodeShape.id
-      );
-    }
-  }
-
-  @task
-  *saveToDb() {
-    const response = yield fetch('http://localhost:8002/sparql/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Accept: 'application/sparql-results+json',
-      },
-      body: new URLSearchParams({ query: this.model }).toString(),
-    });
-    yield response.json();
-  }
-
-  @task
-  *saveRoadsigns(concept) {
-    // delete existing ones
-    for (let i = 0; i < concept.relations.length; i++) {
-      const relation = concept.relations.objectAt(0);
-      yield relation.destroyRecord();
-    }
-    // creating signs
-    concept.relations = [];
-    for (let i = 0; i < this.signs.length; i++) {
-      const mustUseRelation = this.store.createRecord('must-use-relation');
-      mustUseRelation.concept = this.signs[i];
-      mustUseRelation.order = i;
-      concept.relations.pushObject(mustUseRelation);
-      yield mustUseRelation.save();
-    }
-    yield concept.save();
-  }
-
-  @task
-  *saveMappings(template) {
-    const mappings = yield template.mappings;
-    //delete existing ones
-    for (let i = 0; i < mappings.length; i++) {
-      const mapping = mappings.objectAt(0);
-      yield mapping.destroyRecord();
-    }
-    //create new ones
-    for (let i = 0; i < this.mappings.length; i++) {
-      const mapping = this.mappings[i];
-      const newMapping = yield this.store.createRecord('mapping');
-      newMapping.variable = mapping.variable;
-      newMapping.type = mapping.type;
-      template.mappings.pushObject(newMapping);
-      yield newMapping.save();
-    }
-    yield template.save();
   }
 }
