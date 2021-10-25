@@ -101,9 +101,11 @@
       >
         {{t "trafficMeasureConcept.crud.save"}}
       </AuButton>
-      <AuButton  @alert={{true}} @skin="secondary" {{on "click" (perform this.delete)}}>
-        {{t "trafficMeasureConcept.crud.delete"}}
-      </AuButton>
+      {{#unless this.new}}
+        <AuButton  @alert={{true}} @skin="secondary" {{on "click" (perform this.delete)}}>
+          {{t "trafficMeasureConcept.crud.delete"}}
+        </AuButton>
+      {{/unless}}
     </AuButtonGroup>
   </AuToolbarGroup>
   <AuToolbarGroup>
