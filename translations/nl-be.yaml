@@ -15,7 +15,6 @@ utility:
   fieldRequired: Dit veld is verplicht
   appName: MOW Register
   delete: verwijderen
-
 roadSignConcept:
   name: Verkeersborden
   details: Verkeersbord details
@@ -23,14 +22,11 @@ roadSignConcept:
     imageHeader: Afbeelding
     imageUrl: Afbeelding URL
     meaning: Betekenis
-    definition: Definitie
     code: Code
     categories: Categorieën
     subSign: Mogelijke onderborden
     mainSign: Mogelijke hoofdborden
     relatedSign: Gerelateerde verkeersborden
-    relatedTrafficLight: Gerelateerde verkeerslichten
-    relatedMarking: Gerelateerde wegmarkeringen
   crud:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
@@ -44,7 +40,6 @@ roadSignConcept:
     subtitle: Ondertitel voor kaart
     content: Informatie op de kaart die onder de kop komt. Inhoud.
     button: Ga naar Verkeersborden
-
 trafficLightConcept:
   name: Verkeerslichten
   details: Verkeerslicht details
@@ -54,12 +49,7 @@ trafficLightConcept:
     meaning: Betekenis
     definition: Definitie
     code: Code
-    categories: Categorieën
-    subSign: Mogelijke onderborden
-    mainSign: Mogelijke hoofdborden
-    relatedSign: Gerelateerde verkeersborden
     relatedTrafficLight: Gerelateerde verkeerslichten
-    relatedMarking: Gerelateerde wegmarkeringen
   crud:
     create: Verkeerslicht aanmaken
     new: Nieuw verkeerslicht
@@ -68,12 +58,10 @@ trafficLightConcept:
     delete: Verkeerslicht verwijderen
     codeFilter: Code
     meaningFilter: Zoeken op betekenis
-    categoryFilter: Filteren op categorie
   landingPage:
     subtitle: Ondertitel voor kaart
     content: Informatie op de kaart die onder de kop komt. Inhoud.
     button: Ga naar Verkeerslichten
-
 relatedTrafficLight:
   crud:
     add: Gerelateerd verkeerslicht toevoegen
@@ -81,8 +69,6 @@ relatedTrafficLight:
     delete: Gerelateerd verkeerslicht verwijderen
   filter:
     code: Zoek
-
-
 roadMarkingConcept:
   name: Wegmarkeringen
   details: Details wegmarkering
@@ -92,11 +78,7 @@ roadMarkingConcept:
     meaning: Betekenis
     definition: Definitie
     code: Code
-    categories: Categorieën
-    subSign: Mogelijke onderborden
-    mainSign: Mogelijke hoofdborden
     relatedSign: Gerelateerde verkeersborden
-    relatedTrafficLight: Gerelateerde verkeerslichten
     relatedMarking: Gerelateerde wegmarkeringen
   crud:
     create: Wegmarkering aanmaken
@@ -106,39 +88,23 @@ roadMarkingConcept:
     delete: Wegmarkering verwijderen
     codeFilter: Code
     meaningFilter: Zoeken op betekenis
-    categoryFilter: Filteren op categorie
   landingPage:
     subtitle: Ondertitel voor kaart
     content: Informatie op de kaart die onder de kop komt. Inhoud.
     button: Ga naar Wegmarkeringen
-
 relatedRoadMarking:
-  attr:
-    category: Categorie
   crud:
     add: Gerelateerde wegmarkering toevoegen
     addOne: Gerelateerde wegmarkering toevoegen
     delete: Gerelateerde wegmarkering verwijderen
   filter:
     code: Zoek
-
 trafficMeasureConcept:
   name: Mobiliteitsmaatregel
-  details: Mobiliteitsmaatregel
   attr:
     trafficSign: Verkeersteken
-    imageHeader: Afbeelding
-    imageUrl: Afbeelding URL
-    meaning: Betekenis
-    definition: Definitie
     code: Code
-    categories: Categorieën
-    relatedSign: gerelateerde verkeerstekens
-    subSign: Possible sub signs
-    mainSign: Possible main signs
-    relatedMarking: Related road marking
     sign: Sign
-    signs: Signs
     addSign: Add sign
     template: Template
     variable: Variable
@@ -148,23 +114,19 @@ trafficMeasureConcept:
     rdfaModel: RDFA model
     updatePreviewEtc: Update Preview / Variables / RDFA Model
   crud:
-    create: Mobiliteitsmaatregel bewaren
     new: Nieuwe mobiliteitsmaatregel
     noData: Geen mobiliteitsmaatregelen
     edit: Mobiliteitsmaatregel bewerken
     delete: Mobiliteitsmaatregel verwijderen
     save: Mobiliteitsmaatregel bewaren
-    codeFilter: Code
-    meaningFilter: Zoek volgens betekenis
     typeFilter: Filteren op type
     noMatches: Geen resultaten gevonden
     typeToSearch: Typ om te zoeken
     loading: Laden ...
   landingPage:
-    subtitle: 
-    content: 
+    subtitle: ondertitel
+    content: content
     button: Mobiliteitsmaatregelen
-
 subSign:
   filter:
     code: Zoek onderborden op code
@@ -172,18 +134,13 @@ subSign:
     add: Onderborden toevoegen
     addOne: Onderbord toevoegen
     delete: Onderbord verwijderen
-
 mainSign:
   attr:
     category: Zoek verkeersborden op category
-  filter:
-    code: Zoek hoofdborden op code
-
   crud:
     add: Hoofdborden toevoegen
     addOne: Hoofdbord toevoegen
     delete: Hoofdbord verwijderen
-
 relatedRoadSign:
   attr:
     category: Zoek verkeersborden op category
@@ -191,6 +148,5 @@ relatedRoadSign:
     add: Gerelateerde verkeersborden toevoegen
     addOne: Gerelateerd verkeersbord toevoegen
     delete: Gerelateerd verkeersbord verwijderen
-
 mockLogin:
-    pick: Kies een bestuurseenheid om mee in te loggen.
+  pick: Kies een bestuurseenheid om mee in te loggen.
