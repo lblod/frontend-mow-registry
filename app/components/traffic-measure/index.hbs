@@ -8,9 +8,17 @@
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
         {{t "trafficMeasureConcept.attr.trafficSign"}}
       </AuHeading>
-      <TrafficMeasure::SelectType @selectedType={{this.selectedType}} @updateTypeFilter={{this.updateTypeFilter}} />
-      <TrafficMeasure::AddSign @selectedType={{this.selectedType}} @addSign={{this.addSign}} @error={{this.signError}} @disabled={{this.isSelectedTypeEmpty}}/>
-      <TrafficMeasure::SignList @removeSign={{this.removeSign}} @signs={{this.signs}} />
+      <div class="au-o-grid au-o-grid--tiny">
+        <div class="au-o-grid__item">
+          <TrafficMeasure::SelectType @selectedType={{this.selectedType}} @updateTypeFilter={{this.updateTypeFilter}} />
+        </div>
+        <div class="au-o-grid__item">
+          <TrafficMeasure::AddSign @selectedType={{this.selectedType}} @addSign={{this.addSign}} @error={{this.signError}} @disabled={{this.isSelectedTypeEmpty}}/>
+        </div>
+        <div class="au-o-grid__item">
+          <TrafficMeasure::SignList @removeSign={{this.removeSign}} @signs={{this.signs}} />
+        </div>
+      </div>
       <div class="au-u-margin-bottom">
         <AuHeading @level="4" @skin="4"  class="au-u-margin-bottom-small">
           {{t "trafficMeasureConcept.attr.template"}}

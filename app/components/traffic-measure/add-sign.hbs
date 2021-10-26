@@ -1,26 +1,31 @@
-<div class="au-c-form au-u-margin-bottom-small">
-  <PowerSelect
-    @loadingMessage={{t "trafficMeasureConcept.crud.loading"}}
-    @noMatchesMessage={{t "trafficMeasureConcept.crud.noMatches"}}
-    @placeholder={{t "trafficMeasureConcept.crud.typeToSearch"}}
-    @searchEnabled={{true}}
-    @allowClear={{@allowClear}}
-    @disabled={{@disabled}}
-    @search={{perform this.search}}
-    @selected={{this.selected}}
-    @onChange={{this.select}}
-    as |sign|>
-    <img
-      class="au-c-thumbnail"
-      src={{sign.image}}
-      alt="" {{!-- actually required by linting  ¯\_(ツ)_/¯  --}}
-      role="presentation"
-    />
-    {{sign.label}}
-  </PowerSelect>
+<div class="au-o-grid au-o-grid--tiny">
+  <div class="au-o-grid__item">
+    <PowerSelect
+      @loadingMessage={{t "trafficMeasureConcept.crud.loading"}}
+      @noMatchesMessage={{t "trafficMeasureConcept.crud.noMatches"}}
+      @placeholder={{t "trafficMeasureConcept.crud.typeToSearch"}}
+      @searchEnabled={{true}}
+      @allowClear={{@allowClear}}
+      @disabled={{@disabled}}
+      @search={{perform this.search}}
+      @selected={{this.selected}}
+      @onChange={{this.select}}
+      as |sign|>
+      <div class="au-c-thumbnail-holder">
+        <img
+          class="au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny"
+          src={{sign.image}}
+          alt="" {{!-- actually required by linting  ¯\_(ツ)_/¯ => seems correct to me for accessibility, an empty alt is better for accessibility than no alt attribute :-)  --}}
+          role="presentation"
+        />
+        {{sign.label}}
+      </div>
+    </PowerSelect>
+  </div>
+  <div class="au-o-grid__item">
+    <AuButton @width="block" {{on "click" (fn this.addSign this.selected)}} class="au-u-margin-bottom-small">
+      {{t "trafficMeasureConcept.attr.addSign"}}
+    </AuButton>
+    <AuHelpText @error={{true}}>{{@error}}</AuHelpText>
+  </div>
 </div>
-<AuButton @width="block" {{on "click" (fn this.addSign this.selected)}} class="au-u-margin-bottom-small">
-  {{t "trafficMeasureConcept.attr.addSign"}}
-</AuButton>
-
-<AuHelpText @error={{true}}>{{@error}}</AuHelpText>
