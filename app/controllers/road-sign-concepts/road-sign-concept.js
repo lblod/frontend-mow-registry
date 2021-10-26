@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
   @service('router') routerService;
 
+  @tracked isAddingInstructions = false;
   @tracked isAddingSubSigns = false;
   @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedRoadSigns = false;
@@ -19,7 +20,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     return (
       this.isAddingRelatedRoadSigns ||
       this.isAddingMainSigns ||
-      this.isAddingSubSigns
+      this.isAddingSubSigns ||
+      this.isAddingInstructions
     );
   }
 
@@ -116,6 +118,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action
+  toggleInstructions() {
+    this.isAddingInstructions = !this.isAddingInstructions;
+  }
+
+  @action
   toggleAddSubSigns() {
     this.isAddingSubSigns = !this.isAddingSubSigns;
     this.isAddingRelatedRoadSigns = false;
@@ -169,6 +176,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   reset() {
+    this.isAddingInstructions = false;
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
     this.isAddingRelatedRoadSigns = false;

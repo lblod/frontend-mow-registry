@@ -15,6 +15,10 @@ utility:
   fieldRequired: Dit veld is verplicht
   appName: MOW Register
   delete: verwijderen
+  instructions: Instructies
+  addInstruction: Instructie toevoegen
+  title: Titel
+  description: Beschrijving
 roadSignConcept:
   name: Verkeersborden
   details: Verkeersbord details

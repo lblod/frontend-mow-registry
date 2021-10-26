@@ -117,6 +117,84 @@
         </AuToolbarGroup>
       </AuToolbar>
       <div class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables">
+        <AuDataTable
+          as |s|
+        >
+          <s.menu as |menu|>
+            <menu.general>
+              <AuToolbar class="au-o-box">
+                <AuToolbarGroup>
+                  <AuHeading @level="2" @skin="3">
+                    {{t "utility.instructions"}}
+                  </AuHeading>
+                </AuToolbarGroup>
+                <AuToolbarGroup>
+                  <AuButton {{on "click" this.toggleInstructions}}>
+                    {{t "utility.addInstruction"}}
+                  </AuButton>
+                </AuToolbarGroup>
+              </AuToolbar>
+            </menu.general>
+          </s.menu>
+          <s.content as |c|>
+            <c.header>
+              <th class="data-table__header-title">
+                {{t "utility.title"}}
+              </th>
+              <th class="data-table__header-title">
+                {{t "utility.description"}}
+              </th>
+              <th>
+                <span class="au-u-hidden-visually">
+                  {{t "mainSign.crud.delete"}}
+                </span>
+              </th>
+            </c.header>
+            <tbody>
+              <tr>
+                <td>
+                  <AuLink>Title</AuLink>
+                </td>
+                <td>
+                  <p class="max-w-prose">
+                    Description
+                  </p>
+                </td>
+                <td class="w-px au-u-padding-right-small">
+                  <AuButton
+                    @icon="bin"
+                    @alert={{true}}
+                    @skin="secondary"
+                    @hideText={{true}}
+                  >
+                    {{t "utility.delete"}}
+                  </AuButton>
+                </td>
+              </tr>
+            </tbody>
+            {{!-- <c.body>
+              <td>
+                <AuLink>Title</AuLink>
+              </td>
+              <td>
+                <p class="max-w-prose">
+                  Description
+                </p>
+              </td>
+              <td class="w-px au-u-padding-right-small">
+                <AuButton
+                  @icon="bin"
+                  @alert={{true}}
+                  @skin="secondary"
+                  @hideText={{true}}
+                >
+                  {{t "utility.delete"}}
+                </AuButton>
+              </td>
+            </c.body> --}}
+          </s.content>
+        </AuDataTable>
+
         {{#if this.isSubSign}}
           <AuDataTable
             @content={{sort-by-road-sign-code @model.roadSignConcept.mainSigns}}
@@ -525,6 +603,55 @@
               />
             {{/each}}
           {{/if}}
+        </div>
+      </div>
+    </div>
+  {{/if}}
+  {{#if this.isAddingInstructions}}
+    <div class="au-o-grid__item au-u-2-5@medium">
+      <div
+        class="au-c-body-container au-c-action-sidebar"
+        {{auto-focus ".au-c-action-sidebar__header"}}
+      >
+        <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
+          <AuToolbar class="au-u-margin-bottom-small">
+            <AuToolbarGroup>
+              <AuHeading @level="2" @skin="3">
+                {{t "utility.addInstruction"}}
+              </AuHeading>
+            </AuToolbarGroup>
+            <button
+              type="button"
+              class="au-c-close au-c-close--large"
+              {{on "click" this.toggleInstructions}}
+            >
+              <AuIcon @icon="cross" @size="large" />
+              <span class="au-u-hidden-visually">
+                {{t "utility.close"}}
+              </span>
+            </button>
+          </AuToolbar>
+
+        </div>
+        <div class="au-c-body-container au-c-body-container--scroll">
+          <div class="au-o-box au-c-form">
+            <p>
+              <AuLabel for="input-title">{{t "utility.title"}}</AuLabel>
+              <AuInput id="input-title" @width="block"/>
+            </p>
+            <p>
+              <AuLabel for="textarea-description">{{t "utility.description"}}</AuLabel>
+              <AuTextarea id="textarea-description" @width="block"></AuTextarea>
+            </p>
+            <AuButtonGroup>
+              <AuButton>
+                {{t "utility.save"}}
+              </AuButton>
+              <AuButton @skin="secondary">
+                {{t "utility.cancel"}}
+              </AuButton>
+            </AuButtonGroup>
+          </div>
         </div>
       </div>
     </div>

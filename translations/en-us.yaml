@@ -15,6 +15,10 @@ utility:
   fieldRequired: This field is required
   appName: MOW Registry
   delete: delete
+  instructions: Instructions
+  addInstruction: Add instruction
+  title: Title
+  description: Description
 roadSignConcept:
   name: Road Signs
   details: Road Sign details
