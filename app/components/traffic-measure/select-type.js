@@ -1,33 +1,23 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import { task } from 'ember-concurrency';
+import { tracked } from '@glimmer/tracking';
 
 export default class TrafficMeasureSelectTypeComponent extends Component {
   @service intl;
+  @service store;
 
-  get types() {
-    const types = [
-      {
-        label: this.intl.t('roadSignConcept.name'),
-        modelName: 'road-sign-concept',
-        searchFilter: 'filter[road-sign-concept-code]',
-        sortingField: 'road-sign-concept-code',
-        labelField: 'roadSignConceptCode',
-      },
-      {
-        label: this.intl.t('roadMarkingConcept.name'),
-        modelName: 'road-marking-concept',
-        searchFilter: 'filter[road-marking-concept-code]',
-        sortingField: 'road-marking-concept-code',
-        labelField: 'roadMarkingConceptCode',
-      },
-      {
-        label: this.intl.t('trafficLightConcept.name'),
-        modelName: 'traffic-light-concept',
-        searchFilter: 'filter[traffic-light-concept-code]',
-        sortingField: 'traffic-light-concept-code',
-        labelField: 'trafficLightConceptCode',
-      },
-    ];
-    return types;
+  @tracked types;
+
+  constructor() {
+    super(...arguments);
+    this.fetchTypes.perform();
+  }
+
+  @task
+  *fetchTypes() {
+    let queryParams = {};
+    let types = yield this.store.query('indicator-type', queryParams);
+    this.types = types;
   }
 }

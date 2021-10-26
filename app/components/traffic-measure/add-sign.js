@@ -16,7 +16,7 @@ export default class TrafficMeasureAddSignComponent extends Component {
     let queryParams = {};
     queryParams[this.args.selectedType.searchFilter] = searchData;
     queryParams['sort'] = this.args.selectedType.sortingField;
-    console.log(queryParams);
+
     let options = yield this.store.query(
       this.args.selectedType.modelName,
       queryParams
