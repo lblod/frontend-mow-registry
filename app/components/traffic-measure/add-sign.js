@@ -22,7 +22,6 @@ export default class TrafficMeasureAddSignComponent extends Component {
       queryParams
     );
 
-    console.log(options);
     options.map(
       (option) => (option['label'] = option[this.args.selectedType.labelField])
     );
