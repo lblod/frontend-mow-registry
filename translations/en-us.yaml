@@ -87,7 +87,7 @@ roadMarkingConcept:
     imageHeader: Image
     imageUrl: Image URL
     meaning: Meaning
-    definition: Defenition
+    definition: Definition
     code: Code
     relatedSign: Related road signs
     relatedMarking: Related road markings
