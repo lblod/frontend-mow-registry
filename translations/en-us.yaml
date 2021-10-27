@@ -19,6 +19,10 @@ utility:
   addInstruction: Add instruction
   title: Title
   description: Description
+  order: Order
+  sign: Sign
+  selectInstruction: Add instruction
+  drag: Drag
 roadSignConcept:
   name: Road Signs
   details: Road Sign details

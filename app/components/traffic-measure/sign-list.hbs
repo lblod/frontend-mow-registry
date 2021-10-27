@@ -1,13 +1,71 @@
-<div class="au-c-theme-gray-100 au-c-card au-o-box au-o-box--small au-u-margin-bottom">
-  <ul class="au-c-list-horizontal">
-    {{#each @signs as |sign|}}
-      <li class="au-c-list-horizontal__item au-c-sign-container">
-        <img src={{sign.image}} alt="" role="presentation" class="au-c-thumbnail">
-          <button {{on "click" (fn @removeSign sign)}} type="button" class="au-c-sign-container__delete">
-            <AuIcon @icon="cross" />
-            <span class="au-u-hidden-visually">{{t "utility.delete"}}</span>
-          </button>
-      </li>
-    {{/each}}
-  </ul>
+<div class="au-c-table-wrapper au-u-margin-bottom">
+  <table class="au-c-table">
+    <thead class="au-c-table__header">
+      <tr>
+        <th>{{t "utility.order"}}</th>
+        <th>{{t "utility.sign"}}</th>
+        <th>{{t "utility.selectInstruction"}}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <SortableObjects @tagName={{"tbody"}}
+      @sortEndAction={{@onSort}}
+      @sortableObjectList={{@items}}
+      @enableSort={{true}}
+      @useSwap={{true}}
+      @inPlace={{true}}
+      class="au-c-table__body">
+      {{#if empty}}
+      <tr>
+        <td colspan="4">
+          <AuHelpText @size="normal" @skin="tertiary">
+            {{t "utility.noInstructionMessage"}}
+          </AuHelpText>
+        </td>
+      </tr>
+      {{else}}
+      {{#each @signs as |sign|}}
+      <DraggableObject @tagName="tr" @content={{@sign}} @isSortable={{true}} class="au-c-table__row--centered">
+        <td class="w-px au-u-padding-right-small">
+          <AuButton @icon="drag" @skin="tertiary" @hideText={{true}} class="au-c-button--drag">
+            {{t "utility.drag"}}
+          </AuButton>
+        </td>
+        <td>
+          <div class="au-o-flex au-o-flex--center">
+            <img src={{sign.image}} alt="" role="presentation" class="au-c-thumbnail au-c-thumbnail--table">
+            <span>
+              {{sign.label}}
+              Label {{!-- sign.label doesn't seem to render the title  --}}
+            </span>
+          </div>
+        </td>
+        <td>
+          <AuLabel for="instructionSelect" class="au-u-hidden-visually">{{t "utility.selectInstruction"}}</AuLabel>
+          <select id="instructionSelect" class="au-c-custom-select">
+            <option value=""></option>
+            <option value="instruction1">
+              Instruction 1
+            </option>
+            <option value="instruction2">
+              Instruction 2
+            </option>
+          </select>
+        </td>
+        <td class="w-px au-u-padding-right-small">
+          <AuButton
+            @icon="bin"
+            @alert={{true}}
+            @skin="secondary"
+            @hideText={{true}}
+            {{on "click" (fn @removeSign sign)}}
+          >
+            {{t "utility.delete"}}
+          </AuButton>
+        </td>
+      </DraggableObject>
+      {{/each}}
+      {{/if}}
+    </SortableObjects>
+  </table>
 </div>

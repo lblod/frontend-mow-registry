@@ -19,6 +19,10 @@ utility:
   addInstruction: Instructie toevoegen
   title: Titel
   description: Beschrijving
+  order: Volgorde
+  sign: Verkeersteken
+  selectInstruction: Voeg instructie toe
+  drag: Sleep
 roadSignConcept:
   name: Verkeersborden
   details: Verkeersbord details
