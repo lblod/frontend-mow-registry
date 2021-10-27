@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 export default class RoadmarkingConceptsRoadmarkingConceptController extends Controller {
   @service('router') routerService;
 
+  @tracked isAddingInstructions = false;
   @tracked isAddingRelatedRoadMarkings = false;
   @tracked isAddingRelatedRoadSigns = false;
   @tracked isAddingInstructions = false;
