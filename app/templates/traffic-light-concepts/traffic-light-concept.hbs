@@ -119,6 +119,11 @@
       <div
         class="au-c-body-container au-c-body-container--scroll"
       >
+        <InstructionsTable
+          @templates={{@model.trafficLightConcept.templates}}
+          @toggleInstructions={{this.toggleInstructions}}
+          @removeTemplate={{this.removeTemplate}}
+        />
         <AuDataTable
           @content={{
             sort-by-traffic-light-code
@@ -274,5 +279,13 @@
         </div>
       </div>
     </div>
+  {{/if}}
+  {{#if this.isAddingInstructions}}
+    <AddInstruction
+      @toggleInstructions={{this.toggleInstructions}}
+      @addInstruction={{this.addInstruction}}
+      @resetInstruction={{this.resetInstruction}}
+      @newDescription={{this.newDescription}}
+    />
   {{/if}}
 </div>

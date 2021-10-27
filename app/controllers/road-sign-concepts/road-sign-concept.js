@@ -178,8 +178,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async addInstruction() {
-    // todo fix measures that will probably now not work anymore
-
     const template = await this.store.createRecord('template');
     template.value = this.newDescription;
 
