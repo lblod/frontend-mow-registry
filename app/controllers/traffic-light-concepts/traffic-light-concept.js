@@ -10,11 +10,13 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked isAddingSubSigns = false;
   @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedTrafficLights = false;
+  @tracked isAddingInstructions = false;
 
   @tracked category = null;
   @tracked categoryTrafficLights = null;
 
   @tracked relatedTrafficLightCodeFilter = '';
+  @tracked newDescription = '';
 
   get showSidebar() {
     return (
@@ -127,6 +129,36 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
     await trafficLightConcept.destroyRecord();
     this.routerService.transitionTo('traffic-light-concepts');
+  }
+
+  @action
+  async addInstruction() {
+    const template = await this.store.createRecord('template');
+    template.value = this.newDescription;
+
+    const templates = await this.model.trafficLightConcept.templates;
+    templates.pushObject(template);
+
+    await templates.save();
+    await this.model.trafficLightConcept.save();
+
+    this.resetInstruction();
+  }
+
+  @action
+  resetInstruction() {
+    this.newDescription = '';
+    this.toggleInstructions();
+  }
+
+  @action
+  async removeTemplate(template) {
+    let templates = await this.model.trafficLightConcept.templates;
+
+    templates.removeObject(template);
+
+    await template.destroyRecord();
+    await this.model.trafficLightConcept.save();
   }
 
   reset() {

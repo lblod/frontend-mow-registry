@@ -15,6 +15,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked categoryRoadSigns = null;
 
   @tracked subSignCodeFilter = '';
+  @tracked newDescription = '';
 
   get showSidebar() {
     return (
@@ -173,6 +174,36 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
     await roadSignConcept.destroyRecord();
     this.routerService.transitionTo('road-sign-concepts');
+  }
+
+  @action
+  async addInstruction() {
+    const template = await this.store.createRecord('template');
+    template.value = this.newDescription;
+
+    const templates = await this.model.roadSignConcept.templates;
+    templates.pushObject(template);
+
+    await templates.save();
+    await this.model.roadSignConcept.save();
+
+    this.resetInstruction();
+  }
+
+  @action
+  resetInstruction() {
+    this.newDescription = '';
+    this.toggleInstructions();
+  }
+
+  @action
+  async removeTemplate(template) {
+    let templates = await this.model.roadSignConcept.templates;
+
+    templates.removeObject(template);
+
+    await template.destroyRecord();
+    await this.model.roadSignConcept.save();
   }
 
   reset() {

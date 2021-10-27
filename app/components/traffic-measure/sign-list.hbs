@@ -36,21 +36,28 @@
             <img src={{sign.image}} alt="" role="presentation" class="au-c-thumbnail au-c-thumbnail--table">
             <span>
               {{sign.label}}
-              Label {{!-- sign.label doesn't seem to render the title  --}}
+              Label {{!-- sign.label doesnt seem to render the title  --}}
             </span>
           </div>
         </td>
         <td>
-          <AuLabel for="instructionSelect" class="au-u-hidden-visually">{{t "utility.selectInstruction"}}</AuLabel>
-          <select id="instructionSelect" class="au-c-custom-select">
-            <option value=""></option>
-            <option value="instruction1">
-              Instruction 1
-            </option>
-            <option value="instruction2">
-              Instruction 2
-            </option>
-          </select>
+          <div class="au-o-flex au-o-flex--center">
+            <div class="au-u-1-1">
+              <AuLabel for="instructionSelect" class="au-u-hidden-visually">{{t "utility.selectInstruction"}}</AuLabel>
+              <select id="instructionSelect" class="au-c-custom-select">
+                <option value=""></option>
+                <option value="instruction1">
+                  Instruction 1
+                </option>
+                <option value="instruction2">
+                  Instruction 2
+                </option>
+              </select>
+            </div>
+            <AuButton @skin="secondary">
+              {{t "utility.add"}}
+            </AuButton>
+          </div>
         </td>
         <td class="w-px au-u-padding-right-small">
           <AuButton

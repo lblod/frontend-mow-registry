@@ -17,12 +17,12 @@ utility:
   delete: verwijderen
   instructions: Instructies
   addInstruction: Instructie toevoegen
-  title: Titel
   description: Beschrijving
   order: Volgorde
   sign: Verkeersteken
   selectInstruction: Voeg instructie toe
   drag: Sleep
+  add: Voeg toe
 roadSignConcept:
   name: Verkeersborden
   details: Verkeersbord details
@@ -39,6 +39,7 @@ roadSignConcept:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
     noData: Geen verkeersborden gevonden
+    noInstruction: Geen instructies gevonden
     edit: Verkeersbord bewerken
     delete: Verkeersbord verwijderen
     codeFilter: Code

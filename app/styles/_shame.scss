@@ -199,5 +199,18 @@ table.dataTable tbody th {
 .au-o-flex {
   display: flex;
   justify-content: flex-start;
+  flex-wrap: nowrap;
+  width: 100%;
+
+  .au-c-button {
+    flex: none;
+  }
+
+  > * + * {
+    margin-left: $au-unit-tiny;
+  }
+}
+
+.au-o-flex--center {
   align-items: center;
 }

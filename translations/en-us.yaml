@@ -17,12 +17,12 @@ utility:
   delete: delete
   instructions: Instructions
   addInstruction: Add instruction
-  title: Title
   description: Description
   order: Order
   sign: Sign
   selectInstruction: Add instruction
   drag: Drag
+  add: Add
 roadSignConcept:
   name: Road Signs
   details: Road Sign details
@@ -39,6 +39,7 @@ roadSignConcept:
     create: Create road sign
     new: New Road Sign
     noData: No Road Signs
+    noInstruction: No Instructions
     edit: Edit Road Sign
     delete: Delete Road Sign
     codeFilter: Code
@@ -91,7 +92,7 @@ roadMarkingConcept:
     imageHeader: Image
     imageUrl: Image URL
     meaning: Meaning
-    definition: Defenition
+    definition: Definition
     code: Code
     relatedSign: Related road signs
     relatedMarking: Related road markings

@@ -9,16 +9,21 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   @tracked isAddingInstructions = false;
   @tracked isAddingRelatedRoadMarkings = false;
   @tracked isAddingRelatedRoadSigns = false;
+  @tracked isAddingInstructions = false;
 
   @tracked category = null;
   @tracked categoryRoadMarkings = null;
   @tracked categoryRoadSigns = null;
 
   @tracked relatedRoadMarkingCodeFilter = '';
+  @tracked newDescription = '';
 
   get showSidebar() {
-    return this.isAddingRelatedRoadMarkings || this.isAddingRelatedRoadSigns ||
-    this.isAddingInstructions;
+    return (
+      this.isAddingRelatedRoadMarkings ||
+      this.isAddingRelatedRoadSigns ||
+      this.isAddingInstructions
+    );
   }
 
   get roadMarkings() {
@@ -77,11 +82,6 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   }
 
   @action
-  toggleInstructions() {
-    this.isAddingInstructions = !this.isAddingInstructions;
-  }
-
-  @action
   async handleCategorySelection(category) {
     if (category) {
       this.category = category;
@@ -112,11 +112,46 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   }
 
   @action
+  toggleInstructions() {
+    this.isAddingInstructions = !this.isAddingInstructions;
+  }
+
+  @action
   async removeRoadMarkingConcept(roadMarkingConcept, event) {
     event.preventDefault();
 
     await roadMarkingConcept.destroyRecord();
     this.routerService.transitionTo('road-marking-concepts');
+  }
+
+  @action
+  async addInstruction() {
+    const template = await this.store.createRecord('template');
+    template.value = this.newDescription;
+
+    const templates = await this.model.roadMarkingConcept.templates;
+    templates.pushObject(template);
+
+    await templates.save();
+    await this.model.roadMarkingConcept.save();
+
+    this.resetInstruction();
+  }
+
+  @action
+  resetInstruction() {
+    this.newDescription = '';
+    this.toggleInstructions();
+  }
+
+  @action
+  async removeTemplate(template) {
+    let templates = await this.model.roadMarkingConcept.templates;
+
+    templates.removeObject(template);
+
+    await template.destroyRecord();
+    await this.model.roadMarkingConcept.save();
   }
 
   reset() {
