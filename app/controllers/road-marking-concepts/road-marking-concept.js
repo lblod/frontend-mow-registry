@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 export default class RoadmarkingConceptsRoadmarkingConceptController extends Controller {
   @service('router') routerService;
 
+  @tracked isAddingInstructions = false;
   @tracked isAddingRelatedRoadMarkings = false;
   @tracked isAddingRelatedRoadSigns = false;
 
@@ -16,7 +17,8 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   @tracked relatedRoadMarkingCodeFilter = '';
 
   get showSidebar() {
-    return this.isAddingRelatedRoadMarkings || this.isAddingRelatedRoadSigns;
+    return this.isAddingRelatedRoadMarkings || this.isAddingRelatedRoadSigns ||
+    this.isAddingInstructions;
   }
 
   get roadMarkings() {
@@ -75,6 +77,11 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   }
 
   @action
+  toggleInstructions() {
+    this.isAddingInstructions = !this.isAddingInstructions;
+  }
+
+  @action
   async handleCategorySelection(category) {
     if (category) {
       this.category = category;
@@ -113,6 +120,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   }
 
   reset() {
+    this.isAddingInstructions = false;
     this.isAddingRelatedRoadMarkings = false;
     this.isAddingRelatedRoadSigns = false;
     this.category = null;
