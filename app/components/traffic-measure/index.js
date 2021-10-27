@@ -20,7 +20,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked nodeShape;
   @tracked signs = [];
   @tracked mappings = [];
-  @tracked template;
+  @tracked template = '';
   @tracked searchString;
   @tracked signError;
   @tracked preview;
@@ -54,7 +54,10 @@ export default class TrafficMeasureIndexComponent extends Component {
     const concept = yield this.nodeShape.targetHasConcept;
     yield concept.relations;
 
-    this.template = yield concept.template;
+    // We assume that a measure has only one template
+    const templates = yield concept.templates;
+
+    this.template = yield templates.firstObject;
     this.signs = yield concept.orderedRelations.map(
       (relation) => relation.concept
     );
@@ -169,7 +172,8 @@ export default class TrafficMeasureIndexComponent extends Component {
   @task
   *save() {
     const concept = yield this.nodeShape.targetHasConcept;
-    const template = yield concept.template;
+    // We assume a measure only has one template
+    const template = yield concept.templates.firstObject;
 
     //if new save relationships
     if (this.new) {

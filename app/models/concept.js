@@ -1,8 +1,8 @@
-import { hasMany, belongsTo } from '@ember-data/model';
+import { hasMany } from '@ember-data/model';
 import ResourceModel from './resource';
 
 export default class ConceptModel extends ResourceModel {
-  @belongsTo('template') template;
+  @hasMany('template') templates;
   @hasMany('relation', { polyMorphic: true }, { inverse: null }) relations;
 
   get orderedRelations() {
