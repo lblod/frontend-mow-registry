@@ -17,7 +17,6 @@ utility:
   delete: verwijderen
   instructions: Instructies
   addInstruction: Instructie toevoegen
-  title: Titel
   description: Beschrijving
 roadSignConcept:
   name: Verkeersborden
@@ -35,6 +34,7 @@ roadSignConcept:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
     noData: Geen verkeersborden gevonden
+    noInstruction: Geen instructies gevonden
     edit: Verkeersbord bewerken
     delete: Verkeersbord verwijderen
     codeFilter: Code

@@ -17,7 +17,6 @@ utility:
   delete: delete
   instructions: Instructions
   addInstruction: Add instruction
-  title: Title
   description: Description
 roadSignConcept:
   name: Road Signs
@@ -35,6 +34,7 @@ roadSignConcept:
     create: Create road sign
     new: New Road Sign
     noData: No Road Signs
+    noInstruction: No Instructions
     edit: Edit Road Sign
     delete: Delete Road Sign
     codeFilter: Code
