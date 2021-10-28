@@ -32,24 +32,22 @@
       </th>
     </c.header>
     <c.body as |template|>
-      <tr>
-        <td>
-          <p class="max-w-prose">
-            {{template.value}}
-          </p>
-        </td>
-        <td class="w-px au-u-padding-right-small">
-          <AuButton
-            @icon="bin"
-            @alert={{true}}
-            @skin="secondary"
-            @hideText={{true}}
-            {{on "click" (fn @removeTemplate template)}}
-          >
-            {{t "utility.delete"}}
-          </AuButton>
-        </td>
-      </tr>
+      <td>
+        <p class="max-w-prose">
+          {{template.value}}
+        </p>
+      </td>
+      <td class="w-px au-u-padding-right-small">
+        <AuButton
+          @icon="bin"
+          @alert={{true}}
+          @skin="secondary"
+          @hideText={{true}}
+          {{on "click" (fn @removeTemplate template)}}
+        >
+          {{t "utility.delete"}}
+        </AuButton>
+      </td>
     </c.body>
   </s.content>
 </AuDataTable>
