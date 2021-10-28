@@ -343,4 +343,10 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.template.value += `${instruction.value} `;
     this.parseTemplate();
   }
+
+  @task
+  *updateMappingType(mapping, selectedType) {
+    mapping.type = yield selectedType;
+    this.parseTemplate();
+  }
 }
