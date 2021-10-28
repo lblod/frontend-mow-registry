@@ -20,7 +20,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked nodeShape;
   @tracked signs = [];
   @tracked mappings = [];
-  @tracked template = '';
+  @tracked template;
   @tracked searchString;
   @tracked signError;
   @tracked preview;
@@ -56,12 +56,13 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     // We assume that a measure has only one template
     const templates = yield concept.templates;
-
     this.template = yield templates.firstObject;
-    this.signs = yield concept.orderedRelations.map(
-      (relation) => relation.concept
-    );
     this.mappings = yield this.template.get('mappings');
+
+    const relations = yield concept.orderedRelations;
+    this.signs = yield Promise.all(
+      relations.map((relation) => relation.get('concept'))
+    );
 
     this.parseTemplate();
   }
@@ -155,12 +156,13 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *delete() {
-    yield (yield (yield this.nodeShape.targetHasConcept.get('template')).get(
-      'mappings'
-    )).forEach((mapping) => mapping.destroyRecord());
-    yield (yield this.nodeShape.targetHasConcept.get(
-      'template'
-    )).destroyRecord();
+    // We assume a measure only has one template
+    yield (yield (yield this.nodeShape.targetHasConcept.get('templates')
+      .firstObject).get('mappings')).forEach((mapping) =>
+      mapping.destroyRecord()
+    );
+    yield (yield this.nodeShape.targetHasConcept.get('templates')
+      .firstObject).destroyRecord();
     yield (yield this.nodeShape.targetHasConcept.get(
       'relations'
     )).forEach((relation) => relation.destroyRecord());
@@ -334,5 +336,11 @@ export default class TrafficMeasureIndexComponent extends Component {
     } else {
       this.selectedType = null;
     }
+  }
+
+  @action
+  addInstructionToTemplate(instruction) {
+    this.template.value += `${instruction.value} `;
+    this.parseTemplate();
   }
 }

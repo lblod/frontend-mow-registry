@@ -16,13 +16,14 @@ utility:
   appName: MOW Registry
   delete: delete
   instructions: Instructions
-  addInstruction: Add instruction
   description: Description
   order: Order
   sign: Sign
-  selectInstruction: Add instruction
+  addInstruction: Add instruction
+  selectInstruction: Select an instruction
   drag: Drag
   add: Add
+  noInstruction: No instructions found
 roadSignConcept:
   name: Road Signs
   details: Road Sign details
@@ -39,7 +40,7 @@ roadSignConcept:
     create: Create road sign
     new: New Road Sign
     noData: No Road Signs
-    noInstruction: No Instructions
+    noInstruction: No instructions found
     edit: Edit Road Sign
     delete: Delete Road Sign
     codeFilter: Code

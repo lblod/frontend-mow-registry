@@ -1,78 +1,37 @@
 <div class="au-c-table-wrapper au-u-margin-bottom">
+  {{!-- template-lint-disable table-groups --}}
   <table class="au-c-table">
     <thead class="au-c-table__header">
       <tr>
         <th>{{t "utility.order"}}</th>
         <th>{{t "utility.sign"}}</th>
-        <th>{{t "utility.selectInstruction"}}</th>
+        <th>{{t "utility.addInstruction"}}</th>
         <th></th>
       </tr>
     </thead>
-    <SortableObjects @tagName={{"tbody"}}
+    <SortableObjects
+      @tagName={{"tbody"}}
       @sortEndAction={{@onSort}}
-      @sortableObjectList={{@items}}
+      @sortableObjectList={{@signs}}
       @enableSort={{true}}
       @useSwap={{true}}
       @inPlace={{true}}
       class="au-c-table__body">
-      {{#if empty}}
-      <tr>
-        <td colspan="4">
-          <AuHelpText @size="normal" @skin="tertiary">
-            {{t "utility.noInstructionMessage"}}
-          </AuHelpText>
-        </td>
-      </tr>
-      {{else}}
       {{#each @signs as |sign|}}
-      <DraggableObject @tagName="tr" @content={{@sign}} @isSortable={{true}} class="au-c-table__row--centered">
-        <td class="w-px au-u-padding-right-small">
-          <AuButton @icon="drag" @skin="tertiary" @hideText={{true}} class="au-c-button--drag">
-            {{t "utility.drag"}}
-          </AuButton>
-        </td>
-        <td>
-          <div class="au-o-flex au-o-flex--center">
-            <img src={{sign.image}} alt="" role="presentation" class="au-c-thumbnail au-c-thumbnail--table">
-            <span>
-              {{sign.label}}
-              Label {{!-- sign.label doesnt seem to render the title  --}}
-            </span>
-          </div>
-        </td>
-        <td>
-          <div class="au-o-flex au-o-flex--center">
-            <div class="au-u-1-1">
-              <AuLabel for="instructionSelect" class="au-u-hidden-visually">{{t "utility.selectInstruction"}}</AuLabel>
-              <select id="instructionSelect" class="au-c-custom-select">
-                <option value=""></option>
-                <option value="instruction1">
-                  Instruction 1
-                </option>
-                <option value="instruction2">
-                  Instruction 2
-                </option>
-              </select>
-            </div>
-            <AuButton @skin="secondary">
-              {{t "utility.add"}}
-            </AuButton>
-          </div>
-        </td>
-        <td class="w-px au-u-padding-right-small">
-          <AuButton
-            @icon="bin"
-            @alert={{true}}
-            @skin="secondary"
-            @hideText={{true}}
-            {{on "click" (fn @removeSign sign)}}
-          >
-            {{t "utility.delete"}}
-          </AuButton>
-        </td>
-      </DraggableObject>
+        <TrafficMeasure::InstructionEntry
+          @sign={{sign}}
+          @removeSign={{@removeSign}}
+          @addInstructionToTemplate={{@addInstructionToTemplate}}
+        />
+      {{else}}
+        <tr>
+          <td colspan="4">
+            <AuHelpText @size="normal" @skin="tertiary">
+              {{t "utility.noInstruction"}}
+            </AuHelpText>
+          </td>
+        </tr>
       {{/each}}
-      {{/if}}
     </SortableObjects>
   </table>
 </div>

@@ -16,13 +16,14 @@ utility:
   appName: MOW Register
   delete: verwijderen
   instructions: Instructies
-  addInstruction: Instructie toevoegen
   description: Beschrijving
   order: Volgorde
   sign: Verkeersteken
-  selectInstruction: Voeg instructie toe
+  addInstruction: Voeg instructie toe
+  selectInstruction: Selecteer een instructie
   drag: Sleep
   add: Voeg toe
+  noInstruction: Geen instructies gevonden
 roadSignConcept:
   name: Verkeersborden
   details: Verkeersbord details
