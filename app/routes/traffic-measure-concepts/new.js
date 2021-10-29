@@ -8,11 +8,13 @@ export default class TrafficMeasureConceptsNewRoute extends Route {
 
   async model() {
     const template = this.store.createRecord('template');
-    const concept = this.store.createRecord('concept');
+    const trafficMeasureConcept = this.store.createRecord(
+      'traffic-measure-concept'
+    );
     const nodeShape = this.store.createRecord('node-shape');
 
     template.value = '';
-    concept.templates.pushObject(template);
+    trafficMeasureConcept.templates.pushObject(template);
 
     const trafficMeasureResource = await this.store.findRecord(
       'resource',
@@ -20,8 +22,11 @@ export default class TrafficMeasureConceptsNewRoute extends Route {
     );
 
     nodeShape.targetClass = trafficMeasureResource;
-    nodeShape.targetHasConcept = concept;
+    nodeShape.targetHasConcept = trafficMeasureConcept;
 
-    return nodeShape;
+    await trafficMeasureConcept.save();
+    await nodeShape.save();
+
+    return trafficMeasureConcept;
   }
 }

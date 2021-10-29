@@ -8,7 +8,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   constructor(...args) {
     super(...args);
 
-    this.nodeShape = this.args.nodeShape;
+    this.trafficMeasureConcept = this.args.trafficMeasureConcept;
     this.new = this.args.new;
     this.fetchData.perform();
   }
@@ -17,7 +17,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   @service router;
 
   @tracked new;
-  @tracked nodeShape;
+  @tracked trafficMeasureConcept;
   @tracked signs = [];
   @tracked mappings = [];
   @tracked template;
@@ -51,15 +51,14 @@ export default class TrafficMeasureIndexComponent extends Component {
   @task
   *fetchData() {
     // Wait for data loading
-    const concept = yield this.nodeShape.targetHasConcept;
-    yield concept.relations;
+    yield this.trafficMeasureConcept.relations;
 
     // We assume that a measure has only one template
-    const templates = yield concept.templates;
+    const templates = yield this.trafficMeasureConcept.templates;
     this.template = yield templates.firstObject;
     this.mappings = yield this.template.get('mappings');
 
-    const relations = yield concept.orderedRelations;
+    const relations = yield this.trafficMeasureConcept.orderedRelations;
     this.signs = yield Promise.all(
       relations.map((relation) => relation.get('concept'))
     );
@@ -156,43 +155,46 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *delete() {
+    const nodeShape = yield this.store.query('node-shape', {
+      'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
+    });
+    yield (yield nodeShape.firstObject).destroyRecord();
+
     // We assume a measure only has one template
-    yield (yield (yield this.nodeShape.targetHasConcept.get('templates')
+    yield (yield (yield this.trafficMeasureConcept.get('templates')
       .firstObject).get('mappings')).forEach((mapping) =>
       mapping.destroyRecord()
     );
-    yield (yield this.nodeShape.targetHasConcept.get('templates')
+    yield (yield this.trafficMeasureConcept.get('templates')
       .firstObject).destroyRecord();
-    yield (yield this.nodeShape.targetHasConcept.get(
+    yield (yield this.trafficMeasureConcept.get(
       'relations'
     )).forEach((relation) => relation.destroyRecord());
-    yield (yield this.nodeShape.targetHasConcept).destroyRecord();
-    yield this.nodeShape.destroyRecord();
+
+    yield this.trafficMeasureConcept.destroyRecord();
     this.router.transitionTo('traffic-measure-concepts.index');
   }
 
   @task
   *save() {
-    const concept = yield this.nodeShape.targetHasConcept;
     // We assume a measure only has one template
-    const template = yield concept.templates.firstObject;
+    const template = yield this.trafficMeasureConcept.templates.firstObject;
 
     //if new save relationships
     if (this.new) {
       yield template.save();
-      yield concept.save();
-      yield this.nodeShape.save();
+      yield this.trafficMeasureConcept.save();
     }
 
     //1-parse everything again
     this.parseTemplate();
 
     //2-update node shape
-    this.nodeShape.label = this.label;
-    yield this.nodeShape.save();
+    this.trafficMeasureConcept.label = this.label;
+    yield this.trafficMeasureConcept.save();
 
     //3-update roadsigns
-    yield this.saveRoadsigns.perform(concept);
+    yield this.saveRoadsigns.perform(this.trafficMeasureConcept);
 
     //4-handle variable mappings
     yield this.saveMappings.perform(template);
@@ -200,28 +202,28 @@ export default class TrafficMeasureIndexComponent extends Component {
     if (this.new) {
       this.router.transitionTo(
         'traffic-measure-concepts.edit',
-        this.nodeShape.id
+        this.trafficMeasureConcept.id
       );
     }
   }
 
   @task
-  *saveRoadsigns(concept) {
+  *saveRoadsigns(trafficMeasureConcept) {
     // delete existing ones
-    for (let i = 0; i < concept.relations.length; i++) {
-      const relation = concept.relations.objectAt(0);
+    for (let i = 0; i < trafficMeasureConcept.relations.length; i++) {
+      const relation = trafficMeasureConcept.relations.objectAt(0);
       yield relation.destroyRecord();
     }
     // creating signs
-    concept.relations = [];
+    trafficMeasureConcept.relations = [];
     for (let i = 0; i < this.signs.length; i++) {
       const mustUseRelation = this.store.createRecord('must-use-relation');
       mustUseRelation.concept = this.signs[i];
       mustUseRelation.order = i;
-      concept.relations.pushObject(mustUseRelation);
+      trafficMeasureConcept.relations.pushObject(mustUseRelation);
       yield mustUseRelation.save();
     }
-    yield concept.save();
+    yield trafficMeasureConcept.save();
   }
 
   @task
@@ -246,7 +248,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @action
   generateModel() {
-    const templateUUid = this.nodeShape.id;
+    const templateUUid = this.trafficMeasureConcept.id;
     this.model =
       `
     PREFIX ex: <http://example.org#>
