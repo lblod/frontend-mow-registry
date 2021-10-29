@@ -54,11 +54,15 @@ export default class TrafficMeasureIndexComponent extends Component {
     const concept = yield this.nodeShape.targetHasConcept;
     yield concept.relations;
 
-    this.template = yield concept.template;
-    this.signs = yield concept.orderedRelations.map(
-      (relation) => relation.concept
-    );
+    // We assume that a measure has only one template
+    const templates = yield concept.templates;
+    this.template = yield templates.firstObject;
     this.mappings = yield this.template.get('mappings');
+
+    const relations = yield concept.orderedRelations;
+    this.signs = yield Promise.all(
+      relations.map((relation) => relation.get('concept'))
+    );
 
     this.parseTemplate();
   }
@@ -152,12 +156,13 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *delete() {
-    yield (yield (yield this.nodeShape.targetHasConcept.get('template')).get(
-      'mappings'
-    )).forEach((mapping) => mapping.destroyRecord());
-    yield (yield this.nodeShape.targetHasConcept.get(
-      'template'
-    )).destroyRecord();
+    // We assume a measure only has one template
+    yield (yield (yield this.nodeShape.targetHasConcept.get('templates')
+      .firstObject).get('mappings')).forEach((mapping) =>
+      mapping.destroyRecord()
+    );
+    yield (yield this.nodeShape.targetHasConcept.get('templates')
+      .firstObject).destroyRecord();
     yield (yield this.nodeShape.targetHasConcept.get(
       'relations'
     )).forEach((relation) => relation.destroyRecord());
@@ -169,7 +174,8 @@ export default class TrafficMeasureIndexComponent extends Component {
   @task
   *save() {
     const concept = yield this.nodeShape.targetHasConcept;
-    const template = yield concept.template;
+    // We assume a measure only has one template
+    const template = yield concept.templates.firstObject;
 
     //if new save relationships
     if (this.new) {
@@ -330,5 +336,17 @@ export default class TrafficMeasureIndexComponent extends Component {
     } else {
       this.selectedType = null;
     }
+  }
+
+  @action
+  addInstructionToTemplate(instruction) {
+    this.template.value += `${instruction.value} `;
+    this.parseTemplate();
+  }
+
+  @task
+  *updateMappingType(mapping, selectedType) {
+    mapping.type = yield selectedType;
+    this.parseTemplate();
   }
 }

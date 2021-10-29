@@ -1,0 +1,53 @@
+<AuDataTable
+  @content={{@templates}}
+  @fields="Description"
+  @noDataMessage={{t "roadSignConcept.crud.noInstruction"}}
+  as |s|
+>
+  <s.menu as |menu|>
+    <menu.general>
+      <AuToolbar class="au-o-box">
+        <AuToolbarGroup>
+          <AuHeading @level="2" @skin="3">
+            {{t "utility.instructions"}}
+          </AuHeading>
+        </AuToolbarGroup>
+        <AuToolbarGroup>
+          <AuButton {{on "click" @toggleInstructions}}>
+            {{t "utility.addInstruction"}}
+          </AuButton>
+        </AuToolbarGroup>
+      </AuToolbar>
+    </menu.general>
+  </s.menu>
+  <s.content as |c|>
+    <c.header>
+      <th class="data-table__header-title">
+        {{t "utility.description"}}
+      </th>
+      <th>
+        <span class="au-u-hidden-visually">
+          {{t "mainSign.crud.delete"}}
+        </span>
+      </th>
+    </c.header>
+    <c.body as |template|>
+      <td>
+        <p class="max-w-prose">
+          {{template.value}}
+        </p>
+      </td>
+      <td class="w-px au-u-padding-right-small">
+        <AuButton
+          @icon="bin"
+          @alert={{true}}
+          @skin="secondary"
+          @hideText={{true}}
+          {{on "click" (fn @removeTemplate template)}}
+        >
+          {{t "utility.delete"}}
+        </AuButton>
+      </td>
+    </c.body>
+  </s.content>
+</AuDataTable>

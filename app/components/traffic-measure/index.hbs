@@ -16,7 +16,7 @@
           <TrafficMeasure::AddSign @selectedType={{this.selectedType}} @addSign={{this.addSign}} @error={{this.signError}} @disabled={{this.isSelectedTypeEmpty}}/>
         </div>
         <div class="au-o-grid__item">
-          <TrafficMeasure::SignList @removeSign={{this.removeSign}} @signs={{this.signs}} />
+          <TrafficMeasure::SignList @removeSign={{this.removeSign}} @addInstructionToTemplate={{this.addInstructionToTemplate}} @signs={{this.signs}} />
         </div>
       </div>
       <div class="au-u-margin-bottom">
@@ -51,7 +51,7 @@
                       @searchEnabled={{false}}
                       @options={{this.inputTypes}}
                       @selected={{mapping.type}}
-                      @onChange={{fn (mut mapping.type)}} as |type|
+                      @onChange={{perform this.updateMappingType mapping}} as |type|
                     >
                       {{type}}
                     </PowerSelect>

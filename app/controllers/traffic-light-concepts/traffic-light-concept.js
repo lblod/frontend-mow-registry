@@ -6,20 +6,24 @@ import { tracked } from '@glimmer/tracking';
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
   @service('router') routerService;
 
+  @tracked isAddingInstructions = false;
   @tracked isAddingSubSigns = false;
   @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedTrafficLights = false;
+  @tracked isAddingInstructions = false;
 
   @tracked category = null;
   @tracked categoryTrafficLights = null;
 
   @tracked relatedTrafficLightCodeFilter = '';
+  @tracked newDescription = '';
 
   get showSidebar() {
     return (
       this.isAddingRelatedTrafficLights ||
       this.isAddingMainSigns ||
-      this.isAddingSubSigns
+      this.isAddingSubSigns ||
+      this.isAddingInstructions
     );
   }
 
@@ -93,6 +97,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action
+  toggleInstructions() {
+    this.isAddingInstructions = !this.isAddingInstructions;
+  }
+
+  @action
   async handleCategorySelection(category) {
     if (category) {
       this.category = category;
@@ -122,7 +131,38 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.routerService.transitionTo('traffic-light-concepts');
   }
 
+  @action
+  async addInstruction() {
+    const template = await this.store.createRecord('template');
+    template.value = this.newDescription;
+
+    const templates = await this.model.trafficLightConcept.templates;
+    templates.pushObject(template);
+
+    await templates.save();
+    await this.model.trafficLightConcept.save();
+
+    this.resetInstruction();
+  }
+
+  @action
+  resetInstruction() {
+    this.newDescription = '';
+    this.toggleInstructions();
+  }
+
+  @action
+  async removeTemplate(template) {
+    let templates = await this.model.trafficLightConcept.templates;
+
+    templates.removeObject(template);
+
+    await template.destroyRecord();
+    await this.model.trafficLightConcept.save();
+  }
+
   reset() {
+    this.isAddingInstructions = false;
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
     this.isAddingRelatedTrafficLights = false;

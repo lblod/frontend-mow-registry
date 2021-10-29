@@ -117,6 +117,11 @@
         </AuToolbarGroup>
       </AuToolbar>
       <div class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables">
+        <InstructionsTable
+          @templates={{@model.roadSignConcept.templates}}
+          @toggleInstructions={{this.toggleInstructions}}
+          @removeTemplate={{this.removeTemplate}}
+        />
         {{#if this.isSubSign}}
           <AuDataTable
             @content={{sort-by-road-sign-code @model.roadSignConcept.mainSigns}}
@@ -528,5 +533,13 @@
         </div>
       </div>
     </div>
+  {{/if}}
+  {{#if this.isAddingInstructions}}
+    <AddInstruction
+      @toggleInstructions={{this.toggleInstructions}}
+      @addInstruction={{this.addInstruction}}
+      @resetInstruction={{this.resetInstruction}}
+      @newDescription={{this.newDescription}}
+    />
   {{/if}}
 </div>

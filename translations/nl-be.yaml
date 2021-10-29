@@ -15,6 +15,15 @@ utility:
   fieldRequired: Dit veld is verplicht
   appName: MOW Register
   delete: verwijderen
+  instructions: Instructies
+  description: Beschrijving
+  order: Volgorde
+  sign: Verkeersteken
+  addInstruction: Voeg instructie toe
+  selectInstruction: Selecteer een instructie
+  drag: Sleep
+  add: Voeg toe
+  noInstruction: Geen instructies gevonden
 roadSignConcept:
   name: Verkeersborden
   details: Verkeersbord details
@@ -31,6 +40,7 @@ roadSignConcept:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
     noData: Geen verkeersborden gevonden
+    noInstruction: Geen instructies gevonden
     edit: Verkeersbord bewerken
     delete: Verkeersbord verwijderen
     codeFilter: Code

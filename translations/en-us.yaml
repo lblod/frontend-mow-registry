@@ -15,6 +15,15 @@ utility:
   fieldRequired: This field is required
   appName: MOW Registry
   delete: delete
+  instructions: Instructions
+  description: Description
+  order: Order
+  sign: Sign
+  addInstruction: Add instruction
+  selectInstruction: Select an instruction
+  drag: Drag
+  add: Add
+  noInstruction: No instructions found
 roadSignConcept:
   name: Road Signs
   details: Road Sign details
@@ -31,6 +40,7 @@ roadSignConcept:
     create: Create road sign
     new: New Road Sign
     noData: No Road Signs
+    noInstruction: No instructions found
     edit: Edit Road Sign
     delete: Delete Road Sign
     codeFilter: Code
@@ -83,7 +93,7 @@ roadMarkingConcept:
     imageHeader: Image
     imageUrl: Image URL
     meaning: Meaning
-    definition: Defenition
+    definition: Definition
     code: Code
     relatedSign: Related road signs
     relatedMarking: Related road markings

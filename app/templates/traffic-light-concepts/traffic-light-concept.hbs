@@ -19,7 +19,7 @@
       "au-u-1-1@medium"
     }}"
   >
-    <div class="au-c-body-container  au-c-body-container--scroll">
+    <div class="au-c-body-container au-c-body-container--scroll">
       <AuToolbar @size="large">
         <AuToolbarGroup>
           <AuHeading @skin="2">
@@ -117,8 +117,13 @@
         </AuToolbarGroup>
       </AuToolbar>
       <div
-        class="au-c-body-container au-c-body-container--scroll"
+        class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables"
       >
+        <InstructionsTable
+          @templates={{@model.trafficLightConcept.templates}}
+          @toggleInstructions={{this.toggleInstructions}}
+          @removeTemplate={{this.removeTemplate}}
+        />
         <AuDataTable
           @content={{
             sort-by-traffic-light-code
@@ -274,5 +279,13 @@
         </div>
       </div>
     </div>
+  {{/if}}
+  {{#if this.isAddingInstructions}}
+    <AddInstruction
+      @toggleInstructions={{this.toggleInstructions}}
+      @addInstruction={{this.addInstruction}}
+      @resetInstruction={{this.resetInstruction}}
+      @newDescription={{this.newDescription}}
+    />
   {{/if}}
 </div>

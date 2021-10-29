@@ -1,0 +1,48 @@
+<DraggableObject @tagName="tr" @content={{@sign}} @isSortable={{true}} class="au-c-table__row--centered">
+  <td class="w-px au-u-padding-right-small">
+    <AuButton @icon="drag" @skin="tertiary" @hideText={{true}} class="au-c-button--drag">
+      {{t "utility.drag"}}
+    </AuButton>
+  </td>
+  <td>
+    <div class="au-o-flex au-o-flex--center">
+      <img src={{@sign.image}} alt="" role="presentation" class="au-c-thumbnail au-c-thumbnail--table">
+      <span>
+        {{@sign.label}}
+      </span>
+    </div>
+  </td>
+  <td>
+    <div class="au-o-flex au-o-flex--center">
+      <div class="au-u-1-1">
+        <PowerSelect
+          @placeholder={{t "utility.selectInstruction"}}
+          @noMatchesMessage={{t "utility.noInstruction"}}
+          @options={{@sign.templates}}
+          @selected={{this.selectedInstruction}}
+          @onChange={{fn (mut this.selectedInstruction)}} as |template|
+        >
+          {{template.value}}
+        </PowerSelect>
+      </div>
+      <AuButton
+        @skin="secondary"
+        @disabled={{not this.selectedInstruction}}
+        {{on "click" (fn @addInstructionToTemplate this.selectedInstruction)}}
+      >
+        {{t "utility.add"}}
+      </AuButton>
+    </div>
+  </td>
+  <td class="w-px au-u-padding-right-small">
+    <AuButton
+      @icon="bin"
+      @alert={{true}}
+      @skin="secondary"
+      @hideText={{true}}
+      {{on "click" (fn @removeSign @sign)}}
+    >
+      {{t "utility.delete"}}
+    </AuButton>
+  </td>
+</DraggableObject>

@@ -12,7 +12,7 @@ export default class TrafficMeasureConceptsNewRoute extends Route {
     const nodeShape = this.store.createRecord('node-shape');
 
     template.value = '';
-    concept.template = template;
+    concept.templates.pushObject(template);
 
     const trafficMeasureResource = await this.store.findRecord(
       'resource',

@@ -8,7 +8,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   @tracked page = 0;
   @tracked size = 30;
   @tracked code = '';
-  @tracked template = '';
+  @tracked template;
   @tracked sort = 'label';
 
   @restartableTask
