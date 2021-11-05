@@ -24,6 +24,7 @@ utility:
   drag: Drag
   add: Add
   noInstruction: No instructions found
+  validContent: This content is correct
 roadSignConcept:
   name: Road Signs
   details: Road Sign details

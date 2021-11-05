@@ -24,6 +24,7 @@ utility:
   drag: Sleep
   add: Voeg toe
   noInstruction: Geen instructies gevonden
+  validContent: Deze inhoud is correct
 roadSignConcept:
   name: Verkeersborden
   details: Verkeersbord details
