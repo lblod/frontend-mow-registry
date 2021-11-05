@@ -139,15 +139,15 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
     this.resetInstruction();
   }
-  
-  @task 
-  *updateInstruction(){
-    this.editedTemplate.value=this.newDescription
+
+  @task
+  *updateInstruction() {
+    this.editedTemplate.value = this.newDescription;
     yield this.editedTemplate.save();
     this.resetInstruction();
   }
-  
-  @action editInstruction(template){
+
+  @action editInstruction(template) {
     this.toggleInstructions();
     this.newDescription = template.value;
     this.editedTemplate = template;
