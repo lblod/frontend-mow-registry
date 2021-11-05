@@ -105,11 +105,13 @@ export default class TrafficMeasureIndexComponent extends Component {
     //add new variable mappings
     filteredRegexResult.forEach((reg) => {
       if (!this.mappings.find((mapping) => mapping.variable === reg[1])) {
-        this.mappings.pushObject(this.store.createRecord('mapping', {
-          variable: reg[1],
-          type: 'text',
-          expects: this.nodeShape,
-        }));
+        this.mappings.pushObject(
+          this.store.createRecord('mapping', {
+            variable: reg[1],
+            type: 'text',
+            expects: this.nodeShape,
+          })
+        );
       }
     });
 
