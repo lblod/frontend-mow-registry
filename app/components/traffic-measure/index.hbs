@@ -51,7 +51,7 @@
                       @searchEnabled={{false}}
                       @options={{this.inputTypes}}
                       @selected={{mapping.type}}
-                      @onChange={{perform this.updateMappingType mapping}} as |type|
+                      @onChange={{fn this.updateMappingType mapping}} as |type|
                     >
                       {{type}}
                     </PowerSelect>
