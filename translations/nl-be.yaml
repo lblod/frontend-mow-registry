@@ -24,6 +24,8 @@ utility:
   drag: Sleep
   add: Voeg toe
   noInstruction: Geen instructies gevonden
+  username: Gebruikersnaam
+  password: Paswoord
 roadSignConcept:
   name: Verkeersborden
   details: Verkeersbord details
@@ -159,6 +161,8 @@ relatedRoadSign:
     addOne: Gerelateerd verkeersbord toevoegen
     delete: Gerelateerd verkeersbord verwijderen
 mockLogin:
-    pick: Kies een bestuurseenheid om mee in te loggen.
+    pick: Kies een bestuurseenheid om mee in te loggen
+login:
+  login: Voer uw gebruikersnaam en wachtwoord in om in te loggen
 sparql:
     name: 'MOW Register: SPARQL'
