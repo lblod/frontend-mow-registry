@@ -30,9 +30,15 @@
           <AuTextarea id="textarea-description" @width="block" @value={{@newDescription}} />
         </p>
         <AuButtonGroup>
-          <AuButton {{on "click" @addInstruction}}>
-            {{t "utility.save"}}
-          </AuButton>
+          {{#if @editedTemplate}}
+            <AuButton {{on "click" (perform @updateInstruction)}}>
+              {{t "utility.save"}}
+            </AuButton>
+          {{else}}
+            <AuButton {{on "click" @addInstruction}}>
+              {{t "utility.save"}}
+            </AuButton>
+          {{/if}}
           <AuButton @skin="secondary" {{on "click" @resetInstruction}}>
             {{t "utility.cancel"}}
           </AuButton>
