@@ -31,8 +31,6 @@
             class="au-c-form"
             id="edit-road-sign-concept-form"
             novalidate
-            {{on "submit" (perform this.editRoadSignConceptTask roadSignConcept)
-            }}
           >
             {{#let roadSignConcept.error.image as |isInvalid|}}
               <p>
@@ -164,8 +162,7 @@
         <AuButton
           @disabled={{or roadSignConcept.isPristine this.isSaving}}
           @loading={{this.isSaving}}
-          form="edit-road-sign-concept-form"
-          type="submit"
+          {{on "click" (perform this.editRoadSignConceptTask roadSignConcept)}}
         >
           {{t "utility.save"}}
         </AuButton>

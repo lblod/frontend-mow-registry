@@ -26,7 +26,7 @@ utility:
   noInstruction: No instructions found
   username: Username
   password: Password
-  validContent: This content is correct
+  validContent: content validated
   yes: Yes
   no: No
 roadSignConcept:

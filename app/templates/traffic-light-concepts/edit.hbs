@@ -31,10 +31,6 @@
             class="au-c-form"
             id="edit-traffic-light-concept-form"
             novalidate
-            {{on
-              "submit"
-              (perform this.editTrafficLightConceptTask trafficLightConcept)
-            }}
           >
             {{#let trafficLightConcept.error.image as |isInvalid|}}
               <p>
@@ -173,7 +169,7 @@
           @disabled={{or trafficLightConcept.isPristine this.isSaving}}
           @loading={{this.isSaving}}
           form="edit-traffic-light-concept-form"
-          type="submit"
+          {{on "click" (perform this.editTrafficLightConceptTask trafficLightConcept)}}
         >
           {{t "utility.save"}}
         </AuButton>

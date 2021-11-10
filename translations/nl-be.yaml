@@ -26,7 +26,7 @@ utility:
   noInstruction: Geen instructies gevonden
   username: Gebruikersnaam
   password: Paswoord
-  validContent: Deze inhoud is correct
+  validContent: Deze inhoud is gevalideerd
   yes: Ja
   no: Nee
 roadSignConcept:
@@ -41,7 +41,7 @@ roadSignConcept:
     subSign: Mogelijke onderborden
     mainSign: Mogelijke hoofdborden
     relatedSign: Gerelateerde verkeersborden
-    valid: Geldig
+    valid: Gevalideerd
   crud:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
@@ -66,7 +66,7 @@ trafficLightConcept:
     definition: Definitie
     code: Code
     relatedTrafficLight: Gerelateerde verkeerslichten
-    valid: Geldig
+    valid: Gevalideerd
   crud:
     create: Verkeerslicht aanmaken
     new: Nieuw verkeerslicht
@@ -97,7 +97,7 @@ roadMarkingConcept:
     code: Code
     relatedSign: Gerelateerde verkeersborden
     relatedMarking: Gerelateerde wegmarkeringen
-    valid: Geldig
+    valid: Gevalideerd
   crud:
     create: Wegmarkering aanmaken
     new: Nieuwe wegmarkering
