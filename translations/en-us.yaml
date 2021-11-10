@@ -24,6 +24,9 @@ utility:
   drag: Drag
   add: Add
   noInstruction: No instructions found
+  validContent: This content is correct
+  yes: Yes
+  no: No
 roadSignConcept:
   name: Road Signs
   details: Road Sign details
@@ -36,6 +39,7 @@ roadSignConcept:
     subSign: Possible subsigns
     mainSign: Possible main signs
     relatedSign: Related road signs
+    valid: Is valid
   crud:
     create: Create road sign
     new: New Road Sign
@@ -67,6 +71,7 @@ trafficLightConcept:
     definition: Definition
     code: Code
     relatedTrafficLight: Related traffic lights
+    valid: Is valid
   crud:
     create: Create traffic light
     new: New traffic light
@@ -97,6 +102,7 @@ roadMarkingConcept:
     code: Code
     relatedSign: Related road signs
     relatedMarking: Related road markings
+    valid: Is valid
   crud:
     create: Create road marking
     new: New Road marking

@@ -24,6 +24,9 @@ utility:
   drag: Sleep
   add: Voeg toe
   noInstruction: Geen instructies gevonden
+  validContent: Deze inhoud is correct
+  yes: Ja
+  no: Nee
 roadSignConcept:
   name: Verkeersborden
   details: Verkeersbord details
@@ -36,6 +39,7 @@ roadSignConcept:
     subSign: Mogelijke onderborden
     mainSign: Mogelijke hoofdborden
     relatedSign: Gerelateerde verkeersborden
+    valid: Geldig
   crud:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
@@ -60,6 +64,7 @@ trafficLightConcept:
     definition: Definitie
     code: Code
     relatedTrafficLight: Gerelateerde verkeerslichten
+    valid: Geldig
   crud:
     create: Verkeerslicht aanmaken
     new: Nieuw verkeerslicht
@@ -90,6 +95,7 @@ roadMarkingConcept:
     code: Code
     relatedSign: Gerelateerde verkeersborden
     relatedMarking: Gerelateerde wegmarkeringen
+    valid: Geldig
   crud:
     create: Wegmarkering aanmaken
     new: Nieuwe wegmarkering
