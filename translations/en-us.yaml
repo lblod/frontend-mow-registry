@@ -24,7 +24,7 @@ utility:
   drag: Drag
   add: Add
   noInstruction: No instructions found
-  validContent: This content is correct
+  validContent: content validated
   yes: Yes
   no: No
 roadSignConcept:

@@ -54,6 +54,9 @@
                 {{@model.roadMarkingConcept.meaning}}
               </p>
             </li>
+            <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+              <ContentCheck @concept={{@model.roadSignConcept}}/>
+            </li>
           </ul>
         </AuToolbarGroup>
       </AuToolbar>
@@ -284,7 +287,6 @@
           </s.content>
         </AuDataTable>
       </div>
-      <ContentCheck @concept={{@model.roadMarkingConcept}}/>
     </div>
   </div>
   {{#if this.isAddingRelatedRoadMarkings}}
