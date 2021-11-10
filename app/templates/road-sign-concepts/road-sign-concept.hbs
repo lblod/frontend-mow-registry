@@ -83,6 +83,8 @@
           >
             {{t "roadSignConcept.crud.delete"}}
           </AuButton>
+          
+          
           <AuModal
             @modalTitle={{t "utility.confirmation.title"}}
             @modalOpen={{this.isOpen}}
@@ -121,6 +123,7 @@
           @templates={{@model.roadSignConcept.templates}}
           @toggleInstructions={{this.toggleInstructions}}
           @removeTemplate={{this.removeTemplate}}
+          @editInstruction={{this.editInstruction}}
         />
         {{#if this.isSubSign}}
           <AuDataTable
@@ -358,6 +361,7 @@
           </s.content>
         </AuDataTable>
       </div>
+      <ContentCheck @concept={{@model.roadSignConcept}}/>
     </div>
   </div>
   {{#if this.isAddingSubSigns}}
@@ -540,6 +544,8 @@
       @addInstruction={{this.addInstruction}}
       @resetInstruction={{this.resetInstruction}}
       @newDescription={{this.newDescription}}
+      @updateInstruction={{this.updateInstruction}}
+      @editedTemplate={{this.editedTemplate}}
     />
   {{/if}}
 </div>

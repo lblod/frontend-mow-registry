@@ -1,7 +1,8 @@
-import { hasMany } from '@ember-data/model';
+import { hasMany, attr } from '@ember-data/model';
 import ResourceModel from './resource';
 
 export default class ConceptModel extends ResourceModel {
+  @attr() valid;
   @hasMany('template') templates;
   @hasMany('relation', { polyMorphic: true }, { inverse: null }) relations;
 

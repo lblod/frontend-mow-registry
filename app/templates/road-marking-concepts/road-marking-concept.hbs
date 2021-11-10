@@ -113,6 +113,7 @@
           @templates={{@model.roadMarkingConcept.templates}}
           @toggleInstructions={{this.toggleInstructions}}
           @removeTemplate={{this.removeTemplate}}
+          @editInstruction={{this.editInstruction}}
         />
         <AuDataTable
           @content={{
@@ -283,6 +284,7 @@
           </s.content>
         </AuDataTable>
       </div>
+      <ContentCheck @concept={{@model.roadMarkingConcept}}/>
     </div>
   </div>
   {{#if this.isAddingRelatedRoadMarkings}}
@@ -427,6 +429,8 @@
       @addInstruction={{this.addInstruction}}
       @resetInstruction={{this.resetInstruction}}
       @newDescription={{this.newDescription}}
+      @updateInstruction={{this.updateInstruction}}
+      @editedTemplate={{this.editedTemplate}}
     />
   {{/if}}
 </div>

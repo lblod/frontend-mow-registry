@@ -78,6 +78,9 @@
         @currentSorting={{this.sort}}
         @label={{t "trafficLightConcept.attr.categories"}}
       /> --}}
+      <th>
+        {{t "roadMarkingConcept.attr.valid"}}
+      </th>
       <th></th>
     </c.header>
     <c.body as |trafficLightConcept|>
@@ -103,6 +106,13 @@
           {{category.label}}
         {{/each}}
       </td> --}}
+      <td>
+        {{#if trafficLightConcept.valid}}
+          {{t "utility.yes"}}
+        {{else}}
+          {{t "utility.no"}}
+        {{/if}}
+      </td>
       <td>
         <LinkTo
           class="au-c-link"

@@ -30,12 +30,28 @@
           {{t "mainSign.crud.delete"}}
         </span>
       </th>
+      <th>
+        <span class="au-u-hidden-visually">
+          {{t "mainSign.crud.edit"}}
+        </span>
+      </th>
+      
     </c.header>
     <c.body as |template|>
       <td>
         <p class="max-w-prose">
           {{template.value}}
         </p>
+      </td>
+      <td class="w-px au-u-padding-right-small">
+        <AuButton
+          @icon="pencil"
+          @skin="secondary"
+          @hideText={{true}}
+          {{on "click" (fn @editInstruction template)}}
+        >
+          {{t "utility.edit"}}
+        </AuButton>
       </td>
       <td class="w-px au-u-padding-right-small">
         <AuButton

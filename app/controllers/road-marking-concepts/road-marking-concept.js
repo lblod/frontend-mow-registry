@@ -1,4 +1,5 @@
 import Controller from '@ember/controller';
+import { task } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
@@ -17,6 +18,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
   @tracked relatedRoadMarkingCodeFilter = '';
   @tracked newDescription = '';
+  @tracked editedTemplate;
 
   get showSidebar() {
     return (
@@ -138,9 +140,23 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     this.resetInstruction();
   }
 
+  @task
+  *updateInstruction() {
+    this.editedTemplate.value = this.newDescription;
+    yield this.editedTemplate.save();
+    this.resetInstruction();
+  }
+
+  @action editInstruction(template) {
+    this.toggleInstructions();
+    this.newDescription = template.value;
+    this.editedTemplate = template;
+  }
+
   @action
   resetInstruction() {
     this.newDescription = '';
+    this.editedTemplate = null;
     this.toggleInstructions();
   }
 
@@ -155,6 +171,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   }
 
   reset() {
+    this.editedTemplate = null;
     this.isAddingInstructions = false;
     this.isAddingRelatedRoadMarkings = false;
     this.isAddingRelatedRoadSigns = false;

@@ -123,6 +123,7 @@
           @templates={{@model.trafficLightConcept.templates}}
           @toggleInstructions={{this.toggleInstructions}}
           @removeTemplate={{this.removeTemplate}}
+          @editInstruction={{this.editInstruction}}
         />
         <AuDataTable
           @content={{
@@ -203,6 +204,7 @@
           </s.content>
         </AuDataTable>
       </div>
+      <ContentCheck @concept={{@model.trafficLightConcept}}/>
     </div>
   </div>
   {{#if this.isAddingRelatedTrafficLights}}
@@ -286,6 +288,8 @@
       @addInstruction={{this.addInstruction}}
       @resetInstruction={{this.resetInstruction}}
       @newDescription={{this.newDescription}}
+      @updateInstruction={{this.updateInstruction}}
+      @editedTemplate={{this.editedTemplate}}
     />
   {{/if}}
 </div>
