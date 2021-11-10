@@ -31,10 +31,6 @@
             class="au-c-form"
             id="edit-road-marking-concept-form"
             novalidate
-            {{on
-              "submit"
-              (perform this.editRoadMarkingConceptTask roadMarkingConcept)
-            }}
           >
             {{#let roadMarkingConcept.error.image as |isInvalid|}}
               <p>
@@ -115,11 +111,7 @@
                   value={{roadMarkingConcept.meaning}}
                   {{on
                     "input"
-                    (fn
-                      this.setRoadMarkingConceptValue
-                      roadMarkingConcept
-                      "meaning"
-                    )
+                    (fn this.setRoadMarkingConceptValue roadMarkingConcept "meaning")
                   }}
                 />
                 {{#if isInvalid}}
@@ -141,8 +133,7 @@
         <AuButton
           @disabled={{or roadMarkingConcept.isPristine this.isSaving}}
           @loading={{this.isSaving}}
-          form="edit-road-marking-concept-form"
-          type="submit"
+          {{on "click" (perform this.editRoadMarkingConceptTask roadMarkingConcept)}}
         >
           {{t "utility.save"}}
         </AuButton>
