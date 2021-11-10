@@ -1,0 +1,42 @@
+<div>
+  <div>
+    <AuLabel for="nickname">
+      {{t "utility.username"}}&nbsp;
+    </AuLabel>
+    <AuInput
+      type="text"
+      id="nickname"
+      {{on "input" (fn this.setNickname this.nickname)}}
+    />
+  </div>
+  <div>
+    <AuLabel for="password">
+      {{t "utility.password"}}&nbsp;
+    </AuLabel>
+    <AuInput
+      type="password"
+      id="password"
+      {{on "input" (fn this.setPassword this.password)}}
+    />
+  </div>
+  <br>
+  <div>
+    <AuButton
+      {{on "click" this.login}}>
+      {{t "utility.save"}}
+    </AuButton>
+  </div>
+</div>
+
+<div>
+	{{#if this.errorMessage}}
+		<div class="alert alert--warning">
+			<div class="alert__icon" aria-hidden="true"></div>
+			<div class="alert__content">
+				<div class="alert__message">
+					<p class="u-spacer--small smaller">{{this.errorMessage}}</p>
+				</div>
+			</div>
+		</div>
+	{{/if}}
+</div>

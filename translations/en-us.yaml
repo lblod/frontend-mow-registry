@@ -24,6 +24,8 @@ utility:
   drag: Drag
   add: Add
   noInstruction: No instructions found
+  username: Username
+  password: Password
   validContent: content validated
   yes: Yes
   no: No
@@ -166,5 +168,7 @@ mainSign:
     delete: Remove main sign
 mockLogin:
     pick: Choose an account to log in with.
+login:
+  login: Enter your username and password to log in
 sparql:
     name: 'MOW Registry: SPARQL'
