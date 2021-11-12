@@ -12,5 +12,4 @@ export default class ApplicationController extends Controller {
   logout() {
     this.session.invalidate();
   }
-
 }

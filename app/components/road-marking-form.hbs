@@ -38,8 +38,6 @@
             novalidate
           >
             {{#let roadMarkingConcept.error.image as |isInvalid|}}
-              {{log roadMarkingCocnept.error}}
-              {{log isInvalid}}
               <p>
                 <AuLabel @error={{isInvalid}} for="image-url">
                   {{t "roadMarkingConcept.attr.imageUrl"}}&nbsp;
