@@ -1,23 +1,24 @@
-import Controller from '@ember/controller';
+import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import TrafficLightConceptValidations from 'mow-registry/validations/traffic-light-concept';
 
-export default class TrafficlightConceptsNewController extends Controller {
+export default class TrafficLightFormComponent extends Component {
   @service router;
   @service fileService;
 
   TrafficLightConceptValidations = TrafficLightConceptValidations;
-  file = null;
+  file;
 
   get isSaving() {
-    return this.createTrafficLightConceptTask.isRunning;
+    return this.editTrafficLightConceptTask.isRunning;
   }
 
   @action
-  setTrafficLightConceptValue(trafficLightConcept, attributeName, event) {
-    trafficLightConcept[attributeName] = event.target.value;
+  setImageUrl(trafficLightConcept, event) {
+    trafficLightConcept.image = event.target.value;
+    this.file = null;
   }
 
   @action
@@ -27,18 +28,17 @@ export default class TrafficlightConceptsNewController extends Controller {
   }
 
   @action
+  setTrafficLightConceptValue(trafficLightConcept, attributeName, event) {
+    trafficLightConcept[attributeName] = event.target.value;
+  }
+
+  @action
   setTrafficLightConceptCategory(trafficLightConcept, selection) {
     trafficLightConcept.categories = selection;
   }
 
-  @action
-  setImageUrl(trafficLightConcept, event) {
-    trafficLightConcept.image = event.target.value;
-    this.file = null;
-  }
-
   @dropTask
-  *createTrafficLightConceptTask(trafficLightConcept, event) {
+  *editTrafficLightConceptTask(trafficLightConcept, event) {
     event.preventDefault();
 
     if (this.file) {
@@ -56,9 +56,5 @@ export default class TrafficlightConceptsNewController extends Controller {
         trafficLightConcept.id
       );
     }
-  }
-
-  reset() {
-    this.file = null;
   }
 }

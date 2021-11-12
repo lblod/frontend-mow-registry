@@ -10,8 +10,4 @@ export default class TrafficlightConceptsNewRoute extends Route {
       newTrafficLightConcept: this.store.createRecord('traffic-light-concept'),
     });
   }
-
-  resetController(controller) {
-    controller.reset();
-  }
 }

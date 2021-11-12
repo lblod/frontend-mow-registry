@@ -10,8 +10,4 @@ export default class RoadmarkingConceptsNewRoute extends Route {
       newRoadMarkingConcept: this.store.createRecord('road-marking-concept'),
     });
   }
-
-  resetController(controller) {
-    controller.reset();
-  }
 }
