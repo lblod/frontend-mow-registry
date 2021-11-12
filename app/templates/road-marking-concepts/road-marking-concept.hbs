@@ -13,7 +13,7 @@
 <div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
   <div
     class="au-o-grid__item {{
-      if
+    if
       this.showSidebar
       "au-u-3-5@medium au-u-visible-from@medium"
       "au-u-1-1@medium"
@@ -54,9 +54,11 @@
                 {{@model.roadMarkingConcept.meaning}}
               </p>
             </li>
-            <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-              <ContentCheck @concept={{@model.roadMarkingConcept}}/>
-            </li>
+            {{#unless this.showSidebar}}
+              <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+                <ContentCheck @concept={{@model.roadMarkingConcept}}/>
+              </li>
+            {{/unless}}
           </ul>
         </AuToolbarGroup>
       </AuToolbar>
@@ -120,9 +122,9 @@
         />
         <AuDataTable
           @content={{
-            sort-by-road-sign-code
-            @model.roadMarkingConcept.relatedRoadSignConcepts
-          }}
+        sort-by-road-sign-code
+          @model.roadMarkingConcept.relatedRoadSignConcepts
+        }}
           @fields="Image Meaning Code Categories"
           @noDataMessage={{t "roadSignConcept.crud.noData"}}
           as |s|
@@ -204,9 +206,9 @@
         </AuDataTable>
         <AuDataTable
           @content={{
-            sort-by-road-marking-code
-            @model.roadMarkingConcept.relatedRoadMarkingConcepts
-          }}
+        sort-by-road-marking-code
+          @model.roadMarkingConcept.relatedRoadMarkingConcepts
+        }}
           @fields="Image Meaning Code Categories"
           @noDataMessage={{t "roadMarkingConcept.crud.noData"}}
           as |s|
@@ -352,8 +354,8 @@
                 @code={{relatedRoadMarkingByCategory.roadMarkingConceptCode}}
                 @meaning={{relatedRoadMarkingByCategory.meaning}}
                 @onAdd={{
-                  fn this.addRelatedRoadMarking relatedRoadMarkingByCategory
-                }}
+              fn this.addRelatedRoadMarking relatedRoadMarkingByCategory
+              }}
                 @addText={{t "relatedRoadMarking.crud.addOne"}}
                 class="au-c-action-sidebar__item"
               />
