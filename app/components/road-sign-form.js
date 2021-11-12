@@ -1,23 +1,24 @@
-import Controller from '@ember/controller';
+import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import RoadSignConceptValidations from 'mow-registry/validations/road-sign-concept';
 
-export default class RoadsignConceptsNewController extends Controller {
+export default class RoadSignFormComponent extends Component {
   @service router;
   @service fileService;
 
   RoadSignConceptValidations = RoadSignConceptValidations;
-  file = null;
+  file;
 
   get isSaving() {
-    return this.createRoadSignConceptTask.isRunning;
+    return this.editRoadSignConceptTask.isRunning;
   }
 
   @action
-  setRoadSignConceptValue(roadSignConcept, attributeName, event) {
-    roadSignConcept[attributeName] = event.target.value;
+  setImageUrl(roadSignConcept, event) {
+    roadSignConcept.image = event.target.value;
+    this.file = null;
   }
 
   @action
@@ -27,18 +28,17 @@ export default class RoadsignConceptsNewController extends Controller {
   }
 
   @action
+  setRoadSignConceptValue(roadSignConcept, attributeName, event) {
+    roadSignConcept[attributeName] = event.target.value;
+  }
+
+  @action
   setRoadSignConceptCategory(roadSignConcept, selection) {
     roadSignConcept.categories = selection;
   }
 
-  @action
-  setImageUrl(roadSignConcept, event) {
-    roadSignConcept.image = event.target.value;
-    this.file = null;
-  }
-
   @dropTask
-  *createRoadSignConceptTask(roadSignConcept, event) {
+  *editRoadSignConceptTask(roadSignConcept, event) {
     event.preventDefault();
 
     if (this.file) {
@@ -58,7 +58,4 @@ export default class RoadsignConceptsNewController extends Controller {
     }
   }
 
-  reset() {
-    this.file = null;
-  }
 }

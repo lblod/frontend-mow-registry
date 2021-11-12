@@ -11,8 +11,4 @@ export default class RoadsignConceptsNewRoute extends Route {
       categories: this.store.findAll('road-sign-category'),
     });
   }
-
-  resetController(controller) {
-    controller.reset();
-  }
 }
