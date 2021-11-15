@@ -1,3 +1,11 @@
+## 0.5.0 (2021-11-15)
+
+#### :rocket: Enhancement
+* [#99](https://github.com/lblod/frontend-mow-registry/pull/99) Feature/codelist UI ([@Asergey91](https://github.com/Asergey91))
+
+#### Committers: 1
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
 ## 0.4.1 (2021-11-15)
 
 #### :bug: Bug Fix
