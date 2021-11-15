@@ -42,9 +42,9 @@ export default class AddInstructionComponent extends Component {
   }
 
   @action
-  updateMappingType(mapping, type) {
+  async updateMappingType(mapping, type) {
     mapping.type = type;
-    if (type === 'codelist' && !mapping.codeList) {
+    if (type === 'codelist' && !(await mapping.codeList)) {
       mapping.codeList = this.codeLists.firstObject;
     } else {
       mapping.codeList = null;
@@ -133,6 +133,5 @@ export default class AddInstructionComponent extends Component {
       yield this.template.save();
     }
     this.reset();
-    this.args.closeInstructions();
   }
 }
