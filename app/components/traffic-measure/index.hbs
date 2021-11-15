@@ -55,6 +55,17 @@
                     >
                       {{type}}
                     </PowerSelect>
+                    {{#if (eq mapping.type "codelist")}}
+                      <PowerSelect
+                        @allowClear={{false}}
+                        @searchEnabled={{false}}
+                        @options={{this.codeLists}}
+                        @selected={{mapping.codeList}}
+                        @onChange={{fn this.updateCodelist mapping}} as |codeList|
+                      >
+                        {{codeList.label}}
+                      </PowerSelect>
+                    {{/if}}
                   </td>
                 </tr>
               {{/each}}

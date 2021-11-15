@@ -16,6 +16,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   @service store;
   @service router;
 
+  @tracked codeLists;
   @tracked new;
   @tracked trafficMeasureConcept;
   @tracked signs = [];
@@ -52,7 +53,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   *fetchData() {
     // Wait for data loading
     yield this.trafficMeasureConcept.relations;
-
+    this.codeLists = yield this.store.findAll('code-list');
     // We assume that a measure has only one template
     const templates = yield this.trafficMeasureConcept.templates;
     this.template = yield templates.firstObject;
@@ -66,6 +67,11 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.parseTemplate();
   }
 
+  @action
+  updateCodelist(mapping, codeList){
+    mapping.codeList=codeList;
+  }
+  
   @action
   addSign(sign) {
     this.signs.pushObject(sign);
@@ -242,6 +248,7 @@ export default class TrafficMeasureIndexComponent extends Component {
       const newMapping = yield this.store.createRecord('mapping');
       newMapping.variable = mapping.variable;
       newMapping.type = mapping.type;
+      newMapping.codeList = mapping.codeList;
       template.mappings.pushObject(newMapping);
       yield newMapping.save();
     }
@@ -351,6 +358,9 @@ export default class TrafficMeasureIndexComponent extends Component {
   @action
   updateMappingType(mapping, selectedType) {
     mapping.type = selectedType;
-    this.parseTemplate();
+    if(mapping.type!='codelist'){
+      mapping.codeList=null;
+    }
+    this.generatePreview();
   }
 }
