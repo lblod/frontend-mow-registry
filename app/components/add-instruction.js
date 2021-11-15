@@ -127,9 +127,9 @@ export default class AddInstructionComponent extends Component {
 
   @task
   *save() {
-    yield this.concept.save();
-
     yield this.template.save();
+    this.concept.templates.pushObject(this.template);
+    yield this.concept.save();
 
     for (let i = 0; i < this.mappings.length; i++) {
       const mapping = this.mappings[i];
