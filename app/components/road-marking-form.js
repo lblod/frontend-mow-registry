@@ -1,23 +1,24 @@
-import Controller from '@ember/controller';
+import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import RoadMarkingConceptValidations from 'mow-registry/validations/road-marking-concept';
 
-export default class RoadmarkingConceptsNewController extends Controller {
+export default class RoadMarkingFormComponent extends Component {
   @service router;
   @service fileService;
 
   RoadMarkingConceptValidations = RoadMarkingConceptValidations;
-  file = null;
+  file;
 
   get isSaving() {
-    return this.createRoadMarkingConceptTask.isRunning;
+    return this.editRoadMarkingConceptTask.isRunning;
   }
 
   @action
-  setRoadMarkingConceptValue(roadMarkingConcept, attributeName, event) {
-    roadMarkingConcept[attributeName] = event.target.value;
+  setImageUrl(roadMarkingConcept, event) {
+    roadMarkingConcept.image = event.target.value;
+    this.file = null;
   }
 
   @action
@@ -27,18 +28,12 @@ export default class RoadmarkingConceptsNewController extends Controller {
   }
 
   @action
-  setRoadMarkingConceptCategory(roadMarkingConcept, selection) {
-    roadMarkingConcept.categories = selection;
-  }
-
-  @action
-  setImageUrl(roadMarkingConcept, event) {
-    roadMarkingConcept.image = event.target.value;
-    this.file = null;
+  setRoadMarkingConceptValue(roadMarkingConcept, attributeName, event) {
+    roadMarkingConcept[attributeName] = event.target.value;
   }
 
   @dropTask
-  *createRoadMarkingConceptTask(roadMarkingConcept, event) {
+  *editRoadMarkingConceptTask(roadMarkingConcept, event) {
     event.preventDefault();
 
     if (this.file) {
@@ -56,9 +51,5 @@ export default class RoadmarkingConceptsNewController extends Controller {
         roadMarkingConcept.id
       );
     }
-  }
-
-  reset() {
-    this.file = null;
   }
 }

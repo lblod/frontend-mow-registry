@@ -5,6 +5,6 @@ export default class TrafficMeasureConceptsRoute extends Route {
   @service() session;
 
   beforeModel(transition) {
-    this.session.requireAuthentication(transition, 'mock-login');
+    this.session.requireAuthentication(transition, 'login');
   }
 }
