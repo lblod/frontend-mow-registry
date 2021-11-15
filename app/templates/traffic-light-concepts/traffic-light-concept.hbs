@@ -289,11 +289,8 @@
   {{#if this.isAddingInstructions}}
     <AddInstruction
       @toggleInstructions={{this.toggleInstructions}}
-      @addInstruction={{this.addInstruction}}
-      @resetInstruction={{this.resetInstruction}}
-      @newDescription={{this.newDescription}}
-      @updateInstruction={{this.updateInstruction}}
       @editedTemplate={{this.editedTemplate}}
+      @concept={{@model.trafficLightConcept}}
     />
   {{/if}}
 </div>
