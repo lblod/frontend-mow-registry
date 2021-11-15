@@ -99,8 +99,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action
-  toggleInstructions() {
-    this.isAddingInstructions = !this.isAddingInstructions;
+  closeInstructions() {
+    this.isAddingInstructions = false;
   }
 
   @action
@@ -134,7 +134,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action
-  async addInstruction() {
+  addInstruction() {
     this.isAddingInstructions = false;
     this.editedTemplate = null;
     this.isAddingInstructions = true;

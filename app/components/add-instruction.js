@@ -70,7 +70,8 @@ export default class AddInstructionComponent extends Component {
     }
     if (this.concept.hasDirtyAttributes || this.concept.isNew) {
       this.concept.rollBackAttributes();
-    }    
+    }
+    this.args.closeInstructions();    
   }
 
   @action
@@ -132,6 +133,6 @@ export default class AddInstructionComponent extends Component {
       yield this.template.save();
     }
     this.reset();
-    this.args.toggleInstructions();
+    this.args.closeInstructions();
   }
 }
