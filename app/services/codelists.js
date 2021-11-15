@@ -18,6 +18,7 @@ export default class CodelistsService extends Service {
       const codeLists = yield this.store.query('code-list', {
         'page[size]': 100,
         include: 'codeListOptions',
+        sort: 'label',
       });
 
       for (let i = 0; i < codeLists.length; i++) {

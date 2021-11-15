@@ -28,13 +28,19 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   get hasActiveChildRoute() {
     return (
       this.router.currentRouteName.startsWith(
-        'road-sign-concepts.road-sign-concept'
+        'road-marking-concepts.road-marking-concept'
       ) &&
       this.router.currentRouteName !==
-        'road-sign-concepts.road-sign-concept.index'
+        'road-marking-concepts.road-marking-concept.index'
     );
   }
 
+  get isAddingInstructions() {
+    return (
+      this.router.currentRouteName ===
+      'road-marking-concepts.road-marking-concept.instruction'
+    );
+  }
   get roadMarkings() {
     if (!this.relatedRoadMarkingCodeFilter.trim()) {
       return this.model.allRoadMarkings;
@@ -155,7 +161,6 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
   reset() {
     this.editedTemplate = null;
-    this.isAddingInstructions = false;
     this.isAddingRelatedRoadMarkings = false;
     this.isAddingRelatedRoadSigns = false;
     this.category = null;
