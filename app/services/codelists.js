@@ -6,22 +6,24 @@ import { inject as service } from '@ember/service';
 export default class CodelistsService extends Service {
   constructor(...args){
     super(...args);
-    this.fetchCodelists.perform();
-    
   }
   
-  @tracked all;
+  @tracked codeLists = null;
 
   @service store;
   
   @task 
-  *fetchCodelists(){
-    this.all=yield this.store.findAll('code-list');
-    
-    for (let i = 0; i < this.all.length; i++) {
-      const codeList = this.all.objectAt(i);
-      yield codeList.codeListOptions;
+  *all(){
+    if(!this.codeLists){
+      const codeLists=yield this.store.findAll('code-list');
+      
+      for (let i = 0; i < codeLists.length; i++) {
+        const codeList = codeLists.objectAt(i);
+        yield codeList.codeListOptions;
+      }
+      
+      this.codeLists=codeLists;
     }
-
+    return this.codeLists
   }
 }

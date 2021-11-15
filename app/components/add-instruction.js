@@ -26,7 +26,7 @@ export default class AddInstructionComponent extends Component {
   @task
   *fetchData() {
     this.concept = yield this.args.concept;
-    this.codeLists = this.codeListService.all;
+    this.codeLists = yield this.codeListService.all.perform();
 
     if (this.args.editedTemplate) {
       this.new = false;
