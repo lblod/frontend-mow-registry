@@ -135,9 +135,9 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async addInstruction() {
+    this.editedTemplate = null;
     this.isAddingInstructions = false;
     this.isAddingInstructions = true;
-    this.editedTemplate = null;
   }
 
   @task
@@ -148,9 +148,9 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action editInstruction(template) {
+    this.editedTemplate = template;
     this.isAddingInstructions = false;
     this.isAddingInstructions = true;
-    this.editedTemplate = template;
   }
 
   @action
