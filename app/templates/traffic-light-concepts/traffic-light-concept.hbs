@@ -287,11 +287,5 @@
       </div>
     </div>
   {{/if}}
-  {{#if this.isAddingInstructions}}
-    <AddInstruction
-      @closeInstructions={{this.closeInstructions}}
-      @editedTemplate={{this.editedTemplate}}
-      @concept={{@model.trafficLightConcept}}
-    />
-  {{/if}}
+  {{outlet}}
 </div>
