@@ -73,7 +73,7 @@ export default class AddInstructionComponent extends Component {
     }
     if(this.concept.hasDirtyAttributes || this.concept.isNew){
       this.concept.rollBackAttributes();
-    }
+    }    
   }
 
   @action

@@ -135,16 +135,9 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async addInstruction() {
-    const template = await this.store.createRecord('template');
-    template.value = this.newDescription;
-
-    const templates = await this.model.trafficLightConcept.templates;
-    templates.pushObject(template);
-
-    await templates.save();
-    await this.model.trafficLightConcept.save();
-
-    this.resetInstruction();
+    this.isAddingInstructions = false;
+    this.isAddingInstructions = true;
+    this.editedTemplate = null;
   }
 
   @task
@@ -155,8 +148,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action editInstruction(template) {
-    this.toggleInstructions();
-    this.newDescription = template.value;
+    this.isAddingInstructions = false;
+    this.isAddingInstructions = true;
     this.editedTemplate = template;
   }
 
