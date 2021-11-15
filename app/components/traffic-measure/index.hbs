@@ -60,6 +60,7 @@
                         @allowClear={{false}}
                         @searchEnabled={{false}}
                         @options={{this.codeLists}}
+                        @defaultHighlighted	= {{this.codeLists.firstObject}}
                         @selected={{mapping.codeList}}
                         @onChange={{fn this.updateCodelist mapping}} as |codeList|
                       >
