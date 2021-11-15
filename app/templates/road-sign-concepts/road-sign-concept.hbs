@@ -126,9 +126,10 @@
       <div class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables">
         <InstructionsTable
           @templates={{@model.roadSignConcept.templates}}
-          @toggleInstructions={{this.toggleInstructions}}
           @removeTemplate={{this.removeTemplate}}
           @editInstruction={{this.editInstruction}}
+          @addInstruction={{this.addInstruction}}
+          @isAddingInstructions={{this.isAddingInstructions}}
         />
         {{#if this.isSubSign}}
           <AuDataTable
@@ -542,14 +543,5 @@
       </div>
     </div>
   {{/if}}
-  {{#if this.isAddingInstructions}}
-    <AddInstruction
-      @toggleInstructions={{this.toggleInstructions}}
-      @addInstruction={{this.addInstruction}}
-      @resetInstruction={{this.resetInstruction}}
-      @newDescription={{this.newDescription}}
-      @updateInstruction={{this.updateInstruction}}
-      @editedTemplate={{this.editedTemplate}}
-    />
-  {{/if}}
+  {{outlet}}
 </div>
