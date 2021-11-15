@@ -115,10 +115,11 @@
         class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables"
       >
         <InstructionsTable
-          @templates={{@model.roadMarkingConcept.templates}}
-          @toggleInstructions={{this.toggleInstructions}}
+          @templates={{@model.roadSignConcept.templates}}
           @removeTemplate={{this.removeTemplate}}
           @editInstruction={{this.editInstruction}}
+          @addInstruction={{this.addInstruction}}
+          @isAddingInstructions={{this.isAddingInstructions}}
         />
         <AuDataTable
           @content={{
@@ -427,14 +428,5 @@
       </div>
     </div>
   {{/if}}
-  {{#if this.isAddingInstructions}}
-    <AddInstruction
-      @toggleInstructions={{this.toggleInstructions}}
-      @addInstruction={{this.addInstruction}}
-      @resetInstruction={{this.resetInstruction}}
-      @newDescription={{this.newDescription}}
-      @updateInstruction={{this.updateInstruction}}
-      @editedTemplate={{this.editedTemplate}}
-    />
-  {{/if}}
+  {{outlet}}
 </div>

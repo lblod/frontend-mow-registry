@@ -5,13 +5,11 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
-  @service('router') routerService;
+  @service('router') router;
 
-  @tracked isAddingInstructions = false;
   @tracked isAddingSubSigns = false;
   @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedTrafficLights = false;
-  @tracked isAddingInstructions = false;
 
   @tracked category = null;
   @tracked categoryTrafficLights = null;
@@ -25,7 +23,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
       this.isAddingRelatedTrafficLights ||
       this.isAddingMainSigns ||
       this.isAddingSubSigns ||
-      this.isAddingInstructions
+      this.hasActiveChildRoute
     );
   }
 
@@ -99,11 +97,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action
-  toggleInstructions() {
-    this.isAddingInstructions = !this.isAddingInstructions;
-  }
-
-  @action
   async handleCategorySelection(category) {
     if (category) {
       this.category = category;
@@ -130,21 +123,15 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     event.preventDefault();
 
     await trafficLightConcept.destroyRecord();
-    this.routerService.transitionTo('traffic-light-concepts');
+    this.router.transitionTo('traffic-light-concepts');
   }
 
   @action
-  async addInstruction() {
-    const template = await this.store.createRecord('template');
-    template.value = this.newDescription;
-
-    const templates = await this.model.trafficLightConcept.templates;
-    templates.pushObject(template);
-
-    await templates.save();
-    await this.model.trafficLightConcept.save();
-
-    this.resetInstruction();
+  addInstruction() {
+    this.router.transitionTo(
+      'traffic-light-concepts.traffic-light-concept.instruction',
+      'new'
+    );
   }
 
   @task
@@ -155,9 +142,27 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action editInstruction(template) {
-    this.toggleInstructions();
-    this.newDescription = template.value;
-    this.editedTemplate = template;
+    this.router.transitionTo(
+      'traffic-light-concepts.traffic-light-concept.instruction',
+      template.id
+    );
+  }
+
+  get hasActiveChildRoute() {
+    return (
+      this.router.currentRouteName.startsWith(
+        'traffic-light-concepts.traffic-light-concept'
+      ) &&
+      this.router.currentRouteName !==
+        'traffic-light-concepts.traffic-light-concept.index'
+    );
+  }
+
+  get isAddingInstructions() {
+    return (
+      this.router.currentRouteName ===
+      'traffic-light-concepts.traffic-light-concept.instruction'
+    );
   }
 
   @action
@@ -179,7 +184,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   reset() {
     this.editedTemplate = null;
-    this.isAddingInstructions = false;
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
     this.isAddingRelatedTrafficLights = false;

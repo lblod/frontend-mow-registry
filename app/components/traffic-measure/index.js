@@ -16,6 +16,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   @service store;
   @service router;
 
+  @tracked codeLists;
   @tracked new;
   @tracked trafficMeasureConcept;
   @tracked signs = [];
@@ -52,7 +53,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   *fetchData() {
     // Wait for data loading
     yield this.trafficMeasureConcept.relations;
-
+    this.codeLists = yield this.store.findAll('code-list');
     // We assume that a measure has only one template
     const templates = yield this.trafficMeasureConcept.templates;
     this.template = yield templates.firstObject;
@@ -64,6 +65,12 @@ export default class TrafficMeasureIndexComponent extends Component {
     );
 
     this.parseTemplate();
+  }
+
+  @action
+  updateCodelist(mapping, codeList) {
+    mapping.codeList = codeList;
+    this.generatePreview.perform();
   }
 
   @action
@@ -128,13 +135,15 @@ export default class TrafficMeasureIndexComponent extends Component {
     });
     this.mappings = filteredMappings;
 
-    this.generatePreview();
+    this.generatePreview.perform();
   }
 
-  @action
-  generatePreview() {
+  @task
+  *generatePreview() {
     this.preview = this.template.value;
-    this.mappings.forEach((e) => {
+
+    for (let i = 0; i < this.mappings.length; i++) {
+      const e = this.mappings[i];
       let replaceString;
       if (e.type === 'text') {
         replaceString = "<input type='text'></input>";
@@ -145,13 +154,21 @@ export default class TrafficMeasureIndexComponent extends Component {
       } else if (e.type === 'location') {
         replaceString = "<input type='text'></input>";
       } else if (e.type === 'codelist') {
-        replaceString = "<input type='text'></input>";
+        const codeList = yield e.codeList;
+        const codeListOptions = yield codeList.codeListOptions;
+
+        replaceString = '<select>';
+        codeListOptions.forEach((option) => {
+          replaceString += `<option value="${option.label}">${option.label}</option>`;
+        });
+        replaceString += '</select>';
       }
       this.preview = this.preview.replaceAll(
         '${' + e.variable + '}',
         replaceString
       );
-    });
+    }
+
     this.generateModel();
   }
 
@@ -242,6 +259,7 @@ export default class TrafficMeasureIndexComponent extends Component {
       const newMapping = yield this.store.createRecord('mapping');
       newMapping.variable = mapping.variable;
       newMapping.type = mapping.type;
+      newMapping.codeList = mapping.codeList;
       template.mappings.pushObject(newMapping);
       yield newMapping.save();
     }
@@ -351,6 +369,9 @@ export default class TrafficMeasureIndexComponent extends Component {
   @action
   updateMappingType(mapping, selectedType) {
     mapping.type = selectedType;
-    this.parseTemplate();
+    if (mapping.type != 'codelist') {
+      mapping.codeList = null;
+    }
+    this.generatePreview.perform();
   }
 }

@@ -126,9 +126,10 @@
       >
         <InstructionsTable
           @templates={{@model.trafficLightConcept.templates}}
-          @toggleInstructions={{this.toggleInstructions}}
           @removeTemplate={{this.removeTemplate}}
           @editInstruction={{this.editInstruction}}
+          @addInstruction={{this.addInstruction}}
+          @isAddingInstructions={{this.isAddingInstructions}}
         />
         <AuDataTable
           @content={{
@@ -286,14 +287,5 @@
       </div>
     </div>
   {{/if}}
-  {{#if this.isAddingInstructions}}
-    <AddInstruction
-      @toggleInstructions={{this.toggleInstructions}}
-      @addInstruction={{this.addInstruction}}
-      @resetInstruction={{this.resetInstruction}}
-      @newDescription={{this.newDescription}}
-      @updateInstruction={{this.updateInstruction}}
-      @editedTemplate={{this.editedTemplate}}
-    />
-  {{/if}}
+  {{outlet}}
 </div>

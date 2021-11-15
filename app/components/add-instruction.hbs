@@ -13,7 +13,7 @@
         <button
           type="button"
           class="au-c-close au-c-close--large"
-          {{on "click" @toggleInstructions}}
+          {{on 'click' this.reset}}
         >
           <AuIcon @icon="cross" @size="large" />
           <span class="au-u-hidden-visually">
@@ -27,22 +27,65 @@
       <div class="au-o-box au-c-form">
         <p>
           <AuLabel for="textarea-description">{{t "utility.description"}}</AuLabel>
-          <AuTextarea id="textarea-description" @width="block" @value={{@newDescription}} />
+          <AuTextarea {{on "input" this.updateTemplate}} id="textarea-description" @width="block" @value={{this.template.value}} />
         </p>
         <AuButtonGroup>
-          {{#if @editedTemplate}}
-            <AuButton {{on "click" (perform @updateInstruction)}}>
-              {{t "utility.save"}}
-            </AuButton>
-          {{else}}
-            <AuButton {{on "click" @addInstruction}}>
-              {{t "utility.save"}}
-            </AuButton>
-          {{/if}}
-          <AuButton @skin="secondary" {{on "click" @resetInstruction}}>
+          <AuButton
+            {{on 'click' (perform this.save)}}
+            @disabled={{this.save.isRunning}}
+            @loading={{this.save.isRunning}}
+          >
+            {{t "utility.save" }}
+          </AuButton>
+          <AuButton @skin="secondary" {{on 'click' this.reset}}>
             {{t "utility.cancel"}}
           </AuButton>
         </AuButtonGroup>
+
+        <table class="au-c-data-table__table">
+          <thead class="au-c-data-table__header">
+            <tr>
+              <th>{{t "trafficMeasureConcept.attr.variable"}}</th>
+              <th>{{t "trafficMeasureConcept.attr.type"}}</th>
+            </tr>
+          </thead>
+          <tbody>
+          {{#each this.mappings as |mapping|}}
+            <tr>
+              <td>{{mapping.variable}}</td>
+              {{!-- template-lint-disable no-inline-styles --}}
+              <td style="width: 50%;">
+                <PowerSelect
+                  @allowClear={{false}}
+                  @searchEnabled={{false}}
+                  @options={{this.inputTypes}}
+                  @selected={{mapping.type}}
+                  @onChange={{fn this.updateMappingType mapping}} as |type|
+                >
+                  {{type}}
+                </PowerSelect>
+                {{#if (eq mapping.type "codelist")}}
+                  <PowerSelect
+                    @allowClear={{false}}
+                    @searchEnabled={{false}}
+                    @options={{this.codeLists}}
+                    @selected={{mapping.codeList}}
+                    @onChange={{fn this.updateCodeList mapping}} as |codeList|
+                  >
+                    {{codeList.label}}
+                  </PowerSelect>
+                  <ul>
+                  {{#each mapping.codeList.codeListOptions as |option|}}
+                    <li> - {{option.label}}</li>
+                  {{/each}}
+                  </ul>
+                {{/if}}
+              </td>
+            </tr>
+          {{/each}}
+          </tbody>
+        </table>
+
       </div>
     </div>
   </div>

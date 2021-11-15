@@ -13,7 +13,10 @@
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup>
-          <AuButton {{on "click" @toggleInstructions}}>
+          <AuButton 
+            @disabled={{@isAddingInstructions}}
+            {{on "click" @addInstruction}}
+          >
             {{t "utility.addInstruction"}}
           </AuButton>
         </AuToolbarGroup>
@@ -48,6 +51,7 @@
           @icon="pencil"
           @skin="secondary"
           @hideText={{true}}
+          @disabled={{@isAddingInstructions}}
           {{on "click" (fn @editInstruction template)}}
         >
           {{t "utility.edit"}}
@@ -57,6 +61,7 @@
         <AuButton
           @icon="bin"
           @alert={{true}}
+          @disabled={{@isAddingInstructions}}
           @skin="secondary"
           @hideText={{true}}
           {{on "click" (fn @removeTemplate template)}}

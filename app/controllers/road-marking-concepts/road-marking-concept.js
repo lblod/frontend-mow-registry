@@ -1,16 +1,13 @@
 import Controller from '@ember/controller';
-import { task } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
 export default class RoadmarkingConceptsRoadmarkingConceptController extends Controller {
-  @service('router') routerService;
+  @service router;
 
-  @tracked isAddingInstructions = false;
   @tracked isAddingRelatedRoadMarkings = false;
   @tracked isAddingRelatedRoadSigns = false;
-  @tracked isAddingInstructions = false;
 
   @tracked category = null;
   @tracked categoryRoadMarkings = null;
@@ -24,7 +21,17 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     return (
       this.isAddingRelatedRoadMarkings ||
       this.isAddingRelatedRoadSigns ||
-      this.isAddingInstructions
+      this.hasActiveChildRoute
+    );
+  }
+
+  get hasActiveChildRoute() {
+    return (
+      this.router.currentRouteName.startsWith(
+        'road-sign-concepts.road-sign-concept'
+      ) &&
+      this.router.currentRouteName !==
+        'road-sign-concepts.road-sign-concept.index'
     );
   }
 
@@ -114,50 +121,26 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   }
 
   @action
-  toggleInstructions() {
-    this.isAddingInstructions = !this.isAddingInstructions;
-  }
-
-  @action
   async removeRoadMarkingConcept(roadMarkingConcept, event) {
     event.preventDefault();
 
     await roadMarkingConcept.destroyRecord();
-    this.routerService.transitionTo('road-marking-concepts');
+    this.router.transitionTo('road-marking-concepts');
   }
 
   @action
   async addInstruction() {
-    const template = await this.store.createRecord('template');
-    template.value = this.newDescription;
-
-    const templates = await this.model.roadMarkingConcept.templates;
-    templates.pushObject(template);
-
-    await templates.save();
-    await this.model.roadMarkingConcept.save();
-
-    this.resetInstruction();
-  }
-
-  @task
-  *updateInstruction() {
-    this.editedTemplate.value = this.newDescription;
-    yield this.editedTemplate.save();
-    this.resetInstruction();
+    this.router.transitionTo(
+      'road-marking-concepts.road-marking-concept.instruction',
+      'new'
+    );
   }
 
   @action editInstruction(template) {
-    this.toggleInstructions();
-    this.newDescription = template.value;
-    this.editedTemplate = template;
-  }
-
-  @action
-  resetInstruction() {
-    this.newDescription = '';
-    this.editedTemplate = null;
-    this.toggleInstructions();
+    this.router.transitionTo(
+      'road-marking-concepts.road-marking-concept.instruction',
+      template.id
+    );
   }
 
   @action
