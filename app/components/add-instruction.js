@@ -39,7 +39,7 @@ export default class AddInstructionComponent extends Component {
       this.concept.templates.pushObject(this.template);
       this.mappings = this.template.mappings;
     }
-
+    
     this.parseTemplate();
   }
 

@@ -15,7 +15,10 @@ export default class CodelistsService extends Service {
   @task 
   *all(){
     if(!this.codeLists){
-      const codeLists=yield this.store.findAll('code-list');
+      const codeLists=yield this.store.query('code-list', {
+        "page[size]": 100,
+        include: "codeListOptions"
+      });
       
       for (let i = 0; i < codeLists.length; i++) {
         const codeList = codeLists.objectAt(i);
