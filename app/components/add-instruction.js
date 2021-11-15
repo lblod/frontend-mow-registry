@@ -6,72 +6,69 @@ import { inject as service } from '@ember/service';
 
 export default class AddInstructionComponent extends Component {
   @service store;
-  
+
   @tracked template;
   @tracked concept;
 
   @tracked mappings;
   @tracked codeLists;
-  
+
   @tracked new;
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
-  
-  constructor(...args){
+
+  constructor(...args) {
     super(...args);
     this.fetchData.perform();
   }
 
   @task
   *fetchData() {
-    
     this.concept = yield this.args.concept;
     this.codeLists = yield this.store.findAll('code-list');
-    
-    if(this.args.editedTemplate){
-      this.new=false;
-      this.template=yield this.args.editedTemplate;
-      this.mappings=yield this.template.mappings;
-    }
-    else{
-      this.new=true;
-      this.template=this.store.createRecord('template');
-      this.template.value='';
+
+    if (this.args.editedTemplate) {
+      this.new = false;
+      this.template = yield this.args.editedTemplate;
+      this.mappings = yield this.template.mappings;
+    } else {
+      this.new = true;
+      this.template = this.store.createRecord('template');
+      this.template.value = '';
       this.concept.templates.pushObject(this.template);
-      this.mappings=this.template.mappings;
+      this.mappings = this.template.mappings;
     }
-    
+
     this.parseTemplate();
   }
 
   @action
-  updateMappingType(mapping, type){
-    mapping.type=type;
-    if(type==='codelist' && !mapping.codeList){
-      mapping.codeList = this.codeLists.firstObject
-    }
-    else{
-      mapping.codeList=null;
+  updateMappingType(mapping, type) {
+    mapping.type = type;
+    if (type === 'codelist' && !mapping.codeList) {
+      mapping.codeList = this.codeLists.firstObject;
+    } else {
+      mapping.codeList = null;
     }
   }
 
   @action
-  updateCodeList(mapping, codeList){
-    mapping.codeList=codeList;
+  updateCodeList(mapping, codeList) {
+    mapping.codeList = codeList;
   }
 
   @action
-  updateTemplate(event){
-    this.template.value=event.target.value;
+  updateTemplate(event) {
+    this.template.value = event.target.value;
     this.parseTemplate();
   }
 
-  //only resetting things we got from parent component 
-  @action 
-  reset(){
-    if(this.template.hasDirtyAttributes || this.template.isNew){
+  //only resetting things we got from parent component
+  @action
+  reset() {
+    if (this.template.hasDirtyAttributes || this.template.isNew) {
       this.template.rollbackAttributes();
     }
-    if(this.concept.hasDirtyAttributes || this.concept.isNew){
+    if (this.concept.hasDirtyAttributes || this.concept.isNew) {
       this.concept.rollBackAttributes();
     }
   }
@@ -122,13 +119,12 @@ export default class AddInstructionComponent extends Component {
     this.mappings = filteredMappings;
   }
 
-  @task 
-  *save(){
-    
+  @task
+  *save() {
     yield this.concept.save();
-    
+
     yield this.template.save();
-    
+
     for (let i = 0; i < this.mappings.length; i++) {
       const mapping = this.mappings[i];
       this.template.mappings.pushObject(mapping);
