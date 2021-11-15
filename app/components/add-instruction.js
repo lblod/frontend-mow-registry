@@ -7,7 +7,7 @@ import { inject as service } from '@ember/service';
 export default class AddInstructionComponent extends Component {
   @service store;
   @service router;
-  @service ('codelists') codeListService
+  @service('codelists') codeListService;
 
   @tracked template;
   @tracked concept;
@@ -26,7 +26,7 @@ export default class AddInstructionComponent extends Component {
   @task
   *fetchData() {
     this.concept = yield this.args.concept;
-    this.codeLists = this.codeListService.all;
+    this.codeLists = yield this.codeListService.all.perform();
 
     if (this.args.editedTemplate) {
       this.new = false;
@@ -39,7 +39,6 @@ export default class AddInstructionComponent extends Component {
       this.concept.templates.pushObject(this.template);
       this.mappings = this.template.mappings;
     }
-
     this.parseTemplate();
   }
 
