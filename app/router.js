@@ -31,7 +31,7 @@ Router.map(function () {
     this.route('traffic-measure-concept', { path: '/:id' });
   });
 
-  this.route('instruction', function() {
+  this.route('instruction', function () {
     this.route('new');
     this.route('edit');
   });

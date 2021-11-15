@@ -68,11 +68,11 @@ export default class TrafficMeasureIndexComponent extends Component {
   }
 
   @action
-  updateCodelist(mapping, codeList){
-    mapping.codeList=codeList;
+  updateCodelist(mapping, codeList) {
+    mapping.codeList = codeList;
     this.generatePreview.perform();
   }
-  
+
   @action
   addSign(sign) {
     this.signs.pushObject(sign);
@@ -154,22 +154,21 @@ export default class TrafficMeasureIndexComponent extends Component {
       } else if (e.type === 'location') {
         replaceString = "<input type='text'></input>";
       } else if (e.type === 'codelist') {
+        const codeList = yield e.codeList;
+        const codeListOptions = yield codeList.codeListOptions;
 
-        const codeList=yield e.codeList;
-        const codeListOptions=yield codeList.codeListOptions;
-
-        replaceString = "<select>";
-        codeListOptions.forEach(option=>{
-          replaceString += `<option value="${option.label}">${option.label}</option>`
+        replaceString = '<select>';
+        codeListOptions.forEach((option) => {
+          replaceString += `<option value="${option.label}">${option.label}</option>`;
         });
-        replaceString += "</select>";
+        replaceString += '</select>';
       }
       this.preview = this.preview.replaceAll(
         '${' + e.variable + '}',
         replaceString
       );
     }
-      
+
     this.generateModel();
   }
 
@@ -370,8 +369,8 @@ export default class TrafficMeasureIndexComponent extends Component {
   @action
   updateMappingType(mapping, selectedType) {
     mapping.type = selectedType;
-    if(mapping.type!='codelist'){
-      mapping.codeList=null;
+    if (mapping.type != 'codelist') {
+      mapping.codeList = null;
     }
     this.generatePreview.perform();
   }
