@@ -1,13 +1,11 @@
 import Controller from '@ember/controller';
-import { task } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
-  @service('router') routerService;
+  @service router;
 
-  @tracked isAddingInstructions = false;
   @tracked isAddingSubSigns = false;
   @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedRoadSigns = false;
@@ -24,7 +22,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
       this.isAddingRelatedRoadSigns ||
       this.isAddingMainSigns ||
       this.isAddingSubSigns ||
-      this.isAddingInstructions
+      this.hasActiveChildRoute
     );
   }
 
@@ -121,11 +119,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action
-  toggleInstructions() {
-    this.isAddingInstructions = !this.isAddingInstructions;
-  }
-
-  @action
   toggleAddSubSigns() {
     this.isAddingSubSigns = !this.isAddingSubSigns;
     this.isAddingRelatedRoadSigns = false;
@@ -170,46 +163,44 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     }
   }
 
+  get isAddingInstructions() {
+    return (
+      this.router.currentRouteName ===
+      'road-light-concepts.road-light-concept.instruction'
+    );
+  }
+
   @action
   async removeRoadSignConcept(roadSignConcept, event) {
     event.preventDefault();
 
     await roadSignConcept.destroyRecord();
-    this.routerService.transitionTo('road-sign-concepts');
+    this.router.transitionTo('road-sign-concepts');
   }
 
   @action
   async addInstruction() {
-    const template = await this.store.createRecord('template');
-    template.value = this.newDescription;
-
-    const templates = await this.model.roadSignConcept.templates;
-    templates.pushObject(template);
-
-    await templates.save();
-    await this.model.roadSignConcept.save();
-
-    this.resetInstruction();
-  }
-
-  @task
-  *updateInstruction() {
-    this.editedTemplate.value = this.newDescription;
-    yield this.editedTemplate.save();
-    this.resetInstruction();
+    this.router.transitionTo(
+      'road-sign-concepts.road-sign-concept.instruction',
+      'new'
+    );
   }
 
   @action editInstruction(template) {
-    this.toggleInstructions();
-    this.newDescription = template.value;
-    this.editedTemplate = template;
+    this.router.transitionTo(
+      'road-sign-concepts.road-sign-concept.instruction',
+      template.id
+    );
   }
 
-  @action
-  resetInstruction() {
-    this.newDescription = '';
-    this.editedTemplate = null;
-    this.toggleInstructions();
+  get hasActiveChildRoute() {
+    return (
+      this.router.currentRouteName.startsWith(
+        'road-sign-concepts.road-sign-concept'
+      ) &&
+      this.router.currentRouteName !==
+        'road-sign-concepts.road-sign-concept.index'
+    );
   }
 
   @action
@@ -221,10 +212,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     await template.destroyRecord();
     await this.model.roadSignConcept.save();
   }
-
   reset() {
     this.editedTemplate = null;
-    this.isAddingInstructions = false;
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
     this.isAddingRelatedRoadSigns = false;
