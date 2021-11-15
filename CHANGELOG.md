@@ -1,3 +1,14 @@
+## 0.4.1 (2021-11-15)
+
+#### :bug: Bug Fix
+* [#98](https://github.com/lblod/frontend-mow-registry/pull/98) Internal/refactor forms ([@nvdk](https://github.com/nvdk))
+
+#### :house: Internal
+* [#98](https://github.com/lblod/frontend-mow-registry/pull/98) Internal/refactor forms ([@nvdk](https://github.com/nvdk))
+
+#### Committers: 1
+- Niels V ([@nvdk](https://github.com/nvdk))
+
 ## 0.4.0 (2021-11-10)
 
 #### :rocket: Enhancement
