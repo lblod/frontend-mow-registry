@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
-  @service('router') routerService;
+  @service('router') router;
 
   @tracked isAddingInstructions = false;
   @tracked isAddingSubSigns = false;
@@ -25,7 +25,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
       this.isAddingRelatedTrafficLights ||
       this.isAddingMainSigns ||
       this.isAddingSubSigns ||
-      this.isAddingInstructions
+      this.isAddingInstructions ||
+      this.hasActiveChildRoute
     );
   }
 
@@ -130,14 +131,15 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     event.preventDefault();
 
     await trafficLightConcept.destroyRecord();
-    this.routerService.transitionTo('traffic-light-concepts');
+    this.router.transitionTo('traffic-light-concepts');
   }
 
   @action
   addInstruction() {
-    this.isAddingInstructions = false;
-    this.editedTemplate = null;
-    this.isAddingInstructions = true;
+    this.router.transitionTo(
+      'traffic-light-concepts.traffic-light-concept.instruction',
+      'new'
+    );
   }
 
   @task
@@ -148,9 +150,20 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action editInstruction(template) {
-    this.isAddingInstructions = false;
-    this.editedTemplate = template;
-    this.isAddingInstructions = true;
+    this.router.transitionTo(
+      'traffic-light-concepts.traffic-light-concept.instruction',
+      template.id
+    );
+  }
+
+  get hasActiveChildRoute() {
+    return (
+      this.router.currentRouteName.startsWith(
+        'traffic-light-concepts.traffic-light-concept'
+      ) &&
+      this.router.currentRouteName !==
+        'traffic-light-concepts.traffic-light-concept.index'
+    );
   }
 
   @action

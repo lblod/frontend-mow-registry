@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 
 export default class AddInstructionComponent extends Component {
   @service store;
+  @service router;
 
   @tracked template;
   @tracked concept;
@@ -71,7 +72,11 @@ export default class AddInstructionComponent extends Component {
     if (this.concept.hasDirtyAttributes || this.concept.isNew) {
       this.concept.rollBackAttributes();
     }
-    this.args.closeInstructions();    
+    if (this.args.closeInstructions) {
+      this.args.closeInstructions();
+    } else if (this.args.from) {
+      this.router.transitionTo(this.args.from);
+    }
   }
 
   @action

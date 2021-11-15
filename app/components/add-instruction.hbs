@@ -30,12 +30,12 @@
           <AuTextarea {{on "input" this.updateTemplate}} id="textarea-description" @width="block" @value={{this.template.value}} />
         </p>
         <AuButtonGroup>
-          <AuButton 
-            {{on 'click' (perform this.save)}} 
+          <AuButton
+            {{on 'click' (perform this.save)}}
             @disabled={{this.save.isRunning}}
             @loading={{this.save.isRunning}}
           >
-            {{t "utility.save" }} 
+            {{t "utility.save" }}
           </AuButton>
           <AuButton @skin="secondary" {{on 'click' this.reset}}>
             {{t "utility.cancel"}}
@@ -76,7 +76,7 @@
                   </PowerSelect>
                   <ul>
                   {{#each mapping.codeList.codeListOptions as |option|}}
-                    <li> - {{option.label}}</li> 
+                    <li> - {{option.label}}</li>
                   {{/each}}
                   </ul>
                 {{/if}}

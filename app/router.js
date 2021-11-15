@@ -21,7 +21,9 @@ Router.map(function () {
     this.route('edit', { path: '/edit/:id' });
   });
   this.route('traffic-light-concepts', function () {
-    this.route('traffic-light-concept', { path: '/:id' });
+    this.route('traffic-light-concept', { path: '/:id' }, function () {
+      this.route('instruction', { path: '/:instruction_id' });
+    });
     this.route('new');
     this.route('edit', { path: '/edit/:id' });
   });
