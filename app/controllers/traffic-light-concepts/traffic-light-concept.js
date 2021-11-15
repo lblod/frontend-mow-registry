@@ -7,11 +7,9 @@ import { tracked } from '@glimmer/tracking';
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
   @service('router') router;
 
-  @tracked isAddingInstructions = false;
   @tracked isAddingSubSigns = false;
   @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedTrafficLights = false;
-  @tracked isAddingInstructions = false;
 
   @tracked category = null;
   @tracked categoryTrafficLights = null;
@@ -25,7 +23,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
       this.isAddingRelatedTrafficLights ||
       this.isAddingMainSigns ||
       this.isAddingSubSigns ||
-      this.isAddingInstructions ||
       this.hasActiveChildRoute
     );
   }
@@ -100,11 +97,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action
-  closeInstructions() {
-    this.isAddingInstructions = false;
-  }
-
-  @action
   async handleCategorySelection(category) {
     if (category) {
       this.category = category;
@@ -166,6 +158,13 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     );
   }
 
+  get isAddingInstructions() {
+    return (
+      this.router.currentRouteName ===
+      'traffic-light-concepts.traffic-light-concept.instruction'
+    );
+  }
+
   @action
   resetInstruction() {
     this.newDescription = '';
@@ -185,7 +184,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   reset() {
     this.editedTemplate = null;
-    this.isAddingInstructions = false;
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
     this.isAddingRelatedTrafficLights = false;

@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 
 export default class CodelistsService extends Service {
-  constructor(...args){
+  constructor(...args) {
     super(...args);
   }
   
