@@ -4,24 +4,22 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 
 export default class CodelistsService extends Service {
-  constructor(...args){
+  constructor(...args) {
     super(...args);
     this.fetchCodelists.perform();
-    
   }
-  
+
   @tracked all;
 
   @service store;
-  
-  @task 
-  *fetchCodelists(){
-    this.all=yield this.store.findAll('code-list');
-    
+
+  @task
+  *fetchCodelists() {
+    this.all = yield this.store.findAll('code-list');
+
     for (let i = 0; i < this.all.length; i++) {
       const codeList = this.all.objectAt(i);
       yield codeList.codeListOptions;
     }
-
   }
 }
