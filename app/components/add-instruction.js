@@ -7,6 +7,7 @@ import { inject as service } from '@ember/service';
 export default class AddInstructionComponent extends Component {
   @service store;
   @service router;
+  @service ('codelists') codeListService
 
   @tracked template;
   @tracked concept;
@@ -25,7 +26,7 @@ export default class AddInstructionComponent extends Component {
   @task
   *fetchData() {
     this.concept = yield this.args.concept;
-    this.codeLists = yield this.store.findAll('code-list');
+    this.codeLists = this.codeListService.all;
 
     if (this.args.editedTemplate) {
       this.new = false;
@@ -43,9 +44,9 @@ export default class AddInstructionComponent extends Component {
   }
 
   @action
-  updateMappingType(mapping, type) {
+  async updateMappingType(mapping, type) {
     mapping.type = type;
-    if (type === 'codelist' && !mapping.codeList) {
+    if (type === 'codelist' && !(await mapping.codeList)) {
       mapping.codeList = this.codeLists.firstObject;
     } else {
       mapping.codeList = null;
@@ -138,6 +139,5 @@ export default class AddInstructionComponent extends Component {
       yield this.template.save();
     }
     this.reset();
-    this.args.closeInstructions();
   }
 }
