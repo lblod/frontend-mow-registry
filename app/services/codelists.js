@@ -7,26 +7,26 @@ export default class CodelistsService extends Service {
   constructor(...args) {
     super(...args);
   }
-  
+
   @tracked codeLists = null;
 
   @service store;
-  
-  @task 
-  *all(){
-    if(!this.codeLists){
-      const codeLists=yield this.store.query('code-list', {
-        "page[size]": 100,
-        include: "codeListOptions"
+
+  @task
+  *all() {
+    if (!this.codeLists) {
+      const codeLists = yield this.store.query('code-list', {
+        'page[size]': 100,
+        include: 'codeListOptions',
       });
-      
+
       for (let i = 0; i < codeLists.length; i++) {
         const codeList = codeLists.objectAt(i);
         yield codeList.codeListOptions;
       }
-      
-      this.codeLists=codeLists;
+
+      this.codeLists = codeLists;
     }
-    return this.codeLists
+    return this.codeLists;
   }
 }
