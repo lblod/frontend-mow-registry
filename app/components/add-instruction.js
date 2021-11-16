@@ -32,6 +32,7 @@ export default class AddInstructionComponent extends Component {
       this.new = false;
       this.template = yield this.args.editedTemplate;
       this.mappings = yield this.template.mappings;
+      this.mappings.sortBy('id');
     } else {
       this.new = true;
       this.template = this.store.createRecord('template');
