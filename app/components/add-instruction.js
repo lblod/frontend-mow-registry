@@ -98,14 +98,15 @@ export default class AddInstructionComponent extends Component {
     //remove non-existing variable mappings from current array
     this.mappings = this.mappings.filter((mapping) => {
       //search regex results if they contain this mapping
-      if (filteredRegexResult.find((fReg) => {
-        if (fReg[1] === mapping.variable){
-          return true;
-        }
-      })){
+      if (
+        filteredRegexResult.find((fReg) => {
+          if (fReg[1] === mapping.variable) {
+            return true;
+          }
+        })
+      ) {
         return true;
-      }
-      else{
+      } else {
         mapping.destroyRecord();
       }
     });
@@ -132,8 +133,7 @@ export default class AddInstructionComponent extends Component {
         )
       ) {
         filteredMappings.push(mapping);
-      }
-      else{
+      } else {
         mapping.destroyRecord();
       }
     });

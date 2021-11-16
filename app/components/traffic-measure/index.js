@@ -58,7 +58,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     yield this.trafficMeasureConcept.relations;
     this.codeLists = yield this.codeListService.all.perform();
     this.codeLists.sortBy('id');
-    
+
     // We assume that a measure has only one template
     const templates = yield this.trafficMeasureConcept.templates;
     this.template = yield templates.firstObject;
@@ -66,7 +66,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.mappings.sortBy('id');
 
     const relations = yield this.trafficMeasureConcept.orderedRelations;
-    
+
     this.signs = yield Promise.all(
       relations.map((relation) => relation.concept)
     );
@@ -116,8 +116,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     mapping.type = selectedType;
     if (mapping.type === 'codelist') {
       mapping.codeList = this.codeLists.firstObject;
-    }
-    else {
+    } else {
       mapping.codeList = null;
     }
     this.generatePreview.perform();
@@ -141,14 +140,15 @@ export default class TrafficMeasureIndexComponent extends Component {
     //remove non-existing variable mappings from current array
     this.mappings = this.mappings.filter((mapping) => {
       //search regex results if they contain this mapping
-      if (filteredRegexResult.find((fReg) => {
-        if (fReg[1] === mapping.variable){
-          return true;
-        }
-      })){
+      if (
+        filteredRegexResult.find((fReg) => {
+          if (fReg[1] === mapping.variable) {
+            return true;
+          }
+        })
+      ) {
         return true;
-      }
-      else{
+      } else {
         mapping.destroyRecord();
       }
     });
@@ -175,8 +175,7 @@ export default class TrafficMeasureIndexComponent extends Component {
         )
       ) {
         filteredMappings.push(mapping);
-      }
-      else{
+      } else {
         mapping.destroyRecord();
       }
     });
@@ -294,8 +293,6 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *saveMappings(template) {
-    const mappings = yield template.mappings;
-
     //create new ones
     for (let i = 0; i < this.mappings.length; i++) {
       const mapping = this.mappings[i];
