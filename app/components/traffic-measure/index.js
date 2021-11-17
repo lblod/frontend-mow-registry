@@ -186,8 +186,8 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *generatePreview() {
-    this.preview = this.template.value;
-
+    let preview = this.template.value;
+    preview = preview.replaceAll('\n', '<br />');
     for (let i = 0; i < this.mappings.length; i++) {
       const e = this.mappings[i];
       let replaceString;
@@ -209,11 +209,9 @@ export default class TrafficMeasureIndexComponent extends Component {
         });
         replaceString += '</select>';
       }
-      this.preview = this.preview.replaceAll(
-        '${' + e.variable + '}',
-        replaceString
-      );
+      preview = preview.replaceAll('${' + e.variable + '}', replaceString);
     }
+    this.preview = preview;
 
     this.generateModel();
   }
