@@ -32,6 +32,7 @@ export default class AddInstructionComponent extends Component {
       this.new = false;
       this.template = yield this.args.editedTemplate;
       this.mappings = yield this.template.mappings;
+      this.mappings.sortBy('id');
     } else {
       this.new = true;
       this.template = this.store.createRecord('template');
@@ -95,7 +96,18 @@ export default class AddInstructionComponent extends Component {
 
     //remove non-existing variable mappings from current array
     this.mappings = this.mappings.filter((mapping) => {
-      return filteredRegexResult.find((fReg) => fReg[1] === mapping.variable);
+      //search regex results if they contain this mapping
+      if (
+        filteredRegexResult.find((fReg) => {
+          if (fReg[1] === mapping.variable) {
+            return true;
+          }
+        })
+      ) {
+        return true;
+      } else {
+        mapping.destroyRecord();
+      }
     });
 
     //add new variable mappings
@@ -120,6 +132,8 @@ export default class AddInstructionComponent extends Component {
         )
       ) {
         filteredMappings.push(mapping);
+      } else {
+        mapping.destroyRecord();
       }
     });
     this.mappings = filteredMappings;
@@ -135,8 +149,8 @@ export default class AddInstructionComponent extends Component {
       const mapping = this.mappings[i];
       this.template.mappings.pushObject(mapping);
       yield mapping.save();
-      yield this.template.save();
     }
+    yield this.template.save();
     this.reset();
   }
 }
