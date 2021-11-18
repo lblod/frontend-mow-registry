@@ -27,7 +27,6 @@ export default class AddInstructionComponent extends Component {
   *fetchData() {
     this.concept = yield this.args.concept;
     this.codeLists = yield this.codeListService.all.perform();
-    this.codeLists.sortBy('id');
 
     if (this.args.editedTemplate) {
       this.new = false;
