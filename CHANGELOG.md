@@ -1,3 +1,11 @@
+## 0.5.1 (2021-11-15)
+
+#### :bug: Bug Fix
+* [#100](https://github.com/lblod/frontend-mow-registry/pull/100) Chore/improve road markings ([@nvdk](https://github.com/nvdk))
+
+#### Committers: 1
+- Niels V ([@nvdk](https://github.com/nvdk))
+
 ## 0.5.0 (2021-11-15)
 
 #### :rocket: Enhancement
