@@ -214,28 +214,14 @@ export default class TrafficMeasureIndexComponent extends Component {
     for (let i = 0; i < this.mappings.length; i++) {
       const e = this.mappings.objectAt(i);
       let replaceString;
-      if (e.type === 'text') {
-        replaceString = "<input type='text'></input>";
-      } else if (e.type === 'number') {
-        replaceString = "<input type='number'></input>";
-      } else if (e.type === 'date') {
-        replaceString = "<input type='date'></input>";
-      } else if (e.type === 'location') {
-        replaceString = "<input type='text'></input>";
-      } else if (e.type === 'codelist') {
-        const codeList = yield e.codeList;
-        const codeListOptions = yield codeList.codeListOptions;
-
-        replaceString = '<select style="width: 200px;">';
-        codeListOptions.forEach((option) => {
-          replaceString += `<option value="${option.label}">${option.label}</option>`;
-        });
-        replaceString += '</select>';
+      if (e.type === 'instruction' && e.instruction) {
+        const instruction=yield e.instruction
+        replaceString = "<span style='background-color: #ffffff'>"+instruction.value+"</span>";
+        this.preview = this.preview.replaceAll(
+          '${' + e.variable + '}',
+          replaceString
+        );
       }
-      this.preview = this.preview.replaceAll(
-        '${' + e.variable + '}',
-        replaceString
-      );
     }
   }
 
@@ -314,7 +300,6 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *saveMappings(template) {
-    debugger;
     //destroy old ones
     for (let i = 0; i < this.mappingsToBeDeleted.length; i++) {
       const mapping = this.mappingsToBeDeleted[i];
