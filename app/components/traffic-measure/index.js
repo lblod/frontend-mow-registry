@@ -28,18 +28,10 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked signError;
   @tracked preview;
   @tracked selectedType;
+  @tracked instructions = [];
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist', 'instruction'];
+  
   mappingsToBeDeleted = [];
-
-
-  get allInstructions(){
-    let result=[];
-    this.signs.forEach(e=>{
-      const templates = e.templates.map(e=>e);
-      result=result.concat(templates);
-    });
-    return result;
-  }
 
   get label() {
     let result = '';
@@ -81,7 +73,22 @@ export default class TrafficMeasureIndexComponent extends Component {
       relations.map((relation) => relation.concept)
     );
 
+    yield this.fetchInstructions.perform();
+
     this.parseTemplate();
+  }
+
+  @task
+  *fetchInstructions(){
+    this.instructions = [];
+    for (let i=0; i < this.signs.length; i++) {
+      const sign = this.signs[i];
+      const instructions = yield sign.templates;
+      for (let j = 0; j < instructions.length; j++) {
+        const instruction = instructions.objectAt(j);
+        this.instructions.push(instruction)
+      }
+    }
   }
 
   @action
@@ -99,12 +106,14 @@ export default class TrafficMeasureIndexComponent extends Component {
   @action
   addSign(sign) {
     this.signs.pushObject(sign);
+    this.fetchInstructions.perform();
     this.selectedType = null;
   }
 
   @action
   removeSign(sign) {
     this.signs.removeObject(sign);
+    this.fetchInstructions.perform();
   }
 
   @action
@@ -135,7 +144,7 @@ export default class TrafficMeasureIndexComponent extends Component {
       mapping.instruction=null;
     }
     else if(mapping.type === 'instruction'){
-      mapping.instruction = this.allInstructions[0];
+      mapping.instruction = this.instructions.firstObject;
       mapping.codeList=null;
     }
     else{
