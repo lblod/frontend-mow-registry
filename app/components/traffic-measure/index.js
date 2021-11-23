@@ -28,7 +28,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked preview;
   @tracked model;
   @tracked selectedType;
-  @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
+  @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist', 'instruction'];
 
   get label() {
     let result = '';
@@ -73,6 +73,25 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     this.parseTemplate();
   }
+  
+  get allInstructions(){
+    let result=[];
+    for (let i = 0; i < this.signs.length; i++) {
+      const sign = this.signs[i];
+      for (let j = 0; j < sign.templates.length; j++) {
+        const instruction = sign.templates.objectAt(j);
+        result.push(instruction);
+      }
+    }
+    return result;
+  }
+  
+  
+  @action
+  updateInstruction(mapping, instruction){
+    mapping.instruction=instruction;
+    this.generatePreview.perform();
+  }
 
   @action
   updateCodelist(mapping, codeList) {
@@ -116,7 +135,14 @@ export default class TrafficMeasureIndexComponent extends Component {
     mapping.type = selectedType;
     if (mapping.type === 'codelist') {
       mapping.codeList = this.codeLists.firstObject;
-    } else {
+      mapping.instruction = null;
+    }
+    else if (mapping.type === 'instruction') {
+      mapping.instruction = this.allInstructions[0];
+      mapping.codeList = null;
+    } 
+    else {
+      mapping.instruction = null;
       mapping.codeList = null;
     }
     this.generatePreview.perform();
@@ -190,32 +216,14 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     for (let i = 0; i < this.mappings.length; i++) {
       const e = this.mappings[i];
-      let replaceString;
-      if (e.type === 'text') {
-        replaceString = "<input type='text'></input>";
-      } else if (e.type === 'number') {
-        replaceString = "<input type='number'></input>";
-      } else if (e.type === 'date') {
-        replaceString = "<input type='date'></input>";
-      } else if (e.type === 'location') {
-        replaceString = "<input type='text'></input>";
-      } else if (e.type === 'codelist') {
-        const codeList = yield e.codeList;
-        const codeListOptions = yield codeList.codeListOptions;
-
-        replaceString = '<select style="width: 200px;">';
-        codeListOptions.forEach((option) => {
-          replaceString += `<option value="${option.label}">${option.label}</option>`;
-        });
-        replaceString += '</select>';
+      if (e.type === 'instruction') {
+        const instruction = yield e.instruction;
+        this.preview = this.preview.replaceAll(
+          '${' + e.variable + '}',
+          instruction.value
+        );
       }
-      this.preview = this.preview.replaceAll(
-        '${' + e.variable + '}',
-        replaceString
-      );
     }
-
-    this.generateModel();
   }
 
   @task
@@ -300,90 +308,5 @@ export default class TrafficMeasureIndexComponent extends Component {
       yield mapping.save();
     }
     yield template.save();
-  }
-
-  @action
-  generateModel() {
-    const templateUUid = this.trafficMeasureConcept.id;
-    this.model =
-      `
-    PREFIX ex: <http://example.org#>
-    PREFIX sh: <http://www.w3.org/ns/shacl#>
-    PREFIX oslo: <http://data.vlaanderen.be/ns#>
-
-    INSERT {
-    GRAPH <http://mu.semte.ch/application>{
-    
-    ex:` +
-      templateUUid +
-      ` a ex:TrafficMeasureTemplate ;
-      ex:value "` +
-      this.template.value +
-      `";
-      ex:mapping
-    `;
-
-    let varString = '';
-    this.mappings.forEach((mapping) => {
-      varString +=
-        `
-        [
-          ex:variable "` +
-        mapping.variable +
-        `" ;
-          ex:expects [
-            a sh:PropertyShape ;
-              sh:targetClass ex:` +
-        mapping.type +
-        ` ;
-              sh:maxCount 1 ;
-          ]
-        ],`;
-    });
-    varString = varString.slice(0, -1) + '.';
-
-    let signString = '';
-    let signIdentifier = '';
-
-    this.signs.forEach((sign) => {
-      signIdentifier += sign.get('roadSignConceptCode') + '-';
-      signString +=
-        `
-        [
-          a ex:MustUseRelation ;
-          ex:signConcept <http://data.vlaanderen.be/id/concept/Verkeersbordconcept/` +
-        sign.get('id') +
-        `> 
-        ],`;
-    });
-
-    signString = signString.slice(0, -1);
-    signIdentifier = signIdentifier.slice(0, -1);
-
-    this.model +=
-      varString +
-      `
-
-      ex:Shape#TrafficMeasure a sh:NodeShape;
-        sh:targetClass oslo:Verkeersmaatregel;
-        ex:targetHasConcept ex:` +
-      signIdentifier +
-      `MeasureConcept .
-        
-      ex:` +
-      signIdentifier +
-      `MeasureConcept a ex:Concept ;
-        ex:label "` +
-      signIdentifier +
-      ` traffic measure";
-        ex:template ex:` +
-      templateUUid +
-      ` ;
-        ex:relation `;
-    this.model +=
-      signString +
-      `.
-    }}
-    `;
   }
 }
