@@ -1,0 +1,61 @@
+<AuDataTable
+  @content={{this.model.codelists}}
+  @fields="Label"
+  @noDataMessage={{t "codelist.crud.noData"}}
+  @size={{this.size}}
+  @page={{this.page}}
+  @sort={{this.sort}} as |s|
+>
+  <s.menu as |menu|>
+    <menu.general>
+      <AuToolbar class="au-o-box">
+        <AuToolbarGroup>
+          <AuHeading @skin="2">
+            {{t "codelist.name"}}
+          </AuHeading>
+        </AuToolbarGroup>
+        <AuToolbarGroup class="au-c-toolbar__group--center">
+          {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
+          <div class="au-c-data-table__search codelist-label-search">
+            <input
+              value={{this.label}}
+              placeholder={{t "codelist.crud.labelFilter"}}
+              class="au-c-input au-c-input--block"
+              {{on "input" (perform this.updateSearchFilterTask "label")}}
+            />
+            <span class="au-c-data-table__search-icon">
+              <AuIcon @icon="search" @size="large" />
+            </span>
+          </div>
+          <LinkTo class="au-c-button" @route="codelists-management.new">
+            {{t "codelist.crud.new"}}
+          </LinkTo>
+        </AuToolbarGroup>
+      </AuToolbar>
+    </menu.general>
+  </s.menu>
+  <s.content as |c|>
+    <c.header>
+      <AuDataTableThSortable
+        @field="label"
+        @currentSorting={{this.sort}}
+        @label={{t "codelist.attr.label"}}
+      />
+      <th></th>
+    </c.header>
+    <c.body as |codelist|>
+      <td>
+        {{codelist.readableLabel}}
+      </td>
+      <td>
+        <LinkTo
+          class="au-c-link"
+          @route="codelists-management.codelist"
+          @model={{codelist.id}}
+        >
+          {{t "utility.view"}}
+        </LinkTo>
+      </td>
+    </c.body>
+  </s.content>
+</AuDataTable>
