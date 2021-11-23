@@ -218,10 +218,12 @@ export default class TrafficMeasureIndexComponent extends Component {
       const e = this.mappings[i];
       if (e.type === 'instruction') {
         const instruction = yield e.instruction;
-        this.preview = this.preview.replaceAll(
-          '${' + e.variable + '}',
-          instruction.value
-        );
+        if(instruction){
+          this.preview = this.preview.replaceAll(
+            '${' + e.variable + '}',
+            '<span style="background-color: #ffffff">'+instruction.value+'</span>'
+          );
+        }
       }
     }
   }
