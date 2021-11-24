@@ -263,6 +263,19 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     //if new save relationships
     if (this.new) {
+      const trafficMeasureResource = await this.store.findRecord(
+        'resource',
+        TRAFFIC_MEASURE_RESOURCE_UUID
+      );
+      
+      const nodeShape = this.store.createRecord('node-shape');
+
+      nodeShape.targetClass = trafficMeasureResource;
+      nodeShape.targetHasConcept = trafficMeasureConcept;
+
+      await trafficMeasureConcept.save();
+      await nodeShape.save();
+
       yield template.save();
       yield this.trafficMeasureConcept.save();
     }

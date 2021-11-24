@@ -11,22 +11,10 @@ export default class TrafficMeasureConceptsNewRoute extends Route {
     const trafficMeasureConcept = this.store.createRecord(
       'traffic-measure-concept'
     );
-    const nodeShape = this.store.createRecord('node-shape');
 
     template.value = '';
     trafficMeasureConcept.templates.pushObject(template);
-
-    const trafficMeasureResource = await this.store.findRecord(
-      'resource',
-      TRAFFIC_MEASURE_RESOURCE_UUID
-    );
-
-    nodeShape.targetClass = trafficMeasureResource;
-    nodeShape.targetHasConcept = trafficMeasureConcept;
-
-    await trafficMeasureConcept.save();
-    await nodeShape.save();
-
+    
     return trafficMeasureConcept;
   }
 }
