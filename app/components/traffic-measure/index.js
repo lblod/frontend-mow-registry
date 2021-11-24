@@ -267,14 +267,13 @@ export default class TrafficMeasureIndexComponent extends Component {
         'resource',
         TRAFFIC_MEASURE_RESOURCE_UUID
       );
-      
+
       const nodeShape = this.store.createRecord('node-shape');
 
       nodeShape.targetClass = trafficMeasureResource;
       nodeShape.targetHasConcept = trafficMeasureConcept;
 
-      await trafficMeasureConcept.save();
-      await nodeShape.save();
+      yield nodeShape.save();
 
       yield template.save();
       yield this.trafficMeasureConcept.save();
