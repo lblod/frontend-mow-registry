@@ -304,7 +304,8 @@ export default class TrafficMeasureIndexComponent extends Component {
   @task
   *saveRoadsigns(trafficMeasureConcept) {
     // delete existing ones
-    for (let i = 0; i < trafficMeasureConcept.relations.length; i++) {
+    let length = trafficMeasureConcept.relations.length;
+    for (let i = 0; i < length; i++) {
       const relation = trafficMeasureConcept.relations.objectAt(0);
       yield relation.destroyRecord();
     }
