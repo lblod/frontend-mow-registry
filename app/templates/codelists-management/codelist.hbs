@@ -6,18 +6,13 @@
     @model={{@model.codelist.id}}
     class={{linkClass}}
   >
-    {{@model.codelist.readableLabel}}
+    {{@model.codelist.label}}
   </LinkTo>
 </BreadcrumbsItem>
 
 <div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
   <div
-    class="au-o-grid__item {{
-    if
-      this.showSidebar
-      "au-u-3-5@medium au-u-visible-from@medium"
-      "au-u-1-1@medium"
-    }}"
+    class="au-o-grid__item"
   >
     <div class="au-c-body-container au-c-body-container--scroll">
       <AuToolbar @size="large">
@@ -35,22 +30,20 @@
                 {{t "codelist.attr.label"}}
               </AuLabel>
               <p>
-                {{@model.codelist.readableLabel}}
+                {{@model.codelist.label}}
               </p>
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
-              <AuLabel>
-                {{t "codelist.attr.values"}}
-              </AuLabel>
-              <p>
-                <ul>
+              <AuTable>
+                <:title>{{t "codelist.attr.values"}}</:title>
+                <:body>
                   {{#each @model.codelist.codeListOptions as |option|}}
-                    <li>
-                      {{option.label}}
-                    </li>
+                    <tr>
+                      <td>{{option.label}}</td>
+                    </tr>
                   {{/each}}
-                </ul>
-              </p>           
+                </:body>
+              </AuTable>        
             </li>
           </ul>
         </AuToolbarGroup>
@@ -86,7 +79,7 @@
                 @alert={{true}}
                 {{on
                   "click"
-                  (fn this.removeCodelist @model.codelist)
+                  this.removeCodelist
                 }}
               >
                 {{t "codelist.crud.delete"}}

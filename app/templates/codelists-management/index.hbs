@@ -27,9 +27,11 @@
               <AuIcon @icon="search" @size="large" />
             </span>
           </div>
-          <LinkTo class="au-c-button" @route="codelists-management.new">
+          <AuLink
+            @route="codelists-management.new"
+            @skin="button">
             {{t "codelist.crud.new"}}
-          </LinkTo>
+          </AuLink>
         </AuToolbarGroup>
       </AuToolbar>
     </menu.general>
@@ -45,16 +47,16 @@
     </c.header>
     <c.body as |codelist|>
       <td>
-        {{codelist.readableLabel}}
+        {{codelist.label}}
       </td>
       <td>
-        <LinkTo
-          class="au-c-link"
+        <AuLink
+          @skin="primary"
           @route="codelists-management.codelist"
           @model={{codelist.id}}
         >
           {{t "utility.view"}}
-        </LinkTo>
+        </AuLink>
       </td>
     </c.body>
   </s.content>

@@ -12,8 +12,4 @@ export default class CodelistsManagementCodelistRoute extends Route {
 
     return model;
   }
-
-  resetController(controller) {
-    controller.reset();
-  }
 }

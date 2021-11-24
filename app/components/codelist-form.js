@@ -4,22 +4,20 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import CodelistValidations from 'mow-registry/validations/codelist';
 import { tracked } from '@glimmer/tracking';
+import { A } from '@ember/array';
 
 export default class CodelistFormComponent extends Component {
   @service router;
   @service store;
 
   @tracked newValue = '';
-  @tracked options = [];
+  @tracked toSave = A();
 
   CodelistValidations = CodelistValidations;
 
   constructor() {
     super(...arguments);
-
-    this.options = this.args.codelistOptions
-      ? this.args.codelistOptions.map((option) => option.label)
-      : [];
+    this.options = this.args.codelistOptions ? this.args.codelistOptions : [];
   }
 
   get isSaving() {
@@ -38,13 +36,17 @@ export default class CodelistFormComponent extends Component {
 
   @action
   addNewValue() {
-    this.options.pushObject(this.newValue);
+    const codeListOption = this.store.createRecord('code-list-option');
+    codeListOption.label = this.newValue;
+    this.options.pushObject(codeListOption);
     this.newValue = '';
   }
 
   @action
-  removeValue(value) {
-    this.options.removeObject(value);
+  removeOption(option) {
+    this.options.removeObject(option);
+    this.toSave.pushObject(option);
+    option.deleteRecord();
   }
 
   @dropTask
@@ -54,18 +56,7 @@ export default class CodelistFormComponent extends Component {
     yield codelist.validate();
 
     if (codelist.isValid) {
-      const length = codelist.codeListOptions.length;
-      for (let i = 0; i < length; i++) {
-        const option = codelist.codeListOptions.objectAt(0);
-        yield option.destroyRecord();
-      }
-      codelist.codeListOptions = [];
-      yield this.options.forEach((option) => {
-        const codeListOption = this.store.createRecord('code-list-option');
-        codeListOption.label = option;
-        codelist.codeListOptions.pushObject(codeListOption);
-      });
-
+      yield Promise.all(this.toSave.map((option) => option.save()));
       yield codelist.save();
       yield codelist.codeListOptions.save();
       this.router.transitionTo('codelists-management.codelist', codelist.id);

@@ -7,30 +7,22 @@ export default class CodelistController extends Controller {
   @service router;
   @tracked isOpen = false;
 
-  get hasActiveChildRoute() {
-    return (
-      this.router.currentRouteName.startsWith(
-        'codelists-management.codelist'
-      ) &&
-      this.router.currentRouteName !== 'codelists-management.codelist.index'
-    );
-  }
-
   @action
   toggleIsOpen() {
     this.isOpen = !this.isOpen;
   }
 
   @action
-  async removeCodelist(codelist, event) {
+  async removeCodelist(event) {
     event.preventDefault();
 
-    const length = codelist.codeListOptions.length;
-    for (let i = 0; i < length; i++) {
-      const option = codelist.codeListOptions.objectAt(0);
-      await option.destroyRecord();
-    }
-    await codelist.destroyRecord();
+    await Promise.all(
+      this.model.codelist.codeListOptions.map((option) =>
+        option.destroyRecord()
+      )
+    );
+
+    await this.model.codelist.destroyRecord();
     this.router.transitionTo('codelists-management');
   }
 
