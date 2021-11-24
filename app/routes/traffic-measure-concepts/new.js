@@ -1,7 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-
 export default class TrafficMeasureConceptsNewRoute extends Route {
   @service store;
 
@@ -13,7 +12,7 @@ export default class TrafficMeasureConceptsNewRoute extends Route {
 
     template.value = '';
     trafficMeasureConcept.templates.pushObject(template);
-    
+
     return trafficMeasureConcept;
   }
 }

@@ -30,8 +30,15 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked preview;
   @tracked selectedType;
   @tracked instructions = [];
-  @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist', 'instruction'];
-  
+  @tracked inputTypes = [
+    'text',
+    'number',
+    'date',
+    'location',
+    'codelist',
+    'instruction',
+  ];
+
   mappingsToBeDeleted = [];
 
   get label() {
@@ -80,14 +87,14 @@ export default class TrafficMeasureIndexComponent extends Component {
   }
 
   @task
-  *fetchInstructions(){
+  *fetchInstructions() {
     this.instructions = [];
-    for (let i=0; i < this.signs.length; i++) {
+    for (let i = 0; i < this.signs.length; i++) {
       const sign = this.signs[i];
       const instructions = yield sign.templates;
       for (let j = 0; j < instructions.length; j++) {
         const instruction = instructions.objectAt(j);
-        this.instructions.push(instruction)
+        this.instructions.push(instruction);
       }
     }
   }
@@ -142,15 +149,13 @@ export default class TrafficMeasureIndexComponent extends Component {
     mapping.type = selectedType;
     if (mapping.type === 'codelist') {
       mapping.codeList = this.codeLists.firstObject;
-      mapping.instruction=null;
-    }
-    else if(mapping.type === 'instruction'){
+      mapping.instruction = null;
+    } else if (mapping.type === 'instruction') {
       mapping.instruction = this.instructions.firstObject;
-      mapping.codeList=null;
-    }
-    else{
-      mapping.instruction=null;
-      mapping.codeList=null;
+      mapping.codeList = null;
+    } else {
+      mapping.instruction = null;
+      mapping.codeList = null;
     }
     this.generatePreview.perform();
   }
@@ -225,8 +230,11 @@ export default class TrafficMeasureIndexComponent extends Component {
       const e = this.mappings.objectAt(i);
       let replaceString;
       if (e.type === 'instruction' && e.instruction) {
-        const instruction=yield e.instruction
-        replaceString = "<span style='background-color: #ffffff'>"+instruction.value+"</span>";
+        const instruction = yield e.instruction;
+        replaceString =
+          "<span style='background-color: #ffffff'>" +
+          instruction.value +
+          '</span>';
         this.preview = this.preview.replaceAll(
           '${' + e.variable + '}',
           replaceString
@@ -326,7 +334,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     //destroy old ones
     for (let i = 0; i < this.mappingsToBeDeleted.length; i++) {
       const mapping = this.mappingsToBeDeleted[i];
-      yield mapping.destroyRecord();      
+      yield mapping.destroyRecord();
     }
     //create new ones
     for (let i = 0; i < this.mappings.length; i++) {
