@@ -3,7 +3,8 @@ import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import EmberArray from '@ember/array';
+
+const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
 
 export default class TrafficMeasureIndexComponent extends Component {
   constructor(...args) {
@@ -263,7 +264,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     //if new save relationships
     if (this.new) {
-      const trafficMeasureResource = await this.store.findRecord(
+      const trafficMeasureResource = yield this.store.findRecord(
         'resource',
         TRAFFIC_MEASURE_RESOURCE_UUID
       );
@@ -271,7 +272,7 @@ export default class TrafficMeasureIndexComponent extends Component {
       const nodeShape = this.store.createRecord('node-shape');
 
       nodeShape.targetClass = trafficMeasureResource;
-      nodeShape.targetHasConcept = trafficMeasureConcept;
+      nodeShape.targetHasConcept = this.trafficMeasureConcept;
 
       yield nodeShape.save();
 
