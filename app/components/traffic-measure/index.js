@@ -35,8 +35,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     'number',
     'date',
     'location',
-    'codelist',
-    'instruction',
+    'codelist'
   ];
 
   mappingsToBeDeleted = [];
@@ -88,6 +87,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *fetchInstructions() {
+    //refresh instruction list from available signs
     this.instructions = [];
     for (let i = 0; i < this.signs.length; i++) {
       const sign = this.signs[i];
@@ -96,6 +96,20 @@ export default class TrafficMeasureIndexComponent extends Component {
         const instruction = instructions.objectAt(j);
         this.instructions.push(instruction);
       }
+    }
+    //remove input type instruction if there are none available and reset mappings with instructions
+    if(this.instructions.length != 0){
+      this.inputTypes.push('instruction')
+    }
+    else if(this.instructions.length == 0 ){
+      if(this.inputTypes.indexOf('instruction')!=-1){
+        this.inputTypes.splice(this.inputTypes.indexOf('instruction'), 1);
+      }
+      this.mappings.forEach(e=>{
+        if(e.type=='instruction'){
+          this.updateMappingType(e, 'text');
+        }
+      });
     }
   }
 
@@ -229,7 +243,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     for (let i = 0; i < this.mappings.length; i++) {
       const e = this.mappings.objectAt(i);
       let replaceString;
-      if (e.type === 'instruction' && e.instruction) {
+      if (e.type === 'instruction') {
         const instruction = yield e.instruction;
         replaceString =
           "<span style='background-color: #ffffff'>" +
