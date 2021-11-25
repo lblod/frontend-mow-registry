@@ -81,9 +81,9 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *fetchInstructions() {
-    debugger;
     //refresh instruction list from available signs
     this.instructions = [];
+    this.inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
     for (let i = 0; i < this.signs.length; i++) {
       const sign = this.signs[i];
       const instructions = yield sign.templates;
@@ -105,7 +105,7 @@ export default class TrafficMeasureIndexComponent extends Component {
         }
       });
     }
-    this.inputTypes=this.inputTypes;
+    this.inputTypes = this.inputTypes;
   }
 
   @action
