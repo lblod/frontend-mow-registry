@@ -105,6 +105,7 @@ export default class TrafficMeasureIndexComponent extends Component {
         }
       });
     }
+    // eslint-disable-next-line
     this.inputTypes = this.inputTypes;
   }
 
