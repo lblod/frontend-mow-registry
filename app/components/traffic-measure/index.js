@@ -312,6 +312,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     yield this.saveMappings.perform(template);
 
     //5-annotate rdfa
+    yield this.annotateRdfa();
 
     if (this.new) {
       this.router.transitionTo(
