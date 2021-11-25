@@ -311,6 +311,8 @@ export default class TrafficMeasureIndexComponent extends Component {
     //4-handle variable mappings
     yield this.saveMappings.perform(template);
 
+    //5-annotate rdfa
+
     if (this.new) {
       this.router.transitionTo(
         'traffic-measure-concepts.edit',
@@ -353,5 +355,32 @@ export default class TrafficMeasureIndexComponent extends Component {
       yield mapping.save();
     }
     yield template.save();
+  }
+
+  @task
+  *annotateRdfa(){
+    this.preview = this.template.value;
+
+    for (let i = 0; i < this.mappings.length; i++) {
+      const e = this.mappings[i];
+      let replaceString;
+      if (e.type === 'text') {
+        replaceString = "";
+      } else if (e.type === 'number') {
+        replaceString = "";
+      } else if (e.type === 'date') {
+        replaceString = "";
+      } else if (e.type === 'location') {
+        replaceString = "";
+      } else if (e.type === 'codelist') {
+        replaceString = "";
+      } else if (e.type === 'instruction') {
+        replaceString = "";
+      }
+      this.preview = this.preview.replaceAll(
+        '${' + e.variable + '}',
+        replaceString
+      );
+    }
   }
 }
