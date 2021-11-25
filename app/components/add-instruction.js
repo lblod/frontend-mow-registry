@@ -3,6 +3,7 @@ import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import includeMappings from '../util/includeMappings';
 
 export default class AddInstructionComponent extends Component {
   @service store;
@@ -152,6 +153,10 @@ export default class AddInstructionComponent extends Component {
       this.template.mappings.pushObject(mapping);
       yield mapping.save();
     }
+    this.template.annotated = includeMappings(
+      this.template.value,
+      this.mappings
+    );
     yield this.template.save();
 
     for (let i = 0; i < this.mappingsToBeDeleted.length; i++) {

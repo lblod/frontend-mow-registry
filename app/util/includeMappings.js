@@ -27,7 +27,9 @@ function generateLocationTemplate(uri, name) {
 export default function includeMappings(html, mappings) {
   let finalHtml = html;
   for (let mapping of mappings) {
-    if (mapping.type === 'codelist') {
+    if (mapping.type === 'instruction') {
+      continue;
+    } else if (mapping.type === 'codelist') {
       finalHtml = finalHtml.replaceAll(
         `\${${mapping.variable}}`,
         generateCodelistTemplate(mapping.uri, mapping.variable)
