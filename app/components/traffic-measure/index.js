@@ -4,6 +4,8 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
+import includeMappings from '../../util/includeMappings';
+
 const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
 
 export default class TrafficMeasureIndexComponent extends Component {
@@ -312,7 +314,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     yield this.saveMappings.perform(template);
 
     //5-annotate rdfa
-    yield this.annotateRdfa();
+    yield this.annotateRdfa.perform();
 
     if (this.new) {
       this.router.transitionTo(
@@ -359,29 +361,16 @@ export default class TrafficMeasureIndexComponent extends Component {
   }
 
   @task
-  *annotateRdfa(){
-    const anotated = this.template.value;
-
-    for (let i = 0; i < this.mappings.length; i++) {
-      const e = this.mappings[i];
-      let replaceString;
-      if (e.type === 'text') {
-        replaceString = "";
-      } else if (e.type === 'number') {
-        replaceString = "";
-      } else if (e.type === 'date') {
-        replaceString = "";
-      } else if (e.type === 'location') {
-        replaceString = "";
-      } else if (e.type === 'codelist') {
-        replaceString = "";
-      } else if (e.type === 'instruction') {
-        replaceString = "";
-      }
-      this.preview = this.preview.replaceAll(
-        '${' + e.variable + '}',
-        replaceString
-      );
-    }
+  *annotateRdfa() {
+    const contentWithMappigns = includeMappings(
+      this.template.value,
+      this.mappings
+    );
+    this.template.annotated = `
+      <div property="dct:description">
+        ${contentWithMappigns}
+      </div>
+    `;
+    yield this.template.save();
   }
 }
