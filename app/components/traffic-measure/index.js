@@ -360,7 +360,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *annotateRdfa(){
-    this.preview = this.template.value;
+    const anotated = this.template.value;
 
     for (let i = 0; i < this.mappings.length; i++) {
       const e = this.mappings[i];
