@@ -30,13 +30,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked preview;
   @tracked selectedType;
   @tracked instructions = [];
-  @tracked inputTypes = [
-    'text',
-    'number',
-    'date',
-    'location',
-    'codelist'
-  ];
+  @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
   mappingsToBeDeleted = [];
 
@@ -98,15 +92,14 @@ export default class TrafficMeasureIndexComponent extends Component {
       }
     }
     //remove input type instruction if there are none available and reset mappings with instructions
-    if(this.instructions.length != 0){
-      this.inputTypes.push('instruction')
-    }
-    else if(this.instructions.length == 0 ){
-      if(this.inputTypes.indexOf('instruction')!=-1){
+    if (this.instructions.length != 0) {
+      this.inputTypes.push('instruction');
+    } else if (this.instructions.length == 0) {
+      if (this.inputTypes.indexOf('instruction') != -1) {
         this.inputTypes.splice(this.inputTypes.indexOf('instruction'), 1);
       }
-      this.mappings.forEach(e=>{
-        if(e.type=='instruction'){
+      this.mappings.forEach((e) => {
+        if (e.type == 'instruction') {
           this.updateMappingType(e, 'text');
         }
       });
