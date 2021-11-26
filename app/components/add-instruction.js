@@ -138,7 +138,19 @@ export default class AddInstructionComponent extends Component {
         this.mappingsToBeDeleted.push(mapping);
       }
     });
-    this.mappings = filteredMappings;
+
+    //sort mappings in the same order as the regex result
+    const sortedMappings = [];
+    filteredRegexResult.forEach(reg=>{
+      filteredMappings.forEach(mapping=>{
+        if(reg[1]==mapping.variable){
+          sortedMappings.push(mapping);
+        }
+      });
+    });
+    
+    this.mappings = sortedMappings;
+
   }
 
   @task
