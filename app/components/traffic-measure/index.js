@@ -89,7 +89,7 @@ export default class TrafficMeasureIndexComponent extends Component {
       const instructions = yield sign.templates;
       for (let j = 0; j < instructions.length; j++) {
         const instruction = instructions.objectAt(j);
-        this.instructions.push(instruction);
+        this.instructions.pushObject(instruction);
       }
     }
     //remove input type instruction if there are none available and reset mappings with instructions
