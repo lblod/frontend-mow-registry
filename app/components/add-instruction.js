@@ -165,10 +165,9 @@ export default class AddInstructionComponent extends Component {
     }
     yield this.template.save();
 
-    for (let i = 0; i < this.mappingsToBeDeleted.length; i++) {
-      const mapping = this.mappingsToBeDeleted[i];
-      yield mapping.destroyRecord();
-    }
+    yield Promise.all(
+      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
+    );
 
     this.reset();
   }
