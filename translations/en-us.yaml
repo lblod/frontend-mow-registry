@@ -172,3 +172,22 @@ login:
   login: Enter your username and password to log in
 sparql:
     name: 'MOW Registry: SPARQL'
+codelist:
+  name: Codelists management
+  details: Codelist details
+  crud:
+    new: New codelist
+    edit: Edit codelist
+    delete: Delete codelist
+    noData: No codelist
+    noValue: No value
+    labelFilter: Label
+    addValue: Add value
+    deleteValue: Delete value
+  attr:
+    label: Label
+    values: Values
+  landingPage:
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to codelists management
