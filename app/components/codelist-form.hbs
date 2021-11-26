@@ -38,107 +38,100 @@
     <div class="au-o-box">
       <div class="au-o-grid">
         <div class="au-o-grid__item au-u-2-3@medium au-u-2-5@large">
-          <form
-            class="au-c-form"
-            id="edit-codelist-form"
-            novalidate
-            {{on "submit" (perform this.editCodelistTask codelist)}}
-          >
-            {{#let codelist.error.label as |isInvalid|}}
-              <p>
-                <AuLabel @error={{isInvalid}} for="label">
-                  {{t "roadSignConcept.attr.code"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
-                </AuLabel>
-                <AuInput
-                  @error={{isInvalid}}
-                  id="label"
-                  required="required"
-                  value={{codelist.label}}
-                  {{on
-                    "input"
-                    (fn
-                      this.setCodelistValue
-                      codelist
-                      "label"
-                    )
-                  }}
-                />
-                {{#if isInvalid}}
-                  <AuHelpText>
-                    {{t "utility.fieldRequired"}}
-                  </AuHelpText>
-                {{/if}}
-              </p>
-            {{/let}}
+          {{#let codelist.error.label as |isInvalid|}}
             <p>
-              <AuDataTable
-                @content={{this.options}}
-                @noDataMessage={{t "codelist.crud.noValue"}}
-                as |s|
-              >
-                <s.content as |c|>
-                  <c.header>
-                    <th class="data-table__header-title">
-                      {{t "codelist.attr.values"}}
-                    </th>
-                    <th>
-                      <span class="au-u-hidden-visually">
-                        {{t "codelist.crud.deleteValue"}}
-                      </span>
-                    </th>
-                  </c.header>
-                  <c.body as |option|>
+              <AuLabel @error={{isInvalid}} for="label">
+                {{t "roadSignConcept.attr.code"}}&nbsp;
+                <AuPill>
+                  {{t "utility.required"}}
+                </AuPill>
+              </AuLabel>
+              <AuInput
+                @error={{isInvalid}}
+                id="label"
+                required="required"
+                value={{codelist.label}}
+                {{on
+                  "input"
+                  (fn
+                    this.setCodelistValue
+                    codelist
+                    "label"
+                  )
+                }}
+              />
+              {{#if isInvalid}}
+                <AuHelpText>
+                  {{t "utility.fieldRequired"}}
+                </AuHelpText>
+              {{/if}}
+            </p>
+          {{/let}}
+          <p>
+            <AuDataTable
+              @content={{this.options}}
+              @noDataMessage={{t "codelist.crud.noValue"}}
+              as |s|
+            >
+              <s.content as |c|>
+                <c.header>
+                  <th class="data-table__header-title">
+                    {{t "codelist.attr.values"}}
+                  </th>
+                  <th>
+                    <span class="au-u-hidden-visually">
+                      {{t "codelist.crud.deleteValue"}}
+                    </span>
+                  </th>
+                </c.header>
+                <c.body as |option|>
+                  <td>
+                    <p class="max-w-prose">
+                      {{option.label}}
+                    </p>
+                  </td>
+                  <td class="w-px au-u-padding-right-small">
+                    <AuButton
+                      @icon="bin"
+                      @alert={{true}}
+                      @skin="secondary"
+                      @hideText={{true}}
+                      {{on "click" (fn this.removeOption option)}}
+                    >
+                      {{t "utility.delete"}}
+                    </AuButton>
+                  </td>
+                </c.body>
+                <tfoot>
+                  <tr>
                     <td>
                       <p class="max-w-prose">
-                        {{option.label}}
+                        <AuInput
+                          id="values"
+                          required="required"
+                          value={{this.newValue}}
+                          {{on
+                            "input"
+                            this.updateNewValue
+                          }}
+                        />
                       </p>
                     </td>
                     <td class="w-px au-u-padding-right-small">
                       <AuButton
-                        @icon="bin"
-                        @alert={{true}}
+                        @icon="add"
                         @skin="secondary"
                         @hideText={{true}}
-                        {{on "click" (fn this.removeOption option)}}
+                        {{on "click" this.addNewValue}}
                       >
-                        {{t "utility.delete"}}
+                        {{t "codelist.crud.addValue"}}
                       </AuButton>
                     </td>
-                  </c.body>
-                  <tfoot>
-                    <tr>
-                      <td>
-                        <p class="max-w-prose">
-                          <AuInput
-                            id="values"
-                            required="required"
-                            value={{this.newValue}}
-                            {{on
-                              "input"
-                              this.updateNewValue
-                            }}
-                          />
-                        </p>
-                      </td>
-                      <td class="w-px au-u-padding-right-small">
-                        <AuButton
-                          @icon="add"
-                          @skin="secondary"
-                          @hideText={{true}}
-                          {{on "click" this.addNewValue}}
-                        >
-                          {{t "codelist.crud.addValue"}}
-                        </AuButton>
-                      </td>
-                    </tr>
-                  </tfoot>
-                </s.content>
-              </AuDataTable>
-            </p>
-          </form>
+                  </tr>
+                </tfoot>
+              </s.content>
+            </AuDataTable>
+          </p>
         </div>
       </div>
     </div>
@@ -151,7 +144,7 @@
           disabled={{or codelist.isInvalid this.isSaving}}
           class="au-c-button {{if this.isSaving "is-loading"}}"
           form="edit-codelist-form"
-          type="submit"
+          {{on "click" (perform this.editCodelistTask codelist)}}
         >
           {{t "utility.save"}}
         </button>
