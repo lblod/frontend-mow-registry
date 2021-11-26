@@ -228,14 +228,14 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     //sort mappings in the same order as the regex result
     const sortedMappings = [];
-    filteredRegexResult.forEach(reg=>{
-      filteredMappings.forEach(mapping=>{
-        if(reg[1]==mapping.variable){
+    filteredRegexResult.forEach((reg) => {
+      filteredMappings.forEach((mapping) => {
+        if (reg[1] == mapping.variable) {
           sortedMappings.push(mapping);
         }
       });
     });
-    
+
     this.mappings = sortedMappings;
 
     this.generatePreview.perform();
@@ -350,14 +350,16 @@ export default class TrafficMeasureIndexComponent extends Component {
   @task
   *saveMappings(template) {
     //destroy old ones
-    yield Promise.all(this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord()));
+    yield Promise.all(
+      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
+    );
 
     //create new ones
     for (const mapping of this.mappings) {
       template.mappings.pushObject(mapping);
       yield mapping.save();
     }
-    
+
     yield template.save();
   }
 }
