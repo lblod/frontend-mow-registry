@@ -63,4 +63,20 @@ export default class CodelistFormComponent extends Component {
       this.router.transitionTo('codelists-management.codelist', codelist.id);
     }
   }
+
+  @action
+  cancelEditing(){
+    for (let i = 0; i < this.options.length; i++) {
+      const option = this.options.objectAt(i);
+      option.rollbackAttributes();
+    }
+    this.args.codelist.rollbackAttributes();
+
+    if(this.args.codelist.isNew){
+      this.router.transitionTo('codelists-management');
+    }
+    else{
+      this.router.transitionTo('codelists-management.codelist', this.args.codelist.id);
+    }
+  }
 }

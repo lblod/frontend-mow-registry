@@ -160,22 +160,12 @@
         >
           {{t "utility.save"}}
         </button>
-        {{#if @codelist.isNew}}
-          <LinkTo
-            @route="codelists-management"
-            class="au-c-button au-c-button--secondary"
-          >
-            {{t "utility.cancel"}}
-          </LinkTo>
-        {{else}}
-          <LinkTo
-            @route="codelists-management.codelist"
-            @model={{codelist.id}}
-            class="au-c-button au-c-button--secondary"
-          >
-            {{t "utility.cancel"}}
-          </LinkTo>
-        {{/if}}
+        <AuButton
+          @skin='secondary'
+          {{on 'click' this.cancelEditing}}
+        >
+          {{t "utility.cancel"}}
+        </AuButton>
       </AuButtonGroup>
     </AuToolbarGroup>
   </AuToolbar>
