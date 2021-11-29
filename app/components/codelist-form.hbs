@@ -68,69 +68,81 @@
             </p>
           {{/let}}
           <p>
-            <AuDataTable
-              @content={{this.options}}
-              @noDataMessage={{t "codelist.crud.noValue"}}
-              as |s|
+            <form
+              class="au-c-form"
+              id="edit-codelistOption-form"
+              novalidate
+              {{on "submit" this.addNewValue}}
             >
-              <s.content as |c|>
-                <c.header>
-                  <th class="data-table__header-title">
-                    {{t "codelist.attr.values"}}
-                  </th>
-                  <th>
-                    <span class="au-u-hidden-visually">
-                      {{t "codelist.crud.deleteValue"}}
-                    </span>
-                  </th>
-                </c.header>
-                <c.body as |option|>
-                  <td>
-                    <p class="max-w-prose">
-                      {{option.label}}
-                    </p>
-                  </td>
-                  <td class="w-px au-u-padding-right-small">
-                    <AuButton
-                      @icon="bin"
-                      @alert={{true}}
-                      @skin="secondary"
-                      @hideText={{true}}
-                      {{on "click" (fn this.removeOption option)}}
-                    >
-                      {{t "utility.delete"}}
-                    </AuButton>
-                  </td>
-                </c.body>
-                <tfoot>
-                  <tr>
+              <AuDataTable
+                @content={{this.options}}
+                @noDataMessage={{t "codelist.crud.noValue"}}
+                as |s|
+              >
+                <s.content as |c|>
+                  <c.header>
+                    <th class="data-table__header-title">
+                      {{t "codelist.attr.values"}}
+                    </th>
+                    <th>
+                      <span class="au-u-hidden-visually">
+                        {{t "codelist.crud.deleteValue"}}
+                      </span>
+                    </th>
+                  </c.header>
+                  <c.body as |option|>
                     <td>
                       <p class="max-w-prose">
-                        <AuInput
-                          id="values"
-                          required="required"
-                          value={{this.newValue}}
-                          {{on
-                            "input"
-                            this.updateNewValue
-                          }}
-                        />
+                        {{option.label}}
                       </p>
                     </td>
                     <td class="w-px au-u-padding-right-small">
                       <AuButton
-                        @icon="add"
+                        @icon="bin"
+                        @alert={{true}}
                         @skin="secondary"
                         @hideText={{true}}
-                        {{on "click" this.addNewValue}}
+                        {{on "click" (fn this.removeOption option)}}
                       >
-                        {{t "codelist.crud.addValue"}}
+                        {{t "utility.delete"}}
                       </AuButton>
                     </td>
-                  </tr>
-                </tfoot>
-              </s.content>
-            </AuDataTable>
+                  </c.body>
+                  <tfoot>
+                    <tr>
+                      <td>
+                        <p class="max-w-prose">
+                          <AuInput
+                            id="values"
+                            required="required"
+                            value={{this.newValue}}
+                            {{on
+                              "input"
+                              this.updateNewValue
+                            }}
+                          />
+                        </p>
+                      </td>
+                      <td class="w-px au-u-padding-right-small">
+                        <button
+                          class="au-c-button   au-c-button--secondary"
+                          form="edit-codelistOption-form"
+                          type="submit"
+                          novalidate
+                        >
+                          <svg role="img" class="au-c-icon au-c-icon--add  " aria-hidden="true">
+                            <use xlink:href="/@appuniversum/ember-appuniversum/appuniversum-symbolset.svg#add"></use>
+                          </svg>
+                          <span class="au-u-hidden-visually">
+                            {{t "codelist.crud.addValue"}}
+                          </span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </s.content>
+              </AuDataTable>
+            </form>
           </p>
         </div>
       </div>
