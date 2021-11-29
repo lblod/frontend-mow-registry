@@ -64,14 +64,9 @@ export default class CodelistFormComponent extends Component {
     }
   }
 
-  @action
-  cancelEditing(){
-    for (let i = 0; i < this.options.length; i++) {
-      const option = this.options.objectAt(i);
-      option.rollbackAttributes();
-    }
-    this.args.codelist.rollbackAttributes();
-
+  @dropTask
+  *cancelEditingTask(){
+    
     if(this.args.codelist.isNew){
       this.router.transitionTo('codelists-management');
     }
