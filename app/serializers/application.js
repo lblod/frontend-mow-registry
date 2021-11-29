@@ -8,4 +8,8 @@ export default class ApplicationSerializer extends JSONAPISerializer.extend(
   keyForRelationship(key) {
     return key;
   }
+  serializeAttribute(snapshot, json, key, attributes) {
+    if (key !== 'uri')
+      super.serializeAttribute(snapshot, json, key, attributes);
+  }
 }

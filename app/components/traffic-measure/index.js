@@ -362,7 +362,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *annotateRdfa() {
-    const contentWithMappings = includeMappings(
+    const contentWithMappings = yield includeMappings(
       this.template.value,
       this.mappings
     );
@@ -371,7 +371,6 @@ export default class TrafficMeasureIndexComponent extends Component {
         ${contentWithMappings}
       </div>
     `;
-    console.log(contentWithMappings);
     yield this.template.save();
   }
 }

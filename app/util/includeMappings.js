@@ -6,10 +6,10 @@ function generateTextTemplate(uri, name) {
   `;
 }
 
-function generateCodelistTemplate(uri, name) {
+function generateCodelistTemplate(uri, name, codelist) {
   return `
     <span resource="${uri}" typeof="ext:Mapping">
-      <span property="dct:type" resource=":codelist" value="codelist"></span>
+      <span property="dct:type" resource="${codelist}" value="codelist"></span>
       <span property="ext:variable">\${${name}}</span>
     </span>
   `;
@@ -24,15 +24,17 @@ function generateLocationTemplate(uri, name) {
   `;
 }
 
-export default function includeMappings(html, mappings) {
+export default async function includeMappings(html, mappings) {
   let finalHtml = html;
   for (let mapping of mappings) {
     if (mapping.type === 'instruction') {
       continue;
     } else if (mapping.type === 'codelist') {
+      const codeList = await mapping.get('codeList');
+      const codeListUri = codeList.uri;
       finalHtml = finalHtml.replaceAll(
         `\${${mapping.variable}}`,
-        generateCodelistTemplate(mapping.uri, mapping.variable)
+        generateCodelistTemplate(mapping.uri, mapping.variable, codeListUri)
       );
     } else if (mapping.type === 'locatie') {
       finalHtml = finalHtml.replaceAll(
