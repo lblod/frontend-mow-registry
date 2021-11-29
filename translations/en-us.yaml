@@ -126,6 +126,7 @@ relatedRoadMarking:
     code: Search
 trafficMeasureConcept:
   name: Traffic measure
+  help: Add ${variableName} to add a variable/instruction
   attr:
     trafficSign: Traffic sign
     code: Code

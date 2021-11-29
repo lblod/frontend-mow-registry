@@ -23,6 +23,9 @@
         <AuHeading @level="4" @skin="4"  class="au-u-margin-bottom-small">
           {{t "trafficMeasureConcept.attr.template"}}
         </AuHeading>
+        <AuHelpText @skin="secondary">
+          <AuBadge @icon="info-circle" @size="small" /> {{t "trafficMeasureConcept.help"}}
+        </AuHelpText>
         {{!-- template-lint-disable no-inline-styles --}}
         <AuTextarea id="textarea" @width="block"  {{on "input" this.updateTemplate}} {{on "input" this.parseTemplate}} @value={{this.template.value}} style="resize: none; height: 200px;" class="au-u-margin-bottom-small"></AuTextarea>
       </div>
@@ -79,6 +82,12 @@
                         @selected={{mapping.instruction}}
                         @onChange={{fn this.updateInstruction mapping}} as |instruction|
                       >
+                        <img
+                          class="au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny"
+                          src={{instruction.parentConcept.image}}
+                          alt="" {{!-- actually required by linting  ¯\_(ツ)_/¯ => seems correct to me for accessibility, an empty alt is better for accessibility than no alt attribute :-)  --}}
+                          role="presentation"
+                        />
                         <span title='{{instruction.value}}'>{{truncate instruction.value}}</span>
                       </PowerSelect>
                     {{/if}}

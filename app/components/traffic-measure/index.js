@@ -266,8 +266,9 @@ export default class TrafficMeasureIndexComponent extends Component {
     const nodeShape = yield this.store.query('node-shape', {
       'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
     });
-    yield (yield nodeShape.firstObject).destroyRecord();
-
+    if(yield nodeShape.firstObject){
+      yield (yield nodeShape.firstObject).destroyRecord();
+    }
     // We assume a measure only has one template
     yield (yield (yield this.trafficMeasureConcept.get('templates')
       .firstObject).get('mappings')).forEach((mapping) =>
