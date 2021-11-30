@@ -187,6 +187,7 @@ codelist:
   attr:
     label: Label
     values: Values
+    id: Id
   landingPage:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.

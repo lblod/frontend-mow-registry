@@ -65,28 +65,30 @@ export default class CodelistFormComponent extends Component {
   }
 
   @action
-  cancelEditingTask(){
+  cancelEditingTask() {
     for (let i = 0; i < this.options.length; i++) {
       const option = this.options.objectAt(i);
-      if(option.isNew){
+      if (option.isNew) {
         option.rollbackAttributes();
         i--;
       }
     }
-    
+
     for (let i = 0; i < this.toSave.length; i++) {
       const option = this.toSave.objectAt(i);
-      if(!option.isNew){
+      if (!option.isNew) {
         option.rollbackAttributes();
         this.options.pushObject(option);
       }
     }
-    
-    if(this.args.codelist.isNew){
+
+    if (this.args.codelist.isNew) {
       this.router.transitionTo('codelists-management');
-    }
-    else{
-      this.router.transitionTo('codelists-management.codelist', this.args.codelist.id);
+    } else {
+      this.router.transitionTo(
+        'codelists-management.codelist',
+        this.args.codelist.id
+      );
     }
   }
 }

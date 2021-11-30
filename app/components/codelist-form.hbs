@@ -146,8 +146,7 @@
       <AuButtonGroup>
         <button
           disabled={{or codelist.isInvalid this.isSaving}}
-          class="au-c-button {{if this.isSaving "is-loading"}}"
-          {{on "click" (perform this.editCodelistTask codelist)}}
+          class="au-c-button {{if this.isSaving "is-loading"}}" type="button" {{on "click" (perform this.editCodelistTask codelist)}}
         >
           {{t "utility.save"}}
         </button>
