@@ -18,6 +18,8 @@ export default class AddInstructionComponent extends Component {
   @tracked new;
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
+  mappingsToBeDeleted = [];
+
   constructor(...args) {
     super(...args);
     this.fetchData.perform();
@@ -106,7 +108,7 @@ export default class AddInstructionComponent extends Component {
       ) {
         return true;
       } else {
-        mapping.destroyRecord();
+        this.mappingsToBeDeleted.push(mapping);
       }
     });
 
@@ -133,10 +135,21 @@ export default class AddInstructionComponent extends Component {
       ) {
         filteredMappings.push(mapping);
       } else {
-        mapping.destroyRecord();
+        this.mappingsToBeDeleted.push(mapping);
       }
     });
-    this.mappings = filteredMappings;
+
+    //sort mappings in the same order as the regex result
+    const sortedMappings = [];
+    filteredRegexResult.forEach((reg) => {
+      filteredMappings.forEach((mapping) => {
+        if (reg[1] == mapping.variable) {
+          sortedMappings.push(mapping);
+        }
+      });
+    });
+
+    this.mappings = sortedMappings;
   }
 
   @task
@@ -151,6 +164,11 @@ export default class AddInstructionComponent extends Component {
       yield mapping.save();
     }
     yield this.template.save();
+
+    yield Promise.all(
+      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
+    );
+
     this.reset();
   }
 }
