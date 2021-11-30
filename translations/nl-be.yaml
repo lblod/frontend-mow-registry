@@ -119,6 +119,7 @@ relatedRoadMarking:
     code: Zoek
 trafficMeasureConcept:
   name: Mobiliteitsmaatregel
+  help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
     trafficSign: Verkeersteken
     code: Code

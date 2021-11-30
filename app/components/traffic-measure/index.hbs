@@ -23,6 +23,9 @@
         <AuHeading @level="4" @skin="4"  class="au-u-margin-bottom-small">
           {{t "trafficMeasureConcept.attr.template"}}
         </AuHeading>
+        <AuHelpText @skin="secondary">
+          <AuBadge @icon="info-circle" @size="small" /> {{t "trafficMeasureConcept.help"}}
+        </AuHelpText>
         {{!-- template-lint-disable no-inline-styles --}}
         <AuTextarea id="textarea" @width="block"  {{on "input" this.updateTemplate}} {{on "input" this.parseTemplate}} @value={{this.template.value}} style="resize: none; height: 200px;" class="au-u-margin-bottom-small"></AuTextarea>
       </div>
@@ -65,6 +68,28 @@
                       >
                         {{codeList.label}}
                       </PowerSelect>
+                      <ul>
+                        {{#each mapping.codeList.codeListOptions as |option|}}
+                          <li> - {{option.label}}</li>
+                        {{/each}}
+                      </ul>
+                    {{/if}}
+                    {{#if (eq mapping.type "instruction")}}
+                      <PowerSelect
+                        @allowClear={{false}}
+                        @searchEnabled={{false}}
+                        @options={{this.instructions}}
+                        @selected={{mapping.instruction}}
+                        @onChange={{fn this.updateInstruction mapping}} as |instruction|
+                      >
+                        <img
+                          class="au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny"
+                          src={{instruction.parentConcept.image}}
+                          alt=""
+                          role="presentation"
+                        />
+                        <span title={{instruction.value}}>{{truncate instruction.value}}</span>
+                      </PowerSelect>
                     {{/if}}
                   </td>
                 </tr>
@@ -81,7 +106,6 @@
     </div>
   </div>
 
-  {{!-- template-lint-disable no-inline-styles --}}
   <div class="au-o-grid__item au-u-1-2@medium">
     <div class="au-o-box au-c-body-container au-c-body-container--scroll au-c-theme-gray-100">
       <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
@@ -92,12 +116,11 @@
         <img src={{sign.image}} alt="" role="presentation" class="au-c-thumbnail">
       {{/each}}
       </div>
-      {{!-- template-lint-disable no-triple-curlies --}}
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
         {{t "trafficMeasureConcept.attr.template"}}
       </AuHeading>
       <div class="au-o-box au-o-box--small au-c-theme-gray-200 au-u-margin-bottom">
-        {{{this.preview}}}
+        {{this.previewHtml}}
       </div>
     </div>
   </div>

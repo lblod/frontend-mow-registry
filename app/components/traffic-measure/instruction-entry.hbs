@@ -12,28 +12,6 @@
       </span>
     </div>
   </td>
-  <td>
-    <div class="au-o-flex au-o-flex--center">
-      <div class="au-u-1-1">
-        <PowerSelect
-          @placeholder={{t "utility.selectInstruction"}}
-          @noMatchesMessage={{t "utility.noInstruction"}}
-          @options={{@sign.templates}}
-          @selected={{this.selectedInstruction}}
-          @onChange={{fn (mut this.selectedInstruction)}} as |template|
-        >
-          {{template.value}}
-        </PowerSelect>
-      </div>
-      <AuButton
-        @skin="secondary"
-        @disabled={{not this.selectedInstruction}}
-        {{on "click" (fn @addInstructionToTemplate this.selectedInstruction)}}
-      >
-        {{t "utility.add"}}
-      </AuButton>
-    </div>
-  </td>
   <td class="w-px au-u-padding-right-small">
     <AuButton
       @icon="bin"
