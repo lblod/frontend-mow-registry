@@ -3,6 +3,7 @@ import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { htmlSafe } from '@ember/template';
 
 const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
 
@@ -33,6 +34,10 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
   mappingsToBeDeleted = [];
+
+  get previewHtml() {
+    return htmlSafe(this.preview);
+  }
 
   get label() {
     let result = '';
