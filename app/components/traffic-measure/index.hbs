@@ -85,10 +85,10 @@
                         <img
                           class="au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny"
                           src={{instruction.parentConcept.image}}
-                          alt="" {{!-- actually required by linting  ¯\_(ツ)_/¯ => seems correct to me for accessibility, an empty alt is better for accessibility than no alt attribute :-)  --}}
+                          alt=""
                           role="presentation"
                         />
-                        <span title='{{instruction.value}}'>{{truncate instruction.value}}</span>
+                        <span title={{instruction.value}}>{{truncate instruction.value}}</span>
                       </PowerSelect>
                     {{/if}}
                   </td>
@@ -106,7 +106,6 @@
     </div>
   </div>
 
-  {{!-- template-lint-disable no-inline-styles --}}
   <div class="au-o-grid__item au-u-1-2@medium">
     <div class="au-o-box au-c-body-container au-c-body-container--scroll au-c-theme-gray-100">
       <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
@@ -117,7 +116,6 @@
         <img src={{sign.image}} alt="" role="presentation" class="au-c-thumbnail">
       {{/each}}
       </div>
-      {{!-- template-lint-disable no-triple-curlies --}}
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
         {{t "trafficMeasureConcept.attr.template"}}
       </AuHeading>
