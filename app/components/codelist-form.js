@@ -11,7 +11,7 @@ export default class CodelistFormComponent extends Component {
   @service store;
 
   @tracked newValue = '';
-  @tracked toSave = A();
+  @tracked toDelete = A();
 
   CodelistValidations = CodelistValidations;
 
@@ -46,8 +46,7 @@ export default class CodelistFormComponent extends Component {
   @action
   removeOption(option) {
     this.options.removeObject(option);
-    this.toSave.pushObject(option);
-    option.deleteRecord();
+    this.toDelete.pushObject(option);
   }
 
   @dropTask
@@ -57,7 +56,7 @@ export default class CodelistFormComponent extends Component {
     yield codelist.validate();
 
     if (codelist.isValid) {
-      yield Promise.all(this.toSave.map((option) => option.save()));
+      yield Promise.all(this.toDelete.map((option) => option.destroyRecord()));
       yield codelist.save();
       yield codelist.codeListOptions.save();
       this.router.transitionTo('codelists-management.codelist', codelist.id);
@@ -74,8 +73,8 @@ export default class CodelistFormComponent extends Component {
       }
     }
 
-    for (let i = 0; i < this.toSave.length; i++) {
-      const option = this.toSave.objectAt(i);
+    for (let i = 0; i < this.toDelete.length; i++) {
+      const option = this.toDelete.objectAt(i);
       if (!option.isNew) {
         option.rollbackAttributes();
         this.options.pushObject(option);
