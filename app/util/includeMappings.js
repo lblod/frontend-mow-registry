@@ -9,8 +9,9 @@ function generateTextTemplate(uri, name) {
 function generateCodelistTemplate(uri, name, codelist) {
   return `
     <span resource="${uri}" typeof="ext:Mapping">
-      <span property="dct:type" resource="${codelist}" value="codelist"></span>
-      <span property="ext:variable">\${${name}}</span>
+      <span property="dct:type" content="codelist"></span>
+      <span property="ext:codelist" content="${codelist}"></span>
+      <span property="ext:content">\${${name}}</span>
     </span>
   `;
 }
@@ -18,8 +19,8 @@ function generateCodelistTemplate(uri, name, codelist) {
 function generateLocationTemplate(uri, name) {
   return `
     <span resource="${uri}" typeof="ext:Mapping">
-      <span property="dct:type" value="location"></span>
-      <span property="ext:variable">\${${name}}</span>
+      <span property="dct:type" content="location"></span>
+      <span property="ext:content">\${${name}}</span>
     </span>
   `;
 }
