@@ -4,8 +4,6 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import CodelistValidations from 'mow-registry/validations/codelist';
 import { tracked } from '@glimmer/tracking';
-import { A } from '@ember/array';
-
 export default class CodelistFormComponent extends Component {
   @service router;
   @service store;
@@ -18,7 +16,7 @@ export default class CodelistFormComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.options=this.args.codelist.codeListOptions;
+    this.options = this.args.codelist.codeListOptions;
   }
 
   get isSaving() {
@@ -59,7 +57,7 @@ export default class CodelistFormComponent extends Component {
     if (codelist.isValid) {
       yield Promise.all(this.toDelete.map((option) => option.destroyRecord()));
       yield codelist.save();
-      yield Promise.all(this.options.map(option=>option.save()));
+      yield Promise.all(this.options.map((option) => option.save()));
       this.router.transitionTo('codelists-management.codelist', codelist.id);
     }
   }
@@ -68,8 +66,7 @@ export default class CodelistFormComponent extends Component {
   cancelEditingTask() {
     if (this.args.codelist.isNew) {
       this.router.transitionTo('codelists-management');
-    }
-    else{
+    } else {
       for (let i = 0; i < this.options.length; i++) {
         const option = this.options.objectAt(i);
         if (option.isNew) {
