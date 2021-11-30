@@ -4,13 +4,14 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import CodelistValidations from 'mow-registry/validations/codelist';
 import { tracked } from '@glimmer/tracking';
+
 export default class CodelistFormComponent extends Component {
   @service router;
   @service store;
 
   @tracked newValue = '';
   @tracked toDelete = [];
-  @tracked options = [];
+  @tracked options;
 
   CodelistValidations = CodelistValidations;
 
