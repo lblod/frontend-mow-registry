@@ -166,7 +166,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   get isAddingInstructions() {
     return (
       this.router.currentRouteName ===
-      'road-light-concepts.road-light-concept.instruction'
+      'road-sign-concepts.road-sign-concept.instruction'
     );
   }
 

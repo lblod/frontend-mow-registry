@@ -18,6 +18,8 @@ export default class AddInstructionComponent extends Component {
   @tracked new;
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
+  mappingsToBeDeleted = [];
+
   constructor(...args) {
     super(...args);
     this.fetchData.perform();
@@ -32,6 +34,7 @@ export default class AddInstructionComponent extends Component {
       this.new = false;
       this.template = yield this.args.editedTemplate;
       this.mappings = yield this.template.mappings;
+      this.mappings.sortBy('id');
     } else {
       this.new = true;
       this.template = this.store.createRecord('template');
@@ -95,7 +98,18 @@ export default class AddInstructionComponent extends Component {
 
     //remove non-existing variable mappings from current array
     this.mappings = this.mappings.filter((mapping) => {
-      return filteredRegexResult.find((fReg) => fReg[1] === mapping.variable);
+      //search regex results if they contain this mapping
+      if (
+        filteredRegexResult.find((fReg) => {
+          if (fReg[1] === mapping.variable) {
+            return true;
+          }
+        })
+      ) {
+        return true;
+      } else {
+        this.mappingsToBeDeleted.push(mapping);
+      }
     });
 
     //add new variable mappings
@@ -120,9 +134,22 @@ export default class AddInstructionComponent extends Component {
         )
       ) {
         filteredMappings.push(mapping);
+      } else {
+        this.mappingsToBeDeleted.push(mapping);
       }
     });
-    this.mappings = filteredMappings;
+
+    //sort mappings in the same order as the regex result
+    const sortedMappings = [];
+    filteredRegexResult.forEach((reg) => {
+      filteredMappings.forEach((mapping) => {
+        if (reg[1] == mapping.variable) {
+          sortedMappings.push(mapping);
+        }
+      });
+    });
+
+    this.mappings = sortedMappings;
   }
 
   @task
@@ -135,8 +162,13 @@ export default class AddInstructionComponent extends Component {
       const mapping = this.mappings[i];
       this.template.mappings.pushObject(mapping);
       yield mapping.save();
-      yield this.template.save();
     }
+    yield this.template.save();
+
+    yield Promise.all(
+      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
+    );
+
     this.reset();
   }
 }

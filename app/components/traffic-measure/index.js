@@ -3,6 +3,9 @@ import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { htmlSafe } from '@ember/template';
+
+const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
 
 export default class TrafficMeasureIndexComponent extends Component {
   constructor(...args) {
@@ -15,6 +18,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @service store;
   @service router;
+  @service('codelists') codeListService;
 
   @tracked codeLists;
   @tracked new;
@@ -25,9 +29,15 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked searchString;
   @tracked signError;
   @tracked preview;
-  @tracked model;
   @tracked selectedType;
+  @tracked instructions = [];
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
+
+  mappingsToBeDeleted = [];
+
+  get previewHtml() {
+    return htmlSafe(this.preview);
+  }
 
   get label() {
     let result = '';
@@ -41,7 +51,9 @@ export default class TrafficMeasureIndexComponent extends Component {
         result = `${result}${e.get('trafficLightConceptCode')}-`;
     });
 
+    //get rid of the last dash
     result = result.slice(0, -1);
+
     return `${result} Traffic Measure`;
   }
 
@@ -53,18 +65,51 @@ export default class TrafficMeasureIndexComponent extends Component {
   *fetchData() {
     // Wait for data loading
     yield this.trafficMeasureConcept.relations;
-    this.codeLists = yield this.store.findAll('code-list');
+    this.codeLists = yield this.codeListService.all.perform();
+
     // We assume that a measure has only one template
     const templates = yield this.trafficMeasureConcept.templates;
     this.template = yield templates.firstObject;
-    this.mappings = yield this.template.get('mappings');
+    this.mappings = yield this.template.mappings;
+    this.mappings.sortBy('id');
 
     const relations = yield this.trafficMeasureConcept.orderedRelations;
+
     this.signs = yield Promise.all(
-      relations.map((relation) => relation.get('concept'))
+      relations.map((relation) => relation.concept)
     );
 
+    yield this.fetchInstructions.perform();
+
     this.parseTemplate();
+  }
+
+  @task
+  *fetchInstructions() {
+    //refresh instruction list from available signs
+    this.instructions = [];
+    this.inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
+    for (let i = 0; i < this.signs.length; i++) {
+      const sign = this.signs[i];
+      const instructions = yield sign.templates;
+      for (let j = 0; j < instructions.length; j++) {
+        const instruction = instructions.objectAt(j);
+        this.instructions.pushObject(instruction);
+      }
+    }
+    //remove input type instruction if there are none available and reset mappings with instructions
+    if (this.instructions.length != 0) {
+      this.inputTypes.pushObject('instruction');
+    } else if (this.instructions.length == 0) {
+      if (this.inputTypes.indexOf('instruction') != -1) {
+        this.inputTypes.splice(this.inputTypes.indexOf('instruction'), 1);
+      }
+      this.mappings.forEach((e) => {
+        if (e.type == 'instruction') {
+          this.updateMappingType(e, 'text');
+        }
+      });
+    }
   }
 
   @action
@@ -74,19 +119,58 @@ export default class TrafficMeasureIndexComponent extends Component {
   }
 
   @action
+  updateInstruction(mapping, instruction) {
+    mapping.instruction = instruction;
+    this.generatePreview.perform();
+  }
+
+  @action
   addSign(sign) {
     this.signs.pushObject(sign);
+    this.fetchInstructions.perform();
     this.selectedType = null;
   }
 
   @action
   removeSign(sign) {
     this.signs.removeObject(sign);
+    this.fetchInstructions.perform();
   }
 
   @action
   updateTemplate(event) {
     this.template.value = event.target.value;
+  }
+
+  @action
+  updateTypeFilter(selectedType) {
+    if (selectedType) {
+      this.selectedType = selectedType;
+    } else {
+      this.selectedType = null;
+    }
+  }
+
+  @action
+  addInstructionToTemplate(instruction) {
+    this.template.value += `${instruction.value} `;
+    this.parseTemplate();
+  }
+
+  @action
+  updateMappingType(mapping, selectedType) {
+    mapping.type = selectedType;
+    if (mapping.type === 'codelist') {
+      mapping.codeList = this.codeLists.firstObject;
+      mapping.instruction = null;
+    } else if (mapping.type === 'instruction') {
+      mapping.instruction = this.instructions.firstObject;
+      mapping.codeList = null;
+    } else {
+      mapping.instruction = null;
+      mapping.codeList = null;
+    }
+    this.generatePreview.perform();
   }
 
   //parsing algo that keeps ui changes in tact
@@ -106,7 +190,18 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     //remove non-existing variable mappings from current array
     this.mappings = this.mappings.filter((mapping) => {
-      return filteredRegexResult.find((fReg) => fReg[1] === mapping.variable);
+      //search regex results if they contain this mapping
+      if (
+        filteredRegexResult.find((fReg) => {
+          if (fReg[1] === mapping.variable) {
+            return true;
+          }
+        })
+      ) {
+        return true;
+      } else {
+        this.mappingsToBeDeleted.push(mapping);
+      }
     });
 
     //add new variable mappings
@@ -131,9 +226,22 @@ export default class TrafficMeasureIndexComponent extends Component {
         )
       ) {
         filteredMappings.push(mapping);
+      } else {
+        this.mappingsToBeDeleted.push(mapping);
       }
     });
-    this.mappings = filteredMappings;
+
+    //sort mappings in the same order as the regex result
+    const sortedMappings = [];
+    filteredRegexResult.forEach((reg) => {
+      filteredMappings.forEach((mapping) => {
+        if (reg[1] == mapping.variable) {
+          sortedMappings.push(mapping);
+        }
+      });
+    });
+
+    this.mappings = sortedMappings;
 
     this.generatePreview.perform();
   }
@@ -142,34 +250,20 @@ export default class TrafficMeasureIndexComponent extends Component {
   *generatePreview() {
     this.preview = this.template.value;
 
-    for (let i = 0; i < this.mappings.length; i++) {
-      const e = this.mappings[i];
+    for (const mapping of this.mappings) {
       let replaceString;
-      if (e.type === 'text') {
-        replaceString = "<input type='text'></input>";
-      } else if (e.type === 'number') {
-        replaceString = "<input type='number'></input>";
-      } else if (e.type === 'date') {
-        replaceString = "<input type='date'></input>";
-      } else if (e.type === 'location') {
-        replaceString = "<input type='text'></input>";
-      } else if (e.type === 'codelist') {
-        const codeList = yield e.codeList;
-        const codeListOptions = yield codeList.codeListOptions;
-
-        replaceString = '<select>';
-        codeListOptions.forEach((option) => {
-          replaceString += `<option value="${option.label}">${option.label}</option>`;
-        });
-        replaceString += '</select>';
+      if (mapping.type === 'instruction') {
+        const instruction = yield mapping.instruction;
+        replaceString =
+          "<span style='background-color: #ffffff'>" +
+          instruction.value +
+          '</span>';
+        this.preview = this.preview.replaceAll(
+          '${' + mapping.variable + '}',
+          replaceString
+        );
       }
-      this.preview = this.preview.replaceAll(
-        '${' + e.variable + '}',
-        replaceString
-      );
     }
-
-    this.generateModel();
   }
 
   @task
@@ -177,8 +271,9 @@ export default class TrafficMeasureIndexComponent extends Component {
     const nodeShape = yield this.store.query('node-shape', {
       'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
     });
-    yield (yield nodeShape.firstObject).destroyRecord();
-
+    if (yield nodeShape.firstObject) {
+      yield (yield nodeShape.firstObject).destroyRecord();
+    }
     // We assume a measure only has one template
     yield (yield (yield this.trafficMeasureConcept.get('templates')
       .firstObject).get('mappings')).forEach((mapping) =>
@@ -201,6 +296,15 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     //if new save relationships
     if (this.new) {
+      yield this.trafficMeasureConcept.save();
+      const trafficMeasureResource = yield this.store.findRecord(
+        'resource',
+        TRAFFIC_MEASURE_RESOURCE_UUID
+      );
+      const nodeShape = this.store.createRecord('node-shape');
+      nodeShape.targetClass = trafficMeasureResource;
+      nodeShape.targetHasConcept = this.trafficMeasureConcept;
+      yield nodeShape.save();
       yield template.save();
       yield this.trafficMeasureConcept.save();
     }
@@ -229,7 +333,8 @@ export default class TrafficMeasureIndexComponent extends Component {
   @task
   *saveRoadsigns(trafficMeasureConcept) {
     // delete existing ones
-    for (let i = 0; i < trafficMeasureConcept.relations.length; i++) {
+    let length = trafficMeasureConcept.relations.length;
+    for (let i = 0; i < length; i++) {
       const relation = trafficMeasureConcept.relations.objectAt(0);
       yield relation.destroyRecord();
     }
@@ -247,131 +352,17 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @task
   *saveMappings(template) {
-    const mappings = yield template.mappings;
-    //delete existing ones
-    for (let i = 0; i < mappings.length; i++) {
-      const mapping = mappings.objectAt(0);
-      yield mapping.destroyRecord();
-    }
+    //destroy old ones
+    yield Promise.all(
+      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
+    );
+
     //create new ones
-    for (let i = 0; i < this.mappings.length; i++) {
-      const mapping = this.mappings[i];
-      const newMapping = yield this.store.createRecord('mapping');
-      newMapping.variable = mapping.variable;
-      newMapping.type = mapping.type;
-      newMapping.codeList = mapping.codeList;
-      template.mappings.pushObject(newMapping);
-      yield newMapping.save();
+    for (const mapping of this.mappings) {
+      template.mappings.pushObject(mapping);
+      yield mapping.save();
     }
+
     yield template.save();
-  }
-
-  @action
-  generateModel() {
-    const templateUUid = this.trafficMeasureConcept.id;
-    this.model =
-      `
-    PREFIX ex: <http://example.org#>
-    PREFIX sh: <http://www.w3.org/ns/shacl#>
-    PREFIX oslo: <http://data.vlaanderen.be/ns#>
-
-    INSERT {
-    GRAPH <http://mu.semte.ch/application>{
-    
-    ex:` +
-      templateUUid +
-      ` a ex:TrafficMeasureTemplate ;
-      ex:value "` +
-      this.template.value +
-      `";
-      ex:mapping
-    `;
-
-    let varString = '';
-    this.mappings.forEach((mapping) => {
-      varString +=
-        `
-        [
-          ex:variable "` +
-        mapping.variable +
-        `" ;
-          ex:expects [
-            a sh:PropertyShape ;
-              sh:targetClass ex:` +
-        mapping.type +
-        ` ;
-              sh:maxCount 1 ;
-          ]
-        ],`;
-    });
-    varString = varString.slice(0, -1) + '.';
-
-    let signString = '';
-    let signIdentifier = '';
-
-    this.signs.forEach((sign) => {
-      signIdentifier += sign.get('roadSignConceptCode') + '-';
-      signString +=
-        `
-        [
-          a ex:MustUseRelation ;
-          ex:signConcept <http://data.vlaanderen.be/id/concept/Verkeersbordconcept/` +
-        sign.get('id') +
-        `> 
-        ],`;
-    });
-
-    signString = signString.slice(0, -1);
-    signIdentifier = signIdentifier.slice(0, -1);
-
-    this.model +=
-      varString +
-      `
-
-      ex:Shape#TrafficMeasure a sh:NodeShape;
-        sh:targetClass oslo:Verkeersmaatregel;
-        ex:targetHasConcept ex:` +
-      signIdentifier +
-      `MeasureConcept .
-        
-      ex:` +
-      signIdentifier +
-      `MeasureConcept a ex:Concept ;
-        ex:label "` +
-      signIdentifier +
-      ` traffic measure";
-        ex:template ex:` +
-      templateUUid +
-      ` ;
-        ex:relation `;
-    this.model +=
-      signString +
-      `.
-    }}
-    `;
-  }
-
-  @action
-  updateTypeFilter(selectedType) {
-    if (selectedType) {
-      this.selectedType = selectedType;
-    } else {
-      this.selectedType = null;
-    }
-  }
-
-  @action
-  addInstructionToTemplate(instruction) {
-    this.template.value += `${instruction.value} `;
-    this.parseTemplate();
-  }
-
-  @action
-  updateMappingType(mapping, selectedType) {
-    mapping.type = selectedType;
-    if (mapping.type != 'codelist') {
-      mapping.codeList = null;
-    }
-    this.generatePreview.perform();
   }
 }
