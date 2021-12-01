@@ -8,20 +8,6 @@
   width: 100%;
 }
 
-.no-flex-shrink {
-  flex-shrink: 0;
-}
-
-.flex-content-between {
-  display:flex;
-  align-items: center;
-  justify-content: space-between
-}
-
-td {
-  vertical-align: top;
-}
-
 .au-c-close {
   position: absolute;
   appearance: none;
@@ -60,35 +46,6 @@ td {
   min-width: 24rem;
 }
 
-// Utilities based on Tailwind <3
-.flex {
-  display: flex !important;
-}
-
-.flex-grow {
-  flex-grow: 1 !important;
-}
-
-.flex-shrink-0 {
-  flex-shrink: 0 !important;
-}
-
-.self-center {
-  align-self: center !important;
-}
-
-.au-c-action-sidebar__item {
-  border-bottom: 1px solid $au-sidebar-border;
-}
-
-.max-w-prose {
-  max-width: 65ch !important;
-}
-
-.w-px {
-  width: 1px !important;
-}
-
 // Sign container
 .au-c-sign-container {
   position: relative;
@@ -108,7 +65,6 @@ td {
   top: 0;
 }
 
-
 // Quick fix for multiple tables inside a container
 .au-c-body-container--tables {
   .au-c-data-table {
@@ -120,22 +76,6 @@ td {
 .signs-container {
   display: flex;
   flex-direction: row;
-}
-
-/* fix the table for the sparql querier */
-
-table.dataTable tbody td,
-table.dataTable tbody th {
-	min-width: 2rem;
-}
-
-.yasgui .controlbar {
-	justify-content: flex-end;
-	margin-bottom: 1rem;
-}
-
-.yasgui .autocompleteWrapper {
-  display: none !important;
 }
 
 // Smaller font size for the breadcrumbs toolbar
@@ -213,4 +153,111 @@ table.dataTable tbody th {
 
 .au-o-flex--center {
   align-items: center;
+}
+
+.au-u-flex-center {
+  display: flex;
+  align-items: center;
+}
+
+// Helptext list
+.au-c-list-help {
+  margin-top: $au-unit-tiny;
+  padding: $au-unit-tiny;
+  background-color: $au-gray-200;
+  border-radius: $au-radius;
+  border: .1rem solid $au-gray-300;
+}
+
+.au-c-list-help__item {
+  position: relative;
+  padding-left: $au-unit-small;
+
+  &:before {
+    content: "-";
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
+// Override small data table when used in cards
+.au-c-data-table__table--small {
+  .au-c-card & th:first-child,
+  .au-c-card & td:first-child {
+    padding-left: $au-unit-tiny;
+  }
+
+  .au-c-card & tr:last-child {
+    border-bottom: 0;
+  }
+}
+
+.au-c-card .au-c-data-table__wrapper {
+  border-top: 0;
+}
+
+.au-c-table-wrapper .au-c-table tr:last-child {
+  border-bottom: 0;
+}
+
+
+// No prefix
+.no-flex-shrink {
+  flex-shrink: 0;
+}
+
+.flex-content-between {
+  display:flex;
+  align-items: center;
+  justify-content: space-between
+}
+
+td {
+  vertical-align: top;
+}
+
+/* fix the table for the sparql querier */
+
+table.dataTable tbody td,
+table.dataTable tbody th {
+	min-width: 2rem;
+}
+
+.yasgui .controlbar {
+	justify-content: flex-end;
+	margin-bottom: 1rem;
+}
+
+.yasgui .autocompleteWrapper {
+  display: none !important;
+}
+
+// Utilities based on Tailwind <3
+.flex {
+  display: flex !important;
+}
+
+.flex-grow {
+  flex-grow: 1 !important;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0 !important;
+}
+
+.self-center {
+  align-self: center !important;
+}
+
+.au-c-action-sidebar__item {
+  border-bottom: 1px solid $au-sidebar-border;
+}
+
+.max-w-prose {
+  max-width: 65ch !important;
+}
+
+.w-px {
+  width: 1px !important;
 }

@@ -1,3 +1,38 @@
+## 0.7.0 (2021-12-01)
+
+#### :rocket: Enhancement
+* [#103](https://github.com/lblod/frontend-mow-registry/pull/103) feature: improved support for measures and linking instructions to measures ([@Asergey91](https://github.com/Asergey91))
+
+#### :bug: Bug Fix
+* [#109](https://github.com/lblod/frontend-mow-registry/pull/109) Bugfix/codelists ([@Asergey91](https://github.com/Asergey91))
+
+#### :house: Internal
+* [#110](https://github.com/lblod/frontend-mow-registry/pull/110) Review traffic measure design ([@Dietr](https://github.com/Dietr))
+
+#### Committers: 2
+- Dieter Peirs ([@Dietr](https://github.com/Dietr))
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
+## 0.6.0 (2021-11-28)
+
+#### :rocket: Enhancement
+* [#107](https://github.com/lblod/frontend-mow-registry/pull/107) Cleanup design for codelist form and detail page ([@Dietr](https://github.com/Dietr))
+* [#104](https://github.com/lblod/frontend-mow-registry/pull/104) Add codelist management module ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#99](https://github.com/lblod/frontend-mow-registry/pull/99) Feature/codelist UI ([@Asergey91](https://github.com/Asergey91))
+
+#### :bug: Bug Fix
+* [#106](https://github.com/lblod/frontend-mow-registry/pull/106) Fix measure relations not deleted properly ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#105](https://github.com/lblod/frontend-mow-registry/pull/105) Code not displaying after refreshing ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#101](https://github.com/lblod/frontend-mow-registry/pull/101) Bugfix/quality of life ([@Asergey91](https://github.com/Asergey91))
+* [#100](https://github.com/lblod/frontend-mow-registry/pull/100) Chore/improve road markings ([@nvdk](https://github.com/nvdk))
+
+#### Committers: 4
+- Dieter Peirs ([@Dietr](https://github.com/Dietr))
+- Niels V ([@nvdk](https://github.com/nvdk))
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+- [@claire-lovisa](https://github.com/claire-lovisa)
+
+
 ## 0.5.1 (2021-11-15)
 
 #### :bug: Bug Fix

@@ -119,6 +119,7 @@ relatedRoadMarking:
     code: Zoek
 trafficMeasureConcept:
   name: Mobiliteitsmaatregel
+  help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
     trafficSign: Verkeersteken
     code: Code
@@ -172,3 +173,23 @@ login:
   login: Voer uw gebruikersnaam en wachtwoord in om in te loggen
 sparql:
     name: 'MOW Register: SPARQL'
+codelist:
+  name: Codelijsten beheer
+  details: Codelijst details
+  crud:
+    new: Nieuwe codelijst
+    edit: Codelijst bewerken
+    delete: Codelijst verwijderen
+    noData: Geen codelijst
+    noValue: Geen waarde
+    labelFilter: Label
+    addValue: Waarde toevoegen
+    deleteValue: Waarde verwijderen
+  attr:
+    label: Label
+    values: Waarden
+    id: Id
+  landingPage:
+    subtitle: Subtitle for card
+    content: Information in the card that comes below the header. Content.
+    button: Go to codelists management

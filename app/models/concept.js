@@ -3,7 +3,7 @@ import ResourceModel from './resource';
 
 export default class ConceptModel extends ResourceModel {
   @attr() valid;
-  @hasMany('template') templates;
+  @hasMany('template', { inverse: 'parentConcept' }) templates;
   @hasMany('relation', { polyMorphic: true }, { inverse: null }) relations;
 
   get orderedRelations() {

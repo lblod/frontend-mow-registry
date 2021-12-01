@@ -1,0 +1,12 @@
+{{page-title (t "codelist.name")}}
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo @route="codelists-management.index" class={{linkClass}}>
+    {{t "codelist.name"}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<div class="au-c-body-container au-c-body-container--scroll">
+  <NavigationBar />
+  {{outlet}}
+</div>

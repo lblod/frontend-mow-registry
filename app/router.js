@@ -42,4 +42,9 @@ Router.map(function () {
     this.route('edit');
   });
   this.route('edit-instruction');
+  this.route('codelists-management', function () {
+    this.route('new');
+    this.route('edit', { path: '/edit/:id' });
+    this.route('codelist', { path: '/:id' });
+  });
 });

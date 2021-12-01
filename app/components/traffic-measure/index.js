@@ -3,9 +3,9 @@ import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { htmlSafe } from '@ember/template';
 
 import includeMappings from '../../util/includeMappings';
-
 const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
 
 export default class TrafficMeasureIndexComponent extends Component {
@@ -35,6 +35,10 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
   mappingsToBeDeleted = [];
+
+  get previewHtml() {
+    return htmlSafe(this.preview);
+  }
 
   get label() {
     let result = '';
@@ -91,12 +95,12 @@ export default class TrafficMeasureIndexComponent extends Component {
       const instructions = yield sign.templates;
       for (let j = 0; j < instructions.length; j++) {
         const instruction = instructions.objectAt(j);
-        this.instructions.push(instruction);
+        this.instructions.pushObject(instruction);
       }
     }
     //remove input type instruction if there are none available and reset mappings with instructions
     if (this.instructions.length != 0) {
-      this.inputTypes.push('instruction');
+      this.inputTypes.pushObject('instruction');
     } else if (this.instructions.length == 0) {
       if (this.inputTypes.indexOf('instruction') != -1) {
         this.inputTypes.splice(this.inputTypes.indexOf('instruction'), 1);
@@ -107,8 +111,6 @@ export default class TrafficMeasureIndexComponent extends Component {
         }
       });
     }
-    // eslint-disable-next-line
-    this.inputTypes = this.inputTypes;
   }
 
   @action
@@ -229,7 +231,18 @@ export default class TrafficMeasureIndexComponent extends Component {
         this.mappingsToBeDeleted.push(mapping);
       }
     });
-    this.mappings = filteredMappings;
+
+    //sort mappings in the same order as the regex result
+    const sortedMappings = [];
+    filteredRegexResult.forEach((reg) => {
+      filteredMappings.forEach((mapping) => {
+        if (reg[1] == mapping.variable) {
+          sortedMappings.push(mapping);
+        }
+      });
+    });
+
+    this.mappings = sortedMappings;
 
     this.generatePreview.perform();
   }
@@ -238,17 +251,16 @@ export default class TrafficMeasureIndexComponent extends Component {
   *generatePreview() {
     this.preview = this.template.value;
 
-    for (let i = 0; i < this.mappings.length; i++) {
-      const e = this.mappings.objectAt(i);
+    for (const mapping of this.mappings) {
       let replaceString;
-      if (e.type === 'instruction') {
-        const instruction = yield e.instruction;
+      if (mapping.type === 'instruction') {
+        const instruction = yield mapping.instruction;
         replaceString =
           "<span style='background-color: #ffffff'>" +
           instruction.value +
           '</span>';
         this.preview = this.preview.replaceAll(
-          '${' + e.variable + '}',
+          '${' + mapping.variable + '}',
           replaceString
         );
       }
@@ -260,8 +272,9 @@ export default class TrafficMeasureIndexComponent extends Component {
     const nodeShape = yield this.store.query('node-shape', {
       'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
     });
-    yield (yield nodeShape.firstObject).destroyRecord();
-
+    if (yield nodeShape.firstObject) {
+      yield (yield nodeShape.firstObject).destroyRecord();
+    }
     // We assume a measure only has one template
     yield (yield (yield this.trafficMeasureConcept.get('templates')
       .firstObject).get('mappings')).forEach((mapping) =>
@@ -284,18 +297,15 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     //if new save relationships
     if (this.new) {
+      yield this.trafficMeasureConcept.save();
       const trafficMeasureResource = yield this.store.findRecord(
         'resource',
         TRAFFIC_MEASURE_RESOURCE_UUID
       );
-
       const nodeShape = this.store.createRecord('node-shape');
-
       nodeShape.targetClass = trafficMeasureResource;
       nodeShape.targetHasConcept = this.trafficMeasureConcept;
-
       yield nodeShape.save();
-
       yield template.save();
       yield this.trafficMeasureConcept.save();
     }
@@ -347,16 +357,16 @@ export default class TrafficMeasureIndexComponent extends Component {
   @task
   *saveMappings(template) {
     //destroy old ones
-    for (let i = 0; i < this.mappingsToBeDeleted.length; i++) {
-      const mapping = this.mappingsToBeDeleted[i];
-      yield mapping.destroyRecord();
-    }
+    yield Promise.all(
+      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
+    );
+
     //create new ones
-    for (let i = 0; i < this.mappings.length; i++) {
-      const mapping = this.mappings[i];
+    for (const mapping of this.mappings) {
       template.mappings.pushObject(mapping);
       yield mapping.save();
     }
+
     yield template.save();
   }
 
