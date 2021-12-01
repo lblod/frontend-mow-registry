@@ -69,7 +69,7 @@
         <p>
           <form
             class="au-c-form"
-            id="edit-codelist-form"
+            id="add-concept-form"
             novalidate
             {{on "submit" this.addNewValue}}
           >
@@ -124,11 +124,10 @@
                     </p>
                   </td>
                   <td class="w-px au-u-padding-right-small">
-                    <button
-                      form="edit-codelist-form"
+                    <button class="au-c-button"
+                      form="add-concept-form"
                       type="submit"
                     >
-
                       {{t "codelist.crud.addValue"}}
                     </button>
                   </td>
@@ -144,12 +143,12 @@
   <AuToolbar @border="top" @size="large">
     <AuToolbarGroup>
       <AuButtonGroup>
-        <button
-          disabled={{or codelist.isInvalid this.isSaving}}
-          class="au-c-button {{if this.isSaving "is-loading"}}" type="button" {{on "click" (perform this.editCodelistTask codelist)}}
+        <AuButton
+          @disabled={{or codelist.isInvalid this.isSaving}}
+         {{on "click" (perform this.editCodelistTask codelist)}}
         >
           {{t "utility.save"}}
-        </button>
+        </AuButton>
         <AuButton
           @skin='secondary'
           {{on 'click' this.cancelEditingTask}}
