@@ -36,12 +36,6 @@
 
   <div class="au-c-body-container au-c-body-container--scroll">
     <div>
-      <form
-        class="au-c-form"
-        id="edit-codelist-form"
-        novalidate
-        {{on "submit" (perform this.editCodelistTask codelist)}}
-      >
         {{#let codelist.error.label as |isInvalid|}}
           <p class="au-o-box au-u-padding-bottom-none">
             <AuLabel @error={{isInvalid}} for="label">
@@ -73,6 +67,12 @@
           </p>
         {{/let}}
         <p>
+          <form
+            class="au-c-form"
+            id="add-concept-form"
+            novalidate
+            {{on "submit" this.addNewValue}}
+          >
           <AuDataTable
             @content={{this.options}}
             @noDataMessage={{t "codelist.crud.noValue"}}
@@ -124,51 +124,37 @@
                     </p>
                   </td>
                   <td class="w-px au-u-padding-right-small">
-                    <AuButton
-                      @icon="add"
-                      @skin="secondary"
-                      @hideText={{true}}
-                      {{on "click" this.addNewValue}}
+                    <button class="au-c-button"
+                      form="add-concept-form"
+                      type="submit"
                     >
                       {{t "codelist.crud.addValue"}}
-                    </AuButton>
+                    </button>
                   </td>
                 </tr>
               </tfoot>
             </s.content>
           </AuDataTable>
+          </form>
         </p>
-      </form>
     </div>
   </div>
 
   <AuToolbar @border="top" @size="large">
     <AuToolbarGroup>
       <AuButtonGroup>
-        <button
-          disabled={{or codelist.isInvalid this.isSaving}}
-          class="au-c-button {{if this.isSaving "is-loading"}}"
-          form="edit-codelist-form"
-          type="submit"
+        <AuButton
+          @disabled={{or codelist.isInvalid this.isSaving}}
+         {{on "click" (perform this.editCodelistTask codelist)}}
         >
           {{t "utility.save"}}
-        </button>
-        {{#if @codelist.isNew}}
-          <LinkTo
-            @route="codelists-management"
-            class="au-c-button au-c-button--secondary"
-          >
-            {{t "utility.cancel"}}
-          </LinkTo>
-        {{else}}
-          <LinkTo
-            @route="codelists-management.codelist"
-            @model={{codelist.id}}
-            class="au-c-button au-c-button--secondary"
-          >
-            {{t "utility.cancel"}}
-          </LinkTo>
-        {{/if}}
+        </AuButton>
+        <AuButton
+          @skin='secondary'
+          {{on 'click' this.cancelEditingTask}}
+        >
+          {{t "utility.cancel"}}
+        </AuButton>
       </AuButtonGroup>
     </AuToolbarGroup>
   </AuToolbar>
