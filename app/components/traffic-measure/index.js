@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
+import includeMappings from '../../utils/include-mappings';
 
 const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
 
@@ -321,7 +322,10 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     //4-handle variable mappings
     yield this.saveMappings.perform(template);
-
+    
+    //5-annotate rdfa
+    yield this.annotateRdfa.perform();
+    
     if (this.new) {
       this.router.transitionTo(
         'traffic-measure-concepts.edit',
@@ -364,5 +368,19 @@ export default class TrafficMeasureIndexComponent extends Component {
     }
 
     yield template.save();
+  }
+
+  @task
+  *annotateRdfa() {
+    const contentWithMappings = yield includeMappings(
+      this.template.value,
+      this.mappings
+    );
+    this.template.annotated = `
+      <div property="dct:description">
+        ${contentWithMappings}
+      </div>
+    `;
+    yield this.template.save();
   }
 }
