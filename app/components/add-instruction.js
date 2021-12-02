@@ -164,7 +164,7 @@ export default class AddInstructionComponent extends Component {
       this.template.mappings.pushObject(mapping);
       yield mapping.save();
     }
-    
+
     this.template.annotated = yield includeMappings(
       this.template.value,
       this.mappings

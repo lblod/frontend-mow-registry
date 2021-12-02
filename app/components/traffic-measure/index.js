@@ -322,10 +322,10 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     //4-handle variable mappings
     yield this.saveMappings.perform(template);
-    
+
     //5-annotate rdfa
     yield this.annotateRdfa.perform();
-    
+
     if (this.new) {
       this.router.transitionTo(
         'traffic-measure-concepts.edit',
