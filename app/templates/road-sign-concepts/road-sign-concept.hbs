@@ -13,7 +13,7 @@
 <div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
   <div
     class="au-o-grid__item {{
-    if
+      if
       this.showSidebar
       "au-u-3-5@medium au-u-visible-from@medium"
       "au-u-1-1@medium"
@@ -66,7 +66,7 @@
             </li>
             {{#unless this.showSidebar}}
               <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-                <ContentCheck @concept={{@model.roadSignConcept}}/>
+                <ContentCheck @concept={{@model.roadSignConcept}} />
               </li>
             {{/unless}}
           </ul>
@@ -88,7 +88,6 @@
           >
             {{t "roadSignConcept.crud.delete"}}
           </AuButton>
-
 
           <AuModal
             @modalTitle={{t "utility.confirmation.title"}}
@@ -112,10 +111,7 @@
               </AuButton>
               <AuButton
                 @skin="secondary"
-                {{on
-                  "click"
-                  (fn (mut this.isOpen) false)
-                }}
+                {{on "click" (fn (mut this.isOpen) false)}}
               >
                 {{t "utility.cancel"}}
               </AuButton>
@@ -123,7 +119,9 @@
           </AuModal>
         </AuToolbarGroup>
       </AuToolbar>
-      <div class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables">
+      <div
+        class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables"
+      >
         <InstructionsTable
           @templates={{@model.roadSignConcept.templates}}
           @removeTemplate={{this.removeTemplate}}
@@ -135,8 +133,7 @@
           <AuDataTable
             @content={{sort-by-road-sign-code @model.roadSignConcept.mainSigns}}
             @fields="Image Meaning Code Categories"
-            @noDataMessage={{t "roadSignConcept.crud.noData"}}
-            as |s|
+            @noDataMessage={{t "roadSignConcept.crud.noData"}} as |s|
           >
             <s.menu as |menu|>
               <menu.general>
@@ -214,8 +211,7 @@
           <AuDataTable
             @content={{sort-by-road-sign-code @model.roadSignConcept.subSigns}}
             @fields="Image Meaning Code"
-            @noDataMessage={{t "roadSignConcept.crud.noData"}}
-            as |s|
+            @noDataMessage={{t "roadSignConcept.crud.noData"}} as |s|
           >
             <s.menu as |menu|>
               <menu.general>
@@ -284,12 +280,11 @@
         {{/if}}
         <AuDataTable
           @content={{
-        sort-by-road-sign-code
-          @model.roadSignConcept.relatedRoadSignConcepts
-        }}
+            sort-by-road-sign-code
+            @model.roadSignConcept.relatedRoadSignConcepts
+          }}
           @fields="Image Meaning Code Categories"
-          @noDataMessage={{t "roadSignConcept.crud.noData"}}
-          as |s|
+          @noDataMessage={{t "roadSignConcept.crud.noData"}} as |s|
         >
           <s.menu as |menu|>
             <menu.general>
@@ -705,10 +700,6 @@
       </div>
     </div>
   {{/if}}
-<<<<<<< HEAD
-  {{outlet}}
-</div>
-=======
   {{#if this.isAddingRelatedRoadMarkings}}
     <div class="au-o-grid__item au-u-2-5@medium">
       <div
@@ -923,5 +914,5 @@
       </div>
     </div>
   {{/if}}
+  {{outlet}}
 </div>
->>>>>>> 58b9e6ade81f0a8bfdbf9562a9a810fb6548662e

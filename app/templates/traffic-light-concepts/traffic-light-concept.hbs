@@ -13,7 +13,7 @@
 <div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
   <div
     class="au-o-grid__item {{
-    if
+      if
       this.showSidebar
       "au-u-3-5@medium au-u-visible-from@medium"
       "au-u-1-1@medium"
@@ -64,7 +64,7 @@
             </li>
             {{#unless this.showSidebar}}
               <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-                <ContentCheck @concept={{@model.trafficLightConcept}}/>
+                <ContentCheck @concept={{@model.trafficLightConcept}} />
               </li>
             {{/unless}}
           </ul>
@@ -101,19 +101,14 @@
                 @alert={{true}}
                 {{on
                   "click"
-                  (fn
-                    this.removeTrafficLightConcept @model.trafficLightConcept
-                  )
+                  (fn this.removeTrafficLightConcept @model.trafficLightConcept)
                 }}
               >
                 {{t "trafficLightConcept.crud.delete"}}
               </AuButton>
               <AuButton
                 @skin="secondary"
-                {{on
-                  "click"
-                  (fn (mut this.isOpen) false)
-                }}
+                {{on "click" (fn (mut this.isOpen) false)}}
               >
                 {{t "utility.cancel"}}
               </AuButton>
@@ -133,11 +128,6 @@
         />
         <AuDataTable
           @content={{
-<<<<<<< HEAD
-        sort-by-traffic-light-code
-          @model.trafficLightConcept.relatedTrafficLightConcepts
-        }}
-=======
             sort-by-road-sign-code
             @model.trafficLightConcept.relatedRoadSignConcepts
           }}
@@ -309,10 +299,8 @@
             sort-by-traffic-light-code
             @model.trafficLightConcept.relatedTrafficLightConcepts
           }}
->>>>>>> 58b9e6ade81f0a8bfdbf9562a9a810fb6548662e
           @fields="Image Meaning Code"
-          @noDataMessage={{t "trafficLightConcept.crud.noData"}}
-          as |s|
+          @noDataMessage={{t "trafficLightConcept.crud.noData"}} as |s|
         >
           <s.menu as |menu|>
             <menu.general>
@@ -588,8 +576,8 @@
                 @code={{relatedTrafficLightByCategory.TrafficLightConceptCode}}
                 @meaning={{relatedTrafficLightByCategory.meaning}}
                 @onAdd={{
-              fn this.addRelatedTrafficLight relatedTrafficLightByCategory
-              }}
+                  fn this.addRelatedTrafficLight relatedTrafficLightByCategory
+                }}
                 @addText={{t "relatedTrafficLight.crud.addOne"}}
                 class="au-c-action-sidebar__item"
               />
