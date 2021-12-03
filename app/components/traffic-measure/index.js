@@ -324,7 +324,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     yield this.saveMappings.perform(template);
 
     //5-annotate rdfa
-    yield this.annotateRdfa.perform();
+    yield this.annotateRdfa.perform(template);
 
     if (this.new) {
       this.router.transitionTo(
@@ -371,16 +371,16 @@ export default class TrafficMeasureIndexComponent extends Component {
   }
 
   @task
-  *annotateRdfa() {
+  *annotateRdfa(template) {
     const contentWithMappings = yield includeMappings(
-      this.template.value,
+      template.value,
       this.mappings
     );
-    this.template.annotated = `
+    template.annotated = `
       <div property="dct:description">
         ${contentWithMappings}
       </div>
     `;
-    yield this.template.save();
+    yield template.save();
   }
 }
