@@ -10,4 +10,8 @@ export default class RoadSignConceptModel extends ConceptModel {
   @hasMany('road-sign-concept', { inverse: null }) relatedRoadSignConcepts;
   @hasMany('road-sign-concept', { inverse: 'mainSigns' }) subSigns;
   @hasMany('road-sign-concept', { inverse: 'subSigns' }) mainSigns;
+  @hasMany('road-marking-concept')
+  relatedRoadMarkingConcepts;
+  @hasMany('traffic-light-concept')
+  relatedTrafficLightConcepts;
 }

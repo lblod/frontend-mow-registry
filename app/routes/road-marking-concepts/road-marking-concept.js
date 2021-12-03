@@ -16,6 +16,11 @@ export default class RoadmarkingConcept extends Route {
           size: 10000,
         },
       }),
+      allTrafficLights: this.store.query('traffic-light-concept', {
+        page: {
+          size: 10000,
+        },
+      }),
       roadSignCategories: this.store
         .findAll('road-sign-category')
         .then((category) => {

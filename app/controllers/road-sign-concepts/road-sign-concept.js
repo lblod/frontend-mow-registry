@@ -9,6 +9,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked isAddingSubSigns = false;
   @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedRoadSigns = false;
+  @tracked isAddingRelatedRoadMarkings = false;
+  @tracked isAddingRelatedTrafficLights = false;
 
   @tracked category = null;
   @tracked categoryRoadSigns = null;
@@ -16,13 +18,17 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked subSignCodeFilter = '';
   @tracked newDescription = '';
   @tracked editedTemplate;
+  @tracked relatedRoadMarkingCodeFilter = '';
+  @tracked relatedTrafficLightCodeFilter = '';
 
   get showSidebar() {
     return (
       this.isAddingRelatedRoadSigns ||
       this.isAddingMainSigns ||
       this.isAddingSubSigns ||
-      this.hasActiveChildRoute
+      this.hasActiveChildRoute ||
+      this.isAddingRelatedRoadMarkings ||
+      this.isAddingRelatedTrafficLights
     );
   }
 
@@ -44,6 +50,30 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
         return category.label === 'Onderbord';
       }).length === 1
     );
+  }
+
+  get roadMarkings() {
+    if (!this.relatedRoadMarkingCodeFilter.trim()) {
+      return this.model.allRoadMarkings;
+    }
+
+    return this.model.allRoadMarkings.filter((roadMarking) => {
+      return roadMarking.definition
+        .toLowerCase()
+        .includes(this.relatedRoadMarkingCodeFilter.toLowerCase().trim());
+    });
+  }
+
+  get trafficLights() {
+    if (!this.relatedTrafficLightCodeFilter.trim()) {
+      return this.model.allTrafficLights;
+    }
+
+    return this.model.allTrafficLights.filter((trafficLight) => {
+      return trafficLight.definition
+        .toLowerCase()
+        .includes(this.relatedTrafficLightCodeFilter.toLowerCase().trim());
+    });
   }
 
   @action
@@ -70,6 +100,16 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @action
   setMainSignCodeFilter(event) {
     this.mainSignCodeFilter = event.target.value.trim();
+  }
+
+  @action
+  setRelatedRoadMarkingCodeFilter(event) {
+    this.relatedRoadMarkingCodeFilter = event.target.value.trim();
+  }
+
+  @action
+  setRelatedTrafficLightCodeFilter(event) {
+    this.relatedTrafficLightCodeFilter = event.target.value.trim();
   }
 
   @action
@@ -114,6 +154,44 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     if (this.categoryRoadSigns) {
       this.categoryRoadSigns.pushObject(relatedRoadSign);
     }
+
+    this.model.roadSignConcept.save();
+  }
+
+  @action
+  async addRelatedRoadMarking(relatedRoadMarking) {
+    let relatedRoadMarkings = await this.model.roadSignConcept
+      .relatedRoadMarkingConcepts;
+
+    relatedRoadMarkings.pushObject(relatedRoadMarking);
+    this.model.roadSignConcept.save();
+  }
+
+  @action
+  async removeRelatedRoadMarking(relatedRoadMarking) {
+    let relatedRoadMarkings = await this.model.roadSignConcept
+      .relatedRoadMarkingConcepts;
+
+    relatedRoadMarkings.removeObject(relatedRoadMarking);
+
+    this.model.roadSignConcept.save();
+  }
+
+  @action
+  async addRelatedTrafficLight(relatedTrafficLight) {
+    let relatedTrafficLights = await this.model.roadSignConcept
+      .relatedTrafficLightConcepts;
+
+    relatedTrafficLights.pushObject(relatedTrafficLight);
+    this.model.roadSignConcept.save();
+  }
+
+  @action
+  async removeRelatedTrafficLight(relatedTrafficLight) {
+    let relatedTrafficLights = await this.model.roadSignConcept
+      .relatedTrafficLightConcepts;
+
+    relatedTrafficLights.removeObject(relatedTrafficLight);
 
     this.model.roadSignConcept.save();
   }
