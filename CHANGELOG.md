@@ -1,3 +1,18 @@
+## 0.7.0 (2021-12-01)
+
+#### :rocket: Enhancement
+* [#103](https://github.com/lblod/frontend-mow-registry/pull/103) feature: improved support for measures and linking instructions to measures ([@Asergey91](https://github.com/Asergey91))
+
+#### :bug: Bug Fix
+* [#109](https://github.com/lblod/frontend-mow-registry/pull/109) Bugfix/codelists ([@Asergey91](https://github.com/Asergey91))
+
+#### :house: Internal
+* [#110](https://github.com/lblod/frontend-mow-registry/pull/110) Review traffic measure design ([@Dietr](https://github.com/Dietr))
+
+#### Committers: 2
+- Dieter Peirs ([@Dietr](https://github.com/Dietr))
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
 ## 0.6.0 (2021-11-28)
 
 #### :rocket: Enhancement
@@ -16,6 +31,7 @@
 - Niels V ([@nvdk](https://github.com/nvdk))
 - Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
 - [@claire-lovisa](https://github.com/claire-lovisa)
+
 
 ## 0.5.1 (2021-11-15)
 
