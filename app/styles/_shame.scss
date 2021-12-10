@@ -70,6 +70,8 @@
   .au-c-data-table {
     display: block;
     overflow: initial;
+    flex-grow: initial;
+    height: initial;
   }
 }
 
