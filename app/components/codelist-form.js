@@ -46,7 +46,6 @@ export default class CodelistFormComponent extends Component {
         label: type.label,
       });
     });
-    console.log(this.args.codelist);
     const codelistType = yield this.args.codelist.get('type');
     this.codelistTypes = codelistTypes;
     this.selectedType = this.codelistTypes.find(
