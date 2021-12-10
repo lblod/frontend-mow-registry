@@ -1,9 +1,11 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { dropTask } from 'ember-concurrency';
+import { dropTask, task } from 'ember-concurrency';
 import CodelistValidations from 'mow-registry/validations/codelist';
 import { tracked } from '@glimmer/tracking';
+
+const codelistTypesScheme = 'F452BCB4-4CE7-4318-8E00-5A96E7FED207';
 
 export default class CodelistFormComponent extends Component {
   @service router;
@@ -11,22 +13,60 @@ export default class CodelistFormComponent extends Component {
 
   @tracked newValue = '';
   @tracked toDelete = [];
+  @tracked selectedType;
   @tracked options;
+  @tracked codelistTypes;
 
   CodelistValidations = CodelistValidations;
 
   constructor() {
     super(...arguments);
     this.options = this.args.codelist.codeListOptions;
+    this.fetchCodelistTypes.perform();
   }
 
   get isSaving() {
     return this.editCodelistTask.isRunning;
   }
 
+  @task
+  *fetchCodelistTypes() {
+    const typesScheme = yield this.store.findRecord(
+      'concept-scheme',
+      codelistTypesScheme,
+      {
+        include: 'concepts',
+      }
+    );
+    const types = yield typesScheme.concepts;
+    const codelistTypes = [];
+    types.forEach((type) => {
+      codelistTypes.push({
+        value: type.id,
+        label: type.label,
+      });
+    });
+    console.log(this.args.codelist);
+    const codelistType = yield this.args.codelist.get('type');
+    this.codelistTypes = codelistTypes;
+    this.selectedType = this.codelistTypes.find(
+      (type) => type.value === codelistType.id
+    );
+  }
+
   @action
   setCodelistValue(codelist, attributeName, event) {
     codelist[attributeName] = event.target.value;
+  }
+
+  @task
+  *updateCodelistType(type) {
+    this.selectedType = type;
+    const codelistType = yield this.store.findRecord(
+      'skos-concept',
+      type.value
+    );
+    this.args.codelist.type = codelistType;
   }
 
   @action

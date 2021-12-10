@@ -135,6 +135,15 @@
               </tfoot>
             </s.content>
           </AuDataTable>
+          <PowerSelect
+            @allowClear={{false}}
+            @searchEnabled={{false}}
+            @options={{this.codelistTypes}}
+            @selected={{this.selectedType}}
+            @onChange={{perform this.updateCodelistType}} as |type|
+          >
+            {{type.label}}
+          </PowerSelect>
           </form>
         </p>
     </div>

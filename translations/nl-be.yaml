@@ -187,6 +187,7 @@ codelist:
     deleteValue: Waarde verwijderen
   attr:
     label: Label
+    type: Type
     values: Waarden
     id: Id
   landingPage:
