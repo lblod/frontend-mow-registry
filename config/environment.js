@@ -38,8 +38,8 @@ module.exports = function (environment) {
           scope: 'openid vo profile abb_registermobiliteit',
           redirectUri: 'https://roadsigns.lblod.info/authorization/callback',
           logoutUrl: 'https://authenticatie-ti.vlaanderen.be/op/v1/logout',
-        }
-      }
+        },
+      },
     },
     APP: {
       // Here you can pass flags/options to your application instance

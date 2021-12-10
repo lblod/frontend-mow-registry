@@ -1,4 +1,3 @@
-import { inject as service } from '@ember/service';
 import BaseSessionService from 'ember-simple-auth/services/session';
 import ENV from 'mow-registry/config/environment';
 
