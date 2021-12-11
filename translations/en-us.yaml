@@ -29,6 +29,13 @@ utility:
   validContent: content validated
   yes: Yes
   no: No
+  templateVariables:
+    text: text
+    number: number
+    date: date
+    location: location
+    codelist: codelist
+    instruction: instruction
 roadSignConcept:
   name: Road Signs
   details: Road Sign details
