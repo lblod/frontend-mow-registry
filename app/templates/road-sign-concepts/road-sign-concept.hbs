@@ -56,12 +56,20 @@
                 </p>
               {{/each}}
             </li>
-            <li class="au-o-grid__item au-u-1-2 au-u-1-3@medium">
+            <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>
                 {{t "roadSignConcept.attr.meaning"}}
               </AuLabel>
               <p>
                 {{@model.roadSignConcept.meaning}}
+              </p>
+            </li>
+            <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+              <AuLabel>
+                {{t "utility.zonality"}}
+              </AuLabel>
+              <p>
+                {{@model.roadSignConcept.zonality.label}}
               </p>
             </li>
             {{#unless this.showSidebar}}

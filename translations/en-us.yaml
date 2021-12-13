@@ -10,6 +10,11 @@ utility:
     title: Confirm
     body: Are you sure?
   required: Required
+  optional: Optional
+  zonality: Zonality
+  zonal: Zonal
+  nonZonal: Non-Zonal
+  potentiallyZonal: Potentially Zonal 
   upload: Upload
   or: Or
   fieldRequired: This field is required

@@ -10,6 +10,11 @@ utility:
     title: Bevestig
     body: Ben je zeker?
   required: Verplicht
+  optional: Optional
+  zonality: Zonality
+  zonal: Zonal
+  nonZonal: Non-Zonal
+  potentiallyZonal: Potentially Zonal
   upload: Opladen
   or: Of
   fieldRequired: Dit veld is verplicht
