@@ -4,7 +4,10 @@ import { inject as service } from '@ember/service';
 import { dropTask, task } from 'ember-concurrency';
 import CodelistValidations from 'mow-registry/validations/codelist';
 import { tracked } from '@glimmer/tracking';
-import {COD_SINGLE_SELECT_ID, COD_MULTI_SELECT_ID, COD_CONCEPT_SCHEME_ID} from '../utils/constants';
+import {
+  COD_SINGLE_SELECT_ID,
+  COD_CONCEPT_SCHEME_ID,
+} from '../utils/constants';
 
 export default class CodelistFormComponent extends Component {
   @service router;
@@ -37,11 +40,12 @@ export default class CodelistFormComponent extends Component {
     );
     const types = yield typesScheme.concepts;
     this.codelistTypes = types;
-    if(yield this.args.codelist.type){
-      this.selectedType=this.args.codelist.type;
-    }
-    else{
-      this.selectedType=this.codelistTypes.find(type=>type.id===COD_SINGLE_SELECT_ID);
+    if (yield this.args.codelist.type) {
+      this.selectedType = this.args.codelist.type;
+    } else {
+      this.selectedType = this.codelistTypes.find(
+        (type) => type.id === COD_SINGLE_SELECT_ID
+      );
     }
   }
 
