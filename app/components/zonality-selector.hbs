@@ -1,0 +1,10 @@
+<PowerSelect
+  @allowClear={{false}}
+  @searchEnabled={{false}}
+  @options={{this.zonalities}}
+  @selected={{this.selectedZonality}}
+  @onChange={{this.updateZonality}} as |zonality|
+>
+  {{t (concat "utility." zonality.label)}}
+</PowerSelect>
+<br>
