@@ -10,7 +10,7 @@ utility:
     title: Bevestig
     body: Ben je zeker?
   required: Verplicht
-  optional: Optional
+  optional: Optioneel
   zonality: Zonaal karakter
   zonal: Zonaal
   nonZonal: Niet zonaal
