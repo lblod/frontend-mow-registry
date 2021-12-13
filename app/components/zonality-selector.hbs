@@ -5,6 +5,6 @@
   @selected={{this.selectedZonality}}
   @onChange={{this.updateZonality}} as |zonality|
 >
-  {{zonality.label}}
+  {{t (concat "utility." zonality.label)}}
 </PowerSelect>
 <br>

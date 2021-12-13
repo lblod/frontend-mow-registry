@@ -11,10 +11,10 @@ utility:
     body: Ben je zeker?
   required: Verplicht
   optional: Optional
-  zonality: Zonality
-  zonal: Zonal
-  nonZonal: Non-Zonal
-  potentiallyZonal: Potentially Zonal
+  zonality: Zonaal karakter
+  zonal: Zonaal
+  nonZonal: Niet zonaal
+  potentiallyZonal: Potentieel zonaal
   upload: Opladen
   or: Of
   fieldRequired: Dit veld is verplicht
