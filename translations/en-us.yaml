@@ -195,6 +195,9 @@ codelist:
     type: Type
     values: Values
     id: Id
+    types:
+      singleSelect: 'Single select'
+      multiSelect: 'Multi select'
   landingPage:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.

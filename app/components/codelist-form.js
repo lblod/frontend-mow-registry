@@ -4,8 +4,7 @@ import { inject as service } from '@ember/service';
 import { dropTask, task } from 'ember-concurrency';
 import CodelistValidations from 'mow-registry/validations/codelist';
 import { tracked } from '@glimmer/tracking';
-
-const codelistTypesScheme = 'F452BCB4-4CE7-4318-8E00-5A96E7FED207';
+import {COD_SINGLE_SELECT_ID, COD_MULTI_SELECT_ID, COD_CONCEPT_SCHEME_ID} from '../utils/constants';
 
 export default class CodelistFormComponent extends Component {
   @service router;
@@ -13,9 +12,10 @@ export default class CodelistFormComponent extends Component {
 
   @tracked newValue = '';
   @tracked toDelete = [];
-  @tracked selectedType;
   @tracked options;
+
   @tracked codelistTypes;
+  @tracked selectedType;
 
   CodelistValidations = CodelistValidations;
 
@@ -33,24 +33,16 @@ export default class CodelistFormComponent extends Component {
   *fetchCodelistTypes() {
     const typesScheme = yield this.store.findRecord(
       'concept-scheme',
-      codelistTypesScheme,
-      {
-        include: 'concepts',
-      }
+      COD_CONCEPT_SCHEME_ID
     );
     const types = yield typesScheme.concepts;
-    const codelistTypes = [];
-    types.forEach((type) => {
-      codelistTypes.push({
-        value: type.id,
-        label: type.label,
-      });
-    });
-    const codelistType = yield this.args.codelist.get('type');
-    this.codelistTypes = codelistTypes;
-    this.selectedType = this.codelistTypes.find(
-      (type) => type.value === codelistType.id
-    );
+    this.codelistTypes = types;
+    if(yield this.args.codelist.type){
+      this.selectedType=this.args.codelist.type;
+    }
+    else{
+      this.selectedType=this.codelistTypes.find(type=>type.id===COD_SINGLE_SELECT_ID);
+    }
   }
 
   @action
@@ -58,14 +50,10 @@ export default class CodelistFormComponent extends Component {
     codelist[attributeName] = event.target.value;
   }
 
-  @task
-  *updateCodelistType(type) {
+  @action
+  updateCodelistType(type) {
     this.selectedType = type;
-    const codelistType = yield this.store.findRecord(
-      'skos-concept',
-      type.value
-    );
-    this.args.codelist.type = codelistType;
+    this.args.codelist.type = type;
   }
 
   @action
