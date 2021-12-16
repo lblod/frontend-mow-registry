@@ -162,6 +162,15 @@
               {{/if}}
               </p>
             {{/let}}
+            <p>
+            <AuLabel for="categories">
+              {{t "utility.zonality"}}&nbsp;
+              <AuPill>
+                {{t "utility.optional"}}
+              </AuPill>
+            </AuLabel>
+            <ZonalitySelector @concept={{roadSignConcept}}/>
+            </p>
           </form>
         </div>
       </div>

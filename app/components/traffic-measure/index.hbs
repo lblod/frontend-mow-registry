@@ -6,6 +6,10 @@
         {{this.label}}
       </AuHeading>
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
+        {{t "utility.zonality"}}
+      </AuHeading>
+      <ZonalitySelector @concept={{@trafficMeasureConcept}}/>
+      <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
         {{t "trafficMeasureConcept.attr.trafficSign"}}
       </AuHeading>
       <div class="au-o-grid au-o-grid--tiny">
@@ -70,7 +74,7 @@
                         {{codeList.label}}
                       </PowerSelect>
                       <ul class="au-c-list-help au-c-help-text au-c-help-text--secondary">
-                        {{#each mapping.codeList.codeListOptions as |option|}}
+                        {{#each mapping.codeList.concepts as |option|}}
                           <li class="au-c-list-help__item">{{option.label}}</li>
                         {{/each}}
                       </ul>

@@ -39,7 +39,7 @@
         {{#let codelist.error.label as |isInvalid|}}
           <p class="au-o-box au-u-padding-bottom-none">
             <AuLabel @error={{isInvalid}} for="label">
-              {{t "roadSignConcept.attr.code"}}&nbsp;
+              {{t "codelist.attr.label"}}&nbsp;
               <AuPill>
                 {{t "utility.required"}}
               </AuPill>
@@ -66,6 +66,21 @@
             {{/if}}
           </p>
         {{/let}}
+        <p class="au-o-box au-u-padding-bottom-none">
+          <AuLabel for="label">
+            {{t "codelist.attr.type"}}&nbsp;
+          </AuLabel>
+          <PowerSelect
+            @allowClear={{false}}
+            @searchEnabled={{false}}
+            @options={{this.codelistTypes}}
+            @selected={{this.selectedType}}
+            @onChange={{this.updateCodelistType}} as |type|
+          >
+            {{t (concat "codelist.attr.types." type.label)}}
+          </PowerSelect>
+          <br>
+        </p>
         <p>
           <form
             class="au-c-form"

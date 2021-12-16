@@ -78,6 +78,9 @@
         @label={{t "roadSignConcept.attr.categories"}}
       />
       <th>
+        {{t "utility.zonality"}}
+      </th>
+      <th>
         {{t "roadMarkingConcept.attr.valid"}}
       </th>
       <th></th>
@@ -99,6 +102,13 @@
           {{/if}}
           {{category.label}}
         {{/each}}
+      </td>
+      <td>
+        {{#if roadSignConcept.zonality}}
+          {{t (concat "utility." roadSignConcept.zonality.label)}}
+        {{else}}
+          {{t "utility.nonZonal"}}
+        {{/if}}
       </td>
       <td>
         {{#if roadSignConcept.valid}}
