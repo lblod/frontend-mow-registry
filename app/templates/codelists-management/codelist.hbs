@@ -31,7 +31,11 @@
           {{t "codelist.attr.type"}}
         </AuLabel>
         <p>
-          {{t (concat "codelist.attr.types." @model.codelist.type.label)}}
+          {{#if @model.codelist.type}}
+            {{t (concat "codelist.attr.types." @model.codelist.type.label)}}
+          {{else}}
+            {{t "codelist.attr.types.singleSelect"}}
+          {{/if}}
         </p>
       </div>
       <div class="au-o-grid__item au-u-2-3@small au-u-3-4@medium">
