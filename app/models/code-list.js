@@ -1,9 +1,7 @@
-import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
+import { hasMany, belongsTo } from '@ember-data/model';
+import ConceptSchemeModel from './concept-scheme';
 
-export default class CodeListModel extends Model {
-  @attr label;
-  @attr uri;
-  @hasMany('code-list-option', { inverse: 'codeList' }) codeListOptions;
+export default class CodeListModel extends ConceptSchemeModel {
   @hasMany('mapping', { inverse: 'codeList' }) mappings;
-  @belongsTo('skos-concept') type;
+  @belongsTo('skos-concept', {inverse: null}) type;
 }

@@ -24,7 +24,7 @@ export default class CodelistFormComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.options = this.args.codelist.codeListOptions;
+    this.options = this.args.codelist.concepts;
     this.fetchCodelistTypes.perform();
   }
 

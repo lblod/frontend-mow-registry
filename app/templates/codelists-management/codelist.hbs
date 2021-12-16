@@ -38,7 +38,7 @@
         <AuTable>
           <:title>{{t "codelist.attr.values"}}</:title>
           <:body>
-            {{#each @model.codelist.codeListOptions as |option|}}
+            {{#each @model.codelist.concepts as |option|}}
               <tr>
                 <td>{{option.label}}</td>
               </tr>
