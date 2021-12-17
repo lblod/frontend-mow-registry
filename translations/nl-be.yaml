@@ -34,6 +34,13 @@ utility:
   validContent: Deze inhoud is gevalideerd
   yes: Ja
   no: Nee
+  templateVariables:
+    text: tekst
+    number: nummer
+    date: datum
+    location: locatie
+    codelist: codelijst
+    instruction: instructie
 roadSignConcept:
   name: Verkeersborden
   details: Verkeersbord details

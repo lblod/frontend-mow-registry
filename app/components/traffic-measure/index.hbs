@@ -57,10 +57,10 @@
                       @allowClear={{false}}
                       @searchEnabled={{false}}
                       @options={{this.inputTypes}}
-                      @selected={{mapping.type}}
+                      @selected={{find-by-value this.inputTypes mapping.type}}
                       @onChange={{fn this.updateMappingType mapping}} as |type|
                     >
-                      {{type}}
+                      {{type.label}}
                     </PowerSelect>
                     {{#if (eq mapping.type "codelist")}}
                       <PowerSelect

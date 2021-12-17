@@ -9,16 +9,9 @@ import includeMappings from '../../utils/include-mappings';
 const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
 
 export default class TrafficMeasureIndexComponent extends Component {
-  constructor(...args) {
-    super(...args);
-
-    this.trafficMeasureConcept = this.args.trafficMeasureConcept;
-    this.new = this.args.new;
-    this.fetchData.perform();
-  }
-
   @service store;
   @service router;
+  @service intl;
   @service('codelists') codeListService;
 
   @tracked codeLists;
@@ -32,7 +25,40 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked preview;
   @tracked selectedType;
   @tracked instructions = [];
-  @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
+  @tracked inputTypes = [];
+  constructor(...args) {
+    super(...args);
+
+    this.trafficMeasureConcept = this.args.trafficMeasureConcept;
+    this.new = this.args.new;
+    this.fetchData.perform();
+    this.inputTypes = [
+      {
+        value: 'text',
+        label: this.intl.t('utility.templateVariables.text'),
+      },
+      {
+        value: 'number',
+        label: this.intl.t('utility.templateVariables.number'),
+      },
+      {
+        value: 'date',
+        label: this.intl.t('utility.templateVariables.date'),
+      },
+      {
+        value: 'location',
+        label: this.intl.t('utility.templateVariables.location'),
+      },
+      {
+        value: 'codelist',
+        label: this.intl.t('utility.templateVariables.codelist'),
+      },
+    ];
+    this.instructionType = {
+      value: 'instruction',
+      label: this.intl.t('utility.templateVariables.instruction'),
+    };
+  }
 
   mappingsToBeDeleted = [];
 
@@ -89,7 +115,6 @@ export default class TrafficMeasureIndexComponent extends Component {
   *fetchInstructions() {
     //refresh instruction list from available signs
     this.instructions = [];
-    this.inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
     for (let i = 0; i < this.signs.length; i++) {
       const sign = this.signs[i];
       const instructions = yield sign.templates;
@@ -100,13 +125,16 @@ export default class TrafficMeasureIndexComponent extends Component {
     }
     //remove input type instruction if there are none available and reset mappings with instructions
     if (this.instructions.length != 0) {
-      this.inputTypes.pushObject('instruction');
+      this.inputTypes.pushObject(this.instructionType);
     } else if (this.instructions.length == 0) {
-      if (this.inputTypes.indexOf('instruction') != -1) {
-        this.inputTypes.splice(this.inputTypes.indexOf('instruction'), 1);
+      if (this.inputTypes.indexOf(this.instructionType) != -1) {
+        this.inputTypes.splice(
+          this.inputTypes.indexOf(this.instructionType),
+          1
+        );
       }
       this.mappings.forEach((e) => {
-        if (e.type == 'instruction') {
+        if (e.type == this.instructionType.value) {
           this.updateMappingType(e, 'text');
         }
       });
@@ -160,7 +188,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @action
   updateMappingType(mapping, selectedType) {
-    mapping.type = selectedType;
+    mapping.type = selectedType.value;
     if (mapping.type === 'codelist') {
       mapping.codeList = this.codeLists.firstObject;
       mapping.instruction = null;
