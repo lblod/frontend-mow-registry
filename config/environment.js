@@ -29,7 +29,18 @@ module.exports = function (environment) {
         Date: false,
       },
     },
-
+    torii: {
+      disableRedirectInitializer: true,
+      providers: {
+        'acmidm-oauth2': {
+          apiKey: 'ae3be0bb-5c5d-447f-9916-1ea819267e53',
+          baseUrl: 'https://authenticatie-ti.vlaanderen.be/op/v1/auth',
+          scope: 'openid vo profile abb_registermobiliteit',
+          redirectUri: 'https://roadsigns.lblod.info/authorization/callback',
+          logoutUrl: 'https://authenticatie-ti.vlaanderen.be/op/v1/logout',
+        },
+      },
+    },
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
