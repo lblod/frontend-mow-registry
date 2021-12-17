@@ -1,3 +1,20 @@
+## 0.8.0 (2021-12-17)
+
+#### :rocket: Enhancement
+* [#116](https://github.com/lblod/frontend-mow-registry/pull/116) fix intl initialization and translate mapping types ([@lagartoverde](https://github.com/lagartoverde))
+* [#114](https://github.com/lblod/frontend-mow-registry/pull/114) initial implementation of acmidm login ([@nvdk](https://github.com/nvdk))
+* [#117](https://github.com/lblod/frontend-mow-registry/pull/117) Zonality selector feature ([@Asergey91](https://github.com/Asergey91))
+* [#112](https://github.com/lblod/frontend-mow-registry/pull/112) rdfa annotate ([@Asergey91](https://github.com/Asergey91))
+
+#### :bug: Bug Fix
+* [#113](https://github.com/lblod/frontend-mow-registry/pull/113) Fix multiple table bug ([@Dietr](https://github.com/Dietr))
+
+#### Committers: 4
+- Dieter Peirs ([@Dietr](https://github.com/Dietr))
+- Niels V ([@nvdk](https://github.com/nvdk))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
 ## 0.7.0 (2021-12-01)
 
 #### :rocket: Enhancement
