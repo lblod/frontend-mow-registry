@@ -84,7 +84,8 @@ export default class AddInstructionComponent extends Component {
   }
 
   @action
-  parseTemplate() {//match "a-z", "A-Z", "-", "_", "." and "any digit characters" between ${ and } lazily
+  parseTemplate() {
+    //match "a-z", "A-Z", "-", "_", "." and "any digit characters" between ${ and } lazily
     const regex = new RegExp(/\${([a-zA-Z\-_.\d]+?)}/g);
     const regexResult = [...this.template.value.matchAll(regex)];
 
