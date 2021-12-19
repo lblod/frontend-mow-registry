@@ -28,7 +28,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked inputTypes = [];
 
   mappingsToBeDeleted = [];
-  
+
   constructor(...args) {
     super(...args);
 
@@ -207,7 +207,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   @action
   parseTemplate() {
     //match "a-z", "A-Z", "-", "_", "." and "any digit characters" between ${ and } lazily
-    const regex = new RegExp(/\${([a-zA-Z\-\_\.\d]+?)}/g);
+    const regex = new RegExp(/\${([a-zA-Z\-_.\d]+?)}/g);
     const regexResult = [...this.template.value.matchAll(regex)];
 
     //remove duplicates from regex result
@@ -272,19 +272,19 @@ export default class TrafficMeasureIndexComponent extends Component {
       });
     });
 
-    //check existing default mappings with deleted non-default mappings and swap them 
-    sortedMappings.forEach((sMapping, sI)=>{
-      this.mappingsToBeDeleted.forEach((dMapping, dI)=>{
-        if(sMapping.variable === dMapping.variable){
-          if(dMapping.type !== 'text' && sMapping.type === 'text'){
+    //check existing default mappings with deleted non-default mappings and swap them
+    sortedMappings.forEach((sMapping, sI) => {
+      this.mappingsToBeDeleted.forEach((dMapping, dI) => {
+        if (sMapping.variable === dMapping.variable) {
+          if (dMapping.type !== 'text' && sMapping.type === 'text') {
             sortedMappings.replace(sI, 1, [dMapping]);
             this.mappingsToBeDeleted.replace(dI, 1, [sMapping]);
           }
         }
       });
     });
-    
-    this.mappings = sortedMappings; 
+
+    this.mappings = sortedMappings;
 
     this.generatePreview.perform();
   }

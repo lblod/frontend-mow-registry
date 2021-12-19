@@ -21,7 +21,7 @@ export default class CodelistsService extends Service {
         sort: 'label',
       });
 
-      yield Promise.all(codeLists.map(codeList=>codeList.concepts));
+      yield Promise.all(codeLists.map((codeList) => codeList.concepts));
 
       this.codeLists = codeLists;
     }
