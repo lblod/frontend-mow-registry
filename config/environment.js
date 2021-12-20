@@ -41,6 +41,8 @@ module.exports = function (environment) {
         },
       },
     },
+    featureFlags: {
+    },
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
@@ -53,6 +55,7 @@ module.exports = function (environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
+    ENV.featureFlags.simpleLogin = true;
   }
 
   if (environment === 'test') {
@@ -68,6 +71,7 @@ module.exports = function (environment) {
   }
 
   if (environment === 'production') {
+    ENV.featureFlags.simpleLogin = "{{EMBER_SIMPLE_LOGIN}}" === "true";
     // here you can enable a production-specific feature
   }
 
