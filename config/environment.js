@@ -71,7 +71,7 @@ module.exports = function (environment) {
   }
 
   if (environment === 'production') {
-    ENV.featureFlags.simpleLogin = "{{EMBER_SIMPLE_LOGIN}}";
+    ENV.featureFlags.simpleLogin = "{{SIMPLE_LOGIN}}";
     // here you can enable a production-specific feature
   }
 
