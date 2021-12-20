@@ -55,7 +55,7 @@ module.exports = function (environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
-    ENV.featureFlags.simpleLogin = true;
+    ENV.featureFlags.simpleLogin = false;
   }
 
   if (environment === 'test') {
@@ -71,7 +71,7 @@ module.exports = function (environment) {
   }
 
   if (environment === 'production') {
-    ENV.featureFlags.simpleLogin = "{{EMBER_SIMPLE_LOGIN}}" === "true";
+    ENV.featureFlags.simpleLogin = "{{EMBER_SIMPLE_LOGIN}}";
     // here you can enable a production-specific feature
   }
 
