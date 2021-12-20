@@ -55,7 +55,7 @@ module.exports = function (environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
-    ENV.featureFlags.simpleLogin = false;
+    ENV.featureFlags.simpleLogin = true;
   }
 
   if (environment === 'test') {

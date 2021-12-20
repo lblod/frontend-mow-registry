@@ -1,14 +1,15 @@
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
+import ENV from 'mow-registry/config/environment';
+
 export default class LoginController extends Controller {
-  @service features;
 
   get showSimpleLogin() {
-    if (typeof this.features.get('simpleLogin') == "boolean") {
-      return this.features.get('simpleLogin');
+    const simpleLogin = ENV.featureFlags.simpleLogin;
+    if (typeof simpleLogin == "boolean") {
+      return simpleLogin;
     }
     else {
-      return this.get.features.get('simpleLogin') === "true";
+      return simpleLogin === "true";
     }
   }
 }
