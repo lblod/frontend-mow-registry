@@ -51,7 +51,7 @@ export default async function includeMappings(html, mappings) {
         `\${${mapping.variable}}`,
         generateLocationTemplate(mapping.uri, mapping.variable)
       );
-    } else if(mapping.type === 'date') {
+    } else if (mapping.type === 'date') {
       finalHtml = finalHtml.replaceAll(
         `\${${mapping.variable}}`,
         generateDateTemplate(mapping.uri, mapping.variable)
