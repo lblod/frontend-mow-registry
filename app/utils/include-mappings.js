@@ -25,6 +25,15 @@ function generateLocationTemplate(uri, name) {
   `;
 }
 
+function generateDateTemplate(uri, name) {
+  return `
+    <span resource="${uri}" typeof="ext:Mapping">
+      <span property="dct:type" content="date"></span>
+      <span property="ext:content" datatype="xsd:date">\${${name}}</span>
+    </span>
+  `;
+}
+
 export default async function includeMappings(html, mappings) {
   let finalHtml = html;
   for (let mapping of mappings) {
@@ -41,6 +50,11 @@ export default async function includeMappings(html, mappings) {
       finalHtml = finalHtml.replaceAll(
         `\${${mapping.variable}}`,
         generateLocationTemplate(mapping.uri, mapping.variable)
+      );
+    } else if (mapping.type === 'date') {
+      finalHtml = finalHtml.replaceAll(
+        `\${${mapping.variable}}`,
+        generateDateTemplate(mapping.uri, mapping.variable)
       );
     } else {
       finalHtml = finalHtml.replaceAll(
