@@ -1,5 +1,16 @@
+{{!-- template-lint-disable no-bare-strings --}}
 <div class="au-c-main-container" itemprop="mainContentOfPage">
   <div class="au-c-main-container__content au-c-main-container__content--scroll">
+    {{#let (concat
+      "assets/images/header-320.jpg" " 320w,"
+      "assets/images/header-1024.jpg" " 1024w,"
+      "assets/images/header-1600.jpg" " 1600w"
+    ) as |srcSet|}}
+      <AuContentHeader @titlePartOne="Vlaanderen" @titlePartTwo="is lokaal bestuur">
+        {{!-- template-lint-disable require-valid-alt-text --}}
+      <img sizes="50vw" src="assets/images/header-1600.jpg" srcset={{srcSet}} alt="laptop met daarop het vlaanderen logo.">
+    </AuContentHeader>
+    {{/let}}
     {{#if this.showSimpleLogin}}
       <main id="content">
         <div class="au-o-region-large">
@@ -9,6 +20,14 @@
           </div>
         </div>
       </main>
+      <AuMainFooter>
+        <AuHeading @level="3" @skin="4">
+          roadsigns.lblod.info is een officiële website van de Vlaamse overheid
+        </AuHeading>
+        <AuContent @skin="small">
+          <p>Uitgegeven door <a class="au-c-link" href="https://www.vlaanderen.be/organisaties/administratieve-diensten-van-de-vlaamse-overheid/beleidsdomein-kanselarij-en-bestuur/agentschap-binnenlands-bestuur">Agentschap Binnenlands Bestuur</a></p>
+        </AuContent>
+      </AuMainFooter>
     {{else}}
       <AcmidmLoginIframe />
     {{/if}}
