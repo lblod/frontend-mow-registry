@@ -1,3 +1,17 @@
+## 0.10.0 (2022-01-14)
+
+#### :rocket: Enhancement
+* [#120](https://github.com/lblod/frontend-mow-registry/pull/120) Feature/date variables ([@lagartoverde](https://github.com/lagartoverde))
+* [#118](https://github.com/lblod/frontend-mow-registry/pull/118) parsing improvements ([@Asergey91](https://github.com/Asergey91))
+
+#### :house: Internal
+* [#119](https://github.com/lblod/frontend-mow-registry/pull/119) Content check and design review ([@Dietr](https://github.com/Dietr))
+
+#### Committers: 3
+- Dieter Peirs ([@Dietr](https://github.com/Dietr))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
 ## 0.9.0 (2022-01-14)
 
 make acm/idm login optional
