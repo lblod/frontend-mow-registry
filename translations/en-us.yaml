@@ -14,7 +14,7 @@ utility:
   zonality: Zonality
   zonal: Zonal
   nonZonal: Non-Zonal
-  potentiallyZonal: Potentially Zonal 
+  potentiallyZonal: Potentially Zonal
   upload: Upload
   or: Or
   fieldRequired: This field is required
@@ -65,7 +65,7 @@ roadSignConcept:
     meaningFilter: Search by meaning
     categoryFilter: Filter by category
   landingPage:
-    subtitle: Subtitle for card
+    subtitle: –
     content: Information in the card that comes below the header. Content.
     button: Go to Road Signs
 relatedRoadSign:
@@ -95,7 +95,7 @@ trafficLightConcept:
     codeFilter: Code
     meaningFilter: Search by meaning
   landingPage:
-    subtitle: Subtitle for card
+    subtitle: –
     content: Information in the card that comes below the header. Content.
     button: Go to Traffic Lights
 relatedTrafficLight:
@@ -126,7 +126,7 @@ roadMarkingConcept:
     codeFilter: Code
     meaningFilter: Search by meaning
   landingPage:
-    subtitle: Subtitle for card
+    subtitle: –
     content: Information in the card that comes below the header. Content.
     button: Go to Road Markings
 relatedRoadMarking:
@@ -162,7 +162,7 @@ trafficMeasureConcept:
     typeToSearch: Type to search
     loading: Loading ...
   landingPage:
-    subtitle: Subtitle for card
+    subtitle: –
     content: Information in the card that comes below the header. Content.
     button: Go to traffic measures
 subSign:
@@ -206,6 +206,6 @@ codelist:
       singleSelect: 'Single select'
       multiSelect: 'Multi select'
   landingPage:
-    subtitle: Subtitle for card
+    subtitle: –
     content: Information in the card that comes below the header. Content.
     button: Go to codelists management
