@@ -83,7 +83,7 @@
     "edition": "octane"
   },
   "dependencies": {
-    "@lblod/ember-acmidm-login": "1.3.0",
+    "@lblod/ember-acmidm-login": "github:lblod/ember-acmidm-login#enhancement/iframe-login",
     "@triply/yasgui": "^4.2.20",
     "ember-mu-login": "^2.0.1"
   }
