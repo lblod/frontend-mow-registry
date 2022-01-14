@@ -48,6 +48,9 @@
         {{t "trafficMeasureConcept.attr.template"}}
       </th>
       <th>
+       {{t "utility.zonality"}}
+      </th>
+      <th>
         {{t "roadMarkingConcept.attr.valid"}}
       </th>
       <th></th>
@@ -63,6 +66,13 @@
       </td>
       <td>
         {{trafficMeasureConcept.templates.firstObject.value}}
+      </td>
+      <td>
+        {{#if trafficMeasureConcept.zonality}}
+          {{t (concat "utility." trafficMeasureConcept.zonality.label)}}
+        {{else}}
+          {{t "utility.nonZonal"}}
+        {{/if}}
       </td>
       <td>
         {{#if trafficMeasureConcept.valid}}

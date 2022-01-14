@@ -44,6 +44,7 @@
         @label={{t "codelist.attr.label"}}
       />
       <th>{{t "codelist.attr.id"}}</th>
+      <th>{{t "codelist.attr.type"}}</th>
       <th></th>
     </c.header>
     <c.body as |codelist|>
@@ -52,6 +53,13 @@
       </td>
       <td>
         {{codelist.id}}
+      </td>
+      <td>
+        {{#if codelist.type}}
+          {{t (concat "codelist.attr.types." codelist.type.label)}}
+        {{else}}
+          {{t "codelist.attr.types.singleSelect"}}
+        {{/if}}
       </td>
       <td>
         <AuLink

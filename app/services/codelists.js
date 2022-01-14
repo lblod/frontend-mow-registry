@@ -17,13 +17,13 @@ export default class CodelistsService extends Service {
     if (!this.codeLists) {
       const codeLists = yield this.store.query('code-list', {
         'page[size]': 100,
-        include: 'codeListOptions',
+        include: 'concepts',
         sort: 'label',
       });
 
       for (let i = 0; i < codeLists.length; i++) {
         const codeList = codeLists.objectAt(i);
-        yield codeList.codeListOptions;
+        yield codeList.concepts;
       }
 
       this.codeLists = codeLists;

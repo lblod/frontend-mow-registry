@@ -10,6 +10,11 @@ utility:
     title: Bevestig
     body: Ben je zeker?
   required: Verplicht
+  optional: Optioneel
+  zonality: Zonaal karakter
+  zonal: Zonaal
+  nonZonal: Niet zonaal
+  potentiallyZonal: Potentieel zonaal
   upload: Opladen
   or: Of
   fieldRequired: Dit veld is verplicht
@@ -29,6 +34,13 @@ utility:
   validContent: Deze inhoud is gevalideerd
   yes: Ja
   no: Nee
+  templateVariables:
+    text: tekst
+    number: nummer
+    date: datum
+    location: locatie
+    codelist: codelijst
+    instruction: instructie
 roadSignConcept:
   name: Verkeersborden
   details: Verkeersbord details
@@ -143,9 +155,9 @@ trafficMeasureConcept:
     typeToSearch: Typ om te zoeken
     loading: Laden ...
   landingPage:
-    subtitle: ondertitel
-    content: content
-    button: Mobiliteitsmaatregelen
+    subtitle: Ondertitel voor kaart
+    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    button: Ga naar Mobiliteitsmaatregelen
 subSign:
   filter:
     code: Zoek onderborden op code
@@ -187,9 +199,13 @@ codelist:
     deleteValue: Waarde verwijderen
   attr:
     label: Label
+    type: Type
+    types:
+      singleSelect: Enkele selecteren
+      multiSelect: Meerkeuze selectie
     values: Waarden
     id: Id
   landingPage:
-    subtitle: Subtitle for card
-    content: Information in the card that comes below the header. Content.
-    button: Go to codelists management
+    subtitle: Ondertitel voor kaart
+    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    button: Ga naar Codelijsten

@@ -27,12 +27,22 @@
         <p>
           {{@model.codelist.label}}
         </p>
+        <AuLabel>
+          {{t "codelist.attr.type"}}
+        </AuLabel>
+        <p>
+          {{#if @model.codelist.type}}
+            {{t (concat "codelist.attr.types." @model.codelist.type.label)}}
+          {{else}}
+            {{t "codelist.attr.types.singleSelect"}}
+          {{/if}}
+        </p>
       </div>
       <div class="au-o-grid__item au-u-2-3@small au-u-3-4@medium">
         <AuTable>
           <:title>{{t "codelist.attr.values"}}</:title>
           <:body>
-            {{#each @model.codelist.codeListOptions as |option|}}
+            {{#each @model.codelist.concepts as |option|}}
               <tr>
                 <td>{{option.label}}</td>
               </tr>

@@ -10,6 +10,11 @@ utility:
     title: Confirm
     body: Are you sure?
   required: Required
+  optional: Optional
+  zonality: Zonality
+  zonal: Zonal
+  nonZonal: Non-Zonal
+  potentiallyZonal: Potentially Zonal 
   upload: Upload
   or: Or
   fieldRequired: This field is required
@@ -29,6 +34,13 @@ utility:
   validContent: content validated
   yes: Yes
   no: No
+  templateVariables:
+    text: text
+    number: number
+    date: date
+    location: location
+    codelist: codelist
+    instruction: instruction
 roadSignConcept:
   name: Road Signs
   details: Road Sign details
@@ -187,8 +199,12 @@ codelist:
     deleteValue: Delete value
   attr:
     label: Label
+    type: Type
     values: Values
     id: Id
+    types:
+      singleSelect: 'Single select'
+      multiSelect: 'Multi select'
   landingPage:
     subtitle: Subtitle for card
     content: Information in the card that comes below the header. Content.

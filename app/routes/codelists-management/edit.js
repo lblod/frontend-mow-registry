@@ -6,11 +6,11 @@ export default class CodelistsManagementEditRoute extends Route {
 
   async model(params) {
     let codelist = await this.store.findRecord('code-list', params.id);
-    let codelistOptions = await codelist.codeListOptions;
+    let concepts = await codelist.concepts;
 
     return {
       codelist,
-      codelistOptions,
+      concepts,
     };
   }
 }
