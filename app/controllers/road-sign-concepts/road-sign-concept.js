@@ -17,6 +17,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked newDescription = '';
   @tracked editedTemplate;
 
+  @tracked isOpen = false;
+
   get showSidebar() {
     return (
       this.isAddingRelatedRoadSigns ||
@@ -219,5 +221,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingRelatedRoadSigns = false;
     this.category = null;
     this.categoryRoadSigns = null;
+    this.isOpen = false;
   }
 }
