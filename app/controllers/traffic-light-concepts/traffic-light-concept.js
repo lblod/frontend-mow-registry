@@ -10,6 +10,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked isAddingSubSigns = false;
   @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedTrafficLights = false;
+  @tracked isOpen = false;
 
   @tracked category = null;
   @tracked categoryTrafficLights = null;
@@ -187,6 +188,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
     this.isAddingRelatedTrafficLights = false;
+    this.isOpen = false;
     // this.category = null;
     // this.categoryTrafficLights = null;
   }

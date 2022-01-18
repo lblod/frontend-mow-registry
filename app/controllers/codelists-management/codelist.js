@@ -8,11 +8,6 @@ export default class CodelistController extends Controller {
   @tracked isOpen = false;
 
   @action
-  toggleIsOpen() {
-    this.isOpen = !this.isOpen;
-  }
-
-  @action
   async removeCodelist(event) {
     event.preventDefault();
 
@@ -25,6 +20,6 @@ export default class CodelistController extends Controller {
   }
 
   reset() {
-    this.isOpen = null;
+    this.isOpen = false;
   }
 }
