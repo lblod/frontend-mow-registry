@@ -7,11 +7,6 @@ export default class CodelistController extends Controller {
   @service router;
   @tracked isOpen = false;
 
-  //@action
-  //toggleIsOpen() {
-  //  this.isOpen = !this.isOpen;
-  //}
-
   @action
   async removeCodelist(event) {
     event.preventDefault();
