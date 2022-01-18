@@ -25,6 +25,33 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
       query['filter[label]'] = params.code;
     }
 
-    return await this.store.query('traffic-measure-concept', query);
+    const result = await this.store.query('traffic-measure-concept', query);
+
+    for (let i = 0; i < result.length; i++) {
+      const measure = result.objectAt(i);
+      const template = (await measure.templates).firstObject;
+      let preview = template.value;
+      const mappings = await template.mappings;
+
+      for (let j = 0; j < mappings.length; j++) {
+        const mapping = mappings.objectAt(j);
+        let replaceString;
+        if (mapping.type === 'instruction') {
+          const instruction = await mapping.instruction;
+          replaceString =
+            "<span style='background-color: #ffffff'>" +
+            instruction.value +
+            '</span>';
+          preview = preview.replaceAll(
+            '${' + mapping.variable + '}',
+            replaceString
+          );
+        }
+      }
+
+      measure.unwrapped = preview;
+    }
+
+    return result;
   }
 }
