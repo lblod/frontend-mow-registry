@@ -19,6 +19,7 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
         number: params.page,
         size: params.size,
       },
+      include: "templates"
     };
 
     if (params.code) {
