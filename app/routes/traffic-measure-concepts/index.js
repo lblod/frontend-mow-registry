@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { htmlSafe } from '@ember/template';
 
 export default class TrafficMeasureConceptsIndexRoute extends Route {
   @service store;
@@ -19,7 +20,7 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
         number: params.page,
         size: params.size,
       },
-      include: "templates"
+      include: 'templates',
     };
 
     if (params.code) {
@@ -50,7 +51,7 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
         }
       }
 
-      measure.unwrapped = preview;
+      measure.unwrapped = htmlSafe(preview);
     }
 
     return result;
