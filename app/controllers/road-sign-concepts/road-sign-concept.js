@@ -9,6 +9,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked isAddingSubSigns = false;
   @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedRoadSigns = false;
+  @tracked isOpen = false;
 
   @tracked category = null;
   @tracked categoryRoadSigns = null;
@@ -16,8 +17,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked subSignCodeFilter = '';
   @tracked newDescription = '';
   @tracked editedTemplate;
-
-  @tracked isOpen = false;
 
   get showSidebar() {
     return (
@@ -219,8 +218,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
     this.isAddingRelatedRoadSigns = false;
+    this.isOpen = false;
     this.category = null;
     this.categoryRoadSigns = null;
-    this.isOpen = false;
   }
 }

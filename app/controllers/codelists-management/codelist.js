@@ -7,10 +7,10 @@ export default class CodelistController extends Controller {
   @service router;
   @tracked isOpen = false;
 
-  @action
-  toggleIsOpen() {
-    this.isOpen = !this.isOpen;
-  }
+  //@action
+  //toggleIsOpen() {
+  //  this.isOpen = !this.isOpen;
+  //}
 
   @action
   async removeCodelist(event) {
@@ -25,6 +25,6 @@ export default class CodelistController extends Controller {
   }
 
   reset() {
-    this.isOpen = null;
+    this.isOpen = false;
   }
 }
