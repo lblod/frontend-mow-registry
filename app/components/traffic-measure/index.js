@@ -126,7 +126,9 @@ export default class TrafficMeasureIndexComponent extends Component {
     }
     //remove input type instruction if there are none available and reset mappings with instructions
     if (this.instructions.length != 0) {
-      this.inputTypes.pushObject(this.instructionType);
+      if (this.inputTypes.indexOf(this.instructionType) == -1) {
+        this.inputTypes.pushObject(this.instructionType);
+      }
     } else if (this.instructions.length == 0) {
       if (this.inputTypes.indexOf(this.instructionType) != -1) {
         this.inputTypes.splice(
