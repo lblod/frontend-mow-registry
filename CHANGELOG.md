@@ -1,3 +1,15 @@
+## 0.11.0 (2022-01-20)
+
+#### :rocket: Enhancement
+* [#123](https://github.com/lblod/frontend-mow-registry/pull/123) made measures appear fully unwrapped in preview ([@Asergey91](https://github.com/Asergey91))
+
+#### :bug: Bug Fix
+* [#122](https://github.com/lblod/frontend-mow-registry/pull/122) Issue GN-3185: Bug on removing signs ([@benjay10](https://github.com/benjay10))
+
+#### Committers: 2
+- Ben ([@benjay10](https://github.com/benjay10))
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
 ## 0.10.0 (2022-01-14)
 
 #### :rocket: Enhancement
