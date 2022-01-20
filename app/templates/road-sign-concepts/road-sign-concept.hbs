@@ -760,8 +760,6 @@
               class="au-c-action-sidebar__item"
             />
           {{/each}}
-        </div>
-        <div class="au-c-body-container au-c-body-container--scroll">
           {{#if this.category}}
             {{#each
               (sort-by-road-marking-code
@@ -784,68 +782,7 @@
       </div>
     </div>
   {{/if}}
-  {{#if this.isAddingRelatedRoadSigns}}
-    <div class="au-o-grid__item au-u-2-5@medium">
-      <div
-        class="au-c-body-container au-c-action-sidebar"
-        {{auto-focus ".au-c-action-sidebar__header"}}
-      >
-        <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
-          <AuToolbar class="au-u-margin-bottom-small">
-            <AuToolbarGroup>
-              <AuHeading @level="2" @skin="3">
-                {{t "relatedRoadSign.crud.add"}}
-              </AuHeading>
-            </AuToolbarGroup>
-            <button
-              type="button"
-              class="au-c-close au-c-close--large"
-              {{on "click" this.toggleAddRelatedRoadSigns}}
-            >
-              <AuIcon @icon="cross" @size="large" />
-              <span class="au-u-hidden-visually">
-                {{t "utility.close"}}
-              </span>
-            </button>
-          </AuToolbar>
-          <AuContent @skin="small">
-            <AuLabel>
-              {{t "relatedRoadSign.attr.category"}}
-            </AuLabel>
-            <PowerSelect
-              @allowClear={{true}}
-              @searchEnabled={{true}}
-              @noMatchesMessage={{t "roadSignConcept.crud.noData"}}
-              @searchField="label"
-              @options={{@model.roadSignCategories}}
-              @selected={{this.category}}
-              @onChange={{this.handleCategorySelection}} as |category|
-            >
-              {{category.label}}
-            </PowerSelect>
-          </AuContent>
-        </div>
-        <div class="au-c-body-container au-c-body-container--scroll">
-          {{#if this.category}}
-            {{#each
-              (sort-by-road-sign-code
-                this.categoryRoadSigns
-              ) as |relatedRoadSignByCategory|
-            }}
-              <SidebarRoadSign
-                @imageUrl={{relatedRoadSignByCategory.image}}
-                @code={{relatedRoadSignByCategory.roadSignConceptCode}}
-                @meaning={{relatedRoadSignByCategory.meaning}}
-                @onAdd={{fn this.addRelatedRoadSign relatedRoadSignByCategory}}
-                @addText={{t "relatedRoadSign.crud.addOne"}}
-                class="au-c-action-sidebar__item"
-              />
-            {{/each}}
-          {{/if}}
-        </div>
-      </div>
-    </div>
-  {{/if}}
+  
   {{#if this.isAddingRelatedTrafficLights}}
     <div class="au-o-grid__item au-u-2-5@medium">
       <div
@@ -898,8 +835,6 @@
               class="au-c-action-sidebar__item"
             />
           {{/each}}
-        </div>
-        <div class="au-c-body-container au-c-body-container--scroll">
           {{#if this.category}}
             {{#each
               (sort-by-traffic-light-code

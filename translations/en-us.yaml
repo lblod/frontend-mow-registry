@@ -53,6 +53,8 @@ roadSignConcept:
     subSign: Possible subsigns
     mainSign: Possible main signs
     relatedSign: Related road signs
+    relatedMarking: Related road markings
+    relatedTrafficLight: Related traffic light
     valid: Is valid
   crud:
     create: Create road sign
@@ -85,6 +87,8 @@ trafficLightConcept:
     definition: Definition
     code: Code
     relatedTrafficLight: Related traffic lights
+    relatedSign: Related sign
+    relatedMarking: Related marking
     valid: Is valid
   crud:
     create: Create traffic light
@@ -116,6 +120,7 @@ roadMarkingConcept:
     code: Code
     relatedSign: Related road signs
     relatedMarking: Related road markings
+    relatedTrafficLight: Related traffic light
     valid: Is valid
   crud:
     create: Create road marking

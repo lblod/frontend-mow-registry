@@ -201,7 +201,9 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingSubSigns = !this.isAddingSubSigns;
     this.isAddingRelatedRoadSigns = false;
     this.isAddingMainSigns = false;
+    this.isAddingRelatedRoadMarkings = false;
     this.subSignCodeFilter = '';
+    this.isAddingRelatedTrafficLights=false;
   }
 
   @action
@@ -209,7 +211,9 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingMainSigns = !this.isAddingMainSigns;
     this.isAddingRelatedRoadSigns = false;
     this.isAddingSubSigns = false;
+    this.isAddingRelatedRoadMarkings = false;
     this.mainSignCodeFilter = '';
+    this.isAddingRelatedTrafficLights=false;
   }
 
   @action
@@ -217,6 +221,26 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingRelatedRoadSigns = !this.isAddingRelatedRoadSigns;
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
+    this.isAddingRelatedRoadMarkings = false;
+    this.isAddingRelatedTrafficLights=false;
+  }
+  
+  @action
+  toggleAddRelatedRoadMarkings() {
+    this.isAddingRelatedRoadMarkings = !this.isAddingRelatedRoadMarkings;
+    this.isAddingSubSigns = false;
+    this.isAddingMainSigns = false;
+    this.isAddingRelatedRoadSigns = false;
+    this.isAddingRelatedTrafficLights=false;
+  }
+
+  @action
+  toggleAddRelatedTrafficLights() {
+    this.isAddingRelatedTrafficLights = !this.isAddingRelatedTrafficLights;
+    this.isAddingSubSigns = false;
+    this.isAddingMainSigns = false;
+    this.isAddingRelatedRoadSigns = false;
+    this.isAddingRelatedRoadMarkings = false;
   }
 
   @action

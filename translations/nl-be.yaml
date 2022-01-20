@@ -53,6 +53,8 @@ roadSignConcept:
     subSign: Mogelijke onderborden
     mainSign: Mogelijke hoofdborden
     relatedSign: Gerelateerde verkeersborden
+    relatedMarking: Gerelateerde wegmarkeringen
+    relatedTrafficLight: Gerelateerde verkeerslicht
     valid: Gevalideerd
   crud:
     create: Verkeersbord aanmaken
@@ -77,6 +79,8 @@ trafficLightConcept:
     meaning: Betekenis
     definition: Definitie
     code: Code
+    relatedSign: Gerelateerde verkeersborden
+    relatedMarking: Gerelateerde wegmarkeringen
     relatedTrafficLight: Gerelateerde verkeerslichten
     valid: Gevalideerd
   crud:
@@ -109,6 +113,7 @@ roadMarkingConcept:
     code: Code
     relatedSign: Gerelateerde verkeersborden
     relatedMarking: Gerelateerde wegmarkeringen
+    relatedTrafficLight: Gerelateerde verkeerslicht
     valid: Gevalideerd
   crud:
     create: Wegmarkering aanmaken
