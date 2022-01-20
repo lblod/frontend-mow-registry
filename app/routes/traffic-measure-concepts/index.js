@@ -19,12 +19,15 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
         number: params.page,
         size: params.size,
       },
+      include: 'templates',
     };
 
     if (params.code) {
       query['filter[label]'] = params.code;
     }
 
-    return await this.store.query('traffic-measure-concept', query);
+    const result = await this.store.query('traffic-measure-concept', query);
+
+    return result;
   }
 }

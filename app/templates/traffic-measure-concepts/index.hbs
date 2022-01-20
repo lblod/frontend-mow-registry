@@ -65,7 +65,7 @@
         {{/each}}
       </td>
       <td>
-        {{trafficMeasureConcept.templates.firstObject.value}}
+        <TrafficMeasureTemplate @concept={{trafficMeasureConcept}} />
       </td>
       <td>
         {{#if trafficMeasureConcept.zonality}}
