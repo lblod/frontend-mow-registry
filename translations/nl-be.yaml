@@ -133,6 +133,7 @@ trafficMeasureConcept:
   name: Mobiliteitsmaatregel
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
+    temporal: Variabele signalisatie
     trafficSign: Verkeersteken
     code: Code
     sign: Verkeersbord

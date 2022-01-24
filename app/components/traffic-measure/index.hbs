@@ -5,10 +5,20 @@
       <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
         {{this.label}}
       </AuHeading>
-      <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
-        {{t "utility.zonality"}}
-      </AuHeading>
-      <ZonalitySelector @concept={{@trafficMeasureConcept}}/>
+      <div class="au-o-grid">
+        <div class="au-o-grid__item au-u-1-2">
+          <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
+            {{t "utility.zonality"}}
+          </AuHeading>
+          <ZonalitySelector @concept={{@trafficMeasureConcept}} />
+        </div>
+        <div class="au-o-grid__item au-u-1-2">
+          <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
+            {{t "trafficMeasureConcept.attr.temporal"}}
+          </AuHeading>
+          <TemporalSelector @concept={{@trafficMeasureConcept}} />
+        </div>
+      </div>
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small au-u-margin-top-small">
         {{t "trafficMeasureConcept.attr.trafficSign"}}
       </AuHeading>
