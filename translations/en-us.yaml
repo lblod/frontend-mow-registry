@@ -140,7 +140,7 @@ trafficMeasureConcept:
   name: Traffic measure
   help: Add $'{variableName} to add a variable/instruction
   attr:
-    temporal: Temporal
+    temporal: Temporal signage
     trafficSign: Traffic sign
     code: Code
     sign: Sign
