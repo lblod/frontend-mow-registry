@@ -1,3 +1,11 @@
+## 0.12.0 (2022-01-26)
+
+#### :rocket: Enhancement
+* [#124](https://github.com/lblod/frontend-mow-registry/pull/124) added support for temporal signage ([@Asergey91](https://github.com/Asergey91))
+
+#### Committers: 1
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
 ## 0.11.0 (2022-01-20)
 
 #### :rocket: Enhancement
