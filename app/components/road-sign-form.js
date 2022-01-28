@@ -43,13 +43,11 @@ export default class RoadSignFormComponent extends Component {
     event.preventDefault();
 
     if (this.file) {
-      debugger;
       let fileResponse = yield this.fileService.upload(this.file);
-      if(ENV.baseUrl != '{{BASE_URL}}'){
+      if (ENV.baseUrl != '{{BASE_URL}}') {
         roadSignConcept.image = ENV.baseUrl + fileResponse.downloadLink;
-      }
-      else {
-        roadSignConcept.image = 'http://localhost'+fileResponse.downloadLink;
+      } else {
+        roadSignConcept.image = 'http://localhost' + fileResponse.downloadLink;
       }
     }
 
