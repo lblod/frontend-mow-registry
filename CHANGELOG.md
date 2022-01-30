@@ -1,3 +1,42 @@
+## 0.12.0 (2022-01-26)
+
+#### :rocket: Enhancement
+* [#124](https://github.com/lblod/frontend-mow-registry/pull/124) added support for temporal signage ([@Asergey91](https://github.com/Asergey91))
+
+#### Committers: 1
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
+## 0.11.0 (2022-01-20)
+
+#### :rocket: Enhancement
+* [#123](https://github.com/lblod/frontend-mow-registry/pull/123) made measures appear fully unwrapped in preview ([@Asergey91](https://github.com/Asergey91))
+
+#### :bug: Bug Fix
+* [#122](https://github.com/lblod/frontend-mow-registry/pull/122) Issue GN-3185: Bug on removing signs ([@benjay10](https://github.com/benjay10))
+
+#### Committers: 2
+- Ben ([@benjay10](https://github.com/benjay10))
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
+## 0.10.0 (2022-01-14)
+
+#### :rocket: Enhancement
+* [#120](https://github.com/lblod/frontend-mow-registry/pull/120) Feature/date variables ([@lagartoverde](https://github.com/lagartoverde))
+* [#118](https://github.com/lblod/frontend-mow-registry/pull/118) parsing improvements ([@Asergey91](https://github.com/Asergey91))
+
+#### :house: Internal
+* [#119](https://github.com/lblod/frontend-mow-registry/pull/119) Content check and design review ([@Dietr](https://github.com/Dietr))
+
+#### Committers: 3
+- Dieter Peirs ([@Dietr](https://github.com/Dietr))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
+## 0.9.0 (2022-01-14)
+
+make acm/idm login optional
+
+
 ## 0.8.0 (2021-12-17)
 
 #### :rocket: Enhancement

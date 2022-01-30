@@ -33,11 +33,11 @@ module.exports = function (environment) {
       disableRedirectInitializer: true,
       providers: {
         'acmidm-oauth2': {
-          apiKey: 'ae3be0bb-5c5d-447f-9916-1ea819267e53',
-          baseUrl: 'https://authenticatie-ti.vlaanderen.be/op/v1/auth',
+          apiKey: '{{ACM_API_KEY}}',
+          baseUrl: '{{ACM_BASE_URL}}',
           scope: 'openid vo profile abb_registermobiliteit',
-          redirectUri: 'https://roadsigns.lblod.info/authorization/callback',
-          logoutUrl: 'https://authenticatie-ti.vlaanderen.be/op/v1/logout',
+          redirectUri: '{{ACM_REDIRECT_URL}}',
+          logoutUrl: '{{ACM_LOGOUT_URL}}',
         },
       },
     },
