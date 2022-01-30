@@ -1,3 +1,11 @@
+## 0.13.0 (2022-01-30)
+
+#### :rocket: Enhancement
+* [#126](https://github.com/lblod/frontend-mow-registry/pull/126) Feature/configurable auth ([@nvdk](https://github.com/nvdk))
+
+#### Committers: 1
+- Niels V ([@nvdk](https://github.com/nvdk))
+
 ## 0.12.0 (2022-01-26)
 
 #### :rocket: Enhancement
