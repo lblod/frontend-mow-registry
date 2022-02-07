@@ -21,10 +21,7 @@ export default class CodelistsService extends Service {
         sort: 'label',
       });
 
-      for (let i = 0; i < codeLists.length; i++) {
-        const codeList = codeLists.objectAt(i);
-        yield codeList.concepts;
-      }
+      yield Promise.all(codeLists.map((codeList) => codeList.concepts));
 
       this.codeLists = codeLists;
     }

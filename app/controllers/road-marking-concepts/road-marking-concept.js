@@ -9,6 +9,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   @tracked isAddingRelatedRoadSigns = false;
   @tracked isAddingRelatedRoadMarkings = false;
   @tracked isAddingRelatedTrafficLights = false;
+  @tracked isOpen = false;
 
   @tracked category = null;
   @tracked categoryRoadMarkings = null;
@@ -211,6 +212,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     this.editedTemplate = null;
     this.isAddingRelatedRoadMarkings = false;
     this.isAddingRelatedRoadSigns = false;
+    this.isOpen = false;
     this.category = null;
     this.categoryRoadMarkings = null;
   }

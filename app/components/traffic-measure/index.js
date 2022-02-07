@@ -26,6 +26,9 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked selectedType;
   @tracked instructions = [];
   @tracked inputTypes = [];
+
+  mappingsToBeDeleted = [];
+
   constructor(...args) {
     super(...args);
 
@@ -59,8 +62,6 @@ export default class TrafficMeasureIndexComponent extends Component {
       label: this.intl.t('utility.templateVariables.instruction'),
     };
   }
-
-  mappingsToBeDeleted = [];
 
   get previewHtml() {
     return htmlSafe(this.preview);
@@ -125,7 +126,9 @@ export default class TrafficMeasureIndexComponent extends Component {
     }
     //remove input type instruction if there are none available and reset mappings with instructions
     if (this.instructions.length != 0) {
-      this.inputTypes.pushObject(this.instructionType);
+      if (this.inputTypes.indexOf(this.instructionType) == -1) {
+        this.inputTypes.pushObject(this.instructionType);
+      }
     } else if (this.instructions.length == 0) {
       if (this.inputTypes.indexOf(this.instructionType) != -1) {
         this.inputTypes.splice(
@@ -205,8 +208,8 @@ export default class TrafficMeasureIndexComponent extends Component {
   //parsing algo that keeps ui changes in tact
   @action
   parseTemplate() {
-    //finds non-whitespase characters between ${ and }
-    const regex = new RegExp(/\${(\S+?)}/g);
+    //match "a-z", "A-Z", "-", "_", "." and "any digit characters" between ${ and } lazily
+    const regex = new RegExp(/\${([a-zA-Z\-_.\d]+?)}/g);
     const regexResult = [...this.template.value.matchAll(regex)];
 
     //remove duplicates from regex result
@@ -218,6 +221,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     });
 
     //remove non-existing variable mappings from current array
+    //turns mappings into a non ember data thing
     this.mappings = this.mappings.filter((mapping) => {
       //search regex results if they contain this mapping
       if (
@@ -270,11 +274,22 @@ export default class TrafficMeasureIndexComponent extends Component {
       });
     });
 
+    //check existing default mappings with deleted non-default mappings and swap them
+    sortedMappings.forEach((sMapping, sI) => {
+      this.mappingsToBeDeleted.forEach((dMapping, dI) => {
+        if (sMapping.variable === dMapping.variable) {
+          if (dMapping.type !== 'text' && sMapping.type === 'text') {
+            sortedMappings.replace(sI, 1, [dMapping]);
+            this.mappingsToBeDeleted.replace(dI, 1, [sMapping]);
+          }
+        }
+      });
+    });
+
     this.mappings = sortedMappings;
 
     this.generatePreview.perform();
   }
-
   @task
   *generatePreview() {
     this.preview = this.template.value;

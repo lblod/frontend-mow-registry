@@ -67,8 +67,8 @@ roadSignConcept:
     meaningFilter: Zoeken op betekenis
     categoryFilter: Filteren op categorie
   landingPage:
-    subtitle: Ondertitel voor kaart
-    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    subtitle: –
+    content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden
 trafficLightConcept:
   name: Verkeerslichten
@@ -92,8 +92,8 @@ trafficLightConcept:
     codeFilter: Code
     meaningFilter: Zoeken op betekenis
   landingPage:
-    subtitle: Ondertitel voor kaart
-    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    subtitle: –
+    content: Beheer verkeerlichten en instructies.
     button: Ga naar Verkeerslichten
 relatedTrafficLight:
   crud:
@@ -124,8 +124,8 @@ roadMarkingConcept:
     codeFilter: Code
     meaningFilter: Zoeken op betekenis
   landingPage:
-    subtitle: Ondertitel voor kaart
-    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    subtitle: –
+    content: Beheer wegmarkeringen en instructies.
     button: Ga naar Wegmarkeringen
 relatedRoadMarking:
   crud:
@@ -138,6 +138,7 @@ trafficMeasureConcept:
   name: Mobiliteitsmaatregel
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
+    temporal: Variabele signalisatie
     trafficSign: Verkeersteken
     code: Code
     sign: Verkeersbord
@@ -160,8 +161,8 @@ trafficMeasureConcept:
     typeToSearch: Typ om te zoeken
     loading: Laden ...
   landingPage:
-    subtitle: Ondertitel voor kaart
-    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    subtitle: –
+    content: Beheer mobiliteitsmaatregelen.
     button: Ga naar Mobiliteitsmaatregelen
 subSign:
   filter:
@@ -211,6 +212,6 @@ codelist:
     values: Waarden
     id: Id
   landingPage:
-    subtitle: Ondertitel voor kaart
-    content: Informatie op de kaart die onder de kop komt. Inhoud.
+    subtitle: –
+    content: Overzicht en beheer van beschikbare codelijsten.
     button: Ga naar Codelijsten
