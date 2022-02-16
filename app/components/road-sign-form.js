@@ -3,6 +3,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import RoadSignConceptValidations from 'mow-registry/validations/road-sign-concept';
+import ENV from 'mow-registry/config/environment';
 
 export default class RoadSignFormComponent extends Component {
   @service router;
@@ -43,7 +44,11 @@ export default class RoadSignFormComponent extends Component {
 
     if (this.file) {
       let fileResponse = yield this.fileService.upload(this.file);
-      roadSignConcept.image = fileResponse.downloadLink;
+      if (ENV.baseUrl != '{{BASE_URL}}') {
+        roadSignConcept.image = ENV.baseUrl + fileResponse.downloadLink;
+      } else {
+        roadSignConcept.image = 'http://localhost' + fileResponse.downloadLink;
+      }
     }
 
     yield roadSignConcept.validate();
