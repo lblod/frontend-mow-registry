@@ -45,8 +45,7 @@ module.exports = function (environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    },
-    baseUrl: '{{BASE_URL}}',
+    }
   };
 
   if (environment === 'development') {
@@ -72,6 +71,7 @@ module.exports = function (environment) {
 
   if (environment === 'production') {
     ENV.featureFlags.simpleLogin = '{{SIMPLE_LOGIN}}';
+    ENV.baseUrl = '{{BASE_URL}}';
     // here you can enable a production-specific feature
   }
 
