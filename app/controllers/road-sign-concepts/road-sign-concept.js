@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { task } from 'ember-concurrency';
 
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
   @service router;
@@ -137,45 +138,31 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async addRelatedRoadSign(relatedRoadSign) {
-    let relatedRoadSigns = await this.model.roadSignConcept
-      .relatedRoadSignConcepts;
-
+    let relatedRoadSigns = await this.model.roadSignConcept.relatedRoadSignConcepts;
     relatedRoadSigns.pushObject(relatedRoadSign);
-    this.categoryRoadSigns.removeObject(relatedRoadSign);
-    this.model.roadSignConcept.save();
+    await this.model.roadSignConcept.save();
   }
 
   @action
   async removeRelatedRoadSign(relatedRoadSign) {
-    let relatedRoadSigns = await this.model.roadSignConcept
-      .relatedRoadSignConcepts;
-
-    relatedRoadSigns.removeObject(relatedRoadSign);
-
-    if (this.categoryRoadSigns) {
-      this.categoryRoadSigns.pushObject(relatedRoadSign);
-    }
-
-    this.model.roadSignConcept.save();
+    const roadSignConcept = await this.model.roadSignConcept
+    // const relatedRoadSignConcepts = await roadSignConcept.relatedRoadSignConcepts;
+    // relatedRoadSignConcepts.removeObject(relatedRoadSign);
+    roadSignConcept.save();
   }
 
   @action
   async addRelatedRoadMarking(relatedRoadMarking) {
-    let relatedRoadMarkings = await this.model.roadSignConcept
-      .relatedRoadMarkingConcepts;
-
+    let relatedRoadMarkings = await this.model.roadSignConcept.relatedRoadMarkingConcepts;
     relatedRoadMarkings.pushObject(relatedRoadMarking);
-    this.model.roadSignConcept.save();
+    await relatedRoadMarking.save();
   }
 
   @action
   async removeRelatedRoadMarking(relatedRoadMarking) {
-    let relatedRoadMarkings = await this.model.roadSignConcept
-      .relatedRoadMarkingConcepts;
-
+    let relatedRoadMarkings = await this.model.roadSignConcept.relatedRoadMarkingConcepts;
     relatedRoadMarkings.removeObject(relatedRoadMarking);
-
-    this.model.roadSignConcept.save();
+    await relatedRoadMarking.save();
   }
 
   @action

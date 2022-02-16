@@ -7,10 +7,7 @@ export default class RoadMarkingConceptModel extends ConceptModel {
   @attr definition;
   @attr roadMarkingConceptCode;
   @belongsTo('road-marking-concept-status-code') status;
-  @hasMany('road-marking-concept', { inverse: null })
-  relatedRoadMarkingConcepts;
-  @hasMany('road-sign-concept', { inverse: 'relatedRoadMarkingConcepts' })
-  relatedRoadSignConcepts;
-  @hasMany('traffic-light-concept', { inverse: 'relatedRoadMarkingConcepts' })
-  relatedTrafficLightConcepts;
+  @hasMany('road-marking-concept', { inverse: null }) relatedRoadMarkingConcepts;
+  @hasMany('road-sign-concept', { inverse: 'relatedRoadMarkingConcepts' })relatedRoadSignConcepts;
+  @hasMany('traffic-light-concept', { inverse: 'relatedRoadMarkingConcepts' })relatedTrafficLightConcepts;
 }
