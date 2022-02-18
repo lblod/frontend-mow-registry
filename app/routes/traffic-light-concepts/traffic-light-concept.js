@@ -28,7 +28,10 @@ export default class TrafficlightConcept extends Route {
         }),
     });
 
-    // let relatedSubSigns = await model.roadSignConcept.subSigns;
+    model.trafficLightConcept.relatedTrafficLightConcepts=[];
+    model.trafficLightConcept.relatedTrafficLightConcepts
+      .addObjects(await model.trafficLightConcept.relatedToTrafficLightConcepts)
+      .addObjects(await model.trafficLightConcept.relatedFromTrafficLightConcepts)
 
     return model;
   }

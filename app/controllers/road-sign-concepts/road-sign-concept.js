@@ -138,17 +138,27 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async addRelatedRoadSign(relatedRoadSign) {
-    let relatedRoadSigns = await this.model.roadSignConcept.relatedRoadSignConcepts;
-    relatedRoadSigns.pushObject(relatedRoadSign);
+    const relatedToRoadSignConcepts = await this.model.roadSignConcept.relatedToRoadSignConcepts;
+    const relatedRoadSignConcepts = await this.model.roadSignConcept.relatedRoadSignConcepts;
+
+    relatedToRoadSignConcepts.pushObject(relatedRoadSign);
+    relatedRoadSignConcepts.pushObject(relatedRoadSign);
+
     await this.model.roadSignConcept.save();
   }
 
   @action
   async removeRelatedRoadSign(relatedRoadSign) {
-    const roadSignConcept = await this.model.roadSignConcept
-    // const relatedRoadSignConcepts = await roadSignConcept.relatedRoadSignConcepts;
-    // relatedRoadSignConcepts.removeObject(relatedRoadSign);
-    roadSignConcept.save();
+    const relatedToRoadSignConcepts = await this.model.roadSignConcept.relatedToRoadSignConcepts;
+    const relatedFromRoadSignConcepts = await this.model.roadSignConcept.relatedFromRoadSignConcepts;
+    const relatedRoadSignConcepts = await this.model.roadSignConcept.relatedRoadSignConcepts;
+
+    relatedToRoadSignConcepts.removeObject(relatedRoadSign);
+    relatedFromRoadSignConcepts.removeObject(relatedRoadSign);
+    relatedRoadSignConcepts.removeObject(relatedRoadSign);
+
+    await relatedRoadSign.save();
+    await this.model.roadSignConcept.save();
   }
 
   @action

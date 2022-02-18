@@ -64,12 +64,13 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async addRelatedTrafficLight(relatedTrafficLight) {
-    let relatedTrafficLights = await this.model.trafficLightConcept
-      .relatedTrafficLightConcepts;
+    const relatedToTrafficLightConcepts = await this.model.trafficLightConcept.relatedToTrafficLightConcepts;
+    const relatedTrafficLightConcepts = await this.model.trafficLightConcept.relatedTrafficLightConcepts;
 
-    relatedTrafficLights.pushObject(relatedTrafficLight);
-    // this.categoryTrafficLights.removeObject(relatedTrafficLight);
-    this.model.trafficLightConcept.save();
+    relatedToTrafficLightConcepts.pushObject(relatedTrafficLight);
+    relatedTrafficLightConcepts.pushObject(relatedTrafficLight);
+
+    await this.model.trafficLightConcept.save();
   }
 
   @action
@@ -130,12 +131,16 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async removeRelatedTrafficLight(relatedTrafficLight) {
-    let relatedTrafficLights = await this.model.trafficLightConcept
-      .relatedTrafficLightConcepts;
+    const relatedToTrafficLightConcepts = await this.model.trafficLightConcept.relatedToTrafficLightConcepts;
+    const relatedFromTrafficLightConcepts = await this.model.trafficLightConcept.relatedFromTrafficLightConcepts;
+    const relatedTrafficLightConcepts = await this.model.trafficLightConcept.relatedTrafficLightConcepts;
 
-    relatedTrafficLights.removeObject(relatedTrafficLight);
+    relatedToTrafficLightConcepts.removeObject(relatedTrafficLight);
+    relatedFromTrafficLightConcepts.removeObject(relatedTrafficLight);
+    relatedTrafficLightConcepts.removeObject(relatedTrafficLight);
 
-    this.model.trafficLightConcept.save();
+    await relatedTrafficLight.save();
+    await this.model.trafficLightConcept.save();
   }
 
   @action
