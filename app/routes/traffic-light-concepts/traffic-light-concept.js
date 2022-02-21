@@ -28,10 +28,12 @@ export default class TrafficlightConcept extends Route {
         }),
     });
 
-    model.trafficLightConcept.relatedTrafficLightConcepts=[];
+    model.trafficLightConcept.relatedTrafficLightConcepts = [];
     model.trafficLightConcept.relatedTrafficLightConcepts
       .addObjects(await model.trafficLightConcept.relatedToTrafficLightConcepts)
-      .addObjects(await model.trafficLightConcept.relatedFromTrafficLightConcepts)
+      .addObjects(
+        await model.trafficLightConcept.relatedFromTrafficLightConcepts
+      );
 
     return model;
   }

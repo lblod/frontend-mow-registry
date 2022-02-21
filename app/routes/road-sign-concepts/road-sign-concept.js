@@ -30,7 +30,7 @@ export default class RoadsignConcept extends Route {
         page: {
           size: 10000,
         },
-      })
+      }),
     });
 
     let relatedSubSigns = await model.roadSignConcept.subSigns;
@@ -40,12 +40,12 @@ export default class RoadsignConcept extends Route {
         !relatedSubSigns.includes(subSign)
       );
     });
-    
-    model.roadSignConcept.relatedRoadSignConcepts=[];
+
+    model.roadSignConcept.relatedRoadSignConcepts = [];
     model.roadSignConcept.relatedRoadSignConcepts
       .addObjects(await model.roadSignConcept.relatedToRoadSignConcepts)
-      .addObjects(await model.roadSignConcept.relatedFromRoadSignConcepts)
-    
+      .addObjects(await model.roadSignConcept.relatedFromRoadSignConcepts);
+
     return model;
   }
 

@@ -2,7 +2,6 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { task } from 'ember-concurrency';
 
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
   @service router;
@@ -138,8 +137,10 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async addRelatedRoadSign(relatedRoadSign) {
-    const relatedToRoadSignConcepts = await this.model.roadSignConcept.relatedToRoadSignConcepts;
-    const relatedRoadSignConcepts = await this.model.roadSignConcept.relatedRoadSignConcepts;
+    const relatedToRoadSignConcepts = await this.model.roadSignConcept
+      .relatedToRoadSignConcepts;
+    const relatedRoadSignConcepts = await this.model.roadSignConcept
+      .relatedRoadSignConcepts;
 
     relatedToRoadSignConcepts.pushObject(relatedRoadSign);
     relatedRoadSignConcepts.pushObject(relatedRoadSign);
@@ -149,9 +150,12 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async removeRelatedRoadSign(relatedRoadSign) {
-    const relatedToRoadSignConcepts = await this.model.roadSignConcept.relatedToRoadSignConcepts;
-    const relatedFromRoadSignConcepts = await this.model.roadSignConcept.relatedFromRoadSignConcepts;
-    const relatedRoadSignConcepts = await this.model.roadSignConcept.relatedRoadSignConcepts;
+    const relatedToRoadSignConcepts = await this.model.roadSignConcept
+      .relatedToRoadSignConcepts;
+    const relatedFromRoadSignConcepts = await this.model.roadSignConcept
+      .relatedFromRoadSignConcepts;
+    const relatedRoadSignConcepts = await this.model.roadSignConcept
+      .relatedRoadSignConcepts;
 
     relatedToRoadSignConcepts.removeObject(relatedRoadSign);
     relatedFromRoadSignConcepts.removeObject(relatedRoadSign);
@@ -163,14 +167,16 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async addRelatedRoadMarking(relatedRoadMarking) {
-    let relatedRoadMarkings = await this.model.roadSignConcept.relatedRoadMarkingConcepts;
+    let relatedRoadMarkings = await this.model.roadSignConcept
+      .relatedRoadMarkingConcepts;
     relatedRoadMarkings.pushObject(relatedRoadMarking);
     await relatedRoadMarking.save();
   }
 
   @action
   async removeRelatedRoadMarking(relatedRoadMarking) {
-    let relatedRoadMarkings = await this.model.roadSignConcept.relatedRoadMarkingConcepts;
+    let relatedRoadMarkings = await this.model.roadSignConcept
+      .relatedRoadMarkingConcepts;
     relatedRoadMarkings.removeObject(relatedRoadMarking);
     await relatedRoadMarking.save();
   }
@@ -201,7 +207,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingMainSigns = false;
     this.isAddingRelatedRoadMarkings = false;
     this.subSignCodeFilter = '';
-    this.isAddingRelatedTrafficLights=false;
+    this.isAddingRelatedTrafficLights = false;
   }
 
   @action
@@ -211,7 +217,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingSubSigns = false;
     this.isAddingRelatedRoadMarkings = false;
     this.mainSignCodeFilter = '';
-    this.isAddingRelatedTrafficLights=false;
+    this.isAddingRelatedTrafficLights = false;
   }
 
   @action
@@ -220,16 +226,16 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
     this.isAddingRelatedRoadMarkings = false;
-    this.isAddingRelatedTrafficLights=false;
+    this.isAddingRelatedTrafficLights = false;
   }
-  
+
   @action
   toggleAddRelatedRoadMarkings() {
     this.isAddingRelatedRoadMarkings = !this.isAddingRelatedRoadMarkings;
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
     this.isAddingRelatedRoadSigns = false;
-    this.isAddingRelatedTrafficLights=false;
+    this.isAddingRelatedTrafficLights = false;
   }
 
   @action

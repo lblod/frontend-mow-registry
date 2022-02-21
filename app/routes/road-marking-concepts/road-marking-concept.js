@@ -28,10 +28,12 @@ export default class RoadmarkingConcept extends Route {
         }),
     });
 
-    model.roadMarkingConcept.relatedRoadMarkingConcepts=[];
+    model.roadMarkingConcept.relatedRoadMarkingConcepts = [];
     model.roadMarkingConcept.relatedRoadMarkingConcepts
       .addObjects(await model.roadMarkingConcept.relatedToRoadMarkingConcepts)
-      .addObjects(await model.roadMarkingConcept.relatedFromRoadMarkingConcepts)
+      .addObjects(
+        await model.roadMarkingConcept.relatedFromRoadMarkingConcepts
+      );
 
     return model;
   }

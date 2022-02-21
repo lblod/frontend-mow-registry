@@ -64,8 +64,10 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async addRelatedTrafficLight(relatedTrafficLight) {
-    const relatedToTrafficLightConcepts = await this.model.trafficLightConcept.relatedToTrafficLightConcepts;
-    const relatedTrafficLightConcepts = await this.model.trafficLightConcept.relatedTrafficLightConcepts;
+    const relatedToTrafficLightConcepts = await this.model.trafficLightConcept
+      .relatedToTrafficLightConcepts;
+    const relatedTrafficLightConcepts = await this.model.trafficLightConcept
+      .relatedTrafficLightConcepts;
 
     relatedToTrafficLightConcepts.pushObject(relatedTrafficLight);
     relatedTrafficLightConcepts.pushObject(relatedTrafficLight);
@@ -131,9 +133,12 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async removeRelatedTrafficLight(relatedTrafficLight) {
-    const relatedToTrafficLightConcepts = await this.model.trafficLightConcept.relatedToTrafficLightConcepts;
-    const relatedFromTrafficLightConcepts = await this.model.trafficLightConcept.relatedFromTrafficLightConcepts;
-    const relatedTrafficLightConcepts = await this.model.trafficLightConcept.relatedTrafficLightConcepts;
+    const relatedToTrafficLightConcepts = await this.model.trafficLightConcept
+      .relatedToTrafficLightConcepts;
+    const relatedFromTrafficLightConcepts = await this.model.trafficLightConcept
+      .relatedFromTrafficLightConcepts;
+    const relatedTrafficLightConcepts = await this.model.trafficLightConcept
+      .relatedTrafficLightConcepts;
 
     relatedToTrafficLightConcepts.removeObject(relatedTrafficLight);
     relatedFromTrafficLightConcepts.removeObject(relatedTrafficLight);
@@ -168,28 +173,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingRelatedRoadMarkings = false;
     this.isAddingRelatedTrafficLights = !this.isAddingRelatedTrafficLights;
   }
-
-  // @action
-  // async handleCategorySelection(category) {
-  //   if (category) {
-  //     this.category = category;
-  //     let categoryTrafficLights = await category.trafficLightConcepts;
-  //     let relatedTrafficLights = await this.model.trafficLightConcept
-  //       .relatedTrafficLightConcepts;
-
-  //     this.categoryTrafficLights = categoryTrafficLights.filter(
-  //       (trafficLight) => {
-  //         return (
-  //           trafficLight.id !== this.model.trafficLightConcept.id &&
-  //           !relatedTrafficLights.includes(trafficLight)
-  //         );
-  //       }
-  //     );
-  //   } else {
-  //     this.category = null;
-  //     this.categoryTrafficLights = null;
-  //   }
-  // }
 
   @action
   async removeTrafficLightConcept(trafficLightConcept, event) {

@@ -71,8 +71,10 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
   @action
   async addRelatedRoadMarking(relatedRoadMarking) {
-    const relatedToRoadMarkingConcepts = await this.model.roadMarkingConcept.relatedToRoadMarkingConcepts;
-    const relatedRoadMarkingConcepts = await this.model.roadMarkingConcept.relatedRoadMarkingConcepts;
+    const relatedToRoadMarkingConcepts = await this.model.roadMarkingConcept
+      .relatedToRoadMarkingConcepts;
+    const relatedRoadMarkingConcepts = await this.model.roadMarkingConcept
+      .relatedRoadMarkingConcepts;
 
     relatedToRoadMarkingConcepts.pushObject(relatedRoadMarking);
     relatedRoadMarkingConcepts.pushObject(relatedRoadMarking);
@@ -82,9 +84,12 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
   @action
   async removeRelatedRoadMarking(relatedRoadMarking) {
-    const relatedToRoadMarkingConcepts = await this.model.roadMarkingConcept.relatedToRoadMarkingConcepts;
-    const relatedFromRoadMarkingConcepts = await this.model.roadMarkingConcept.relatedFromRoadMarkingConcepts;
-    const relatedRoadMarkingConcepts = await this.model.roadMarkingConcept.relatedRoadMarkingConcepts;
+    const relatedToRoadMarkingConcepts = await this.model.roadMarkingConcept
+      .relatedToRoadMarkingConcepts;
+    const relatedFromRoadMarkingConcepts = await this.model.roadMarkingConcept
+      .relatedFromRoadMarkingConcepts;
+    const relatedRoadMarkingConcepts = await this.model.roadMarkingConcept
+      .relatedRoadMarkingConcepts;
 
     relatedToRoadMarkingConcepts.removeObject(relatedRoadMarking);
     relatedFromRoadMarkingConcepts.removeObject(relatedRoadMarking);
