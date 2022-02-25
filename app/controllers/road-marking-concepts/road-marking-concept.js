@@ -6,8 +6,9 @@ import { tracked } from '@glimmer/tracking';
 export default class RoadmarkingConceptsRoadmarkingConceptController extends Controller {
   @service router;
 
-  @tracked isAddingRelatedRoadMarkings = false;
   @tracked isAddingRelatedRoadSigns = false;
+  @tracked isAddingRelatedRoadMarkings = false;
+  @tracked isAddingRelatedTrafficLights = false;
   @tracked isOpen = false;
 
   @tracked category = null;
@@ -17,12 +18,14 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   @tracked relatedRoadMarkingCodeFilter = '';
   @tracked newDescription = '';
   @tracked editedTemplate;
+  @tracked relatedTrafficLightCodeFilter = '';
 
   get showSidebar() {
     return (
-      this.isAddingRelatedRoadMarkings ||
+      this.hasActiveChildRoute ||
       this.isAddingRelatedRoadSigns ||
-      this.hasActiveChildRoute
+      this.isAddingRelatedRoadMarkings ||
+      this.isAddingRelatedTrafficLights
     );
   }
 
@@ -54,23 +57,46 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     });
   }
 
+  get trafficLights() {
+    if (!this.relatedTrafficLightCodeFilter.trim()) {
+      return this.model.allTrafficLights;
+    }
+
+    return this.model.allTrafficLights.filter((trafficLight) => {
+      return trafficLight.definition
+        .toLowerCase()
+        .includes(this.relatedTrafficLightCodeFilter.toLowerCase().trim());
+    });
+  }
+
   @action
   async addRelatedRoadMarking(relatedRoadMarking) {
-    let relatedRoadMarkings = await this.model.roadMarkingConcept
+    const relatedToRoadMarkingConcepts = await this.model.roadMarkingConcept
+      .relatedToRoadMarkingConcepts;
+    const relatedRoadMarkingConcepts = await this.model.roadMarkingConcept
       .relatedRoadMarkingConcepts;
 
-    relatedRoadMarkings.pushObject(relatedRoadMarking);
-    this.model.roadMarkingConcept.save();
+    relatedToRoadMarkingConcepts.pushObject(relatedRoadMarking);
+    relatedRoadMarkingConcepts.pushObject(relatedRoadMarking);
+
+    await this.model.roadMarkingConcept.save();
   }
 
   @action
   async removeRelatedRoadMarking(relatedRoadMarking) {
-    let relatedRoadMarkings = await this.model.roadMarkingConcept
+    const relatedToRoadMarkingConcepts = await this.model.roadMarkingConcept
+      .relatedToRoadMarkingConcepts;
+    const relatedFromRoadMarkingConcepts = await this.model.roadMarkingConcept
+      .relatedFromRoadMarkingConcepts;
+    const relatedRoadMarkingConcepts = await this.model.roadMarkingConcept
       .relatedRoadMarkingConcepts;
 
-    relatedRoadMarkings.removeObject(relatedRoadMarking);
+    relatedToRoadMarkingConcepts.removeObject(relatedRoadMarking);
+    relatedFromRoadMarkingConcepts.removeObject(relatedRoadMarking);
+    relatedRoadMarkingConcepts.removeObject(relatedRoadMarking);
 
-    this.model.roadMarkingConcept.save();
+    await relatedRoadMarking.save();
+    await this.model.roadMarkingConcept.save();
   }
 
   @action
@@ -85,7 +111,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
   @action
   async removeRelatedRoadSign(relatedRoadSign) {
-    let relatedRoadSigns = await this.model.roadSignConcept
+    let relatedRoadSigns = await this.model.roadMarkingConcept
       .relatedRoadSignConcepts;
 
     relatedRoadSigns.removeObject(relatedRoadSign);
@@ -94,7 +120,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
       this.categoryRoadSigns.pushObject(relatedRoadSign);
     }
 
-    this.model.roadSignConcept.save();
+    this.model.roadMarkingConcept.save();
   }
 
   @action
@@ -111,20 +137,53 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   }
 
   @action
+  async addRelatedTrafficLight(relatedTrafficLight) {
+    let relatedTrafficLights = await this.model.roadMarkingConcept
+      .relatedTrafficLightConcepts;
+
+    relatedTrafficLights.pushObject(relatedTrafficLight);
+    this.model.roadMarkingConcept.save();
+  }
+
+  @action
+  async removeRelatedTrafficLight(relatedTrafficLight) {
+    let relatedTrafficLights = await this.model.roadMarkingConcept
+      .relatedTrafficLightConcepts;
+
+    relatedTrafficLights.removeObject(relatedTrafficLight);
+
+    this.model.roadMarkingConcept.save();
+  }
+
+  @action
   setRelatedRoadMarkingCodeFilter(event) {
     this.relatedRoadMarkingCodeFilter = event.target.value.trim();
   }
 
   @action
-  toggleAddRelatedRoadMarkings() {
-    this.isAddingRelatedRoadMarkings = !this.isAddingRelatedRoadMarkings;
-    this.isAddingRelatedRoadSigns = false;
+  setRelatedTrafficLightCodeFilter(event) {
+    this.relatedTrafficLightCodeFilter = event.target.value.trim();
   }
 
   @action
   toggleAddRelatedRoadSigns() {
     this.isAddingRelatedRoadSigns = !this.isAddingRelatedRoadSigns;
     this.isAddingRelatedRoadMarkings = false;
+    this.isAddingRelatedTrafficLights = false;
+  }
+
+  @action
+  toggleAddRelatedRoadMarkings() {
+    this.isAddingRelatedRoadSigns = false;
+    this.isAddingRelatedRoadMarkings = !this.isAddingRelatedRoadMarkings;
+    this.isAddingRelatedTrafficLights = false;
+  }
+
+  @action
+  toggleAddRelatedTrafficLights() {
+    this.isAddingRelatedRoadSigns = false;
+    this.isAddingRelatedRoadMarkings = false;
+    this.isAddingRelatedTrafficLights = !this.isAddingRelatedTrafficLights;
   }
 
   @action
