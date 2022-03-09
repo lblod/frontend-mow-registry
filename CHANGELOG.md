@@ -1,3 +1,15 @@
+## 0.14.0 (2022-03-09)
+
+#### :rocket: Enhancement
+* [#81](https://github.com/lblod/frontend-mow-registry/pull/81) enable all relations: signs, lights and marks. ([@bdevloed](https://github.com/bdevloed))
+
+#### :bug: Bug Fix
+* [#125](https://github.com/lblod/frontend-mow-registry/pull/125) absolute image paths, please read inside ([@Asergey91](https://github.com/Asergey91))
+
+#### Committers: 2
+- Boris De Vloed ([@bdevloed](https://github.com/bdevloed))
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
 ## 0.13.0 (2022-01-30)
 
 #### :rocket: Enhancement
