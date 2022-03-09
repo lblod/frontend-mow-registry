@@ -9,6 +9,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked isAddingSubSigns = false;
   @tracked isAddingMainSigns = false;
   @tracked isAddingRelatedRoadSigns = false;
+  @tracked isAddingRelatedRoadMarkings = false;
+  @tracked isAddingRelatedTrafficLights = false;
   @tracked isOpen = false;
 
   @tracked category = null;
@@ -17,13 +19,17 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked subSignCodeFilter = '';
   @tracked newDescription = '';
   @tracked editedTemplate;
+  @tracked relatedRoadMarkingCodeFilter = '';
+  @tracked relatedTrafficLightCodeFilter = '';
 
   get showSidebar() {
     return (
       this.isAddingRelatedRoadSigns ||
       this.isAddingMainSigns ||
       this.isAddingSubSigns ||
-      this.hasActiveChildRoute
+      this.hasActiveChildRoute ||
+      this.isAddingRelatedRoadMarkings ||
+      this.isAddingRelatedTrafficLights
     );
   }
 
@@ -45,6 +51,30 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
         return category.label === 'Onderbord';
       }).length === 1
     );
+  }
+
+  get roadMarkings() {
+    if (!this.relatedRoadMarkingCodeFilter.trim()) {
+      return this.model.allRoadMarkings;
+    }
+
+    return this.model.allRoadMarkings.filter((roadMarking) => {
+      return roadMarking.definition
+        .toLowerCase()
+        .includes(this.relatedRoadMarkingCodeFilter.toLowerCase().trim());
+    });
+  }
+
+  get trafficLights() {
+    if (!this.relatedTrafficLightCodeFilter.trim()) {
+      return this.model.allTrafficLights;
+    }
+
+    return this.model.allTrafficLights.filter((trafficLight) => {
+      return trafficLight.definition
+        .toLowerCase()
+        .includes(this.relatedTrafficLightCodeFilter.toLowerCase().trim());
+    });
   }
 
   @action
@@ -74,6 +104,16 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   @action
+  setRelatedRoadMarkingCodeFilter(event) {
+    this.relatedRoadMarkingCodeFilter = event.target.value.trim();
+  }
+
+  @action
+  setRelatedTrafficLightCodeFilter(event) {
+    this.relatedTrafficLightCodeFilter = event.target.value.trim();
+  }
+
+  @action
   async addMainSign(mainSign) {
     let mainSigns = await this.model.roadSignConcept.mainSigns;
 
@@ -97,24 +137,65 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   async addRelatedRoadSign(relatedRoadSign) {
-    let relatedRoadSigns = await this.model.roadSignConcept
+    const relatedToRoadSignConcepts = await this.model.roadSignConcept
+      .relatedToRoadSignConcepts;
+    const relatedRoadSignConcepts = await this.model.roadSignConcept
       .relatedRoadSignConcepts;
 
-    relatedRoadSigns.pushObject(relatedRoadSign);
-    this.categoryRoadSigns.removeObject(relatedRoadSign);
-    this.model.roadSignConcept.save();
+    relatedToRoadSignConcepts.pushObject(relatedRoadSign);
+    relatedRoadSignConcepts.pushObject(relatedRoadSign);
+
+    await this.model.roadSignConcept.save();
   }
 
   @action
   async removeRelatedRoadSign(relatedRoadSign) {
-    let relatedRoadSigns = await this.model.roadSignConcept
+    const relatedToRoadSignConcepts = await this.model.roadSignConcept
+      .relatedToRoadSignConcepts;
+    const relatedFromRoadSignConcepts = await this.model.roadSignConcept
+      .relatedFromRoadSignConcepts;
+    const relatedRoadSignConcepts = await this.model.roadSignConcept
       .relatedRoadSignConcepts;
 
-    relatedRoadSigns.removeObject(relatedRoadSign);
+    relatedToRoadSignConcepts.removeObject(relatedRoadSign);
+    relatedFromRoadSignConcepts.removeObject(relatedRoadSign);
+    relatedRoadSignConcepts.removeObject(relatedRoadSign);
 
-    if (this.categoryRoadSigns) {
-      this.categoryRoadSigns.pushObject(relatedRoadSign);
-    }
+    await relatedRoadSign.save();
+    await this.model.roadSignConcept.save();
+  }
+
+  @action
+  async addRelatedRoadMarking(relatedRoadMarking) {
+    let relatedRoadMarkings = await this.model.roadSignConcept
+      .relatedRoadMarkingConcepts;
+    relatedRoadMarkings.pushObject(relatedRoadMarking);
+    await relatedRoadMarking.save();
+  }
+
+  @action
+  async removeRelatedRoadMarking(relatedRoadMarking) {
+    let relatedRoadMarkings = await this.model.roadSignConcept
+      .relatedRoadMarkingConcepts;
+    relatedRoadMarkings.removeObject(relatedRoadMarking);
+    await relatedRoadMarking.save();
+  }
+
+  @action
+  async addRelatedTrafficLight(relatedTrafficLight) {
+    let relatedTrafficLights = await this.model.roadSignConcept
+      .relatedTrafficLightConcepts;
+
+    relatedTrafficLights.pushObject(relatedTrafficLight);
+    this.model.roadSignConcept.save();
+  }
+
+  @action
+  async removeRelatedTrafficLight(relatedTrafficLight) {
+    let relatedTrafficLights = await this.model.roadSignConcept
+      .relatedTrafficLightConcepts;
+
+    relatedTrafficLights.removeObject(relatedTrafficLight);
 
     this.model.roadSignConcept.save();
   }
@@ -124,7 +205,9 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingSubSigns = !this.isAddingSubSigns;
     this.isAddingRelatedRoadSigns = false;
     this.isAddingMainSigns = false;
+    this.isAddingRelatedRoadMarkings = false;
     this.subSignCodeFilter = '';
+    this.isAddingRelatedTrafficLights = false;
   }
 
   @action
@@ -132,7 +215,9 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingMainSigns = !this.isAddingMainSigns;
     this.isAddingRelatedRoadSigns = false;
     this.isAddingSubSigns = false;
+    this.isAddingRelatedRoadMarkings = false;
     this.mainSignCodeFilter = '';
+    this.isAddingRelatedTrafficLights = false;
   }
 
   @action
@@ -140,6 +225,26 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingRelatedRoadSigns = !this.isAddingRelatedRoadSigns;
     this.isAddingSubSigns = false;
     this.isAddingMainSigns = false;
+    this.isAddingRelatedRoadMarkings = false;
+    this.isAddingRelatedTrafficLights = false;
+  }
+
+  @action
+  toggleAddRelatedRoadMarkings() {
+    this.isAddingRelatedRoadMarkings = !this.isAddingRelatedRoadMarkings;
+    this.isAddingSubSigns = false;
+    this.isAddingMainSigns = false;
+    this.isAddingRelatedRoadSigns = false;
+    this.isAddingRelatedTrafficLights = false;
+  }
+
+  @action
+  toggleAddRelatedTrafficLights() {
+    this.isAddingRelatedTrafficLights = !this.isAddingRelatedTrafficLights;
+    this.isAddingSubSigns = false;
+    this.isAddingMainSigns = false;
+    this.isAddingRelatedRoadSigns = false;
+    this.isAddingRelatedRoadMarkings = false;
   }
 
   @action

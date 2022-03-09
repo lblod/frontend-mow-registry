@@ -71,6 +71,7 @@ module.exports = function (environment) {
 
   if (environment === 'production') {
     ENV.featureFlags.simpleLogin = '{{SIMPLE_LOGIN}}';
+    ENV.baseUrl = '{{BASE_URL}}';
     // here you can enable a production-specific feature
   }
 
