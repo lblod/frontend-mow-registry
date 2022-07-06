@@ -62,7 +62,7 @@
                   {{t "utility.or"}}
                 </span>
                 <FileUploader
-                  @accept={{"image/png,image/jpg"}}
+                  @accept={{"image/jpeg,image/jpg,image/png,image/svg+xml"}}
                   @onFileSet={{fn this.setImageUpload trafficLightConcept}}
                 />
                 {{#if isInvalid}}
