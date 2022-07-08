@@ -1,3 +1,11 @@
+## 0.14.1 (2022-07-08)
+
+#### :bug: Bug Fix
+* [#127](https://github.com/lblod/frontend-mow-registry/pull/127) added svg to upload types ([@Asergey91](https://github.com/Asergey91))
+
+#### Committers: 1
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
 ## 0.14.0 (2022-03-09)
 
 #### :rocket: Enhancement
