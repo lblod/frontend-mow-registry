@@ -30,6 +30,7 @@
     "@ember/test-helpers": "^2.6.0",
     "@glimmer/component": "^1.0.4",
     "@glimmer/tracking": "^1.0.4",
+    "@lblod/ember-environment-banner": "github:lblod/ember-environment-banner#0.1.0",
     "@lblod/ember-mock-login": "https://github.com/lblod/ember-mock-login.git#feature/english-model",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",

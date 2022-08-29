@@ -1,5 +1,5 @@
 {{page-title (t "utility.appName")}}
-
+<EnvironmentBanner @applicationName='MOW Register' @disablePackagesOverview={{true}}/>
 <AuMainHeader @brandLink="https://www.vlaanderen.be/nl" @homeRoute="index" @appTitle={{t "utility.appName"}}>
     {{#if this.session.isAuthenticated}}
       <AuButton @skin="tertiary" role="menuitem" {{on "click" this.logout}}>
