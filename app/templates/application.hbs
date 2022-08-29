@@ -1,5 +1,13 @@
-{{page-title (t "utility.appName")}}
-<EnvironmentBanner @applicationName='MOW Register' @disablePackagesOverview={{true}}/>
+{{#let (config 'environmentName') as |environmentName|}}
+  {{page-title (concat (t "utility.appName") (if environmentName (concat ' - ' environmentName)))}}
+  {{#if environmentName}}
+    <EnvironmentBanner 
+      @applicationName='MOW Register' 
+      @environmentName={{environmentName}} 
+      @disablePackagesOverview={{true}}
+    />
+  {{/if}}
+{{/let}}
 <AuMainHeader @brandLink="https://www.vlaanderen.be/nl" @homeRoute="index" @appTitle={{t "utility.appName"}}>
     {{#if this.session.isAuthenticated}}
       <AuButton @skin="tertiary" role="menuitem" {{on "click" this.logout}}>
