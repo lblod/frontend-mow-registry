@@ -5,8 +5,7 @@
     {{#if (and environmentName (not-eq environmentName '{{ENVIRONMENT_NAME}}'))}}
       <EnvironmentBanner 
         @applicationName='{{t "utility.appName"}}'
-        @environmentName={{environmentName}} 
-        @disablePackagesOverview={{true}}
+        @environmentName={{environmentName}}
       />
     {{/if}}
     <AuMainHeader @brandLink="https://www.vlaanderen.be/nl" @homeRoute="index" @appTitle={{t "utility.appName"}}>

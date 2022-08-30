@@ -46,7 +46,7 @@ module.exports = function (environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
-    environmentName: '{{ENVIRONMENT_NAME}}',
+    environmentName: 'DEV',
   };
 
   if (environment === 'development') {
