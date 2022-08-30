@@ -2,7 +2,7 @@
   {{page-title (concat (t "utility.appName") (if environmentName (concat ' - ' environmentName)))}}
   {{#if environmentName}}
     <EnvironmentBanner 
-      @applicationName='MOW Register' 
+      @applicationname={{t "utility.appName"}}
       @environmentName={{environmentName}} 
       @disablePackagesOverview={{true}}
     />
