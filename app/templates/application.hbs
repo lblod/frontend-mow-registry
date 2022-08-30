@@ -1,32 +1,30 @@
-{{#let (config 'environmentName') as |environmentName|}}
-  {{page-title (concat (t "utility.appName") (if (and environmentName (not-eq environmentName '{{ENVIRONMENT_NAME}}')) (concat ' - ' environmentName)))}}
-  
-  <AuApp class='{{if (and environmentName (not-eq environmentName '{{ENVIRONMENT_NAME}}')) "au-c-app--environment"}}'>
-    {{#if (and environmentName (not-eq environmentName '{{ENVIRONMENT_NAME}}'))}}
-      <EnvironmentBanner 
-        @applicationName='{{t "utility.appName"}}'
-        @environmentName={{environmentName}}
-      />
-    {{/if}}
-    <AuMainHeader @brandLink="https://www.vlaanderen.be/nl" @homeRoute="index" @appTitle={{t "utility.appName"}}>
-        {{#if this.session.isAuthenticated}}
-          <AuButton @skin="tertiary" role="menuitem" {{on "click" this.logout}}>
-            <AuIcon @icon="logout" @alignment="left" />{{t "utility.logout"}}
-          </AuButton>
-        {{else}}
-          <AuLink @route="login">
-            {{t "utility.login"}}
-          </AuLink>
-        {{/if}}
-    </AuMainHeader>
+{{page-title (concat (t "utility.appName") (if this.showEnvironment (concat ' - ' this.environmentName)))}}
 
-    <main id="main" class="au-c-main-container">
-      <div
-        class="au-c-main-container__content au-c-main-container__content--scroll"
-        id="content"
-      >
-        {{outlet}}
-      </div>
-    </main>
-  </AuApp>
-{{/let}}
+<AuApp class='{{if this.showEnvironment "au-c-app--environment"}}'>
+  {{#if this.showEnvironment}}
+    <EnvironmentBanner 
+      @applicationName='{{t "utility.appName"}}'
+      @environmentName={{this.environmentName}}
+    />
+  {{/if}}
+  <AuMainHeader @brandLink="https://www.vlaanderen.be/nl" @homeRoute="index" @appTitle={{t "utility.appName"}}>
+      {{#if this.session.isAuthenticated}}
+        <AuButton @skin="tertiary" role="menuitem" {{on "click" this.logout}}>
+          <AuIcon @icon="logout" @alignment="left" />{{t "utility.logout"}}
+        </AuButton>
+      {{else}}
+        <AuLink @route="login">
+          {{t "utility.login"}}
+        </AuLink>
+      {{/if}}
+  </AuMainHeader>
+
+  <main id="main" class="au-c-main-container">
+    <div
+      class="au-c-main-container__content au-c-main-container__content--scroll"
+      id="content"
+    >
+      {{outlet}}
+    </div>
+  </main>
+</AuApp>
