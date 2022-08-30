@@ -1,7 +1,7 @@
 {{#let (config 'environmentName') as |environmentName|}}
   {{page-title (concat (t "utility.appName") (if (and environmentName (not-eq environmentName '{{ENVIRONMENT_NAME}}')) (concat ' - ' environmentName)))}}
   
-  <AuApp>
+  <AuApp class='{{if (and environmentName (not-eq environmentName '{{ENVIRONMENT_NAME}}')) "au-c-app--environment"}}'>
     {{#if (and environmentName (not-eq environmentName '{{ENVIRONMENT_NAME}}'))}}
       <EnvironmentBanner 
         @applicationName='{{t "utility.appName"}}'
