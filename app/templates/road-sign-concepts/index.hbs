@@ -17,26 +17,22 @@
         <AuToolbarGroup class="au-c-toolbar__group--center">
           {{!-- Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input--}}
           <div class="au-c-data-table__search road-sign-code-search">
-            <input
-              value={{this.code}}
+            <AuInput
+              @value={{this.code}}
               placeholder={{t "roadSignConcept.crud.codeFilter"}}
-              class="au-c-input au-c-input--block"
+              @icon="search"
+              @iconAlignment="right"
               {{on "input" (perform this.updateSearchFilterTask "code")}}
             />
-            <span class="au-c-data-table__search-icon">
-              <AuIcon @icon="search" @size="large" />
-            </span>
           </div>
           <div class="au-c-data-table__search road-sign-meaning-search">
-            <input
-              value={{this.meaning}}
+            <AuInput
+              @value={{this.meaning}}
               placeholder={{t "roadSignConcept.crud.meaningFilter"}}
-              class="au-c-input au-c-input--block"
+              @icon="search"
+              @iconAlignment="right"
               {{on "input" (perform this.updateSearchFilterTask "meaning")}}
             />
-            <span class="au-c-data-table__search-icon">
-              <AuIcon @icon="search" @size="large" />
-            </span>
           </div>
           <label>
             <span class="au-u-hidden-visually">{{t "roadSignConcept.crud.categoryFilter"}}</span>
