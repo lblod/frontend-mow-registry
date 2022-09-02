@@ -325,9 +325,9 @@ export default class TrafficMeasureIndexComponent extends Component {
     );
     yield (yield this.trafficMeasureConcept.get('templates')
       .firstObject).destroyRecord();
-    yield (yield this.trafficMeasureConcept.get(
-      'relations'
-    )).forEach((relation) => relation.destroyRecord());
+    yield (yield this.trafficMeasureConcept.get('relations')).forEach(
+      (relation) => relation.destroyRecord()
+    );
 
     yield this.trafficMeasureConcept.destroyRecord();
     this.router.transitionTo('traffic-measure-concepts.index');
