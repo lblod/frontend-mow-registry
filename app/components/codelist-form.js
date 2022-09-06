@@ -68,10 +68,12 @@ export default class CodelistFormComponent extends Component {
   @action
   addNewValue(event) {
     event.preventDefault();
-    const codeListOption = this.store.createRecord('skosConcept');
-    codeListOption.label = this.newValue;
-    this.options.pushObject(codeListOption);
-    this.newValue = '';
+    if (this.newValue) {
+      const codeListOption = this.store.createRecord('skosConcept');
+      codeListOption.label = this.newValue;
+      this.options.pushObject(codeListOption);
+      this.newValue = '';
+    }
   }
 
   @action
