@@ -1,3 +1,21 @@
+
+## 0.15.0 (2022-09-06)
+
+#### :rocket: Enhancement
+* [#131](https://github.com/lblod/frontend-mow-registry/pull/131) Feature/environment banner ([@elpoelma](https://github.com/elpoelma))
+
+#### :bug: Bug Fix
+* [#128](https://github.com/lblod/frontend-mow-registry/pull/128) Bugfix/problems in codelist management ([@lagartoverde](https://github.com/lagartoverde))
+
+#### :house: Internal
+* [#130](https://github.com/lblod/frontend-mow-registry/pull/130) Update ember appuniversum to 1.4.1 ([@elpoelma](https://github.com/elpoelma))
+* [#129](https://github.com/lblod/frontend-mow-registry/pull/129) update to ember 3.28 lts ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 2
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+
+
 ## 0.14.1 (2022-07-08)
 
 #### :bug: Bug Fix
