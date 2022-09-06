@@ -1,3 +1,31 @@
+## 0.14.1 (2022-07-08)
+
+#### :bug: Bug Fix
+* [#127](https://github.com/lblod/frontend-mow-registry/pull/127) added svg to upload types ([@Asergey91](https://github.com/Asergey91))
+
+#### Committers: 1
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
+## 0.14.0 (2022-03-09)
+
+#### :rocket: Enhancement
+* [#81](https://github.com/lblod/frontend-mow-registry/pull/81) enable all relations: signs, lights and marks. ([@bdevloed](https://github.com/bdevloed))
+
+#### :bug: Bug Fix
+* [#125](https://github.com/lblod/frontend-mow-registry/pull/125) absolute image paths, please read inside ([@Asergey91](https://github.com/Asergey91))
+
+#### Committers: 2
+- Boris De Vloed ([@bdevloed](https://github.com/bdevloed))
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
+## 0.13.0 (2022-01-30)
+
+#### :rocket: Enhancement
+* [#126](https://github.com/lblod/frontend-mow-registry/pull/126) Feature/configurable auth ([@nvdk](https://github.com/nvdk))
+
+#### Committers: 1
+- Niels V ([@nvdk](https://github.com/nvdk))
+
 ## 0.12.0 (2022-01-26)
 
 #### :rocket: Enhancement
