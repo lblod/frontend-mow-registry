@@ -263,3 +263,16 @@ table.dataTable tbody th {
 .w-px {
   width: 1px !important;
 }
+
+// Fix app with environment banner @TODO: rework app component
+.au-c-app--environment {
+  // Fix main container height
+  .au-c-main-container {
+    height: calc(100vh - 92px);
+  }
+
+  // Fix sidebar offset
+  .au-c-meeting-sidebar {
+    top: 14.8rem;
+  }
+}
