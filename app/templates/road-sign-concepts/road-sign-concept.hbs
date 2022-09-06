@@ -556,16 +556,14 @@
             </button>
           </AuToolbar>
           <div class="au-c-data-table__search">
-            <input
-              value={{this.subSignCodeFilter}}
+            <AuInput
+              @value={{this.subSignCodeFilter}}
               placeholder={{t "subSign.filter.code"}}
-              class="au-c-input au-c-input--block"
+              @icon="search"
+              @iconAlignment="right"
               {{on "input" this.setSubSignCodeFilter}}
               {{auto-focus}}
             />
-            <span class="au-c-data-table__search-icon">
-              <AuIcon @icon="search" @size="large" />
-            </span>
           </div>
         </div>
         <div class="au-c-body-container au-c-body-container--scroll">
@@ -733,16 +731,14 @@
             </button>
           </AuToolbar>
           <div class="au-c-data-table__search">
-            <input
-              value={{this.relatedRoadMarkingCodeFilter}}
+            <AuInput
+              @value={{this.relatedRoadMarkingCodeFilter}}
               placeholder={{t "relatedRoadMarking.filter.code"}}
-              class="au-c-input au-c-input--block"
+              @icon="search"
+              @iconAlignment="right"
               {{on "input" this.setRelatedRoadMarkingCodeFilter}}
               {{auto-focus}}
             />
-            <span class="au-c-data-table__search-icon">
-              <AuIcon @icon="search" @size="large" />
-            </span>
           </div>
         </div>
         <div class="au-c-body-container au-c-body-container--scroll">
@@ -806,16 +802,14 @@
             </button>
           </AuToolbar>
           <div class="au-c-data-table__search">
-            <input
+            <AuInput
               value={{this.relatedTrafficLightCodeFilter}}
               placeholder={{t "relatedTrafficLight.filter.code"}}
-              class="au-c-input au-c-input--block"
+              @icon="search"
+              @iconAlignment="right"
               {{on "input" this.setRelatedTrafficLightCodeFilter}}
               {{auto-focus}}
             />
-            <span class="au-c-data-table__search-icon">
-              <AuIcon @icon="search" @size="large" />
-            </span>
           </div>
         </div>
         <div class="au-c-body-container au-c-body-container--scroll">
