@@ -11,7 +11,7 @@ module.exports = function (environment) {
     environment,
     rootURL: '/',
     locationType: 'auto',
-    sparqlEnpoint: '{{SPARQL_ENDPOINT}}',
+    sparqlEndpoint: '{{SPARQL_ENDPOINT}}',
     yasgui: {
       // NOTE: look at app/modifiers/yasgui.js when changing this variable
       defaultQuery: 'EMBER_YASGUI_DEFAULT_QUERY',
