@@ -96,7 +96,6 @@ export default class TrafficMeasureIndexComponent extends Component {
     // We assume that a measure has only one template
     const templates = yield this.trafficMeasureConcept.templates;
     this.template = yield templates.firstObject;
-    console.log('TEMPLATE', this.template);
     this.mappings = yield this.template.mappings;
     this.mappings.sortBy('id');
 
