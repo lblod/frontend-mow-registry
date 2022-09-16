@@ -29,11 +29,8 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   mappingsToBeDeleted = [];
 
-  @action
-  async didInsert() {
-    this.trafficMeasureConcept = await this.args.trafficMeasureConcept;
-    this.new = this.args.new;
-    await this.fetchData.perform();
+  constructor() {
+    super(...arguments);
     this.inputTypes = [
       {
         value: 'text',
@@ -60,6 +57,13 @@ export default class TrafficMeasureIndexComponent extends Component {
       value: 'instruction',
       label: this.intl.t('utility.templateVariables.instruction'),
     };
+  }
+
+  @action
+  async didInsert() {
+    this.trafficMeasureConcept = await this.args.trafficMeasureConcept;
+    this.new = this.args.new;
+    await this.fetchData.perform();
   }
 
   get previewHtml() {
@@ -92,11 +96,14 @@ export default class TrafficMeasureIndexComponent extends Component {
   *fetchData() {
     // Wait for data loading
     yield this.trafficMeasureConcept.relations;
+
     this.codeLists = yield this.codeListService.all.perform();
+
     // We assume that a measure has only one template
     const templates = yield this.trafficMeasureConcept.templates;
     this.template = yield templates.firstObject;
     this.mappings = yield this.template.mappings;
+
     this.mappings.sortBy('id');
 
     const relations = yield this.trafficMeasureConcept.orderedRelations;
@@ -122,6 +129,7 @@ export default class TrafficMeasureIndexComponent extends Component {
         this.instructions.pushObject(instruction);
       }
     }
+
     //remove input type instruction if there are none available and reset mappings with instructions
     if (this.instructions.length != 0) {
       if (this.inputTypes.indexOf(this.instructionType) == -1) {
@@ -129,6 +137,7 @@ export default class TrafficMeasureIndexComponent extends Component {
       }
     } else if (this.instructions.length == 0) {
       if (this.inputTypes.indexOf(this.instructionType) != -1) {
+        console.log('FETCH DATA');
         this.inputTypes.splice(
           this.inputTypes.indexOf(this.instructionType),
           1
