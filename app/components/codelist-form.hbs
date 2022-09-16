@@ -3,7 +3,7 @@
     @codelist this.CodelistValidations
   ) as |codelist|
 }}
-  <BreadcrumbsItem as |linkClass|>
+  <BreadcrumbsItem as |linkClass| {{did-insert this.didInsert}}>
     {{#if @codelist.isNew}}
       <LinkTo
         @route="codelists-management.new"

@@ -4,10 +4,6 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 
 export default class CodelistsService extends Service {
-  constructor(...args) {
-    super(...args);
-  }
-
   @tracked codeLists = null;
 
   @service store;
@@ -20,7 +16,7 @@ export default class CodelistsService extends Service {
         include: 'concepts',
         sort: 'label',
       });
-
+      console.log('FETCH codelists');
       yield Promise.all(codeLists.map((codeList) => codeList.concepts));
 
       this.codeLists = codeLists;

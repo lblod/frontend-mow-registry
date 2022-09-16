@@ -2,14 +2,14 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
 import { task } from 'ember-concurrency';
+import { action } from '@ember/object';
 
 export default class TrafficMeasureTemplateComponent extends Component {
   @tracked template;
-  constructor() {
-    super(...arguments);
-    this.fetchTemplate.perform(this.args.concept);
-    const concept = this.args.concept;
-    console.log(concept);
+
+  @action
+  async didInsert() {
+    await this.fetchTemplate.perform(this.args.concept);
   }
   @task
   *fetchTemplate(concept) {

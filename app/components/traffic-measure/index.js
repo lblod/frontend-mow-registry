@@ -29,12 +29,11 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   mappingsToBeDeleted = [];
 
-  constructor(...args) {
-    super(...args);
-
-    this.trafficMeasureConcept = this.args.trafficMeasureConcept;
+  @action
+  async didInsert() {
+    this.trafficMeasureConcept = await this.args.trafficMeasureConcept;
     this.new = this.args.new;
-    this.fetchData.perform();
+    await this.fetchData.perform();
     this.inputTypes = [
       {
         value: 'text',
@@ -94,10 +93,10 @@ export default class TrafficMeasureIndexComponent extends Component {
     // Wait for data loading
     yield this.trafficMeasureConcept.relations;
     this.codeLists = yield this.codeListService.all.perform();
-
     // We assume that a measure has only one template
     const templates = yield this.trafficMeasureConcept.templates;
     this.template = yield templates.firstObject;
+    console.log('TEMPLATE', this.template);
     this.mappings = yield this.template.mappings;
     this.mappings.sortBy('id');
 

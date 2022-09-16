@@ -6,9 +6,9 @@ import { inject as service } from '@ember/service';
 import { ZON_NON_ZONAL_ID, ZON_CONCEPT_SCHEME_ID } from '../utils/constants';
 
 export default class ZonalitySelectorComponent extends Component {
-  constructor(...args) {
-    super(...args);
-    this.fetchZonalities.perform();
+  @action
+  async didInsert() {
+    await this.fetchZonalities.perform();
   }
 
   @tracked zonalities;
