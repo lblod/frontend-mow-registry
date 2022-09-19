@@ -1,3 +1,5 @@
+import config from 'mow-registry/config/environment';
+
 function generateTextTemplate(uri, name) {
   return `
     <span typeof="ext:Mapping" resource="${uri}">
@@ -9,6 +11,7 @@ function generateTextTemplate(uri, name) {
 function generateCodelistTemplate(uri, name, codelist) {
   return `
     <span resource="${uri}" typeof="ext:Mapping">
+      <span property="dct:source" resource="${config.sparqlEndpoint}"></span>
       <span property="dct:type" content="codelist"></span>
       <span property="ext:codelist" content="${codelist}"></span>
       <span property="ext:content">\${${name}}</span>
@@ -19,6 +22,7 @@ function generateCodelistTemplate(uri, name, codelist) {
 function generateLocationTemplate(uri, name) {
   return `
     <span resource="${uri}" typeof="ext:Mapping">
+      <span property="dct:source" resource="${config.sparqlEndpoint}"></span>
       <span property="dct:type" content="location"></span>
       <span property="ext:content">\${${name}}</span>
     </span>
