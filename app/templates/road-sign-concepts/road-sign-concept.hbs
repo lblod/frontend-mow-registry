@@ -10,7 +10,7 @@
   </LinkTo>
 </BreadcrumbsItem>
 
-<div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
+<div class="au-o-grid au-o-grid--flush au-o-grid--fixed" {{did-insert this.didInsert}}>
   <div
     class="au-o-grid__item {{
       if
@@ -139,7 +139,7 @@
         />
         {{#if this.isSubSign}}
           <AuDataTable
-            @content={{sort-by-road-sign-code @model.roadSignConcept.mainSigns}}
+            @content={{sort-by-road-sign-code (await @model.roadSignConcept.mainSigns)}}
             @fields="Image Meaning Code Categories"
             @noDataMessage={{t "roadSignConcept.crud.noData"}} as |s|
           >
@@ -217,7 +217,7 @@
           </AuDataTable>
         {{else}}
           <AuDataTable
-            @content={{sort-by-road-sign-code @model.roadSignConcept.subSigns}}
+            @content={{sort-by-road-sign-code (await @model.roadSignConcept.subSigns)}}
             @fields="Image Meaning Code"
             @noDataMessage={{t "roadSignConcept.crud.noData"}} as |s|
           >
@@ -289,7 +289,7 @@
         <AuDataTable
           @content={{
             sort-by-road-sign-code
-            @model.roadSignConcept.relatedRoadSignConcepts
+            (await @model.roadSignConcept.relatedRoadSignConcepts)
           }}
           @fields="Image Meaning Code Categories"
           @noDataMessage={{t "roadSignConcept.crud.noData"}} as |s|
@@ -372,7 +372,7 @@
         <AuDataTable
           @content={{
             sort-by-road-marking-code
-            @model.roadSignConcept.relatedRoadMarkingConcepts
+            (await @model.roadSignConcept.relatedRoadMarkingConcepts)
           }}
           @fields="Image Meaning Code Categories"
           @noDataMessage={{t "roadMarkingConcept.crud.noData"}}
@@ -456,7 +456,7 @@
         <AuDataTable
           @content={{
             sort-by-traffic-light-code
-            @model.roadSignConcept.relatedTrafficLightConcepts
+            (await @model.roadSignConcept.relatedTrafficLightConcepts)
           }}
           @fields="Image Meaning Code"
           @noDataMessage={{t "roadMarkingConcept.crud.noData"}}
