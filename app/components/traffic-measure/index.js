@@ -61,9 +61,9 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   @action
   async didInsert() {
-    this.trafficMeasureConcept = await this.args.trafficMeasureConcept;
+    this.trafficMeasureConcept = this.args.trafficMeasureConcept;
     this.new = this.args.new;
-    await this.fetchData.perform();
+    this.fetchData.perform();
   }
 
   get previewHtml() {

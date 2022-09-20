@@ -23,7 +23,7 @@ export default class AddInstructionComponent extends Component {
 
   @action
   async didInsert() {
-    await this.fetchData.perform();
+    this.fetchData.perform();
   }
 
   @task

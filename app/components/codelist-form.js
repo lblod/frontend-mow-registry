@@ -25,7 +25,7 @@ export default class CodelistFormComponent extends Component {
   @action
   async didInsert() {
     this.options = await this.args.codelist.concepts;
-    await this.fetchCodelistTypes.perform();
+    this.fetchCodelistTypes.perform();
   }
 
   get isSaving() {

@@ -9,7 +9,7 @@ export default class TrafficMeasureTemplateComponent extends Component {
 
   @action
   async didInsert() {
-    await this.fetchTemplate.perform(this.args.concept);
+    this.fetchTemplate.perform(this.args.concept);
   }
   @task
   *fetchTemplate(concept) {

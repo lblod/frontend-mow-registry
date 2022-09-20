@@ -8,7 +8,7 @@ import { ZON_NON_ZONAL_ID, ZON_CONCEPT_SCHEME_ID } from '../utils/constants';
 export default class ZonalitySelectorComponent extends Component {
   @action
   async didInsert() {
-    await this.fetchZonalities.perform();
+    this.fetchZonalities.perform();
   }
 
   @tracked zonalities;
