@@ -1,4 +1,18 @@
 
+
+## 0.15.1 (2022-09-20)
+
+#### :rocket: Enhancement
+* [#132](https://github.com/lblod/frontend-mow-registry/pull/132) Feature/codelist sources ([@lagartoverde](https://github.com/lagartoverde))
+
+#### :house: Internal
+* [#135](https://github.com/lblod/frontend-mow-registry/pull/135) Add release-it ([@elpoelma](https://github.com/elpoelma))
+* [#134](https://github.com/lblod/frontend-mow-registry/pull/134) Upgrade to ember-data 3.28.12 with fixes/modifications on how data and relationships are handled ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 2
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+
 ## 0.15.0 (2022-09-06)
 
 #### :rocket: Enhancement
