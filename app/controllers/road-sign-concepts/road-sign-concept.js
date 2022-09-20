@@ -22,6 +22,16 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked relatedRoadMarkingCodeFilter = '';
   @tracked relatedTrafficLightCodeFilter = '';
 
+  @tracked isSubSign = false;
+
+  @action
+  async didInsert() {
+    this.isSubSign =
+      (await this.model.roadSignConcept.categories).filter((category) => {
+        return category.label === 'Onderbord';
+      }).length === 1;
+  }
+
   get showSidebar() {
     return (
       this.isAddingRelatedRoadSigns ||
@@ -43,14 +53,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
         .toLowerCase()
         .includes(this.subSignCodeFilter.toLowerCase().trim());
     });
-  }
-
-  get isSubSign() {
-    return (
-      this.model.roadSignConcept.categories.filter((category) => {
-        return category.label === 'Onderbord';
-      }).length === 1
-    );
   }
 
   get roadMarkings() {

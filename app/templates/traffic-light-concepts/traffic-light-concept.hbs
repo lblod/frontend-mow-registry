@@ -129,7 +129,7 @@
         <AuDataTable
           @content={{
             sort-by-road-sign-code
-            @model.trafficLightConcept.relatedRoadSignConcepts
+            (await @model.trafficLightConcept.relatedRoadSignConcepts)
           }}
           @fields="Image Meaning Code Categories"
           @noDataMessage={{t "roadSignConcept.crud.noData"}}
@@ -213,7 +213,7 @@
         <AuDataTable
           @content={{
             sort-by-road-marking-code
-            @model.trafficLightConcept.relatedRoadMarkingConcepts
+            (await @model.trafficLightConcept.relatedRoadMarkingConcepts)
           }}
           @fields="Image Meaning Code Categories"
           @noDataMessage={{t "trafficLightConcept.crud.noData"}}
@@ -297,7 +297,7 @@
         <AuDataTable
           @content={{
             sort-by-traffic-light-code
-            @model.trafficLightConcept.relatedTrafficLightConcepts
+            (await @model.trafficLightConcept.relatedTrafficLightConcepts)
           }}
           @fields="Image Meaning Code"
           @noDataMessage={{t "trafficLightConcept.crud.noData"}} as |s|

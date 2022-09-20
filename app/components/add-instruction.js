@@ -21,8 +21,8 @@ export default class AddInstructionComponent extends Component {
 
   mappingsToBeDeleted = [];
 
-  constructor(...args) {
-    super(...args);
+  @action
+  async didInsert() {
     this.fetchData.perform();
   }
 
