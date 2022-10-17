@@ -13,7 +13,7 @@ function generateCodelistTemplate(uri, name, codelist) {
     <span resource="${uri}" typeof="ext:Mapping">
       <span property="dct:source" resource="${config.sparqlEndpoint}"></span>
       <span property="dct:type" content="codelist"></span>
-      <span property="ext:codelist" content="${codelist}"></span>
+      <span property="ext:codelist" resource="${codelist}"></span>
       <span property="ext:content">\${${name}}</span>
     </span>
   `;
