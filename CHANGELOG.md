@@ -1,5 +1,15 @@
 
 
+
+## 0.16.0 (2022-11-07)
+
+#### :rocket: Enhancement
+* [#136](https://github.com/lblod/frontend-mow-registry/pull/136) Change content to resource in the codelist triple ([@lagartoverde](https://github.com/lagartoverde))
+
+#### Committers: 1
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+
+
 ## 0.15.1 (2022-09-20)
 
 #### :rocket: Enhancement
