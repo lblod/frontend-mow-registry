@@ -1,6 +1,15 @@
 
 
 
+
+## 0.16.1 (2022-11-18)
+
+#### :bug: Bug Fix
+* [#137](https://github.com/lblod/frontend-mow-registry/pull/137) Replace duplicate au-main-container ([@Dietr](https://github.com/Dietr))
+
+#### Committers: 1
+- Dieter Peirs ([@Dietr](https://github.com/Dietr))
+
 ## 0.16.0 (2022-11-07)
 
 #### :rocket: Enhancement
