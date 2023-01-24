@@ -2,6 +2,15 @@
 
 
 
+
+## 0.16.2 (2023-01-24)
+
+#### :bug: Bug Fix
+* [#138](https://github.com/lblod/frontend-mow-registry/pull/138) Update zonality-selector to set zonality if resource does not have any ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 1
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+
 ## 0.16.1 (2022-11-18)
 
 #### :bug: Bug Fix
