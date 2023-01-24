@@ -27,10 +27,10 @@ export default class ZonalitySelectorComponent extends Component {
     if (yield this.args.concept.zonality) {
       this.selectedZonality = this.args.concept.zonality;
     } else {
-      this.selectedZonality = this.zonalities.find(
+      const defaultZonality = this.zonalities.find(
         (zonality) => zonality.id == ZON_NON_ZONAL_ID
       );
-      this.args.concept.zonality = this.selectedZonality;
+      this.updateZonality(defaultZonality);
     }
   }
 
