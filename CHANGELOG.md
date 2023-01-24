@@ -1,3 +1,12 @@
+
+## 0.14.2 (2023-01-24)
+
+#### :bug: Bug Fix
+* [#139](https://github.com/lblod/frontend-mow-registry/pull/139) Set zonality on NON_ZONAL when resource does not have any ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 1
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+
 ## 0.14.1 (2022-07-08)
 
 #### :bug: Bug Fix
