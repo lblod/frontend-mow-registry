@@ -1,13 +1,13 @@
-{{page-title (concat (t "utility.appName") (if this.showEnvironment (concat ' - ' this.environmentName)))}}
+{{page-title (concat (t "utility.app-name") (if this.showEnvironment (concat ' - ' this.environmentName)))}}
 
 <AuApp class='{{if this.showEnvironment "au-c-app--environment"}}'>
   {{#if this.showEnvironment}}
     <EnvironmentBanner 
-      @applicationName='{{t "utility.appName"}}'
+      @applicationName='{{t "utility.app-name"}}'
       @environmentName={{this.environmentName}}
     />
   {{/if}}
-  <AuMainHeader @brandLink="https://www.vlaanderen.be/nl" @homeRoute="index" @appTitle={{t "utility.appName"}}>
+  <AuMainHeader @brandLink="https://www.vlaanderen.be/nl" @homeRoute="index" @appTitle={{t "utility.app-name"}}>
       {{#if this.session.isAuthenticated}}
         <AuButton @skin="tertiary" role="menuitem" {{on "click" this.logout}}>
           <AuIcon @icon="logout" @alignment="left" />{{t "utility.logout"}}
