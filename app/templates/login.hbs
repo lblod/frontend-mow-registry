@@ -10,12 +10,17 @@
     <img sizes="50vw" src="assets/images/header-1600.jpg" srcset={{srcSet}} alt="laptop met daarop het vlaanderen logo.">
   </AuContentHeader>
   {{/let}}
-  {{#if this.showSimpleLogin}}
+  
     <main id="content">
       <div class="au-o-region-large">
         <div class="au-o-layout">
-          <AuHeading @skin="4" class="au-u-margin-bottom-small">{{t 'login.login'}}</AuHeading>
+          {{#if this.showSimpleLogin}}
+          <AuHeading @skin="4" class="au-u-margin-bottom-small">{{t 'auth.simple.title'}}</AuHeading>
           <MuLogin />
+          {{else}}
+          <AuHeading @skin="4" class="au-u-margin-bottom">{{t 'auth.acmidm.title'}}</AuHeading>
+          <AuLinkExternal @skin='button' href={{this.loginUrl}}>{{t 'auth.login'}}</AuLinkExternal>
+          {{/if}}
         </div>
       </div>
     </main>
@@ -27,7 +32,4 @@
         <p>Uitgegeven door <a class="au-c-link" href="https://www.vlaanderen.be/organisaties/administratieve-diensten-van-de-vlaamse-overheid/beleidsdomein-kanselarij-en-bestuur/agentschap-binnenlands-bestuur">Agentschap Binnenlands Bestuur</a></p>
       </AuContent>
     </AuMainFooter>
-  {{else}}
-    <AcmidmLoginIframe />
-  {{/if}}
 </AuBodyContainer>

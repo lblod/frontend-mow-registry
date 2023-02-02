@@ -1,3 +1,11 @@
+auth:
+  simple:
+    title: Enter your username and password to log in
+  mock: 
+    title: Choose an account to log in with.
+  acmidm:
+    title: Log in with acm/idm
+  login: Login
 utility:
   login: Login
   logout: Logout
