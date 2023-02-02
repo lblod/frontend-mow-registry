@@ -6,7 +6,7 @@ const supportedLocales = {
 };
 
 module.exports = function (environment) {
-  let ENV = {
+  const ENV = {
     modulePrefix: 'mow-registry',
     environment,
     rootURL: '/',
