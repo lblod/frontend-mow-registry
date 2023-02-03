@@ -4,15 +4,15 @@ type: docker
 name: verify-pr
 steps:
 - name: install
-  image: danlynn/ember-cli:3.28.5-node_16.13
+  image: danlynn/ember-cli:4.8.0
   commands:
   - npm ci
 - name: lint
-  image: danlynn/ember-cli:3.28.5-node_16.13
+  image: danlynn/ember-cli:4.8.0
   commands:
   - npm run lint
 - name: test
-  image: danlynn/ember-cli:3.28.5-node_16.13
+  image: danlynn/ember-cli:4.8.0
   failure: ignore
   commands:
   - npm run test:ember
