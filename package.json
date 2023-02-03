@@ -82,7 +82,7 @@
     "webpack": "^5.74.0"
   },
   "engines": {
-    "node": "14.* || 16.* || >= 18"
+    "node": ">= 18"
   },
   "ember": {
     "edition": "octane"
@@ -91,5 +91,8 @@
     "@lblod/ember-acmidm-login": "^2.0.0-beta.1",
     "@triply/yasgui": "^4.2.20",
     "ember-mu-login": "^2.0.1"
+  },
+  "volta": {
+    "node": "18.14.0"
   }
 }
