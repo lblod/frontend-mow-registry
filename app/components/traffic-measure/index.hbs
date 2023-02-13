@@ -14,13 +14,13 @@
         </div>
         <div class="au-o-grid__item au-u-1-2">
           <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
-            {{t "trafficMeasureConcept.attr.temporal"}}
+            {{t "traffic-measure-concept.attr.temporal"}}
           </AuHeading>
           <TemporalSelector @concept={{@trafficMeasureConcept}} />
         </div>
       </div>
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small au-u-margin-top-small">
-        {{t "trafficMeasureConcept.attr.trafficSign"}}
+        {{t "traffic-measure-concept.attr.traffic-sign"}}
       </AuHeading>
       <div class="au-o-grid au-o-grid--tiny">
         <div class="au-o-grid__item au-u-1-3@medium">
@@ -35,17 +35,17 @@
       </div>
       <div class="au-u-margin-bottom-small">
         <AuHeading @level="4" @skin="4">
-          {{t "trafficMeasureConcept.attr.template"}}
+          {{t "traffic-measure-concept.attr.template"}}
         </AuHeading>
         <AuHelpText @skin="secondary" class="au-u-margin-bottom-small au-u-flex-center">
-          <AuBadge @icon="info-circle" @size="small" class="au-u-margin-right-tiny" /> {{t "trafficMeasureConcept.help"}}
+          <AuBadge @icon="info-circle" @size="small" class="au-u-margin-right-tiny" /> {{t "traffic-measure-concept.help"}}
         </AuHelpText>
         {{!-- template-lint-disable no-inline-styles --}}
         <AuTextarea id="textarea" @width="block"  {{on "input" this.updateTemplate}} {{on "input" this.parseTemplate}} @value={{this.template.value}} style="resize: none; height: 200px;" class="au-u-margin-bottom-small"></AuTextarea>
       </div>
       {{#if this.mappings.length}}
       <AuHeading @level="4" @skin="4"  class="au-u-margin-bottom-small">
-        {{t "trafficMeasureConcept.attr.variables"}}
+        {{t "traffic-measure-concept.attr.variables"}}
       </AuHeading>
       <div class="au-c-card">
         <div class="au-data-table">
@@ -53,8 +53,8 @@
             <table class="au-c-data-table__table au-c-data-table__table--small">
               <thead class="au-c-data-table__header">
                 <tr>
-                  <th>{{t "trafficMeasureConcept.attr.variable"}}</th>
-                  <th>{{t "trafficMeasureConcept.attr.type"}}</th>
+                  <th>{{t "traffic-measure-concept.attr.variable"}}</th>
+                  <th>{{t "traffic-measure-concept.attr.type"}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -129,7 +129,7 @@
   <div class="au-o-grid__item au-u-1-2@medium">
     <div class="au-o-box au-c-body-container au-c-body-container--scroll au-c-theme-gray-100">
       <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
-        {{t "trafficMeasureConcept.attr.preview"}}
+        {{t "traffic-measure-concept.attr.preview"}}
       </AuHeading>
       <div class="au-u-margin-bottom">
       {{#each this.signs as |sign|}}
@@ -137,7 +137,7 @@
       {{/each}}
       </div>
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
-        {{t "trafficMeasureConcept.attr.template"}}
+        {{t "traffic-measure-concept.attr.template"}}
       </AuHeading>
       <div class="au-o-box au-o-box--small au-c-theme-gray-200 au-u-margin-bottom">
         {{this.previewHtml}}
@@ -153,11 +153,11 @@
           @loading={{if this.save.isRunning true false}}
           @disabled={{if this.save.isRunning true false}}
         >
-          {{t "trafficMeasureConcept.crud.save"}}
+          {{t "traffic-measure-concept.crud.save"}}
         </AuButton>
       {{#unless this.new}}
         <AuButton  @alert={{true}} @skin="secondary" {{on "click" (perform this.delete)}}>
-          {{t "trafficMeasureConcept.crud.delete"}}
+          {{t "traffic-measure-concept.crud.delete"}}
         </AuButton>
       {{/unless}}
     </AuButtonGroup>

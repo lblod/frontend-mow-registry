@@ -34,28 +34,28 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.inputTypes = [
       {
         value: 'text',
-        label: this.intl.t('utility.templateVariables.text'),
+        label: this.intl.t('utility.template-variables.text'),
       },
       {
         value: 'number',
-        label: this.intl.t('utility.templateVariables.number'),
+        label: this.intl.t('utility.template-variables.number'),
       },
       {
         value: 'date',
-        label: this.intl.t('utility.templateVariables.date'),
+        label: this.intl.t('utility.template-variables.date'),
       },
       {
         value: 'location',
-        label: this.intl.t('utility.templateVariables.location'),
+        label: this.intl.t('utility.template-variables.location'),
       },
       {
         value: 'codelist',
-        label: this.intl.t('utility.templateVariables.codelist'),
+        label: this.intl.t('utility.template-variables.codelist'),
       },
     ];
     this.instructionType = {
       value: 'instruction',
-      label: this.intl.t('utility.templateVariables.instruction'),
+      label: this.intl.t('utility.template-variables.instruction'),
     };
   }
 

@@ -1,7 +1,7 @@
 utility:
   login: Aanmelden
   logout: Afmelden
-  backToOverview: Naar het overzicht
+  back-to-overview: Naar het overzicht
   view: Bekijk
   save: Opslaan
   cancel: Annuleer
@@ -17,175 +17,172 @@ utility:
   potentiallyZonal: Potentieel zonaal
   upload: Opladen
   or: Of
-  fieldRequired: Dit veld is verplicht
-  appName: MOW Register
+  field-required: Dit veld is verplicht
+  app-name: MOW Register
   delete: verwijderen
   instructions: Instructies
   description: Beschrijving
   order: Volgorde
   sign: Verkeersteken
-  addInstruction: Voeg instructie toe
-  selectInstruction: Selecteer een instructie
+  add-instruction: Voeg instructie toe
   drag: Sleep
   add: Voeg toe
-  noInstruction: Geen instructies gevonden
+  no-instruction: Geen instructies gevonden
   username: Gebruikersnaam
   password: Paswoord
-  validContent: Deze inhoud is gevalideerd
+  valid-content: Deze inhoud is gevalideerd
   yes: Ja
   no: Nee
-  templateVariables:
+  template-variables:
     text: tekst
     number: nummer
     date: datum
     location: locatie
     codelist: codelijst
     instruction: instructie
-roadSignConcept:
+road-sign-concept:
   name: Verkeersborden
   details: Verkeersbord details
   attr:
-    imageHeader: Afbeelding
-    imageUrl: Afbeelding URL
+    image-header: Afbeelding
+    image-url: Afbeelding URL
     meaning: Betekenis
     code: Code
     categories: Categorieën
-    subSign: Mogelijke onderborden
-    mainSign: Mogelijke hoofdborden
-    relatedSign: Gerelateerde verkeersborden
-    relatedMarking: Gerelateerde wegmarkeringen
-    relatedTrafficLight: Gerelateerde verkeerslicht
+    sub-sign: Mogelijke onderborden
+    main-sign: Mogelijke hoofdborden
+    related-sign: Gerelateerde verkeersborden
+    related-marking: Gerelateerde wegmarkeringen
+    related-traffic-light: Gerelateerde verkeerslicht
     valid: Gevalideerd
   crud:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
-    noData: Geen verkeersborden gevonden
-    noInstruction: Geen instructies gevonden
+    no-data: Geen verkeersborden gevonden
+    no-instruction: Geen instructies gevonden
     edit: Verkeersbord bewerken
     delete: Verkeersbord verwijderen
-    codeFilter: Code
-    meaningFilter: Zoeken op betekenis
-    categoryFilter: Filteren op categorie
-  landingPage:
+    code-filter: Code
+    meaning-filter: Zoeken op betekenis
+    category-filter: Filteren op categorie
+  landing-page:
     subtitle: –
     content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden
-trafficLightConcept:
+traffic-light-concept:
   name: Verkeerslichten
   details: Verkeerslicht details
   attr:
-    imageHeader: Afbeelding
-    imageUrl: Afbeelding URL
+    image-header: Afbeelding
+    image-url: Afbeelding URL
     meaning: Betekenis
     definition: Definitie
     code: Code
-    relatedSign: Gerelateerde verkeersborden
-    relatedMarking: Gerelateerde wegmarkeringen
-    relatedTrafficLight: Gerelateerde verkeerslichten
+    related-sign: Gerelateerde verkeersborden
+    related-marking: Gerelateerde wegmarkeringen
+    related-traffic-light: Gerelateerde verkeerslichten
     valid: Gevalideerd
   crud:
     create: Verkeerslicht aanmaken
     new: Nieuw verkeerslicht
-    noData: Geen verkeerslichten gevonden
+    no-data: Geen verkeerslichten gevonden
     edit: Verkeerslicht bewerken
     delete: Verkeerslicht verwijderen
-    codeFilter: Code
-    meaningFilter: Zoeken op betekenis
-  landingPage:
+    code-filter: Code
+    meaning-filter: Zoeken op betekenis
+  landing-page:
     subtitle: –
     content: Beheer verkeerlichten en instructies.
     button: Ga naar Verkeerslichten
-relatedTrafficLight:
+related-traffic-light:
   crud:
     add: Gerelateerd verkeerslicht toevoegen
-    addOne: Gerelateerd verkeerslicht toevoegen
+    add-one: Gerelateerd verkeerslicht toevoegen
     delete: Gerelateerd verkeerslicht verwijderen
   filter:
     code: Zoek
-roadMarkingConcept:
+road-marking-concept:
   name: Wegmarkeringen
   details: Details wegmarkering
   attr:
-    imageHeader: Afbeelding
-    imageUrl: Afbeelding URL
+    image-header: Afbeelding
+    image-url: Afbeelding URL
     meaning: Betekenis
     definition: Definitie
     code: Code
-    relatedSign: Gerelateerde verkeersborden
-    relatedMarking: Gerelateerde wegmarkeringen
-    relatedTrafficLight: Gerelateerde verkeerslicht
+    related-sign: Gerelateerde verkeersborden
+    related-marking: Gerelateerde wegmarkeringen
+    related-traffic-light: Gerelateerde verkeerslicht
     valid: Gevalideerd
   crud:
     create: Wegmarkering aanmaken
     new: Nieuwe wegmarkering
-    noData: Geen wegmarkeringen gevonden
+    no-data: Geen wegmarkeringen gevonden
     edit: Wegmarkering bewerken
     delete: Wegmarkering verwijderen
-    codeFilter: Code
-    meaningFilter: Zoeken op betekenis
-  landingPage:
+    code-filter: Code
+    meaning-filter: Zoeken op betekenis
+  landing-page:
     subtitle: –
     content: Beheer wegmarkeringen en instructies.
     button: Ga naar Wegmarkeringen
-relatedRoadMarking:
+related-road-marking:
   crud:
     add: Gerelateerde wegmarkering toevoegen
-    addOne: Gerelateerde wegmarkering toevoegen
+    add-one: Gerelateerde wegmarkering toevoegen
     delete: Gerelateerde wegmarkering verwijderen
   filter:
     code: Zoek
-trafficMeasureConcept:
+traffic-measure-concept:
   name: Mobiliteitsmaatregel
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
     temporal: Variabele signalisatie
-    trafficSign: Verkeersteken
+    traffic-sign: Verkeersteken
     code: Code
     sign: Verkeersbord
-    addSign: Verkeersteken toevoegen
+    add-sign: Verkeersteken toevoegen
     template: Template
     variable: Variabele
     variables: Variabelen
     type: Type
     preview: Voorvertoning
-    rdfaModel: RDFA model
-    updatePreviewEtc: Update Preview / Variables / RDFA Model
   crud:
     new: Nieuwe mobiliteitsmaatregel
-    noData: Geen mobiliteitsmaatregelen
+    no-data: Geen mobiliteitsmaatregelen
     edit: Mobiliteitsmaatregel bewerken
     delete: Mobiliteitsmaatregel verwijderen
     save: Mobiliteitsmaatregel bewaren
-    typeFilter: Filteren op type
-    noMatches: Geen resultaten gevonden
-    typeToSearch: Typ om te zoeken
+    type-filter: Filteren op type
+    no-matches: Geen resultaten gevonden
+    type-to-search: Typ om te zoeken
     loading: Laden ...
-  landingPage:
+  landing-page:
     subtitle: –
     content: Beheer mobiliteitsmaatregelen.
     button: Ga naar Mobiliteitsmaatregelen
-subSign:
+sub-sign:
   filter:
     code: Zoek onderborden op code
   crud:
     add: Onderborden toevoegen
-    addOne: Onderbord toevoegen
+    add-one: Onderbord toevoegen
     delete: Onderbord verwijderen
-mainSign:
+main-sign:
   attr:
     category: Zoek verkeersborden op category
   crud:
     add: Hoofdborden toevoegen
-    addOne: Hoofdbord toevoegen
+    add-one: Hoofdbord toevoegen
     delete: Hoofdbord verwijderen
-relatedRoadSign:
+related-road-sign:
   attr:
     category: Zoek verkeersborden op category
   crud:
     add: Gerelateerde verkeersborden toevoegen
-    addOne: Gerelateerd verkeersbord toevoegen
+    add-one: Gerelateerd verkeersbord toevoegen
     delete: Gerelateerd verkeersbord verwijderen
-mockLogin:
+mock-login:
     pick: Kies een bestuurseenheid om mee in te loggen
 login:
   login: Voer uw gebruikersnaam en wachtwoord in om in te loggen
@@ -198,11 +195,11 @@ codelist:
     new: Nieuwe codelijst
     edit: Codelijst bewerken
     delete: Codelijst verwijderen
-    noData: Geen codelijst
-    noValue: Geen waarde
-    labelFilter: Label
-    addValue: Waarde toevoegen
-    deleteValue: Waarde verwijderen
+    no-data: Geen codelijst
+    no-value: Geen waarde
+    label-filter: Label
+    add-value: Waarde toevoegen
+    delete-value: Waarde verwijderen
   attr:
     label: Label
     type: Type
@@ -211,7 +208,7 @@ codelist:
       multiSelect: Meerkeuze selectie
     values: Waarden
     id: Id
-  landingPage:
+  landing-page:
     subtitle: –
     content: Overzicht en beheer van beschikbare codelijsten.
     button: Ga naar Codelijsten

@@ -1,7 +1,7 @@
 utility:
   login: Login
   logout: Logout
-  backToOverview: Back to overview
+  back-to-overview: Back to overview
   view: View
   save: Save
   cancel: Cancel
@@ -17,175 +17,172 @@ utility:
   potentiallyZonal: Potentially Zonal
   upload: Upload
   or: Or
-  fieldRequired: This field is required
-  appName: MOW Registry
+  field-required: This field is required
+  app-name: MOW Registry
   delete: delete
   instructions: Instructions
   description: Description
   order: Order
   sign: Sign
-  addInstruction: Add instruction
-  selectInstruction: Select an instruction
+  add-instruction: Add instruction
   drag: Drag
   add: Add
-  noInstruction: No instructions found
+  no-instruction: No instructions found
   username: Username
   password: Password
-  validContent: content validated
+  valid-content: content validated
   yes: Yes
   no: No
-  templateVariables:
+  template-variables:
     text: text
     number: number
     date: date
     location: location
     codelist: codelist
     instruction: instruction
-roadSignConcept:
+road-sign-concept:
   name: Road Signs
   details: Road Sign details
   attr:
-    imageHeader: Image
-    imageUrl: Image URL
+    image-header: Image
+    image-url: Image URL
     meaning: Meaning
     code: Code
     categories: Categories
-    subSign: Possible subsigns
-    mainSign: Possible main signs
-    relatedSign: Related road signs
-    relatedMarking: Related road markings
-    relatedTrafficLight: Related traffic light
+    sub-sign: Possible subsigns
+    main-sign: Possible main signs
+    related-sign: Related road signs
+    related-marking: Related road markings
+    related-traffic-light: Related traffic light
     valid: Is valid
   crud:
     create: Create road sign
     new: New Road Sign
-    noData: No Road Signs
-    noInstruction: No instructions found
+    no-data: No Road Signs
+    no-instruction: No instructions found
     edit: Edit Road Sign
     delete: Delete Road Sign
-    codeFilter: Code
-    meaningFilter: Search by meaning
-    categoryFilter: Filter by category
-  landingPage:
+    code-filter: Code
+    meaning-filter: Search by meaning
+    category-filter: Filter by category
+  landing-page:
     subtitle: –
     content: Information in the card that comes below the header. Content.
     button: Go to Road Signs
-relatedRoadSign:
+related-road-sign:
   attr:
     category: Search road signs by category
   crud:
     add: Add related road signs
-    addOne: Add related road sign
+    add-one: Add related road sign
     delete: Remove related road sign
-trafficLightConcept:
+traffic-light-concept:
   name: Traffic Lights
   details: Traffic Light details
   attr:
-    imageHeader: Image
-    imageUrl: Image URL
+    image-header: Image
+    image-url: Image URL
     meaning: Meaning
     definition: Definition
     code: Code
-    relatedTrafficLight: Related traffic lights
-    relatedSign: Related sign
-    relatedMarking: Related marking
+    related-traffic-light: Related traffic lights
+    related-sign: Related sign
+    related-marking: Related marking
     valid: Is valid
   crud:
     create: Create traffic light
     new: New traffic light
-    noData: No traffic light
+    no-data: No traffic light
     edit: Edit traffic light
     delete: Delete traffic light
-    codeFilter: Code
-    meaningFilter: Search by meaning
-  landingPage:
+    code-filter: Code
+    meaning-filter: Search by meaning
+  landing-page:
     subtitle: –
     content: Information in the card that comes below the header. Content.
     button: Go to Traffic Lights
-relatedTrafficLight:
+related-traffic-light:
   crud:
     add: Add related traffic light
-    addOne: Add related traffic light
+    add-one: Add related traffic light
     delete: Remove related traffic light
   filter:
     code: Search
-roadMarkingConcept:
+road-marking-concept:
   name: Road Markings
   details: Road marking details
   attr:
-    imageHeader: Image
-    imageUrl: Image URL
+    image-header: Image
+    image-url: Image URL
     meaning: Meaning
     definition: Definition
     code: Code
-    relatedSign: Related road signs
-    relatedMarking: Related road markings
-    relatedTrafficLight: Related traffic light
+    related-sign: Related road signs
+    related-marking: Related road markings
+    related-traffic-light: Related traffic light
     valid: Is valid
   crud:
     create: Create road marking
     new: New Road marking
-    noData: No Road markings
+    no-data: No Road markings
     edit: Edit Road marking
     delete: Delete Road marking
-    codeFilter: Code
-    meaningFilter: Search by meaning
-  landingPage:
+    code-filter: Code
+    meaning-filter: Search by meaning
+  landing-page:
     subtitle: –
     content: Information in the card that comes below the header. Content.
     button: Go to Road Markings
-relatedRoadMarking:
+related-road-marking:
   crud:
     add: Add related road marking
-    addOne: Add related road marking
+    add-one: Add related road marking
     delete: Remove related road marking
   filter:
     code: Search
-trafficMeasureConcept:
+traffic-measure-concept:
   name: Traffic measure
   help: Add $'{variableName} to add a variable/instruction
   attr:
     temporal: Temporal signage
-    trafficSign: Traffic sign
+    traffic-sign: Traffic sign
     code: Code
     sign: Sign
-    addSign: Add sign
+    add-sign: Add sign
     template: Template
     variable: Variable
     variables: Variables
     type: Type
     preview: Preview
-    rdfaModel: RDFA model
-    updatePreviewEtc: Update Preview / Variables / RDFA Model
   crud:
     new: New traffic measure
-    noData: No traffic measures
+    no-data: No traffic measures
     edit: Edit traffic measure
     delete: Delete traffic measure
     save: Save traffic measure
-    typeFilter: Filter by type
-    noMatches: No results found
-    typeToSearch: Type to search
+    type-filter: Filter by type
+    no-matches: No results found
+    type-to-search: Type to search
     loading: Loading ...
-  landingPage:
+  landing-page:
     subtitle: –
     content: Information in the card that comes below the header. Content.
     button: Go to traffic measures
-subSign:
+sub-sign:
   filter:
     code: Search sub signs by code
   crud:
     add: Add subsigns
-    addOne: Add subsign
+    add-one: Add subsign
     delete: Remove subsign
-mainSign:
+main-sign:
   attr:
     category: Search road signs by category
   crud:
     add: Add main signs
-    addOne: Add main sign
+    add-one: Add main sign
     delete: Remove main sign
-mockLogin:
+mock-login:
     pick: Choose an account to log in with.
 login:
   login: Enter your username and password to log in
@@ -198,11 +195,11 @@ codelist:
     new: New codelist
     edit: Edit codelist
     delete: Delete codelist
-    noData: No codelist
-    noValue: No value
-    labelFilter: Label
-    addValue: Add value
-    deleteValue: Delete value
+    no-data: No codelist
+    no-value: No value
+    label-filter: Label
+    add-value: Add value
+    delete-value: Delete value
   attr:
     label: Label
     type: Type
@@ -211,7 +208,7 @@ codelist:
     types:
       singleSelect: 'Single select'
       multiSelect: 'Multi select'
-  landingPage:
+  landing-page:
     subtitle: –
     content: Information in the card that comes below the header. Content.
     button: Go to codelists management

@@ -1,7 +1,7 @@
 <AuDataTable
   @content={{@templates}}
   @fields="Description"
-  @noDataMessage={{t "roadSignConcept.crud.noInstruction"}}
+  @noDataMessage={{t "road-sign-concept.crud.no-instruction"}}
   as |s|
 >
   <s.menu as |menu|>
@@ -17,7 +17,7 @@
             @disabled={{@isAddingInstructions}}
             {{on "click" @addInstruction}}
           >
-            {{t "utility.addInstruction"}}
+            {{t "utility.add-instruction"}}
           </AuButton>
         </AuToolbarGroup>
       </AuToolbar>
@@ -30,12 +30,12 @@
       </th>
       <th>
         <span class="au-u-hidden-visually">
-          {{t "mainSign.crud.delete"}}
+          {{t "main-sign.crud.delete"}}
         </span>
       </th>
       <th>
         <span class="au-u-hidden-visually">
-          {{t "mainSign.crud.edit"}}
+          {{t "main-sign.crud.edit"}}
         </span>
       </th>
       

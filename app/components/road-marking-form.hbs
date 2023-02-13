@@ -10,7 +10,7 @@
       class={{linkClass}}
     >
       {{#if @roadMarkingConcept.isNew}}
-        {{t "roadMarkingConcept.crud.new"}}
+        {{t "road-marking-concept.crud.new"}}
       {{else}}
         {{roadMarkingConcept.roadMarkingConceptCode}}
       {{/if}}
@@ -21,9 +21,9 @@
     <AuToolbarGroup>
       <AuHeading @skin="2">
         {{#if @roadMarkingConcept.isNew}}
-          {{t "roadMarkingConcept.crud.new"}}
+          {{t "road-marking-concept.crud.new"}}
         {{else}}
-          {{t "roadMarkingConcept.crud.edit"}}
+          {{t "road-marking-concept.crud.edit"}}
         {{/if}}
       </AuHeading>
     </AuToolbarGroup>
@@ -40,7 +40,7 @@
             {{#let roadMarkingConcept.error.image as |isInvalid|}}
               <p>
                 <AuLabel @error={{isInvalid}} for="image-url">
-                  {{t "roadMarkingConcept.attr.imageUrl"}}&nbsp;
+                  {{t "road-marking-concept.attr.image-url"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -63,7 +63,7 @@
                 />
                 {{#if isInvalid}}
                   <AuHelpText>
-                    {{t "utility.fieldRequired"}}
+                    {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
               </p>
@@ -73,7 +73,7 @@
             }}
               <p>
                 <AuLabel @error={{isInvalid}} for="road-marking-concept-code">
-                  {{t "roadMarkingConcept.attr.code"}}&nbsp;
+                  {{t "road-marking-concept.attr.code"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -94,7 +94,7 @@
                 />
                 {{#if isInvalid}}
                   <AuHelpText>
-                    {{t "utility.fieldRequired"}}
+                    {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
               </p>
@@ -102,7 +102,7 @@
             {{#let roadMarkingConcept.error.meaning as |isInvalid|}}
               <p>
                 <AuLabel @error={{isInvalid}} for="meaning">
-                  {{t "roadMarkingConcept.attr.meaning"}}&nbsp;
+                  {{t "road-marking-concept.attr.meaning"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -121,7 +121,7 @@
                 />
                 {{#if isInvalid}}
                   <AuHelpText>
-                    {{t "utility.fieldRequired"}}
+                    {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
               </p>

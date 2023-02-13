@@ -61,7 +61,7 @@
             />
             {{#if isInvalid}}
               <AuHelpText>
-                {{t "utility.fieldRequired"}}
+                {{t "utility.field-required"}}
               </AuHelpText>
             {{/if}}
           </p>
@@ -90,7 +90,7 @@
           >
           <AuDataTable
             @content={{this.options}}
-            @noDataMessage={{t "codelist.crud.noValue"}}
+            @noDataMessage={{t "codelist.crud.no-value"}}
             as |s|
           >
             <s.content as |c|>
@@ -100,7 +100,7 @@
                 </th>
                 <th>
                   <span class="au-u-hidden-visually">
-                    {{t "codelist.crud.deleteValue"}}
+                    {{t "codelist.crud.delete-value"}}
                   </span>
                 </th>
               </c.header>
@@ -143,7 +143,7 @@
                       form="add-concept-form"
                       type="submit"
                     >
-                      {{t "codelist.crud.addValue"}}
+                      {{t "codelist.crud.add-value"}}
                     </button>
                   </td>
                 </tr>

@@ -9,7 +9,7 @@
         @route="road-sign-concepts.new"
         class={{linkClass}}
       >
-        {{t "roadSignConcept.crud.new"}}
+        {{t "road-sign-concept.crud.new"}}
       </LinkTo>
     {{else}}
       <LinkTo
@@ -27,9 +27,9 @@
     <AuToolbarGroup>
       <AuHeading @skin="2">
         {{#if @roadSignConcept.isNew}}
-          {{t "roadSignConcept.crud.new"}}
+          {{t "road-sign-concept.crud.new"}}
         {{else}}
-          {{t "roadSignConcept.crud.edit"}}
+          {{t "road-sign-concept.crud.edit"}}
         {{/if}}
       </AuHeading>
     </AuToolbarGroup>
@@ -47,7 +47,7 @@
             {{#let roadSignConcept.error.image as |isInvalid|}}
               <p>
                 <AuLabel @error={{isInvalid}} for="image-url">
-                  {{t "roadSignConcept.attr.imageUrl"}}&nbsp;
+                  {{t "road-sign-concept.attr.image-url"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -70,7 +70,7 @@
                 />
                 {{#if isInvalid}}
                   <AuHelpText>
-                    {{t "utility.fieldRequired"}}
+                    {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
               </p>
@@ -78,7 +78,7 @@
             {{#let roadSignConcept.error.roadSignConceptCode as |isInvalid|}}
               <p>
                 <AuLabel @error={{isInvalid}} for="road-sign-concept-code">
-                  {{t "roadSignConcept.attr.code"}}&nbsp;
+                  {{t "road-sign-concept.attr.code"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -99,7 +99,7 @@
                 />
                 {{#if isInvalid}}
                   <AuHelpText>
-                    {{t "utility.fieldRequired"}}
+                    {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
               </p>
@@ -107,7 +107,7 @@
             {{#let roadSignConcept.error.meaning as |isInvalid|}}
               <p>
                 <AuLabel @error={{isInvalid}} for="meaning">
-                  {{t "roadSignConcept.attr.meaning"}}&nbsp;
+                  {{t "road-sign-concept.attr.meaning"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -126,7 +126,7 @@
                 />
                 {{#if isInvalid}}
                   <AuHelpText>
-                    {{t "utility.fieldRequired"}}
+                    {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
               </p>
@@ -134,7 +134,7 @@
             {{#let roadSignConcept.error.categories as |isInvalid|}}
               <p>
                 <AuLabel @error={{isInvalid}} for="categories">
-                  {{t "roadSignConcept.attr.categories"}}&nbsp;
+                  {{t "road-sign-concept.attr.categories"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -143,7 +143,7 @@
                 <PowerSelectMultiple
                   @allowClear={{true}}
                   @searchEnabled={{true}}
-                  @noMatchesMessage={{t "roadSignConcept.crud.noData"}}
+                  @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
                   @searchField="label"
                   @options={{@categories}}
                   @selected={{roadSignConcept.categories}}
@@ -157,7 +157,7 @@
               </div>
               {{#if isInvalid}}
                 <AuHelpText>
-                  {{t "utility.fieldRequired"}}
+                  {{t "utility.field-required"}}
                 </AuHelpText>
               {{/if}}
               </p>
