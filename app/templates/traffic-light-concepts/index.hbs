@@ -1,7 +1,7 @@
 <AuDataTable
   @content={{this.model.trafficLightConcepts}}
   @fields="Image Meaning Code"
-  @noDataMessage={{t "trafficLightConcept.crud.noData"}}
+  @noDataMessage={{t "traffic-light-concept.crud.no-data"}}
   @size={{this.size}}
   @page={{this.page}}
   @sort={{this.sort}} as |s|
@@ -11,7 +11,7 @@
       <AuToolbar class="au-o-box">
         <AuToolbarGroup>
           <AuHeading @skin="2">
-            {{t "trafficLightConcept.name"}}
+            {{t "traffic-light-concept.name"}}
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
@@ -19,7 +19,7 @@
           <div class="au-c-data-table__search traffic-light-code-search">
             <AuInput
               @value={{this.code}}
-              placeholder={{t "trafficLightConcept.crud.codeFilter"}}
+              placeholder={{t "traffic-light-concept.crud.code-filter"}}
               @icon="search"
               @iconAlignment="right"
               {{on "input" (perform this.updateSearchFilterTask "code")}}
@@ -28,7 +28,7 @@
           <div class="au-c-data-table__search traffic-light-meaning-search">
             <AuInput
               @value={{this.meaning}}
-              placeholder={{t "trafficLightConcept.crud.meaningFilter"}}
+              placeholder={{t "traffic-light-concept.crud.meaning-filter"}}
               @icon="search"
               @iconAlignment="right"
               {{on "input" (perform this.updateSearchFilterTask "meaning")}}
@@ -36,13 +36,13 @@
           </div>
           {{!-- <label>
             <span class="au-u-hidden-visually">
-              {{t "trafficLightConcept.crud.categoryFilter"}}
+              {{t "traffic-light-concept.crud.category-filter"}}
             </span>
             <PowerSelect
               @allowClear={{true}}
               @options={{this.model.categories}}
               @selected={{this.selectedCategory}}
-              @placeholder={{t "trafficLightConcept.crud.categoryFilter"}}
+              @placeholder={{t "traffic-light-concept.crud.category-filter"}}
               @onChange={{this.updateCategoryFilter}}
               @triggerClass="category-select" as |category|
             >
@@ -50,7 +50,7 @@
             </PowerSelect>
           </label> --}}
           <LinkTo class="au-c-button" @route="traffic-light-concepts.new">
-            {{t "trafficLightConcept.crud.new"}}
+            {{t "traffic-light-concept.crud.new"}}
           </LinkTo>
         </AuToolbarGroup>
       </AuToolbar>
@@ -61,21 +61,21 @@
       <AuDataTableThSortable
         @field="trafficLightConceptCode"
         @currentSorting={{this.sort}}
-        @label={{t "trafficLightConcept.attr.code"}}
+        @label={{t "traffic-light-concept.attr.code"}}
       />
       <th>
-        {{t "trafficLightConcept.attr.imageHeader"}}
+        {{t "traffic-light-concept.attr.image-header"}}
       </th>
       <th>
-        {{t "trafficLightConcept.attr.meaning"}}
+        {{t "traffic-light-concept.attr.meaning"}}
       </th>
       {{!-- <AuDataTableThSortable
         @field="categories.label"
         @currentSorting={{this.sort}}
-        @label={{t "trafficLightConcept.attr.categories"}}
+        @label={{t "traffic-light-concept.attr.categories"}}
       /> --}}
       <th>
-        {{t "roadMarkingConcept.attr.valid"}}
+        {{t "road-marking-concept.attr.valid"}}
       </th>
       <th></th>
     </c.header>

@@ -6,7 +6,7 @@
   <BreadcrumbsItem as |linkClass|>
     {{#if @trafficLightConcept.isNew}}
       <LinkTo @route="traffic-light-concepts.new" class={{linkClass}}>
-        {{t "trafficLightConcept.crud.new"}}
+        {{t "traffic-light-concept.crud.new"}}
       </LinkTo>
     {{else}}
       <LinkTo
@@ -24,9 +24,9 @@
     <AuToolbarGroup>
       <AuHeading @skin="2">
         {{#if @trafficLightConcept.isNew}}
-          {{t "trafficLightConcept.crud.new"}}
+          {{t "traffic-light-concept.crud.new"}}
         {{else}}
-          {{t "trafficLightConcept.crud.edit"}}
+          {{t "traffic-light-concept.crud.edit"}}
         {{/if}}
       </AuHeading>
     </AuToolbarGroup>
@@ -44,7 +44,7 @@
             {{#let trafficLightConcept.error.image as |isInvalid|}}
               <p>
                 <AuLabel @error={{isInvalid}} for="image-url">
-                  {{t "trafficLightConcept.attr.imageUrl"}}&nbsp;
+                  {{t "traffic-light-concept.attr.image-url"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -67,7 +67,7 @@
                 />
                 {{#if isInvalid}}
                   <AuHelpText>
-                    {{t "utility.fieldRequired"}}
+                    {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
               </p>
@@ -77,7 +77,7 @@
             }}
               <p>
                 <AuLabel @error={{isInvalid}} for="traffic-light-concept-code">
-                  {{t "trafficLightConcept.attr.code"}}&nbsp;
+                  {{t "traffic-light-concept.attr.code"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -98,7 +98,7 @@
                 />
                 {{#if isInvalid}}
                   <AuHelpText>
-                    {{t "utility.fieldRequired"}}
+                    {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
               </p>
@@ -106,7 +106,7 @@
             {{#let trafficLightConcept.error.definition as |isInvalid|}}
               <p>
                 <AuLabel @error={{isInvalid}} for="definition">
-                  {{t "trafficLightConcept.attr.definition"}}&nbsp;
+                  {{t "traffic-light-concept.attr.definition"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -129,7 +129,7 @@
                 />
                 {{#if isInvalid}}
                   <AuHelpText>
-                    {{t "utility.fieldRequired"}}
+                    {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
               </p>
@@ -137,7 +137,7 @@
             {{#let trafficLightConcept.error.meaning as |isInvalid|}}
               <p>
                 <AuLabel @error={{isInvalid}} for="meaning">
-                  {{t "trafficLightConcept.attr.meaning"}}&nbsp;
+                  {{t "traffic-light-concept.attr.meaning"}}&nbsp;
                   <AuPill>
                     {{t "utility.required"}}
                   </AuPill>
@@ -160,7 +160,7 @@
                 />
                 {{#if isInvalid}}
                   <AuHelpText>
-                    {{t "utility.fieldRequired"}}
+                    {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
               </p>

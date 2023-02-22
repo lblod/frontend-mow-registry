@@ -1,4 +1,4 @@
-{{page-title (t "roadSignConcept.details")}}
+{{page-title (t "road-sign-concept.details")}}
 
 <BreadcrumbsItem as |linkClass|>
   <LinkTo
@@ -23,7 +23,7 @@
       <AuToolbar @size="large">
         <AuToolbarGroup>
           <AuHeading @skin="2">
-            {{t "roadSignConcept.details"}}
+            {{t "road-sign-concept.details"}}
           </AuHeading>
         </AuToolbarGroup>
       </AuToolbar>
@@ -40,7 +40,7 @@
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>
-                {{t "roadSignConcept.attr.code"}}
+                {{t "road-sign-concept.attr.code"}}
               </AuLabel>
               <p>
                 {{@model.roadSignConcept.roadSignConceptCode}}
@@ -48,7 +48,7 @@
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>
-                {{t "roadSignConcept.attr.categories"}}
+                {{t "road-sign-concept.attr.categories"}}
               </AuLabel>
               {{#each @model.roadSignConcept.categories as |category|}}
                 <p>
@@ -58,7 +58,7 @@
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>
-                {{t "roadSignConcept.attr.meaning"}}
+                {{t "road-sign-concept.attr.meaning"}}
               </AuLabel>
               <p>
                 {{@model.roadSignConcept.meaning}}
@@ -87,14 +87,14 @@
             @route="road-sign-concepts.edit"
             @model={{@model.roadSignConcept.id}}
           >
-            {{t "roadSignConcept.crud.edit"}}
+            {{t "road-sign-concept.crud.edit"}}
           </AuLink>
           <AuButton
             @skin="secondary"
             @alert={{true}}
             {{on "click" (fn (mut this.isOpen) true)}}
           >
-            {{t "roadSignConcept.crud.delete"}}
+            {{t "road-sign-concept.crud.delete"}}
           </AuButton>
 
           <AuModal
@@ -115,7 +115,7 @@
                   (perform this.removeRoadSignConcept @model.roadSignConcept)
                 }}
               >
-                {{t "roadSignConcept.crud.delete"}}
+                {{t "road-sign-concept.crud.delete"}}
               </AuButton>
               <AuButton
                 @skin="secondary"
@@ -141,19 +141,19 @@
           <AuDataTable
             @content={{sort-by-road-sign-code (await @model.roadSignConcept.mainSigns)}}
             @fields="Image Meaning Code Categories"
-            @noDataMessage={{t "roadSignConcept.crud.noData"}} as |s|
+            @noDataMessage={{t "road-sign-concept.crud.no-data"}} as |s|
           >
             <s.menu as |menu|>
               <menu.general>
                 <AuToolbar class="au-o-box">
                   <AuToolbarGroup>
                     <AuHeading @level="2" @skin="3">
-                      {{t "roadSignConcept.attr.mainSign"}}
+                      {{t "road-sign-concept.attr.main-sign"}}
                     </AuHeading>
                   </AuToolbarGroup>
                   <AuToolbarGroup>
                     <AuButton {{on "click" this.toggleAddMainSigns}}>
-                      {{t "mainSign.crud.add"}}
+                      {{t "main-sign.crud.add"}}
                     </AuButton>
                   </AuToolbarGroup>
                 </AuToolbar>
@@ -162,20 +162,20 @@
             <s.content as |c|>
               <c.header>
                 <th class="data-table__header-title">
-                  {{t "roadSignConcept.attr.code"}}
+                  {{t "road-sign-concept.attr.code"}}
                 </th>
                 <th class="data-table__header-title">
-                  {{t "roadSignConcept.attr.imageHeader"}}
+                  {{t "road-sign-concept.attr.image-header"}}
                 </th>
                 <th class="data-table__header-title">
-                  {{t "roadSignConcept.attr.meaning"}}
+                  {{t "road-sign-concept.attr.meaning"}}
                 </th>
                 <th class="data-table__header-title">
-                  {{t "roadSignConcept.attr.categories"}}
+                  {{t "road-sign-concept.attr.categories"}}
                 </th>
                 <th>
                   <span class="au-u-hidden-visually">
-                    {{t "mainSign.crud.delete"}}
+                    {{t "main-sign.crud.delete"}}
                   </span>
                 </th>
               </c.header>
@@ -209,7 +209,7 @@
                     @hideText={{true}}
                     {{on "click" (perform this.removeMainSign mainSignConcept)}}
                   >
-                    {{t "mainSign.crud.delete"}}
+                    {{t "main-sign.crud.delete"}}
                   </AuButton>
                 </td>
               </c.body>
@@ -219,19 +219,19 @@
           <AuDataTable
             @content={{sort-by-road-sign-code (await @model.roadSignConcept.subSigns)}}
             @fields="Image Meaning Code"
-            @noDataMessage={{t "roadSignConcept.crud.noData"}} as |s|
+            @noDataMessage={{t "road-sign-concept.crud.no-data"}} as |s|
           >
             <s.menu as |menu|>
               <menu.general>
                 <AuToolbar class="au-o-box">
                   <AuToolbarGroup>
                     <AuHeading @level="2" @skin="3">
-                      {{t "roadSignConcept.attr.subSign"}}
+                      {{t "road-sign-concept.attr.sub-sign"}}
                     </AuHeading>
                   </AuToolbarGroup>
                   <AuToolbarGroup>
                     <AuButton {{on "click" this.toggleAddSubSigns}}>
-                      {{t "subSign.crud.add"}}
+                      {{t "sub-sign.crud.add"}}
                     </AuButton>
                   </AuToolbarGroup>
                 </AuToolbar>
@@ -240,17 +240,17 @@
             <s.content as |c|>
               <c.header>
                 <th class="data-table__header-title">
-                  {{t "roadSignConcept.attr.code"}}
+                  {{t "road-sign-concept.attr.code"}}
                 </th>
                 <th class="data-table__header-title">
-                  {{t "roadSignConcept.attr.imageHeader"}}
+                  {{t "road-sign-concept.attr.image-header"}}
                 </th>
                 <th class="data-table__header-title">
-                  {{t "roadSignConcept.attr.meaning"}}
+                  {{t "road-sign-concept.attr.meaning"}}
                 </th>
                 <th>
                   <span class="au-u-hidden-visually">
-                    {{t "subSign.crud.delete"}}
+                    {{t "sub-sign.crud.delete"}}
                   </span>
                 </th>
               </c.header>
@@ -279,7 +279,7 @@
                     @hideText={{true}}
                     {{on "click" (perform this.removeSubSign subSign)}}
                   >
-                    {{t "subSign.crud.delete"}}
+                    {{t "sub-sign.crud.delete"}}
                   </AuButton>
                 </td>
               </c.body>
@@ -292,19 +292,19 @@
             (await @model.roadSignConcept.relatedRoadSignConcepts)
           }}
           @fields="Image Meaning Code Categories"
-          @noDataMessage={{t "roadSignConcept.crud.noData"}} as |s|
+          @noDataMessage={{t "road-sign-concept.crud.no-data"}} as |s|
         >
           <s.menu as |menu|>
             <menu.general>
               <AuToolbar class="au-o-box">
                 <AuToolbarGroup>
                   <AuHeading @level="2" @skin="3">
-                    {{t "roadSignConcept.attr.relatedSign"}}
+                    {{t "road-sign-concept.attr.related-sign"}}
                   </AuHeading>
                 </AuToolbarGroup>
                 <AuToolbarGroup>
                   <AuButton {{on "click" this.toggleAddRelatedRoadSigns}}>
-                    {{t "relatedRoadSign.crud.add"}}
+                    {{t "related-road-sign.crud.add"}}
                   </AuButton>
                 </AuToolbarGroup>
               </AuToolbar>
@@ -313,20 +313,20 @@
           <s.content as |c|>
             <c.header>
               <th class="data-table__header-title">
-                {{t "roadSignConcept.attr.code"}}
+                {{t "road-sign-concept.attr.code"}}
               </th>
               <th class="data-table__header-title">
-                {{t "roadSignConcept.attr.imageHeader"}}
+                {{t "road-sign-concept.attr.image-header"}}
               </th>
               <th class="data-table__header-title">
-                {{t "roadSignConcept.attr.meaning"}}
+                {{t "road-sign-concept.attr.meaning"}}
               </th>
               <th class="data-table__header-title">
-                {{t "roadSignConcept.attr.categories"}}
+                {{t "road-sign-concept.attr.categories"}}
               </th>
               <th>
                 <span class="au-u-hidden-visually">
-                  {{t "relatedRoadSign.crud.delete"}}
+                  {{t "related-road-sign.crud.delete"}}
                 </span>
               </th>
             </c.header>
@@ -363,7 +363,7 @@
                     (perform this.removeRelatedRoadSign relatedRoadSignConcept)
                   }}
                 >
-                  {{t "relatedRoadSign.crud.delete"}}
+                  {{t "related-road-sign.crud.delete"}}
                 </AuButton>
               </td>
             </c.body>
@@ -375,7 +375,7 @@
             (await @model.roadSignConcept.relatedRoadMarkingConcepts)
           }}
           @fields="Image Meaning Code Categories"
-          @noDataMessage={{t "roadMarkingConcept.crud.noData"}}
+          @noDataMessage={{t "road-marking-concept.crud.no-data"}}
           class="container-flex--contain table-no-overflow" as |s|
         >
           <s.menu as |menu|>
@@ -383,12 +383,12 @@
               <AuToolbar class="au-o-box">
                 <AuToolbarGroup>
                   <AuHeading @level="2" @skin="3">
-                    {{t "roadMarkingConcept.attr.relatedMarking"}}
+                    {{t "road-marking-concept.attr.related-marking"}}
                   </AuHeading>
                 </AuToolbarGroup>
                 <AuToolbarGroup>
                   <AuButton {{on "click" this.toggleAddRelatedRoadMarkings}}>
-                    {{t "relatedRoadMarking.crud.add"}}
+                    {{t "related-road-marking.crud.add"}}
                   </AuButton>
                 </AuToolbarGroup>
               </AuToolbar>
@@ -397,20 +397,20 @@
           <s.content as |c|>
             <c.header>
               <th class="data-table__header-title">
-                {{t "roadMarkingConcept.attr.code"}}
+                {{t "road-marking-concept.attr.code"}}
               </th>
               <th class="data-table__header-title">
-                {{t "roadMarkingConcept.attr.imageHeader"}}
+                {{t "road-marking-concept.attr.image-header"}}
               </th>
               <th class="data-table__header-title">
-                {{t "roadMarkingConcept.attr.definition"}}
+                {{t "road-marking-concept.attr.definition"}}
               </th>
               <th class="data-table__header-title">
-                {{t "roadMarkingConcept.attr.meaning"}}
+                {{t "road-marking-concept.attr.meaning"}}
               </th>
               <th>
                 <span class="au-u-hidden-visually">
-                  {{t "relatedRoadMarking.crud.delete"}}
+                  {{t "related-road-marking.crud.delete"}}
                 </span>
               </th>
             </c.header>
@@ -447,7 +447,7 @@
                     (perform this.removeRelatedRoadMarking relatedRoadMarkingConcept)
                   }}
                 >
-                  {{t "relatedRoadMarking.crud.delete"}}
+                  {{t "related-road-marking.crud.delete"}}
                 </AuButton>
               </td>
             </c.body>
@@ -459,7 +459,7 @@
             (await @model.roadSignConcept.relatedTrafficLightConcepts)
           }}
           @fields="Image Meaning Code"
-          @noDataMessage={{t "roadMarkingConcept.crud.noData"}}
+          @noDataMessage={{t "road-marking-concept.crud.no-data"}}
           class="container-flex--contain table-no-overflow" as |s|
         >
           <s.menu as |menu|>
@@ -467,12 +467,12 @@
               <AuToolbar class="au-o-box">
                 <AuToolbarGroup>
                   <AuHeading @level="2" @skin="3">
-                    {{t "roadMarkingConcept.attr.relatedTrafficLight"}}
+                    {{t "road-marking-concept.attr.related-traffic-light"}}
                   </AuHeading>
                 </AuToolbarGroup>
                 <AuToolbarGroup>
                   <AuButton {{on "click" this.toggleAddRelatedTrafficLights}}>
-                    {{t "relatedTrafficLight.crud.add"}}
+                    {{t "related-traffic-light.crud.add"}}
                   </AuButton>
                 </AuToolbarGroup>
               </AuToolbar>
@@ -481,17 +481,17 @@
           <s.content as |c|>
             <c.header>
               <th class="data-table__header-title">
-                {{t "trafficLightConcept.attr.code"}}
+                {{t "traffic-light-concept.attr.code"}}
               </th>
               <th class="data-table__header-title">
-                {{t "trafficLightConcept.attr.imageHeader"}}
+                {{t "traffic-light-concept.attr.image-header"}}
               </th>
               <th class="data-table__header-title">
-                {{t "trafficLightConcept.attr.definition"}}
+                {{t "traffic-light-concept.attr.definition"}}
               </th>
               <th>
                 <span class="au-u-hidden-visually">
-                  {{t "relatedTrafficLight.crud.delete"}}
+                  {{t "related-traffic-light.crud.delete"}}
                 </span>
               </th>
             </c.header>
@@ -525,7 +525,7 @@
                     )
                   }}
                 >
-                  {{t "relatedTrafficLight.crud.delete"}}
+                  {{t "related-traffic-light.crud.delete"}}
                 </AuButton>
               </td>
             </c.body>
@@ -541,7 +541,7 @@
           <AuToolbar class="au-u-margin-bottom-small">
             <AuToolbarGroup>
               <AuHeading @level="2" @skin="3">
-                {{t "subSign.crud.add"}}
+                {{t "sub-sign.crud.add"}}
               </AuHeading>
             </AuToolbarGroup>
             <button
@@ -558,7 +558,7 @@
           <div class="au-c-data-table__search">
             <AuInput
               @value={{this.subSignCodeFilter}}
-              placeholder={{t "subSign.filter.code"}}
+              placeholder={{t "sub-sign.filter.code"}}
               @icon="search"
               @iconAlignment="right"
               {{on "input" this.setSubSignCodeFilter}}
@@ -573,7 +573,7 @@
               @code={{subSign.roadSignConceptCode}}
               @meaning={{subSign.meaning}}
               @onAdd={{perform this.addSubSign subSign}}
-              @addText={{t "subSign.crud.addOne"}}
+              @addText={{t "sub-sign.crud.add-one"}}
               class="au-c-action-sidebar__item"
             />
           {{/each}}
@@ -592,7 +592,7 @@
           <AuToolbar class="au-u-margin-bottom-small">
             <AuToolbarGroup>
               <AuHeading @level="2" @skin="3">
-                {{t "mainSign.crud.add"}}
+                {{t "main-sign.crud.add"}}
               </AuHeading>
             </AuToolbarGroup>
             <button
@@ -608,12 +608,12 @@
           </AuToolbar>
           <AuContent @skin="small">
             <AuLabel>
-              {{t "mainSign.attr.category"}}
+              {{t "main-sign.attr.category"}}
             </AuLabel>
             <PowerSelect
               @allowClear={{true}}
               @searchEnabled={{true}}
-              @noMatchesMessage={{t "roadSignConcept.crud.noData"}}
+              @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
               @searchField="label"
               @options={{@model.categories}}
               @selected={{this.category}}
@@ -635,7 +635,7 @@
                 @code={{mainSignByCategory.roadSignConceptCode}}
                 @meaning={{mainSignByCategory.meaning}}
                 @onAdd={{perform this.addMainSign mainSignByCategory}}
-                @addText={{t "mainSign.crud.addOne"}}
+                @addText={{t "main-sign.crud.add-one"}}
                 class="au-c-action-sidebar__item"
               />
             {{/each}}
@@ -654,7 +654,7 @@
           <AuToolbar class="au-u-margin-bottom-small">
             <AuToolbarGroup>
               <AuHeading @level="2" @skin="3">
-                {{t "relatedRoadSign.crud.add"}}
+                {{t "related-road-sign.crud.add"}}
               </AuHeading>
             </AuToolbarGroup>
             <button
@@ -670,12 +670,12 @@
           </AuToolbar>
           <AuContent @skin="small">
             <AuLabel>
-              {{t "relatedRoadSign.attr.category"}}
+              {{t "related-road-sign.attr.category"}}
             </AuLabel>
             <PowerSelect
               @allowClear={{true}}
               @searchEnabled={{true}}
-              @noMatchesMessage={{t "roadSignConcept.crud.noData"}}
+              @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
               @searchField="label"
               @options={{@model.categories}}
               @selected={{this.category}}
@@ -697,7 +697,7 @@
                 @code={{relatedRoadSignByCategory.roadSignConceptCode}}
                 @meaning={{relatedRoadSignByCategory.meaning}}
                 @onAdd={{perform this.addRelatedRoadSign relatedRoadSignByCategory}}
-                @addText={{t "relatedRoadSign.crud.addOne"}}
+                @addText={{t "related-road-sign.crud.add-one"}}
                 class="au-c-action-sidebar__item"
               />
             {{/each}}
@@ -716,7 +716,7 @@
           <AuToolbar class="au-u-margin-bottom-small">
             <AuToolbarGroup>
               <AuHeading @level="2" @skin="3">
-                {{t "relatedRoadMarking.crud.add"}}
+                {{t "related-road-marking.crud.add"}}
               </AuHeading>
             </AuToolbarGroup>
             <button
@@ -733,7 +733,7 @@
           <div class="au-c-data-table__search">
             <AuInput
               @value={{this.relatedRoadMarkingCodeFilter}}
-              placeholder={{t "relatedRoadMarking.filter.code"}}
+              placeholder={{t "related-road-marking.filter.code"}}
               @icon="search"
               @iconAlignment="right"
               {{on "input" this.setRelatedRoadMarkingCodeFilter}}
@@ -752,7 +752,7 @@
               @code={{relatedRoadMarking.roadSignConceptCode}}
               @meaning={{relatedRoadMarking.definition}}
               @onAdd={{perform this.addRelatedRoadMarking relatedRoadMarking}}
-              @addText={{t "relatedRoadMarking.crud.addOne"}}
+              @addText={{t "related-road-marking.crud.add-one"}}
               class="au-c-action-sidebar__item"
             />
           {{/each}}
@@ -767,7 +767,7 @@
                 @code={{relatedRoadMarkingByCategory.roadMarkingConceptCode}}
                 @meaning={{relatedRoadMarkingByCategory.meaning}}
                 @onAdd={{perform this.addRelatedRoadMarking relatedRoadMarkingByCategory}}
-                @addText={{t "relatedRoadMarking.crud.addOne"}}
+                @addText={{t "related-road-marking.crud.add-one"}}
                 class="au-c-action-sidebar__item"
               />
             {{/each}}
@@ -787,7 +787,7 @@
           <AuToolbar class="au-u-margin-bottom-small">
             <AuToolbarGroup>
               <AuHeading @level="2" @skin="3">
-                {{t "relatedTrafficLight.crud.add"}}
+                {{t "related-traffic-light.crud.add"}}
               </AuHeading>
             </AuToolbarGroup>
             <button
@@ -823,7 +823,7 @@
               @code={{relatedTrafficLight.roadSignConceptCode}}
               @meaning={{relatedTrafficLight.definition}}
               @onAdd={{perform this.addRelatedTrafficLight relatedTrafficLight}}
-              @addText={{t "relatedTrafficLight.crud.addOne"}}
+              @addText={{t "related-traffic-light.crud.add-one"}}
               class="au-c-action-sidebar__item"
             />
           {{/each}}
@@ -840,7 +840,7 @@
                 @onAdd={{
                   perform this.addRelatedTrafficLight relatedTrafficLightByCategory
                 }}
-                @addText={{t "relatedTrafficLight.crud.addOne"}}
+                @addText={{t "related-traffic-light.crud.add-one"}}
                 class="au-c-action-sidebar__item"
               />
             {{/each}}

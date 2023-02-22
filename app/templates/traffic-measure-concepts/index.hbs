@@ -1,7 +1,7 @@
 <AuDataTable
   @content={{this.model}}
   @fields="signs templates"
-  @noDataMessage={{t "trafficMeasureConcept.crud.noData"}}
+  @noDataMessage={{t "traffic-measure-concept.crud.no-data"}}
   @size={{this.size}}
   @page={{this.page}}
   @sort={{this.sort}} as |s|
@@ -11,7 +11,7 @@
       <AuToolbar class="au-o-box">
         <AuToolbarGroup>
           <AuHeading @skin="2">
-            {{t "trafficMeasureConcept.name"}}
+            {{t "traffic-measure-concept.name"}}
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup class="au-c-toolbar__group--center">
@@ -19,14 +19,14 @@
           <div class="au-c-data-table__search traffic-light-code-search">
             <AuInput
               @value={{this.code}}
-              placeholder={{t "trafficMeasureConcept.attr.code"}}
+              placeholder={{t "traffic-measure-concept.attr.code"}}
               @icon="search"
               @iconAlignment="right"
               {{on "input" (perform this.updateSearchFilterTask "code")}}
             />
           </div>
           <LinkTo class="au-c-button" @route="traffic-measure-concepts.new">
-            {{t "trafficMeasureConcept.crud.new"}}
+            {{t "traffic-measure-concept.crud.new"}}
           </LinkTo>
         </AuToolbarGroup>
       </AuToolbar>
@@ -40,16 +40,16 @@
         @label="Name"
       />
       <th>
-        {{t "trafficMeasureConcept.attr.sign"}}
+        {{t "traffic-measure-concept.attr.sign"}}
       </th>
       <th>
-        {{t "trafficMeasureConcept.attr.template"}}
+        {{t "traffic-measure-concept.attr.template"}}
       </th>
       <th>
        {{t "utility.zonality"}}
       </th>
       <th>
-        {{t "roadMarkingConcept.attr.valid"}}
+        {{t "road-marking-concept.attr.valid"}}
       </th>
       <th></th>
     </c.header>
@@ -85,7 +85,7 @@
           @route="traffic-measure-concepts.edit"
           @model={{trafficMeasureConcept.id}}
         >
-          {{t "trafficMeasureConcept.crud.edit"}}
+          {{t "traffic-measure-concept.crud.edit"}}
         </LinkTo>
       </td>
     </c.body>
