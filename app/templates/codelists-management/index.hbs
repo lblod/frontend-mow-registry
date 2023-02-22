@@ -1,7 +1,7 @@
 <AuDataTable
   @content={{this.model.codelists}}
   @fields="Label"
-  @noDataMessage={{t "codelist.crud.noData"}}
+  @noDataMessage={{t "codelist.crud.no-data"}}
   @size={{this.size}}
   @page={{this.page}}
   @sort={{this.sort}} as |s|
@@ -21,7 +21,7 @@
               @value={{this.label}}
               @icon="search"
               @iconAlignment="right"
-              placeholder={{t "codelist.crud.labelFilter"}}
+              placeholder={{t "codelist.crud.label-filter"}}
               {{on "input" (perform this.updateSearchFilterTask "label")}}
             />
           </div>
