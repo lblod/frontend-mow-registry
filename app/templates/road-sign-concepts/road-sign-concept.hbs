@@ -112,7 +112,7 @@
                 @alert={{true}}
                 {{on
                   "click"
-                  (fn this.removeRoadSignConcept @model.roadSignConcept)
+                  (perform this.removeRoadSignConcept @model.roadSignConcept)
                 }}
               >
                 {{t "road-sign-concept.crud.delete"}}
@@ -132,7 +132,7 @@
       >
         <InstructionsTable
           @templates={{@model.roadSignConcept.templates}}
-          @removeTemplate={{this.removeTemplate}}
+          @removeTemplate={{perform this.removeTemplate}}
           @editInstruction={{this.editInstruction}}
           @addInstruction={{this.addInstruction}}
           @isAddingInstructions={{this.isAddingInstructions}}
@@ -207,7 +207,7 @@
                     @alert={{true}}
                     @skin="secondary"
                     @hideText={{true}}
-                    {{on "click" (fn this.removeMainSign mainSignConcept)}}
+                    {{on "click" (perform this.removeMainSign mainSignConcept)}}
                   >
                     {{t "main-sign.crud.delete"}}
                   </AuButton>
@@ -277,7 +277,7 @@
                     @alert={{true}}
                     @skin="secondary"
                     @hideText={{true}}
-                    {{on "click" (fn this.removeSubSign subSign)}}
+                    {{on "click" (perform this.removeSubSign subSign)}}
                   >
                     {{t "sub-sign.crud.delete"}}
                   </AuButton>
@@ -360,7 +360,7 @@
                   @hideText={{true}}
                   {{on
                     "click"
-                    (fn this.removeRelatedRoadSign relatedRoadSignConcept)
+                    (perform this.removeRelatedRoadSign relatedRoadSignConcept)
                   }}
                 >
                   {{t "related-road-sign.crud.delete"}}
@@ -444,7 +444,7 @@
                   @hideText={{true}}
                   {{on
                     "click"
-                    (fn this.removeRelatedRoadMarking relatedRoadMarkingConcept)
+                    (perform this.removeRelatedRoadMarking relatedRoadMarkingConcept)
                   }}
                 >
                   {{t "related-road-marking.crud.delete"}}
@@ -520,7 +520,7 @@
                   @hideText={{true}}
                   {{on
                     "click"
-                    (fn
+                    (perform
                       this.removeRelatedTrafficLight relatedTrafficLightConcept
                     )
                   }}
@@ -572,7 +572,7 @@
               @imageUrl={{subSign.image}}
               @code={{subSign.roadSignConceptCode}}
               @meaning={{subSign.meaning}}
-              @onAdd={{fn this.addSubSign subSign}}
+              @onAdd={{perform this.addSubSign subSign}}
               @addText={{t "sub-sign.crud.add-one"}}
               class="au-c-action-sidebar__item"
             />
@@ -617,7 +617,7 @@
               @searchField="label"
               @options={{@model.categories}}
               @selected={{this.category}}
-              @onChange={{this.handleCategorySelection}} as |category|
+              @onChange={{perform this.handleCategorySelection}} as |category|
             >
               {{category.label}}
             </PowerSelect>
@@ -634,7 +634,7 @@
                 @imageUrl={{mainSignByCategory.image}}
                 @code={{mainSignByCategory.roadSignConceptCode}}
                 @meaning={{mainSignByCategory.meaning}}
-                @onAdd={{fn this.addMainSign mainSignByCategory}}
+                @onAdd={{perform this.addMainSign mainSignByCategory}}
                 @addText={{t "main-sign.crud.add-one"}}
                 class="au-c-action-sidebar__item"
               />
@@ -679,7 +679,7 @@
               @searchField="label"
               @options={{@model.categories}}
               @selected={{this.category}}
-              @onChange={{this.handleCategorySelection}} as |category|
+              @onChange={{perform this.handleCategorySelection}} as |category|
             >
               {{category.label}}
             </PowerSelect>
@@ -696,7 +696,7 @@
                 @imageUrl={{relatedRoadSignByCategory.image}}
                 @code={{relatedRoadSignByCategory.roadSignConceptCode}}
                 @meaning={{relatedRoadSignByCategory.meaning}}
-                @onAdd={{fn this.addRelatedRoadSign relatedRoadSignByCategory}}
+                @onAdd={{perform this.addRelatedRoadSign relatedRoadSignByCategory}}
                 @addText={{t "related-road-sign.crud.add-one"}}
                 class="au-c-action-sidebar__item"
               />
@@ -751,7 +751,7 @@
               @imageUrl={{relatedRoadMarking.image}}
               @code={{relatedRoadMarking.roadSignConceptCode}}
               @meaning={{relatedRoadMarking.definition}}
-              @onAdd={{fn this.addRelatedRoadMarking relatedRoadMarking}}
+              @onAdd={{perform this.addRelatedRoadMarking relatedRoadMarking}}
               @addText={{t "related-road-marking.crud.add-one"}}
               class="au-c-action-sidebar__item"
             />
@@ -766,7 +766,7 @@
                 @imageUrl={{relatedRoadMarkingByCategory.image}}
                 @code={{relatedRoadMarkingByCategory.roadMarkingConceptCode}}
                 @meaning={{relatedRoadMarkingByCategory.meaning}}
-                @onAdd={{fn this.addRelatedRoadMarking relatedRoadMarkingByCategory}}
+                @onAdd={{perform this.addRelatedRoadMarking relatedRoadMarkingByCategory}}
                 @addText={{t "related-road-marking.crud.add-one"}}
                 class="au-c-action-sidebar__item"
               />
@@ -803,7 +803,7 @@
           </AuToolbar>
           <div class="au-c-data-table__search">
             <AuInput
-              value={{this.relatedTrafficLightCodeFilter}}
+              @value={{this.relatedTrafficLightCodeFilter}}
               placeholder={{t "relatedTrafficLight.filter.code"}}
               @icon="search"
               @iconAlignment="right"
@@ -822,7 +822,7 @@
               @imageUrl={{relatedTrafficLight.image}}
               @code={{relatedTrafficLight.roadSignConceptCode}}
               @meaning={{relatedTrafficLight.definition}}
-              @onAdd={{fn this.addRelatedTrafficLight relatedTrafficLight}}
+              @onAdd={{perform this.addRelatedTrafficLight relatedTrafficLight}}
               @addText={{t "related-traffic-light.crud.add-one"}}
               class="au-c-action-sidebar__item"
             />
@@ -838,7 +838,7 @@
                 @code={{relatedTrafficLightByCategory.TrafficLightConceptCode}}
                 @meaning={{relatedTrafficLightByCategory.meaning}}
                 @onAdd={{
-                  fn this.addRelatedTrafficLight relatedTrafficLightByCategory
+                  perform this.addRelatedTrafficLight relatedTrafficLightByCategory
                 }}
                 @addText={{t "related-traffic-light.crud.add-one"}}
                 class="au-c-action-sidebar__item"

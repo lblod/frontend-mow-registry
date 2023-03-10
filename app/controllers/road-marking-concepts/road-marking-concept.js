@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { task } from 'ember-concurrency';
 
 export default class RoadmarkingConceptsRoadmarkingConceptController extends Controller {
   @service router;
@@ -69,39 +70,39 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     });
   }
 
-  @action
-  async addRelatedRoadMarking(relatedRoadMarking) {
-    const relatedToRoadMarkingConcepts = await this.model.roadMarkingConcept
+  @task
+  *addRelatedRoadMarking(relatedRoadMarking) {
+    const relatedToRoadMarkingConcepts = yield this.model.roadMarkingConcept
       .relatedToRoadMarkingConcepts;
-    const relatedRoadMarkingConcepts = await this.model.roadMarkingConcept
+    const relatedRoadMarkingConcepts = yield this.model.roadMarkingConcept
       .relatedRoadMarkingConcepts;
 
     relatedToRoadMarkingConcepts.pushObject(relatedRoadMarking);
     relatedRoadMarkingConcepts.pushObject(relatedRoadMarking);
 
-    await this.model.roadMarkingConcept.save();
+    yield this.model.roadMarkingConcept.save();
   }
 
-  @action
-  async removeRelatedRoadMarking(relatedRoadMarking) {
-    const relatedToRoadMarkingConcepts = await this.model.roadMarkingConcept
+  @task
+  *removeRelatedRoadMarking(relatedRoadMarking) {
+    const relatedToRoadMarkingConcepts = yield this.model.roadMarkingConcept
       .relatedToRoadMarkingConcepts;
-    const relatedFromRoadMarkingConcepts = await this.model.roadMarkingConcept
+    const relatedFromRoadMarkingConcepts = yield this.model.roadMarkingConcept
       .relatedFromRoadMarkingConcepts;
-    const relatedRoadMarkingConcepts = await this.model.roadMarkingConcept
+    const relatedRoadMarkingConcepts = yield this.model.roadMarkingConcept
       .relatedRoadMarkingConcepts;
 
     relatedToRoadMarkingConcepts.removeObject(relatedRoadMarking);
     relatedFromRoadMarkingConcepts.removeObject(relatedRoadMarking);
     relatedRoadMarkingConcepts.removeObject(relatedRoadMarking);
 
-    await relatedRoadMarking.save();
-    await this.model.roadMarkingConcept.save();
+    yield relatedRoadMarking.save();
+    yield this.model.roadMarkingConcept.save();
   }
 
-  @action
-  async addRelatedRoadSign(relatedRoadSign) {
-    let relatedRoadSigns = await this.model.roadMarkingConcept
+  @task
+  *addRelatedRoadSign(relatedRoadSign) {
+    let relatedRoadSigns = yield this.model.roadMarkingConcept
       .relatedRoadSignConcepts;
 
     relatedRoadSigns.pushObject(relatedRoadSign);
@@ -109,9 +110,9 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     this.model.roadMarkingConcept.save();
   }
 
-  @action
-  async removeRelatedRoadSign(relatedRoadSign) {
-    let relatedRoadSigns = await this.model.roadMarkingConcept
+  @task
+  *removeRelatedRoadSign(relatedRoadSign) {
+    let relatedRoadSigns = yield this.model.roadMarkingConcept
       .relatedRoadSignConcepts;
 
     relatedRoadSigns.removeObject(relatedRoadSign);
@@ -123,11 +124,11 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     this.model.roadMarkingConcept.save();
   }
 
-  @action
-  async handleCategorySelection(category) {
+  @task
+  *handleCategorySelection(category) {
     if (category) {
       this.category = category;
-      let categoryRoadSigns = await category.roadSignConcepts;
+      let categoryRoadSigns = yield category.roadSignConcepts;
 
       this.categoryRoadSigns = categoryRoadSigns;
     } else {
@@ -136,18 +137,18 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     }
   }
 
-  @action
-  async addRelatedTrafficLight(relatedTrafficLight) {
-    let relatedTrafficLights = await this.model.roadMarkingConcept
+  @task
+  *addRelatedTrafficLight(relatedTrafficLight) {
+    let relatedTrafficLights = yield this.model.roadMarkingConcept
       .relatedTrafficLightConcepts;
 
     relatedTrafficLights.pushObject(relatedTrafficLight);
     this.model.roadMarkingConcept.save();
   }
 
-  @action
-  async removeRelatedTrafficLight(relatedTrafficLight) {
-    let relatedTrafficLights = await this.model.roadMarkingConcept
+  @task
+  *removeRelatedTrafficLight(relatedTrafficLight) {
+    let relatedTrafficLights = yield this.model.roadMarkingConcept
       .relatedTrafficLightConcepts;
 
     relatedTrafficLights.removeObject(relatedTrafficLight);
@@ -186,37 +187,38 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     this.isAddingRelatedTrafficLights = !this.isAddingRelatedTrafficLights;
   }
 
-  @action
-  async removeRoadMarkingConcept(roadMarkingConcept, event) {
+  @task
+  *removeRoadMarkingConcept(roadMarkingConcept, event) {
     event.preventDefault();
 
-    await roadMarkingConcept.destroyRecord();
+    yield roadMarkingConcept.destroyRecord();
     this.router.transitionTo('road-marking-concepts');
   }
 
   @action
-  async addInstruction() {
+  addInstruction() {
     this.router.transitionTo(
       'road-marking-concepts.road-marking-concept.instruction',
       'new'
     );
   }
 
-  @action editInstruction(template) {
+  @action
+  editInstruction(template) {
     this.router.transitionTo(
       'road-marking-concepts.road-marking-concept.instruction',
       template.id
     );
   }
 
-  @action
-  async removeTemplate(template) {
-    let templates = await this.model.roadMarkingConcept.templates;
+  @task
+  *removeTemplate(template) {
+    let templates = yield this.model.roadMarkingConcept.templates;
 
     templates.removeObject(template);
 
-    await template.destroyRecord();
-    await this.model.roadMarkingConcept.save();
+    yield template.destroyRecord();
+    yield this.model.roadMarkingConcept.save();
   }
 
   reset() {

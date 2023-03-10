@@ -54,7 +54,7 @@
                   id="image-url"
                   required="required"
                   type="text"
-                  value={{trafficLightConcept.image}}
+                  @value={{trafficLightConcept.image}}
                   class="au-u-3-5 au-u-4-5@small"
                   {{on "input" (fn this.setImageUrl trafficLightConcept)}}
                 />
@@ -86,7 +86,7 @@
                   @error={{isInvalid}}
                   id="traffic-light-concept-code"
                   required="required"
-                  value={{trafficLightConcept.trafficLightConceptCode}}
+                  @value={{trafficLightConcept.trafficLightConceptCode}}
                   {{on
                     "input"
                     (fn
@@ -117,7 +117,7 @@
                   class="u-min-h-20"
                   id="definition"
                   required="required"
-                  value={{trafficLightConcept.definition}}
+                  @value={{trafficLightConcept.definition}}
                   {{on
                     "input"
                     (fn
@@ -148,7 +148,7 @@
                   class="u-min-h-20"
                   id="meaning"
                   required="required"
-                  value={{trafficLightConcept.meaning}}
+                  @value={{trafficLightConcept.meaning}}
                   {{on
                     "input"
                     (fn

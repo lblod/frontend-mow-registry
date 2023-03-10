@@ -50,7 +50,7 @@
                   id="image-url"
                   required="required"
                   type="text"
-                  value={{roadMarkingConcept.image}}
+                  @value={{roadMarkingConcept.image}}
                   class="au-u-3-5 au-u-4-5@small"
                   {{on "input" (fn this.setImageUrl roadMarkingConcept)}}
                 />
@@ -82,7 +82,7 @@
                   @error={{isInvalid}}
                   id="road-marking-concept-code"
                   required="required"
-                  value={{roadMarkingConcept.roadMarkingConceptCode}}
+                  @value={{roadMarkingConcept.roadMarkingConceptCode}}
                   {{on
                     "input"
                     (fn
@@ -113,7 +113,7 @@
                   class="u-min-h-20"
                   id="meaning"
                   required="required"
-                  value={{roadMarkingConcept.meaning}}
+                  @value={{roadMarkingConcept.meaning}}
                   {{on
                     "input"
                     (fn this.setRoadMarkingConceptValue roadMarkingConcept "meaning")

@@ -57,9 +57,9 @@
                   id="image-url"
                   required="required"
                   type="text"
-                  value={{roadSignConcept.image}}
+                  @value={{@roadSignConcept.image}}
                   class="au-u-3-5 au-u-4-5@small"
-                  {{on "input" (fn this.setImageUrl roadSignConcept)}}
+                  {{on "input" (fn this.setImageUrl @roadSignConcept)}}
                 />
                 <span>
                   {{t "utility.or"}}
@@ -87,7 +87,7 @@
                   @error={{isInvalid}}
                   id="road-sign-concept-code"
                   required="required"
-                  value={{roadSignConcept.roadSignConceptCode}}
+                  @value={{roadSignConcept.roadSignConceptCode}}
                   {{on
                     "input"
                     (fn
@@ -118,7 +118,7 @@
                   class="u-min-h-20"
                   id="meaning"
                   required="required"
-                  value={{roadSignConcept.meaning}}
+                  @value={{roadSignConcept.meaning}}
                   {{on
                     "input"
                     (fn this.setRoadSignConceptValue roadSignConcept "meaning")

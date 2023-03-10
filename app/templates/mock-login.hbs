@@ -5,13 +5,35 @@
         <div class="au-o-layout">
           <AuHeading @skin="4" class="au-u-margin-bottom-small">{{t 'auth.mock.title'}}</AuHeading>
           <MockLogin as |login|>
-            <login.each-account @accounts={{this.model}} as |account|>
-              <div class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small">
-                <p>
-                  {{account.user.fullName}}
-                </p>
-              </div>
-            </login.each-account>
+            {{#if login.isLoading}}
+              <AuLoader />
+            {{else}}
+              {{#if login.errorMessage}}
+                {{login.errorMessage}}
+              {{/if}}
+              <ul>
+              {{#each this.model as |account|}}
+                <li>
+                  <div
+                    class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small"
+                  >
+                    <AuButton
+                      @skin="tertiary"
+                      {{on
+                        "click"
+                        (fn login.login account.id account.user.groups.firstObject.id)
+                      }}
+                    >
+                      <strong>
+                        {{account.user.fullName}}
+                        -&nbsp;
+                      </strong>
+                    </AuButton>
+                  </div>
+                </li>
+              {{/each}}
+              </ul>
+            {{/if}}
           </MockLogin>
         </div>
       </div>
