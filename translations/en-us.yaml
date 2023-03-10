@@ -1,3 +1,11 @@
+auth:
+  simple:
+    title: Enter your username and password to log in
+  mock: 
+    title: Choose an account to log in with.
+  acmidm:
+    title: Log in with acm/idm
+  login: Login
 utility:
   login: Login
   logout: Logout
@@ -182,10 +190,6 @@ main-sign:
     add: Add main signs
     add-one: Add main sign
     delete: Remove main sign
-mock-login:
-    pick: Choose an account to log in with.
-login:
-  login: Enter your username and password to log in
 sparql:
     name: 'MOW Registry: SPARQL'
 codelist:

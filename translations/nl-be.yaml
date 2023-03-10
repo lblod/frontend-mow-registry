@@ -1,3 +1,11 @@
+auth:
+  simple:
+    title: Voer uw gebruikersnaam en wachtwoord in om in te loggen
+  mock: 
+    title: Kies een bestuurseenheid om mee in te loggen
+  acmidm:
+    title: Log in met acm/idm
+  login: Meld u aan
 utility:
   login: Aanmelden
   logout: Afmelden
@@ -182,10 +190,6 @@ related-road-sign:
     add: Gerelateerde verkeersborden toevoegen
     add-one: Gerelateerd verkeersbord toevoegen
     delete: Gerelateerd verkeersbord verwijderen
-mock-login:
-    pick: Kies een bestuurseenheid om mee in te loggen
-login:
-  login: Voer uw gebruikersnaam en wachtwoord in om in te loggen
 sparql:
     name: 'MOW Register: SPARQL'
 codelist:
