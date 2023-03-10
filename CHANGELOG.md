@@ -3,6 +3,28 @@
 
 
 
+
+## 1.0.0 (2023-03-10)
+
+#### :house: Internal
+* [#142](https://github.com/lblod/frontend-mow-registry/pull/142) Upgrade ember-source to 4.8.4 ([@elpoelma](https://github.com/elpoelma))
+* [#141](https://github.com/lblod/frontend-mow-registry/pull/141) Update ember-acm-idm login to 2.0.0-beta.1 ([@elpoelma](https://github.com/elpoelma))
+* [#140](https://github.com/lblod/frontend-mow-registry/pull/140) Convert translations to kebab-case to ensure consistency ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 2
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+
+
+## 0.14.2 (2023-01-24)
+
+#### :bug: Bug Fix
+* [#139](https://github.com/lblod/frontend-mow-registry/pull/139) Set zonality on NON_ZONAL when resource does not have any ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 1
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+
+
 ## 0.16.2 (2023-01-24)
 
 #### :bug: Bug Fix
