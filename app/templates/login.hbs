@@ -19,7 +19,7 @@
           <MuLogin />
           {{else}}
           <AuHeading @skin="4" class="au-u-margin-bottom">{{t 'auth.acmidm.title'}}</AuHeading>
-          <AuLinkExternal @skin='button' href={{this.loginUrl}}>{{t 'auth.login'}}</AuLinkExternal>
+          <AuLinkExternal @skin='button' href={{this.loginUrl}} target=''>{{t 'auth.login'}}</AuLinkExternal>
           {{/if}}
         </div>
       </div>
