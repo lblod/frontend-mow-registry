@@ -48,5 +48,7 @@ Router.map(function () {
     this.route('codelist', { path: '/:id' });
   });
 
-  this.route('authorization', { path: 'authorization/callback' });
+  this.route('authorization', function () {
+    this.route('callback');
+  });
 });
