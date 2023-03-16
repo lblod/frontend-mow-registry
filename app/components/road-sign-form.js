@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { dropTask, task } from 'ember-concurrency';
+import { dropTask } from 'ember-concurrency';
 import RoadSignConceptValidations from 'mow-registry/validations/road-sign-concept';
 import ENV from 'mow-registry/config/environment';
 

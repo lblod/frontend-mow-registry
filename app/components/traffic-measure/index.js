@@ -320,18 +320,20 @@ export default class TrafficMeasureIndexComponent extends Component {
       'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
     });
     if (await nodeShape.firstObject) {
-      await ((await nodeShape.firstObject)).destroyRecord();
+      await (await nodeShape.firstObject).destroyRecord();
     }
     // We assume a measure only has one template
-    await ((await ((await this.trafficMeasureConcept.get('templates')
-      .firstObject)).get('mappings'))).forEach((mapping) =>
-      mapping.destroyRecord()
-    );
-    await ((await this.trafficMeasureConcept.get('templates')
-      .firstObject)).destroyRecord();
-    await ((await this.trafficMeasureConcept.get('relations'))).forEach(
-      (relation) => relation.destroyRecord()
-    );
+    await (
+      await (
+        await this.trafficMeasureConcept.get('templates').firstObject
+      ).get('mappings')
+    ).forEach((mapping) => mapping.destroyRecord());
+    await (
+      await this.trafficMeasureConcept.get('templates').firstObject
+    ).destroyRecord();
+    await (
+      await this.trafficMeasureConcept.get('relations')
+    ).forEach((relation) => relation.destroyRecord());
 
     await this.trafficMeasureConcept.destroyRecord();
     this.router.transitionTo('traffic-measure-concepts.index');
@@ -380,7 +382,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     }
   });
 
-  saveRoadsigns = task(async trafficMeasureConcept => {
+  saveRoadsigns = task(async (trafficMeasureConcept) => {
     // delete existing ones
     let length = trafficMeasureConcept.relations.length;
     for (let i = 0; i < length; i++) {
@@ -399,7 +401,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     await trafficMeasureConcept.save();
   });
 
-  saveMappings = task(async template => {
+  saveMappings = task(async (template) => {
     //destroy old ones
     await Promise.all(
       this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
@@ -414,7 +416,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     await template.save();
   });
 
-  annotateRdfa = task(async template => {
+  annotateRdfa = task(async (template) => {
     const contentWithMappings = await includeMappings(
       template.value,
       this.mappings
