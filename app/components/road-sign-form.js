@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { dropTask } from 'ember-concurrency';
+import { dropTask, task } from 'ember-concurrency';
 import RoadSignConceptValidations from 'mow-registry/validations/road-sign-concept';
 import ENV from 'mow-registry/config/environment';
 
@@ -38,12 +38,11 @@ export default class RoadSignFormComponent extends Component {
     roadSignConcept.categories = selection;
   }
 
-  @dropTask
-  *editRoadSignConceptTask(roadSignConcept, event) {
+  editRoadSignConceptTask = dropTask(async (roadSignConcept, event) => {
     event.preventDefault();
 
     if (this.file) {
-      let fileResponse = yield this.fileService.upload(this.file);
+      let fileResponse = await this.fileService.upload(this.file);
       if (ENV.baseUrl) {
         roadSignConcept.image = ENV.baseUrl + fileResponse.downloadLink;
       } else {
@@ -51,15 +50,15 @@ export default class RoadSignFormComponent extends Component {
       }
     }
 
-    yield roadSignConcept.validate();
+    await roadSignConcept.validate();
 
     if (roadSignConcept.isValid) {
-      yield roadSignConcept.save();
+      await roadSignConcept.save();
 
       this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
         roadSignConcept.id
       );
     }
-  }
+  });
 }

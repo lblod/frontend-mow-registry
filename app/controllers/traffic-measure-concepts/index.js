@@ -11,13 +11,14 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   @tracked template;
   @tracked sort = 'label';
 
-  @restartableTask
-  *updateSearchFilterTask(queryParamProperty, event) {
-    yield timeout(300);
+  updateSearchFilterTask = restartableTask(
+    async (queryParamProperty, event) => {
+      await timeout(300);
 
-    this[queryParamProperty] = event.target.value.trim();
-    this.resetPagination();
-  }
+      this[queryParamProperty] = event.target.value.trim();
+      this.resetPagination();
+    }
+  );
 
   resetPagination() {
     this.page = 0;

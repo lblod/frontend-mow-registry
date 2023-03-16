@@ -92,38 +92,36 @@ export default class TrafficMeasureIndexComponent extends Component {
     return !this.selectedType;
   }
 
-  @task
-  *fetchData() {
+  fetchData = task(async () => {
     // Wait for data loading
-    yield this.trafficMeasureConcept.relations;
+    await this.trafficMeasureConcept.relations;
 
-    this.codeLists = yield this.codeListService.all.perform();
+    this.codeLists = await this.codeListService.all.perform();
 
     // We assume that a measure has only one template
-    const templates = yield this.trafficMeasureConcept.templates;
-    this.template = yield templates.firstObject;
-    this.mappings = yield this.template.mappings;
+    const templates = await this.trafficMeasureConcept.templates;
+    this.template = await templates.firstObject;
+    this.mappings = await this.template.mappings;
 
     this.mappings.sortBy('id');
 
-    const relations = yield this.trafficMeasureConcept.orderedRelations;
+    const relations = await this.trafficMeasureConcept.orderedRelations;
 
-    this.signs = yield Promise.all(
+    this.signs = await Promise.all(
       relations.map((relation) => relation.concept)
     );
 
-    yield this.fetchInstructions.perform();
+    await this.fetchInstructions.perform();
 
     this.parseTemplate();
-  }
+  });
 
-  @task
-  *fetchInstructions() {
+  fetchInstructions = task(async () => {
     //refresh instruction list from available signs
     this.instructions = [];
     for (let i = 0; i < this.signs.length; i++) {
       const sign = this.signs[i];
-      const instructions = yield sign.templates;
+      const instructions = await sign.templates;
       for (let j = 0; j < instructions.length; j++) {
         const instruction = instructions.objectAt(j);
         this.instructions.pushObject(instruction);
@@ -149,7 +147,7 @@ export default class TrafficMeasureIndexComponent extends Component {
         }
       });
     }
-  }
+  });
 
   @action
   updateCodelist(mapping, codeList) {
@@ -297,14 +295,14 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     this.generatePreview.perform();
   }
-  @task
-  *generatePreview() {
+
+  generatePreview = task(async () => {
     this.preview = this.template.value;
 
     for (const mapping of this.mappings) {
       let replaceString;
       if (mapping.type === 'instruction') {
-        const instruction = yield mapping.instruction;
+        const instruction = await mapping.instruction;
         replaceString =
           "<span style='background-color: #ffffff'>" +
           instruction.value +
@@ -315,49 +313,47 @@ export default class TrafficMeasureIndexComponent extends Component {
         );
       }
     }
-  }
+  });
 
-  @task
-  *delete() {
-    const nodeShape = yield this.store.query('node-shape', {
+  delete = task(async () => {
+    const nodeShape = await this.store.query('node-shape', {
       'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
     });
-    if (yield nodeShape.firstObject) {
-      yield (yield nodeShape.firstObject).destroyRecord();
+    if (await nodeShape.firstObject) {
+      await ((await nodeShape.firstObject)).destroyRecord();
     }
     // We assume a measure only has one template
-    yield (yield (yield this.trafficMeasureConcept.get('templates')
-      .firstObject).get('mappings')).forEach((mapping) =>
+    await ((await ((await this.trafficMeasureConcept.get('templates')
+      .firstObject)).get('mappings'))).forEach((mapping) =>
       mapping.destroyRecord()
     );
-    yield (yield this.trafficMeasureConcept.get('templates')
-      .firstObject).destroyRecord();
-    yield (yield this.trafficMeasureConcept.get('relations')).forEach(
+    await ((await this.trafficMeasureConcept.get('templates')
+      .firstObject)).destroyRecord();
+    await ((await this.trafficMeasureConcept.get('relations'))).forEach(
       (relation) => relation.destroyRecord()
     );
 
-    yield this.trafficMeasureConcept.destroyRecord();
+    await this.trafficMeasureConcept.destroyRecord();
     this.router.transitionTo('traffic-measure-concepts.index');
-  }
+  });
 
-  @task
-  *save() {
+  save = task(async () => {
     // We assume a measure only has one template
-    const template = yield this.trafficMeasureConcept.templates.firstObject;
+    const template = await this.trafficMeasureConcept.templates.firstObject;
 
     //if new save relationships
     if (this.new) {
-      yield this.trafficMeasureConcept.save();
-      const trafficMeasureResource = yield this.store.findRecord(
+      await this.trafficMeasureConcept.save();
+      const trafficMeasureResource = await this.store.findRecord(
         'resource',
         TRAFFIC_MEASURE_RESOURCE_UUID
       );
       const nodeShape = this.store.createRecord('node-shape');
       nodeShape.targetClass = trafficMeasureResource;
       nodeShape.targetHasConcept = this.trafficMeasureConcept;
-      yield nodeShape.save();
-      yield template.save();
-      yield this.trafficMeasureConcept.save();
+      await nodeShape.save();
+      await template.save();
+      await this.trafficMeasureConcept.save();
     }
 
     //1-parse everything again
@@ -365,16 +361,16 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     //2-update node shape
     this.trafficMeasureConcept.label = this.label;
-    yield this.trafficMeasureConcept.save();
+    await this.trafficMeasureConcept.save();
 
     //3-update roadsigns
-    yield this.saveRoadsigns.perform(this.trafficMeasureConcept);
+    await this.saveRoadsigns.perform(this.trafficMeasureConcept);
 
     //4-handle variable mappings
-    yield this.saveMappings.perform(template);
+    await this.saveMappings.perform(template);
 
     //5-annotate rdfa
-    yield this.annotateRdfa.perform(template);
+    await this.annotateRdfa.perform(template);
 
     if (this.new) {
       this.router.transitionTo(
@@ -382,15 +378,14 @@ export default class TrafficMeasureIndexComponent extends Component {
         this.trafficMeasureConcept.id
       );
     }
-  }
+  });
 
-  @task
-  *saveRoadsigns(trafficMeasureConcept) {
+  saveRoadsigns = task(async trafficMeasureConcept => {
     // delete existing ones
     let length = trafficMeasureConcept.relations.length;
     for (let i = 0; i < length; i++) {
       const relation = trafficMeasureConcept.relations.objectAt(0);
-      yield relation.destroyRecord();
+      await relation.destroyRecord();
     }
     // creating signs
     trafficMeasureConcept.relations = [];
@@ -399,30 +394,28 @@ export default class TrafficMeasureIndexComponent extends Component {
       mustUseRelation.concept = this.signs[i];
       mustUseRelation.order = i;
       trafficMeasureConcept.relations.pushObject(mustUseRelation);
-      yield mustUseRelation.save();
+      await mustUseRelation.save();
     }
-    yield trafficMeasureConcept.save();
-  }
+    await trafficMeasureConcept.save();
+  });
 
-  @task
-  *saveMappings(template) {
+  saveMappings = task(async template => {
     //destroy old ones
-    yield Promise.all(
+    await Promise.all(
       this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
     );
 
     //create new ones
     for (const mapping of this.mappings) {
       template.mappings.pushObject(mapping);
-      yield mapping.save();
+      await mapping.save();
     }
 
-    yield template.save();
-  }
+    await template.save();
+  });
 
-  @task
-  *annotateRdfa(template) {
-    const contentWithMappings = yield includeMappings(
+  annotateRdfa = task(async template => {
+    const contentWithMappings = await includeMappings(
       template.value,
       this.mappings
     );
@@ -431,6 +424,6 @@ export default class TrafficMeasureIndexComponent extends Component {
         ${contentWithMappings}
       </div>
     `;
-    yield template.save();
-  }
+    await template.save();
+  });
 }

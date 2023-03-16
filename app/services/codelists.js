@@ -8,18 +8,17 @@ export default class CodelistsService extends Service {
 
   @service store;
 
-  @task
-  *all() {
+  all = task(async () => {
     if (!this.codeLists) {
-      const codeLists = yield this.store.query('code-list', {
+      const codeLists = await this.store.query('code-list', {
         'page[size]': 100,
         include: 'concepts',
         sort: 'label',
       });
-      yield Promise.all(codeLists.map((codeList) => codeList.concepts));
+      await Promise.all(codeLists.map((codeList) => codeList.concepts));
 
       this.codeLists = codeLists;
     }
     return this.codeLists;
-  }
+  });
 }

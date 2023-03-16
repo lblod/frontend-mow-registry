@@ -32,22 +32,21 @@ export default class CodelistFormComponent extends Component {
     return this.editCodelistTask.isRunning;
   }
 
-  @task
-  *fetchCodelistTypes() {
-    const typesScheme = yield this.store.findRecord(
+  fetchCodelistTypes = task(async () => {
+    const typesScheme = await this.store.findRecord(
       'concept-scheme',
       COD_CONCEPT_SCHEME_ID
     );
-    const types = yield typesScheme.concepts;
+    const types = await typesScheme.concepts;
     this.codelistTypes = types;
-    if (yield this.args.codelist.type) {
+    if (await this.args.codelist.type) {
       this.selectedType = this.args.codelist.type;
     } else {
       this.selectedType = this.codelistTypes.find(
         (type) => type.id === COD_SINGLE_SELECT_ID
       );
     }
-  }
+  });
 
   @action
   setCodelistValue(codelist, attributeName, event) {
@@ -82,19 +81,18 @@ export default class CodelistFormComponent extends Component {
     this.toDelete.pushObject(option);
   }
 
-  @dropTask
-  *editCodelistTask(codelist, event) {
+  editCodelistTask = dropTask(async (codelist, event) => {
     event.preventDefault();
 
-    yield codelist.validate();
+    await codelist.validate();
 
     if (codelist.isValid) {
-      yield Promise.all(this.toDelete.map((option) => option.destroyRecord()));
-      yield codelist.save();
-      yield Promise.all(this.options.map((option) => option.save()));
+      await Promise.all(this.toDelete.map((option) => option.destroyRecord()));
+      await codelist.save();
+      await Promise.all(this.options.map((option) => option.save()));
       this.router.transitionTo('codelists-management.codelist', codelist.id);
     }
-  }
+  });
 
   @action
   cancelEditingTask() {

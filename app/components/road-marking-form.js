@@ -32,24 +32,23 @@ export default class RoadMarkingFormComponent extends Component {
     roadMarkingConcept[attributeName] = event.target.value;
   }
 
-  @dropTask
-  *editRoadMarkingConceptTask(roadMarkingConcept, event) {
+  editRoadMarkingConceptTask = dropTask(async (roadMarkingConcept, event) => {
     event.preventDefault();
 
     if (this.file) {
-      let fileResponse = yield this.fileService.upload(this.file);
+      let fileResponse = await this.fileService.upload(this.file);
       roadMarkingConcept.image = fileResponse.downloadLink;
     }
 
-    yield roadMarkingConcept.validate();
+    await roadMarkingConcept.validate();
 
     if (roadMarkingConcept.isValid) {
-      yield roadMarkingConcept.save();
+      await roadMarkingConcept.save();
 
       this.router.transitionTo(
         'road-marking-concepts.road-marking-concept',
         roadMarkingConcept.id
       );
     }
-  }
+  });
 }

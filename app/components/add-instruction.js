@@ -26,15 +26,14 @@ export default class AddInstructionComponent extends Component {
     this.fetchData.perform();
   }
 
-  @task
-  *fetchData() {
-    this.concept = yield this.args.concept;
-    this.codeLists = yield this.codeListService.all.perform();
+  fetchData = task(async () => {
+    this.concept = await this.args.concept;
+    this.codeLists = await this.codeListService.all.perform();
 
     if (this.args.editedTemplate) {
       this.new = false;
-      this.template = yield this.args.editedTemplate;
-      this.mappings = yield this.template.mappings;
+      this.template = await this.args.editedTemplate;
+      this.mappings = await this.template.mappings;
       this.mappings.sortBy('id');
     } else {
       this.new = true;
@@ -44,7 +43,7 @@ export default class AddInstructionComponent extends Component {
       this.mappings = this.template.mappings;
     }
     this.parseTemplate();
-  }
+  });
 
   @action
   async updateMappingType(mapping, type) {
@@ -166,28 +165,27 @@ export default class AddInstructionComponent extends Component {
     this.mappings = sortedMappings;
   }
 
-  @task
-  *save() {
-    yield this.template.save();
+  save = task(async () => {
+    await this.template.save();
     this.concept.templates.pushObject(this.template);
-    yield this.concept.save();
+    await this.concept.save();
 
     for (let i = 0; i < this.mappings.length; i++) {
       const mapping = this.mappings[i];
       this.template.mappings.pushObject(mapping);
-      yield mapping.save();
+      await mapping.save();
     }
 
-    this.template.annotated = yield includeMappings(
+    this.template.annotated = await includeMappings(
       this.template.value,
       this.mappings
     );
 
-    yield this.template.save();
-    yield Promise.all(
+    await this.template.save();
+    await Promise.all(
       this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
     );
 
     this.reset();
-  }
+  });
 }
