@@ -6,6 +6,6 @@ export default class MappingModel extends Model {
   @attr uri;
   @belongsTo('code-list', { inverse: 'mappings', async: true }) codeList;
   @belongsTo('template', { inverse: null, async: true }) instruction;
-  @belongsTo('shape', { inverse: null, async: true, polyMorphic: true })
+  @belongsTo('shape', { inverse: null, async: true, polymorphic: true })
   expects;
 }
