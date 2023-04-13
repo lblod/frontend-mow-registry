@@ -11,6 +11,9 @@ module.exports = function (defaults) {
         'node_modules/@appuniversum/ember-appuniversum/app/styles',
       ],
     },
+    '@appuniversum/ember-appuniversum': {
+      disableWormholeElement: true,
+    },
     autoprefixer: {
       enabled: true,
       cascade: true,
