@@ -1,3 +1,8 @@
+{{#let
+  (changeset
+    @trafficMeasureConcept this.TrafficMeasureConceptValidations
+  ) as |trafficMeasureConcept|
+}}
 <div class="au-o-grid au-o-grid--flush au-o-grid--split" {{did-insert this.didInsert}}>
   {{!-- template-lint-disable no-inline-styles --}}
   <div class="au-o-grid__item au-u-1-2@medium">
@@ -10,13 +15,13 @@
           <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
             {{t "utility.zonality"}}
           </AuHeading>
-          <ZonalitySelector @concept={{@trafficMeasureConcept}} />
+          <ZonalitySelector @concept={{trafficMeasureConcept}} />
         </div>
         <div class="au-o-grid__item au-u-1-2">
           <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
             {{t "traffic-measure-concept.attr.temporal"}}
           </AuHeading>
-          <TemporalSelector @concept={{@trafficMeasureConcept}} />
+          <TemporalSelector @concept={{trafficMeasureConcept}} />
         </div>
       </div>
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small au-u-margin-top-small">
@@ -120,7 +125,7 @@
       {{/if}}
       {{#unless @new}}
         <div class="au-u-margin-top-small">
-          <ContentCheck @concept={{@trafficMeasureConcept}}/>
+          <ContentCheck @concept={{trafficMeasureConcept}}/>
         </div>
       {{/unless}}
     </div>
@@ -173,3 +178,4 @@
     </AuButtonGroup>
   </Group>
 </AuToolbar>
+{{/let}}
