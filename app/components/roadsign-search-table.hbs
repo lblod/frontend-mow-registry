@@ -1,0 +1,75 @@
+<ReactiveTable
+  @content={{@content}}
+  @fields="Image Meaning Code"
+  @noDataMessage={{t "road-sign-concept.crud.no-data"}}
+  @page={{@page}}
+  @sort={{@sort}}
+  @pageSize={{@pageSize}}
+  @onPageChange={{@onPageChange}}
+  @onSortChange={{@onSortChange}}
+>
+  <:menu>
+    {{yield to="menu"}}
+  </:menu>
+  <:header as |header|>
+
+    <header.Sortable
+      @field="roadSignConceptCode"
+      @label={{t "road-sign-concept.attr.code"}}
+    />
+    <th>
+      {{t "road-sign-concept.attr.image-header"}}
+    </th>
+    <th>
+      {{t "road-sign-concept.attr.meaning"}}
+    </th>
+    <header.Sortable
+      @field="categories.label"
+      @label={{t "road-sign-concept.attr.categories"}}
+    />
+    <th>
+      {{t "utility.zonality"}}
+    </th>
+    <th>
+      {{t "road-marking-concept.attr.valid"}}
+    </th>
+    <th></th>
+  </:header>
+  <:body as |roadSignConcept|>
+
+    <td>
+      {{roadSignConcept.roadSignConceptCode}}
+    </td>
+    <td>
+      <img class="au-c-thumbnail" src={{roadSignConcept.image}} alt="" role="presentation" />
+    </td>
+    <td>
+      {{roadSignConcept.meaning}}
+    </td>
+    <td>
+      {{#each roadSignConcept.categories as |category index|}}
+        {{#if (gt index 0)}}
+          <br>
+        {{/if}}
+        {{category.label}}
+      {{/each}}
+    </td>
+    <td>
+      {{#if roadSignConcept.zonality}}
+        {{t (concat "utility." roadSignConcept.zonality.label)}}
+      {{else}}
+        {{t "utility.nonZonal"}}
+      {{/if}}
+    </td>
+    <td>
+      {{#if roadSignConcept.valid}}
+        {{t "utility.yes"}}
+      {{else}}
+        {{t "utility.no"}}
+      {{/if}}
+    </td>
+    <td>
+      {{yield roadSignConcept to='rowAction'}}
+    </td>
+  </:body>
+</ReactiveTable>

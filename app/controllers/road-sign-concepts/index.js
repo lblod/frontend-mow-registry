@@ -42,6 +42,17 @@ export default class RoadsignConceptsIndexController extends Controller {
     }
   }
 
+  /**
+   * @param {number} newPage
+   */
+  @action onPageChange(newPage) {
+    this.page = newPage;
+  }
+  /** @param {string} newSort */
+  @action onSortChange(newSort) {
+    this.sort = newSort;
+  }
+
   resetPagination() {
     this.page = 0;
   }
