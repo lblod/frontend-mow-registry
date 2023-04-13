@@ -118,89 +118,14 @@
           @addInstruction={{this.addInstruction}}
           @isAddingInstructions={{this.isAddingInstructions}}
         />
-        <AuDataTable
-          @content={{
-            sort-by-road-sign-code
-            (await @model.roadMarkingConcept.relatedRoadSignConcepts)
-          }}
-          @fields="Image Meaning Code Categories"
-          @noDataMessage={{t "road-sign-concept.crud.no-data"}} as |s|
-        >
-          <s.menu as |menu|>
-            <menu.general>
-              <AuToolbar class="au-o-box" as |Group|>
-                <Group>
-                  <AuHeading @level="2" @skin="3">
-                    {{t "road-marking-concept.attr.related-sign"}}
-                  </AuHeading>
-                </Group>
-                <Group>
-                  <AuButton {{on "click" this.toggleAddRelatedRoadSigns}}>
-                    {{t "related-road-sign.crud.add"}}
-                  </AuButton>
-                </Group>
-              </AuToolbar>
-            </menu.general>
-          </s.menu>
-          <s.content as |c|>
-            <c.header>
-              <th class="data-table__header-title">
-                {{t "road-sign-concept.attr.code"}}
-              </th>
-              <th class="data-table__header-title">
-                {{t "road-sign-concept.attr.image-header"}}
-              </th>
-              <th class="data-table__header-title">
-                {{t "road-sign-concept.attr.meaning"}}
-              </th>
-              <th class="data-table__header-title">
-                {{t "road-sign-concept.attr.categories"}}
-              </th>
-              <th>
-                <span class="au-u-hidden-visually">
-                  {{t "related-road-sign.crud.delete"}}
-                </span>
-              </th>
-            </c.header>
-            <c.body as |relatedRoadSignConcept|>
-              <td>
-                {{relatedRoadSignConcept.roadSignConceptCode}}
-              </td>
-              <td>
-                <img
-                  class="au-c-thumbnail"
-                  src={{relatedRoadSignConcept.image}}
-                  alt=""
-                  role="presentation"
-                />
-              </td>
-              <td>
-                <p class="max-w-prose">
-                  {{relatedRoadSignConcept.meaning}}
-                </p>
-              </td>
-              <td>
-                {{#each relatedRoadSignConcept.categories as |category|}}
-                  {{category.label}}
-                {{/each}}
-              </td>
-              <td class="w-px au-u-padding-right-small">
-                <AuButton
-                  @icon="bin"
-                  @alert={{true}}
-                  @skin="secondary"
-                  @hideText={{true}}
-                  {{on
-                    "click"
-                    (perform this.removeRelatedRoadSign relatedRoadSignConcept)
-                  }}
-                >
-                  {{t "related-road-sign.crud.delete"}}
-                </AuButton>
-              </td>
-            </c.body>
-          </s.content>
-        </AuDataTable>
+        <RelatedRoadsignsTable
+
+          @relatedSigns={{sort-by-road-sign-code
+          (await @model.roadMarkingConcept.relatedRoadSignConcepts) }}
+          @addSign={{this.toggleAddRelatedRoadsigns}}
+          @removeSign={{perform this.removeRelatedRoadSign}}
+
+        />
         <AuDataTable
           @content={{
             sort-by-road-marking-code
