@@ -104,8 +104,9 @@ export default class TrafficMeasureIndexComponent extends Component {
     const templates = await this.trafficMeasureConcept.templates;
     this.template = await templates[0];
     this.mappings = await this.template.mappings;
-
-    this.mappings.sortBy('id');
+    this.mappings = this.mappings
+      .slice()
+      .sort((a, b) => (a.id < b.id ? -1 : 1));
 
     const relations = await this.trafficMeasureConcept.orderedRelations;
 
