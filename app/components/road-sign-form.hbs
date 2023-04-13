@@ -46,11 +46,8 @@
           >
             {{#let roadSignConcept.error.image as |isInvalid|}}
               <p>
-                <AuLabel @error={{isInvalid}} for="image-url">
+                <AuLabel @error={{isInvalid}} for="image-url" @required={{true}}>
                   {{t "road-sign-concept.attr.image-url"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
                 </AuLabel>
                 <AuInput
                   @error={{isInvalid}}
@@ -77,11 +74,8 @@
             {{/let}}
             {{#let roadSignConcept.error.roadSignConceptCode as |isInvalid|}}
               <p>
-                <AuLabel @error={{isInvalid}} for="road-sign-concept-code">
+                <AuLabel @error={{isInvalid}} for="road-sign-concept-code" @required={{true}}>
                   {{t "road-sign-concept.attr.code"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
                 </AuLabel>
                 <AuInput
                   @error={{isInvalid}}
@@ -106,11 +100,8 @@
             {{/let}}
             {{#let roadSignConcept.error.meaning as |isInvalid|}}
               <p>
-                <AuLabel @error={{isInvalid}} for="meaning">
+                <AuLabel @error={{isInvalid}} for="meaning" @required={{true}}>
                   {{t "road-sign-concept.attr.meaning"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
                 </AuLabel>
                 <AuTextarea
                   @error={{isInvalid}}
@@ -133,11 +124,8 @@
             {{/let}}
             {{#let roadSignConcept.error.categories as |isInvalid|}}
               <p>
-                <AuLabel @error={{isInvalid}} for="categories">
+                <AuLabel @error={{isInvalid}} for="categories" @required={{true}}>
                   {{t "road-sign-concept.attr.categories"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
                 </AuLabel>
               <div class={{if isInvalid "ember-power-select--error"}}>
                 <PowerSelectMultiple
@@ -166,9 +154,6 @@
             <p>
             <AuLabel for="categories">
               {{t "utility.zonality"}}&nbsp;
-              <AuPill>
-                {{t "utility.optional"}}
-              </AuPill>
             </AuLabel>
             <ZonalitySelector @concept={{roadSignConcept}}/>
             </p>

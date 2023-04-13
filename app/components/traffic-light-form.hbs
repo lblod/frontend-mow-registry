@@ -43,11 +43,8 @@
           >
             {{#let trafficLightConcept.error.image as |isInvalid|}}
               <p>
-                <AuLabel @error={{isInvalid}} for="image-url">
+                <AuLabel @error={{isInvalid}} for="image-url" @required={{true}}>
                   {{t "traffic-light-concept.attr.image-url"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
                 </AuLabel>
                 <AuInput
                   @error={{isInvalid}}
@@ -76,11 +73,8 @@
               trafficLightConcept.error.trafficLightConceptCode as |isInvalid|
             }}
               <p>
-                <AuLabel @error={{isInvalid}} for="traffic-light-concept-code">
+                <AuLabel @error={{isInvalid}} for="traffic-light-concept-code" @required={{true}}>
                   {{t "traffic-light-concept.attr.code"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
                 </AuLabel>
                 <AuInput
                   @error={{isInvalid}}
@@ -105,11 +99,8 @@
             {{/let}}
             {{#let trafficLightConcept.error.definition as |isInvalid|}}
               <p>
-                <AuLabel @error={{isInvalid}} for="definition">
+                <AuLabel @error={{isInvalid}} for="definition" @required={{true}}>
                   {{t "traffic-light-concept.attr.definition"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
                 </AuLabel>
                 <AuTextarea
                   @error={{isInvalid}}
@@ -136,11 +127,8 @@
             {{/let}}
             {{#let trafficLightConcept.error.meaning as |isInvalid|}}
               <p>
-                <AuLabel @error={{isInvalid}} for="meaning">
+                <AuLabel @error={{isInvalid}} for="meaning" @required={{true}}>
                   {{t "traffic-light-concept.attr.meaning"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
                 </AuLabel>
                 <AuTextarea
                   @error={{isInvalid}}

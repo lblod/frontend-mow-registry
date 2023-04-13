@@ -39,11 +39,8 @@
           >
             {{#let roadMarkingConcept.error.image as |isInvalid|}}
               <p>
-                <AuLabel @error={{isInvalid}} for="image-url">
+                <AuLabel @error={{isInvalid}} for="image-url" @required={{true}}>
                   {{t "road-marking-concept.attr.image-url"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
                 </AuLabel>
                 <AuInput
                   @error={{isInvalid}}
@@ -72,11 +69,8 @@
               roadMarkingConcept.error.roadMarkingConceptCode as |isInvalid|
             }}
               <p>
-                <AuLabel @error={{isInvalid}} for="road-marking-concept-code">
+                <AuLabel @error={{isInvalid}} for="road-marking-concept-code" @required={{true}}>
                   {{t "road-marking-concept.attr.code"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
                 </AuLabel>
                 <AuInput
                   @error={{isInvalid}}
@@ -101,11 +95,8 @@
             {{/let}}
             {{#let roadMarkingConcept.error.meaning as |isInvalid|}}
               <p>
-                <AuLabel @error={{isInvalid}} for="meaning">
+                <AuLabel @error={{isInvalid}} for="meaning" @required={{true}}>
                   {{t "road-marking-concept.attr.meaning"}}&nbsp;
-                  <AuPill>
-                    {{t "utility.required"}}
-                  </AuPill>
                 </AuLabel>
                 <AuTextarea
                   @error={{isInvalid}}
