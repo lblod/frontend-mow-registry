@@ -1,5 +1,6 @@
 import Model, { belongsTo } from '@ember-data/model';
 
 export default class RoadMarkingConceptStatusModel extends Model {
-  @belongsTo('road-marking-concept-status-code') statusCode;
+  @belongsTo('road-marking-concept-status-code', { inverse: null, async: true })
+  statusCode;
 }

@@ -1,7 +1,9 @@
 import Model, { belongsTo } from '@ember-data/model';
 
 export default class ShapeModel extends Model {
-  @belongsTo('resource', { polyMorphic: true }) targetClass;
-  @belongsTo('resource', { polyMorphic: true }) targetNode;
-  @belongsTo('concept') targetHasConcept;
+  @belongsTo('resource', { inverse: null, async: true, polyMorphic: true })
+  targetClass;
+  @belongsTo('resource', { inverse: null, async: true, polyMorphic: true })
+  targetNode;
+  @belongsTo('concept', { inverse: null, async: true }) targetHasConcept;
 }

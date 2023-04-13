@@ -3,8 +3,9 @@ import ResourceModel from './resource';
 
 export default class ConceptModel extends ResourceModel {
   @attr() valid;
-  @hasMany('template', { inverse: 'parentConcept' }) templates;
-  @hasMany('relation', { polyMorphic: true }, { inverse: null }) relations;
+  @hasMany('template', { inverse: 'parentConcept', async: true }) templates;
+  @hasMany('relation', { inverse: null, async: true, polyMorphic: true })
+  relations;
 
   get orderedRelations() {
     return this.relations.sortBy('order');
