@@ -25,13 +25,13 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "@appuniversum/ember-appuniversum": "^1.4.1",
+    "@appuniversum/ember-appuniversum": "^2.5.0",
     "@bagaar/ember-breadcrumbs": "^4.0.0",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.8.1",
     "@glimmer/component": "^1.1.2",
     "@glimmer/tracking": "^1.1.2",
-    "@lblod/ember-environment-banner": "^0.1.1",
+    "@lblod/ember-environment-banner": "^0.2.0",
     "@lblod/ember-mock-login": "^0.7.0",
     "@release-it-plugins/lerna-changelog": "^5.0.0",
     "babel-eslint": "^10.1.0",
