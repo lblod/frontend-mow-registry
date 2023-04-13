@@ -8,7 +8,7 @@ export default helper(function sortByRoadMarkingCode([roadMarkingConcepts]) {
     return [];
   }
 
-  return [...roadMarkingConcepts.toArray()].sort((a, b) => {
+  return [...roadMarkingConcepts.slice()].sort((a, b) => {
     return a.roadMarkingConceptCode.localeCompare(
       b.roadMarkingConceptCode,
       undefined,
