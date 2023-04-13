@@ -49,7 +49,7 @@ export default class AddInstructionComponent extends Component {
   async updateMappingType(mapping, type) {
     mapping.type = type;
     if (type === 'codelist' && !(await mapping.codeList)) {
-      mapping.codeList = this.codeLists.firstObject;
+      mapping.codeList = this.codeLists[0];
     } else {
       mapping.codeList = null;
     }

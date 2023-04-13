@@ -100,7 +100,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     // We assume that a measure has only one template
     const templates = await this.trafficMeasureConcept.templates;
-    this.template = await templates.firstObject;
+    this.template = await templates[0];
     this.mappings = await this.template.mappings;
 
     this.mappings.sortBy('id');
@@ -198,10 +198,10 @@ export default class TrafficMeasureIndexComponent extends Component {
   updateMappingType(mapping, selectedType) {
     mapping.type = selectedType.value;
     if (mapping.type === 'codelist') {
-      mapping.codeList = this.codeLists.firstObject;
+      mapping.codeList = this.codeLists[0];
       mapping.instruction = null;
     } else if (mapping.type === 'instruction') {
-      mapping.instruction = this.instructions.firstObject;
+      mapping.instruction = this.instructions[0];
       mapping.codeList = null;
     } else {
       mapping.instruction = null;
@@ -319,18 +319,18 @@ export default class TrafficMeasureIndexComponent extends Component {
     const nodeShape = await this.store.query('node-shape', {
       'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
     });
-    if (await nodeShape.firstObject) {
-      await (await nodeShape.firstObject).destroyRecord();
+    if (await nodeShape[0]) {
+      await (await nodeShape[0]).destroyRecord();
     }
     // We assume a measure only has one template
     await (
       await (
-        await this.trafficMeasureConcept.get('templates').firstObject
-      ).get('mappings')
+        await this.trafficMeasureConcept.get('templates')
+      )[0].get('mappings')
     ).forEach((mapping) => mapping.destroyRecord());
     await (
-      await this.trafficMeasureConcept.get('templates').firstObject
-    ).destroyRecord();
+      await this.trafficMeasureConcept.get('templates')
+    )[0].destroyRecord();
     await (
       await this.trafficMeasureConcept.get('relations')
     ).forEach((relation) => relation.destroyRecord());
@@ -341,7 +341,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   save = task(async () => {
     // We assume a measure only has one template
-    const template = await this.trafficMeasureConcept.templates.firstObject;
+    const template = (await this.trafficMeasureConcept.templates)[0];
 
     //if new save relationships
     if (this.new) {

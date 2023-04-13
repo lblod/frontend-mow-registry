@@ -13,7 +13,7 @@ export default class TrafficMeasureTemplateComponent extends Component {
   }
 
   fetchTemplate = task(async (concept) => {
-    const template = (await concept.templates).firstObject;
+    const template = (await concept.templates)[0];
     let preview = template.value;
     const mappings = await template.mappings;
 
