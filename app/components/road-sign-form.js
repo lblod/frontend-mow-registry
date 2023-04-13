@@ -38,12 +38,11 @@ export default class RoadSignFormComponent extends Component {
     roadSignConcept.categories = selection;
   }
 
-  @dropTask
-  *editRoadSignConceptTask(roadSignConcept, event) {
+  editRoadSignConceptTask = dropTask(async (roadSignConcept, event) => {
     event.preventDefault();
 
     if (this.file) {
-      let fileResponse = yield this.fileService.upload(this.file);
+      let fileResponse = await this.fileService.upload(this.file);
       if (ENV.baseUrl) {
         roadSignConcept.image = ENV.baseUrl + fileResponse.downloadLink;
       } else {
@@ -51,15 +50,15 @@ export default class RoadSignFormComponent extends Component {
       }
     }
 
-    yield roadSignConcept.validate();
+    await roadSignConcept.validate();
 
     if (roadSignConcept.isValid) {
-      yield roadSignConcept.save();
+      await roadSignConcept.save();
 
       this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
         roadSignConcept.id
       );
     }
-  }
+  });
 }

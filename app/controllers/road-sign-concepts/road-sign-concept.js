@@ -85,21 +85,19 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.subSignCodeFilter = event.target.value.trim();
   }
 
-  @task
-  *addSubSign(subSign) {
-    let subSigns = yield this.model.roadSignConcept.subSigns;
+  addSubSign = task(async (subSign) => {
+    let subSigns = await this.model.roadSignConcept.subSigns;
     subSigns.pushObject(subSign);
     this.model.allSubSigns.removeObject(subSign);
     this.model.roadSignConcept.save();
-  }
+  });
 
-  @task
-  *removeSubSign(subSign) {
-    let subSigns = yield this.model.roadSignConcept.subSigns;
+  removeSubSign = task(async (subSign) => {
+    let subSigns = await this.model.roadSignConcept.subSigns;
     subSigns.removeObject(subSign);
     this.model.allSubSigns.pushObject(subSign);
     this.model.roadSignConcept.save();
-  }
+  });
 
   @action
   setMainSignCodeFilter(event) {
@@ -116,18 +114,16 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.relatedTrafficLightCodeFilter = event.target.value.trim();
   }
 
-  @task
-  *addMainSign(mainSign) {
-    let mainSigns = yield this.model.roadSignConcept.mainSigns;
+  addMainSign = task(async (mainSign) => {
+    let mainSigns = await this.model.roadSignConcept.mainSigns;
 
     mainSigns.pushObject(mainSign);
     this.categoryRoadSigns.removeObject(mainSign);
     this.model.roadSignConcept.save();
-  }
+  });
 
-  @task
-  *removeMainSign(mainSign) {
-    let mainSigns = yield this.model.roadSignConcept.mainSigns;
+  removeMainSign = task(async (mainSign) => {
+    let mainSigns = await this.model.roadSignConcept.mainSigns;
 
     mainSigns.removeObject(mainSign);
 
@@ -136,72 +132,66 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     }
 
     this.model.roadSignConcept.save();
-  }
+  });
 
-  @task
-  *addRelatedRoadSign(relatedRoadSign) {
-    const relatedToRoadSignConcepts = yield this.model.roadSignConcept
+  addRelatedRoadSign = task(async (relatedRoadSign) => {
+    const relatedToRoadSignConcepts = await this.model.roadSignConcept
       .relatedToRoadSignConcepts;
-    const relatedRoadSignConcepts = yield this.model.roadSignConcept
+    const relatedRoadSignConcepts = await this.model.roadSignConcept
       .relatedRoadSignConcepts;
 
     relatedToRoadSignConcepts.pushObject(relatedRoadSign);
     relatedRoadSignConcepts.pushObject(relatedRoadSign);
 
-    yield this.model.roadSignConcept.save();
-  }
+    await this.model.roadSignConcept.save();
+  });
 
-  @task
-  *removeRelatedRoadSign(relatedRoadSign) {
-    const relatedToRoadSignConcepts = yield this.model.roadSignConcept
+  removeRelatedRoadSign = task(async (relatedRoadSign) => {
+    const relatedToRoadSignConcepts = await this.model.roadSignConcept
       .relatedToRoadSignConcepts;
-    const relatedFromRoadSignConcepts = yield this.model.roadSignConcept
+    const relatedFromRoadSignConcepts = await this.model.roadSignConcept
       .relatedFromRoadSignConcepts;
-    const relatedRoadSignConcepts = yield this.model.roadSignConcept
+    const relatedRoadSignConcepts = await this.model.roadSignConcept
       .relatedRoadSignConcepts;
 
     relatedToRoadSignConcepts.removeObject(relatedRoadSign);
     relatedFromRoadSignConcepts.removeObject(relatedRoadSign);
     relatedRoadSignConcepts.removeObject(relatedRoadSign);
 
-    yield relatedRoadSign.save();
-    yield this.model.roadSignConcept.save();
-  }
+    await relatedRoadSign.save();
+    await this.model.roadSignConcept.save();
+  });
 
-  @task
-  *addRelatedRoadMarking(relatedRoadMarking) {
-    let relatedRoadMarkings = yield this.model.roadSignConcept
+  addRelatedRoadMarking = task(async (relatedRoadMarking) => {
+    let relatedRoadMarkings = await this.model.roadSignConcept
       .relatedRoadMarkingConcepts;
     relatedRoadMarkings.pushObject(relatedRoadMarking);
-    yield relatedRoadMarking.save();
-  }
+    await relatedRoadMarking.save();
+  });
 
-  @task
-  *removeRelatedRoadMarking(relatedRoadMarking) {
-    let relatedRoadMarkings = yield this.model.roadSignConcept
+  removeRelatedRoadMarking = task(async (relatedRoadMarking) => {
+    let relatedRoadMarkings = await this.model.roadSignConcept
       .relatedRoadMarkingConcepts;
     relatedRoadMarkings.removeObject(relatedRoadMarking);
-    yield relatedRoadMarking.save();
-  }
+    await relatedRoadMarking.save();
+  });
 
-  @task
-  *addRelatedTrafficLight(relatedTrafficLight) {
-    let relatedTrafficLights = yield this.model.roadSignConcept
+  addRelatedTrafficLight = task(async (relatedTrafficLight) => {
+    let relatedTrafficLights = await this.model.roadSignConcept
       .relatedTrafficLightConcepts;
 
     relatedTrafficLights.pushObject(relatedTrafficLight);
     this.model.roadSignConcept.save();
-  }
+  });
 
-  @task
-  *removeRelatedTrafficLight(relatedTrafficLight) {
-    let relatedTrafficLights = yield this.model.roadSignConcept
+  removeRelatedTrafficLight = task(async (relatedTrafficLight) => {
+    let relatedTrafficLights = await this.model.roadSignConcept
       .relatedTrafficLightConcepts;
 
     relatedTrafficLights.removeObject(relatedTrafficLight);
 
     this.model.roadSignConcept.save();
-  }
+  });
 
   @action
   toggleAddSubSigns() {
@@ -250,14 +240,13 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingRelatedRoadMarkings = false;
   }
 
-  @task
-  *handleCategorySelection(category) {
+  handleCategorySelection = task(async (category) => {
     if (category) {
       this.category = category;
-      let categoryRoadSigns = yield category.roadSignConcepts;
-      let relatedRoadSigns = yield this.model.roadSignConcept
+      let categoryRoadSigns = await category.roadSignConcepts;
+      let relatedRoadSigns = await this.model.roadSignConcept
         .relatedRoadSignConcepts;
-      let mainRoadSigns = yield this.model.roadSignConcept.mainSigns;
+      let mainRoadSigns = await this.model.roadSignConcept.mainSigns;
 
       this.categoryRoadSigns = categoryRoadSigns.filter((roadSign) => {
         return (
@@ -270,7 +259,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
       this.category = null;
       this.categoryRoadSigns = null;
     }
-  }
+  });
 
   get isAddingInstructions() {
     return (
@@ -279,13 +268,12 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     );
   }
 
-  @task
-  *removeRoadSignConcept(roadSignConcept, event) {
+  removeRoadSignConcept = task(async (roadSignConcept, event) => {
     event.preventDefault();
 
-    yield roadSignConcept.destroyRecord();
+    await roadSignConcept.destroyRecord();
     this.router.transitionTo('road-sign-concepts');
-  }
+  });
 
   @action
   addInstruction() {
@@ -313,15 +301,15 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     );
   }
 
-  @task
-  *removeTemplate(template) {
-    let templates = yield this.model.roadSignConcept.templates;
+  removeTemplate = task(async (template) => {
+    let templates = await this.model.roadSignConcept.templates;
 
     templates.removeObject(template);
 
-    yield template.destroyRecord();
-    yield this.model.roadSignConcept.save();
-  }
+    await template.destroyRecord();
+    await this.model.roadSignConcept.save();
+  });
+
   reset() {
     this.editedTemplate = null;
     this.isAddingSubSigns = false;

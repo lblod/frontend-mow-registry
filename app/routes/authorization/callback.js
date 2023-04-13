@@ -7,8 +7,8 @@ export default class AuthorizationCallbackRoute extends Route {
   queryParams = {
     code: {
       refreshModel: true,
-    }
-  }
+    },
+  };
 
   beforeModel() {
     // redirect to index if already authenticated

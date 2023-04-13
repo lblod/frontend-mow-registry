@@ -37,24 +37,23 @@ export default class TrafficLightFormComponent extends Component {
     trafficLightConcept.categories = selection;
   }
 
-  @dropTask
-  *editTrafficLightConceptTask(trafficLightConcept, event) {
+  editTrafficLightConceptTask = dropTask(async (trafficLightConcept, event) => {
     event.preventDefault();
 
     if (this.file) {
-      let fileResponse = yield this.fileService.upload(this.file);
+      let fileResponse = await this.fileService.upload(this.file);
       trafficLightConcept.image = fileResponse.downloadLink;
     }
 
-    yield trafficLightConcept.validate();
+    await trafficLightConcept.validate();
 
     if (trafficLightConcept.isValid) {
-      yield trafficLightConcept.save();
+      await trafficLightConcept.save();
 
       this.router.transitionTo(
         'traffic-light-concepts.traffic-light-concept',
         trafficLightConcept.id
       );
     }
-  }
+  });
 }

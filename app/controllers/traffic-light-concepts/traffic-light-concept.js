@@ -62,32 +62,29 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.relatedTrafficLightCodeFilter = event.target.value.trim();
   }
 
-  @task
-  *addRelatedTrafficLight(relatedTrafficLight) {
-    const relatedToTrafficLightConcepts = yield this.model.trafficLightConcept
+  addRelatedTrafficLight = task(async (relatedTrafficLight) => {
+    const relatedToTrafficLightConcepts = await this.model.trafficLightConcept
       .relatedToTrafficLightConcepts;
-    const relatedTrafficLightConcepts = yield this.model.trafficLightConcept
+    const relatedTrafficLightConcepts = await this.model.trafficLightConcept
       .relatedTrafficLightConcepts;
 
     relatedToTrafficLightConcepts.pushObject(relatedTrafficLight);
     relatedTrafficLightConcepts.pushObject(relatedTrafficLight);
 
-    yield this.model.trafficLightConcept.save();
-  }
+    await this.model.trafficLightConcept.save();
+  });
 
-  @task
-  *addRelatedRoadSign(relatedRoadSign) {
-    let relatedRoadSigns = yield this.model.trafficLightConcept
+  addRelatedRoadSign = task(async (relatedRoadSign) => {
+    let relatedRoadSigns = await this.model.trafficLightConcept
       .relatedRoadSignConcepts;
 
     relatedRoadSigns.pushObject(relatedRoadSign);
     this.categoryRoadSigns.removeObject(relatedRoadSign);
     this.model.trafficLightConcept.save();
-  }
+  });
 
-  @task
-  *removeRelatedRoadSign(relatedRoadSign) {
-    let relatedRoadSigns = yield this.model.trafficLightConcept
+  removeRelatedRoadSign = task(async (relatedRoadSign) => {
+    let relatedRoadSigns = await this.model.trafficLightConcept
       .relatedRoadSignConcepts;
 
     relatedRoadSigns.removeObject(relatedRoadSign);
@@ -97,56 +94,52 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     }
 
     this.model.trafficLightConcept.save();
-  }
+  });
 
-  @task
-  *addRelatedRoadMarking(relatedRoadMarking) {
-    let relatedRoadMarkings = yield this.model.trafficLightConcept
+  addRelatedRoadMarking = task(async (relatedRoadMarking) => {
+    let relatedRoadMarkings = await this.model.trafficLightConcept
       .relatedRoadMarkingConcepts;
 
     relatedRoadMarkings.pushObject(relatedRoadMarking);
     this.model.trafficLightConcept.save();
-  }
+  });
 
-  @task
-  *removeRelatedRoadMarking(relatedRoadMarking) {
-    let relatedRoadMarkings = yield this.model.trafficLightConcept
+  removeRelatedRoadMarking = task(async (relatedRoadMarking) => {
+    let relatedRoadMarkings = await this.model.trafficLightConcept
       .relatedRoadMarkingConcepts;
 
     relatedRoadMarkings.removeObject(relatedRoadMarking);
 
     this.model.trafficLightConcept.save();
-  }
+  });
 
-  @task
-  *handleCategorySelection(category) {
+  handleCategorySelection = task(async (category) => {
     if (category) {
       this.category = category;
-      let categoryRoadSigns = yield category.roadSignConcepts;
+      let categoryRoadSigns = await category.roadSignConcepts;
 
       this.categoryRoadSigns = categoryRoadSigns;
     } else {
       this.category = null;
       this.categoryRoadSigns = null;
     }
-  }
+  });
 
-  @task
-  *removeRelatedTrafficLight(relatedTrafficLight) {
-    const relatedToTrafficLightConcepts = yield this.model.trafficLightConcept
+  removeRelatedTrafficLight = task(async (relatedTrafficLight) => {
+    const relatedToTrafficLightConcepts = await this.model.trafficLightConcept
       .relatedToTrafficLightConcepts;
-    const relatedFromTrafficLightConcepts = yield this.model.trafficLightConcept
+    const relatedFromTrafficLightConcepts = await this.model.trafficLightConcept
       .relatedFromTrafficLightConcepts;
-    const relatedTrafficLightConcepts = yield this.model.trafficLightConcept
+    const relatedTrafficLightConcepts = await this.model.trafficLightConcept
       .relatedTrafficLightConcepts;
 
     relatedToTrafficLightConcepts.removeObject(relatedTrafficLight);
     relatedFromTrafficLightConcepts.removeObject(relatedTrafficLight);
     relatedTrafficLightConcepts.removeObject(relatedTrafficLight);
 
-    yield relatedTrafficLight.save();
-    yield this.model.trafficLightConcept.save();
-  }
+    await relatedTrafficLight.save();
+    await this.model.trafficLightConcept.save();
+  });
 
   @action
   setRelatedRoadMarkingCodeFilter(event) {
@@ -174,13 +167,12 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingRelatedTrafficLights = !this.isAddingRelatedTrafficLights;
   }
 
-  @task
-  *removeTrafficLightConcept(trafficLightConcept, event) {
+  removeTrafficLightConcept = task(async (trafficLightConcept, event) => {
     event.preventDefault();
 
-    yield trafficLightConcept.destroyRecord();
+    await trafficLightConcept.destroyRecord();
     this.router.transitionTo('traffic-light-concepts');
-  }
+  });
 
   @action
   addInstruction() {
@@ -190,12 +182,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     );
   }
 
-  @task
-  *updateInstruction() {
+  updateInstruction = task(async () => {
     this.editedTemplate.value = this.newDescription;
-    yield this.editedTemplate.save();
+    await this.editedTemplate.save();
     this.resetInstruction();
-  }
+  });
 
   @action editInstruction(template) {
     this.router.transitionTo(
@@ -228,15 +219,14 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.toggleInstructions();
   }
 
-  @task
-  *removeTemplate(template) {
-    let templates = yield this.model.trafficLightConcept.templates;
+  removeTemplate = task(async (template) => {
+    let templates = await this.model.trafficLightConcept.templates;
 
     templates.removeObject(template);
 
-    yield template.destroyRecord();
-    yield this.model.trafficLightConcept.save();
-  }
+    await template.destroyRecord();
+    await this.model.trafficLightConcept.save();
+  });
 
   reset() {
     this.editedTemplate = null;

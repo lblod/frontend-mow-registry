@@ -16,15 +16,14 @@ export default class ZonalitySelectorComponent extends Component {
 
   @service store;
 
-  @task
-  *fetchZonalities() {
-    yield this.args.concept;
-    const conceptScheme = yield this.store.findRecord(
+  fetchZonalities = task(async () => {
+    await this.args.concept;
+    const conceptScheme = await this.store.findRecord(
       'concept-scheme',
       ZON_CONCEPT_SCHEME_ID
     );
-    this.zonalities = yield conceptScheme.concepts;
-    if (yield this.args.concept.zonality) {
+    this.zonalities = await conceptScheme.concepts;
+    if (await this.args.concept.zonality) {
       this.selectedZonality = this.args.concept.zonality;
     } else {
       const defaultZonality = this.zonalities.find(
@@ -32,7 +31,7 @@ export default class ZonalitySelectorComponent extends Component {
       );
       this.updateZonality(defaultZonality);
     }
-  }
+  });
 
   @action
   updateZonality(zonality) {

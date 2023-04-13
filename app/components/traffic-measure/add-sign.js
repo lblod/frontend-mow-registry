@@ -9,16 +9,15 @@ export default class TrafficMeasureAddSignComponent extends Component {
 
   @tracked selected;
 
-  @restartableTask
-  *search(searchData) {
-    yield timeout(300);
+  search = restartableTask(async (searchData) => {
+    await timeout(300);
 
     let queryParams = {};
     queryParams[this.args.selectedType.searchFilter] = searchData;
     queryParams['sort'] = this.args.selectedType.sortingField;
     queryParams['include'] = 'templates';
 
-    let options = yield this.store.query(
+    let options = await this.store.query(
       this.args.selectedType.modelName,
       queryParams
     );
@@ -27,7 +26,7 @@ export default class TrafficMeasureAddSignComponent extends Component {
       (option) => (option['label'] = option[this.args.selectedType.labelField])
     );
     return options;
-  }
+  });
 
   @action
   select(selected) {

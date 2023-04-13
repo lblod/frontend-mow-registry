@@ -13,13 +13,14 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked category = null;
   @tracked sort = 'traffic-light-concept-code';
 
-  @restartableTask
-  *updateSearchFilterTask(queryParamProperty, event) {
-    yield timeout(300);
+  updateSearchFilterTask = restartableTask(
+    async (queryParamProperty, event) => {
+      await timeout(300);
 
-    this[queryParamProperty] = event.target.value.trim();
-    this.resetPagination();
-  }
+      this[queryParamProperty] = event.target.value.trim();
+      this.resetPagination();
+    }
+  );
 
   get selectedCategory() {
     if (!this.category) {

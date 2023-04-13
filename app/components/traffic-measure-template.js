@@ -11,17 +11,17 @@ export default class TrafficMeasureTemplateComponent extends Component {
   async didInsert() {
     this.fetchTemplate.perform(this.args.concept);
   }
-  @task
-  *fetchTemplate(concept) {
-    const template = (yield concept.templates).firstObject;
+
+  fetchTemplate = task(async (concept) => {
+    const template = (await concept.templates).firstObject;
     let preview = template.value;
-    const mappings = yield template.mappings;
+    const mappings = await template.mappings;
 
     for (let j = 0; j < mappings.length; j++) {
       const mapping = mappings.objectAt(j);
       let replaceString;
       if (mapping.type === 'instruction') {
-        const instruction = yield mapping.instruction;
+        const instruction = await mapping.instruction;
         replaceString =
           "<span style='background-color: #ffffff'>" +
           instruction.value +
@@ -34,5 +34,5 @@ export default class TrafficMeasureTemplateComponent extends Component {
     }
 
     this.template = htmlSafe(preview);
-  }
+  });
 }
