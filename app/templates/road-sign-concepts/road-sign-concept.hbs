@@ -13,7 +13,7 @@
 <div class="au-o-grid au-o-grid--flush au-o-grid--fixed" {{did-insert this.didInsert}}>
   <div
     class="au-o-grid__item {{
-      if
+    if
       this.showSidebar
       "au-u-3-5@medium au-u-visible-from@medium"
       "au-u-1-1@medium"
@@ -288,172 +288,23 @@
         {{/if}}
         <RelatedRoadsignsTable
           @relatedSigns={{sort-by-road-sign-code
-          (await @model.roadSignConcept.relatedRoadSignConcepts) }}
+          (await @model.roadSignConcept.relatedRoadSignConcepts)}}
           @addSign={{this.toggleAddRelatedRoadSigns}}
           @removeSign={{perform this.removeRelatedRoadSign}}
         />
-        <AuDataTable
-          @content={{
-            sort-by-road-marking-code
-            (await @model.roadSignConcept.relatedRoadMarkingConcepts)
-          }}
-          @fields="Image Meaning Code Categories"
-          @noDataMessage={{t "road-marking-concept.crud.no-data"}}
-          class="container-flex--contain table-no-overflow" as |s|
-        >
-          <s.menu as |menu|>
-            <menu.general>
-              <AuToolbar class="au-o-box" as |Group|>
-                <Group>
-                  <AuHeading @level="2" @skin="3">
-                    {{t "road-marking-concept.attr.related-marking"}}
-                  </AuHeading>
-                </Group>
-                <Group>
-                  <AuButton {{on "click" this.toggleAddRelatedRoadMarkings}}>
-                    {{t "related-road-marking.crud.add"}}
-                  </AuButton>
-                </Group>
-              </AuToolbar>
-            </menu.general>
-          </s.menu>
-          <s.content as |c|>
-            <c.header>
-              <th class="data-table__header-title">
-                {{t "road-marking-concept.attr.code"}}
-              </th>
-              <th class="data-table__header-title">
-                {{t "road-marking-concept.attr.image-header"}}
-              </th>
-              <th class="data-table__header-title">
-                {{t "road-marking-concept.attr.definition"}}
-              </th>
-              <th class="data-table__header-title">
-                {{t "road-marking-concept.attr.meaning"}}
-              </th>
-              <th>
-                <span class="au-u-hidden-visually">
-                  {{t "related-road-marking.crud.delete"}}
-                </span>
-              </th>
-            </c.header>
-            <c.body as |relatedRoadMarkingConcept|>
-              <td>
-                {{relatedRoadMarkingConcept.roadMarkingConceptCode}}
-              </td>
-              <td>
-                <img
-                  class="road-marking-image"
-                  src={{relatedRoadMarkingConcept.image}}
-                  alt=""
-                  role="presentation"
-                />
-              </td>
-              <td>
-                <p class="max-w-prose">
-                  {{relatedRoadMarkingConcept.definition}}
-                </p>
-              </td>
-              <td>
-                <p class="max-w-prose">
-                  {{relatedRoadMarkingConcept.meaning}}
-                </p>
-              </td>
-              <td class="w-px au-u-padding-right-small">
-                <AuButton
-                  @icon="bin"
-                  @alert={{true}}
-                  @skin="secondary"
-                  @hideText={{true}}
-                  {{on
-                    "click"
-                    (perform this.removeRelatedRoadMarking relatedRoadMarkingConcept)
-                  }}
-                >
-                  {{t "related-road-marking.crud.delete"}}
-                </AuButton>
-              </td>
-            </c.body>
-          </s.content>
-        </AuDataTable>
-        <AuDataTable
-          @content={{
-            sort-by-traffic-light-code
-            (await @model.roadSignConcept.relatedTrafficLightConcepts)
-          }}
-          @fields="Image Meaning Code"
-          @noDataMessage={{t "road-marking-concept.crud.no-data"}}
-          class="container-flex--contain table-no-overflow" as |s|
-        >
-          <s.menu as |menu|>
-            <menu.general>
-              <AuToolbar class="au-o-box" as |Group|>
-                <Group>
-                  <AuHeading @level="2" @skin="3">
-                    {{t "road-marking-concept.attr.related-traffic-light"}}
-                  </AuHeading>
-                </Group>
-                <Group>
-                  <AuButton {{on "click" this.toggleAddRelatedTrafficLights}}>
-                    {{t "related-traffic-light.crud.add"}}
-                  </AuButton>
-                </Group>
-              </AuToolbar>
-            </menu.general>
-          </s.menu>
-          <s.content as |c|>
-            <c.header>
-              <th class="data-table__header-title">
-                {{t "traffic-light-concept.attr.code"}}
-              </th>
-              <th class="data-table__header-title">
-                {{t "traffic-light-concept.attr.image-header"}}
-              </th>
-              <th class="data-table__header-title">
-                {{t "traffic-light-concept.attr.definition"}}
-              </th>
-              <th>
-                <span class="au-u-hidden-visually">
-                  {{t "related-traffic-light.crud.delete"}}
-                </span>
-              </th>
-            </c.header>
-            <c.body as |relatedTrafficLightConcept|>
-              <td>
-                {{relatedTrafficLightConcept.trafficLightConceptCode}}
-              </td>
-              <td>
-                <img
-                  class="traffic-light-image"
-                  src={{relatedTrafficLightConcept.image}}
-                  alt=""
-                  role="presentation"
-                />
-              </td>
-              <td>
-                <p class="max-w-prose">
-                  {{relatedTrafficLightConcept.definition}}
-                </p>
-              </td>
-              <td class="w-px au-u-padding-right-small">
-                <AuButton
-                  @icon="bin"
-                  @alert={{true}}
-                  @skin="secondary"
-                  @hideText={{true}}
-                  {{on
-                    "click"
-                    (perform
-                      this.removeRelatedTrafficLight relatedTrafficLightConcept
-                    )
-                  }}
-                >
-                  {{t "related-traffic-light.crud.delete"}}
-                </AuButton>
-              </td>
-            </c.body>
-          </s.content>
-        </AuDataTable>
+        <RelatedRoadmarkingsTable
+          @content={{sort-by-road-marking-code
+          (await @model.roadSignConcept.relatedRoadMarkingConcepts)}}
+          @onClickAdd={{this.toggleAddRelatedRoadMarkings}}
+          @onClickRemove={{perform this.removeRelatedRoadMarking}}
+        />
+        <RelatedTrafficLightsTable
+          @content={{sort-by-traffic-light-code
+          (await @model.roadSignConcept.relatedTrafficLightConcepts)}}
+          @onClickAdd={{this.toggleAddRelatedTrafficLights}}
+          @onClickRemove={{perform this.removeRelatedTrafficLight}}
+        />
+
       </div>
     </div>
   </div>
@@ -763,8 +614,8 @@
                 @code={{relatedTrafficLightByCategory.TrafficLightConceptCode}}
                 @meaning={{relatedTrafficLightByCategory.meaning}}
                 @onAdd={{
-                  perform this.addRelatedTrafficLight relatedTrafficLightByCategory
-                }}
+              perform this.addRelatedTrafficLight relatedTrafficLightByCategory
+              }}
                 @addText={{t "related-traffic-light.crud.add-one"}}
                 class="au-c-action-sidebar__item"
               />
