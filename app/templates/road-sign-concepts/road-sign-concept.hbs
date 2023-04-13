@@ -287,10 +287,10 @@
           </AuDataTable>
         {{/if}}
         <RelatedRoadsignsTable
-          @relatedSigns={{sort-by-road-sign-code
+          @content={{sort-by-road-sign-code
           (await @model.roadSignConcept.relatedRoadSignConcepts)}}
-          @addSign={{this.toggleAddRelatedRoadSigns}}
-          @removeSign={{perform this.removeRelatedRoadSign}}
+          @onClickAdd={{this.toggleAddRelatedRoadSigns}}
+          @onClickRemove={{perform this.removeRelatedRoadSign}}
         />
         <RelatedRoadmarkingsTable
           @content={{sort-by-road-marking-code

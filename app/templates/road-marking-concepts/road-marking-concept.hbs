@@ -120,10 +120,10 @@
         />
         <RelatedRoadsignsTable
 
-          @relatedSigns={{sort-by-road-sign-code
+          @content={{sort-by-road-sign-code
           (await @model.roadMarkingConcept.relatedRoadSignConcepts) }}
-          @addSign={{this.toggleAddRelatedRoadSigns}}
-          @removeSign={{perform this.removeRelatedRoadSign}}
+          @onClickAdd={{this.toggleAddRelatedRoadSigns}}
+          @onClickRemove={{perform this.removeRelatedRoadSign}}
 
         />
         <RelatedRoadmarkingsTable
