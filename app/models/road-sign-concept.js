@@ -5,9 +5,13 @@ export default class RoadSignConceptModel extends ConceptModel {
   @attr image;
   @attr meaning;
   @attr roadSignConceptCode;
-  @belongsTo('road-sign-concept-status-code', { inverse: null, async: true })
+  @belongsTo('road-sign-concept-status-code', {
+    inverse: 'roadSignConcepts',
+    async: true,
+  })
   status;
-  @hasMany('road-sign-category', { inverse: null, async: true }) categories;
+  @hasMany('road-sign-category', { inverse: 'roadSignConcepts', async: true })
+  categories;
   @hasMany('road-sign-concept', { inverse: 'mainSigns', async: true }) subSigns;
   @hasMany('road-sign-concept', { inverse: 'subSigns', async: true }) mainSigns;
   @belongsTo('skos-concept', { inverse: null, async: true }) zonality;

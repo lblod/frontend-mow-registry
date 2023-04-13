@@ -7,7 +7,7 @@ export default class TrafficLightConceptModel extends ConceptModel {
   @attr definition;
   @attr trafficLightConceptCode;
   @belongsTo('traffic-light-concept-status-code', {
-    inverse: null,
+    inverse: 'trafficLightConcepts',
     async: true,
   })
   status;
