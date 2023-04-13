@@ -433,7 +433,6 @@ export default class TrafficMeasureIndexComponent extends Component {
   });
 
   async willDestroy() {
-    console.log('calling will destroy');
     super.willDestroy(...arguments);
     this.template.rollbackAttributes();
     for (const mapping of this.mappings) {
@@ -442,6 +441,6 @@ export default class TrafficMeasureIndexComponent extends Component {
     for (const sign of this.signs) {
       sign.rollbackAttributes();
     }
-    console.log('end will destroy')
+    this.trafficMeasureConcept.rollbackAttributes();
   }
 }

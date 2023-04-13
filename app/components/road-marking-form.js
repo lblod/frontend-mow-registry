@@ -51,4 +51,9 @@ export default class RoadMarkingFormComponent extends Component {
       );
     }
   });
+
+  async willDestroy() {
+    super.willDestroy(...arguments);
+    this.args.roadMarkingConcept.rollbackAttributes();
+  }
 }

@@ -56,4 +56,9 @@ export default class TrafficLightFormComponent extends Component {
       );
     }
   });
+
+  async willDestroy() {
+    super.willDestroy(...arguments);
+    this.args.trafficLightConcept.rollbackAttributes();
+  }
 }

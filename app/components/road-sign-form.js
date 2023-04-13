@@ -61,4 +61,9 @@ export default class RoadSignFormComponent extends Component {
       );
     }
   });
+
+  async willDestroy() {
+    super.willDestroy(...arguments);
+    this.args.roadSignConcept.rollbackAttributes();
+  }
 }
