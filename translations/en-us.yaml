@@ -19,6 +19,7 @@ utility:
     body: Are you sure?
   required: Required
   optional: Optional
+  loading: Loading...
   zonality: Zonality
   zonal: Zonal
   nonZonal: Non-Zonal
@@ -171,7 +172,6 @@ traffic-measure-concept:
     type-filter: Filter by type
     no-matches: No results found
     type-to-search: Type to search
-    loading: Loading ...
   landing-page:
     subtitle: –
     content: Information in the card that comes below the header. Content.

@@ -146,6 +146,7 @@
                   @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
                   @searchField="label"
                   @options={{@categories}}
+                  @loadingMessage={{t 'utility.loading'}}
                   @selected={{roadSignConcept.categories}}
                   @onChange={{
                 fn this.setRoadSignConceptCategory roadSignConcept

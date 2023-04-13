@@ -19,6 +19,7 @@ utility:
     body: Ben je zeker?
   required: Verplicht
   optional: Optioneel
+  loading: Aan het laden...
   zonality: Zonaal karakter
   zonal: Zonaal
   nonZonal: Niet zonaal
@@ -164,7 +165,6 @@ traffic-measure-concept:
     type-filter: Filteren op type
     no-matches: Geen resultaten gevonden
     type-to-search: Typ om te zoeken
-    loading: Laden ...
   landing-page:
     subtitle: –
     content: Beheer mobiliteitsmaatregelen.

@@ -22,7 +22,8 @@ export default class ZonalitySelectorComponent extends Component {
       'concept-scheme',
       ZON_CONCEPT_SCHEME_ID
     );
-    this.zonalities = await conceptScheme.concepts;
+    this.zonalities = conceptScheme.concepts;
+    await this.zonalities;
     if (await this.args.concept.zonality) {
       this.selectedZonality = this.args.concept.zonality;
     } else {
