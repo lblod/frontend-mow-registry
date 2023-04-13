@@ -8,13 +8,13 @@
 >
   <s.menu as |menu|>
     <menu.general>
-      <AuToolbar class="au-o-box">
-        <AuToolbarGroup>
+      <AuToolbar class="au-o-box" as |Group|>
+        <Group>
           <AuHeading @skin="2">
             {{t "road-sign-concept.name"}}
           </AuHeading>
-        </AuToolbarGroup>
-        <AuToolbarGroup class="au-c-toolbar__group--center">
+        </Group>
+        <Group class="au-c-toolbar__group--center">
           {{!-- Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input--}}
           <div class="au-c-data-table__search road-sign-code-search">
             <AuInput
@@ -51,7 +51,7 @@
           <LinkTo class="au-c-button" @route="road-sign-concepts.new">
             {{t "road-sign-concept.crud.new"}}
           </LinkTo>
-        </AuToolbarGroup>
+        </Group>
       </AuToolbar>
     </menu.general>
   </s.menu>

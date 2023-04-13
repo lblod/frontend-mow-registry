@@ -1,5 +1,5 @@
-<AuToolbar @border="bottom" @size="medium" @skin="tint" class="au-c-toolbar--breadcrumbs">
-  <AuToolbarGroup>
+<AuToolbar @border="bottom" @size="medium" @skin="tint" class="au-c-toolbar--breadcrumbs" as |Group|>
+  <Group>
     <BreadcrumbsContainer
       class="au-c-breadcrumbs au-c-list-horizontal"
       @itemClass="au-c-breadcrumbs__item au-c-list-horizontal__item"
@@ -14,5 +14,5 @@
         <CompactMenu/>
       </li>
     </BreadcrumbsContainer>
-  </AuToolbarGroup>
+  </Group>
 </AuToolbar>

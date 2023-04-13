@@ -20,8 +20,8 @@
 
   </BreadcrumbsItem>
 
-  <AuToolbar @border="bottom" @size="large">
-    <AuToolbarGroup>
+  <AuToolbar @border="bottom" @size="large" as |Group|>
+    <Group>
       <AuHeading @skin="2">
         {{#if @trafficLightConcept.isNew}}
           {{t "traffic-light-concept.crud.new"}}
@@ -29,7 +29,7 @@
           {{t "traffic-light-concept.crud.edit"}}
         {{/if}}
       </AuHeading>
-    </AuToolbarGroup>
+    </Group>
   </AuToolbar>
 
   <div class="au-c-body-container au-c-body-container--scroll">
@@ -171,8 +171,8 @@
     </div>
   </div>
 
-  <AuToolbar @border="top" @size="large">
-    <AuToolbarGroup>
+  <AuToolbar @border="top" @size="large" as |Group|>
+    <Group>
       <AuButtonGroup>
         <AuButton
           @disabled={{or trafficLightConcept.isPristine this.isSaving}}
@@ -199,6 +199,6 @@
           </LinkTo>
         {{/if}}
       </AuButtonGroup>
-    </AuToolbarGroup>
+    </Group>
   </AuToolbar>
 {{/let}}

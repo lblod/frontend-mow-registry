@@ -20,15 +20,15 @@
     }}"
   >
     <div class="au-c-body-container au-c-body-container--scroll">
-      <AuToolbar @size="large">
-        <AuToolbarGroup>
+      <AuToolbar @size="large" as |Group|>
+        <Group>
           <AuHeading @skin="2">
             {{t "traffic-light-concept.details"}}
           </AuHeading>
-        </AuToolbarGroup>
+        </Group>
       </AuToolbar>
-      <AuToolbar @size="medium">
-        <AuToolbarGroup class="au-c-toolbar__group--row">
+      <AuToolbar @size="medium" as |Group|>
+        <Group class="au-c-toolbar__group--row">
           <ul class="au-o-grid">
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <img
@@ -68,10 +68,10 @@
               </li>
             {{/unless}}
           </ul>
-        </AuToolbarGroup>
+        </Group>
       </AuToolbar>
-      <AuToolbar @border="bottom" @size="large">
-        <AuToolbarGroup>
+      <AuToolbar @border="bottom" @size="large" as |Group|>
+        <Group>
           <AuLink
             @skin="button"
             @route="traffic-light-concepts.edit"
@@ -114,7 +114,7 @@
               </AuButton>
             </Modal.Footer>
           </AuModal>
-        </AuToolbarGroup>
+        </Group>
       </AuToolbar>
       <div
         class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables"
@@ -137,17 +137,17 @@
         >
           <s.menu as |menu|>
             <menu.general>
-              <AuToolbar class="au-o-box">
-                <AuToolbarGroup>
+              <AuToolbar class="au-o-box" as |Group|>
+                <Group>
                   <AuHeading @level="2" @skin="3">
                     {{t "traffic-light-concept.attr.related-sign"}}
                   </AuHeading>
-                </AuToolbarGroup>
-                <AuToolbarGroup>
+                </Group>
+                <Group>
                   <AuButton {{on "click" this.toggleAddRelatedRoadSigns}}>
                     {{t "related-road-sign.crud.add"}}
                   </AuButton>
-                </AuToolbarGroup>
+                </Group>
               </AuToolbar>
             </menu.general>
           </s.menu>
@@ -221,17 +221,17 @@
         >
           <s.menu as |menu|>
             <menu.general>
-              <AuToolbar class="au-o-box">
-                <AuToolbarGroup>
+              <AuToolbar class="au-o-box" as |Group|>
+                <Group>
                   <AuHeading @level="2" @skin="3">
                     {{t "traffic-light-concept.attr.related-marking"}}
                   </AuHeading>
-                </AuToolbarGroup>
-                <AuToolbarGroup>
+                </Group>
+                <Group>
                   <AuButton {{on "click" this.toggleAddRelatedRoadMarkings}}>
                     {{t "related-road-marking.crud.add"}}
                   </AuButton>
-                </AuToolbarGroup>
+                </Group>
               </AuToolbar>
             </menu.general>
           </s.menu>
@@ -304,17 +304,17 @@
         >
           <s.menu as |menu|>
             <menu.general>
-              <AuToolbar class="au-o-box">
-                <AuToolbarGroup>
+              <AuToolbar class="au-o-box" as |Group|>
+                <Group>
                   <AuHeading @level="2" @skin="3">
                     {{t "traffic-light-concept.attr.related-traffic-light"}}
                   </AuHeading>
-                </AuToolbarGroup>
-                <AuToolbarGroup>
+                </Group>
+                <Group>
                   <AuButton {{on "click" this.toggleAddRelatedTrafficLights}}>
                     {{t "related-traffic-light.crud.add"}}
                   </AuButton>
-                </AuToolbarGroup>
+                </Group>
               </AuToolbar>
             </menu.general>
           </s.menu>
@@ -381,12 +381,12 @@
         {{auto-focus ".au-c-action-sidebar__header"}}
       >
         <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
-          <AuToolbar class="au-u-margin-bottom-small">
-            <AuToolbarGroup>
+          <AuToolbar class="au-u-margin-bottom-small" as |Group|>
+            <Group>
               <AuHeading @level="2" @skin="3">
                 {{t "related-road-sign.crud.add"}}
               </AuHeading>
-            </AuToolbarGroup>
+            </Group>
             <button
               type="button"
               class="au-c-close au-c-close--large"
@@ -443,12 +443,12 @@
         {{auto-focus ".au-c-action-sidebar__header"}}
       >
         <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
-          <AuToolbar class="au-u-margin-bottom-small">
-            <AuToolbarGroup>
+          <AuToolbar class="au-u-margin-bottom-small" as |Group|>
+            <Group>
               <AuHeading @level="2" @skin="3">
                 {{t "related-road-marking.crud.add"}}
               </AuHeading>
-            </AuToolbarGroup>
+            </Group>
             <button
               type="button"
               class="au-c-close au-c-close--large"
@@ -515,12 +515,12 @@
         {{auto-focus ".au-c-action-sidebar__header"}}
       >
         <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
-          <AuToolbar class="au-u-margin-bottom-small">
-            <AuToolbarGroup>
+          <AuToolbar class="au-u-margin-bottom-small" as |Group|>
+            <Group>
               <AuHeading @level="2" @skin="3">
                 {{t "related-traffic-light.crud.add"}}
               </AuHeading>
-            </AuToolbarGroup>
+            </Group>
             <button
               type="button"
               class="au-c-close au-c-close--large"

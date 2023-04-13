@@ -11,12 +11,12 @@
 </BreadcrumbsItem>
 
 <div class="au-c-body-container au-c-body-container--scroll">
-  <AuToolbar @border="bottom" @size="large">
-    <AuToolbarGroup>
+  <AuToolbar @border="bottom" @size="large" as |Group|>
+    <Group>
       <AuHeading @skin="2">
         {{t "codelist.details"}}
       </AuHeading>
-    </AuToolbarGroup>
+    </Group>
   </AuToolbar>
   <div class="au-o-box">
     <div class="au-o-grid au-o-grid--small">
@@ -56,8 +56,8 @@
   {{outlet}}
 </div>
 
-<AuToolbar @size="large" @border="top">
-  <AuToolbarGroup>
+<AuToolbar @size="large" @border="top" as |Group|>
+  <Group>
     <AuLink
       @skin="button"
       @route="codelists-management.edit"
@@ -103,5 +103,5 @@
         </AuButton>
       </Modal.Footer>
     </AuModal>
-  </AuToolbarGroup>
+  </Group>
 </AuToolbar>

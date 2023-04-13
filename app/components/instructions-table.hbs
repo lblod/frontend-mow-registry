@@ -6,20 +6,20 @@
 >
   <s.menu as |menu|>
     <menu.general>
-      <AuToolbar class="au-o-box">
-        <AuToolbarGroup>
+      <AuToolbar class="au-o-box" as |Group|>
+        <Group>
           <AuHeading @level="2" @skin="3">
             {{t "utility.instructions"}}
           </AuHeading>
-        </AuToolbarGroup>
-        <AuToolbarGroup>
+        </Group>
+        <Group>
           <AuButton 
             @disabled={{@isAddingInstructions}}
             {{on "click" @addInstruction}}
           >
             {{t "utility.add-instruction"}}
           </AuButton>
-        </AuToolbarGroup>
+        </Group>
       </AuToolbar>
     </menu.general>
   </s.menu>

@@ -145,8 +145,8 @@
     </div>
   </div>
 </div>
-<AuToolbar @border="top" @size="large">
-  <AuToolbarGroup>
+<AuToolbar @border="top" @size="large" as |Group|>
+  <Group>
     <AuButtonGroup>
         <AuButton
           {{on "click" (perform this.save)}}
@@ -161,8 +161,8 @@
         </AuButton>
       {{/unless}}
     </AuButtonGroup>
-  </AuToolbarGroup>
-  <AuToolbarGroup>
+  </Group>
+  <Group>
     <AuButtonGroup>
       <AuLink
         @skin="button-secondary"
@@ -171,5 +171,5 @@
         {{t "utility.cancel"}}
       </AuLink>
     </AuButtonGroup>
-  </AuToolbarGroup>
+  </Group>
 </AuToolbar>

@@ -23,8 +23,8 @@
 
   </BreadcrumbsItem>
 
-  <AuToolbar @border="bottom" @size="large">
-    <AuToolbarGroup>
+  <AuToolbar @border="bottom" @size="large" as |Group|>
+    <Group>
       <AuHeading @skin="2">
         {{#if @roadSignConcept.isNew}}
           {{t "road-sign-concept.crud.new"}}
@@ -32,7 +32,7 @@
           {{t "road-sign-concept.crud.edit"}}
         {{/if}}
       </AuHeading>
-    </AuToolbarGroup>
+    </Group>
   </AuToolbar>
 
   <div class="au-c-body-container au-c-body-container--scroll">
@@ -177,8 +177,8 @@
     </div>
   </div>
 
-  <AuToolbar @border="top" @size="large">
-    <AuToolbarGroup>
+  <AuToolbar @border="top" @size="large" as |Group|>
+    <Group>
       <AuButtonGroup>
         <AuButton
           @disabled={{or roadSignConcept.isPristine}}
@@ -204,6 +204,6 @@
           </LinkTo>
         {{/if}}
       </AuButtonGroup>
-    </AuToolbarGroup>
+    </Group>
   </AuToolbar>
 {{/let}}
