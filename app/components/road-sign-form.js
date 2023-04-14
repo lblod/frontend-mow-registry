@@ -29,11 +29,6 @@ export default class RoadSignFormComponent extends Component {
   }
 
   @action
-  setRoadSignConceptValue(roadSignConcept, attributeName, event) {
-    roadSignConcept[attributeName] = event.target.value;
-  }
-
-  @action
   setRoadSignConceptCategory(roadSignConcept, selection) {
     roadSignConcept.categories = selection;
   }
