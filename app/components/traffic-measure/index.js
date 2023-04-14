@@ -16,7 +16,6 @@ export default class TrafficMeasureIndexComponent extends Component {
   @service('codelists') codeListService;
 
   @tracked codeLists;
-  @tracked new;
   @tracked trafficMeasureConcept;
   @tracked signs = [];
   @tracked mappings = [];
@@ -63,8 +62,11 @@ export default class TrafficMeasureIndexComponent extends Component {
   @action
   async didInsert() {
     this.trafficMeasureConcept = this.args.trafficMeasureConcept;
-    this.new = this.args.new;
     this.fetchData.perform();
+  }
+
+  get new() {
+    return this.trafficMeasureConcept.isNew;
   }
 
   get previewHtml() {
