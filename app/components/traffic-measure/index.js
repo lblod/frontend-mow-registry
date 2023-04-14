@@ -22,7 +22,6 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked mappings = [];
   @tracked template;
   @tracked searchString;
-  @tracked signError;
   @tracked preview;
   @tracked selectedType;
   @tracked instructions = [];
