@@ -75,8 +75,7 @@ road-sign-concept:
     meaning-filter: Search by meaning
     category-filter: Filter by category
   landing-page:
-    subtitle: –
-    content: Information in the card that comes below the header. Content.
+    content: Manage traffic signs, sub-signs and instructions.
     button: Go to Road Signs
 related-road-sign:
   attr:
@@ -107,8 +106,7 @@ traffic-light-concept:
     code-filter: Code
     meaning-filter: Search by meaning
   landing-page:
-    subtitle: –
-    content: Information in the card that comes below the header. Content.
+    content: Manage traffic lights and instructions.
     button: Go to Traffic Lights
 related-traffic-light:
   crud:
@@ -139,8 +137,7 @@ road-marking-concept:
     code-filter: Code
     meaning-filter: Search by meaning
   landing-page:
-    subtitle: –
-    content: Information in the card that comes below the header. Content.
+    content: Manage road markings and instructions.
     button: Go to Road Markings
 related-road-marking:
   crud:
@@ -173,8 +170,7 @@ traffic-measure-concept:
     no-matches: No results found
     type-to-search: Type to search
   landing-page:
-    subtitle: –
-    content: Information in the card that comes below the header. Content.
+    content: Manage mobility measures.
     button: Go to traffic measures
 sub-sign:
   filter:
@@ -213,6 +209,5 @@ codelist:
       singleSelect: 'Single select'
       multiSelect: 'Multi select'
   landing-page:
-    subtitle: –
-    content: Information in the card that comes below the header. Content.
+    content: Overview and management of available code lists.
     button: Go to codelists management

@@ -75,7 +75,6 @@ road-sign-concept:
     meaning-filter: Zoeken op betekenis
     category-filter: Filteren op categorie
   landing-page:
-    subtitle: –
     content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden
 traffic-light-concept:
@@ -100,7 +99,6 @@ traffic-light-concept:
     code-filter: Code
     meaning-filter: Zoeken op betekenis
   landing-page:
-    subtitle: –
     content: Beheer verkeerlichten en instructies.
     button: Ga naar Verkeerslichten
 related-traffic-light:
@@ -132,7 +130,6 @@ road-marking-concept:
     code-filter: Code
     meaning-filter: Zoeken op betekenis
   landing-page:
-    subtitle: –
     content: Beheer wegmarkeringen en instructies.
     button: Ga naar Wegmarkeringen
 related-road-marking:
@@ -166,7 +163,6 @@ traffic-measure-concept:
     no-matches: Geen resultaten gevonden
     type-to-search: Typ om te zoeken
   landing-page:
-    subtitle: –
     content: Beheer mobiliteitsmaatregelen.
     button: Ga naar Mobiliteitsmaatregelen
 sub-sign:
@@ -213,6 +209,5 @@ codelist:
     values: Waarden
     id: Id
   landing-page:
-    subtitle: –
     content: Overzicht en beheer van beschikbare codelijsten.
     button: Ga naar Codelijsten
