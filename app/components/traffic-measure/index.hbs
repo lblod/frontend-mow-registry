@@ -1,7 +1,7 @@
 {{#let
   (changeset
     @trafficMeasureConcept this.TrafficMeasureConceptValidations
-  ) as |trafficMeasureConcept|
+  ) as |changeset|
 }}
 <div class="au-o-grid au-o-grid--flush au-o-grid--split" {{did-insert this.didInsert}}>
   {{!-- template-lint-disable no-inline-styles --}}
@@ -15,13 +15,13 @@
           <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
             {{t "utility.zonality"}}
           </AuHeading>
-          <ZonalitySelector @concept={{trafficMeasureConcept}} />
+          <ZonalitySelector @concept={{changeset}} />
         </div>
         <div class="au-o-grid__item au-u-1-2">
           <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
             {{t "traffic-measure-concept.attr.temporal"}}
           </AuHeading>
-          <TemporalSelector @concept={{trafficMeasureConcept}} />
+          <TemporalSelector @concept={{changeset}} />
         </div>
       </div>
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small au-u-margin-top-small">
@@ -32,7 +32,7 @@
           <TrafficMeasure::SelectType @selectedType={{this.selectedType}} @updateTypeFilter={{this.updateTypeFilter}} />
         </div>
         <div class="au-o-grid__item au-u-2-3@medium">
-          <TrafficMeasure::AddSign @selectedType={{this.selectedType}} @addSign={{this.addSign}} @error={{this.signError}} @disabled={{this.isSelectedTypeEmpty}}/>
+          <TrafficMeasure::AddSign @selectedType={{this.selectedType}} @addSign={{this.addSign}} @disabled={{this.isSelectedTypeEmpty}}/>
         </div>
         <div class="au-o-grid__item">
           <TrafficMeasure::SignList @removeSign={{this.removeSign}} @addInstructionToTemplate={{this.addInstructionToTemplate}} @signs={{this.signs}} />
@@ -125,7 +125,7 @@
       {{/if}}
       {{#unless @new}}
         <div class="au-u-margin-top-small">
-          <ContentCheck @concept={{trafficMeasureConcept}}/>
+          <ContentCheck @concept={{changeset}}/>
         </div>
       {{/unless}}
     </div>
