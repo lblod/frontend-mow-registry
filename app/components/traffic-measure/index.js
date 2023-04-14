@@ -5,7 +5,6 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
 import includeMappings from '../../utils/include-mappings';
-import TrafficMeasureConceptValidations from 'mow-registry/validations/traffic-measure';
 
 const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
 
@@ -26,7 +25,6 @@ export default class TrafficMeasureIndexComponent extends Component {
   @tracked instructions = [];
   @tracked inputTypes = [];
 
-  TrafficMeasureConceptValidations = TrafficMeasureConceptValidations;
   mappingsToBeDeleted = [];
 
   constructor() {
@@ -66,7 +64,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   }
 
   get new() {
-    return this.trafficMeasureConcept.isNew;
+    return this.trafficMeasureConcept?.isNew;
   }
 
   get previewHtml() {
@@ -437,9 +435,6 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.template.rollbackAttributes();
     for (const mapping of this.mappings) {
       mapping.rollbackAttributes();
-    }
-    for (const sign of this.signs) {
-      sign.rollbackAttributes();
     }
     this.trafficMeasureConcept.rollbackAttributes();
   }
