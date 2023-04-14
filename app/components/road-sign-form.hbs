@@ -66,14 +66,14 @@
                   @onFileSet={{fn this.setImageUpload roadSignConcept}}
                 />
                 {{#if isInvalid}}
-                  <AuHelpText>
+                  <AuHelpText @error={{true}}>
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
               </p>
             {{/let}}
             {{#let roadSignConcept.error.roadSignConceptCode as |isInvalid|}}
-              <p>
+              <p>                
                 <AuLabel @error={{isInvalid}} for="road-sign-concept-code" @required={{true}}>
                   {{t "road-sign-concept.attr.code"}}&nbsp;
                 </AuLabel>
@@ -92,7 +92,7 @@
                   }}
                 />
                 {{#if isInvalid}}
-                  <AuHelpText>
+                  <AuHelpText @error={{true}}>
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
@@ -116,7 +116,7 @@
                   }}
                 />
                 {{#if isInvalid}}
-                  <AuHelpText>
+                  <AuHelpText @error={{true}}>
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
@@ -145,7 +145,7 @@
                 </PowerSelectMultiple>
               </div>
               {{#if isInvalid}}
-                <AuHelpText>
+                <AuHelpText @error={{true}}>
                   {{t "utility.field-required"}}
                 </AuHelpText>
               {{/if}}

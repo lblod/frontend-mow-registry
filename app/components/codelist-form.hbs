@@ -57,7 +57,7 @@
               }}
             />
             {{#if isInvalid}}
-              <AuHelpText>
+              <AuHelpText @error={{true}}>
                 {{t "utility.field-required"}}
               </AuHelpText>
             {{/if}}

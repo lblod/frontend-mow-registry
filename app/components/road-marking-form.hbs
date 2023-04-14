@@ -59,7 +59,7 @@
                   @onFileSet={{fn this.setImageUpload roadMarkingConcept}}
                 />
                 {{#if isInvalid}}
-                  <AuHelpText>
+                  <AuHelpText @error={{true}}>
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
@@ -87,7 +87,7 @@
                   }}
                 />
                 {{#if isInvalid}}
-                  <AuHelpText>
+                  <AuHelpText @error={{true}}>
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
@@ -111,7 +111,7 @@
                   }}
                 />
                 {{#if isInvalid}}
-                  <AuHelpText>
+                  <AuHelpText @error={{true}}>
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
