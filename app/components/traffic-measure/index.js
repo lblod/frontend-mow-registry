@@ -138,7 +138,6 @@ export default class TrafficMeasureIndexComponent extends Component {
       }
     } else if (this.instructions.length == 0) {
       if (this.inputTypes.indexOf(this.instructionType) != -1) {
-        console.log('FETCH DATA');
         this.inputTypes.splice(
           this.inputTypes.indexOf(this.instructionType),
           1
