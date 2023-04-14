@@ -375,12 +375,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     //5-annotate rdfa
     await this.annotateRdfa.perform(template);
 
-    if (this.new) {
-      this.router.transitionTo(
-        'traffic-measure-concepts.edit',
-        this.trafficMeasureConcept.id
-      );
-    }
+    this.router.transitionTo('traffic-measure-concepts.index');
   });
 
   saveRoadsigns = task(async (trafficMeasureConcept) => {
