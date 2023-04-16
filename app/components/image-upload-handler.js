@@ -20,7 +20,7 @@ export default class ImageUploadHandlerComponent extends Component {
     }
   }
 
-  async saveFile() {
+  async saveImage() {
     if (this.isFileUrl) {
       return this.file;
     } else {

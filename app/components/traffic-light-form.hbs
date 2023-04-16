@@ -1,7 +1,7 @@
 {{#let
   (changeset
     @trafficLightConcept this.TrafficLightConceptValidations
-  ) as |trafficLightConcept|
+  ) as |changeset|
 }}
   <BreadcrumbsItem as |linkClass|>
     {{#if @trafficLightConcept.isNew}}
@@ -11,10 +11,10 @@
     {{else}}
       <LinkTo
         @route="traffic-light-concepts.edit"
-        @model={{trafficLightConcept.id}}
+        @model={{changeset.id}}
         class={{linkClass}}
       >
-        {{trafficLightConcept.trafficLightConceptCode}}
+        {{changeset.trafficLightConceptCode}}
       </LinkTo>
     {{/if}}
 
@@ -41,38 +41,13 @@
             id="edit-traffic-light-concept-form"
             novalidate
           >
-            {{#let trafficLightConcept.error.image as |isInvalid|}}
-              <p>
-                <AuLabel @error={{isInvalid}} for="image-url" @required={{true}}>
-                  {{t "traffic-light-concept.attr.image-url"}}&nbsp;
-                </AuLabel>
-                <AuInput
-                  @error={{isInvalid}}
-                  id="image-url"
-                  required="required"
-                  type="text"
-                  @value={{trafficLightConcept.image}}
-                  class="au-u-3-5 au-u-4-5@small"
-                  {{on "input" (fn this.setImageUrl trafficLightConcept)}}
-                />
-                <span>
-                  {{t "utility.or"}}
-                </span>
-                <FileUploader
-                  @accept={{"image/jpeg,image/jpg,image/png,image/svg+xml"}}
-                  @onFileSet={{fn this.setImageUpload trafficLightConcept}}
-                />
-                {{#if isInvalid}}
-                  <AuHelpText @error={{true}}>
-                    {{t "utility.field-required"}}
-                  </AuHelpText>
-                {{/if}}
-              </p>
+            {{#let changeset.error.image as |isInvalid|}}
+              <ImageInput @oldImage={{changeset.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
             {{/let}}
             {{#let
-              trafficLightConcept.error.trafficLightConceptCode as |isInvalid|
+              changeset.error.trafficLightConceptCode as |isInvalid|
             }}
-              <p>
+              <AuFormRow>
                 <AuLabel @error={{isInvalid}} for="traffic-light-concept-code" @required={{true}}>
                   {{t "traffic-light-concept.attr.code"}}&nbsp;
                 </AuLabel>
@@ -80,12 +55,12 @@
                   @error={{isInvalid}}
                   id="traffic-light-concept-code"
                   required="required"
-                  @value={{trafficLightConcept.trafficLightConceptCode}}
+                  @value={{changeset.trafficLightConceptCode}}
                   {{on
                     "input"
                     (fn
                       this.setTrafficLightConceptValue
-                      trafficLightConcept
+                      changeset
                       "trafficLightConceptCode"
                     )
                   }}
@@ -95,10 +70,10 @@
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
-              </p>
+              </AuFormRow>
             {{/let}}
-            {{#let trafficLightConcept.error.definition as |isInvalid|}}
-              <p>
+            {{#let changeset.error.definition as |isInvalid|}}
+              <AuFormRow>
                 <AuLabel @error={{isInvalid}} for="definition" @required={{true}}>
                   {{t "traffic-light-concept.attr.definition"}}&nbsp;
                 </AuLabel>
@@ -108,12 +83,12 @@
                   class="u-min-h-20"
                   id="definition"
                   required="required"
-                  @value={{trafficLightConcept.definition}}
+                  @value={{changeset.definition}}
                   {{on
                     "input"
                     (fn
                       this.setTrafficLightConceptValue
-                      trafficLightConcept
+                      changeset
                       "definition"
                     )
                   }}
@@ -123,10 +98,10 @@
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
-              </p>
+              </AuFormRow>
             {{/let}}
-            {{#let trafficLightConcept.error.meaning as |isInvalid|}}
-              <p>
+            {{#let changeset.error.meaning as |isInvalid|}}
+              <AuFormRow>
                 <AuLabel @error={{isInvalid}} for="meaning" @required={{true}}>
                   {{t "traffic-light-concept.attr.meaning"}}&nbsp;
                 </AuLabel>
@@ -136,12 +111,12 @@
                   class="u-min-h-20"
                   id="meaning"
                   required="required"
-                  @value={{trafficLightConcept.meaning}}
+                  @value={{changeset.meaning}}
                   {{on
                     "input"
                     (fn
                       this.setTrafficLightConceptValue
-                      trafficLightConcept
+                      changeset
                       "meaning"
                     )
                   }}
@@ -151,7 +126,7 @@
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
-              </p>
+              </AuFormRow>
             {{/let}}
           </form>
         </div>
@@ -163,10 +138,10 @@
     <Group>
       <AuButtonGroup>
         <AuButton
-          @disabled={{or trafficLightConcept.isPristine this.isSaving}}
+          @disabled={{or changeset.isPristine this.isSaving}}
           @loading={{this.isSaving}}
           form="edit-traffic-light-concept-form"
-          {{on "click" (perform this.editTrafficLightConceptTask trafficLightConcept)}}
+          {{on "click" (perform this.editTrafficLightConceptTask changeset)}}
         >
           {{t "utility.save"}}
         </AuButton>
@@ -180,7 +155,7 @@
         {{else}}
           <LinkTo
             @route="traffic-light-concepts.traffic-light-concept"
-            @model={{trafficLightConcept.id}}
+            @model={{changeset.id}}
             class="au-c-button au-c-button--secondary"
           >
             {{t "utility.cancel"}}

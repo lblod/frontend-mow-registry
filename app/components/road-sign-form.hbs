@@ -38,39 +38,10 @@
         <div class="au-o-grid__item au-u-2-3@medium au-u-2-5@large">
           <form class="au-c-form" id="edit-road-sign-concept-form" novalidate>
             {{#let changeset.error.image as |isInvalid|}}
-              <p>
-                <AuLabel
-                  @error={{isInvalid}}
-                  for="image-url"
-                  @required={{true}}
-                >
-                  {{t "road-sign-concept.attr.image-url"}}&nbsp;
-                </AuLabel>
-                <AuInput
-                  @error={{isInvalid}}
-                  id="image-url"
-                  required="required"
-                  type="text"
-                  @value={{changeset.image}}
-                  class="au-u-3-5 au-u-4-5@small"
-                  {{on "input" (fn this.setImageUrl changeset)}}
-                />
-                <span>
-                  {{t "utility.or"}}
-                </span>
-                <FileUploader
-                  @accept={{"image/jpeg,image/jpg,image/png,image/svg+xml"}}
-                  @onFileSet={{fn this.setImageUpload changeset}}
-                />
-                {{#if isInvalid}}
-                  <AuHelpText @error={{true}}>
-                    {{t "utility.field-required"}}
-                  </AuHelpText>
-                {{/if}}
-              </p>
+              <ImageInput @oldImage={{changeset.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
             {{/let}}
             {{#let changeset.error.roadSignConceptCode as |isInvalid|}}
-              <p>
+              <AuFormRow>
                 <AuLabel @error={{isInvalid}} for="road-sign-concept-code" @required={{true}}>
                   {{t "road-sign-concept.attr.code"}}&nbsp;
                 </AuLabel>
@@ -85,10 +56,10 @@
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
-              </p>
+              </AuFormRow>
             {{/let}}
             {{#let changeset.error.meaning as |isInvalid|}}
-              <p>
+              <AuFormRow>
                 <AuLabel @error={{isInvalid}} for="meaning" @required={{true}}>
                   {{t "road-sign-concept.attr.meaning"}}&nbsp;
                 </AuLabel>
@@ -105,10 +76,10 @@
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
-              </p>
+              </AuFormRow>
             {{/let}}
             {{#let changeset.error.categories as |isInvalid|}}
-              <p>
+              <AuFormRow>
                 <AuLabel @error={{isInvalid}} for="categories" @required={{true}}>
                   {{t "road-sign-concept.attr.categories"}}&nbsp;
                 </AuLabel>
@@ -132,14 +103,14 @@
                     {{t "utility.field-required"}}
                   </AuHelpText>
                 {{/if}}
-              </p>
+              </AuFormRow>
             {{/let}}
-            <p>
+            <AuFormRow>
               <AuLabel for="categories">
                 {{t "utility.zonality"}}&nbsp;
               </AuLabel>
               <ZonalitySelector @concept={{changeset}} />
-            </p>
+            </AuFormRow>
           </form>
         </div>
       </div>
@@ -150,7 +121,7 @@
     <Group>
       <AuButtonGroup>
         <AuButton
-          @disabled={{changeset.isPristine}}
+          @disabled={{or changeset.isPristine this.isSaving}}
           @loading={{this.isSaving}}
           {{on "click" (perform this.editRoadSignConceptTask changeset)}}
         >

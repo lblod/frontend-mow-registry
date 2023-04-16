@@ -1,53 +1,35 @@
-import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import RoadMarkingConceptValidations from 'mow-registry/validations/road-marking-concept';
+import ImageUploadHandlerComponent from './image-upload-handler';
 
-export default class RoadMarkingFormComponent extends Component {
+export default class RoadMarkingFormComponent extends ImageUploadHandlerComponent {
   @service router;
-  @service fileService;
 
   RoadMarkingConceptValidations = RoadMarkingConceptValidations;
-  file;
 
   get isSaving() {
     return this.editRoadMarkingConceptTask.isRunning;
   }
 
   @action
-  setImageUrl(roadMarkingConcept, event) {
-    roadMarkingConcept.image = event.target.value;
-    this.file = null;
+  setRoadMarkingConceptValue(changeset, attributeName, event) {
+    changeset[attributeName] = event.target.value;
   }
 
-  @action
-  setImageUpload(roadMarkingConcept, event) {
-    this.file = event.target.files[0];
-    roadMarkingConcept.image = this.file.name;
-  }
-
-  @action
-  setRoadMarkingConceptValue(roadMarkingConcept, attributeName, event) {
-    roadMarkingConcept[attributeName] = event.target.value;
-  }
-
-  editRoadMarkingConceptTask = dropTask(async (roadMarkingConcept, event) => {
+  editRoadMarkingConceptTask = dropTask(async (changeset, event) => {
     event.preventDefault();
 
-    if (this.file) {
-      let fileResponse = await this.fileService.upload(this.file);
-      roadMarkingConcept.image = fileResponse.downloadLink;
-    }
+    changeset.image = await this.saveImage();
+    await changeset.validate();
 
-    await roadMarkingConcept.validate();
-
-    if (roadMarkingConcept.isValid) {
-      await roadMarkingConcept.save();
+    if (changeset.isValid) {
+      await changeset.save();
 
       this.router.transitionTo(
         'road-marking-concepts.road-marking-concept',
-        roadMarkingConcept.id
+        changeset.id
       );
     }
   });
