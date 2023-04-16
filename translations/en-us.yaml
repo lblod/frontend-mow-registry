@@ -53,6 +53,7 @@ image-input:
   helptext: Press the button to upload an image or insert a URL of an existing image
   preview-alt: A preview of the uploaded or linked image
   url-placeholder: insert a link as http(s)://...
+  image-url: Image URL
 road-sign-concept:
   name: Road Signs
   details: Road Sign details
@@ -93,7 +94,6 @@ traffic-light-concept:
   details: Traffic Light details
   attr:
     image-header: Image
-    image-url: Image URL
     meaning: Meaning
     definition: Definition
     code: Code
