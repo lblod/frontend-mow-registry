@@ -1,0 +1,35 @@
+<AuLabel @error={{@error}} for="image-url" @required={{true}}>
+  {{t "road-sign-concept.attr.image-url"}}&nbsp;
+</AuLabel>
+{{#if this.source}}
+  <img
+    src={{this.source}}
+    alt={{t "image-input.preview-alt"}}
+    class="image-preview"
+  />
+{{else}}
+
+{{/if}}
+<AuHelpText @size="small" @skin="tertiary">{{t "image-input.helptext"}}</AuHelpText>
+<FileUploader
+  @accept={{"image/jpeg,image/jpg,image/png,image/svg+xml"}}
+  @onFileSet={{this.setImageUpload}}
+/>
+<span>
+  {{t "utility.or"}}
+</span>
+<AuInput
+  @error={{@error}}
+  id="image-url"
+  required="required"
+  type="text"
+  placeholder={{t "image-input.url-placeholder"}}
+  @value={{this.url}}
+  class="au-u-3-5 au-u-4-5@small"
+  {{on "input" this.setImageUrl}}
+/>
+{{#if @error}}
+  <AuHelpText @error={{true}}>
+    {{t "utility.field-required"}}
+  </AuHelpText>
+{{/if}}

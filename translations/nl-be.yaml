@@ -31,6 +31,7 @@ utility:
   delete: verwijderen
   instructions: Instructies
   description: Beschrijving
+  image-preview-alt: Een voorbeeldweergave van de geüploade of de gelinkte afbeelding
   order: Volgorde
   sign: Verkeersteken
   add-instruction: Voeg instructie toe
@@ -49,6 +50,10 @@ utility:
     location: locatie
     codelist: codelijst
     instruction: instructie
+image-input:
+  helptext: Druk op de upload knop om een bestand te uploaden of plak de URL van een bestaande afbeelding
+  preview-alt: Een voorbeeld van het geüploade bestand of de URL
+  url-placeholder: voeg een link toe in de vorm van http(s)://...
 road-sign-concept:
   name: Verkeersborden
   details: Verkeersbord details

@@ -49,6 +49,10 @@ utility:
     location: location
     codelist: codelist
     instruction: instruction
+image-input:
+  helptext: Press the button to upload an image or insert a URL of an existing image
+  preview-alt: A preview of the uploaded or linked image
+  url-placeholder: insert a link as http(s)://...
 road-sign-concept:
   name: Road Signs
   details: Road Sign details
