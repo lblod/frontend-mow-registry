@@ -1,0 +1,55 @@
+<ReactiveTable
+  @content={{@content}}
+  @noDataMessage={{t "road-marking-concept.crud.no-data"}}  
+  @page={{@page}}
+  @sort={{@sort}}
+  @pageSize={{@pageSize}}
+  @onPageChange={{@onPageChange}}
+  @onSortChange={{@onSortChange}}
+>
+  <:menu>
+    {{yield to="menu"}}
+  </:menu>
+    <:header as |header|>
+      <header.Sortable
+        @field="roadMarkingConceptCode"
+        @label={{t "road-marking-concept.attr.code"}}
+      />
+      <th>
+        {{t "road-marking-concept.attr.image-header"}}
+      </th>
+      <th>
+        {{t "road-marking-concept.attr.meaning"}}
+      </th>
+      <th>
+        {{t "road-marking-concept.attr.valid"}}
+      </th>
+      <th></th>
+    </:header>
+    <:body as |roadMarkingConcept|>
+      <td>
+        {{roadMarkingConcept.roadMarkingConceptCode}}
+      </td>
+      <td>
+        <img
+          class="au-c-thumbnail"
+          src={{roadMarkingConcept.image}}
+          alt=""
+          role="presentation"
+        />
+      </td>
+      <td>
+        {{roadMarkingConcept.meaning}}
+      </td>
+      <td>
+        {{#if roadMarkingConcept.valid}}
+          {{t "utility.yes"}}
+        {{else}}
+          {{t "utility.no"}}
+        {{/if}}
+      </td>
+      <td>
+        {{yield roadMarkingConcept to='rowAction'}}
+      </td>
+    </:body>
+</ReactiveTable>

@@ -1,95 +1,52 @@
-<AuDataTable
+<SearchTables::RoadMarking
   @content={{this.model.roadMarkingConcepts}}
-  @fields="Image Meaning Code"
-  @noDataMessage={{t "road-marking-concept.crud.no-data"}}
-  @size={{this.size}}
+  @pageSize={{this.size}}
   @page={{this.page}}
-  @sort={{this.sort}} as |s|
+  @sort={{this.sort}}
+  @onPageChange={{this.onPageChange}}
+  @onSortChange={{this.onSortChange}}
 >
-  <s.menu as |menu|>
-    <menu.general>
-      <AuToolbar class="au-o-box" as |Group|>
-        <Group>
-          <AuHeading @skin="2">
-            {{t "road-marking-concept.name"}}
-          </AuHeading>
-        </Group>
-        <Group class="au-c-toolbar__group--center">
-          {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
-          <div class="au-c-data-table__search road-marking-code-search">
-            <AuInput
-              @value={{this.code}}
-              placeholder={{t "road-marking-concept.crud.code-filter"}}
-              @icon="search"
-              @iconAlignment="right"
-              {{on "input" (perform this.updateSearchFilterTask "code")}}
-            />
-          </div>
-          <div class="au-c-data-table__search road-marking-meaning-search">
-            <AuInput
-              @value={{this.meaning}}
-              placeholder={{t "road-marking-concept.crud.meaning-filter"}}
-              @icon="search"
-              @iconAlignment="right"
-              {{on "input" (perform this.updateSearchFilterTask "meaning")}}
-            />
-          </div>
-          <LinkTo class="au-c-button" @route="road-marking-concepts.new">
-            {{t "road-marking-concept.crud.new"}}
-          </LinkTo>
-        </Group>
-      </AuToolbar>
-    </menu.general>
-  </s.menu>
-  <s.content as |c|>
-    <c.header>
-      <AuDataTableThSortable
-        @field="roadMarkingConceptCode"
-        @currentSorting={{this.sort}}
-        @label={{t "road-marking-concept.attr.code"}}
-      />
-      <th>
-        {{t "road-marking-concept.attr.image-header"}}
-      </th>
-      <th>
-        {{t "road-marking-concept.attr.meaning"}}
-      </th>
-      <th>
-        {{t "road-marking-concept.attr.valid"}}
-      </th>
-      <th></th>
-    </c.header>
-    <c.body as |roadMarkingConcept|>
-      <td>
-        {{roadMarkingConcept.roadMarkingConceptCode}}
-      </td>
-      <td>
-        <img
-          class="au-c-thumbnail"
-          src={{roadMarkingConcept.image}}
-          alt=""
-          role="presentation"
-        />
-      </td>
-      <td>
-        {{roadMarkingConcept.meaning}}
-      </td>
-      <td>
-        {{#if roadMarkingConcept.valid}}
-          {{t "utility.yes"}}
-        {{else}}
-          {{t "utility.no"}}
-        {{/if}}
-      </td>
-      <td>
-        <LinkTo
-          class="au-c-link"
-          @route="road-marking-concepts.road-marking-concept"
-          @model={{roadMarkingConcept.id}}
-        >
-          {{t "utility.view"}}
+  <:menu>
+    <AuToolbar class="au-o-box" as |Group|>
+      <Group>
+        <AuHeading @skin="2">
+          {{t "road-marking-concept.name"}}
+        </AuHeading>
+      </Group>
+      <Group class="au-c-toolbar__group--center">
+        {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
+        <div class="au-c-data-table__search road-marking-code-search">
+          <AuInput
+            @value={{this.code}}
+            placeholder={{t "road-marking-concept.crud.code-filter"}}
+            @icon="search"
+            @iconAlignment="right"
+            {{on "input" (perform this.updateSearchFilterTask "code")}}
+          />
+        </div>
+        <div class="au-c-data-table__search road-marking-meaning-search">
+          <AuInput
+            @value={{this.meaning}}
+            placeholder={{t "road-marking-concept.crud.meaning-filter"}}
+            @icon="search"
+            @iconAlignment="right"
+            {{on "input" (perform this.updateSearchFilterTask "meaning")}}
+          />
+        </div>
+        <LinkTo class="au-c-button" @route="road-marking-concepts.new">
+          {{t "road-marking-concept.crud.new"}}
         </LinkTo>
-      </td>
-    </c.body>
-  </s.content>
-</AuDataTable>
+      </Group>
+    </AuToolbar>
+  </:menu>
+  <:rowAction as |roadMarkingConcept|>
+    <LinkTo
+      class="au-c-link"
+      @route="road-marking-concepts.road-marking-concept"
+      @model={{roadMarkingConcept.id}}
+    >
+      {{t "utility.view"}}
+    </LinkTo>
+  </:rowAction>
+  
+</SearchTables::RoadMarking>
