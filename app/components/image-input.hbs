@@ -28,6 +28,9 @@
   class="au-u-3-5 au-u-4-5@small"
   {{on "input" this.setImageUrl}}
 />
+{{#if this.showUrlError}}
+  <AuHelpText @size="small" @error={{true}}>{{t 'image-input.invalid-url'}}</AuHelpText>
+{{/if}}
 {{#if @error}}
   <AuHelpText @error={{true}}>
     {{t "utility.field-required"}}

@@ -16,19 +16,32 @@ import { tracked } from '@glimmer/tracking';
  */
 export default class ImageInputComponent extends Component {
   @service fileService;
-  @tracked url;
+  @tracked url = '';
   @tracked file;
 
   get source() {
     return (
-      this.url ||
+      (this.isValidUrl && this.url) ||
       (this.file && URL.createObjectURL(this.file)) ||
       this.args.oldImage
     );
   }
 
+  get isValidUrl() {
+    try {
+      const parsedUrl = new URL(this.url);
+      return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
+    } catch (_) {
+      return false;
+    }
+  }
+
+  get showUrlError() {
+    return this.url !== '' && !this.source;
+  }
+
   imageChanged() {
-    if (this.url !== '') {
+    if (this.isValidUrl) {
       this.args.setImage(this.url);
     } else if (this.file) {
       this.args.setImage(this.file);

@@ -11,10 +11,10 @@
     {{else}}
       <LinkTo
         @route="traffic-light-concepts.edit"
-        @model={{changeset.id}}
+        @model={{@trafficLightConcept.id}}
         class={{linkClass}}
       >
-        {{changeset.trafficLightConceptCode}}
+        {{@trafficLightConcept.trafficLightConceptCode}}
       </LinkTo>
     {{/if}}
 
@@ -42,7 +42,7 @@
             novalidate
           >
             {{#let changeset.error.image as |isInvalid|}}
-              <ImageInput @oldImage={{changeset.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
+              <ImageInput @oldImage={{@trafficLightConcept.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
             {{/let}}
             {{#let
               changeset.error.trafficLightConceptCode as |isInvalid|

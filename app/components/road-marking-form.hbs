@@ -6,13 +6,13 @@
   <BreadcrumbsItem as |linkClass|>
     <LinkTo
       @route="road-marking-concepts.edit"
-      @model={{changeset.id}}
+      @model={{@roadMarkingConcept.id}}
       class={{linkClass}}
     >
       {{#if @roadMarkingConcept.isNew}}
         {{t "road-marking-concept.crud.new"}}
       {{else}}
-        {{changeset.roadMarkingConceptCode}}
+        {{@roadMarkingConcept.roadMarkingConceptCode}}
       {{/if}}
     </LinkTo>
   </BreadcrumbsItem>
@@ -38,7 +38,7 @@
             novalidate
           >
             {{#let changeset.error.image as |isInvalid|}}
-              <ImageInput @oldImage={{changeset.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
+              <ImageInput @oldImage={{@roadMarkingConcept.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
             {{/let}}
             {{#let changeset.error.roadMarkingConceptCode as |isInvalid|}}
               <AuFormRow>

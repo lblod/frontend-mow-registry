@@ -51,9 +51,10 @@ utility:
     codelist: codelijst
     instruction: instructie
 image-input:
-  helptext: Druk op de upload knop om een bestand te uploaden of plak de URL van een bestaande afbeelding
+  helptext: Druk op de upload knop om een nieuw bestand te uploaden of plak de URL van een bestaande afbeelding
   preview-alt: Een voorbeeld van het geüploade bestand of de URL
   url-placeholder: voeg een link toe in de vorm van http(s)://...
+  invalid-url: Enkel afbeeldings-URLs die beginnen met http(s) zijn toegelaten
   image-url: Afbeelding URL
 road-sign-concept:
   name: Verkeersborden
