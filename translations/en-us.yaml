@@ -52,7 +52,7 @@ utility:
 image-input:
   helptext: Press the button to upload a new image or insert a URL of an existing image
   preview-alt: A preview of the uploaded or linked image
-  url-placeholder: insert a link as http(s)://...
+  url-placeholder: http(s)://...
   invalid-url: Only image URLs starting with http(s) are allowed
   image-url: Image URL
 road-sign-concept:
