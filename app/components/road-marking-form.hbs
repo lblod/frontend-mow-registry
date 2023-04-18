@@ -31,14 +31,16 @@
   <div class="au-c-body-container au-c-body-container--scroll">
     <div class="au-o-box">
       <div class="au-o-grid">
-        <div class="au-o-grid__item au-u-2-3@medium au-u-2-5@large">
+        <div class="au-o-grid__item au-u-2-3@medium">
           <form
             class="au-c-form"
             id="edit-road-marking-concept-form"
             novalidate
           >
             {{#let changeset.error.image as |isInvalid|}}
-              <ImageInput @oldImage={{@roadMarkingConcept.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
+              <AuFormRow>
+                <ImageInput @oldImage={{@roadMarkingConcept.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
+              </AuFormRow>
             {{/let}}
             {{#let changeset.error.roadMarkingConceptCode as |isInvalid|}}
               <AuFormRow>
