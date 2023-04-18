@@ -62,7 +62,7 @@ road-sign-concept:
     main-sign: Mogelijke hoofdborden
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
-    related-traffic-light: Gerelateerde verkeerslicht
+    related-traffic-light: Gerelateerde verkeerslichten
     valid: Gevalideerd
   crud:
     create: Verkeersbord aanmaken
@@ -119,7 +119,7 @@ road-marking-concept:
     code: Code
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
-    related-traffic-light: Gerelateerde verkeerslicht
+    related-traffic-light: Gerelateerde verkeerslichten
     valid: Gevalideerd
   crud:
     create: Wegmarkering aanmaken
