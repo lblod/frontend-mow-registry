@@ -32,6 +32,7 @@ utility:
   delete: verwijderen
   instructions: Instructies
   description: Beschrijving
+  image-preview-alt: Een voorbeeldweergave van de geüploade of de gelinkte afbeelding
   order: Volgorde
   sign: Verkeersteken
   add-instruction: Voeg instructie toe
@@ -50,6 +51,12 @@ utility:
     location: locatie
     codelist: codelijst
     instruction: instructie
+image-input:
+  helptext: Druk op de upload knop om een nieuw bestand te uploaden of plak de URL van een bestaande afbeelding
+  preview-alt: Een voorbeeld van het geüploade bestand of de URL
+  url-placeholder: http(s)://...
+  invalid-url: Enkel afbeeldings-URLs die beginnen met http(s) zijn toegelaten
+  image-url: Afbeelding URL
 road-sign-concept:
   name: Verkeersborden
   details: Verkeersbord details
@@ -83,7 +90,6 @@ traffic-light-concept:
   details: Verkeerslicht details
   attr:
     image-header: Afbeelding
-    image-url: Afbeelding URL
     meaning: Betekenis
     definition: Definitie
     code: Code

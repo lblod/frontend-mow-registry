@@ -10,7 +10,7 @@
           <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
             {{t "utility.zonality"}}
           </AuHeading>
-          <ZonalitySelector @concept={{@trafficMeasureConcept}} />
+          <ZonalitySelector @zonality={{@trafficMeasureConcept.zonality}} @onChange={{(fn (mut @trafficMeasureConcept.zonality))}} />
         </div>
         <div class="au-o-grid__item au-u-1-2">
           <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">

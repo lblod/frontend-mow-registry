@@ -11,3 +11,12 @@
   cursor: pointer;
   opacity: 0;
 }
+
+.image-preview {
+  padding: $au-unit-tiny;
+  margin-top: $au-unit-small;
+  max-width: 200px;
+  max-height: 200px;
+  border: .1rem solid var(--au-gray-200);
+  border-radius: var(--au-radius);
+}

@@ -3,9 +3,9 @@
   @searchEnabled={{false}}
   @loadingMessage={{t "utility.loading"}}
   @options={{this.zonalities}}
-  @selected={{this.selectedZonality}}
-  @onChange={{this.updateZonality}} as |zonality|
-  {{did-insert this.didInsert}}
+  @selected={{@zonality}}
+  @onChange={{@onChange}} as |zonality|
+  {{did-insert this.didInsert}}  
 >
   {{t (concat "utility." zonality.label)}}
 </PowerSelect>
