@@ -24,7 +24,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent {
     await changeset.validate();
 
     if (changeset.isValid) {
-      changeset.image = await this.saveImage();
+      await this.saveImage(changeset);
       await changeset.save();
 
       this.router.transitionTo(

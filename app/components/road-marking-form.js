@@ -21,7 +21,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   editRoadMarkingConceptTask = dropTask(async (changeset, event) => {
     event.preventDefault();
 
-    changeset.image = await this.saveImage();
+    await this.saveImage(changeset);
     await changeset.validate();
 
     if (changeset.isValid) {

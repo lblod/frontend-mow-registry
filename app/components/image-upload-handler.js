@@ -10,27 +10,27 @@ import { inject as service } from '@ember/service';
  */
 export default class ImageUploadHandlerComponent extends Component {
   @service fileService;
-  file;
 
-  get isFileUrl() {
-    return typeof this.file === 'string';
+  fileData;
+
+  isFileUrl(file) {
+    return typeof file === 'string';
   }
 
   @action
   setImage(changeset, image) {
-    this.file = image;
-    if (this.isFileUrl) {
-      changeset.image = this.file;
+    if (this.isFileUrl(image)) {
+      changeset.image = image;
+      this.fileData = null;
     } else {
-      changeset.image = this.file.name;
+      this.fileData = image;
+      changeset.image = this.fileData.name;
     }
   }
 
-  async saveImage() {
-    if (this.isFileUrl) {
-      return this.file;
-    } else {
-      return await this.fileService.upload(this.file);
+  async saveImage(changeset) {
+    if (this.fileData) {
+      changeset.image = await this.fileService.upload(this.fileData);
     }
   }
 }

@@ -29,7 +29,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
     await changeset.validate();
 
     if (changeset.isValid) {
-      changeset.image = await this.saveImage();
+      await this.saveImage(changeset);
       await changeset.save();
 
       this.router.transitionTo(
