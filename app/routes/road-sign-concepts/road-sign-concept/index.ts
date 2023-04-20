@@ -8,13 +8,9 @@ export default class RoadSignConceptsRoadSignConceptIndexRoute extends Route {
   @service declare store: Store;
 
   async model() {
-    const { mainConcept } = this.modelFor(
+    const { mainConcept, isSubSign } = this.modelFor(
       'road-sign-concepts.road-sign-concept'
     ) as ModelFrom<RoadSignConceptsRoadSignConceptRoute>;
-    const signCategories = await mainConcept.categories;
-    const isSubSign = signCategories.any(
-      (category) => category.label === 'Onderbord'
-    );
     const allSubSigns = await this.store.query('road-sign-concept', {
       filter: {
         categories: {

@@ -59,18 +59,18 @@ export default class RoadSignConceptsRoadSignConceptRelatedSignsController exten
   }
 
   @action
-  async addRelatedSign(sign: RoadSignConceptModel) {
-    this.signRelation.pushObject(sign);
+  async addRelated(concept: RoadSignConceptModel) {
+    this.signRelation.pushObject(concept);
     await this.model.mainConcept.save();
   }
 
   @action
-  async handleRemove(sign: RoadSignConceptModel) {
-    this.signRelation.removeObject(sign);
+  async removeRelated(concept: RoadSignConceptModel) {
+    this.signRelation.removeObject(concept);
     await this.model.mainConcept.save();
   }
 
-  isRelated = (roadSignConcept: RoadSignConceptModel) => {
-    return this.relatedSignIds.has(roadSignConcept.id);
+  isRelated = (concept: RoadSignConceptModel) => {
+    return this.relatedSignIds.has(concept.id);
   };
 }

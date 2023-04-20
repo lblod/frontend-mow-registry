@@ -14,9 +14,51 @@
     @templates={{@model.mainConcept.templates}}
     @removeTemplate={{perform this.removeTemplate}}
     @editInstruction={{this.editInstruction}}
-    @addInstruction={{this.addInstruction}}
     @isAddingInstructions={{this.isAddingInstructions}}
-  />
+  >
+    <:menu>
+      <AuToolbar class="au-o-box" as |Group|>
+        <Group>
+          <AuHeading @level="2" @skin="3">
+            {{t "utility.instructions"}}
+          </AuHeading>
+        </Group>
+        <Group>
+          <AuLink
+            @route="road-sign-concepts.road-sign-concept.instruction"
+            @model="new"
+            @skin="button"
+          >
+            {{t "utility.add-instruction"}}
+          </AuLink>
+        </Group>
+      </AuToolbar>
+    </:menu>
+    <:edit as |template|>
+
+      <AuLink
+        @icon="pencil"
+        @skin="button-secondary"
+        @hideText={{true}}
+        @route="road-sign-concepts.road-sign-concept.instruction"
+        @model={{template.id}}
+      >
+        {{t "utility.edit"}}
+      </AuLink>
+    </:edit>
+    <:delete as |template|>
+
+      <AuButton
+        @icon="bin"
+        @alert={{true}}
+        @skin="button-secondary"
+        @hideText={{true}}
+        {{on "click" (perform this.removeTemplate template)}}
+      >
+        {{t "utility.delete"}}
+      </AuButton>
+    </:delete>
+  </InstructionsTable>
   {{#if this.isSubSign}}
     <SearchTables::RoadSign
       @content={{sort-by-road-sign-code (await @model.mainConcept.mainSigns)}}

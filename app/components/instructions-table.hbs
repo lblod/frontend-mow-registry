@@ -6,21 +6,7 @@
 >
   <s.menu as |menu|>
     <menu.general>
-      <AuToolbar class="au-o-box" as |Group|>
-        <Group>
-          <AuHeading @level="2" @skin="3">
-            {{t "utility.instructions"}}
-          </AuHeading>
-        </Group>
-        <Group>
-          <AuButton 
-            @disabled={{@isAddingInstructions}}
-            {{on "click" @addInstruction}}
-          >
-            {{t "utility.add-instruction"}}
-          </AuButton>
-        </Group>
-      </AuToolbar>
+      {{yield to='menu'}}
     </menu.general>
   </s.menu>
   <s.content as |c|>
@@ -38,7 +24,7 @@
           {{t "main-sign.crud.edit"}}
         </span>
       </th>
-      
+
     </c.header>
     <c.body as |template|>
       <td>
@@ -47,27 +33,10 @@
         </p>
       </td>
       <td class="w-px au-u-padding-right-small">
-        <AuButton
-          @icon="pencil"
-          @skin="secondary"
-          @hideText={{true}}
-          @disabled={{@isAddingInstructions}}
-          {{on "click" (fn @editInstruction template)}}
-        >
-          {{t "utility.edit"}}
-        </AuButton>
+        {{yield template to='edit'}}
       </td>
       <td class="w-px au-u-padding-right-small">
-        <AuButton
-          @icon="bin"
-          @alert={{true}}
-          @disabled={{@isAddingInstructions}}
-          @skin="secondary"
-          @hideText={{true}}
-          {{on "click" (fn @removeTemplate template)}}
-        >
-          {{t "utility.delete"}}
-        </AuButton>
+        {{yield template to='delete'}}
       </td>
     </c.body>
   </s.content>
