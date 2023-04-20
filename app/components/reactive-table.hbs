@@ -10,8 +10,8 @@
   {{did-insert this.initialize}}
   {{did-update this.onPageChange this._page}}
   {{did-update this.onSortChange this._sort}}
-  {{did-update this.onExternalPageChange @page}}
-  {{did-update this.onExternalSortChange @sort}}
+  {{did-update this.onExternalPageChange this.page}}
+  {{did-update this.onExternalSortChange this.sort}}
 ></span>
   <table.menu as |menu|>
     <menu.general>

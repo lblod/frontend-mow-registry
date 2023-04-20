@@ -32,7 +32,9 @@
     <th>
       {{t "road-marking-concept.attr.valid"}}
     </th>
-    <th></th>
+    {{#if (has-block 'rowAction')}}
+      <th></th>
+    {{/if}}
   </:header>
   <:body as |roadSignConcept|>
 

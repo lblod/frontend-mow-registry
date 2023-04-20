@@ -1,0 +1,219 @@
+<div
+  class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables"
+>
+  <InstructionsTable
+    @templates={{@model.roadSignConcept.templates}}
+    @removeTemplate={{perform this.removeTemplate}}
+    @editInstruction={{this.editInstruction}}
+    @addInstruction={{this.addInstruction}}
+    @isAddingInstructions={{this.isAddingInstructions}}
+  />
+  {{#if this.isSubSign}}
+    <AuDataTable
+      @content={{sort-by-road-sign-code (await @model.roadSignConcept.mainSigns)}}
+      @fields="Image Meaning Code Categories"
+      @noDataMessage={{t "road-sign-concept.crud.no-data"}} as |s|
+    >
+      <s.menu as |menu|>
+        <menu.general>
+          <AuToolbar class="au-o-box" as |Group|>
+            <Group>
+              <AuHeading @level="2" @skin="3">
+                {{t "road-sign-concept.attr.main-sign"}}
+              </AuHeading>
+            </Group>
+            <Group>
+              <AuButton {{on "click" this.toggleAddMainSigns}}>
+                {{t "main-sign.crud.add"}}
+              </AuButton>
+            </Group>
+          </AuToolbar>
+        </menu.general>
+      </s.menu>
+      <s.content as |c|>
+        <c.header>
+          <th class="data-table__header-title">
+            {{t "road-sign-concept.attr.code"}}
+          </th>
+          <th class="data-table__header-title">
+            {{t "road-sign-concept.attr.image-header"}}
+          </th>
+          <th class="data-table__header-title">
+            {{t "road-sign-concept.attr.meaning"}}
+          </th>
+          <th class="data-table__header-title">
+            {{t "road-sign-concept.attr.categories"}}
+          </th>
+          <th>
+                  <span class="au-u-hidden-visually">
+                    {{t "main-sign.crud.delete"}}
+                  </span>
+          </th>
+        </c.header>
+        <c.body as |mainSignConcept|>
+          <td>
+            {{mainSignConcept.roadSignConceptCode}}
+          </td>
+          <td>
+            <img
+              class="au-c-thumbnail"
+              src={{mainSignConcept.image}}
+              alt=""
+              role="presentation"
+            />
+          </td>
+          <td>
+            <p class="max-w-prose">
+              {{mainSignConcept.meaning}}
+            </p>
+          </td>
+          <td>
+            {{#each mainSignConcept.categories as |category|}}
+              {{category.label}}
+            {{/each}}
+          </td>
+          <td class="w-px au-u-padding-right-small">
+            <AuButton
+              @icon="bin"
+              @alert={{true}}
+              @skin="secondary"
+              @hideText={{true}}
+              {{on "click" (perform this.removeMainSign mainSignConcept)}}
+            >
+              {{t "main-sign.crud.delete"}}
+            </AuButton>
+          </td>
+        </c.body>
+      </s.content>
+    </AuDataTable>
+  {{else}}
+    <AuDataTable
+      @content={{sort-by-road-sign-code (await @model.roadSignConcept.subSigns)}}
+      @fields="Image Meaning Code"
+      @noDataMessage={{t "road-sign-concept.crud.no-data"}} as |s|
+    >
+      <s.menu as |menu|>
+        <menu.general>
+          <AuToolbar class="au-o-box" as |Group|>
+            <Group>
+              <AuHeading @level="2" @skin="3">
+                {{t "road-sign-concept.attr.sub-sign"}}
+              </AuHeading>
+            </Group>
+            <Group>
+              <AuButton {{on "click" this.toggleAddSubSigns}}>
+                {{t "sub-sign.crud.add"}}
+              </AuButton>
+            </Group>
+          </AuToolbar>
+        </menu.general>
+      </s.menu>
+      <s.content as |c|>
+        <c.header>
+          <th class="data-table__header-title">
+            {{t "road-sign-concept.attr.code"}}
+          </th>
+          <th class="data-table__header-title">
+            {{t "road-sign-concept.attr.image-header"}}
+          </th>
+          <th class="data-table__header-title">
+            {{t "road-sign-concept.attr.meaning"}}
+          </th>
+          <th>
+                  <span class="au-u-hidden-visually">
+                    {{t "sub-sign.crud.delete"}}
+                  </span>
+          </th>
+        </c.header>
+        <c.body as |subSign|>
+          <td>
+            {{subSign.roadSignConceptCode}}
+          </td>
+          <td>
+            <img
+              class="au-c-thumbnail"
+              src={{subSign.image}}
+              alt=""
+              role="presentation"
+            />
+          </td>
+          <td>
+            <p class="max-w-prose">
+              {{subSign.meaning}}
+            </p>
+          </td>
+          <td class="w-px au-u-padding-right-small">
+            <AuButton
+              @icon="bin"
+              @alert={{true}}
+              @skin="secondary"
+              @hideText={{true}}
+              {{on "click" (perform this.removeSubSign subSign)}}
+            >
+              {{t "sub-sign.crud.delete"}}
+            </AuButton>
+          </td>
+        </c.body>
+      </s.content>
+    </AuDataTable>
+  {{/if}}
+  <SearchTables::RoadSign
+    @content={{sort-by-road-sign-code
+    (await @model.mainConcept.relatedRoadSignConcepts)}}
+  >
+    <:menu>
+      <AuToolbar class="au-o-box" as |Group|>
+        <Group>
+          <AuHeading @level="2" @skin="3">
+            {{t "road-sign-concept.attr.related-sign"}}
+          </AuHeading>
+        </Group>
+        <Group>
+          <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.related-signs">
+            {{t "related-road-sign.crud.add"}}
+          </AuLink>
+        </Group>
+      </AuToolbar>
+    </:menu>
+
+  </SearchTables::RoadSign>
+  <SearchTables::RoadMarking
+    @content={{sort-by-road-marking-code
+    (await @model.roadSignConcept.relatedRoadMarkingConcepts)}}
+  >
+    <:menu>
+      <AuToolbar class="au-o-box" as |Group|>
+        <Group>
+          <AuHeading @level="2" @skin="3">
+            {{t "road-sign-concept.attr.related-sign"}}
+          </AuHeading>
+        </Group>
+        <Group>
+          <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.related-markings">
+            {{t "related-road-marking.crud.add"}}
+          </AuLink>
+        </Group>
+      </AuToolbar>
+    </:menu>
+  </SearchTables::RoadMarking>
+  <SearchTables::TrafficLight
+    @content={{sort-by-traffic-light-code
+    (await @model.roadSignConcept.relatedTrafficLightConcepts)}}
+  >
+    <:menu>
+      <AuToolbar class="au-o-box" as |Group|>
+        <Group>
+          <AuHeading @level="2" @skin="3">
+            {{t "road-sign-concept.attr.related-traffic-light"}}
+          </AuHeading>
+        </Group>
+        <Group>
+          <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.related-lights">
+            {{t "related-traffic-light.crud.add"}}
+          </AuLink>
+        </Group>
+      </AuToolbar>
+    </:menu>
+  </SearchTables::TrafficLight>
+
+</div>

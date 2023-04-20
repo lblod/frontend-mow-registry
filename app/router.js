@@ -13,6 +13,10 @@ Router.map(function () {
   this.route('road-sign-concepts', function () {
     this.route('road-sign-concept', { path: '/:id' }, function () {
       this.route('instruction', { path: '/instruction//:instruction_id' });
+      this.route('related-signs');
+      this.route('subsigns');
+      this.route('related-markings');
+      this.route('related-lights');
     });
     this.route('new');
     this.route('edit', { path: '/edit/:id' });

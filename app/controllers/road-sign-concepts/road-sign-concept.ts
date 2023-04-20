@@ -3,9 +3,13 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
+import RouterService from '@ember/routing/router-service';
+import { ModelFrom } from 'mow-registry/utils/type-utils';
+import RoadsignConceptsRoadSignConceptRoute from 'mow-registry/routes/road-sign-concepts/road-sign-concept';
 
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
-  @service router;
+  @service declare router: RouterService;
+  declare model: ModelFrom<RoadsignConceptsRoadSignConceptRoute>;
 
   @tracked isAddingSubSigns = false;
   @tracked isAddingMainSigns = false;
@@ -19,7 +23,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @tracked subSignCodeFilter = '';
   @tracked newDescription = '';
-  @tracked editedTemplate;
+  @tracked editedTemplate?: string;
   @tracked relatedRoadMarkingCodeFilter = '';
   @tracked relatedTrafficLightCodeFilter = '';
 
