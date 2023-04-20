@@ -14,13 +14,13 @@ export default class RoadSignConceptsRoadSignConceptInstructionRoute extends Rou
   @service declare store: Store;
 
   async model(params: Params) {
-    const { mainConcept: concept } = this.modelFor(
+    const { mainConcept } = this.modelFor(
       'road-sign-concepts.road-sign-concept'
     ) as ModelFrom<RoadSignConceptsRoadSignConceptRoute>;
 
     if (params.instruction_id === 'new') {
       return {
-        concept,
+        mainConcept,
         from: PARENT_ROUTE,
       };
     } else {
@@ -33,7 +33,7 @@ export default class RoadSignConceptsRoadSignConceptInstructionRoute extends Rou
       );
       return {
         template,
-        concept,
+        mainConcept,
         from: PARENT_ROUTE,
       };
     }
