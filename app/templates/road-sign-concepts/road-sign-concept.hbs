@@ -3,14 +3,14 @@
 <BreadcrumbsItem as |linkClass|>
   <LinkTo
     @route="road-sign-concepts.road-sign-concept"
-    @model={{@model.roadSignConcept.id}}
+    @model={{@model.mainConcept.id}}
     class={{linkClass}}
   >
-    {{@model.roadSignConcept.roadSignConceptCode}}
+    {{@model.mainConcept.roadSignConceptCode}}
   </LinkTo>
 </BreadcrumbsItem>
 
-<div class="au-o-grid au-o-grid--flush au-o-grid--fixed" {{did-insert this.didInsert}}>
+<div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
   <div
     class="au-o-grid__item"
   >
@@ -30,7 +30,7 @@
                 class="au-c-thumbnail au-c-thumbnail--full"
                 alt=""
                 role="presentation"
-                src={{@model.roadSignConcept.image}}
+                src={{@model.mainConcept.image}}
               />
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
@@ -38,14 +38,14 @@
                 {{t "road-sign-concept.attr.code"}}
               </AuLabel>
               <p>
-                {{@model.roadSignConcept.roadSignConceptCode}}
+                {{@model.mainConcept.roadSignConceptCode}}
               </p>
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>
                 {{t "road-sign-concept.attr.categories"}}
               </AuLabel>
-              {{#each @model.roadSignConcept.categories as |category|}}
+              {{#each @model.mainConcept.categories as |category|}}
                 <p>
                   {{category.label}}
                 </p>
@@ -56,7 +56,7 @@
                 {{t "road-sign-concept.attr.meaning"}}
               </AuLabel>
               <p>
-                {{@model.roadSignConcept.meaning}}
+                {{@model.mainConcept.meaning}}
               </p>
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
@@ -64,11 +64,11 @@
                 {{t "utility.zonality"}}
               </AuLabel>
               <p>
-                {{t (concat "utility." @model.roadSignConcept.zonality.label)}}
+                {{t (concat "utility." @model.mainConcept.zonality.label)}}
               </p>
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-              <ContentCheck @concept={{@model.roadSignConcept}} />
+              <ContentCheck @concept={{@model.mainConcept}} />
             </li>
           </ul>
         </Group>
@@ -78,7 +78,7 @@
           <AuLink
             @skin="button"
             @route="road-sign-concepts.edit"
-            @model={{@model.roadSignConcept.id}}
+            @model={{@model.mainConcept.id}}
           >
             {{t "road-sign-concept.crud.edit"}}
           </AuLink>
@@ -105,7 +105,7 @@
                 @alert={{true}}
                 {{on
                   "click"
-                  (perform this.removeRoadSignConcept @model.roadSignConcept)
+                  (perform this.removeRoadSignConcept @model.mainConcept)
                 }}
               >
                 {{t "road-sign-concept.crud.delete"}}

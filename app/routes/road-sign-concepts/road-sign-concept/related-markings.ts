@@ -4,7 +4,7 @@ import RoadsignConceptsRoadSignConceptRoute from 'mow-registry/routes/road-sign-
 
 export default class RoadSignConceptsRoadSignConceptRelatedMarkingsRoute extends Route {
   async model() {
-    const { roadSignConcept: mainConcept } = this.modelFor(
+    const { mainConcept } = this.modelFor(
       'road-sign-concepts.road-sign-concept'
     ) as ModelFrom<RoadsignConceptsRoadSignConceptRoute>;
     const relatedConcepts = await mainConcept.relatedRoadMarkingConcepts;

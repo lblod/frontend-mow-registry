@@ -1,5 +1,21 @@
 {{page-title "Subsigns"}}
 
+
+<SearchTables::RoadSign
+  @content={{@model.relatedConcepts}}
+>
+
+</SearchTables::RoadSign>
+
+{{#if this.potentialConcepts.value}}
+  <SearchTables::RoadSign
+    @content={{this.potentialConcepts.value}}
+  >
+
+  </SearchTables::RoadSign>
+
+{{/if}}
+
 {{#if this.isAddingSubSigns}}
 <div class="au-o-grid__item au-u-2-5@medium">
   <div class="au-c-body-container au-c-action-sidebar">

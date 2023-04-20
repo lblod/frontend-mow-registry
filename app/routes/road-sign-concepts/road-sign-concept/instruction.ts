@@ -1,13 +1,23 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import Store from '@ember-data/store';
+import RoadSignConceptsRoadSignConceptRoute from 'mow-registry/routes/road-sign-concepts/road-sign-concept';
+import { ModelFrom } from 'mow-registry/utils/type-utils';
+
 const PARENT_ROUTE = 'road-sign-concepts.road-sign-concept';
 
+interface Params {
+  instruction_id: string;
+}
+
 export default class RoadSignConceptsRoadSignConceptInstructionRoute extends Route {
-  @service store;
-  async model(params) {
-    console.log(this.modelFor('road-sign-concepts.road-sign-concept'));
-    const concept = await this.modelFor('road-sign-concepts.road-sign-concept')
-      .roadSignConcept;
+  @service declare store: Store;
+
+  async model(params: Params) {
+    const { mainConcept: concept } = this.modelFor(
+      'road-sign-concepts.road-sign-concept'
+    ) as ModelFrom<RoadSignConceptsRoadSignConceptRoute>;
+
     if (params.instruction_id === 'new') {
       return {
         concept,

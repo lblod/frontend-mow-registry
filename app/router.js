@@ -12,7 +12,7 @@ Router.map(function () {
   this.route('mock-login');
   this.route('road-sign-concepts', function () {
     this.route('road-sign-concept', { path: '/:id' }, function () {
-      this.route('instruction', { path: '/instruction//:instruction_id' });
+      this.route('instruction', { path: '/instruction/:instruction_id' });
       this.route('related-signs');
       this.route('subsigns');
       this.route('related-markings');
@@ -30,7 +30,7 @@ Router.map(function () {
   });
   this.route('traffic-light-concepts', function () {
     this.route('traffic-light-concept', { path: '/:id' }, function () {
-      this.route('instruction', { path: '/instruction//:instruction_id' });
+      this.route('instruction', { path: '/instruction/:instruction_id' });
     });
     this.route('new');
     this.route('edit', { path: '/edit/:id' });
