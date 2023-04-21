@@ -1,20 +1,9 @@
-<BreadcrumbsItem as |linkClass|>
-  <LinkTo
-    @route="road-sign-concepts.road-sign-concept"
-    @model={{@model.mainConcept.id}}
-    class={{linkClass}}
-  >
-    {{@model.mainConcept.roadSignConceptCode}}
-  </LinkTo>
-</BreadcrumbsItem>
 <div
   class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables"
 >
   <InstructionsTable
     @templates={{@model.mainConcept.templates}}
     @removeTemplate={{perform this.removeTemplate}}
-    @editInstruction={{this.editInstruction}}
-    @isAddingInstructions={{this.isAddingInstructions}}
   >
     <:menu>
       <AuToolbar class="au-o-box" as |Group|>
@@ -35,7 +24,6 @@
       </AuToolbar>
     </:menu>
     <:edit as |template|>
-
       <AuLink
         @icon="pencil"
         @skin="button-secondary"
