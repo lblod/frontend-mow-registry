@@ -28,7 +28,7 @@ export default class AddInstructionComponent extends Component {
 
   fetchData = task(async () => {
     this.concept = await this.args.concept;
-    this.codeLists = await this.codeListService.all.perform();
+    this.codeLists = await this.codeListService.all.linked().perform();
 
     if (this.args.editedTemplate) {
       this.new = false;
@@ -71,10 +71,10 @@ export default class AddInstructionComponent extends Component {
   //only resetting things we got from parent component
   @action
   reset() {
-    if (this.template.hasDirtyAttributes || this.template.isNew) {
+    if (this.template?.hasDirtyAttributes) {
       this.template.rollbackAttributes();
     }
-    if (this.concept.hasDirtyAttributes || this.concept.isNew) {
+    if (this.concept?.hasDirtyAttributes) {
       this.concept.rollBackAttributes();
     }
     if (this.args.closeInstructions) {
@@ -190,4 +190,9 @@ export default class AddInstructionComponent extends Component {
 
     this.reset();
   });
+
+  willDestroy() {
+    super.willDestroy(...arguments);
+    this.reset();
+  }
 }
