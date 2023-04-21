@@ -9,7 +9,7 @@
       <button
         type="button"
         class="au-c-close au-c-close--large"
-        {{on 'click' this.reset}}
+        {{on 'click' this.cancel}}
       >
         <AuIcon @icon="cross" @size="large" />
         <span class="au-u-hidden-visually">
@@ -34,7 +34,7 @@
         >
           {{t "utility.save" }}
         </AuButton>
-        <AuButton @skin="secondary" {{on 'click' this.reset}}>
+        <AuButton @skin="secondary" {{on 'click' this.cancel}}>
           {{t "utility.cancel"}}
         </AuButton>
       </AuButtonGroup>

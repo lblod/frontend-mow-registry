@@ -19,7 +19,11 @@ export default class RoadSignConceptsRoadSignConceptInstructionRoute extends Rou
     ) as ModelFrom<RoadSignConceptsRoadSignConceptRoute>;
 
     if (params.instruction_id === 'new') {
+      let template = this.store.createRecord('template');
+      template.value = '';
+      mainConcept.templates.pushObject(template);
       return {
+        template,
         mainConcept,
         from: PARENT_ROUTE,
       };
@@ -37,5 +41,10 @@ export default class RoadSignConceptsRoadSignConceptInstructionRoute extends Rou
         from: PARENT_ROUTE,
       };
     }
+  }
+
+  resetController(controller: any) {
+    controller.model.template?.rollbackAttributes();
+    controller.model.mainConcept?.rollbackAttributes();
   }
 }

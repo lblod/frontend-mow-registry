@@ -16,7 +16,6 @@ export default class AddInstructionComponent extends Component {
   @tracked mappings;
   @tracked codeLists;
 
-  @tracked new;
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
   mappingsToBeDeleted = [];
@@ -29,21 +28,11 @@ export default class AddInstructionComponent extends Component {
   fetchData = task(async () => {
     this.concept = await this.args.concept;
     this.codeLists = await this.codeListService.all.linked().perform();
-
-    if (this.args.editedTemplate) {
-      this.new = false;
-      this.template = await this.args.editedTemplate;
-      this.mappings = await this.template.mappings;
-      this.mappings = this.mappings
-        .slice()
-        .sort((a, b) => (a.id < b.id ? -1 : 1));
-    } else {
-      this.new = true;
-      this.template = this.store.createRecord('template');
-      this.template.value = '';
-      this.concept.templates.pushObject(this.template);
-      this.mappings = this.template.mappings;
-    }
+    this.template = await this.args.editedTemplate;
+    this.mappings = await this.template.mappings;
+    this.mappings = this.mappings
+      .slice()
+      .sort((a, b) => (a.id < b.id ? -1 : 1));
     this.parseTemplate();
   });
 
@@ -68,20 +57,9 @@ export default class AddInstructionComponent extends Component {
     this.parseTemplate();
   }
 
-  //only resetting things we got from parent component
   @action
-  reset() {
-    if (this.template?.hasDirtyAttributes) {
-      this.template.rollbackAttributes();
-    }
-    if (this.concept?.hasDirtyAttributes) {
-      this.concept.rollBackAttributes();
-    }
-    if (this.args.closeInstructions) {
-      this.args.closeInstructions();
-    } else if (this.args.from) {
-      this.router.transitionTo(this.args.from);
-    }
+  cancel() {
+    this.goBack();
   }
 
   @action
@@ -167,6 +145,10 @@ export default class AddInstructionComponent extends Component {
     this.mappings = sortedMappings;
   }
 
+  goBack() {
+    this.router.transitionTo(this.args.from);
+  }
+
   save = task(async () => {
     await this.template.save();
     this.concept.templates.pushObject(this.template);
@@ -188,11 +170,6 @@ export default class AddInstructionComponent extends Component {
       this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
     );
 
-    this.reset();
+    this.goBack();
   });
-
-  willDestroy() {
-    super.willDestroy(...arguments);
-    this.reset();
-  }
 }
