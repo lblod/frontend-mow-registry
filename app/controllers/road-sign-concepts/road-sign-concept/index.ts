@@ -1,11 +1,12 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
 import { ModelFrom } from 'mow-registry/utils/type-utils';
 import RoadSignConceptsRoadSignConceptIndexRoute from 'mow-registry/routes/road-sign-concepts/road-sign-concept/index';
 import { task } from 'ember-concurrency';
 
 export default class RoadSignConceptsRoadsignConceptIndexController extends Controller {
   declare model: ModelFrom<RoadSignConceptsRoadSignConceptIndexRoute>;
+
+  show = {};
 
   get isSubSign() {
     return this.model.isSubSign;
@@ -14,12 +15,6 @@ export default class RoadSignConceptsRoadsignConceptIndexController extends Cont
   get concept() {
     return this.model.mainConcept;
   }
-
-  @action
-  addInstruction() {}
-
-  @action
-  editInstruction() {}
 
   removeTemplate = task(async (template) => {
     let templates = await this.concept.templates;

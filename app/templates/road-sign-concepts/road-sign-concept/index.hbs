@@ -35,15 +35,21 @@
       </AuLink>
     </:edit>
     <:delete as |template|>
-      <AuButton
-        @icon="bin"
-        @alert={{true}}
-        @skin="button-secondary"
-        @hideText={{true}}
-        {{on "click" (perform this.removeTemplate template)}}
-      >
-        {{t "utility.delete"}}
-      </AuButton>
+      {{#let (get this.show (unique-id)) as |show|}}
+        <AuButton
+          @icon="bin"
+          @alert={{true}}
+          @skin="button-secondary"
+          @hideText={{true}}
+          {{on "click" (fn (mut show) true)}}
+        >
+          {{t "utility.delete"}}
+        </AuButton>
+        <AreYouSureModal 
+          @onConfirm={{perform this.removeTemplate template}} 
+          @modalOpen={{show}} 
+        />
+      {{/let}}
     </:delete>
   </InstructionsTable>
   {{#if this.isSubSign}}

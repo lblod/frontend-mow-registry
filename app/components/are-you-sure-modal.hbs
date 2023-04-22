@@ -1,0 +1,19 @@
+<AuModal 
+  @modalTitle={{t "utility.confirmation.title"}} 
+  @modalOpen={{@modalOpen}} 
+  @closeModal={{(fn (mut @modalOpen) false)}} as |Modal|
+  >
+  <Modal.Body>
+    <p>
+      {{t "utility.confirmation.body"}}
+    </p>
+  </Modal.Body>
+  <Modal.Footer>
+    <AuButton @alert={{true}} {{on "click" @onConfirm}}>
+      {{t "utility.yes"}}
+    </AuButton>
+     <AuButton @skin="secondary" {{on "click" (fn (mut @modalOpen) false)}}>
+      {{t "utility.cancel"}}
+    </AuButton>
+  </Modal.Footer>
+</AuModal>
