@@ -10,6 +10,6 @@ export default class RelativeRoute extends Helper {
       ? fullPath.slice(0, -removeableEnd.length)
       : fullPath;
 
-    return basePath + '.' + path;
+    return path ? basePath + '.' + path : basePath;
   }
 }

@@ -8,10 +8,6 @@ export default class ConceptIndexPageComponent extends Component {
     return this.args.model;
   }
 
-  get isSubSign() {
-    return this.model.isSubSign;
-  }
-
   get concept() {
     return this.model.mainConcept;
   }
