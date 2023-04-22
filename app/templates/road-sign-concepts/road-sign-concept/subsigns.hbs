@@ -13,22 +13,20 @@
 <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept" class="au-u-margin-bottom-small">
   <AuIcon @icon="chevron-left"/>{{t "road-sign-concept.back-to-overview"}}
 </AuLink>
-<div>
-  <SearchTables::RoadSign
-    @content={{@model.relatedConcepts}}
-  >
-    <:rowAction as |sign|>
-      <AuButton
-        @icon="bin"
-        @skin="secondary"
-        @hideText={{true}}
-        {{on "click" (fn this.removeSign sign)}}>
+<SearchTables::RoadSign
+  @content={{@model.relatedConcepts}}
+>
+  <:rowAction as |sign|>
+    <AuButton
+      @icon="bin"
+      @skin="secondary"
+      @hideText={{true}}
+      {{on "click" (fn this.removeSign sign)}}>
 
-        {{(if this.isAddMainSigns (t "main-sign.crud.delete") (t 'sub-sign.crud.delete'))}}
-      </AuButton>
-    </:rowAction>
-  </SearchTables::RoadSign>
-</div>
+      {{(if this.isAddMainSigns (t "main-sign.crud.delete") (t 'sub-sign.crud.delete'))}}
+    </AuButton>
+  </:rowAction>
+</SearchTables::RoadSign>
 <hr>
 {{#if this.potentialConcepts.value}}
   <PowerSelect

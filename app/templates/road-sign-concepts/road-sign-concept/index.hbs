@@ -1,155 +1,39 @@
-<div
-  class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables"
->
-  <InstructionsTable
-    @templates={{@model.mainConcept.templates}}
-    @removeTemplate={{perform this.removeTemplate}}
-  >
-    <:menu>
-      <AuToolbar class="au-o-box" as |Group|>
-        <Group>
-          <AuHeading @level="2" @skin="3">
-            {{t "utility.instructions"}}
-          </AuHeading>
-        </Group>
-        <Group>
-          <AuLink
-            @route="road-sign-concepts.road-sign-concept.instruction"
-            @model="new"
-            @skin="button"
-          >
-            {{t "utility.add-instruction"}}
-          </AuLink>
-        </Group>
-      </AuToolbar>
-    </:menu>
-    <:edit as |template|>
-      <AuLink
-        @icon="pencil"
-        @skin="button-secondary"
-        @hideText={{true}}
-        @route="road-sign-concepts.road-sign-concept.instruction"
-        @model={{template.id}}
-      >
-        {{t "utility.edit"}}
-      </AuLink>
-    </:edit>
-    <:delete as |template|>
-      {{#let (get this.show (unique-id)) as |show|}}
-        <AuButton
-          @icon="bin"
-          @alert={{true}}
-          @skin="button-secondary"
-          @hideText={{true}}
-          {{on "click" (fn (mut show) true)}}
-        >
-          {{t "utility.delete"}}
-        </AuButton>
-        <AreYouSureModal 
-          @onConfirm={{perform this.removeTemplate template}} 
-          @modalOpen={{show}} 
-        />
-      {{/let}}
-    </:delete>
-  </InstructionsTable>
-  {{#if this.isSubSign}}
-    <SearchTables::RoadSign
-      @content={{sort-by-road-sign-code (await @model.mainConcept.mainSigns)}}
-    >
-    <:menu>
-      <AuToolbar class="au-o-box" as |Group|>
-        <Group>
-          <AuHeading @level="2" @skin="3">
-            {{t "road-sign-concept.attr.main-sign"}}
-          </AuHeading>
-        </Group>
-        <Group>
-          <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.subsigns">
-            {{t "main-sign.crud.add"}}
-          </AuLink>
-        </Group>
-      </AuToolbar>
-    </:menu>
-    </SearchTables::RoadSign>
-  {{else}}
-    <SearchTables::RoadSign
-      @content={{sort-by-road-sign-code (await @model.mainConcept.subSigns)}}
-    >
-      <:menu>
-
-        <AuToolbar class="au-o-box" as |Group|>
-          <Group>
-            <AuHeading @level="2" @skin="3">
-              {{t "road-sign-concept.attr.sub-sign"}}
-            </AuHeading>
-          </Group>
-          <Group>
-            <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.subsigns">
-              {{t "sub-sign.crud.add"}}
-            </AuLink>
-          </Group>
-        </AuToolbar>
-      </:menu>
-
-    </SearchTables::RoadSign>
-  {{/if}}
-  <SearchTables::RoadSign
-    @content={{sort-by-road-sign-code
-    (await @model.mainConcept.relatedRoadSignConcepts)}}
-  >
-    <:menu>
-      <AuToolbar class="au-o-box" as |Group|>
-        <Group>
-          <AuHeading @level="2" @skin="3">
-            {{t "road-sign-concept.attr.related-sign"}}
-          </AuHeading>
-        </Group>
-        <Group>
-          <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.related-signs">
-            {{t "related-road-sign.crud.add"}}
-          </AuLink>
-        </Group>
-      </AuToolbar>
-    </:menu>
-
-  </SearchTables::RoadSign>
-  <SearchTables::RoadMarking
-    @content={{sort-by-road-marking-code
-    (await @model.mainConcept.relatedRoadMarkingConcepts)}}
-  >
-    <:menu>
-      <AuToolbar class="au-o-box" as |Group|>
-        <Group>
-          <AuHeading @level="2" @skin="3">
-            {{t "road-sign-concept.attr.related-marking"}}
-          </AuHeading>
-        </Group>
-        <Group>
-          <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.related-markings">
-            {{t "related-road-marking.crud.add"}}
-          </AuLink>
-        </Group>
-      </AuToolbar>
-    </:menu>
-  </SearchTables::RoadMarking>
-  <SearchTables::TrafficLight
-    @content={{sort-by-traffic-light-code
-    (await @model.mainConcept.relatedTrafficLightConcepts)}}
-  >
-    <:menu>
-      <AuToolbar class="au-o-box" as |Group|>
-        <Group>
-          <AuHeading @level="2" @skin="3">
-            {{t "road-sign-concept.attr.related-traffic-light"}}
-          </AuHeading>
-        </Group>
-        <Group>
-          <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.related-lights">
-            {{t "related-traffic-light.crud.add"}}
-          </AuLink>
-        </Group>
-      </AuToolbar>
-    </:menu>
-  </SearchTables::TrafficLight>
-
-</div>
+<ConceptIndexPage @model={{@model}}>
+  <:belowInstructions>
+    {{#if this.isSubSign}}
+      <SearchTables::RoadSign @content={{sort-by-road-sign-code (await @model.mainConcept.mainSigns)}}>
+        <:menu>
+          <AuToolbar class="au-o-box" as |Group|>
+            <Group>
+              <AuHeading @level="2" @skin="3">
+                {{t "road-sign-concept.attr.main-sign"}}
+              </AuHeading>
+            </Group>
+            <Group>
+              <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.subsigns">
+                {{t "main-sign.crud.add"}}
+              </AuLink>
+            </Group>
+          </AuToolbar>
+        </:menu>
+      </SearchTables::RoadSign>
+    {{else}}
+      <SearchTables::RoadSign @content={{sort-by-road-sign-code (await @model.mainConcept.subSigns)}}>
+        <:menu>
+          <AuToolbar class="au-o-box" as |Group|>
+            <Group>
+              <AuHeading @level="2" @skin="3">
+                {{t "road-sign-concept.attr.sub-sign"}}
+              </AuHeading>
+            </Group>
+            <Group>
+              <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.subsigns">
+                {{t "sub-sign.crud.add"}}
+              </AuLink>
+            </Group>
+          </AuToolbar>
+        </:menu>
+      </SearchTables::RoadSign>
+    {{/if}}
+  </:belowInstructions>
+</ConceptIndexPage>
