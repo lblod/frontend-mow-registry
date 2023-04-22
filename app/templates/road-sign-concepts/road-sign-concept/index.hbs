@@ -35,7 +35,6 @@
       </AuLink>
     </:edit>
     <:delete as |template|>
-
       <AuButton
         @icon="bin"
         @alert={{true}}
@@ -59,7 +58,7 @@
         </Group>
         <Group>
           <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.subsigns">
-            {{t "related-road-sign.crud.add"}}
+            {{t "main-sign.crud.add"}}
           </AuLink>
         </Group>
       </AuToolbar>
@@ -79,7 +78,7 @@
           </Group>
           <Group>
             <AuLink @skin="button" @route="road-sign-concepts.road-sign-concept.subsigns">
-              {{t "related-road-sign.crud.add"}}
+              {{t "sub-sign.crud.add"}}
             </AuLink>
           </Group>
         </AuToolbar>
@@ -115,7 +114,7 @@
       <AuToolbar class="au-o-box" as |Group|>
         <Group>
           <AuHeading @level="2" @skin="3">
-            {{t "road-sign-concept.attr.related-sign"}}
+            {{t "road-sign-concept.attr.related-marking"}}
           </AuHeading>
         </Group>
         <Group>
