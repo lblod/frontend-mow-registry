@@ -1,0 +1,39 @@
+{{page-title "RelatedLights"}}
+<SearchTables::TrafficLight
+  @content={{this.relatedConcepts}}
+>
+  <:rowAction as |concept|>
+    <AuButton
+      @icon="bin"
+      @skin="secondary"
+      @hideText={{true}}
+      {{on "click" (fn this.removeRelated concept)}}>
+
+      {{t "related-traffic-light.crud.delete"}}
+    </AuButton>
+
+  </:rowAction>
+
+</SearchTables::TrafficLight>
+{{#if this.potentialConcepts.value}}
+  <SearchTables::TrafficLight
+    @content={{this.potentialConcepts.value}}
+    @pageSize={{this.pageSize}}
+    @page={{this.page}}
+    @sort={{this.sort}}
+    @onPageChange={{this.onPageChange}}
+    @onSortChange={{this.onSortChange}}
+  >
+    <:rowAction as |concept|>
+      <AuButton
+        @disabled={{this.isRelated concept}}
+        @icon="add"
+        @hideText={{true}}
+        {{on "click" (fn this.addRelated concept)}}
+      >
+        {{t "related-traffic-light.crud.add-one"}}
+      </AuButton>
+    </:rowAction>
+
+  </SearchTables::TrafficLight>
+{{/if}}

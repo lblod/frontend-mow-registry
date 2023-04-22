@@ -6,13 +6,14 @@ export default class RelatedSignsRoute extends ConceptRoute {
   @service declare store: Store;
 
   async model() {
-    const { mainConcept, isSubSign } = this.modelFor(this.parentRoute);
-    let relatedConcepts;
-    if (isSubSign) {
-      relatedConcepts = await mainConcept.relatedFromRoadSignConcepts;
+    const { mainConcept } = this.modelFor(this.parentRoute);
+    if (mainConcept.relatedRoadSignConcepts) {
+      let related = await mainConcept.relatedRoadSignConcepts;
+      return { mainConcept, related };
     } else {
-      relatedConcepts = await mainConcept.relatedToRoadSignConcepts;
+      let relatedFrom = await mainConcept.relatedFromRoadSignConcepts;
+      let relatedTo = await mainConcept.relatedToRoadSignConcepts;
+      return { mainConcept, relatedFrom, relatedTo };
     }
-    return { mainConcept, isSubSign, relatedConcepts };
   }
 }

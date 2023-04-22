@@ -1,0 +1,36 @@
+{{page-title "RelatedMarkings"}}
+<SearchTables::RoadMarking
+  @content={{this.relatedConcepts}}
+>
+  <:rowAction as |concept|>
+    <AuButton
+      @icon="bin"
+      @skin="secondary"
+      @hideText={{true}}
+      {{on "click" (fn this.removeRelated concept)}}>
+      {{t "related-road-marking.crud.delete"}}
+    </AuButton>
+  </:rowAction>
+
+</SearchTables::RoadMarking>
+{{#if this.potentialConcepts.value}}
+  <SearchTables::RoadMarking
+    @content={{this.potentialConcepts.value}}
+    @pageSize={{this.pageSize}}
+    @page={{this.page}}
+    @sort={{this.sort}}
+    @onPageChange={{this.onPageChange}}
+    @onSortChange={{this.onSortChange}}
+  >
+    <:rowAction as |concept|>
+      <AuButton
+        @disabled={{this.isRelated concept}}
+        @hideText={{true}}
+        @icon="add"
+        {{on "click" (fn this.addRelated concept)}}
+      >
+        {{t "related-road-marking.crud.add-one"}}
+      </AuButton>
+    </:rowAction>
+  </SearchTables::RoadMarking>
+{{/if}}

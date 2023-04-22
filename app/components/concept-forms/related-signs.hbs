@@ -1,0 +1,36 @@
+{{page-title "RelatedSigns"}}
+<SearchTables::RoadSign
+  @content={{this.relatedConcepts}}
+  @pageSize={{this.pageSize}}
+>
+  <:rowAction as |concept|>
+    <AuButton
+      @icon="bin"
+      @skin="secondary"
+      @hideText={{true}}
+      {{on "click" (fn this.removeRelated concept)}} >
+      {{t "related-road-sign.crud.delete"}}
+    </AuButton>
+  </:rowAction>
+
+</SearchTables::RoadSign>
+{{#if this.potentialConcepts.value}}
+  <SearchTables::RoadSign
+    @content={{this.potentialConcepts.value}}
+    @pageSize={{this.pageSize}}
+    @page={{this.page}}
+    @sort={{this.sort}}
+    @onPageChange={{this.onPageChange}}
+    @onSortChange={{this.onSortChange}}
+  >
+    <:rowAction as |concept|>
+      <AuButton
+        @disabled={{this.isRelated concept}}
+        @icon="add"
+        @hideText={{true}}
+        {{on "click" (fn this.addRelated concept)}} >
+        {{t "related-road-sign.crud.add-one"}}
+      </AuButton>
+    </:rowAction>
+  </SearchTables::RoadSign>
+{{/if}}
