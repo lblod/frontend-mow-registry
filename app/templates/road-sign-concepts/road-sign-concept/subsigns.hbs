@@ -1,128 +1,60 @@
-{{page-title "Subsigns"}}
+{{#let (if this.isAddMainSigns (t "main-sign.crud.add") (t 'sub-sign.crud.add')) as |pageTitle|}}
+  {{page-title pageTitle}}
+  <BreadcrumbsItem as |linkClass|>
+    <LinkTo
+      @route="road-sign-concepts.road-sign-concept.subsigns"
+      @model={{@model.mainConcept.id}}
+      class={{linkClass}}
+    >
+      {{pageTitle}}
+    </LinkTo>
+  </BreadcrumbsItem>
+{{/let}}
+<AuLink @skin="button" @route="road-sign-concepts.road-sign-concept" class="au-u-margin-bottom-small">
+  <AuIcon @icon="chevron-left"/>{{t "road-sign-concept.back-to-overview"}}
+</AuLink>
+<div>
+  <SearchTables::RoadSign
+    @content={{@model.relatedConcepts}}
+  >
+    <:rowAction as |sign|>
+      <AuButton
+        @icon="bin"
+        @skin="secondary"
+        @hideText={{true}}
+        {{on "click" (fn this.removeSign sign)}}>
 
-
-<SearchTables::RoadSign
-  @content={{@model.relatedConcepts}}
->
-
-</SearchTables::RoadSign>
-
+        {{(if this.isAddMainSigns (t "main-sign.crud.delete") (t 'sub-sign.crud.delete'))}}
+      </AuButton>
+    </:rowAction>
+  </SearchTables::RoadSign>
+</div>
+<hr>
 {{#if this.potentialConcepts.value}}
+  <PowerSelect
+    @allowClear={{true}}
+    @searchEnabled={{true}}
+    @noMatchesMessage={{t "road-sign-concept.crud.no-categories"}}
+    @loadingMessage={{t "utility.loading"}}
+    @searchField="label"
+    @options={{@model.categories}}
+    @selected={{this.selectedCategory}}
+    @onChange={{this.setCategory}} as |category|
+  >
+    {{category}}
+  </PowerSelect>
   <SearchTables::RoadSign
     @content={{this.potentialConcepts.value}}
   >
-
+   <:rowAction as |sign|>
+      <AuButton
+        @disabled={{this.isRelated sign}}
+        @icon="add"
+        @hideText={{true}}
+        {{on "click" (fn this.addSign sign)}}
+      >
+        {{(if this.isAddMainSigns (t "main-sign.crud.add-one") (t 'sub-sign.crud.add-one'))}}
+      </AuButton>
+    </:rowAction>
   </SearchTables::RoadSign>
-
-{{/if}}
-
-{{#if this.isAddingSubSigns}}
-<div class="au-o-grid__item au-u-2-5@medium">
-  <div class="au-c-body-container au-c-action-sidebar">
-    <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
-      <AuToolbar class="au-u-margin-bottom-small" as |Group|>
-        <Group>
-          <AuHeading @level="2" @skin="3">
-            {{t "sub-sign.crud.add"}}
-          </AuHeading>
-        </Group>
-        <button
-          type="button"
-          class="au-c-close au-c-close--large"
-          {{on "click" this.toggleAddSubSigns}}
-        >
-          <AuIcon @icon="cross" @size="large" />
-          <span class="au-u-hidden-visually">
-            {{t "utility.close"}}
-          </span>
-        </button>
-      </AuToolbar>
-      <div class="au-c-data-table__search">
-        <AuInput
-          @value={{this.subSignCodeFilter}}
-          placeholder={{t "sub-sign.filter.code"}}
-          @icon="search"
-          @iconAlignment="right"
-          {{on "input" this.setSubSignCodeFilter}}
-          {{auto-focus}}
-        />
-      </div>
-    </div>
-    <div class="au-c-body-container au-c-body-container--scroll">
-      {{#each (sort-by-road-sign-code this.subSigns) as |subSign|}}
-        <SidebarRoadSign
-          @imageUrl={{subSign.image}}
-          @code={{subSign.roadSignConceptCode}}
-          @meaning={{subSign.meaning}}
-          @onAdd={{perform this.addSubSign subSign}}
-          @addText={{t "sub-sign.crud.add-one"}}
-          class="au-c-action-sidebar__item"
-        />
-      {{/each}}
-    </div>
-  </div>
-</div>
-{{/if}}
-{{#if this.isAddingMainSigns}}
-  <div class="au-o-grid__item au-u-2-5@medium">
-    <div
-      class="au-c-body-container au-c-action-sidebar"
-      {{auto-focus ".au-c-action-sidebar__header"}}
-    >
-      <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
-        <AuToolbar class="au-u-margin-bottom-small" as |Group|>
-          <Group>
-            <AuHeading @level="2" @skin="3">
-              {{t "main-sign.crud.add"}}
-            </AuHeading>
-          </Group>
-          <button
-            type="button"
-            class="au-c-close au-c-close--large"
-            {{on "click" this.toggleAddMainSigns}}
-          >
-            <AuIcon @icon="cross" @size="large" />
-            <span class="au-u-hidden-visually">
-              {{t "utility.close"}}
-            </span>
-          </button>
-        </AuToolbar>
-        <AuContent @skin="small">
-          <AuLabel>
-            {{t "main-sign.attr.category"}}
-          </AuLabel>
-          <PowerSelect
-            @allowClear={{true}}
-            @searchEnabled={{true}}
-            @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
-            @loadingMessage={{t "utility.loading"}}
-            @searchField="label"
-            @options={{@model.categories}}
-            @selected={{this.category}}
-            @onChange={{perform this.handleCategorySelection}} as |category|
-          >
-            {{category.label}}
-          </PowerSelect>
-        </AuContent>
-      </div>
-      <div class="au-c-body-container au-c-body-container--scroll">
-        {{#if this.category}}
-          {{#each
-            (sort-by-road-sign-code
-              this.categoryRoadSigns
-            ) as |mainSignByCategory|
-          }}
-            <SidebarRoadSign
-              @imageUrl={{mainSignByCategory.image}}
-              @code={{mainSignByCategory.roadSignConceptCode}}
-              @meaning={{mainSignByCategory.meaning}}
-              @onAdd={{perform this.addMainSign mainSignByCategory}}
-              @addText={{t "main-sign.crud.add-one"}}
-              class="au-c-action-sidebar__item"
-            />
-          {{/each}}
-        {{/if}}
-      </div>
-    </div>
-  </div>
 {{/if}}

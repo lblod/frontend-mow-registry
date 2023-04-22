@@ -60,6 +60,7 @@ image-input:
 road-sign-concept:
   name: Verkeersborden
   details: Verkeersbord details
+  back-to-overview: Terug naar Verkeersbordoverzicht
   attr:
     image-header: Afbeelding
     image-url: Afbeelding URL

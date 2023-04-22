@@ -59,6 +59,7 @@ image-input:
 road-sign-concept:
   name: Road Signs
   details: Road Sign details
+  back-to-overview: Back to road sign overview
   attr:
     image-header: Image
     image-url: Image URL

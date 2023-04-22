@@ -37,7 +37,6 @@
     {{/if}}
   </:header>
   <:body as |roadSignConcept|>
-
     <td>
       {{roadSignConcept.roadSignConceptCode}}
     </td>
@@ -69,8 +68,10 @@
         {{t "utility.no"}}
       {{/if}}
     </td>
-    <td>
-      {{yield roadSignConcept to='rowAction'}}
-    </td>
+    {{#if (has-block 'rowAction')}}    
+      <td>
+        {{yield roadSignConcept to='rowAction'}}
+      </td>
+    {{/if}}
   </:body>
 </ReactiveTable>

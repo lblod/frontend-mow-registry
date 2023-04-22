@@ -19,7 +19,7 @@ export default class RoadSignConceptsRoadSignConceptRelatedLightsController exte
   pageSize = 30;
 
   get relatedIds() {
-    return new Set([...this.model.relatedConcepts.map((sign) => sign.id)]);
+    return new Set([...this.model.relatedConcepts.map((light) => light.id)]);
   }
 
   get mainConcept() {
