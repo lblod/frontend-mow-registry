@@ -24,6 +24,9 @@ Router.map(function () {
   this.route('road-marking-concepts', function () {
     this.route('road-marking-concept', { path: '/:id' }, function () {
       this.route('instruction', { path: '/instruction/:instruction_id' });
+      this.route('related-signs');
+      this.route('related-markings');
+      this.route('related-lights');
     });
     this.route('new');
     this.route('edit', { path: '/edit/:id' });
@@ -31,6 +34,9 @@ Router.map(function () {
   this.route('traffic-light-concepts', function () {
     this.route('traffic-light-concept', { path: '/:id' }, function () {
       this.route('instruction', { path: '/instruction/:instruction_id' });
+      this.route('related-signs');
+      this.route('related-markings');
+      this.route('related-lights');
     });
     this.route('new');
     this.route('edit', { path: '/edit/:id' });
@@ -39,6 +45,9 @@ Router.map(function () {
     this.route('edit', { path: '/edit/:id' });
     this.route('new');
     this.route('traffic-measure-concept', { path: '/:id' });
+    this.route('related-signs');
+    this.route('related-markings');
+    this.route('related-lights');
   });
 
   this.route('instruction', function () {
