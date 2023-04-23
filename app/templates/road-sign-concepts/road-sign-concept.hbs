@@ -57,7 +57,9 @@
         <AuLabel>
           {{t "utility.zonality"}}
         </AuLabel>
-        {{(zonality-label @model.mainConcept)}}
+        <p>
+          {{zonality-label @model.mainConcept}}
+        </p>
       </li>
       <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
         <ContentCheck @concept={{@model.mainConcept}} />

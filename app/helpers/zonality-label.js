@@ -8,8 +8,9 @@ export default class ZonalityLabel extends Helper {
     if (typeof signConceptOrLabel === 'string') {
       label = signConceptOrLabel;
     } else {
-      label = signConceptOrLabel?.zonality?.label;
+      label = signConceptOrLabel.get('zonality')?.get('label');
     }
+
     if (label) {
       return this.intl.t('utility.' + label);
     } else {
