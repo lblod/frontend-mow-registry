@@ -1,3 +1,3 @@
 import InstructionRoute from 'mow-registry/routes/concept-helpers/instructions-route';
 
-export default class RoadSignConceptsRoadSignConceptInstructionRoute extends InstructionRoute {}
+export default class RoadMarkingConceptsRoadMarkingConceptInstructionRoute extends InstructionRoute {}
