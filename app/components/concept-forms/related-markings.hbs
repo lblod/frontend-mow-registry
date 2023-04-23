@@ -1,4 +1,16 @@
-{{page-title "RelatedMarkings"}}
+{{#let (t 'related-road-marking.crud.add') as |pageTitle|}}
+  {{page-title pageTitle}}
+  <BreadcrumbsItem as |linkClass|>
+    <LinkTo
+      @route={{concat @parentRoute ".related-markings"}}
+      @model={{@model.mainConcept.id}}
+      class={{linkClass}}
+    >
+      {{pageTitle}}
+    </LinkTo>
+  </BreadcrumbsItem>
+{{/let}}
+
 <SearchTables::RoadMarking
   @content={{this.relatedConcepts}}
 >

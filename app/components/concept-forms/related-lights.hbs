@@ -1,4 +1,15 @@
-{{page-title "RelatedLights"}}
+{{#let (t 'related-traffic-light.crud.add') as |pageTitle|}}
+  {{page-title pageTitle}}
+  <BreadcrumbsItem as |linkClass|>
+    <LinkTo
+      @route={{concat @parentRoute ".related-lights"}}
+      @model={{@model.mainConcept.id}}
+      class={{linkClass}}
+    >
+      {{pageTitle}}
+    </LinkTo>
+  </BreadcrumbsItem>
+{{/let}}
 <SearchTables::TrafficLight
   @content={{this.relatedConcepts}}
 >
