@@ -19,9 +19,8 @@ export default class RoadSignConceptsRoadSignConceptSubsignsRoute extends Route 
     }
     let categories = [];
     if (isSubSign) {
-      // todo: at page refresh this does not return all categories (even though store has them all)
       categories = await this.store
-        .findAll('road-sign-category')
+        .query('road-sign-category', {})
         .then((categories) => {
           return categories
             .map((cat) => cat.label)
