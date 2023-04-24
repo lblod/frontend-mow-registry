@@ -1,3 +1,13 @@
-import RelatedMarkingsRoute from 'mow-registry/routes/concept-helpers/related-markings-route';
+import Route from '@ember/routing/route';
+import { ModelFrom } from 'mow-registry/utils/type-utils';
+import RoadSignConceptsRoadSignConceptRoute from 'mow-registry/routes/road-sign-concepts/road-sign-concept';
 
-export default class RoadSignConceptsRoadSignConceptRelatedMarkingsRoute extends RelatedMarkingsRoute {}
+export default class RoadSignConceptsRoadSignConceptRelatedMarkingsRoute extends Route {
+  async model() {
+    const { mainConcept } = this.modelFor(
+      'road-sign-concepts.road-sign-concept'
+    ) as ModelFrom<RoadSignConceptsRoadSignConceptRoute>;
+    const related = await mainConcept.relatedRoadMarkingConcepts;
+    return { mainConcept, related };
+  }
+}

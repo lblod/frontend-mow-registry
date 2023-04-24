@@ -64,7 +64,7 @@ export default class RoadSignConceptsRoadSignConceptSubsignsController extends C
     }
   );
   potentialConcepts = trackedTask(this, this.loadPotentialConcepts, () => {
-    let categories: [string];
+    let categories: (string | undefined)[];
     if (this.selectedCategory === '') {
       categories = this.model.categories;
     } else {

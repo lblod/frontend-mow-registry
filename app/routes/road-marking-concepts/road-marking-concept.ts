@@ -6,7 +6,7 @@ interface Params {
   id: string;
 }
 
-export default class RoadSignConceptsRoadSignConceptRoute extends Route {
+export default class RoadMarkingConceptsRoadMarkingConceptRoute extends Route {
   @service declare store: Store;
 
   async model(params: Params) {
