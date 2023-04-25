@@ -15,11 +15,6 @@ export default class RoadMarkingConceptsRoadMarkingConceptRoute extends Route {
       params.id
     );
 
-    mainConcept.relatedRoadMarkingConcepts = [];
-    mainConcept.relatedRoadMarkingConcepts
-      .addObjects(await mainConcept.relatedToRoadMarkingConcepts)
-      .addObjects(await mainConcept.relatedFromRoadMarkingConcepts);
-
     return { mainConcept };
   }
 }

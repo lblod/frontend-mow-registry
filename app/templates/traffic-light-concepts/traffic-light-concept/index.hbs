@@ -1,1 +1,4 @@
-<ConceptIndexPage @model={{@model}} />
+<ConceptIndexPage @concept={{@model.mainConcept}}
+                  @relatedSigns={{@model.relatedSigns}}
+                  @relatedMarkings={{@model.relatedMarkings}}
+                  @relatedLights={{@model.relatedLights}} />

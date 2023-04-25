@@ -15,11 +15,6 @@ export default class RoadSignConceptsRoadSignConceptRoute extends Route {
       params.id
     );
 
-    mainConcept.relatedRoadSignConcepts = [];
-    mainConcept.relatedRoadSignConcepts
-      .addObjects(await mainConcept.relatedToRoadSignConcepts)
-      .addObjects(await mainConcept.relatedFromRoadSignConcepts);
-
     const signCategories = await mainConcept.categories;
     const isSubSign = signCategories.any(
       (category) => category.label === 'Onderbord'

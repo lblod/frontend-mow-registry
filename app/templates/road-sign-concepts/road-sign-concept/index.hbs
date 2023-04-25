@@ -1,4 +1,8 @@
-<ConceptIndexPage @model={{@model}}>
+<ConceptIndexPage @concept={{@model.mainConcept}}
+                  @relatedSigns={{@model.relatedSigns}}
+                  @relatedMarkings={{@model.relatedMarkings}}
+                  @relatedLights={{@model.relatedLights}}
+>
   <:belowInstructions>
     {{#if this.isSubSign}}
       <SearchTables::RoadSign @content={{sort-by-road-sign-code (await @model.mainConcept.mainSigns)}}>
@@ -15,7 +19,7 @@
               </AuLink>
             </Group>
           </AuToolbar>
-        </:menue
+        </:menu>
       </SearchTables::RoadSign>
     {{else}}
       <SearchTables::RoadSign @content={{sort-by-road-sign-code (await @model.mainConcept.subSigns)}}>

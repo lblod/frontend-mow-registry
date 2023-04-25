@@ -2,7 +2,7 @@
   class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables"
 >
   <InstructionsTable
-    @templates={{this.model.mainConcept.templates}}
+    @templates={{this.concept.templates}}
     @removeTemplate={{perform this.removeTemplate}}
   >
     <:menu>
@@ -56,8 +56,7 @@
     {{yield to='belowInstructions'}}
   {{/if}}
   <SearchTables::RoadSign
-    @content={{sort-by-road-sign-code
-    (await this.model.mainConcept.relatedRoadSignConcepts)}}
+    @content={{sort-by-road-sign-code @relatedSigns}}
   >
     <:menu>
       <AuToolbar class="au-o-box" as |Group|>
@@ -76,8 +75,7 @@
 
   </SearchTables::RoadSign>
   <SearchTables::RoadMarking
-    @content={{sort-by-road-marking-code
-    (await this.model.mainConcept.relatedRoadMarkingConcepts)}}
+    @content={{sort-by-road-marking-code @relatedMarkings}}
   >
     <:menu>
       <AuToolbar class="au-o-box" as |Group|>
@@ -95,8 +93,7 @@
     </:menu>
   </SearchTables::RoadMarking>
   <SearchTables::TrafficLight
-    @content={{sort-by-traffic-light-code
-    (await this.model.mainConcept.relatedTrafficLightConcepts)}}
+    @content={{sort-by-traffic-light-code @relatedLights}}
   >
     <:menu>
       <AuToolbar class="au-o-box" as |Group|>
