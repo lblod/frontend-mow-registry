@@ -5,7 +5,7 @@ import RoadSignConceptsRoadSignConceptRoute from '../road-sign-concept';
 
 export default class RoadSignConceptsRoadSignConceptIndexRoute extends Route {
   async model() {
-    const { mainConcept } = this.modelFor(
+    const { mainConcept, isSubSign } = this.modelFor(
       'road-sign-concepts.road-sign-concept'
     ) as ModelFrom<RoadSignConceptsRoadSignConceptRoute>;
     const relatedToConcepts = await mainConcept.relatedToRoadSignConcepts;
@@ -19,6 +19,7 @@ export default class RoadSignConceptsRoadSignConceptIndexRoute extends Route {
       relatedSigns,
       relatedMarkings: mainConcept.relatedRoadMarkingConcepts,
       relatedLights: mainConcept.relatedTrafficLightConcepts,
+      isSubSign,
     });
   }
 }

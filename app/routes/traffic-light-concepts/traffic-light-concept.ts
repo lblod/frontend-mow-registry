@@ -6,7 +6,7 @@ interface Params {
   id: string;
 }
 
-export default class TrafficLightConceptsTrafficlightConceptRoute extends Route {
+export default class TrafficLightConceptsTrafficLightConceptRoute extends Route {
   @service declare store: Store;
 
   async model(params: Params) {
@@ -15,10 +15,6 @@ export default class TrafficLightConceptsTrafficlightConceptRoute extends Route 
       params.id
     );
 
-    mainConcept.relatedTrafficLightConcepts = [];
-    mainConcept.relatedTrafficLightConcepts
-      .addObjects(await mainConcept.relatedToTrafficLightConcepts)
-      .addObjects(await mainConcept.relatedFromTrafficLightConcepts);
     return { mainConcept };
   }
 }
