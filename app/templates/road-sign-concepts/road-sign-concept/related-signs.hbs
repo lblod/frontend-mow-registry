@@ -1,1 +1,6 @@
-<ConceptForms::RelatedSigns @model={{@model}} @parentRoute="road-sign-concepts.road-sign-concept"/>
+<ConceptForms::RelatedSigns
+  @mainConcept={{@model.mainConcept}}
+  @relatedConcepts={{@model.related}}
+  @addRelated={{@model.addRelated}}
+  @removeRelated={{@model.removeRelated}}
+  @parentRoute="road-sign-concepts.road-sign-concept" />

@@ -3,7 +3,7 @@
   <BreadcrumbsItem as |linkClass|>
     <LinkTo
       @route={{concat @parentRoute ".related-signs"}}
-      @model={{@model.mainConcept.id}}
+      @model={{this.mainConcept.id}}
       class={{linkClass}}
     >
       {{pageTitle}}
@@ -19,7 +19,7 @@
       @icon="bin"
       @skin="secondary"
       @hideText={{true}}
-      {{on "click" (fn this.removeRelated concept)}} >
+      {{on "click" (fn @removeRelated concept)}} >
       {{t "related-road-sign.crud.delete"}}
     </AuButton>
   </:rowAction>
@@ -39,7 +39,7 @@
         @disabled={{this.isRelated concept}}
         @icon="add"
         @hideText={{true}}
-        {{on "click" (fn this.addRelated concept)}} >
+        {{on "click" (fn @addRelated concept)}} >
         {{t "related-road-sign.crud.add-one"}}
       </AuButton>
     </:rowAction>

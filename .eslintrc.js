@@ -10,16 +10,20 @@ module.exports = {
       legacyDecorators: true,
     },
   },
-  plugins: ['ember'],
+  plugins: ['ember', '@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
     'plugin:prettier/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
   ],
   env: {
     browser: true,
   },
-  rules: {},
+  rules: {
+    semi: 'error',
+    'no-console': 'off',
+  },
   overrides: [
     // node files
     {
@@ -53,6 +57,16 @@ module.exports = {
       // test files
       files: ['tests/**/*-test.{js,ts}'],
       extends: ['plugin:qunit/recommended'],
+    },
+    {
+      files: ['**/*.ts', '**/*.tsx'],
+      parserOptions: {
+        project: ['./tsconfig.json'],
+      },
+      rules: {
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': 'error',
+      },
     },
   ],
 };

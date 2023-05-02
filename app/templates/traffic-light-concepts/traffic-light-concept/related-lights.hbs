@@ -1,1 +1,6 @@
-<ConceptForms::RelatedLights @model={{@model}} @parentRoute="traffic-light-concepts.traffic-light-concept"/>
+<ConceptForms::RelatedLights
+  @mainConcept={{@model.mainConcept}}
+  @relatedConcepts={{this.related}}
+  @addRelated={{@model.addRelated}}
+  @removeRelated={{@model.removeRelated}}
+  @parentRoute="traffic-light-concepts.traffic-light-concept" />

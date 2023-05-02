@@ -15,7 +15,7 @@ export async function loadInstructions(
   id: string
 ) {
   if (id === 'new') {
-    let template = store.createRecord('template');
+    const template = store.createRecord('template');
     template.value = '';
     concept.templates.pushObject(template);
     return {

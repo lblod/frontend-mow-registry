@@ -20,7 +20,7 @@ export default class ConceptIndexPageComponent extends Component<Args> {
   }
 
   removeTemplate = task(async (template) => {
-    let templates = await this.concept.templates;
+    const templates = await this.concept.templates;
 
     templates.removeObject(template);
 

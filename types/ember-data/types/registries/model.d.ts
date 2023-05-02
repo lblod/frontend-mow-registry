@@ -61,4 +61,4 @@ export default interface ModelRegistry {
   user: UserModel;
 
   [key: string]: any;
-}
+};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -5,68 +5,49 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
+import ConceptModel from 'mow-registry/models/concept';
+import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
+import Store from '@ember-data/store';
+import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 
-export default class ConceptFormsRelatedSignsComponent extends Component {
-  @service store;
+interface Args {
+  mainConcept: ConceptModel;
+  relatedConcepts: TrafficLightConceptModel[];
+  addRelated: (concept: TrafficLightConceptModel) => void;
+  removeRelated: (concept: TrafficLightConceptModel) => void;
+}
+
+export default class ConceptFormsRelatedSignsComponent extends Component<Args> {
+  @service declare store: Store;
   @tracked
   page = 0;
   @tracked
   sort = '';
   pageSize = 30;
 
-  get model() {
-    return this.args.model;
+  get mainConcept() {
+    return this.args.mainConcept;
   }
 
   get relatedIds() {
     return new Set([...this.relatedConcepts.map((concept) => concept.id)]);
   }
 
-  get relations() {
-    if (this.model.related) {
-      return [this.model.related];
-    } else {
-      return [this.model.relatedFrom, this.model.relatedTo];
-    }
-  }
-
   get relatedConcepts() {
-    let rel = this.relations;
-    if (rel.length === 1) {
-      return rel[0];
-    } else {
-      return [...rel[0], ...rel[1]];
-    }
+    return this.args.relatedConcepts;
   }
 
   @action
-  onPageChange(newPage) {
+  onPageChange(newPage: number) {
     this.page = newPage;
   }
 
   @action
-  onSortChange(newSort) {
+  onSortChange(newSort: string) {
     this.sort = newSort;
   }
 
-  @action
-  async addRelated(concept) {
-    for (const rel of this.relations) {
-      rel.pushObject(concept);
-    }
-    await this.model.mainConcept.save();
-  }
-
-  @action
-  async removeRelated(concept) {
-    for (const rel of this.relations) {
-      rel.removeObject(concept);
-    }
-
-    await this.model.mainConcept.save();
-  }
-
-  isRelated = (concept) => {
+  isRelated = (concept: RoadSignConceptModel) => {
     return this.relatedIds.has(concept.id);
   };
   loadPotentialConcepts = restartableTask(async ({ page, sort, pageSize }) => {

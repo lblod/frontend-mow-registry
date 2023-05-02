@@ -3,7 +3,7 @@
   <BreadcrumbsItem as |linkClass|>
     <LinkTo
       @route={{concat @parentRoute ".related-lights"}}
-      @model={{@model.mainConcept.id}}
+      @model={{this.mainConcept.id}}
       class={{linkClass}}
     >
       {{pageTitle}}
@@ -18,7 +18,7 @@
       @icon="bin"
       @skin="secondary"
       @hideText={{true}}
-      {{on "click" (fn this.removeRelated concept)}}>
+      {{on "click" (fn @removeRelated concept)}}>
 
       {{t "related-traffic-light.crud.delete"}}
     </AuButton>
@@ -40,7 +40,7 @@
         @disabled={{this.isRelated concept}}
         @icon="add"
         @hideText={{true}}
-        {{on "click" (fn this.addRelated concept)}}
+        {{on "click" (fn @addRelated concept)}}
       >
         {{t "related-traffic-light.crud.add-one"}}
       </AuButton>
