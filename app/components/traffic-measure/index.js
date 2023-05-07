@@ -432,5 +432,6 @@ export default class TrafficMeasureIndexComponent extends Component {
       mapping.rollbackAttributes();
     }
     this.trafficMeasureConcept.rollbackAttributes();
+    await this.trafficMeasureConcept.belongsTo('zonality').reload();
   }
 }
