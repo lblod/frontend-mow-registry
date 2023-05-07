@@ -8,7 +8,7 @@ export default helper(function sortByTrafficLightCode([trafficLightConcepts]) {
     return [];
   }
 
-  return [...trafficLightConcepts.toArray()].sort((a, b) => {
+  return [...trafficLightConcepts.slice()].sort((a, b) => {
     return a.trafficLightConceptCode.localeCompare(
       b.trafficLightConceptCode,
       undefined,

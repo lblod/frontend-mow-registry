@@ -34,7 +34,9 @@ export default class AddInstructionComponent extends Component {
       this.new = false;
       this.template = await this.args.editedTemplate;
       this.mappings = await this.template.mappings;
-      this.mappings.sortBy('id');
+      this.mappings = this.mappings
+        .slice()
+        .sort((a, b) => (a.id < b.id ? -1 : 1));
     } else {
       this.new = true;
       this.template = this.store.createRecord('template');
@@ -49,7 +51,7 @@ export default class AddInstructionComponent extends Component {
   async updateMappingType(mapping, type) {
     mapping.type = type;
     if (type === 'codelist' && !(await mapping.codeList)) {
-      mapping.codeList = this.codeLists.firstObject;
+      mapping.codeList = this.codeLists[0];
     } else {
       mapping.codeList = null;
     }

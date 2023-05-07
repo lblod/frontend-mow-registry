@@ -1,127 +1,66 @@
-<AuDataTable
+<SearchTables::RoadSign
   @content={{this.model.roadSignConcepts}}
-  @fields="Image Meaning Code"
-  @noDataMessage={{t "road-sign-concept.crud.no-data"}}
-  @size={{this.size}}
+  @pageSize={{this.size}}
   @page={{this.page}}
-  @sort={{this.sort}} as |s|
+  @sort={{this.sort}}
+  @onPageChange={{this.onPageChange}}
+  @onSortChange={{this.onSortChange}}
 >
-  <s.menu as |menu|>
-    <menu.general>
-      <AuToolbar class="au-o-box">
-        <AuToolbarGroup>
-          <AuHeading @skin="2">
-            {{t "road-sign-concept.name"}}
-          </AuHeading>
-        </AuToolbarGroup>
-        <AuToolbarGroup class="au-c-toolbar__group--center">
-          {{!-- Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input--}}
-          <div class="au-c-data-table__search road-sign-code-search">
-            <AuInput
-              @value={{this.code}}
-              placeholder={{t "road-sign-concept.crud.code-filter"}}
-              @icon="search"
-              @iconAlignment="right"
-              {{on "input" (perform this.updateSearchFilterTask "code")}}
-            />
-          </div>
-          <div class="au-c-data-table__search road-sign-meaning-search">
-            <AuInput
-              @value={{this.meaning}}
-              placeholder={{t "road-sign-concept.crud.meaning-filter"}}
-              @icon="search"
-              @iconAlignment="right"
-              {{on "input" (perform this.updateSearchFilterTask "meaning")}}
-            />
-          </div>
-          <label>
-            <span class="au-u-hidden-visually">{{t "road-sign-concept.crud.category-filter"}}</span>
-            <PowerSelect
-              @allowClear={{true}}
-              @options={{this.model.categories}}
-              @selected={{this.selectedCategory}}
-              @placeholder={{t "road-sign-concept.crud.category-filter"}}
-              @onChange={{this.updateCategoryFilter}}
-              @triggerClass="category-select"
-              as |category|
-            >
-              {{category.label}}
-            </PowerSelect>
-          </label>
-          <LinkTo class="au-c-button" @route="road-sign-concepts.new">
-            {{t "road-sign-concept.crud.new"}}
-          </LinkTo>
-        </AuToolbarGroup>
-      </AuToolbar>
-    </menu.general>
-  </s.menu>
-  <s.content as |c|>
-    <c.header>
-      <AuDataTableThSortable
-        @field="roadSignConceptCode"
-        @currentSorting={{this.sort}}
-        @label={{t "road-sign-concept.attr.code"}}
-      />
-      <th>
-        {{t "road-sign-concept.attr.image-header"}}
-      </th>
-      <th>
-        {{t "road-sign-concept.attr.meaning"}}
-      </th>
-      <AuDataTableThSortable
-        @field="categories.label"
-        @currentSorting={{this.sort}}
-        @label={{t "road-sign-concept.attr.categories"}}
-      />
-      <th>
-        {{t "utility.zonality"}}
-      </th>
-      <th>
-        {{t "road-marking-concept.attr.valid"}}
-      </th>
-      <th></th>
-    </c.header>
-    <c.body as |roadSignConcept|>
-      <td>
-        {{roadSignConcept.roadSignConceptCode}}
-      </td>
-      <td>
-        <img class="au-c-thumbnail" src={{roadSignConcept.image}} alt="" role="presentation" />
-      </td>
-      <td>
-        {{roadSignConcept.meaning}}
-      </td>
-      <td>
-        {{#each roadSignConcept.categories as |category index|}}
-          {{#if (gt index 0)}}
-            <br>
-          {{/if}}
-          {{category.label}}
-        {{/each}}
-      </td>
-      <td>
-        {{#if roadSignConcept.zonality}}
-          {{t (concat "utility." roadSignConcept.zonality.label)}}
-        {{else}}
-          {{t "utility.nonZonal"}}
-        {{/if}}
-      </td>
-      <td>
-        {{#if roadSignConcept.valid}}
-          {{t "utility.yes"}}
-        {{else}}
-          {{t "utility.no"}}
-        {{/if}}
-      </td>
-      <td>
-        <LinkTo
-          class="au-c-link"
-          @route="road-sign-concepts.road-sign-concept"
-          @model={{roadSignConcept.id}}
-        >
-          {{t "utility.view"}}
+  <:menu>
+    <AuToolbar class="au-o-box" as |Group|>
+      <Group>
+        <AuHeading @skin="2">
+          {{t "road-sign-concept.name"}}
+        </AuHeading>
+      </Group>
+      <Group class="au-c-toolbar__group--center">
+        {{!-- Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input--}}
+        <div class="au-c-data-table__search road-sign-code-search">
+          <AuInput
+            @value={{this.code}}
+            placeholder={{t "road-sign-concept.crud.code-filter"}}
+            @icon="search"
+            @iconAlignment="right"
+            {{on "input" (perform this.updateSearchFilterTask "code")}}
+          />
+        </div>
+        <div class="au-c-data-table__search road-sign-meaning-search">
+          <AuInput
+            @value={{this.meaning}}
+            placeholder={{t "road-sign-concept.crud.meaning-filter"}}
+            @icon="search"
+            @iconAlignment="right"
+            {{on "input" (perform this.updateSearchFilterTask "meaning")}}
+          />
+        </div>
+        <label>
+          <span class="au-u-hidden-visually">{{t "road-sign-concept.crud.category-filter"}}</span>
+          <PowerSelect
+            @allowClear={{true}}
+            @options={{this.model.categories}}
+            @selected={{this.selectedCategory}}
+            @placeholder={{t "road-sign-concept.crud.category-filter"}}
+            @loadingMessage={{t "utility.loading"}}
+            @onChange={{this.updateCategoryFilter}}
+            @triggerClass="category-select"
+            as |category|
+          >
+            {{category.label}}
+          </PowerSelect>
+        </label>
+        <LinkTo class="au-c-button" @route="road-sign-concepts.new">
+          {{t "road-sign-concept.crud.new"}}
         </LinkTo>
-      </td>
-    </c.body>
-  </s.content>
-</AuDataTable>
+      </Group>
+    </AuToolbar>
+  </:menu>
+  <:rowAction as |roadSignConcept|>
+    <LinkTo
+      class="au-c-link"
+      @route="road-sign-concepts.road-sign-concept"
+      @model={{roadSignConcept.id}}
+    >
+      {{t "utility.view"}}
+    </LinkTo>
+  </:rowAction>
+</SearchTables::RoadSign>

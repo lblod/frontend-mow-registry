@@ -1,7 +1,7 @@
 <div class="au-o-grid au-o-grid--tiny">
   <div class="au-o-grid__item au-u-1-2@medium">
     <PowerSelect
-      @loadingMessage={{t "traffic-measure-concept.crud.loading"}}
+      @loadingMessage={{t "utility.loading"}}
       @noMatchesMessage={{t "traffic-measure-concept.crud.no-matches"}}
       @placeholder={{t "traffic-measure-concept.crud.type-to-search"}}
       @searchEnabled={{true}}
@@ -26,6 +26,5 @@
     <AuButton @width="block" {{on "click" (fn this.addSign this.selected)}} class="au-u-margin-bottom-small">
       {{t "traffic-measure-concept.attr.add-sign"}}
     </AuButton>
-    <AuHelpText @error={{true}}>{{@error}}</AuHelpText>
   </div>
 </div>

@@ -6,17 +6,29 @@ export default class TrafficLightConceptModel extends ConceptModel {
   @attr meaning;
   @attr definition;
   @attr trafficLightConceptCode;
-  @belongsTo('traffic-light-concept-status-code') status;
+  @belongsTo('traffic-light-concept-status-code', {
+    inverse: 'trafficLightConcepts',
+    async: true,
+  })
+  status;
   @hasMany('traffic-light-concept', {
     inverse: 'relatedFromTrafficLightConcepts',
+    async: true,
   })
   relatedToTrafficLightConcepts;
   @hasMany('traffic-light-concept', {
     inverse: 'relatedToTrafficLightConcepts',
+    async: true,
   })
   relatedFromTrafficLightConcepts;
-  @hasMany('road-sign-concept', { inverse: 'relatedTrafficLightConcepts' })
+  @hasMany('road-sign-concept', {
+    inverse: 'relatedTrafficLightConcepts',
+    async: true,
+  })
   relatedRoadSignConcepts;
-  @hasMany('road-marking-concept', { inverse: 'relatedTrafficLightConcepts' })
+  @hasMany('road-marking-concept', {
+    inverse: 'relatedTrafficLightConcepts',
+    async: true,
+  })
   relatedRoadMarkingConcepts;
 }

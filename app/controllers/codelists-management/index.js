@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-
+import { action } from '@ember/object';
 export default class CodelistsManagementIndexController extends Controller {
   queryParams = ['page', 'size', 'label', 'sort'];
 
@@ -18,6 +18,17 @@ export default class CodelistsManagementIndexController extends Controller {
       this.resetPagination();
     }
   );
+
+  /**
+   * @param {number} newPage
+   */
+  @action onPageChange(newPage) {
+    this.page = newPage;
+  }
+  /** @param {string} newSort */
+  @action onSortChange(newSort) {
+    this.sort = newSort;
+  }
 
   resetPagination() {
     this.page = 0;

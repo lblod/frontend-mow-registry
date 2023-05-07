@@ -1,59 +1,46 @@
-import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import TrafficLightConceptValidations from 'mow-registry/validations/traffic-light-concept';
+import ImageUploadHandlerComponent from './image-upload-handler';
 
-export default class TrafficLightFormComponent extends Component {
+export default class TrafficLightFormComponent extends ImageUploadHandlerComponent {
   @service router;
-  @service fileService;
 
   TrafficLightConceptValidations = TrafficLightConceptValidations;
-  file;
 
   get isSaving() {
     return this.editTrafficLightConceptTask.isRunning;
   }
 
   @action
-  setImageUrl(trafficLightConcept, event) {
-    trafficLightConcept.image = event.target.value;
-    this.file = null;
+  setTrafficLightConceptValue(changeset, attributeName, event) {
+    changeset[attributeName] = event.target.value;
   }
 
   @action
-  setImageUpload(trafficLightConcept, event) {
-    this.file = event.target.files[0];
-    trafficLightConcept.image = this.file.name;
+  setTrafficLightConceptCategory(changeset, selection) {
+    changeset.categories = selection;
   }
 
-  @action
-  setTrafficLightConceptValue(trafficLightConcept, attributeName, event) {
-    trafficLightConcept[attributeName] = event.target.value;
-  }
-
-  @action
-  setTrafficLightConceptCategory(trafficLightConcept, selection) {
-    trafficLightConcept.categories = selection;
-  }
-
-  editTrafficLightConceptTask = dropTask(async (trafficLightConcept, event) => {
+  editTrafficLightConceptTask = dropTask(async (changeset, event) => {
     event.preventDefault();
 
-    if (this.file) {
-      let fileResponse = await this.fileService.upload(this.file);
-      trafficLightConcept.image = fileResponse.downloadLink;
-    }
+    await changeset.validate();
 
-    await trafficLightConcept.validate();
-
-    if (trafficLightConcept.isValid) {
-      await trafficLightConcept.save();
+    if (changeset.isValid) {
+      await this.saveImage(changeset);
+      await changeset.save();
 
       this.router.transitionTo(
         'traffic-light-concepts.traffic-light-concept',
-        trafficLightConcept.id
+        changeset.id
       );
     }
   });
+
+  async willDestroy() {
+    super.willDestroy(...arguments);
+    this.args.trafficLightConcept.rollbackAttributes();
+  }
 }

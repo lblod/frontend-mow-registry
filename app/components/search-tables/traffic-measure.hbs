@@ -1,0 +1,63 @@
+<ReactiveTable
+  @content={{@content}}
+  @noDataMessage={{t "traffic-measure-concept.crud.no-data"}}
+  @page={{@page}}
+  @sort={{@sort}}
+  @pageSize={{@pageSize}}
+  @onPageChange={{@onPageChange}}
+  @onSortChange={{@onSortChange}}
+>
+  <:menu>
+    {{yield to="menu"}}
+  </:menu>
+  <:header as |header|>
+    <header.Sortable
+      @field="label"
+      @currentSorting={{this.sort}}
+      @label="Name"
+    />
+    <th>
+      {{t "traffic-measure-concept.attr.sign"}}
+    </th>
+    <th>
+      {{t "traffic-measure-concept.attr.template"}}
+    </th>
+    <th>
+      {{t "utility.zonality"}}
+    </th>
+    <th>
+      {{t "road-marking-concept.attr.valid"}}
+    </th>
+    <th></th>
+  </:header>
+  <:body as |trafficMeasureConcept|>
+    <td>
+      {{trafficMeasureConcept.label}}
+    </td>
+    <td>
+      {{#each trafficMeasureConcept.orderedRelations as |relation|}}
+        <img src={{relation.concept.image}} alt="" role="presentation" height="50">
+      {{/each}}
+    </td>
+    <td>
+      <TrafficMeasureTemplate @concept={{trafficMeasureConcept}} />
+    </td>
+    <td>
+      {{#if trafficMeasureConcept.zonality}}
+        {{t (concat "utility." trafficMeasureConcept.zonality.label)}}
+      {{else}}
+        {{t "utility.nonZonal"}}
+      {{/if}}
+    </td>
+    <td>
+      {{#if trafficMeasureConcept.valid}}
+        {{t "utility.yes"}}
+      {{else}}
+        {{t "utility.no"}}
+      {{/if}}
+    </td>
+    <td>
+      {{yield trafficMeasureConcept to='rowAction'}}
+    </td>
+  </:body>
+</ReactiveTable>

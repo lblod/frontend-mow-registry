@@ -15,13 +15,11 @@ export default class TrafficMeasureIndexComponent extends Component {
   @service('codelists') codeListService;
 
   @tracked codeLists;
-  @tracked new;
   @tracked trafficMeasureConcept;
   @tracked signs = [];
   @tracked mappings = [];
   @tracked template;
   @tracked searchString;
-  @tracked signError;
   @tracked preview;
   @tracked selectedType;
   @tracked instructions = [];
@@ -62,8 +60,11 @@ export default class TrafficMeasureIndexComponent extends Component {
   @action
   async didInsert() {
     this.trafficMeasureConcept = this.args.trafficMeasureConcept;
-    this.new = this.args.new;
     this.fetchData.perform();
+  }
+
+  get new() {
+    return this.trafficMeasureConcept?.isNew;
   }
 
   get previewHtml() {
@@ -100,10 +101,11 @@ export default class TrafficMeasureIndexComponent extends Component {
 
     // We assume that a measure has only one template
     const templates = await this.trafficMeasureConcept.templates;
-    this.template = await templates.firstObject;
+    this.template = await templates[0];
     this.mappings = await this.template.mappings;
-
-    this.mappings.sortBy('id');
+    this.mappings = this.mappings
+      .slice()
+      .sort((a, b) => (a.id < b.id ? -1 : 1));
 
     const relations = await this.trafficMeasureConcept.orderedRelations;
 
@@ -135,7 +137,6 @@ export default class TrafficMeasureIndexComponent extends Component {
       }
     } else if (this.instructions.length == 0) {
       if (this.inputTypes.indexOf(this.instructionType) != -1) {
-        console.log('FETCH DATA');
         this.inputTypes.splice(
           this.inputTypes.indexOf(this.instructionType),
           1
@@ -198,10 +199,10 @@ export default class TrafficMeasureIndexComponent extends Component {
   updateMappingType(mapping, selectedType) {
     mapping.type = selectedType.value;
     if (mapping.type === 'codelist') {
-      mapping.codeList = this.codeLists.firstObject;
+      mapping.codeList = this.codeLists[0];
       mapping.instruction = null;
     } else if (mapping.type === 'instruction') {
-      mapping.instruction = this.instructions.firstObject;
+      mapping.instruction = this.instructions[0];
       mapping.codeList = null;
     } else {
       mapping.instruction = null;
@@ -319,18 +320,18 @@ export default class TrafficMeasureIndexComponent extends Component {
     const nodeShape = await this.store.query('node-shape', {
       'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
     });
-    if (await nodeShape.firstObject) {
-      await (await nodeShape.firstObject).destroyRecord();
+    if (await nodeShape[0]) {
+      await (await nodeShape[0]).destroyRecord();
     }
     // We assume a measure only has one template
     await (
       await (
-        await this.trafficMeasureConcept.get('templates').firstObject
-      ).get('mappings')
+        await this.trafficMeasureConcept.get('templates')
+      )[0].get('mappings')
     ).forEach((mapping) => mapping.destroyRecord());
     await (
-      await this.trafficMeasureConcept.get('templates').firstObject
-    ).destroyRecord();
+      await this.trafficMeasureConcept.get('templates')
+    )[0].destroyRecord();
     await (
       await this.trafficMeasureConcept.get('relations')
     ).forEach((relation) => relation.destroyRecord());
@@ -341,7 +342,7 @@ export default class TrafficMeasureIndexComponent extends Component {
 
   save = task(async () => {
     // We assume a measure only has one template
-    const template = await this.trafficMeasureConcept.templates.firstObject;
+    const template = (await this.trafficMeasureConcept.templates)[0];
 
     //if new save relationships
     if (this.new) {
@@ -374,12 +375,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     //5-annotate rdfa
     await this.annotateRdfa.perform(template);
 
-    if (this.new) {
-      this.router.transitionTo(
-        'traffic-measure-concepts.edit',
-        this.trafficMeasureConcept.id
-      );
-    }
+    this.router.transitionTo('traffic-measure-concepts.index');
   });
 
   saveRoadsigns = task(async (trafficMeasureConcept) => {
@@ -428,4 +424,14 @@ export default class TrafficMeasureIndexComponent extends Component {
     `;
     await template.save();
   });
+
+  async willDestroy() {
+    super.willDestroy(...arguments);
+    this.template.rollbackAttributes();
+    for (const mapping of this.mappings) {
+      mapping.rollbackAttributes();
+    }
+    this.trafficMeasureConcept.rollbackAttributes();
+    await this.trafficMeasureConcept.belongsTo('zonality').reload();
+  }
 }

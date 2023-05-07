@@ -1,0 +1,77 @@
+<AuDataTable
+  @content={{@content}}
+  @fields="Image Meaning Code Categories"
+  @noDataMessage={{t "road-marking-concept.crud.no-data"}} as |s|
+>
+  <s.menu as |menu|>
+    <menu.general>
+      <AuToolbar class="au-o-box" as |Group|>
+        <Group>
+          <AuHeading @level="2" @skin="3">
+            {{t "road-marking-concept.attr.related-marking"}}
+          </AuHeading>
+        </Group>
+        <Group>
+          <AuButton {{on "click" @onClickAdd}}>
+            {{t "related-road-marking.crud.add"}}
+          </AuButton>
+        </Group>
+      </AuToolbar>
+    </menu.general>
+  </s.menu>
+  <s.content as |c|>
+    <c.header>
+      <th class="data-table__header-title">
+        {{t "road-marking-concept.attr.code"}}
+      </th>
+      <th class="data-table__header-title">
+        {{t "road-marking-concept.attr.image-header"}}
+      </th>
+      <th class="data-table__header-title">
+        {{t "road-marking-concept.attr.definition"}}
+      </th>
+      <th class="data-table__header-title">
+        {{t "road-marking-concept.attr.meaning"}}
+      </th>
+      <th>
+                <span class="au-u-hidden-visually">
+                  {{t "related-road-marking.crud.delete"}}
+                </span>
+      </th>
+    </c.header>
+    <c.body as |relatedRoadMarkingConcept|>
+      <td>
+        {{relatedRoadMarkingConcept.roadMarkingConceptCode}}
+      </td>
+      <td>
+        <img
+          class="au-c-thumbnail"
+          src={{relatedRoadMarkingConcept.image}}
+          alt=""
+          role="presentation"
+        />
+      </td>
+      <td>
+        <p class="max-w-prose">
+          {{relatedRoadMarkingConcept.definition}}
+        </p>
+      </td>
+      <td>
+        <p class="max-w-prose">
+          {{relatedRoadMarkingConcept.meaning}}
+        </p>
+      </td>
+      <td class="w-px au-u-padding-right-small">
+        <AuButton
+          @icon="bin"
+          @alert={{true}}
+          @skin="secondary"
+          @hideText={{true}}
+          {{on "click" (fn @onClickRemove relatedRoadMarkingConcept)}}
+        >
+          {{t "related-road-marking.crud.delete"}}
+        </AuButton>
+      </td>
+    </c.body>
+  </s.content>
+</AuDataTable>

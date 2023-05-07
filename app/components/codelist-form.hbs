@@ -22,8 +22,8 @@
     {{/if}}
   </BreadcrumbsItem>
 
-  <AuToolbar @border="bottom" @size="large">
-    <AuToolbarGroup>
+  <AuToolbar @border="bottom" @size="large" as |Group|>
+    <Group>
       <AuHeading @skin="2">
         {{#if @codelist.isNew}}
           {{t "codelist.crud.new"}}
@@ -31,18 +31,15 @@
           {{t "codelist.crud.edit"}}
         {{/if}}
       </AuHeading>
-    </AuToolbarGroup>
+    </Group>
   </AuToolbar>
 
   <div class="au-c-body-container au-c-body-container--scroll"  {{did-insert this.didInsert}}>
     <div>
         {{#let codelist.error.label as |isInvalid|}}
           <p class="au-o-box au-u-padding-bottom-none">
-            <AuLabel @error={{isInvalid}} for="label">
+            <AuLabel @error={{isInvalid}} for="label" @required={{true}}>
               {{t "codelist.attr.label"}}&nbsp;
-              <AuPill>
-                {{t "utility.required"}}
-              </AuPill>
             </AuLabel>
             <AuInput
               @error={{isInvalid}}
@@ -60,7 +57,7 @@
               }}
             />
             {{#if isInvalid}}
-              <AuHelpText>
+              <AuHelpText @error={{true}}>
                 {{t "utility.field-required"}}
               </AuHelpText>
             {{/if}}
@@ -155,8 +152,8 @@
     </div>
   </div>
 
-  <AuToolbar @border="top" @size="large">
-    <AuToolbarGroup>
+  <AuToolbar @border="top" @size="large" as |Group|>
+    <Group>
       <AuButtonGroup>
         <AuButton
           @disabled={{or codelist.isInvalid this.isSaving}}
@@ -171,6 +168,6 @@
           {{t "utility.cancel"}}
         </AuButton>
       </AuButtonGroup>
-    </AuToolbarGroup>
+    </Group>
   </AuToolbar>
 {{/let}}

@@ -10,7 +10,7 @@
           <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
             {{t "utility.zonality"}}
           </AuHeading>
-          <ZonalitySelector @concept={{@trafficMeasureConcept}} />
+          <ZonalitySelector @zonality={{@trafficMeasureConcept.zonality}} @onChange={{(fn (mut @trafficMeasureConcept.zonality))}} />
         </div>
         <div class="au-o-grid__item au-u-1-2">
           <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
@@ -27,7 +27,7 @@
           <TrafficMeasure::SelectType @selectedType={{this.selectedType}} @updateTypeFilter={{this.updateTypeFilter}} />
         </div>
         <div class="au-o-grid__item au-u-2-3@medium">
-          <TrafficMeasure::AddSign @selectedType={{this.selectedType}} @addSign={{this.addSign}} @error={{this.signError}} @disabled={{this.isSelectedTypeEmpty}}/>
+          <TrafficMeasure::AddSign @selectedType={{this.selectedType}} @addSign={{this.addSign}} @disabled={{this.isSelectedTypeEmpty}}/>
         </div>
         <div class="au-o-grid__item">
           <TrafficMeasure::SignList @removeSign={{this.removeSign}} @addInstructionToTemplate={{this.addInstructionToTemplate}} @signs={{this.signs}} />
@@ -145,8 +145,8 @@
     </div>
   </div>
 </div>
-<AuToolbar @border="top" @size="large">
-  <AuToolbarGroup>
+<AuToolbar @border="top" @size="large" as |Group|>
+  <Group>
     <AuButtonGroup>
         <AuButton
           {{on "click" (perform this.save)}}
@@ -161,8 +161,8 @@
         </AuButton>
       {{/unless}}
     </AuButtonGroup>
-  </AuToolbarGroup>
-  <AuToolbarGroup>
+  </Group>
+  <Group>
     <AuButtonGroup>
       <AuLink
         @skin="button-secondary"
@@ -171,5 +171,5 @@
         {{t "utility.cancel"}}
       </AuLink>
     </AuButtonGroup>
-  </AuToolbarGroup>
+  </Group>
 </AuToolbar>

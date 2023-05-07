@@ -1,0 +1,55 @@
+<ReactiveTable
+  @content={{@content}}
+  @noDataMessage={{t "traffic-light-concept.crud.no-data"}}
+  @page={{@page}}
+  @sort={{@sort}}
+  @pageSize={{@pageSize}}
+  @onPageChange={{@onPageChange}}
+  @onSortChange={{@onSortChange}}
+>
+  <:menu>
+    {{yield to="menu"}}
+  </:menu>
+  <:header as |header|>
+    <header.Sortable
+      @field="trafficLightConceptCode"
+      @label={{t "traffic-light-concept.attr.code"}}
+    />
+    <th>
+      {{t "traffic-light-concept.attr.image-header"}}
+    </th>
+    <th>
+      {{t "traffic-light-concept.attr.meaning"}}
+    </th>
+    <th>
+      {{t "road-marking-concept.attr.valid"}}
+    </th>
+    <th></th>
+  </:header>
+  <:body as |trafficLightConcept|>
+    <td>
+      {{trafficLightConcept.trafficLightConceptCode}}
+    </td>
+    <td>
+      <img
+        class="au-c-thumbnail"
+        src={{trafficLightConcept.image}}
+        alt=""
+        role="presentation"
+      />
+    </td>
+    <td>
+      {{trafficLightConcept.meaning}}
+    </td>
+    <td>
+      {{#if trafficLightConcept.valid}}
+        {{t "utility.yes"}}
+      {{else}}
+        {{t "utility.no"}}
+      {{/if}}
+    </td>
+    <td>
+      {{yield trafficLightConcept to='rowAction'}}
+    </td>
+  </:body>
+</ReactiveTable>

@@ -14,11 +14,13 @@ utility:
   save: Save
   cancel: Cancel
   close: Close
+  edit: Edit
   confirmation:
     title: Confirm
     body: Are you sure?
   required: Required
   optional: Optional
+  loading: Loading...
   zonality: Zonality
   zonal: Zonal
   nonZonal: Non-Zonal
@@ -48,6 +50,12 @@ utility:
     location: location
     codelist: codelist
     instruction: instruction
+image-input:
+  helptext: Press the button to upload a new image or insert a URL of an existing image
+  preview-alt: A preview of the uploaded or linked image
+  url-placeholder: http(s)://...
+  invalid-url: Only image URLs starting with http(s) are allowed
+  image-url: Image URL
 road-sign-concept:
   name: Road Signs
   details: Road Sign details
@@ -74,8 +82,7 @@ road-sign-concept:
     meaning-filter: Search by meaning
     category-filter: Filter by category
   landing-page:
-    subtitle: –
-    content: Information in the card that comes below the header. Content.
+    content: Manage traffic signs, sub-signs and instructions.
     button: Go to Road Signs
 related-road-sign:
   attr:
@@ -89,7 +96,6 @@ traffic-light-concept:
   details: Traffic Light details
   attr:
     image-header: Image
-    image-url: Image URL
     meaning: Meaning
     definition: Definition
     code: Code
@@ -106,8 +112,7 @@ traffic-light-concept:
     code-filter: Code
     meaning-filter: Search by meaning
   landing-page:
-    subtitle: –
-    content: Information in the card that comes below the header. Content.
+    content: Manage traffic lights and instructions.
     button: Go to Traffic Lights
 related-traffic-light:
   crud:
@@ -138,8 +143,7 @@ road-marking-concept:
     code-filter: Code
     meaning-filter: Search by meaning
   landing-page:
-    subtitle: –
-    content: Information in the card that comes below the header. Content.
+    content: Manage road markings and instructions.
     button: Go to Road Markings
 related-road-marking:
   crud:
@@ -171,10 +175,8 @@ traffic-measure-concept:
     type-filter: Filter by type
     no-matches: No results found
     type-to-search: Type to search
-    loading: Loading ...
   landing-page:
-    subtitle: –
-    content: Information in the card that comes below the header. Content.
+    content: Manage mobility measures.
     button: Go to traffic measures
 sub-sign:
   filter:
@@ -190,6 +192,7 @@ main-sign:
     add: Add main signs
     add-one: Add main sign
     delete: Remove main sign
+    edit: Edit main sign
 sparql:
     name: 'MOW Registry: SPARQL'
 codelist:
@@ -213,6 +216,5 @@ codelist:
       singleSelect: 'Single select'
       multiSelect: 'Multi select'
   landing-page:
-    subtitle: –
-    content: Information in the card that comes below the header. Content.
+    content: Overview and management of available code lists.
     button: Go to codelists management

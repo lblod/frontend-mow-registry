@@ -14,11 +14,13 @@ utility:
   save: Opslaan
   cancel: Annuleer
   close: Sluiten
+  edit: Bewerken
   confirmation:
     title: Bevestig
     body: Ben je zeker?
   required: Verplicht
   optional: Optioneel
+  loading: Aan het laden...
   zonality: Zonaal karakter
   zonal: Zonaal
   nonZonal: Niet zonaal
@@ -30,6 +32,7 @@ utility:
   delete: verwijderen
   instructions: Instructies
   description: Beschrijving
+  image-preview-alt: Een voorbeeldweergave van de geüploade of de gelinkte afbeelding
   order: Volgorde
   sign: Verkeersteken
   add-instruction: Voeg instructie toe
@@ -48,6 +51,12 @@ utility:
     location: locatie
     codelist: codelijst
     instruction: instructie
+image-input:
+  helptext: Druk op de upload knop om een nieuw bestand te uploaden of plak de URL van een bestaande afbeelding
+  preview-alt: Een voorbeeld van het geüploade bestand of de URL
+  url-placeholder: http(s)://...
+  invalid-url: Enkel afbeeldings-URLs die beginnen met http(s) zijn toegelaten
+  image-url: Afbeelding URL
 road-sign-concept:
   name: Verkeersborden
   details: Verkeersbord details
@@ -61,7 +70,7 @@ road-sign-concept:
     main-sign: Mogelijke hoofdborden
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
-    related-traffic-light: Gerelateerde verkeerslicht
+    related-traffic-light: Gerelateerde verkeerslichten
     valid: Gevalideerd
   crud:
     create: Verkeersbord aanmaken
@@ -74,7 +83,6 @@ road-sign-concept:
     meaning-filter: Zoeken op betekenis
     category-filter: Filteren op categorie
   landing-page:
-    subtitle: –
     content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden
 traffic-light-concept:
@@ -82,7 +90,6 @@ traffic-light-concept:
   details: Verkeerslicht details
   attr:
     image-header: Afbeelding
-    image-url: Afbeelding URL
     meaning: Betekenis
     definition: Definitie
     code: Code
@@ -99,7 +106,6 @@ traffic-light-concept:
     code-filter: Code
     meaning-filter: Zoeken op betekenis
   landing-page:
-    subtitle: –
     content: Beheer verkeerlichten en instructies.
     button: Ga naar Verkeerslichten
 related-traffic-light:
@@ -120,7 +126,7 @@ road-marking-concept:
     code: Code
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
-    related-traffic-light: Gerelateerde verkeerslicht
+    related-traffic-light: Gerelateerde verkeerslichten
     valid: Gevalideerd
   crud:
     create: Wegmarkering aanmaken
@@ -131,7 +137,6 @@ road-marking-concept:
     code-filter: Code
     meaning-filter: Zoeken op betekenis
   landing-page:
-    subtitle: –
     content: Beheer wegmarkeringen en instructies.
     button: Ga naar Wegmarkeringen
 related-road-marking:
@@ -164,9 +169,7 @@ traffic-measure-concept:
     type-filter: Filteren op type
     no-matches: Geen resultaten gevonden
     type-to-search: Typ om te zoeken
-    loading: Laden ...
   landing-page:
-    subtitle: –
     content: Beheer mobiliteitsmaatregelen.
     button: Ga naar Mobiliteitsmaatregelen
 sub-sign:
@@ -183,6 +186,7 @@ main-sign:
     add: Hoofdborden toevoegen
     add-one: Hoofdbord toevoegen
     delete: Hoofdbord verwijderen
+    edit: Hoofdbord bewerken
 related-road-sign:
   attr:
     category: Zoek verkeersborden op category
@@ -213,6 +217,5 @@ codelist:
     values: Waarden
     id: Id
   landing-page:
-    subtitle: –
     content: Overzicht en beheer van beschikbare codelijsten.
     button: Ga naar Codelijsten
