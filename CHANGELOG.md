@@ -4,6 +4,20 @@
 
 
 
+
+## 1.1.0 (2023-05-31)
+
+#### :rocket: Enhancement
+* [#145](https://github.com/lblod/frontend-mow-registry/pull/145) Hackathon ([@lagartoverde](https://github.com/lagartoverde))
+
+#### :house: Internal
+* [#144](https://github.com/lblod/frontend-mow-registry/pull/144) Use new ember-concurrency api ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 3
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+- [@x-m-el](https://github.com/x-m-el)
+
 ## 1.0.3 (2023-03-13)
 
 
