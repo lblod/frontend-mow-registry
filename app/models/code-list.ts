@@ -5,11 +5,17 @@ import {
   AsyncHasMany,
   AsyncBelongsTo,
 } from '@ember-data/model';
-import ConceptSchemeModel from './concept-scheme';
+import ConceptScheme from 'mow-registry/models/concept-scheme';
 import type MappingModel from 'mow-registry/models/mapping';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 
-export default class CodeListModel extends ConceptSchemeModel {
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    'code-list': CodeListModel;
+  }
+}
+
+export default class CodeListModel extends ConceptScheme {
   @attr declare uri?: string;
   @hasMany('mapping', { inverse: 'codeList', async: true })
   declare mappings: AsyncHasMany<MappingModel>;

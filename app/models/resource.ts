@@ -1,5 +1,11 @@
 import Model, { AsyncHasMany, hasMany } from '@ember-data/model';
-import ConceptModel from './concept';
+import type ConceptModel from 'mow-registry/models/concept';
+
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    resource: ResourceModel;
+  }
+}
 
 export default class ResourceModel extends Model {
   @hasMany('concept', { inverse: null, async: true })

@@ -1,8 +1,13 @@
 import Model, { AsyncBelongsTo, attr, belongsTo } from '@ember-data/model';
-import type TemplateModel from 'mow-registry/models/template';
+import type CodeListModel from 'mow-registry/models/code-list';
 import type ShapeModel from 'mow-registry/models/shape';
-import type CodeListModel from './code-list';
+import type TemplateModel from 'mow-registry/models/template';
 
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    mapping: MappingModel;
+  }
+}
 export default class MappingModel extends Model {
   @attr('string') declare variable?: string;
   @attr('string') declare type?: string;

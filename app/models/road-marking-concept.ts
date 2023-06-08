@@ -5,10 +5,16 @@ import {
   AsyncBelongsTo,
   AsyncHasMany,
 } from '@ember-data/model';
-import ConceptModel from './concept';
-import type RoadSignConceptStatusCodeModel from 'mow-registry/models/road-sign-concept-status-code';
+import ConceptModel from 'mow-registry/models/concept';
 import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
+import type RoadSignConceptStatusCodeModel from 'mow-registry/models/road-sign-concept-status-code';
 import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
+
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    'road-marking-concept': RoadMarkingConceptModel;
+  }
+}
 
 export default class RoadMarkingConceptModel extends ConceptModel {
   @attr declare image?: string;

@@ -3,6 +3,12 @@ import Model, { AsyncHasMany, attr, hasMany } from '@ember-data/model';
 import type AccountModel from 'mow-registry/models/account';
 import type GroupModel from 'mow-registry/models/group';
 
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    user: UserModel;
+  }
+}
+
 export default class UserModel extends Model {
   @attr() declare firstName?: string;
   @attr() declare familyName?: string;

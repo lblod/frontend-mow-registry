@@ -1,9 +1,13 @@
 import { hasMany, attr, AsyncHasMany } from '@ember-data/model';
-import ResourceModel from './resource';
-import type TemplateModel from 'mow-registry/models/template';
+import ResourceModel from 'mow-registry/models/resource';
 import type RelationModel from 'mow-registry/models/relation';
+import type TemplateModel from 'mow-registry/models/template';
 
-/** @extends ResourceModel */
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    concept: ConceptModel;
+  }
+}
 export default class ConceptModel extends ResourceModel {
   @attr() declare valid?: boolean;
 

@@ -4,8 +4,13 @@ import Model, {
   belongsTo,
   AsyncHasMany,
 } from '@ember-data/model';
-import type MappingModel from './mapping';
+import type MappingModel from 'mow-registry/models/mapping';
 
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    template: TemplateModel;
+  }
+}
 export default class TemplateModel extends Model {
   @attr('string') declare value?: string;
   @attr('string') declare annotated?: string;
