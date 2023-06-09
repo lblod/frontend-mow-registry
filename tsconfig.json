@@ -1,29 +1,34 @@
 {
-  "extends": "@tsconfig/ember/tsconfig.json",
   "compilerOptions": {
-
-    // The combination of `baseUrl` with `paths` allows Ember's classic package
-    // layout, which is not resolvable with the Node resolution algorithm, to
-    // work with TypeScript.
+    "target": "ES2020",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noEmitOnError": false,
+    "noEmit": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
     "baseUrl": ".",
+    "module": "es2020",
+    "experimentalDecorators": true,
+    "lib": ["ES2017", "ES2019.Object", "ES2020", "DOM", "DOM.Iterable", "ES2021.String"],
     "paths": {
-      "mow-registry/tests/*": [
-        "tests/*"
-      ],
-      "mow-registry/*": [
-        "app/*"
-      ],
-      "*": [
-        "types/*"
-      ],
+      "*": ["types/*"],
+      "mow-registry": ["app"],
+      "mow-registry/*": ["app/*"],
       "fetch": [
         "node_modules/ember-fetch"
       ]
     }
   },
-  "include": [
-    "app/**/*",
-    "tests/**/*",
-    "types/**/*"
-  ]
+  "include": ["app/**/*", "tests/**/*", "types/**/*", "test-support/**/*"]
 }
