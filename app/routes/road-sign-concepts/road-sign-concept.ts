@@ -25,7 +25,7 @@ export default class RoadsignConcept extends Route {
             size: 10000,
           },
         })
-        .slice(),
+        .then((subsigns) => subsigns.slice()),
       categories: this.store.findAll('road-sign-category').then((category) => {
         return category.filter(({ label }) => label !== 'Onderbord');
       }),
