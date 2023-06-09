@@ -39,6 +39,8 @@ export default class TrafficLightConceptModel extends ConceptModel {
   })
   declare relatedFromTrafficLightConcepts: AsyncHasMany<TrafficLightConceptModel>;
 
+  relatedTrafficLightConcepts?: TrafficLightConceptModel[];
+
   @hasMany('road-sign-concept', {
     inverse: 'relatedTrafficLightConcepts',
     async: true,

@@ -40,6 +40,8 @@ export default class RoadMarkingConceptModel extends ConceptModel {
   })
   declare relatedFromRoadMarkingConcepts: AsyncHasMany<RoadMarkingConceptModel>;
 
+  relatedRoadMarkingConcepts?: RoadMarkingConceptModel[];
+
   @hasMany('road-sign-concept', {
     inverse: 'relatedRoadMarkingConcepts',
     async: true,

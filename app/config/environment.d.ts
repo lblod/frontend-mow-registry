@@ -9,6 +9,24 @@ declare const config: {
   locationType: 'history' | 'hash' | 'none' | 'auto';
   rootURL: string;
   APP: Record<string, unknown>;
+  baseUrl?: string;
+  torii: {
+    disableRedirectInitializer: boolean;
+    providers: {
+      'acmidm-oauth2': {
+        apiKey: string;
+        baseUrl: string;
+        scope: string;
+        redirectUri: string;
+        logoutUrl: string;
+      };
+    };
+  };
+  sparqlEndpoint: string;
+  environmentName: string;
+  featureFlags: {
+    simpleLogin: boolean;
+  };
 };
 
 export default config;
