@@ -35,11 +35,11 @@ module.exports = {
         './.prettierrc.js',
         './.template-lintrc.js',
         './ember-cli-build.js',
-        './index.js',
         './testem.js',
         './blueprints/*/index.js',
         './config/**/*.js',
-        './tests/dummy/config/**/*.js',
+        './lib/*/index.js',
+        './server/**/*.js',
       ],
       parserOptions: {
         sourceType: 'script',
@@ -49,18 +49,17 @@ module.exports = {
         node: true,
       },
       plugins: ['node'],
+      extends: ['plugin:node/recommended'],
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      rules: Object.assign(
-        {},
-        require('eslint-plugin-node').configs.recommended.rules,
-        {
-          // add your custom rules and overrides for node files here
-        }
-      ),
+      rules: {
+        // this can be removed once the following is fixed
+        // https://github.com/mysticatea/eslint-plugin-node/issues/77
+        'node/no-unpublished-require': 'off',
+      },
     },
     // typescript
     {
-      files: ['**/*.ts', '**/*.tsx'],
+      files: ['**/*.ts'],
       parserOptions: {
         project: ['./tsconfig.json'],
       },
