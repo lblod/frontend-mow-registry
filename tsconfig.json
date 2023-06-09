@@ -15,6 +15,9 @@
       ],
       "*": [
         "types/*"
+      ],
+      "fetch": [
+        "node_modules/ember-fetch"
       ]
     }
   },
