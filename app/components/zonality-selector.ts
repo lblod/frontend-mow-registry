@@ -7,16 +7,6 @@ import { ZON_NON_ZONAL_ID, ZON_CONCEPT_SCHEME_ID } from '../utils/constants';
 import type Store from '@ember-data/store';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import ArrayProxy from '@ember/array/proxy';
-/**
- * @typedef {Object} Args
- * @property {function} onChange
- * @prop {string} zonality
- */
-
-/**
- * @extends {Component<Args>}
- * @property {Args} args
- */
 
 type Args = {
   zonality: string;

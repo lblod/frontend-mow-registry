@@ -2,30 +2,17 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
-/**
- * @typedef {Object} Args
- * @property {string} noDataMessage
- * @property {string} fields
- *
- * @property {Record<string, unknown>} content
- * @property {number?} pageSize
- *
- * @property {number?} page
- * @property {string?} sort
- *
- *
- * @property {((newPage: number) => void)?} onPageChange
- * @property {((newSort: string) => void)?} onSortChange
- *
- */
+type Args = {
+  pageSize?: number;
+  page?: number;
+  sort?: string;
 
-/**
- * @extends {Component<Args>}
- * @property {Args} args
- */
-export default class ReactiveTableComponent extends Component {
-  @tracked _page;
-  @tracked _sort;
+  onPageChange?: (newPage: number) => void;
+  onSortChange?: (newSort: string) => void;
+};
+export default class ReactiveTableComponent extends Component<Args> {
+  @tracked declare _page: number;
+  @tracked declare _sort: string;
 
   get pageSize() {
     return this.args.pageSize ?? 20;

@@ -2,22 +2,17 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import FileService from 'mow-registry/services/file-service';
 
-/**
- * @typedef {Object} Args
- * @property {function} setImage
- * @prop {boolean} error
- * @prop {string} oldImage
- */
-
-/**
- * @extends {Component<Args>}
- * @property {Args} args
- */
-export default class ImageInputComponent extends Component {
-  @service fileService;
+type Args = {
+  setImage: (image: string | File) => void;
+  error: boolean;
+  oldImage: string;
+};
+export default class ImageInputComponent extends Component<Args> {
+  @service declare fileService: FileService;
   @tracked url = '';
-  @tracked file;
+  @tracked file?: File;
 
   get source() {
     return (
@@ -51,14 +46,14 @@ export default class ImageInputComponent extends Component {
   }
 
   @action
-  setImageUrl(event) {
-    this.url = event.target.value;
+  setImageUrl(event: InputEvent) {
+    this.url = (event.target as HTMLInputElement).value;
     this.imageChanged();
   }
 
   @action
-  setImageUpload(event) {
-    this.file = event.target.files[0];
+  setImageUpload(event: InputEvent) {
+    this.file = (event.target as HTMLInputElement).files?.[0];
     this.url = '';
     this.imageChanged();
   }

@@ -3,38 +3,41 @@ import { action } from '@ember/object';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import Store from '@ember-data/store';
+import { SignType } from 'mow-registry/components/traffic-measure/select-type';
+import ConceptModel from 'mow-registry/models/concept';
 
-export default class TrafficMeasureAddSignComponent extends Component {
-  @service store;
+type Args = {
+  selectedType: SignType;
+  addSign: (sign: ConceptModel) => void;
+};
+export default class TrafficMeasureAddSignComponent extends Component<Args> {
+  @service declare store: Store;
 
-  @tracked selected;
+  @tracked selected?: ConceptModel | null;
 
-  search = restartableTask(async (searchData) => {
+  search = restartableTask(async (searchData: string) => {
     await timeout(300);
 
-    let queryParams = {};
+    const queryParams: Record<string, unknown> = {};
     queryParams[this.args.selectedType.searchFilter] = searchData;
     queryParams['sort'] = this.args.selectedType.sortingField;
     queryParams['include'] = 'templates';
 
-    let options = await this.store.query(
+    const options = await this.store.query(
       this.args.selectedType.modelName,
       queryParams
-    );
-
-    options.map(
-      (option) => (option['label'] = option[this.args.selectedType.labelField])
     );
     return options;
   });
 
   @action
-  select(selected) {
+  select(selected: ConceptModel) {
     this.selected = selected;
   }
 
   @action
-  addSign(selected) {
+  addSign(selected: ConceptModel) {
     if (selected) {
       this.args.addSign(selected);
       this.selected = null;

@@ -12,9 +12,9 @@ type Response = {
 export default class FileService extends Service {
   @service declare store: Store;
 
-  async upload(fileName: string) {
+  async upload(file: File) {
     const formData = new FormData();
-    formData.append('file', fileName);
+    formData.append('file', file);
     const response = await fetch('/files', {
       method: 'POST',
       body: formData,
@@ -23,7 +23,7 @@ export default class FileService extends Service {
     this.store.pushPayload('file', upload);
     const fileRecord = this.store.peekRecord('file', upload.data.id);
     if (!fileRecord) {
-      throw Error(`Failed upload file: ${fileName}`);
+      throw Error(`Failed upload file`);
     }
     let downloadUrl = fileRecord.downloadLink;
     // fileUrl is a relative url.

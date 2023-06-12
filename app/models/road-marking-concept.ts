@@ -22,6 +22,10 @@ export default class RoadMarkingConceptModel extends ConceptModel {
   @attr declare definition?: string;
   @attr declare roadMarkingConceptCode?: string;
 
+  get label() {
+    return this.roadMarkingConceptCode;
+  }
+
   @belongsTo('road-marking-concept-status-code', {
     inverse: 'roadMarkingConcepts',
     async: true,

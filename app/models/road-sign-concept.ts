@@ -23,6 +23,10 @@ export default class RoadSignConceptModel extends ConceptModel {
   @attr declare meaning?: string;
   @attr declare roadSignConceptCode?: string;
 
+  get label() {
+    return this.roadSignConceptCode;
+  }
+
   @belongsTo('road-sign-concept-status-code', {
     inverse: 'roadSignConcepts',
     async: true,

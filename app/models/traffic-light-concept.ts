@@ -21,6 +21,10 @@ export default class TrafficLightConceptModel extends ConceptModel {
   @attr declare definition?: string;
   @attr declare trafficLightConceptCode?: string;
 
+  get label() {
+    return this.trafficLightConceptCode;
+  }
+
   @belongsTo('traffic-light-concept-status-code', {
     inverse: 'trafficLightConcepts',
     async: true,
