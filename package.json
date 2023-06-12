@@ -80,7 +80,7 @@
     "qunit-dom": "^2.0.0",
     "release-it": "^15.4.2",
     "sass": "^1.49.9",
-    "webpack": "^5.74.0"
+    "webpack": "^5.76.0"
   },
   "engines": {
     "node": ">= 18"
