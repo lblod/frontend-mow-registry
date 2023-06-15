@@ -6,7 +6,7 @@
     <AuInput
       @type="text"
       id="nickname"
-      @value={{this.nickname}}
+      {{on 'input' this.setNickname}}
     />
   </div>
   <div>
@@ -16,7 +16,7 @@
     <AuInput
       @type="password"
       id="password"
-      @value={{this.password}}
+      {{on 'input' this.setPassword}}
     />
   </div>
   <br>
