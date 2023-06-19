@@ -9,7 +9,7 @@ export default class MyMuLoginComponent extends MuLoginComponent {
     this.nickname = event.target.value;
   }
 
-  setPassword(event){
+  setPassword(event) {
     this.password = event.target.value;
   }
 }
