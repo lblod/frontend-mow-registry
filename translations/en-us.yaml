@@ -176,7 +176,7 @@ traffic-measure-concept:
     no-matches: No results found
     type-to-search: Type to search
   landing-page:
-    content: Manage mobility measures.
+    content: Manage traffic measures.
     button: Go to traffic measures
 sub-sign:
   filter:
