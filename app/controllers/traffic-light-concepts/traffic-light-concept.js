@@ -59,7 +59,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   setRelatedTrafficLightCodeFilter(event) {
-    this.relatedTrafficLightCodeFilter = event.target.value.trim();
+    this.relatedTrafficLightCodeFilter = event.target.value;
   }
 
   addRelatedTrafficLight = task(async (relatedTrafficLight) => {
@@ -143,7 +143,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   setRelatedRoadMarkingCodeFilter(event) {
-    this.relatedRoadMarkingCodeFilter = event.target.value.trim();
+    this.relatedRoadMarkingCodeFilter = event.target.value;
   }
 
   @action

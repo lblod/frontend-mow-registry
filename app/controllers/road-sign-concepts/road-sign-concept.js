@@ -82,7 +82,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   setSubSignCodeFilter(event) {
-    this.subSignCodeFilter = event.target.value.trim();
+    this.subSignCodeFilter = event.target.value;
   }
 
   addSubSign = task(async (subSign) => {
@@ -101,17 +101,17 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   setMainSignCodeFilter(event) {
-    this.mainSignCodeFilter = event.target.value.trim();
+    this.mainSignCodeFilter = event.target.value;
   }
 
   @action
   setRelatedRoadMarkingCodeFilter(event) {
-    this.relatedRoadMarkingCodeFilter = event.target.value.trim();
+    this.relatedRoadMarkingCodeFilter = event.target.value;
   }
 
   @action
   setRelatedTrafficLightCodeFilter(event) {
-    this.relatedTrafficLightCodeFilter = event.target.value.trim();
+    this.relatedTrafficLightCodeFilter = event.target.value;
   }
 
   addMainSign = task(async (mainSign) => {

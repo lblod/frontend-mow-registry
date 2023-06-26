@@ -151,12 +151,12 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
   @action
   setRelatedRoadMarkingCodeFilter(event) {
-    this.relatedRoadMarkingCodeFilter = event.target.value.trim();
+    this.relatedRoadMarkingCodeFilter = event.target.value;
   }
 
   @action
   setRelatedTrafficLightCodeFilter(event) {
-    this.relatedTrafficLightCodeFilter = event.target.value.trim();
+    this.relatedTrafficLightCodeFilter = event.target.value;
   }
 
   @action
