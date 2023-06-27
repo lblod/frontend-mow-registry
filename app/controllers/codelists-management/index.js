@@ -14,7 +14,7 @@ export default class CodelistsManagementIndexController extends Controller {
     async (queryParamProperty, event) => {
       await timeout(300);
 
-      this[queryParamProperty] = event.target.value.trim();
+      this[queryParamProperty] = event.target.value;
       this.resetPagination();
     }
   );
