@@ -45,38 +45,38 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   get subSigns() {
-    if (!this.subSignCodeFilter.trim()) {
+    if (!this.subSignCodeFilter) {
       return this.model.allSubSigns;
     }
 
     return this.model.allSubSigns.filter((subSign) => {
       return subSign.roadSignConceptCode
         .toLowerCase()
-        .includes(this.subSignCodeFilter.toLowerCase().trim());
+        .includes(this.subSignCodeFilter.toLowerCase());
     });
   }
 
   get roadMarkings() {
-    if (!this.relatedRoadMarkingCodeFilter.trim()) {
+    if (!this.relatedRoadMarkingCodeFilter) {
       return this.model.allRoadMarkings;
     }
 
     return this.model.allRoadMarkings.filter((roadMarking) => {
       return roadMarking.definition
         .toLowerCase()
-        .includes(this.relatedRoadMarkingCodeFilter.toLowerCase().trim());
+        .includes(this.relatedRoadMarkingCodeFilter.toLowerCase());
     });
   }
 
   get trafficLights() {
-    if (!this.relatedTrafficLightCodeFilter.trim()) {
+    if (!this.relatedTrafficLightCodeFilter) {
       return this.model.allTrafficLights;
     }
 
     return this.model.allTrafficLights.filter((trafficLight) => {
       return trafficLight.definition
         .toLowerCase()
-        .includes(this.relatedTrafficLightCodeFilter.toLowerCase().trim());
+        .includes(this.relatedTrafficLightCodeFilter.toLowerCase());
     });
   }
 
