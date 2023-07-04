@@ -91,7 +91,7 @@
   "dependencies": {
     "@lblod/ember-acmidm-login": "^2.0.0-beta.1",
     "@triply/yasgui": "^4.2.20",
-    "ember-mu-login": "^2.0.1"
+    "ember-mu-login": "^2.0.2"
   },
   "volta": {
     "node": "18.14.0"
