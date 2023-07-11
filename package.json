@@ -28,7 +28,7 @@
     "@appuniversum/ember-appuniversum": "^2.7.0",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/plugin-proposal-decorators": "^7.20.13",
-    "@bagaar/ember-breadcrumbs": "^4.0.0",
+    "@bagaar/ember-breadcrumbs": "^4.1.0",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.9.4",
     "@glimmer/component": "^1.1.2",
