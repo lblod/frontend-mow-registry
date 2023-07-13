@@ -6,7 +6,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptInstructionRoute exten
   @service store;
   async model(params) {
     const concept = await this.modelFor(
-      'road-marking-concepts.road-marking-concept'
+      'road-marking-concepts.road-marking-concept',
     ).roadMarkingConcept;
     if (params.instruction_id === 'new') {
       return {
@@ -19,7 +19,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptInstructionRoute exten
         params.instruction_id,
         {
           include: 'mappings',
-        }
+        },
       );
       return {
         template,

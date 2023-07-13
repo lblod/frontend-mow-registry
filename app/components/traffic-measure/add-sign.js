@@ -19,11 +19,11 @@ export default class TrafficMeasureAddSignComponent extends Component {
 
     let options = await this.store.query(
       this.args.selectedType.modelName,
-      queryParams
+      queryParams,
     );
 
     options.map(
-      (option) => (option['label'] = option[this.args.selectedType.labelField])
+      (option) => (option['label'] = option[this.args.selectedType.labelField]),
     );
     return options;
   });

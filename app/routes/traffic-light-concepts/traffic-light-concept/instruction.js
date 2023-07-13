@@ -6,7 +6,7 @@ export default class TrafficLightConceptsTrafficLightConceptInstructionRoute ext
   @service store;
   model(params) {
     const concept = this.modelFor(
-      'traffic-light-concepts.traffic-light-concept'
+      'traffic-light-concepts.traffic-light-concept',
     ).trafficLightConcept;
     if (params.instruction_id === 'new') {
       return {

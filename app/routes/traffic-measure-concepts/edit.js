@@ -6,7 +6,7 @@ export default class TrafficMeasureConceptsEditRoute extends Route {
   async model(params) {
     const trafficMeasureConcept = this.store.findRecord(
       'traffic-measure-concept',
-      params.id
+      params.id,
     );
     return trafficMeasureConcept;
   }

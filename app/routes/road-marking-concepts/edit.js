@@ -9,7 +9,7 @@ export default class RoadmarkingConceptsEditRoute extends Route {
     return hash({
       roadMarkingConcept: this.store.findRecord(
         'road-marking-concept',
-        params.id
+        params.id,
       ),
     });
   }

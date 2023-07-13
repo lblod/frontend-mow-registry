@@ -34,7 +34,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
 
       this.router.transitionTo(
         'traffic-light-concepts.traffic-light-concept',
-        changeset.id
+        changeset.id,
       );
     }
   });

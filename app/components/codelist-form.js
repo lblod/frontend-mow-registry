@@ -35,7 +35,7 @@ export default class CodelistFormComponent extends Component {
   fetchCodelistTypes = task(async () => {
     const typesScheme = await this.store.findRecord(
       'concept-scheme',
-      COD_CONCEPT_SCHEME_ID
+      COD_CONCEPT_SCHEME_ID,
     );
     const types = await typesScheme.concepts;
     this.codelistTypes = types;
@@ -43,7 +43,7 @@ export default class CodelistFormComponent extends Component {
       this.selectedType = this.args.codelist.type;
     } else {
       this.selectedType = this.codelistTypes.find(
-        (type) => type.id === COD_SINGLE_SELECT_ID
+        (type) => type.id === COD_SINGLE_SELECT_ID,
       );
     }
   });
@@ -117,7 +117,7 @@ export default class CodelistFormComponent extends Component {
 
       this.router.transitionTo(
         'codelists-management.codelist',
-        this.args.codelist.id
+        this.args.codelist.id,
       );
     }
   }

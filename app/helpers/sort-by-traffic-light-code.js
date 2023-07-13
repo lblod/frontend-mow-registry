@@ -14,7 +14,7 @@ export default helper(function sortByTrafficLightCode([trafficLightConcepts]) {
       undefined,
       {
         numeric: true,
-      }
+      },
     );
   });
 });

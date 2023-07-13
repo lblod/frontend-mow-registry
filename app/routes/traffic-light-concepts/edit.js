@@ -9,7 +9,7 @@ export default class TrafficLightConceptsEditRoute extends Route {
     return hash({
       trafficLightConcept: this.store.findRecord(
         'traffic-light-concept',
-        params.id
+        params.id,
       ),
     });
   }

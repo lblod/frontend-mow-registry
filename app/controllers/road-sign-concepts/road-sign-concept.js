@@ -279,7 +279,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   addInstruction() {
     this.router.transitionTo(
       'road-sign-concepts.road-sign-concept.instruction',
-      'new'
+      'new',
     );
   }
 
@@ -287,14 +287,14 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   editInstruction(template) {
     this.router.transitionTo(
       'road-sign-concepts.road-sign-concept.instruction',
-      template.id
+      template.id,
     );
   }
 
   get hasActiveChildRoute() {
     return (
       this.router.currentRouteName.startsWith(
-        'road-sign-concepts.road-sign-concept'
+        'road-sign-concepts.road-sign-concept',
       ) &&
       this.router.currentRouteName !==
         'road-sign-concepts.road-sign-concept.index'

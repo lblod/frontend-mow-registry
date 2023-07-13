@@ -123,7 +123,7 @@ export default class AddInstructionComponent extends Component {
             variable: reg[1],
             type: 'text',
             expects: this.nodeShape,
-          })
+          }),
         );
       }
     });
@@ -133,7 +133,7 @@ export default class AddInstructionComponent extends Component {
     this.mappings.forEach((mapping) => {
       if (
         !filteredMappings.find(
-          (fMapping) => fMapping.variable === mapping.variable
+          (fMapping) => fMapping.variable === mapping.variable,
         )
       ) {
         filteredMappings.push(mapping);
@@ -180,12 +180,12 @@ export default class AddInstructionComponent extends Component {
 
     this.template.annotated = await includeMappings(
       this.template.value,
-      this.mappings
+      this.mappings,
     );
 
     await this.template.save();
     await Promise.all(
-      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
+      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord()),
     );
 
     this.reset();
