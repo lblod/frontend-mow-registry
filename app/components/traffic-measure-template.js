@@ -28,7 +28,7 @@ export default class TrafficMeasureTemplateComponent extends Component {
           '</span>';
         preview = preview.replaceAll(
           '${' + mapping.variable + '}',
-          replaceString
+          replaceString,
         );
       }
     }

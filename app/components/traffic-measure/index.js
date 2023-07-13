@@ -110,7 +110,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     const relations = await this.trafficMeasureConcept.orderedRelations;
 
     this.signs = await Promise.all(
-      relations.map((relation) => relation.concept)
+      relations.map((relation) => relation.concept),
     );
 
     await this.fetchInstructions.perform();
@@ -139,7 +139,7 @@ export default class TrafficMeasureIndexComponent extends Component {
       if (this.inputTypes.indexOf(this.instructionType) != -1) {
         this.inputTypes.splice(
           this.inputTypes.indexOf(this.instructionType),
-          1
+          1,
         );
       }
       this.mappings.forEach((e) => {
@@ -251,7 +251,7 @@ export default class TrafficMeasureIndexComponent extends Component {
             variable: reg[1],
             type: 'text',
             expects: this.nodeShape,
-          })
+          }),
         );
       }
     });
@@ -261,7 +261,7 @@ export default class TrafficMeasureIndexComponent extends Component {
     this.mappings.forEach((mapping) => {
       if (
         !filteredMappings.find(
-          (fMapping) => fMapping.variable === mapping.variable
+          (fMapping) => fMapping.variable === mapping.variable,
         )
       ) {
         filteredMappings.push(mapping);
@@ -310,7 +310,7 @@ export default class TrafficMeasureIndexComponent extends Component {
           '</span>';
         this.preview = this.preview.replaceAll(
           '${' + mapping.variable + '}',
-          replaceString
+          replaceString,
         );
       }
     }
@@ -349,7 +349,7 @@ export default class TrafficMeasureIndexComponent extends Component {
       await this.trafficMeasureConcept.save();
       const trafficMeasureResource = await this.store.findRecord(
         'resource',
-        TRAFFIC_MEASURE_RESOURCE_UUID
+        TRAFFIC_MEASURE_RESOURCE_UUID,
       );
       const nodeShape = this.store.createRecord('node-shape');
       nodeShape.targetClass = trafficMeasureResource;
@@ -400,7 +400,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   saveMappings = task(async (template) => {
     //destroy old ones
     await Promise.all(
-      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
+      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord()),
     );
 
     //create new ones
@@ -415,7 +415,7 @@ export default class TrafficMeasureIndexComponent extends Component {
   annotateRdfa = task(async (template) => {
     const contentWithMappings = await includeMappings(
       template.value,
-      this.mappings
+      this.mappings,
     );
     template.annotated = `
       <div property="dct:description">

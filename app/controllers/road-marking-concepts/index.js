@@ -18,7 +18,7 @@ export default class RoadmarkingConceptsIndexController extends Controller {
 
       this[queryParamProperty] = event.target.value;
       this.resetPagination();
-    }
+    },
   );
 
   /**

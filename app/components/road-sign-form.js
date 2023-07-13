@@ -29,7 +29,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent {
 
       this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
-        changeset.id
+        changeset.id,
       );
     }
   });

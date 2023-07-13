@@ -48,22 +48,22 @@ export default async function includeMappings(html, mappings) {
       const codeListUri = codeList.uri;
       finalHtml = finalHtml.replaceAll(
         `\${${mapping.variable}}`,
-        generateCodelistTemplate(mapping.uri, mapping.variable, codeListUri)
+        generateCodelistTemplate(mapping.uri, mapping.variable, codeListUri),
       );
     } else if (mapping.type === 'location') {
       finalHtml = finalHtml.replaceAll(
         `\${${mapping.variable}}`,
-        generateLocationTemplate(mapping.uri, mapping.variable)
+        generateLocationTemplate(mapping.uri, mapping.variable),
       );
     } else if (mapping.type === 'date') {
       finalHtml = finalHtml.replaceAll(
         `\${${mapping.variable}}`,
-        generateDateTemplate(mapping.uri, mapping.variable)
+        generateDateTemplate(mapping.uri, mapping.variable),
       );
     } else {
       finalHtml = finalHtml.replaceAll(
         `\${${mapping.variable}}`,
-        generateTextTemplate(mapping.uri, mapping.variable)
+        generateTextTemplate(mapping.uri, mapping.variable),
       );
     }
   }

@@ -33,7 +33,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   get hasActiveChildRoute() {
     return (
       this.router.currentRouteName.startsWith(
-        'road-marking-concepts.road-marking-concept'
+        'road-marking-concepts.road-marking-concept',
       ) &&
       this.router.currentRouteName !==
         'road-marking-concepts.road-marking-concept.index'
@@ -191,7 +191,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   addInstruction() {
     this.router.transitionTo(
       'road-marking-concepts.road-marking-concept.instruction',
-      'new'
+      'new',
     );
   }
 
@@ -199,7 +199,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   editInstruction(template) {
     this.router.transitionTo(
       'road-marking-concepts.road-marking-concept.instruction',
-      template.id
+      template.id,
     );
   }
 

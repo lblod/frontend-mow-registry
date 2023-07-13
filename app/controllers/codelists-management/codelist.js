@@ -12,7 +12,7 @@ export default class CodelistController extends Controller {
     event.preventDefault();
 
     await Promise.all(
-      this.model.codelist.concepts.map((option) => option.destroyRecord())
+      this.model.codelist.concepts.map((option) => option.destroyRecord()),
     );
 
     await this.model.codelist.destroyRecord();

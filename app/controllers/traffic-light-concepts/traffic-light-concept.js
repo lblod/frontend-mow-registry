@@ -178,7 +178,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   addInstruction() {
     this.router.transitionTo(
       'traffic-light-concepts.traffic-light-concept.instruction',
-      'new'
+      'new',
     );
   }
 
@@ -191,14 +191,14 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @action editInstruction(template) {
     this.router.transitionTo(
       'traffic-light-concepts.traffic-light-concept.instruction',
-      template.id
+      template.id,
     );
   }
 
   get hasActiveChildRoute() {
     return (
       this.router.currentRouteName.startsWith(
-        'traffic-light-concepts.traffic-light-concept'
+        'traffic-light-concepts.traffic-light-concept',
       ) &&
       this.router.currentRouteName !==
         'traffic-light-concepts.traffic-light-concept.index'

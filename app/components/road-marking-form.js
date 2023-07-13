@@ -29,7 +29,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
 
       this.router.transitionTo(
         'road-marking-concepts.road-marking-concept',
-        changeset.id
+        changeset.id,
       );
     }
   });

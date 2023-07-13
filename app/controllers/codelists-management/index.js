@@ -16,7 +16,7 @@ export default class CodelistsManagementIndexController extends Controller {
 
       this[queryParamProperty] = event.target.value;
       this.resetPagination();
-    }
+    },
   );
 
   /**
