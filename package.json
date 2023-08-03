@@ -35,7 +35,7 @@
     "@glimmer/tracking": "^1.1.2",
     "@lblod/ember-environment-banner": "^0.2.0",
     "@lblod/ember-mock-login": "^0.7.0",
-    "@release-it-plugins/lerna-changelog": "^5.0.0",
+    "@release-it-plugins/lerna-changelog": "^6.0.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-auto-import": "^2.4.3",
     "ember-changeset": "^4.0.0",
