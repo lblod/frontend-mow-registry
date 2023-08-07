@@ -15,7 +15,7 @@ export default class RoadmarkingConcept extends Route {
     const model = await hash({
       roadMarkingConcept: this.store.findRecord(
         'road-marking-concept',
-        params.id
+        params.id,
       ),
       allRoadMarkings: this.store.query('road-marking-concept', {
         page: {
@@ -38,7 +38,7 @@ export default class RoadmarkingConcept extends Route {
     model.roadMarkingConcept.relatedRoadMarkingConcepts
       .addObjects(await model.roadMarkingConcept.relatedToRoadMarkingConcepts)
       .addObjects(
-        await model.roadMarkingConcept.relatedFromRoadMarkingConcepts
+        await model.roadMarkingConcept.relatedFromRoadMarkingConcepts,
       );
 
     return model;

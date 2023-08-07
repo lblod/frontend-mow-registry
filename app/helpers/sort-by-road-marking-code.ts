@@ -18,7 +18,7 @@ export default helper(function sortByRoadMarkingCode([roadMarkingConcepts]: [
       undefined,
       {
         numeric: true,
-      }
+      },
     );
   });
 });

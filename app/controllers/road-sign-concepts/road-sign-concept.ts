@@ -55,44 +55,44 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   get subSigns() {
-    if (!this.subSignCodeFilter.trim()) {
+    if (!this.subSignCodeFilter) {
       return this.model.allSubSigns;
     }
 
     return this.model.allSubSigns.filter((subSign) => {
       return subSign.roadSignConceptCode
         ?.toLowerCase()
-        .includes(this.subSignCodeFilter.toLowerCase().trim());
+        .includes(this.subSignCodeFilter.toLowerCase());
     });
   }
 
   get roadMarkings() {
-    if (!this.relatedRoadMarkingCodeFilter.trim()) {
+    if (!this.relatedRoadMarkingCodeFilter) {
       return this.model.allRoadMarkings;
     }
 
     return this.model.allRoadMarkings.filter((roadMarking) => {
       return roadMarking.definition
         ?.toLowerCase()
-        .includes(this.relatedRoadMarkingCodeFilter.toLowerCase().trim());
+        .includes(this.relatedRoadMarkingCodeFilter.toLowerCase());
     });
   }
 
   get trafficLights() {
-    if (!this.relatedTrafficLightCodeFilter.trim()) {
+    if (!this.relatedTrafficLightCodeFilter) {
       return this.model.allTrafficLights;
     }
 
     return this.model.allTrafficLights.filter((trafficLight) => {
       return trafficLight.definition
         ?.toLowerCase()
-        .includes(this.relatedTrafficLightCodeFilter.toLowerCase().trim());
+        .includes(this.relatedTrafficLightCodeFilter.toLowerCase());
     });
   }
 
   @action
   setSubSignCodeFilter(event: InputEvent) {
-    this.subSignCodeFilter = (event.target as HTMLInputElement).value.trim();
+    this.subSignCodeFilter = (event.target as HTMLInputElement).value;
   }
 
   addSubSign = task(async (subSign) => {
@@ -111,21 +111,21 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   @action
   setMainSignCodeFilter(event: InputEvent) {
-    this.mainSignCodeFilter = (event.target as HTMLInputElement).value.trim();
+    this.mainSignCodeFilter = (event.target as HTMLInputElement).value;
   }
 
   @action
   setRelatedRoadMarkingCodeFilter(event: InputEvent) {
     this.relatedRoadMarkingCodeFilter = (
       event.target as HTMLInputElement
-    ).value.trim();
+    ).value;
   }
 
   @action
   setRelatedTrafficLightCodeFilter(event: InputEvent) {
     this.relatedTrafficLightCodeFilter = (
       event.target as HTMLInputElement
-    ).value.trim();
+    ).value;
   }
 
   addMainSign = task(async (mainSign: RoadSignConceptModel) => {
@@ -304,7 +304,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   async addInstruction() {
     await this.router.transitionTo(
       'road-sign-concepts.road-sign-concept.instruction',
-      'new'
+      'new',
     );
   }
 
@@ -312,7 +312,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   async editInstruction(template: TemplateModel) {
     await this.router.transitionTo(
       'road-sign-concepts.road-sign-concept.instruction',
-      template.id
+      template.id,
     );
   }
 
@@ -322,7 +322,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
       //@ts-expect-error for some reason, the currentRouteName property is not included in the types
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       this.router.currentRouteName.startsWith(
-        'road-sign-concepts.road-sign-concept'
+        'road-sign-concepts.road-sign-concept',
       ) &&
       //@ts-expect-error for some reason, the currentRouteName property is not included in the types
       this.router.currentRouteName !==

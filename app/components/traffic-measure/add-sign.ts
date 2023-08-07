@@ -26,7 +26,7 @@ export default class TrafficMeasureAddSignComponent extends Component<Args> {
 
     const options = await this.store.query(
       this.args.selectedType.modelName,
-      queryParams
+      queryParams,
     );
     return options;
   });

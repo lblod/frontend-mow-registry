@@ -5,6 +5,27 @@
 
 
 
+
+## 1.2.0 (2023-06-22)
+
+#### :house: Internal
+* [#158](https://github.com/lblod/frontend-mow-registry/pull/158) Bump ember-resources from 5.6.4 to 6.1.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#157](https://github.com/lblod/frontend-mow-registry/pull/157) Bump ember-cli-dependency-checker from 3.3.1 to 3.3.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#159](https://github.com/lblod/frontend-mow-registry/pull/159) Bump @appuniversum/ember-appuniversum from 2.5.0 to 2.7.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#160](https://github.com/lblod/frontend-mow-registry/pull/160) Bump eslint-plugin-ember from 11.4.6 to 11.8.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#161](https://github.com/lblod/frontend-mow-registry/pull/161) Bump webpack from 5.86.0 to 5.87.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#151](https://github.com/lblod/frontend-mow-registry/pull/151) Bump ember-power-select from 6.0.1 to 7.0.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#149](https://github.com/lblod/frontend-mow-registry/pull/149) Bump sass from 1.58.0 to 1.63.3 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#153](https://github.com/lblod/frontend-mow-registry/pull/153) Bump webpack from 5.75.0 to 5.86.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#155](https://github.com/lblod/frontend-mow-registry/pull/155) Bump socket.io-parser from 4.2.2 to 4.2.4 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#152](https://github.com/lblod/frontend-mow-registry/pull/152) Bump ember-cli-sass from 10.0.1 to 11.0.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#154](https://github.com/lblod/frontend-mow-registry/pull/154) Bump vm2 from 3.9.14 to 3.9.19 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#150](https://github.com/lblod/frontend-mow-registry/pull/150) Bump minimist from 0.2.2 to 0.2.4 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 2
+- Jan-Pieter Baert ([@Jan-PieterBaert](https://github.com/Jan-PieterBaert))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+
 ## 1.1.0 (2023-05-31)
 
 #### :rocket: Enhancement

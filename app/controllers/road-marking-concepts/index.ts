@@ -18,9 +18,9 @@ export default class RoadmarkingConceptsIndexController extends Controller {
 
       this[queryParamProperty] = (
         event.target as HTMLInputElement
-      ).value.trim();
+      ).value;
       this.resetPagination();
-    }
+    },
   );
 
   @action onPageChange(newPage: number) {

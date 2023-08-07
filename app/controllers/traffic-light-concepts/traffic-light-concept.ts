@@ -45,26 +45,26 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   }
 
   get trafficLights() {
-    if (!this.relatedTrafficLightCodeFilter.trim()) {
+    if (!this.relatedTrafficLightCodeFilter) {
       return this.model.allTrafficLights;
     }
 
     return this.model.allTrafficLights.filter((trafficLight) => {
       return trafficLight.definition
         ?.toLowerCase()
-        .includes(this.relatedTrafficLightCodeFilter.toLowerCase().trim());
+        .includes(this.relatedTrafficLightCodeFilter.toLowerCase());
     });
   }
 
   get roadMarkings() {
-    if (!this.relatedRoadMarkingCodeFilter.trim()) {
+    if (!this.relatedRoadMarkingCodeFilter) {
       return this.model.allRoadMarkings;
     }
 
     return this.model.allRoadMarkings.filter((roadMarking) => {
       return roadMarking.definition
         ?.toLowerCase()
-        .includes(this.relatedRoadMarkingCodeFilter.toLowerCase().trim());
+        .includes(this.relatedRoadMarkingCodeFilter.toLowerCase());
     });
   }
 
@@ -72,7 +72,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   setRelatedTrafficLightCodeFilter(event: InputEvent) {
     this.relatedTrafficLightCodeFilter = (
       event.target as HTMLInputElement
-    ).value.trim();
+    ).value;
   }
 
   addRelatedTrafficLight = task(async (relatedTrafficLight) => {
@@ -160,7 +160,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   setRelatedRoadMarkingCodeFilter(event: InputEvent) {
     this.relatedRoadMarkingCodeFilter = (
       event.target as HTMLInputElement
-    ).value.trim();
+    ).value;
   }
 
   @action
@@ -200,7 +200,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   async addInstruction() {
     await this.router.transitionTo(
       'traffic-light-concepts.traffic-light-concept.instruction',
-      'new'
+      'new',
     );
   }
 
@@ -215,7 +215,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   @action async editInstruction(template: TemplateModel) {
     await this.router.transitionTo(
       'traffic-light-concepts.traffic-light-concept.instruction',
-      template.id
+      template.id,
     );
   }
 

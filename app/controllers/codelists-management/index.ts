@@ -16,9 +16,9 @@ export default class CodelistsManagementIndexController extends Controller {
 
       this[queryParamProperty] = (
         event.target as HTMLInputElement
-      ).value.trim();
+      ).value;
       this.resetPagination();
-    }
+    },
   );
 
   @action onPageChange(newPage: number) {

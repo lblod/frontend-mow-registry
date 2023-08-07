@@ -135,7 +135,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     const relations = await this.trafficMeasureConcept.getOrderedRelations();
 
     this.signs = await Promise.all(
-      relations.map((relation) => relation.concept)
+      relations.map((relation) => relation.concept),
     );
 
     await this.fetchInstructions.perform();
@@ -161,7 +161,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       if (this.inputTypes.indexOf(this.instructionType) != -1) {
         this.inputTypes.splice(
           this.inputTypes.indexOf(this.instructionType),
-          1
+          1,
         );
       }
       for (const mapping of this.mappings) {
@@ -306,7 +306,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     this.mappings.forEach((mapping) => {
       if (
         !filteredMappings.find(
-          (fMapping) => fMapping.variable === mapping.variable
+          (fMapping) => fMapping.variable === mapping.variable,
         )
       ) {
         filteredMappings.push(mapping);
@@ -358,7 +358,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
           '</span>';
         this.preview = this.preview.replaceAll(
           '${' + (mapping.variable ?? '') + '}',
-          replaceString
+          replaceString,
         );
       }
     }
@@ -399,7 +399,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       await this.trafficMeasureConcept.save();
       const trafficMeasureResource = await this.store.findRecord(
         'resource',
-        TRAFFIC_MEASURE_RESOURCE_UUID
+        TRAFFIC_MEASURE_RESOURCE_UUID,
       );
       const nodeShape = this.store.createRecord('node-shape');
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
@@ -455,7 +455,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   saveMappings = task(async (template: TemplateModel) => {
     //destroy old ones
     await Promise.all(
-      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord())
+      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord()),
     );
 
     //create new ones

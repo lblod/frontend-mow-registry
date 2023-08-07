@@ -24,9 +24,9 @@ export default class RoadsignConceptsIndexController extends Controller {
 
       this[queryParamProperty] = (
         event.target as HTMLInputElement
-      ).value.trim();
+      ).value;
       this.resetPagination();
-    }
+    },
   );
 
   get selectedCategory() {

@@ -18,7 +18,7 @@ export default helper(function sortByRoadSignCode([roadSignConcepts]: [
       undefined,
       {
         numeric: true,
-      }
+      },
     );
   });
 });

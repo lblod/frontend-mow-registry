@@ -25,12 +25,12 @@ export default class ZonalitySelectorComponent extends Component<Args> {
   fetchZonalities = task(async () => {
     const conceptScheme = await this.store.findRecord(
       'concept-scheme',
-      ZON_CONCEPT_SCHEME_ID
+      ZON_CONCEPT_SCHEME_ID,
     );
     this.zonalities = await conceptScheme.concepts;
     if (!this.args.zonality) {
       const defaultZonality = this.zonalities.find(
-        (zonality) => zonality.id == ZON_NON_ZONAL_ID
+        (zonality) => zonality.id == ZON_NON_ZONAL_ID,
       );
       this.args.onChange(defaultZonality);
     }

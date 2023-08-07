@@ -8,7 +8,7 @@ export default class TrafficMeasureConceptsNewRoute extends Route {
   model() {
     const template = this.store.createRecord('template');
     const trafficMeasureConcept = this.store.createRecord(
-      'traffic-measure-concept'
+      'traffic-measure-concept',
     );
 
     template.value = '';

@@ -33,7 +33,7 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
           '</span>';
         preview = preview.replaceAll(
           '${' + (mapping.variable ?? '') + '}',
-          replaceString
+          replaceString,
         );
       }
     }
