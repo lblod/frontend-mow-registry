@@ -14,7 +14,7 @@ export default class TrafficLightConceptsTrafficLightConceptInstructionRoute ext
 
   model(params: Params) {
     const parentModel = this.modelFor(
-      'traffic-light-concepts.traffic-light-concept'
+      'traffic-light-concepts.traffic-light-concept',
     ) as ModelFrom<TrafficlightConcept>;
     const concept = parentModel.trafficLightConcept;
     if (params.instruction_id === 'new') {

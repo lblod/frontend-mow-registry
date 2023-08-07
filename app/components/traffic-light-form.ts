@@ -24,7 +24,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   setTrafficLightConceptValue(
     changeset: BufferedChangeset,
     attributeName: string,
-    event: InputEvent
+    event: InputEvent,
   ) {
     changeset[attributeName] = (event.target as HTMLInputElement).value;
   }
@@ -41,10 +41,10 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
 
         await this.router.transitionTo(
           'traffic-light-concepts.traffic-light-concept',
-          changeset.id
+          changeset.id,
         );
       }
-    }
+    },
   );
 
   willDestroy() {

@@ -11,7 +11,7 @@ import { BufferedChangeset } from 'ember-changeset/types';
  *   the URL format is often used with digital asset management tools.
  */
 export default class ImageUploadHandlerComponent<
-  T = unknown
+  T = unknown,
 > extends Component<T> {
   @service declare fileService: FileService;
 

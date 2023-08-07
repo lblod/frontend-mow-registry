@@ -16,9 +16,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
     async (queryParamProperty: 'code', event: InputEvent) => {
       await timeout(300);
 
-      this[queryParamProperty] = (
-        event.target as HTMLInputElement
-      ).value;
+      this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();
     },
   );

@@ -153,7 +153,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
 
       await relatedTrafficLight.save();
       await this.model.trafficLightConcept.save();
-    }
+    },
   );
 
   @action
@@ -187,13 +187,13 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   removeTrafficLightConcept = task(
     async (
       trafficLightConcept: TrafficLightConceptModel,
-      event: InputEvent
+      event: InputEvent,
     ) => {
       event.preventDefault();
 
       await trafficLightConcept.destroyRecord();
       await this.router.transitionTo('traffic-light-concepts');
-    }
+    },
   );
 
   @action
@@ -224,7 +224,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     return (
       //@ts-expect-error for some reason, the currentRouteName property is not included in the types
       (this.router.currentRouteName as string).startsWith(
-        'traffic-light-concepts.traffic-light-concept'
+        'traffic-light-concepts.traffic-light-concept',
       ) &&
       //@ts-expect-error for some reason, the currentRouteName property is not included in the types
       this.router.currentRouteName !==

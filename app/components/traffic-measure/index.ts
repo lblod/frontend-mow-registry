@@ -226,7 +226,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   @action
   async updateMappingType(
     mapping: MappingModel,
-    selectedType: InputType | string
+    selectedType: InputType | string,
   ) {
     mapping.type =
       typeof selectedType === 'string' ? selectedType : selectedType.value;
@@ -296,7 +296,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
             type: 'text',
             //TODO: this.nodeShape does not seem to be defined
             // expects: this.nodeShape,
-          })
+          }),
         );
       }
     });
@@ -375,13 +375,13 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     const template = (await this.trafficMeasureConcept.templates).firstObject;
     if (template) {
       (await template.mappings).forEach(
-        (mapping) => void mapping.destroyRecord()
+        (mapping) => void mapping.destroyRecord(),
       );
       await template.destroyRecord();
     }
 
     (await this.trafficMeasureConcept.relations).forEach(
-      (relation) => void relation.destroyRecord()
+      (relation) => void relation.destroyRecord(),
     );
 
     await this.trafficMeasureConcept.destroyRecord();
@@ -391,7 +391,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   save = task(async () => {
     // We assume a measure only has one template
     const template = unwrap(
-      (await this.trafficMeasureConcept.templates).firstObject
+      (await this.trafficMeasureConcept.templates).firstObject,
     );
 
     //if new save relationships
@@ -449,7 +449,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
         await mustUseRelation.save();
       }
       await trafficMeasureConcept.save();
-    }
+    },
   );
 
   saveMappings = task(async (template: TemplateModel) => {
@@ -470,7 +470,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   annotateRdfa = task(async (template: TemplateModel) => {
     const contentWithMappings = await includeMappings(
       template.value ?? '',
-      this.mappings
+      this.mappings,
     );
     template.annotated = `
       <div property="dct:description">

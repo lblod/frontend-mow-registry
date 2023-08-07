@@ -12,7 +12,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptInstructionRoute exten
   @service declare store: Store;
   async model(params: Params) {
     const parentModel = this.modelFor(
-      'road-marking-concepts.road-marking-concept'
+      'road-marking-concepts.road-marking-concept',
     ) as ModelFrom<RoadmarkingConcept>;
     const concept = parentModel.roadMarkingConcept;
     if (params.instruction_id === 'new') {

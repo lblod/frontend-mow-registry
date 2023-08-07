@@ -14,7 +14,7 @@ export default class RoadSignConceptsRoadSignConceptInstructionRoute extends Rou
 
   async model(params: Params) {
     const parentModel = this.modelFor(
-      PARENT_ROUTE
+      PARENT_ROUTE,
     ) as ModelFrom<RoadsignConcept>;
     const concept = parentModel.roadSignConcept;
     if (params.instruction_id === 'new') {

@@ -42,7 +42,7 @@ export default class RoadmarkingConceptsIndexRoute extends Route {
     return hash({
       roadMarkingConcepts: await this.store.query(
         'road-marking-concept',
-        query
+        query,
       ),
     });
   }

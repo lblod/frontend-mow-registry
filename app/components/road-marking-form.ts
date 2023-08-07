@@ -24,7 +24,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   setRoadMarkingConceptValue(
     changeset: BufferedChangeset,
     attributeName: string,
-    event: InputEvent
+    event: InputEvent,
   ) {
     changeset[attributeName] = (event.target as HTMLInputElement).value;
   }
@@ -41,10 +41,10 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
 
         await this.router.transitionTo(
           'road-marking-concepts.road-marking-concept',
-          changeset.id
+          changeset.id,
         );
       }
-    }
+    },
   );
 
   willDestroy() {

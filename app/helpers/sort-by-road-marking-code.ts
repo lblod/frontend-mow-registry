@@ -6,7 +6,7 @@ import { unwrap } from 'mow-registry/utils/option';
  * Sort an array of road-marking-concepts numerically based on their roadMarkingConceptCode
  */
 export default helper(function sortByRoadMarkingCode([roadMarkingConcepts]: [
-  RoadMarkingConceptModel[]
+  RoadMarkingConceptModel[],
 ]) {
   if (!roadMarkingConcepts) {
     return [];

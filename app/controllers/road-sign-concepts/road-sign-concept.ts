@@ -175,7 +175,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
       await relatedRoadSign.save();
       await this.model.roadSignConcept.save();
-    }
+    },
   );
 
   addRelatedRoadMarking = task(
@@ -184,7 +184,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
         .relatedRoadMarkingConcepts;
       relatedRoadMarkings.pushObject(relatedRoadMarking);
       await relatedRoadMarking.save();
-    }
+    },
   );
 
   removeRelatedRoadMarking = task(
@@ -193,7 +193,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
         .relatedRoadMarkingConcepts;
       relatedRoadMarkings.removeObject(relatedRoadMarking);
       await relatedRoadMarking.save();
-    }
+    },
   );
 
   addRelatedTrafficLight = task(
@@ -203,7 +203,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
       relatedTrafficLights.pushObject(relatedTrafficLight);
       await this.model.roadSignConcept.save();
-    }
+    },
   );
 
   removeRelatedTrafficLight = task(async (relatedTrafficLight) => {
@@ -297,7 +297,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
       await roadSignConcept.destroyRecord();
       await this.router.transitionTo('road-sign-concepts');
-    }
+    },
   );
 
   @action

@@ -14,9 +14,7 @@ export default class CodelistsManagementIndexController extends Controller {
     async (queryParamProperty: 'label', event: InputEvent) => {
       await timeout(300);
 
-      this[queryParamProperty] = (
-        event.target as HTMLInputElement
-      ).value;
+      this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();
     },
   );

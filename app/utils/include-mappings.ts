@@ -42,7 +42,7 @@ function generateDateTemplate(uri: string, name: string) {
 
 export default async function includeMappings(
   html: string,
-  mappings: MappingModel[]
+  mappings: MappingModel[],
 ) {
   let finalHtml = html;
   for (const mapping of mappings) {
@@ -56,23 +56,23 @@ export default async function includeMappings(
         generateCodelistTemplate(
           unwrap(mapping.uri),
           unwrap(mapping.variable),
-          unwrap(codeListUri)
-        )
+          unwrap(codeListUri),
+        ),
       );
     } else if (mapping.type === 'location') {
       finalHtml = finalHtml.replaceAll(
         `\${${unwrap(mapping.variable)}}`,
-        generateLocationTemplate(unwrap(mapping.uri), unwrap(mapping.variable))
+        generateLocationTemplate(unwrap(mapping.uri), unwrap(mapping.variable)),
       );
     } else if (mapping.type === 'date') {
       finalHtml = finalHtml.replaceAll(
         `\${${unwrap(mapping.variable)}}`,
-        generateDateTemplate(unwrap(mapping.uri), unwrap(mapping.variable))
+        generateDateTemplate(unwrap(mapping.uri), unwrap(mapping.variable)),
       );
     } else {
       finalHtml = finalHtml.replaceAll(
         `\${${unwrap(mapping.variable)}}`,
-        generateTextTemplate(unwrap(mapping.uri), unwrap(mapping.variable))
+        generateTextTemplate(unwrap(mapping.uri), unwrap(mapping.variable)),
       );
     }
   }

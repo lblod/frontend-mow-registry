@@ -22,9 +22,7 @@ export default class RoadsignConceptsIndexController extends Controller {
     async (queryParamProperty: 'category' | 'meaning', event: InputEvent) => {
       await timeout(300);
 
-      this[queryParamProperty] = (
-        event.target as HTMLInputElement
-      ).value;
+      this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();
     },
   );

@@ -45,7 +45,7 @@ export default class CodelistFormComponent extends Component<Args> {
   fetchCodelistTypes = task(async () => {
     const typesScheme = await this.store.findRecord(
       'concept-scheme',
-      COD_CONCEPT_SCHEME_ID
+      COD_CONCEPT_SCHEME_ID,
     );
     const types = await typesScheme.concepts;
     this.codelistTypes = types;
@@ -53,7 +53,7 @@ export default class CodelistFormComponent extends Component<Args> {
       this.selectedType = await this.args.codelist.type;
     } else {
       this.selectedType = this.codelistTypes.find(
-        (type) => type.id === COD_SINGLE_SELECT_ID
+        (type) => type.id === COD_SINGLE_SELECT_ID,
       );
     }
   });
@@ -62,7 +62,7 @@ export default class CodelistFormComponent extends Component<Args> {
   setCodelistValue(
     codelist: BufferedChangeset,
     attributeName: string,
-    event: InputEvent
+    event: InputEvent,
   ) {
     codelist[attributeName] = (event.target as HTMLInputElement).value;
   }
@@ -104,16 +104,16 @@ export default class CodelistFormComponent extends Component<Args> {
 
       if (codelist.isValid) {
         await Promise.all(
-          this.toDelete.map((option) => option.destroyRecord())
+          this.toDelete.map((option) => option.destroyRecord()),
         );
         await codelist.save();
         await Promise.all(this.options.map((option) => option.save()));
         await this.router.transitionTo(
           'codelists-management.codelist',
-          codelist.id
+          codelist.id,
         );
       }
-    }
+    },
   );
 
   @action
@@ -142,7 +142,7 @@ export default class CodelistFormComponent extends Component<Args> {
 
       await this.router.transitionTo(
         'codelists-management.codelist',
-        this.args.codelist.id
+        this.args.codelist.id,
       );
     }
   }

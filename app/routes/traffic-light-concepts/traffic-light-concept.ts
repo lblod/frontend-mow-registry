@@ -44,7 +44,7 @@ export default class TrafficlightConcept extends Route {
   }
 
   resetController(
-    controller: TrafficLightConceptsTrafficLightConceptController
+    controller: TrafficLightConceptsTrafficLightConceptController,
   ) {
     controller.reset();
   }

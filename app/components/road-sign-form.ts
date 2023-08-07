@@ -23,7 +23,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   @action
   setRoadSignConceptCategory(
     changeset: BufferedChangeset,
-    selection: RoadSignCategoryModel[]
+    selection: RoadSignCategoryModel[],
   ) {
     changeset.categories = selection;
   }
@@ -40,10 +40,10 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
         await this.router.transitionTo(
           'road-sign-concepts.road-sign-concept',
-          changeset.id
+          changeset.id,
         );
       }
-    }
+    },
   );
 
   willDestroy() {

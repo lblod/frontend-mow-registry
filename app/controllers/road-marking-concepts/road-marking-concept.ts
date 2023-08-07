@@ -47,7 +47,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
       //@ts-expect-error for some reason, the currentRouteName property is not included in the types
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       this.router.currentRouteName.startsWith(
-        'road-marking-concepts.road-marking-concept'
+        'road-marking-concepts.road-marking-concept',
       ) &&
       //@ts-expect-error for some reason, the currentRouteName property is not included in the types
       this.router.currentRouteName !==
@@ -113,7 +113,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
       await relatedRoadMarking.save();
       await this.model.roadMarkingConcept.save();
-    }
+    },
   );
 
   addRelatedRoadSign = task(async (relatedRoadSign) => {
@@ -137,7 +137,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
       }
 
       await this.model.roadMarkingConcept.save();
-    }
+    },
   );
 
   handleCategorySelection = task(async (category: RoadSignCategoryModel) => {
@@ -159,7 +159,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
       relatedTrafficLights.pushObject(relatedTrafficLight);
       await this.model.roadMarkingConcept.save();
-    }
+    },
   );
 
   removeRelatedTrafficLight = task(
@@ -170,7 +170,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
       relatedTrafficLights.removeObject(relatedTrafficLight);
 
       await this.model.roadMarkingConcept.save();
-    }
+    },
   );
 
   @action
@@ -214,14 +214,14 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
       await roadMarkingConcept.destroyRecord();
       await this.router.transitionTo('road-marking-concepts');
-    }
+    },
   );
 
   @action
   async addInstruction() {
     await this.router.transitionTo(
       'road-marking-concepts.road-marking-concept.instruction',
-      'new'
+      'new',
     );
   }
 
@@ -229,7 +229,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   async editInstruction(template: TemplateModel) {
     await this.router.transitionTo(
       'road-marking-concepts.road-marking-concept.instruction',
-      template.id
+      template.id,
     );
   }
 
