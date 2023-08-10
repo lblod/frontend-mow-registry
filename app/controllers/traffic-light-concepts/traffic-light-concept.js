@@ -40,7 +40,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
     return this.model.allTrafficLights.filter((trafficLight) => {
       return trafficLight.definition
-        .toLowerCase()
+        ?.toLowerCase()
         .includes(this.relatedTrafficLightCodeFilter.toLowerCase());
     });
   }
@@ -52,7 +52,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
     return this.model.allRoadMarkings.filter((roadMarking) => {
       return roadMarking.definition
-        .toLowerCase()
+        ?.toLowerCase()
         .includes(this.relatedRoadMarkingCodeFilter.toLowerCase());
     });
   }
