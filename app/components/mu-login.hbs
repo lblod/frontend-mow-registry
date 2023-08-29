@@ -4,9 +4,9 @@
       {{t "utility.username"}}&nbsp;
     </AuLabel>
     <AuInput
-      type="text"
+      @type="text"
       id="nickname"
-      {{on "input" (fn this.setNickname this.nickname)}}
+      {{on 'input' this.setNickname}}
     />
   </div>
   <div>
@@ -14,9 +14,9 @@
       {{t "utility.password"}}&nbsp;
     </AuLabel>
     <AuInput
-      type="password"
+      @type="password"
       id="password"
-      {{on "input" (fn this.setPassword this.password)}}
+      {{on 'input' this.setPassword}}
     />
   </div>
   <br>
