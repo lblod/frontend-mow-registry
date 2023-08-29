@@ -103,7 +103,6 @@
                             class="au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny"
                             src={{instruction.parentConcept.image}}
                             alt=""
-                            role="presentation"
                           />
                           <span title={{instruction.value}}>{{truncate instruction.value}}</span>
                         </div>
@@ -133,7 +132,7 @@
       </AuHeading>
       <div class="au-u-margin-bottom">
       {{#each this.signs as |sign|}}
-        <img src={{sign.image}} alt="" role="presentation" class="au-c-thumbnail">
+        <img src={{sign.image}} alt="" class="au-c-thumbnail">
       {{/each}}
       </div>
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">

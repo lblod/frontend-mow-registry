@@ -21,7 +21,7 @@
                       @skin="tertiary"
                       {{on
                         "click"
-                        (fn login.login account.id account.user.groups.firstObject.id)
+                        (fn login.login account.id (get account.user.groups "0.id"))
                       }}
                     >
                       <strong>
