@@ -6,6 +6,47 @@
 
 
 
+
+## 1.3.0 (2023-08-29)
+
+#### :bug: Bug Fix
+* [#194](https://github.com/lblod/frontend-mow-registry/pull/194) GN-4399: check if related road-marking or traffic-light has undefined definition ([@elpoelma](https://github.com/elpoelma))
+* [#163](https://github.com/lblod/frontend-mow-registry/pull/163) GN-4353: disable search field trimming ([@elpoelma](https://github.com/elpoelma))
+
+#### :house: Internal
+* [#202](https://github.com/lblod/frontend-mow-registry/pull/202) Bump ember-template-lint from 4.18.2 to 5.11.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#203](https://github.com/lblod/frontend-mow-registry/pull/203) Bump @babel/eslint-parser from 7.22.9 to 7.22.11 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#204](https://github.com/lblod/frontend-mow-registry/pull/204) Bump ember-concurrency from 3.0.0 to 3.1.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#200](https://github.com/lblod/frontend-mow-registry/pull/200) Bump @babel/plugin-proposal-decorators from 7.22.7 to 7.22.10 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#199](https://github.com/lblod/frontend-mow-registry/pull/199) Bump ember-resources from 6.1.0 to 6.4.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#205](https://github.com/lblod/frontend-mow-registry/pull/205) Bump semver from 5.7.1 to 5.7.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#147](https://github.com/lblod/frontend-mow-registry/pull/147) Convert source code to typescript ([@elpoelma](https://github.com/elpoelma))
+* [#198](https://github.com/lblod/frontend-mow-registry/pull/198) Bump webpack from 5.87.0 to 5.88.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#182](https://github.com/lblod/frontend-mow-registry/pull/182) Bump release-it from 15.6.0 to 16.0.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#191](https://github.com/lblod/frontend-mow-registry/pull/191) Bump ember-resolver from 10.1.1 to 11.0.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#192](https://github.com/lblod/frontend-mow-registry/pull/192) Bump ember-cli-app-version from 5.0.0 to 6.0.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#188](https://github.com/lblod/frontend-mow-registry/pull/188) Bump eslint-config-prettier from 8.6.0 to 8.8.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#190](https://github.com/lblod/frontend-mow-registry/pull/190) Bump @babel/eslint-parser from 7.22.6 to 7.22.9 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#186](https://github.com/lblod/frontend-mow-registry/pull/186) Bump word-wrap from 1.2.3 to 1.2.4 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#184](https://github.com/lblod/frontend-mow-registry/pull/184) Bump @babel/plugin-proposal-decorators from 7.20.13 to 7.22.7 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#185](https://github.com/lblod/frontend-mow-registry/pull/185) Bump eslint-plugin-ember from 11.8.0 to 11.10.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#176](https://github.com/lblod/frontend-mow-registry/pull/176) Bump prettier from 2.8.8 to 3.0.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#179](https://github.com/lblod/frontend-mow-registry/pull/179) Bump @bagaar/ember-breadcrumbs from 4.0.0 to 4.1.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#180](https://github.com/lblod/frontend-mow-registry/pull/180) Bump semver from 5.7.1 to 5.7.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#178](https://github.com/lblod/frontend-mow-registry/pull/178) Bump eslint-plugin-qunit from 7.3.4 to 8.0.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#173](https://github.com/lblod/frontend-mow-registry/pull/173) Bump eslint from 7.32.0 to 8.44.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#171](https://github.com/lblod/frontend-mow-registry/pull/171) Bump ember-mu-login from 2.0.1 to 2.0.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#174](https://github.com/lblod/frontend-mow-registry/pull/174) Bump ember-power-select from 7.0.0 to 7.1.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#172](https://github.com/lblod/frontend-mow-registry/pull/172) Bump prettier from 2.8.4 to 2.8.8 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#166](https://github.com/lblod/frontend-mow-registry/pull/166) Bump ember-concurrency from 2.3.7 to 3.0.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#168](https://github.com/lblod/frontend-mow-registry/pull/168) Bump ember-resolver from 8.1.0 to 10.1.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#169](https://github.com/lblod/frontend-mow-registry/pull/169) Bump @ember/test-helpers from 2.9.3 to 2.9.4 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#165](https://github.com/lblod/frontend-mow-registry/pull/165) Bump ember-qunit from 6.1.1 to 6.2.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 1
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+
+
 ## 1.2.0 (2023-06-22)
 
 #### :house: Internal
