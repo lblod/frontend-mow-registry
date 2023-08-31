@@ -7,6 +7,16 @@
 
 
 
+
+## 1.3.1 (2023-08-31)
+
+#### :bug: Bug Fix
+* [#206](https://github.com/lblod/frontend-mow-registry/pull/206) fix(mock-login): correctly pass groupId to login function ([@abeforgit](https://github.com/abeforgit))
+
+#### Committers: 1
+- Arne Bertrand ([@abeforgit](https://github.com/abeforgit))
+
+
 ## 1.3.0 (2023-08-29)
 
 #### :bug: Bug Fix
