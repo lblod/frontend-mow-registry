@@ -21,13 +21,24 @@ export default class MockLoginRoute extends Route {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     this.session.prohibitAuthentication('index');
   }
-
-  model(params: Params) {
+  async model(params: Params) {
     const filter = { provider: 'https://github.com/lblod/mock-login-service' };
-    return this.store.query('account', {
+    const accounts = await this.store.query('account', {
       include: 'user.groups',
       filter: filter,
       page: { size: 10, number: params.page },
     });
+    const promises = accounts.map(async (account) => {
+      const user = await account.user;
+
+      const group = (await user.groups).slice()[0];
+      return {
+        account,
+        user,
+        group,
+      };
+    });
+
+    return Promise.all(promises);
   }
 }
