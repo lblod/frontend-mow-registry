@@ -33,10 +33,10 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
     async (changeset: BufferedChangeset, event: InputEvent) => {
       event.preventDefault();
 
-      await this.saveImage(changeset);
       await changeset.validate();
 
       if (changeset.isValid) {
+        await this.saveImage(changeset);
         await changeset.save();
 
         await this.router.transitionTo(
