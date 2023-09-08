@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@appuniversum/ember-appuniversum": "^2.7.0",
-    "@babel/eslint-parser": "^7.22.11",
+    "@babel/eslint-parser": "^7.22.15",
     "@babel/plugin-proposal-decorators": "^7.22.10",
     "@bagaar/ember-breadcrumbs": "^4.1.0",
     "@changesets/changelog-github": "^0.4.8",
@@ -92,7 +92,7 @@
     "ember-intl": "^5.7.2",
     "ember-load-initializers": "^2.1.2",
     "ember-named-blocks-polyfill": "^0.2.4",
-    "ember-page-title": "^7.0.0",
+    "ember-page-title": "^8.0.0",
     "ember-power-select": "7.1.0",
     "ember-promise-helpers": "^2.0.0",
     "ember-qunit": "^6.2.0",
