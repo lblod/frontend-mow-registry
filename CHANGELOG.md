@@ -8,6 +8,15 @@
 
 
 
+
+## 1.3.2 (2023-09-08)
+
+#### :house: Internal
+* [#211](https://github.com/lblod/frontend-mow-registry/pull/211) build(deps-dev): bump ember-page-title from 7.0.0 to 8.0.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#209](https://github.com/lblod/frontend-mow-registry/pull/209) build(deps-dev): bump @babel/eslint-parser from 7.22.11 to 7.22.15 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#210](https://github.com/lblod/frontend-mow-registry/pull/210) build(deps-dev): bump eslint-config-prettier from 8.10.0 to 9.0.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#208](https://github.com/lblod/frontend-mow-registry/pull/208) build(deps-dev): bump @types/ember__controller from 4.0.5 to 4.0.6 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 1.3.1 (2023-08-31)
 
 #### :bug: Bug Fix
