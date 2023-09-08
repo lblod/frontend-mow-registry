@@ -63,6 +63,7 @@ road-sign-concept:
     image-header: Image
     image-url: Image URL
     meaning: Meaning
+    definition: Definition
     code: Code
     categories: Categories
     sub-sign: Possible subsigns
