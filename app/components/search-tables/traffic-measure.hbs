@@ -43,11 +43,7 @@
       <TrafficMeasureTemplate @concept={{trafficMeasureConcept}} />
     </td>
     <td>
-      {{#if trafficMeasureConcept.zonality}}
-        {{t (concat "utility." trafficMeasureConcept.zonality.label)}}
-      {{else}}
-        {{t "utility.nonZonal"}}
-      {{/if}}
+      {{zonality-label (await trafficMeasureConcept.zonality)}}
     </td>
     <td>
       {{#if trafficMeasureConcept.valid}}

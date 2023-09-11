@@ -67,11 +67,7 @@
                 {{t "utility.zonality"}}
               </AuLabel>
               <p>
-                {{#if @model.roadSignConcept.zonality}}
-                  {{t (concat "utility." @model.roadSignConcept.zonality.label)}}
-                {{else}}
-                  {{t "utility.nonZonal"}}
-                {{/if}}
+                {{zonality-label (await @model.roadSignConcept.zonality)}}
               </p>
             </li>
             {{#unless this.showSidebar}}
