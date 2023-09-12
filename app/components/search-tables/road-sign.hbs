@@ -54,11 +54,7 @@
       {{/each}}
     </td>
     <td>
-      {{#if roadSignConcept.zonality}}
-        {{t (concat "utility." roadSignConcept.zonality.label)}}
-      {{else}}
-        {{t "utility.nonZonal"}}
-      {{/if}}
+      {{zonality-label (await roadSignConcept.zonality)}}
     </td>
     <td>
       {{#if roadSignConcept.valid}}
