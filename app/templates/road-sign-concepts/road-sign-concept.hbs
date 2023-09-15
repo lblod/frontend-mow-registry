@@ -75,7 +75,7 @@
                 {{t "utility.zonality"}}
               </AuLabel>
               <p>
-                {{t (concat "utility." @model.roadSignConcept.zonality.label)}}
+                {{zonality-label (await @model.roadSignConcept.zonality)}}
               </p>
             </li>
             {{#unless this.showSidebar}}
@@ -584,7 +584,7 @@
           <div class="au-c-data-table__search">
             <AuInput
               @value={{this.relatedTrafficLightCodeFilter}}
-              placeholder={{t "relatedTrafficLight.filter.code"}}
+              placeholder={{t "related-traffic-light.filter.code"}}
               @icon="search"
               @iconAlignment="right"
               {{on "input" this.setRelatedTrafficLightCodeFilter}}
