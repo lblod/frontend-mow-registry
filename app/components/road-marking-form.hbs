@@ -68,6 +68,34 @@
                 {{/if}}
               </AuFormRow>
             {{/let}}
+            {{#let changeset.error.definition as |isInvalid|}}
+              <AuFormRow>
+                <AuLabel @error={{isInvalid}} for="definition" @required={{true}}>
+                  {{t "road-marking-concept.attr.definition"}}&nbsp;
+                </AuLabel>
+                <AuTextarea
+                  @error={{isInvalid}}
+                  @width="block"
+                  class="u-min-h-20"
+                  id="definition"
+                  required="required"
+                  @value={{changeset.definition}}
+                  {{on
+                    "input"
+                    (fn
+                      this.setRoadMarkingConceptValue
+                      changeset
+                      "definition"
+                    )
+                  }}
+                />
+                {{#if isInvalid}}
+                  <AuHelpText @error={{true}}>
+                    {{t "utility.field-required"}}
+                  </AuHelpText>
+                {{/if}}
+              </AuFormRow>
+            {{/let}}
             {{#let changeset.error.meaning as |isInvalid|}}
               <AuFormRow>
                 <AuLabel @error={{isInvalid}} for="meaning" @required={{true}}>
