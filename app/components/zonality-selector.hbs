@@ -2,10 +2,9 @@
   @allowClear={{false}}
   @searchEnabled={{false}}
   @loadingMessage={{t "utility.loading"}}
-  @options={{this.zonalities}}
-  @selected={{@zonality}}
+  @options={{this.zonalities.value}}
+  @selected={{this.selectedZonality}}
   @onChange={{@onChange}} as |zonality|
-  {{did-insert this.didInsert}}  
 >
   {{zonality-label zonality}}
 </PowerSelect>

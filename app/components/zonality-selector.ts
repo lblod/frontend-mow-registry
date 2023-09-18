@@ -1,38 +1,31 @@
 import Component from '@glimmer/component';
-import { task } from 'ember-concurrency';
-import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { ZON_NON_ZONAL_ID, ZON_CONCEPT_SCHEME_ID } from '../utils/constants';
 import type Store from '@ember-data/store';
 import SkosConcept from 'mow-registry/models/skos-concept';
-import ArrayProxy from '@ember/array/proxy';
-
+import { trackedFunction } from 'ember-resources/util/function';
 type Args = {
-  zonality: string;
+  zonality?: SkosConcept;
   onChange: (zonality?: SkosConcept) => void;
 };
 export default class ZonalitySelectorComponent extends Component<Args> {
-  @action
-  async didInsert() {
-    await this.fetchZonalities.perform();
-  }
-
-  @tracked zonalities?: ArrayProxy<SkosConcept>;
-
   @service declare store: Store;
 
-  fetchZonalities = task(async () => {
+  zonalities = trackedFunction(this, async () => {
     const conceptScheme = await this.store.findRecord(
       'concept-scheme',
       ZON_CONCEPT_SCHEME_ID,
     );
-    this.zonalities = await conceptScheme.concepts;
-    if (!this.args.zonality) {
-      const defaultZonality = this.zonalities.find(
+    return conceptScheme.concepts;
+  });
+
+  get selectedZonality() {
+    if (this.args.zonality) {
+      return this.args.zonality;
+    } else {
+      return this.zonalities.value?.find(
         (zonality) => zonality.id == ZON_NON_ZONAL_ID,
       );
-      this.args.onChange(defaultZonality);
     }
-  });
+  }
 }
