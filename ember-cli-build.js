@@ -11,6 +11,9 @@ module.exports = function (defaults) {
         'node_modules/@appuniversum/ember-appuniversum/app/styles',
       ],
     },
+    'ember-cli-babel': {
+      enableTypeScriptTransform: true,
+    },
     '@appuniversum/ember-appuniversum': {
       disableWormholeElement: true,
     },
