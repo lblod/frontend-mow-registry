@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 1.4.1
+
+### Patch Changes
+
+- [#229](https://github.com/lblod/frontend-mow-registry/pull/229) [`859442c`](https://github.com/lblod/frontend-mow-registry/commit/859442c1504f1c490bb733c191075241318f3634) Thanks [@elpoelma](https://github.com/elpoelma)! - Fix website URL in footer
+
 ## 1.4.0
 
 ### Minor Changes
