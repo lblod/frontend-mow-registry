@@ -101,7 +101,7 @@
     "ember-power-select": "7.1.0",
     "ember-promise-helpers": "^2.0.0",
     "ember-qunit": "^6.2.0",
-    "ember-resolver": "^11.0.0",
+    "ember-resolver": "^11.0.1",
     "ember-resources": "^6.4.0",
     "ember-simple-auth": "^4.2.2",
     "ember-source": "~4.12.0",
