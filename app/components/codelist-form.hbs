@@ -38,7 +38,12 @@
     <div>
         {{#let codelist.error.label as |isInvalid|}}
           <p class="au-o-box au-u-padding-bottom-none">
-            <AuLabel @error={{isInvalid}} for="label" @required={{true}}>
+            <AuLabel
+              @error={{isInvalid}}
+              for="label"
+              @required={{true}}
+              @requiredLabel={{t "utility.required"}}
+            >
               {{t "codelist.attr.label"}}&nbsp;
             </AuLabel>
             <AuInput

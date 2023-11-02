@@ -1,11 +1,21 @@
 auth:
   simple:
     title: Voer uw gebruikersnaam en wachtwoord in om in te loggen
-  mock: 
+  mock:
     title: Kies een bestuurseenheid om mee in te loggen
   acmidm:
     title: Log in met acm/idm
   login: Meld u aan
+login-page:
+  header:
+    title:
+      part-one: Vlaanderen
+      part-two: is lokaal bestuur
+    image-alt: laptop met daarop het vlaanderen logo
+  footer:
+    heading: register.mobiliteit.vlaanderen.be is een officiële website van de Vlaamse overheid
+    published-by: Uitgegeven door
+    abb: Agentschap Binnenlands Bestuur
 utility:
   login: Aanmelden
   logout: Afmelden
@@ -25,7 +35,7 @@ utility:
   zonal: Zonaal
   nonZonal: Niet zonaal
   potentiallyZonal: Potentieel zonaal
-  upload: Opladen
+  upload: Uploaden
   or: Of
   field-required: Dit veld is verplicht
   app-name: MOW Register
@@ -51,6 +61,7 @@ utility:
     location: locatie
     codelist: codelijst
     instruction: instructie
+  search-placeholder: Typ om te zoeken
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden of plak de URL van een bestaande afbeelding
   preview-alt: Een voorbeeld van het geüploade bestand of de URL
@@ -150,6 +161,7 @@ traffic-measure-concept:
   name: Mobiliteitsmaatregel
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
+    name: Naam
     temporal: Variabele signalisatie
     traffic-sign: Verkeersteken
     code: Code
@@ -181,7 +193,7 @@ sub-sign:
     delete: Onderbord verwijderen
 main-sign:
   attr:
-    category: Zoek verkeersborden op category
+    category: Zoek verkeersborden op categorie
   crud:
     add: Hoofdborden toevoegen
     add-one: Hoofdbord toevoegen
@@ -189,7 +201,7 @@ main-sign:
     edit: Hoofdbord bewerken
 related-road-sign:
   attr:
-    category: Zoek verkeersborden op category
+    category: Zoek verkeersborden op categorie
   crud:
     add: Gerelateerde verkeersborden toevoegen
     add-one: Gerelateerd verkeersbord toevoegen

@@ -175,7 +175,9 @@
             </AuLabel>
             <PowerSelect
               @allowClear={{true}}
+              @placeholder={{t "utility.search-placeholder"}}
               @searchEnabled={{true}}
+              @searchMessage={{t "utility.search-placeholder"}}
               @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
               @searchField="label"
               @options={{@model.roadSignCategories}}
