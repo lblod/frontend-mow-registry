@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 1.4.2
+
+### Patch Changes
+
+- [`b0d0db7`](https://github.com/lblod/frontend-mow-registry/commit/b0d0db72bfa82d06fc2cb3ede8498bb5b20fae0d) Thanks [@abeforgit](https://github.com/abeforgit)! - bump base images to 4.12
+
 ## 1.4.1
 
 ### Patch Changes
