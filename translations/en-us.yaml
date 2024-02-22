@@ -1,11 +1,21 @@
 auth:
   simple:
     title: Enter your username and password to log in
-  mock: 
+  mock:
     title: Choose an account to log in with.
   acmidm:
     title: Log in with acm/idm
   login: Login
+login-page:
+  header:
+    title:
+      part-one: Flanders
+      part-two: is local governance
+    image-alt: laptop with the flanders logo
+  footer:
+    heading: register.mobiliteit.vlaanderen.be is an official website of the Flemish government
+    published-by: Published by
+    abb: Agency for Home Affairs
 utility:
   login: Login
   logout: Logout
@@ -50,6 +60,7 @@ utility:
     location: location
     codelist: codelist
     instruction: instruction
+  search-placeholder: Type to search
 image-input:
   helptext: Press the button to upload a new image or insert a URL of an existing image
   preview-alt: A preview of the uploaded or linked image
@@ -156,6 +167,7 @@ traffic-measure-concept:
   name: Traffic measure
   help: Add $'{variableName} to add a variable/instruction
   attr:
+    name: Name
     temporal: Temporal signage
     traffic-sign: Traffic sign
     code: Code

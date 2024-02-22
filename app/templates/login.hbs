@@ -1,13 +1,15 @@
-{{!-- template-lint-disable no-bare-strings --}}
 <AuBodyContainer @scroll={{true}} itemprop="mainContentOfPage">
   {{#let (concat
     "assets/images/header-320.jpg" " 320w,"
     "assets/images/header-1024.jpg" " 1024w,"
     "assets/images/header-1600.jpg" " 1600w"
   ) as |srcSet|}}
-    <AuContentHeader @titlePartOne="Vlaanderen" @titlePartTwo="is lokaal bestuur">
+    <AuContentHeader
+      @titlePartOne={{t "login-page.header.title.part-one"}}
+      @titlePartTwo={{t "login-page.header.title.part-two"}}
+    >
       {{!-- template-lint-disable require-valid-alt-text --}}
-    <img sizes="50vw" src="assets/images/header-1600.jpg" srcset={{srcSet}} alt="laptop met daarop het vlaanderen logo.">
+    <img sizes="50vw" src="assets/images/header-1600.jpg" srcset={{srcSet}} alt={{t "login-page.header.image-alt"}}>
   </AuContentHeader>
   {{/let}}
 
@@ -26,10 +28,10 @@
     </main>
     <AuMainFooter>
       <AuHeading @level="3" @skin="4">
-        register.mobiliteit.vlaanderen.be is een officiële website van de Vlaamse overheid
+        {{t "login-page.footer.heading"}}
       </AuHeading>
       <AuContent @skin="small">
-        <p>Uitgegeven door <a class="au-c-link" href="https://www.vlaanderen.be/organisaties/administratieve-diensten-van-de-vlaamse-overheid/beleidsdomein-kanselarij-en-bestuur/agentschap-binnenlands-bestuur">Agentschap Binnenlands Bestuur</a></p>
+        <p>{{t "login-page.footer.published-by"}} <a class="au-c-link" href="https://www.vlaanderen.be/organisaties/administratieve-diensten-van-de-vlaamse-overheid/beleidsdomein-kanselarij-en-bestuur/agentschap-binnenlands-bestuur">{{t "login-page.footer.abb"}}</a></p>
       </AuContent>
     </AuMainFooter>
 </AuBodyContainer>

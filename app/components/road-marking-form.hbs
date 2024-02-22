@@ -44,7 +44,7 @@
             {{/let}}
             {{#let changeset.error.roadMarkingConceptCode as |isInvalid|}}
               <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="road-marking-concept-code" @required={{true}}>
+                <AuLabel @error={{isInvalid}} for="road-marking-concept-code" @required={{true}} @requiredLabel={{t "utility.required"}}>
                   {{t "road-marking-concept.attr.code"}}&nbsp;
                 </AuLabel>
                 <AuInput
@@ -70,7 +70,7 @@
             {{/let}}
             {{#let changeset.error.definition as |isInvalid|}}
               <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="definition" @required={{true}}>
+                <AuLabel @error={{isInvalid}} for="definition" @required={{true}} @requiredLabel={{t "utility.required"}}>
                   {{t "road-marking-concept.attr.definition"}}&nbsp;
                 </AuLabel>
                 <AuTextarea
@@ -98,7 +98,7 @@
             {{/let}}
             {{#let changeset.error.meaning as |isInvalid|}}
               <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="meaning" @required={{true}}>
+                <AuLabel @error={{isInvalid}} for="meaning" @required={{true}} @requiredLabel={{t "utility.required"}}>
                   {{t "road-marking-concept.attr.meaning"}}&nbsp;
                 </AuLabel>
                 <AuTextarea
