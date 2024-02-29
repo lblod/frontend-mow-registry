@@ -13,7 +13,7 @@
         <button
           type="button"
           class="au-c-close au-c-close--large"
-          {{on 'click' this.reset}}
+          {{on "click" this.reset}}
         >
           <AuIcon @icon="cross" @size="large" />
           <span class="au-u-hidden-visually">
@@ -25,19 +25,37 @@
     </div>
     <div class="au-c-body-container au-c-body-container--scroll">
       <div class="au-o-box au-c-form">
-        <p>
-          <AuLabel for="textarea-description">{{t "utility.description"}}</AuLabel>
-          <AuTextarea {{on "input" this.updateTemplate}} id="textarea-description" @width="block" @value={{this.template.value}} />
-        </p>
+        <AuFormRow>
+          <AuLabel for="textarea-description">{{t
+              "utility.description"
+            }}</AuLabel>
+          <AuTextarea
+            {{on "input" this.updateTemplate}}
+            id="textarea-description"
+            @width="block"
+            @value={{this.template.value}}
+          />
+          {{#if this.templateSyntaxError}}
+            <AuAlert
+              @title={{this.templateSyntaxError.title}}
+              @skin="error"
+              @icon="alert-triangle"
+              class="au-u-margin-top-small"
+            >
+              {{this.templateSyntaxError.message}}
+            </AuAlert>
+          {{/if}}
+        </AuFormRow>
+
         <AuButtonGroup>
           <AuButton
-            {{on 'click' (perform this.save)}}
-            @disabled={{this.save.isRunning}}
+            {{on "click" (perform this.save)}}
+            @disabled={{not this.canSave}}
             @loading={{this.save.isRunning}}
           >
-            {{t "utility.save" }}
+            {{t "utility.save"}}
           </AuButton>
-          <AuButton @skin="secondary" {{on 'click' this.reset}}>
+          <AuButton @skin="secondary" {{on "click" this.reset}}>
             {{t "utility.cancel"}}
           </AuButton>
         </AuButtonGroup>
@@ -50,39 +68,41 @@
             </tr>
           </thead>
           <tbody>
-          {{#each this.mappings as |mapping|}}
-            <tr>
-              <td>{{mapping.variable}}</td>
-              {{!-- template-lint-disable no-inline-styles --}}
-              <td style="width: 50%;">
-                <PowerSelect
-                  @allowClear={{false}}
-                  @searchEnabled={{false}}
-                  @options={{this.inputTypes}}
-                  @selected={{mapping.type}}
-                  @onChange={{fn this.updateMappingType mapping}} as |type|
-                >
-                  {{type}}
-                </PowerSelect>
-                {{#if (eq mapping.type "codelist")}}
+            {{#each this.mappings as |mapping|}}
+              <tr>
+                <td>{{mapping.variable}}</td>
+                {{! template-lint-disable no-inline-styles }}
+                <td style="width: 50%;">
                   <PowerSelect
                     @allowClear={{false}}
                     @searchEnabled={{false}}
-                    @options={{this.codeLists}}
-                    @selected={{mapping.codeList}}
-                    @onChange={{fn this.updateCodeList mapping}} as |codeList|
+                    @options={{this.inputTypes}}
+                    @selected={{mapping.type}}
+                    @onChange={{fn this.updateMappingType mapping}}
+                    as |type|
                   >
-                    {{codeList.label}}
+                    {{type}}
                   </PowerSelect>
-                  <ul>
-                  {{#each mapping.codeList.concepts as |option|}}
-                    <li> - {{option.label}}</li>
-                  {{/each}}
-                  </ul>
-                {{/if}}
-              </td>
-            </tr>
-          {{/each}}
+                  {{#if (eq mapping.type "codelist")}}
+                    <PowerSelect
+                      @allowClear={{false}}
+                      @searchEnabled={{false}}
+                      @options={{this.codeLists}}
+                      @selected={{mapping.codeList}}
+                      @onChange={{fn this.updateCodeList mapping}}
+                      as |codeList|
+                    >
+                      {{codeList.label}}
+                    </PowerSelect>
+                    <ul>
+                      {{#each mapping.codeList.concepts as |option|}}
+                        <li> - {{option.label}}</li>
+                      {{/each}}
+                    </ul>
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
           </tbody>
         </table>
 

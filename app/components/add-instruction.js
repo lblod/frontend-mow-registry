@@ -9,6 +9,7 @@ export default class AddInstructionComponent extends Component {
   @service store;
   @service router;
   @service('codelists') codeListService;
+  @service intl;
 
   @tracked template;
   @tracked concept;
@@ -66,6 +67,28 @@ export default class AddInstructionComponent extends Component {
   updateTemplate(event) {
     this.template.value = event.target.value;
     this.parseTemplate();
+  }
+
+  get templateSyntaxError() {
+    if (!this.template || !this.template.value) {
+      return null;
+    }
+    // Regex which tests if variables in the template occur containing non-allowed characters:
+    // (characters which are not: letters, numbers, '-', '.', '_', '}')
+    const regex = new RegExp(/\${[^}]*?[^a-zA-Z\d\-_.}]+?[^}]*?}/g);
+    const containsInvalidCharacters = regex.test(this.template.value);
+
+    if (containsInvalidCharacters) {
+      return {
+        title: this.intl.t(
+          'utility.template-variables.invalid-character.title',
+        ),
+        message: this.intl.t(
+          'utility.template-variables.invalid-character.message',
+        ),
+      };
+    }
+    return null;
   }
 
   //only resetting things we got from parent component
@@ -165,6 +188,10 @@ export default class AddInstructionComponent extends Component {
     });
 
     this.mappings = sortedMappings;
+  }
+
+  get canSave() {
+    return !this.save.isRunning && !this.templateSyntaxError;
   }
 
   save = task(async () => {

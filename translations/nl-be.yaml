@@ -61,6 +61,9 @@ utility:
     location: locatie
     codelist: codelijst
     instruction: instructie
+    invalid-character:
+      title: Ongeldig karakter gedetecteerd
+      message: Een van de opgegeven variabelenamen bevat een ongeldig karakter. Variabelenamen mogen enkel letters, cijfers, '-', '_' en '.' bevatten
   search-placeholder: Typ om te zoeken
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden of plak de URL van een bestaande afbeelding
