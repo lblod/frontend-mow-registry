@@ -60,6 +60,9 @@ utility:
     location: location
     codelist: codelist
     instruction: instruction
+    invalid-character:
+      title: Invalid character detected
+      message: One of the mentioned variable names contains an invalid character. Variable names may only contains letters, numbers, '-', '_' and '.'
   search-placeholder: Type to search
 image-input:
   helptext: Press the button to upload a new image or insert a URL of an existing image
