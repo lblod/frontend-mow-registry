@@ -76,8 +76,7 @@ export default class AddInstructionComponent extends Component {
     // Regex which tests if variables in the template occur containing non-allowed characters:
     // (characters which are not: letters, numbers, '-', '.', '_', '}')
     const regex = new RegExp(/\${[^}]*?[^a-zA-Z\d\-_.}]+?[^}]*?}/g);
-    const next = this.template.value.matchAll(regex).next();
-    const containsInvalidCharacters = !next.done;
+    const containsInvalidCharacters = regex.test(this.template.value);
 
     if (containsInvalidCharacters) {
       return {
