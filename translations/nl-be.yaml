@@ -78,6 +78,7 @@ road-sign-concept:
     image-header: Afbeelding
     image-url: Afbeelding URL
     meaning: Betekenis
+    definition: Definitie
     code: Code
     categories: Categorieën
     sub-sign: Mogelijke onderborden

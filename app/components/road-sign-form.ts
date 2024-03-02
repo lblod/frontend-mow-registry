@@ -28,6 +28,15 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     changeset.categories = selection;
   }
 
+  @action
+  setRoadSignConceptValue(
+    changeset: BufferedChangeset,
+    attributeName: string,
+    event: InputEvent,
+  ) {
+    changeset[attributeName] = (event.target as HTMLInputElement).value;
+  }
+
   editRoadSignConceptTask = dropTask(
     async (changeset: BufferedChangeset, event: InputEvent) => {
       event.preventDefault();
