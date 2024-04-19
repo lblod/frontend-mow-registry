@@ -1,5 +1,15 @@
 # frontend-mow-registry
 
+## 1.4.3
+
+### Patch Changes
+
+- [#241](https://github.com/lblod/frontend-mow-registry/pull/241) [`bce0fdf`](https://github.com/lblod/frontend-mow-registry/commit/bce0fdff606a53ebe78680292f7cfaf423ac64ef) Thanks [@elpoelma](https://github.com/elpoelma)! - Show alert to user when template variable names contain invalid characters
+
+- [#238](https://github.com/lblod/frontend-mow-registry/pull/238) [`2a4141f`](https://github.com/lblod/frontend-mow-registry/commit/2a4141fd7ab13f69ba3e734c07bc565e61a095d3) Thanks [@elpoelma](https://github.com/elpoelma)! - Enable no-bare-strings template-lint rule
+
+- [#238](https://github.com/lblod/frontend-mow-registry/pull/238) [`2a4141f`](https://github.com/lblod/frontend-mow-registry/commit/2a4141fd7ab13f69ba3e734c07bc565e61a095d3) Thanks [@elpoelma](https://github.com/elpoelma)! - Fill-in missing translations
+
 ## 1.4.2
 
 ### Patch Changes
