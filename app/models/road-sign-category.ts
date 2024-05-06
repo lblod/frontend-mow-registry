@@ -10,7 +10,7 @@ declare module 'ember-data/types/registries/model' {
 export default class RoadSignCategoryModel extends Model {
   @attr declare label?: string;
   @hasMany('road-sign-concept', {
-    inverse: 'categories',
+    inverse: 'classifications',
     async: true,
   })
   declare roadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
