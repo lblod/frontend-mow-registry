@@ -33,8 +33,8 @@ export default class RoadSignConceptModel extends ConceptModel {
   })
   declare status: AsyncBelongsTo<RoadSignConceptStatusCodeModel>;
 
-  @hasMany('road-sign-category', { inverse: 'roadSignConcepts', async: true })
-  declare categories: AsyncHasMany<RoadSignCategoryModel>;
+  @hasMany('skos-concept', { inverse: null, async: true })
+  declare classifications: AsyncHasMany<SkosConcept>;
 
   @hasMany('road-sign-concept', { inverse: 'mainSigns', async: true })
   declare subSigns: AsyncHasMany<RoadSignConceptModel>;
