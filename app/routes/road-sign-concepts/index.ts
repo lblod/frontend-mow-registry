@@ -27,7 +27,7 @@ export default class RoadsignConceptsIndexRoute extends Route {
   async model(params: Params) {
     const query: Record<string, unknown> = {
       sort: params.sort,
-      include: 'categories',
+      include: 'classifications',
       page: {
         number: params.page,
         size: params.size,

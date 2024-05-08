@@ -7,7 +7,7 @@ import RoadsignConceptsIndexRoute from 'mow-registry/routes/road-sign-concepts/i
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
 
 export default class RoadsignConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'code', 'meaning', 'sort', 'category'];
+  queryParams = ['page', 'size', 'code', 'meaning', 'sort', 'classifications'];
 
   declare model: ModelFrom<RoadsignConceptsIndexRoute>;
 
@@ -16,7 +16,7 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked code = '';
   @tracked meaning = '';
   @tracked category?: string | null;
-  @tracked sort = 'road-sign-concept-code';
+  @tracked sort = 'code';
 
   updateSearchFilterTask = restartableTask(
     async (queryParamProperty: 'category' | 'meaning', event: InputEvent) => {
