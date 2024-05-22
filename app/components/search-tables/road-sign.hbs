@@ -13,7 +13,7 @@
   <:header as |header|>
 
     <header.Sortable
-      @field="roadSignConceptCode"
+      @field="code"
       @label={{t "road-sign-concept.attr.code"}}
     />
     <th>
@@ -37,7 +37,7 @@
   <:body as |roadSignConcept|>
 
     <td>
-      {{roadSignConcept.roadSignConceptCode}}
+      {{roadSignConcept.code}}
     </td>
     <td>
       <img class="au-c-thumbnail" src={{roadSignConcept.image}} alt="" />

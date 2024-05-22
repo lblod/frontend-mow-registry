@@ -9,6 +9,10 @@ declare module 'ember-data/types/registries/model' {
 
 export default class ConceptScheme extends Model {
   @attr declare label?: string;
-  @hasMany('skos-concept', { inverse: 'inScheme', async: true })
+  @hasMany('skos-concept', {
+    inverse: 'inScheme',
+    async: true,
+    polymorphic: true,
+  })
   declare concepts: AsyncHasMany<SkosConcept>;
 }

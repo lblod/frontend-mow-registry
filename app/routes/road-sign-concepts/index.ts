@@ -35,7 +35,7 @@ export default class RoadsignConceptsIndexRoute extends Route {
     };
 
     if (params.code) {
-      query['filter[road-sign-concept-code]'] = params.code;
+      query['filter[code]'] = params.code;
     }
 
     if (params.meaning) {
