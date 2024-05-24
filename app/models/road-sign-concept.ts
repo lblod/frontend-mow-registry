@@ -16,7 +16,7 @@ declare module 'ember-data/types/registries/model' {
   }
 }
 export default class RoadSignConceptModel extends TrafficSignConceptModel {
-  @attr declare meaning?: string; // debug: present in app
+  @attr declare meaning?: string;
 
   @hasMany('skos-concept', { inverse: null, async: true })
   declare classifications: AsyncHasMany<SkosConcept>; // debug: categories renamed to classifications -> undefined in app

@@ -1,12 +1,12 @@
-import Model from '@ember-data/model';
 import { attr } from '@ember-data/model';
+import DocumentModel from 'mow-registry/models/document';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
-    document: DocumentModel;
+    image: ImageModel;
   }
 }
 
-export default class DocumentModel extends Model {
+export default class ImageModel extends DocumentModel {
   @attr declare uri?: string;
 }

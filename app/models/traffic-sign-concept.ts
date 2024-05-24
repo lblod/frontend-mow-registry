@@ -8,14 +8,14 @@ import {
 import SkosConcept from 'mow-registry/models/skos-concept';
 import type TemplateModel from 'mow-registry/models/template';
 import type TrafficMeasureConceptModel from 'mow-registry/models/traffic-measure-concept';
-import type DocumentModel from 'mow-registry/models/document';
+import type ImageModel from 'mow-registry/models/image';
 
 export default class TrafficSignConceptModel extends SkosConcept {
   @attr declare meaning?: string;
   @attr declare code?: string;
 
-  @belongsTo('document', { async: true, inverse: null })
-  declare image: AsyncBelongsTo<DocumentModel>;
+  @belongsTo('image', { async: true, inverse: null })
+  declare image: AsyncBelongsTo<ImageModel>;
 
   @belongsTo('skos-concept', { async: true, inverse: null })
   declare status: AsyncBelongsTo<SkosConcept>;

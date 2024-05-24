@@ -23,7 +23,7 @@
       {{t "road-sign-concept.attr.meaning"}}
     </th>
     <header.Sortable
-      @field="categories.label"
+      @field="classifications.label"
       @label={{t "road-sign-concept.attr.categories"}}
     />
     <th>
@@ -40,17 +40,17 @@
       {{roadSignConcept.code}}
     </td>
     <td>
-      <img class="au-c-thumbnail" src={{roadSignConcept.image}} alt="" />
+      <img class="au-c-thumbnail" src={{roadSignConcept.image.uri}} alt="" />
     </td>
     <td>
       {{roadSignConcept.meaning}}
     </td>
     <td>
-      {{#each roadSignConcept.categories as |category index|}}
+      {{#each roadSignConcept.classifications as |classification index|}}
         {{#if (gt index 0)}}
           <br>
         {{/if}}
-        {{category.label}}
+        {{classification.label}}
       {{/each}}
     </td>
     <td>

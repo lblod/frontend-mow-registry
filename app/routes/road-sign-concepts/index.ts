@@ -27,7 +27,6 @@ export default class RoadsignConceptsIndexRoute extends Route {
   async model(params: Params) {
     const query: Record<string, unknown> = {
       sort: params.sort,
-      include: 'classifications',
       page: {
         number: params.page,
         size: params.size,
@@ -43,12 +42,14 @@ export default class RoadsignConceptsIndexRoute extends Route {
     }
 
     if (params.category) {
-      query['filter[categories][:id:]'] = params.category;
+      query['filter[classifications][:id:]'] = params.category;
     }
 
     return hash({
       roadSignConcepts: this.store.query('road-sign-concept', query),
-      categories: this.store.findAll('road-sign-category', { reload: true }),
+      classifications: this.store.findAll('road-sign-category', {
+        reload: true,
+      }),
     });
   }
 }
