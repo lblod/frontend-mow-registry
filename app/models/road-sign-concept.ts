@@ -9,6 +9,7 @@ import type SkosConcept from 'mow-registry/models/skos-concept';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
 import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import TrafficSignConceptModel from './traffic-sign-concept';
+import RoadSignCategoryModel from './road-sign-category';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -18,8 +19,8 @@ declare module 'ember-data/types/registries/model' {
 export default class RoadSignConceptModel extends TrafficSignConceptModel {
   @attr declare meaning?: string;
 
-  @hasMany('skos-concept', { inverse: null, async: true })
-  declare classifications: AsyncHasMany<SkosConcept>; // debug: categories renamed to classifications -> undefined in app
+  @hasMany('road-sign-category', { inverse: null, async: true })
+  declare classifications: AsyncHasMany<RoadSignCategoryModel>; // debug: categories renamed to classifications -> undefined in app
 
   @hasMany('road-sign-concept', { inverse: 'mainSigns', async: true })
   declare subSigns: AsyncHasMany<RoadSignConceptModel>;
