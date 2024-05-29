@@ -115,6 +115,33 @@
               </AuLabel>
               <ZonalitySelector @zonality={{changeset.zonality}} @onChange={{(fn (mut changeset.zonality))}} />
             </AuFormRow>
+          {{#let changeset.error.shapes as |isInvalid|}}
+            <AuFormRow>
+              <AuLabel for="shapes" @error={{isInvalid}} @required={{true}} @requiredLabel={{t "utility.required"}}>
+                {{t "utility.shape"}}&nbsp;
+              </AuLabel>
+            <div class={{if isInvalid "ember-power-select--error"}}>
+              <PowerSelect
+                @allowClear={{false}}
+                @searchEnabled={{false}}
+                @placeholder={{t "utility.search-placeholder"}}
+                @loadingMessage={{t "utility.loading"}}
+                @options={{@shapes}} 
+                @selected={{changeset.shapes}}
+                @onChange={{fn this.setRoadSignShape changeset}} 
+                @triggerId="shapes" as |shape|
+              >
+                {{shape.label}}
+              </PowerSelect>
+              <br>
+            </div>
+            {{#if isInvalid}}
+              <AuHelpText @error={{true}}>
+                {{t "utility.field-required"}}
+              </AuHelpText>
+            {{/if}}
+            </AuFormRow>
+          {{/let}}
           </form>
         </div>
       </div>

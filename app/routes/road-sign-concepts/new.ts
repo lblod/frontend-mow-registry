@@ -10,6 +10,7 @@ export default class RoadsignConceptsNewRoute extends Route {
     return hash({
       newRoadSignConcept: this.store.createRecord('road-sign-concept'),
       categories: this.store.findAll('road-sign-category'),
+      shapes: this.store.findAll('tribont-shape'),
     });
   }
 }

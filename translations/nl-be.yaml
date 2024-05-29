@@ -65,6 +65,7 @@ utility:
       title: Ongeldig karakter gedetecteerd
       message: Een van de opgegeven variabelenamen bevat een ongeldig karakter. Variabelenamen mogen enkel letters, cijfers, '-', '_' en '.' bevatten
   search-placeholder: Typ om te zoeken
+  shape: Vorm
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden of plak de URL van een bestaande afbeelding
   preview-alt: Een voorbeeld van het geüploade bestand of de URL
@@ -210,7 +211,7 @@ related-road-sign:
     add-one: Gerelateerd verkeersbord toevoegen
     delete: Gerelateerd verkeersbord verwijderen
 sparql:
-    name: 'MOW Register: SPARQL'
+  name: 'MOW Register: SPARQL'
 codelist:
   name: Codelijsten beheer
   details: Codelijst details
