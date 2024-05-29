@@ -115,13 +115,13 @@
               </AuLabel>
               <ZonalitySelector @zonality={{changeset.zonality}} @onChange={{(fn (mut changeset.zonality))}} />
             </AuFormRow>
-          {{#let changeset.error.shapes as |isInvalid|}}
+          {{!-- {{#let changeset.error.shapes as |isInvalid|}}
             <AuFormRow>
               <AuLabel for="shapes" @error={{isInvalid}} @required={{true}} @requiredLabel={{t "utility.required"}}>
                 {{t "utility.shape"}}&nbsp;
               </AuLabel>
             <div class={{if isInvalid "ember-power-select--error"}}>
-              <PowerSelect
+              <PowerSelectMultiple
                 @allowClear={{false}}
                 @searchEnabled={{false}}
                 @placeholder={{t "utility.search-placeholder"}}
@@ -132,7 +132,7 @@
                 @triggerId="shapes" as |shape|
               >
                 {{shape.label}}
-              </PowerSelect>
+              </PowerSelectMultiple>
               <br>
             </div>
             {{#if isInvalid}}
@@ -141,7 +141,7 @@
               </AuHelpText>
             {{/if}}
             </AuFormRow>
-          {{/let}}
+          {{/let}} --}}
           </form>
         </div>
       </div>

@@ -8,5 +8,5 @@ export default {
   meaning: validatePresence({ presence: true, ignoreBlank: true }),
   roadSignConceptCode: validatePresence({ presence: true, ignoreBlank: true }),
   categories: validateLength({ min: 1 }),
-  shapes: validatePresence({ presence: true, ignoreBlank: true }),
+  // shapes: validatePresence({ presence: true, ignoreBlank: true }),
 };

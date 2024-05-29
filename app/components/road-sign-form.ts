@@ -40,13 +40,16 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   editRoadSignConceptTask = dropTask(
     async (changeset: BufferedChangeset, event: InputEvent) => {
       event.preventDefault();
-
       await changeset.validate();
-
       if (changeset.isValid) {
         await this.saveImage(changeset);
-        await changeset.save();
-
+        try {
+          await changeset.save(); // mergeDeep error here
+          console.log('Changeset saved successfully');
+        } catch (error) {
+          console.error('Error saving changeset:', error);
+        }
+        return;
         await this.router.transitionTo(
           'road-sign-concepts.road-sign-concept',
           changeset.id,

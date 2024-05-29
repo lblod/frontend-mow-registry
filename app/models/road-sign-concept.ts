@@ -10,6 +10,7 @@ import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-conce
 import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import TrafficSignConceptModel from './traffic-sign-concept';
 import RoadSignCategoryModel from './road-sign-category';
+import TribontShapeModel from './tribont-shape';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -20,7 +21,10 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
   @attr declare meaning?: string;
 
   @hasMany('road-sign-category', { inverse: null, async: true })
-  declare classifications: AsyncHasMany<RoadSignCategoryModel>; // debug: categories renamed to classifications -> undefined in app
+  declare categories: AsyncHasMany<RoadSignCategoryModel>;
+
+  // @hasMany('tribont-shape', { inverse: null, async: true })
+  // declare shapes: AsyncHasMany<TribontShapeModel>;
 
   @hasMany('road-sign-concept', { inverse: 'mainSigns', async: true })
   declare subSigns: AsyncHasMany<RoadSignConceptModel>;
@@ -29,7 +33,7 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
   declare mainSigns: AsyncHasMany<RoadSignConceptModel>;
 
   @belongsTo('skos-concept', { inverse: null, async: true })
-  declare zonality: AsyncBelongsTo<SkosConcept>; // debug: present in app
+  declare zonality: AsyncBelongsTo<SkosConcept>;
 
   @hasMany('road-sign-concept', {
     inverse: 'relatedFromRoadSignConcepts',
