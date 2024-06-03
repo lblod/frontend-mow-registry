@@ -26,7 +26,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     changeset: BufferedChangeset,
     selection: RoadSignCategoryModel[],
   ) {
-    changeset.categories = selection;
+    changeset.classifications = selection;
   }
 
   @action
@@ -42,7 +42,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       event.preventDefault();
       await changeset.validate();
       if (changeset.isValid) {
-        await this.saveImage(changeset);
+        // await this.saveImage(changeset);
         try {
           await changeset.save(); // mergeDeep error here
           console.log('Changeset saved successfully');

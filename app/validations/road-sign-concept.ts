@@ -4,9 +4,9 @@ import {
 } from 'ember-changeset-validations/validators';
 
 export default {
-  image: validatePresence({ presence: true, ignoreBlank: true }),
+  // image: validatePresence({ presence: true, ignoreBlank: true }),
   meaning: validatePresence({ presence: true, ignoreBlank: true }),
-  roadSignConceptCode: validatePresence({ presence: true, ignoreBlank: true }),
-  categories: validateLength({ min: 1 }),
+  code: validatePresence({ presence: true, ignoreBlank: true }),
+  classifications: validateLength({ min: 1 }),
   // shapes: validatePresence({ presence: true, ignoreBlank: true }),
 };
