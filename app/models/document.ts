@@ -1,5 +1,5 @@
-import Model from '@ember-data/model';
-import { attr } from '@ember-data/model';
+import Model, { AsyncBelongsTo, belongsTo, attr } from '@ember-data/model';
+import FileModel from './file';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -8,5 +8,8 @@ declare module 'ember-data/types/registries/model' {
 }
 
 export default class DocumentModel extends Model {
-  @attr declare uri?: string;
+  // @attr declare uri?: string;
+
+  @belongsTo('file', { async: true, inverse: null })
+  declare file: AsyncBelongsTo<FileModel>;
 }

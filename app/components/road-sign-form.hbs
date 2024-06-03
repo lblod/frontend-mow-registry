@@ -37,11 +37,11 @@
       <div class="au-o-grid">
         <div class="au-o-grid__item au-u-2-3@medium">
           <form class="au-c-form" id="edit-road-sign-concept-form" novalidate>
-            {{!-- {{#let changeset.error.image as |isInvalid|}}
+            {{#let changeset.error.image as |isInvalid|}}
               <AuFormRow>
                 <ImageInput @oldImage={{@roadSignConcept.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
               </AuFormRow>
-            {{/let}} --}}
+            {{/let}}
             {{#let changeset.error.code as |isInvalid|}}
               <AuFormRow>
                 <AuLabel @error={{isInvalid}} for="road-sign-concept-code" @required={{true}} @requiredLabel={{t "utility.required"}}>

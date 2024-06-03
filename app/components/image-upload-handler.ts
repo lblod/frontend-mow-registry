@@ -3,6 +3,8 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import FileService from 'mow-registry/services/file-service';
 import { BufferedChangeset } from 'ember-changeset/types';
+import Store from '@ember-data/store';
+import ImageModel from 'mow-registry/models/image';
 
 /**
  * A helper for uploading images, used in conjunction with `image-input.js`
@@ -32,9 +34,15 @@ export default class ImageUploadHandlerComponent<
     }
   }
 
-  async saveImage(changeset: BufferedChangeset) {
+  async saveImage(store: Store) {
     if (this.fileData) {
-      changeset.image = await this.fileService.upload(this.fileData);
+      const image = await this.fileService.uploadImage(this.fileData);
+      const imageModel: ImageModel = store.createRecord('image');
+      imageModel.set('file', image);
+
+      return await imageModel.save();
+    } else {
+      return null;
     }
   }
 }

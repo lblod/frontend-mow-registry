@@ -8,12 +8,14 @@ import { BufferedChangeset } from 'ember-changeset/types';
 import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
 import TribontShapeModel from 'mow-registry/models/tribont-shape';
+import Store from '@ember-data/store';
 
 type Args = {
   roadSignConcept: RoadSignConceptModel;
 };
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: Router;
+  @service declare store: Store;
 
   RoadSignConceptValidations = RoadSignConceptValidations;
 
@@ -42,7 +44,8 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       event.preventDefault();
       await changeset.validate();
       if (changeset.isValid) {
-        // await this.saveImage(changeset);
+        const image = await this.saveImage(this.store);
+        changeset.image = image;
         try {
           await changeset.save(); // mergeDeep error here
           console.log('Changeset saved successfully');
