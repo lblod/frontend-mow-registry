@@ -17,7 +17,7 @@ export default class RoadsignConcept extends Route {
       allSubSigns: this.store
         .query('road-sign-concept', {
           filter: {
-            categories: {
+            classifications: {
               label: 'Onderbord',
             },
           },
@@ -26,9 +26,11 @@ export default class RoadsignConcept extends Route {
           },
         })
         .then((subsigns) => subsigns.slice()),
-      categories: this.store.findAll('road-sign-category').then((category) => {
-        return category.filter(({ label }) => label !== 'Onderbord');
-      }),
+      classifications: this.store
+        .findAll('road-sign-category')
+        .then((category) => {
+          return category.filter(({ label }) => label !== 'Onderbord');
+        }),
       allRoadMarkings: this.store.query('road-marking-concept', {
         page: {
           size: 10000,

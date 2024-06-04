@@ -49,15 +49,15 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
 
   // relatedRoadSignConcepts?: Array<RoadSignConceptModel>;
 
-  // @hasMany('road-marking-concept', {
-  //   inverse: 'relatedRoadSignConcepts',
-  //   async: true,
-  // })
-  // declare relatedRoadMarkingConcepts: AsyncHasMany<RoadMarkingConceptModel>;
+  @hasMany('road-marking-concept', {
+    inverse: 'relatedRoadSignConcepts',
+    async: true,
+  })
+  declare relatedRoadMarkingConcepts: AsyncHasMany<RoadMarkingConceptModel>;
 
-  // @hasMany('traffic-light-concept', {
-  //   inverse: 'relatedRoadSignConcepts',
-  //   async: true,
-  // })
-  // declare relatedTrafficLightConcepts: AsyncHasMany<TrafficLightConceptModel>;
+  @hasMany('traffic-light-concept', {
+    inverse: 'relatedRoadSignConcepts',
+    async: true,
+  })
+  declare relatedTrafficLightConcepts: AsyncHasMany<TrafficLightConceptModel>;
 }

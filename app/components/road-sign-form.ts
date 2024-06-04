@@ -52,7 +52,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
         } catch (error) {
           console.error('Error saving changeset:', error);
         }
-        return;
         await this.router.transitionTo(
           'road-sign-concepts.road-sign-concept',
           changeset.id,
