@@ -26,28 +26,28 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
   @belongsTo('tribont-shape', { inverse: null, async: true })
   declare shapes: AsyncBelongsTo<TribontShapeModel>;
 
-  // @hasMany('road-sign-concept', { inverse: 'mainSigns', async: true })
-  // declare subSigns: AsyncHasMany<RoadSignConceptModel>;
+  @hasMany('road-sign-concept', { inverse: 'mainSigns', async: true })
+  declare subSigns: AsyncHasMany<RoadSignConceptModel>;
 
-  // @hasMany('road-sign-concept', { inverse: 'subSigns', async: true })
-  // declare mainSigns: AsyncHasMany<RoadSignConceptModel>;
+  @hasMany('road-sign-concept', { inverse: 'subSigns', async: true })
+  declare mainSigns: AsyncHasMany<RoadSignConceptModel>;
 
-  // @belongsTo('skos-concept', { inverse: null, async: true })
-  // declare zonality: AsyncBelongsTo<SkosConcept>;
+  @belongsTo('skos-concept', { inverse: null, async: true })
+  declare zonality: AsyncBelongsTo<SkosConcept>;
 
-  // @hasMany('road-sign-concept', {
-  //   inverse: 'relatedFromRoadSignConcepts',
-  //   async: true,
-  // })
-  // declare relatedToRoadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
+  @hasMany('road-sign-concept', {
+    inverse: 'relatedFromRoadSignConcepts',
+    async: true,
+  })
+  declare relatedToRoadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
 
-  // @hasMany('road-sign-concept', {
-  //   inverse: 'relatedToRoadSignConcepts',
-  //   async: true,
-  // })
-  // declare relatedFromRoadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
+  @hasMany('road-sign-concept', {
+    inverse: 'relatedToRoadSignConcepts',
+    async: true,
+  })
+  declare relatedFromRoadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
 
-  // relatedRoadSignConcepts?: Array<RoadSignConceptModel>;
+  relatedRoadSignConcepts?: Array<RoadSignConceptModel>;
 
   @hasMany('road-marking-concept', {
     inverse: 'relatedRoadSignConcepts',
