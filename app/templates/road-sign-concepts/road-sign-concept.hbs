@@ -33,7 +33,7 @@
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <img
                 class="au-c-thumbnail au-c-thumbnail--full"
-                alt="" src={{@model.roadSignConcept.image}}
+                alt="" src={{@model.roadSignConcept.image.file.downloadLink}}
               />
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
@@ -41,16 +41,16 @@
                 {{t "road-sign-concept.attr.code"}}
               </AuLabel>
               <p>
-                {{@model.roadSignConcept.roadSignConceptCode}}
+                {{@model.roadSignConcept.code}}
               </p>
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>
                 {{t "road-sign-concept.attr.categories"}}
               </AuLabel>
-              {{#each @model.roadSignConcept.categories as |category|}}
+              {{#each @model.roadSignConcept.classifications as |classification|}}
                 <p>
-                  {{category.label}}
+                  {{classification.label}}
                 </p>
               {{/each}}
             </li>
@@ -75,6 +75,15 @@
                 <ContentCheck @concept={{@model.roadSignConcept}} />
               </li>
             {{/unless}}
+                        <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+              <AuLabel>
+                {{t "road-sign-concept.attr.shape"}}
+              </AuLabel>
+              <p>
+                {{@model.roadSignConcept.shape.label}}
+              </p>
+            </li>
+            
           </ul>
         </Group>
       </AuToolbar>

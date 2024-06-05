@@ -87,6 +87,7 @@ road-sign-concept:
     related-marking: Gerelateerde wegmarkeringen
     related-traffic-light: Gerelateerde verkeerslichten
     valid: Gevalideerd
+    shape: Vorm
   crud:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord

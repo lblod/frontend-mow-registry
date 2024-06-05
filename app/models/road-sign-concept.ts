@@ -24,7 +24,7 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
   declare classifications: AsyncHasMany<RoadSignCategoryModel>;
 
   @belongsTo('tribont-shape', { inverse: null, async: true })
-  declare shapes: AsyncBelongsTo<TribontShapeModel>;
+  declare shape: AsyncBelongsTo<TribontShapeModel>;
 
   @hasMany('road-sign-concept', { inverse: 'mainSigns', async: true })
   declare subSigns: AsyncHasMany<RoadSignConceptModel>;

@@ -39,7 +39,7 @@
           <form class="au-c-form" id="edit-road-sign-concept-form" novalidate>
             {{#let changeset.error.image as |isInvalid|}}
               <AuFormRow>
-                <ImageInput @oldImage={{@roadSignConcept.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
+                <ImageInput @oldImage={{@roadSignConcept.image.file.downloadLink}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
               </AuFormRow>
             {{/let}}
             {{#let changeset.error.code as |isInvalid|}}
@@ -127,7 +127,7 @@
                 @placeholder={{t "utility.search-placeholder"}}
                 @loadingMessage={{t "utility.loading"}}
                 @options={{@shapes}} 
-                @selected={{changeset.shapes}}
+                @selected={{changeset.shape}}
                 @onChange={{fn this.setRoadSignShape changeset}} 
                 @triggerId="shapes" as |shape|
               >

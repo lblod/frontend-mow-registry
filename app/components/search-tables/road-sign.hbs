@@ -26,6 +26,9 @@
       @field="classifications.label"
       @label={{t "road-sign-concept.attr.categories"}}
     />
+        <th>
+      {{t "road-sign-concept.attr.shape"}}
+    </th>
     <th>
       {{t "utility.zonality"}}
     </th>
@@ -40,7 +43,7 @@
       {{roadSignConcept.code}}
     </td>
     <td>
-      <img class="au-c-thumbnail" src={{roadSignConcept.image.uri}} alt="" />
+      <img class="au-c-thumbnail" src={{roadSignConcept.image.file.downloadLink}} alt="" />
     </td>
     <td>
       {{roadSignConcept.meaning}}
@@ -52,6 +55,9 @@
         {{/if}}
         {{classification.label}}
       {{/each}}
+    </td>
+     <td>
+      {{roadSignConcept.shape.label}}
     </td>
     <td>
       {{zonality-label (await roadSignConcept.zonality)}}

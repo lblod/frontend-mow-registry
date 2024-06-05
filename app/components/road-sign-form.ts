@@ -36,7 +36,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     changeset: BufferedChangeset,
     selection: TribontShapeModel[],
   ) {
-    changeset.shapes = selection;
+    changeset.shape = selection;
   }
 
   editRoadSignConceptTask = dropTask(
@@ -47,7 +47,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
         const image = await this.saveImage(this.store);
         changeset.image = image;
         try {
-          await changeset.save(); // mergeDeep error here
+          await changeset.save();
           console.log('Changeset saved successfully');
         } catch (error) {
           console.error('Error saving changeset:', error);

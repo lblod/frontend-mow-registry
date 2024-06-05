@@ -8,5 +8,5 @@ export default {
   meaning: validatePresence({ presence: true, ignoreBlank: true }),
   code: validatePresence({ presence: true, ignoreBlank: true }),
   classifications: validateLength({ min: 1 }),
-  shapes: validatePresence({ presence: true, ignoreBlank: true }),
+  shape: validatePresence({ presence: true, ignoreBlank: true }),
 };
