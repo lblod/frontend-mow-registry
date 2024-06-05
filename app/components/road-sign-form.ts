@@ -48,7 +48,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
         changeset.image = image;
         try {
           await changeset.save();
-          console.log('Changeset saved successfully');
         } catch (error) {
           console.error('Error saving changeset:', error);
         }
