@@ -35,6 +35,7 @@ export default class ImageUploadHandlerComponent<
   }
 
   async saveImage(store: Store) {
+    console.log('this.fileData', this.fileData);
     if (this.fileData) {
       const image = await this.fileService.uploadImage(this.fileData);
       const imageModel: ImageModel = store.createRecord('image');

@@ -12,10 +12,7 @@
   </:menu>
   <:header as |header|>
 
-    <header.Sortable
-      @field="code"
-      @label={{t "road-sign-concept.attr.code"}}
-    />
+    <header.Sortable @field="code" @label={{t "road-sign-concept.attr.code"}} />
     <th>
       {{t "road-sign-concept.attr.image-header"}}
     </th>
@@ -26,7 +23,7 @@
       @field="classifications.label"
       @label={{t "road-sign-concept.attr.categories"}}
     />
-        <th>
+    <th>
       {{t "road-sign-concept.attr.shape"}}
     </th>
     <th>
@@ -43,7 +40,11 @@
       {{roadSignConcept.code}}
     </td>
     <td>
-      <img class="au-c-thumbnail" src={{roadSignConcept.image.file.downloadLink}} alt="" />
+      <img
+        class="au-c-thumbnail"
+        src={{roadSignConcept.image.file.downloadLink}}
+        alt=""
+      />
     </td>
     <td>
       {{roadSignConcept.meaning}}
@@ -51,12 +52,12 @@
     <td>
       {{#each roadSignConcept.classifications as |classification index|}}
         {{#if (gt index 0)}}
-          <br>
+          <br />
         {{/if}}
         {{classification.label}}
       {{/each}}
     </td>
-     <td>
+    <td>
       {{roadSignConcept.shape.label}}
     </td>
     <td>
@@ -70,7 +71,7 @@
       {{/if}}
     </td>
     <td>
-      {{yield roadSignConcept to='rowAction'}}
+      {{yield roadSignConcept to="rowAction"}}
     </td>
   </:body>
 </ReactiveTable>
