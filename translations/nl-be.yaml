@@ -88,6 +88,7 @@ road-sign-concept:
     related-traffic-light: Gerelateerde verkeerslichten
     valid: Gevalideerd
     shape: Vorm
+    dimensions: Dimensies
   crud:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
