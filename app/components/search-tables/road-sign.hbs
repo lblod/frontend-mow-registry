@@ -12,7 +12,10 @@
   </:menu>
   <:header as |header|>
 
-    <header.Sortable @field="code" @label={{t "road-sign-concept.attr.code"}} />
+    <header.Sortable
+      @field="label"
+      @label={{t "road-sign-concept.attr.code"}}
+    />
     <th>
       {{t "road-sign-concept.attr.image-header"}}
     </th>
@@ -37,7 +40,7 @@
   <:body as |roadSignConcept|>
 
     <td>
-      {{roadSignConcept.code}}
+      {{roadSignConcept.label}}
     </td>
     <td>
       <img

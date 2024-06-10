@@ -40,7 +40,6 @@ export default class ImageUploadHandlerComponent<
       const image = await this.fileService.uploadImage(this.fileData);
       const imageModel: ImageModel = store.createRecord('image');
       imageModel.set('file', image);
-
       return await imageModel.save();
     } else {
       return null;

@@ -12,7 +12,6 @@ import type ImageModel from 'mow-registry/models/image';
 
 export default class TrafficSignConceptModel extends SkosConcept {
   @attr declare meaning?: string;
-  @attr declare code?: string;
 
   @belongsTo('image', { async: true, inverse: null })
   declare image: AsyncBelongsTo<ImageModel>;

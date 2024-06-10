@@ -13,7 +13,7 @@
         @model={{@roadSignConcept.id}}
         class={{linkClass}}
       >
-        {{@roadSignConcept.code}}
+        {{@roadSignConcept.label}}
       </LinkTo>
     {{/if}}
   </BreadcrumbsItem>
@@ -44,7 +44,7 @@
                 />
               </AuFormRow>
             {{/let}}
-            {{#let changeset.error.code as |isInvalid|}}
+            {{#let changeset.error.label as |isInvalid|}}
               <AuFormRow>
                 <AuLabel
                   @error={{isInvalid}}
@@ -58,7 +58,7 @@
                   @error={{isInvalid}}
                   id="road-sign-concept-code"
                   required="required"
-                  @value={{changeset.code}}
+                  @value={{changeset.label}}
                 />
                 {{#if isInvalid}}
                   <AuHelpText @error={{true}}>
