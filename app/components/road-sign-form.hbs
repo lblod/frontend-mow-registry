@@ -1,12 +1,10 @@
 {{#let
-  (changeset @roadSignConcept this.RoadSignConceptValidations) as |changeset|
+  (changeset @roadSignConcept this.RoadSignConceptValidations)
+  as |changeset|
 }}
   <BreadcrumbsItem as |linkClass|>
     {{#if @roadSignConcept.isNew}}
-      <LinkTo
-        @route="road-sign-concepts.new"
-        class={{linkClass}}
-      >
+      <LinkTo @route="road-sign-concepts.new" class={{linkClass}}>
         {{t "road-sign-concept.crud.new"}}
       </LinkTo>
     {{else}}
@@ -15,7 +13,7 @@
         @model={{@roadSignConcept.id}}
         class={{linkClass}}
       >
-        {{@roadSignConcept.roadSignConceptCode}}
+        {{@roadSignConcept.label}}
       </LinkTo>
     {{/if}}
   </BreadcrumbsItem>
@@ -39,19 +37,28 @@
           <form class="au-c-form" id="edit-road-sign-concept-form" novalidate>
             {{#let changeset.error.image as |isInvalid|}}
               <AuFormRow>
-                <ImageInput @oldImage={{@roadSignConcept.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
+                <ImageInput
+                  @oldImage={{changeset.image.file.downloadLink}}
+                  @error={{isInvalid}}
+                  @setImage={{(fn this.setImage changeset)}}
+                />
               </AuFormRow>
             {{/let}}
-            {{#let changeset.error.roadSignConceptCode as |isInvalid|}}
+            {{#let changeset.error.label as |isInvalid|}}
               <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="road-sign-concept-code" @required={{true}} @requiredLabel={{t "utility.required"}}>
+                <AuLabel
+                  @error={{isInvalid}}
+                  for="road-sign-concept-code"
+                  @required={{true}}
+                  @requiredLabel={{t "utility.required"}}
+                >
                   {{t "road-sign-concept.attr.code"}}&nbsp;
                 </AuLabel>
                 <AuInput
                   @error={{isInvalid}}
                   id="road-sign-concept-code"
                   required="required"
-                  @value={{changeset.roadSignConceptCode}}
+                  @value={{changeset.label}}
                 />
                 {{#if isInvalid}}
                   <AuHelpText @error={{true}}>
@@ -62,7 +69,12 @@
             {{/let}}
             {{#let changeset.error.meaning as |isInvalid|}}
               <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="meaning" @required={{true}} @requiredLabel={{t "utility.required"}}>
+                <AuLabel
+                  @error={{isInvalid}}
+                  for="meaning"
+                  @required={{true}}
+                  @requiredLabel={{t "utility.required"}}
+                >
                   {{t "road-sign-concept.attr.meaning"}}&nbsp;
                 </AuLabel>
                 <AuTextarea
@@ -80,9 +92,14 @@
                 {{/if}}
               </AuFormRow>
             {{/let}}
-            {{#let changeset.error.categories as |isInvalid|}}
+            {{#let changeset.error.classifications as |isInvalid|}}
               <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="categories" @required={{true}} @requiredLabel={{t "utility.required"}}>
+                <AuLabel
+                  @error={{isInvalid}}
+                  for="classifications"
+                  @required={{true}}
+                  @requiredLabel={{t "utility.required"}}
+                >
                   {{t "road-sign-concept.attr.categories"}}&nbsp;
                 </AuLabel>
                 <div class={{if isInvalid "ember-power-select--error"}}>
@@ -93,13 +110,14 @@
                     @searchMessage={{t "utility.search-placeholder"}}
                     @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
                     @searchField="label"
-                    @options={{@categories}}
+                    @options={{@classifications}}
                     @loadingMessage={{t "utility.loading"}}
-                    @selected={{changeset.categories}}
+                    @selected={{changeset.classifications}}
                     @onChange={{fn this.setRoadSignConceptCategory changeset}}
-                    @triggerId="categories" as |category|
+                    @triggerId="classifications"
+                    as |classification|
                   >
-                    {{category.label}}
+                    {{classification.label}}
                   </PowerSelectMultiple>
                 </div>
                 {{#if isInvalid}}
@@ -113,35 +131,45 @@
               <AuLabel for="categories">
                 {{t "utility.zonality"}}&nbsp;
               </AuLabel>
-              <ZonalitySelector @zonality={{changeset.zonality}} @onChange={{(fn (mut changeset.zonality))}} />
+              <ZonalitySelector
+                @zonality={{changeset.zonality}}
+                @onChange={{(fn (mut changeset.zonality))}}
+              />
             </AuFormRow>
-          {{#let changeset.error.shapes as |isInvalid|}}
-            <AuFormRow>
-              <AuLabel for="shapes" @error={{isInvalid}} @required={{true}} @requiredLabel={{t "utility.required"}}>
-                {{t "utility.shape"}}&nbsp;
-              </AuLabel>
-            <div class={{if isInvalid "ember-power-select--error"}}>
-              <PowerSelect
-                @allowClear={{false}}
-                @searchEnabled={{false}}
-                @placeholder={{t "utility.search-placeholder"}}
-                @loadingMessage={{t "utility.loading"}}
-                @options={{@shapes}} 
-                @selected={{changeset.shapes}}
-                @onChange={{fn this.setRoadSignShape changeset}} 
-                @triggerId="shapes" as |shape|
-              >
-                {{shape.label}}
-              </PowerSelect>
-              <br>
-            </div>
-            {{#if isInvalid}}
-              <AuHelpText @error={{true}}>
-                {{t "utility.field-required"}}
-              </AuHelpText>
-            {{/if}}
-            </AuFormRow>
-          {{/let}}
+            {{#let changeset.error.shapes as |isInvalid|}}
+              <AuFormRow>
+                <AuLabel
+                  for="shapes"
+                  @error={{isInvalid}}
+                  @required={{true}}
+                  @requiredLabel={{t "utility.required"}}
+                >
+                  {{t "utility.shape"}}&nbsp;
+                </AuLabel>
+                <div class={{if isInvalid "ember-power-select--error"}}>
+                  <PowerSelect
+                    @allowClear={{false}}
+                    @searchEnabled={{false}}
+                    @placeholder={{t "utility.search-placeholder"}}
+                    @loadingMessage={{t "utility.loading"}}
+                    @options={{@shapes}}
+                    @selected={{changeset.shape}}
+                    @onChange={{fn this.setRoadSignShape changeset}}
+                    @triggerId="shapes"
+                    as |shape|
+                  >
+                    {{shape.label}}
+                  </PowerSelect>
+                  <br />
+                </div>
+                {{#if isInvalid}}
+                  <AuHelpText @error={{true}}>
+                    {{t "utility.field-required"}}
+                  </AuHelpText>
+                {{/if}}
+              </AuFormRow>
+            {{/let}}
+
           </form>
         </div>
       </div>

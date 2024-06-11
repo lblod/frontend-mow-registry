@@ -1,7 +1,8 @@
 <AuDataTable
   @content={{@content}}
   @fields="Image Meaning Code Categories"
-  @noDataMessage={{t "road-sign-concept.crud.no-data"}} as |s|
+  @noDataMessage={{t "road-sign-concept.crud.no-data"}}
+  as |s|
 >
   <s.menu as |menu|>
     <menu.general>
@@ -34,19 +35,19 @@
         {{t "road-sign-concept.attr.categories"}}
       </th>
       <th>
-                <span class="au-u-hidden-visually">
-                  {{t "related-road-sign.crud.delete"}}
-                </span>
+        <span class="au-u-hidden-visually">
+          {{t "related-road-sign.crud.delete"}}
+        </span>
       </th>
     </c.header>
     <c.body as |relatedRoadSignConcept|>
       <td>
-        {{relatedRoadSignConcept.roadSignConceptCode}}
+        {{relatedRoadSignConcept.label}}
       </td>
       <td>
         <img
           class="au-c-thumbnail"
-          src={{relatedRoadSignConcept.image}}
+          src={{relatedRoadSignConcept.image.file.downloadLink}}
           alt=""
         />
       </td>
@@ -56,8 +57,8 @@
         </p>
       </td>
       <td>
-        {{#each relatedRoadSignConcept.categories as |category|}}
-          {{category.label}}
+        {{#each relatedRoadSignConcept.classifications as |classification|}}
+          {{classification.label}}
         {{/each}}
       </td>
       <td class="w-px au-u-padding-right-small">
@@ -66,10 +67,7 @@
           @alert={{true}}
           @skin="secondary"
           @hideText={{true}}
-          {{on
-            "click"
-            (fn @onClickRemove relatedRoadSignConcept)
-          }}
+          {{on "click" (fn @onClickRemove relatedRoadSignConcept)}}
         >
           {{t "related-road-sign.crud.delete"}}
         </AuButton>

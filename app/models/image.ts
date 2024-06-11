@@ -8,5 +8,5 @@ declare module 'ember-data/types/registries/model' {
 }
 
 export default class ImageModel extends DocumentModel {
-  @attr declare uri?: string;
+  // @attr declare uri?: string;
 }

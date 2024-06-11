@@ -86,6 +86,8 @@ road-sign-concept:
     related-marking: Related road markings
     related-traffic-light: Related traffic light
     valid: Is valid
+    shape: Shape
+    dimensions: Dimensions
   crud:
     create: Create road sign
     new: New Road Sign

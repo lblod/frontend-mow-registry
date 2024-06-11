@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import { hash } from 'rsvp';
 
 type Params = {
-  code?: string;
+  label?: string;
   meaning?: string;
   page: number;
   size: number;
@@ -16,7 +16,7 @@ export default class RoadsignConceptsIndexRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    code: { refreshModel: true },
+    label: { refreshModel: true },
     meaning: { refreshModel: true },
     page: { refreshModel: true },
     size: { refreshModel: true },
@@ -33,8 +33,8 @@ export default class RoadsignConceptsIndexRoute extends Route {
       },
     };
 
-    if (params.code) {
-      query['filter[code]'] = params.code;
+    if (params.label) {
+      query['filter[label]'] = params.label;
     }
 
     if (params.meaning) {

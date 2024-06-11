@@ -38,9 +38,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @action
   async didInsert() {
     this.isSubSign =
-      (await this.model.roadSignConcept.categories).filter((category) => {
-        return category.label === 'Onderbord';
-      }).length === 1;
+      (await this.model.roadSignConcept.classifications).filter(
+        (classification) => {
+          return classification.label === 'Onderbord';
+        },
+      ).length === 1;
   }
 
   get showSidebar() {
@@ -60,7 +62,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     }
 
     return this.model.allSubSigns.filter((subSign) => {
-      return subSign.roadSignConceptCode
+      return subSign.label
         ?.toLowerCase()
         .includes(this.subSignCodeFilter.toLowerCase());
     });

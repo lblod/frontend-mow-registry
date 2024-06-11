@@ -3,6 +3,7 @@ import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import fetch from 'fetch';
 import ENV from 'mow-registry/config/environment';
+import FileModel from 'mow-registry/models/file';
 
 type Response = {
   data: {
@@ -32,5 +33,18 @@ export default class FileService extends Service {
       downloadUrl = ENV.baseUrl + downloadUrl;
     }
     return downloadUrl;
+  }
+
+  async uploadImage(file: File): Promise<FileModel> {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await fetch('/files', {
+      method: 'POST',
+      body: formData,
+    });
+    const upload = (await response.json()) as Response;
+    this.store.pushPayload('file', upload);
+    const fileRecord = this.store.findRecord('file', upload.data.id);
+    return fileRecord;
   }
 }
