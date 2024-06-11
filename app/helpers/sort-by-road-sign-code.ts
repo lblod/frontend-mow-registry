@@ -13,12 +13,8 @@ export default helper(function sortByRoadSignCode([roadSignConcepts]: [
   }
 
   return [...roadSignConcepts.slice()].sort((a, b) => {
-    return unwrap(a.roadSignConceptCode).localeCompare(
-      unwrap(b.roadSignConceptCode),
-      undefined,
-      {
-        numeric: true,
-      },
-    );
+    return unwrap(a.label).localeCompare(unwrap(b.label), undefined, {
+      numeric: true,
+    });
   });
 });

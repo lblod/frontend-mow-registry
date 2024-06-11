@@ -6,7 +6,7 @@
     @model={{@model.roadSignConcept.id}}
     class={{linkClass}}
   >
-    {{@model.roadSignConcept.roadSignConceptCode}}
+    {{@model.roadSignConcept.label}}
   </LinkTo>
 </BreadcrumbsItem>
 
@@ -207,12 +207,12 @@
               </c.header>
               <c.body as |mainSignConcept|>
                 <td>
-                  {{mainSignConcept.roadSignConceptCode}}
+                  {{mainSignConcept.label}}
                 </td>
                 <td>
                   <img
                     class="au-c-thumbnail"
-                    src={{mainSignConcept.image}}
+                    src={{mainSignConcept.image.file.downloadLink}}
                     alt=""
                   />
                 </td>
@@ -222,8 +222,8 @@
                   </p>
                 </td>
                 <td>
-                  {{#each mainSignConcept.categories as |category|}}
-                    {{category.label}}
+                  {{#each mainSignConcept.classifications as |classification|}}
+                    {{classification.label}}
                   {{/each}}
                 </td>
                 <td class="w-px au-u-padding-right-small">
@@ -284,10 +284,14 @@
               </c.header>
               <c.body as |subSign|>
                 <td>
-                  {{subSign.roadSignConceptCode}}
+                  {{subSign.label}}
                 </td>
                 <td>
-                  <img class="au-c-thumbnail" src={{subSign.image}} alt="" />
+                  <img
+                    class="au-c-thumbnail"
+                    src={{subSign.image.file.downloadLink}}
+                    alt=""
+                  />
                 </td>
                 <td>
                   <p class="max-w-prose">
@@ -369,8 +373,8 @@
         <div class="au-c-body-container au-c-body-container--scroll">
           {{#each (sort-by-road-sign-code this.subSigns) as |subSign|}}
             <SidebarRoadSign
-              @imageUrl={{subSign.image}}
-              @code={{subSign.roadSignConceptCode}}
+              @imageUrl={{subSign.image.file.downloadLink}}
+              @code={{subSign.label}}
               @meaning={{subSign.meaning}}
               @onAdd={{perform this.addSubSign subSign}}
               @addText={{t "sub-sign.crud.add-one"}}
@@ -434,8 +438,8 @@
               as |mainSignByCategory|
             }}
               <SidebarRoadSign
-                @imageUrl={{mainSignByCategory.image}}
-                @code={{mainSignByCategory.roadSignConceptCode}}
+                @imageUrl={{mainSignByCategory.image.file.downloadLink}}
+                @code={{mainSignByCategory.label}}
                 @meaning={{mainSignByCategory.meaning}}
                 @onAdd={{perform this.addMainSign mainSignByCategory}}
                 @addText={{t "main-sign.crud.add-one"}}
@@ -499,8 +503,8 @@
               as |relatedRoadSignByCategory|
             }}
               <SidebarRoadSign
-                @imageUrl={{relatedRoadSignByCategory.image}}
-                @code={{relatedRoadSignByCategory.roadSignConceptCode}}
+                @imageUrl={{relatedRoadSignByCategory.image.file.downloadLink}}
+                @code={{relatedRoadSignByCategory.label}}
                 @meaning={{relatedRoadSignByCategory.meaning}}
                 @onAdd={{perform
                   this.addRelatedRoadSign
@@ -556,8 +560,8 @@
             as |relatedRoadMarking|
           }}
             <SidebarRoadSign
-              @imageUrl={{relatedRoadMarking.image}}
-              @code={{relatedRoadMarking.roadSignConceptCode}}
+              @imageUrl={{relatedRoadMarking.image.file.downloadLink}}
+              @code={{relatedRoadMarking.label}}
               @meaning={{relatedRoadMarking.definition}}
               @onAdd={{perform this.addRelatedRoadMarking relatedRoadMarking}}
               @addText={{t "related-road-marking.crud.add-one"}}
@@ -570,7 +574,7 @@
               as |relatedRoadMarkingByCategory|
             }}
               <SidebarRoadMarking
-                @imageUrl={{relatedRoadMarkingByCategory.image}}
+                @imageUrl={{relatedRoadMarkingByCategory.image.file.downloadLink}}
                 @code={{relatedRoadMarkingByCategory.roadMarkingConceptCode}}
                 @meaning={{relatedRoadMarkingByCategory.meaning}}
                 @onAdd={{perform
@@ -628,8 +632,8 @@
             as |relatedTrafficLight|
           }}
             <SidebarRoadSign
-              @imageUrl={{relatedTrafficLight.image}}
-              @code={{relatedTrafficLight.roadSignConceptCode}}
+              @imageUrl={{relatedTrafficLight.image.file.downloadLink}}
+              @code={{relatedTrafficLight.label}}
               @meaning={{relatedTrafficLight.definition}}
               @onAdd={{perform this.addRelatedTrafficLight relatedTrafficLight}}
               @addText={{t "related-traffic-light.crud.add-one"}}
@@ -642,7 +646,7 @@
               as |relatedTrafficLightByCategory|
             }}
               <SidebarTrafficLight
-                @imageUrl={{relatedTrafficLightByCategory.image}}
+                @imageUrl={{relatedTrafficLightByCategory.image.file.downloadLink}}
                 @code={{relatedTrafficLightByCategory.TrafficLightConceptCode}}
                 @meaning={{relatedTrafficLightByCategory.meaning}}
                 @onAdd={{perform
