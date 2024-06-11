@@ -9,6 +9,7 @@ import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
 import TribontShapeModel from 'mow-registry/models/tribont-shape';
 import Store from '@ember-data/store';
+import DimensionModel from 'mow-registry/models/dimension';
 
 type Args = {
   roadSignConcept: RoadSignConceptModel;
@@ -32,11 +33,19 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  setRoadSignShape(
+  setRoadSignConceptShape(
     changeset: BufferedChangeset,
     selection: TribontShapeModel[],
   ) {
     changeset.shape = selection;
+  }
+
+  @action
+  setRoadSignConceptDimensions(
+    changeset: BufferedChangeset,
+    selection: DimensionModel[],
+  ) {
+    changeset.dimensions = selection;
   }
 
   editRoadSignConceptTask = dropTask(

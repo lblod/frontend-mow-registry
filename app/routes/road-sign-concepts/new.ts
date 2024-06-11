@@ -11,6 +11,7 @@ export default class RoadsignConceptsNewRoute extends Route {
       newRoadSignConcept: this.store.createRecord('road-sign-concept'),
       classifications: this.store.findAll('road-sign-category'),
       shapes: this.store.findAll('tribont-shape'),
+      dimensions: this.store.findAll('dimension'),
     });
   }
 }
