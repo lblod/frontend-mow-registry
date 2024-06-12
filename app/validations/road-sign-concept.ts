@@ -9,4 +9,5 @@ export default {
   code: validatePresence({ presence: true, ignoreBlank: true }),
   classifications: validateLength({ min: 1 }),
   shape: validatePresence({ presence: true, ignoreBlank: true }),
+  dimensions: validatePresence({ presence: true, ignoreBlank: true }),
 };
