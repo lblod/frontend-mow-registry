@@ -1,7 +1,8 @@
 <AuDataTable
   @content={{@content}}
   @fields="Image Meaning Code Categories"
-  @noDataMessage={{t "road-marking-concept.crud.no-data"}} as |s|
+  @noDataMessage={{t "road-marking-concept.crud.no-data"}}
+  as |s|
 >
   <s.menu as |menu|>
     <menu.general>
@@ -34,14 +35,14 @@
         {{t "road-marking-concept.attr.meaning"}}
       </th>
       <th>
-                <span class="au-u-hidden-visually">
-                  {{t "related-road-marking.crud.delete"}}
-                </span>
+        <span class="au-u-hidden-visually">
+          {{t "related-road-marking.crud.delete"}}
+        </span>
       </th>
     </c.header>
     <c.body as |relatedRoadMarkingConcept|>
       <td>
-        {{relatedRoadMarkingConcept.roadMarkingConceptCode}}
+        {{relatedRoadMarkingConcept.label}}
       </td>
       <td>
         <img

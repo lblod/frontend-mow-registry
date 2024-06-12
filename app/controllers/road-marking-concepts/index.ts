@@ -10,7 +10,7 @@ export default class RoadmarkingConceptsIndexController extends Controller {
   @tracked size = 30;
   @tracked code = '';
   @tracked meaning = '';
-  @tracked sort = 'road-marking-concept-code';
+  @tracked sort = 'label';
 
   updateSearchFilterTask = restartableTask(
     async (queryParamProperty: 'code' | 'meaning', event: InputEvent) => {

@@ -1,7 +1,6 @@
 {{#let
-  (changeset
-    @roadMarkingConcept this.RoadMarkingConceptValidations
-  ) as |changeset|
+  (changeset @roadMarkingConcept this.RoadMarkingConceptValidations)
+  as |changeset|
 }}
   <BreadcrumbsItem as |linkClass|>
     <LinkTo
@@ -12,7 +11,7 @@
       {{#if @roadMarkingConcept.isNew}}
         {{t "road-marking-concept.crud.new"}}
       {{else}}
-        {{@roadMarkingConcept.roadMarkingConceptCode}}
+        {{@roadMarkingConcept.label}}
       {{/if}}
     </LinkTo>
   </BreadcrumbsItem>
@@ -39,26 +38,31 @@
           >
             {{#let changeset.error.image as |isInvalid|}}
               <AuFormRow>
-                <ImageInput @oldImage={{@roadMarkingConcept.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
+                <ImageInput
+                  @oldImage={{@roadMarkingConcept.image}}
+                  @error={{isInvalid}}
+                  @setImage={{(fn this.setImage changeset)}}
+                />
               </AuFormRow>
             {{/let}}
-            {{#let changeset.error.roadMarkingConceptCode as |isInvalid|}}
+            {{#let changeset.error.label as |isInvalid|}}
               <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="road-marking-concept-code" @required={{true}} @requiredLabel={{t "utility.required"}}>
+                <AuLabel
+                  @error={{isInvalid}}
+                  for="road-marking-concept-code"
+                  @required={{true}}
+                  @requiredLabel={{t "utility.required"}}
+                >
                   {{t "road-marking-concept.attr.code"}}&nbsp;
                 </AuLabel>
                 <AuInput
                   @error={{isInvalid}}
                   id="road-marking-concept-code"
                   required="required"
-                  @value={{changeset.roadMarkingConceptCode}}
+                  @value={{changeset.label}}
                   {{on
                     "input"
-                    (fn
-                      this.setRoadMarkingConceptValue
-                      changeset
-                      "roadMarkingConceptCode"
-                    )
+                    (fn this.setRoadMarkingConceptValue changeset "label")
                   }}
                 />
                 {{#if isInvalid}}
@@ -70,7 +74,12 @@
             {{/let}}
             {{#let changeset.error.definition as |isInvalid|}}
               <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="definition" @required={{true}} @requiredLabel={{t "utility.required"}}>
+                <AuLabel
+                  @error={{isInvalid}}
+                  for="definition"
+                  @required={{true}}
+                  @requiredLabel={{t "utility.required"}}
+                >
                   {{t "road-marking-concept.attr.definition"}}&nbsp;
                 </AuLabel>
                 <AuTextarea
@@ -82,11 +91,7 @@
                   @value={{changeset.definition}}
                   {{on
                     "input"
-                    (fn
-                      this.setRoadMarkingConceptValue
-                      changeset
-                      "definition"
-                    )
+                    (fn this.setRoadMarkingConceptValue changeset "definition")
                   }}
                 />
                 {{#if isInvalid}}
@@ -98,7 +103,12 @@
             {{/let}}
             {{#let changeset.error.meaning as |isInvalid|}}
               <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="meaning" @required={{true}} @requiredLabel={{t "utility.required"}}>
+                <AuLabel
+                  @error={{isInvalid}}
+                  for="meaning"
+                  @required={{true}}
+                  @requiredLabel={{t "utility.required"}}
+                >
                   {{t "road-marking-concept.attr.meaning"}}&nbsp;
                 </AuLabel>
                 <AuTextarea

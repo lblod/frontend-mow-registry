@@ -1,13 +1,5 @@
-import {
-  AsyncHasMany,
-  attr,
-  belongsTo,
-  hasMany,
-  AsyncBelongsTo,
-} from '@ember-data/model';
+import { attr, belongsTo, AsyncBelongsTo } from '@ember-data/model';
 import SkosConcept from 'mow-registry/models/skos-concept';
-import type TemplateModel from 'mow-registry/models/template';
-import type TrafficMeasureConceptModel from 'mow-registry/models/traffic-measure-concept';
 import type ImageModel from 'mow-registry/models/image';
 
 export default class TrafficSignConceptModel extends SkosConcept {

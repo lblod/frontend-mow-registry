@@ -6,18 +6,18 @@
     @model={{@model.roadMarkingConcept.id}}
     class={{linkClass}}
   >
-    {{@model.roadMarkingConcept.roadMarkingConceptCode}}
+    {{@model.roadMarkingConcept.label}}
   </LinkTo>
 </BreadcrumbsItem>
 
 <div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
   <div
-    class="au-o-grid__item {{
-      if
-      this.showSidebar
-      "au-u-3-5@medium au-u-visible-from@medium"
-      "au-u-1-1@medium"
-    }}"
+    class="au-o-grid__item
+      {{if
+        this.showSidebar
+        'au-u-3-5@medium au-u-visible-from@medium'
+        'au-u-1-1@medium'
+      }}"
   >
     <div class="au-c-body-container au-c-body-container--scroll">
       <AuToolbar @size="large" as |Group|>
@@ -33,7 +33,8 @@
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <img
                 class="au-c-thumbnail au-c-thumbnail--full"
-                alt="" src={{@model.roadMarkingConcept.image}}
+                alt=""
+                src={{@model.roadMarkingConcept.image}}
               />
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
@@ -41,7 +42,7 @@
                 {{t "road-marking-concept.attr.code"}}
               </AuLabel>
               <p>
-                {{@model.roadMarkingConcept.roadMarkingConceptCode}}
+                {{@model.roadMarkingConcept.label}}
               </p>
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-4@medium">
@@ -87,7 +88,8 @@
           <AuModal
             @modalTitle={{t "utility.confirmation.title"}}
             @modalOpen={{this.isOpen}}
-            @closeModal={{fn (mut this.isOpen) false}} as |Modal|
+            @closeModal={{fn (mut this.isOpen) false}}
+            as |Modal|
           >
             <Modal.Body>
               <p>
@@ -99,7 +101,9 @@
                 @alert={{true}}
                 {{on
                   "click"
-                  (perform this.removeRoadMarkingConcept @model.roadMarkingConcept)
+                  (perform
+                    this.removeRoadMarkingConcept @model.roadMarkingConcept
+                  )
                 }}
               >
                 {{t "road-marking-concept.crud.delete"}}
@@ -125,25 +129,22 @@
           @isAddingInstructions={{this.isAddingInstructions}}
         />
         <RelatedRoadsignsTable
-
           @content={{sort-by-road-sign-code
-          (await @model.roadMarkingConcept.relatedRoadSignConcepts) }}
+            (await @model.roadMarkingConcept.relatedRoadSignConcepts)
+          }}
           @onClickAdd={{this.toggleAddRelatedRoadSigns}}
           @onClickRemove={{perform this.removeRelatedRoadSign}}
-
         />
         <RelatedRoadmarkingsTable
-          @content={{
-        sort-by-road-marking-code
-          (await @model.roadMarkingConcept.relatedRoadMarkingConcepts)
+          @content={{sort-by-road-marking-code
+            (await @model.roadMarkingConcept.relatedRoadMarkingConcepts)
           }}
           @onClickAdd={{this.toggleAddRelatedRoadMarkings}}
           @onClickRemove={{perform this.removeRelatedRoadMarking}}
         />
         <RelatedTrafficLightsTable
-          @content={{
-          sort-by-traffic-light-code
-          (await @model.roadMarkingConcept.relatedTrafficLightConcepts)
+          @content={{sort-by-traffic-light-code
+            (await @model.roadMarkingConcept.relatedTrafficLightConcepts)
           }}
           @onClickAdd={{this.toggleAddRelatedTrafficLights}}
           @onClickRemove={{perform this.removeRelatedTrafficLight}}
@@ -188,9 +189,8 @@
         </div>
         <div class="au-c-body-container au-c-body-container--scroll">
           {{#each
-            (sort-by-road-marking-code
-              this.roadMarkings
-            ) as |relatedRoadMarking|
+            (sort-by-road-marking-code this.roadMarkings)
+            as |relatedRoadMarking|
           }}
             <SidebarRoadSign
               @imageUrl={{relatedRoadMarking.image}}
@@ -203,16 +203,16 @@
           {{/each}}
           {{#if this.category}}
             {{#each
-              (sort-by-road-marking-code
-                this.categoryRoadMarkings
-              ) as |relatedRoadMarkingByCategory|
+              (sort-by-road-marking-code this.categoryRoadMarkings)
+              as |relatedRoadMarkingByCategory|
             }}
               <SidebarRoadMarking
                 @imageUrl={{relatedRoadMarkingByCategory.image}}
-                @code={{relatedRoadMarkingByCategory.roadMarkingConceptCode}}
+                @code={{relatedRoadMarkingByCategory.label}}
                 @meaning={{relatedRoadMarkingByCategory.meaning}}
-                @onAdd={{
-                  perform this.addRelatedRoadMarking relatedRoadMarkingByCategory
+                @onAdd={{perform
+                  this.addRelatedRoadMarking
+                  relatedRoadMarkingByCategory
                 }}
                 @addText={{t "related-road-marking.crud.add-one"}}
                 class="au-c-action-sidebar__item"
@@ -261,7 +261,8 @@
               @searchField="label"
               @options={{@model.roadSignCategories}}
               @selected={{this.category}}
-              @onChange={{perform this.handleCategorySelection}} as |category|
+              @onChange={{perform this.handleCategorySelection}}
+              as |category|
             >
               {{category.label}}
             </PowerSelect>
@@ -270,15 +271,17 @@
         <div class="au-c-body-container au-c-body-container--scroll">
           {{#if this.category}}
             {{#each
-              (sort-by-road-sign-code
-                this.categoryRoadSigns
-              ) as |relatedRoadSignByCategory|
+              (sort-by-road-sign-code this.categoryRoadSigns)
+              as |relatedRoadSignByCategory|
             }}
               <SidebarRoadSign
                 @imageUrl={{relatedRoadSignByCategory.image}}
                 @code={{relatedRoadSignByCategory.roadSignConceptCode}}
                 @meaning={{relatedRoadSignByCategory.meaning}}
-                @onAdd={{perform this.addRelatedRoadSign relatedRoadSignByCategory}}
+                @onAdd={{perform
+                  this.addRelatedRoadSign
+                  relatedRoadSignByCategory
+                }}
                 @addText={{t "related-road-sign.crud.add-one"}}
                 class="au-c-action-sidebar__item"
               />
@@ -325,9 +328,8 @@
         </div>
         <div class="au-c-body-container au-c-body-container--scroll">
           {{#each
-            (sort-by-traffic-light-code
-              this.trafficLights
-            ) as |relatedTrafficLight|
+            (sort-by-traffic-light-code this.trafficLights)
+            as |relatedTrafficLight|
           }}
             <SidebarRoadSign
               @imageUrl={{relatedTrafficLight.image}}
@@ -340,16 +342,16 @@
           {{/each}}
           {{#if this.category}}
             {{#each
-              (sort-by-traffic-light-code
-                this.categoryTrafficLights
-              ) as |relatedTrafficLightByCategory|
+              (sort-by-traffic-light-code this.categoryTrafficLights)
+              as |relatedTrafficLightByCategory|
             }}
               <SidebarTrafficLight
                 @imageUrl={{relatedTrafficLightByCategory.image}}
                 @code={{relatedTrafficLightByCategory.TrafficLightConceptCode}}
                 @meaning={{relatedTrafficLightByCategory.meaning}}
-                @onAdd={{
-                  perform this.addRelatedTrafficLight relatedTrafficLightByCategory
+                @onAdd={{perform
+                  this.addRelatedTrafficLight
+                  relatedTrafficLightByCategory
                 }}
                 @addText={{t "related-traffic-light.crud.add-one"}}
                 class="au-c-action-sidebar__item"

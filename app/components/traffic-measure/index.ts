@@ -102,9 +102,9 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     this.signs.forEach((sign) => {
       if (sign instanceof RoadSignConceptModel) {
-        result = `${result}${sign.roadSignConceptCode ?? ''}-`;
+        result = `${result}${sign.label ?? ''}-`;
       } else if (sign instanceof RoadMarkingConceptModel) {
-        result = `${result}${sign.roadMarkingConceptCode ?? ''}-`;
+        result = `${result}${sign.label ?? ''}-`;
       } else if (sign instanceof TrafficLightConceptModel) {
         result = `${result}${sign.trafficLightConceptCode ?? ''}-`;
       }

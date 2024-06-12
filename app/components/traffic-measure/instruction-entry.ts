@@ -14,8 +14,8 @@ export default class TrafficMeasureInstructionEntryComponent extends Component<A
     const { sign } = this.args;
     if ('roadSignConceptCode' in sign) {
       return sign.roadSignConceptCode;
-    } else if ('roadMarkingConceptCode' in sign) {
-      return sign.roadMarkingConceptCode;
+    } else if ('label' in sign) {
+      return sign.label;
     } else if ('trafficLightConceptCode' in sign) {
       return sign.trafficLightConceptCode;
     }
