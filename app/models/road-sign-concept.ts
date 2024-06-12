@@ -1,5 +1,4 @@
 import {
-  attr,
   hasMany,
   belongsTo,
   AsyncBelongsTo,
@@ -18,8 +17,6 @@ declare module 'ember-data/types/registries/model' {
   }
 }
 export default class RoadSignConceptModel extends TrafficSignConceptModel {
-  // @attr declare meaning?: string;
-
   @hasMany('road-sign-category', { inverse: null, async: true })
   declare classifications: AsyncHasMany<RoadSignCategoryModel>;
 
