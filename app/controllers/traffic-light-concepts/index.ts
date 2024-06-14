@@ -24,7 +24,7 @@ export default class RoadsignConceptsIndexController extends Controller {
     },
   );
 
-  get selectedCategory() {
+  get selectedClassification() {
     if (!this.category) {
       return null;
     }
@@ -38,10 +38,10 @@ export default class RoadsignConceptsIndexController extends Controller {
 
   @action
   //@ts-expect-error this.category is not defined
-  updateCategoryFilter(selectedCategory) {
-    if (selectedCategory) {
+  updateCategoryFilter(selectedClassification) {
+    if (selectedClassification) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      this.category = selectedCategory.id;
+      this.category = selectedClassification.id;
       this.resetPagination();
     } else {
       this.category = null;

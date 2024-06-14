@@ -9,7 +9,7 @@ type Params = {
   page: number;
   size: number;
   sort: string;
-  category?: string;
+  classification?: string;
 };
 
 export default class RoadsignConceptsIndexRoute extends Route {
@@ -21,7 +21,7 @@ export default class RoadsignConceptsIndexRoute extends Route {
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
-    category: { refreshModel: true },
+    classification: { refreshModel: true },
   };
 
   async model(params: Params) {
@@ -41,8 +41,8 @@ export default class RoadsignConceptsIndexRoute extends Route {
       query['filter[meaning]'] = params.meaning;
     }
 
-    if (params.category) {
-      query['filter[classifications][:id:]'] = params.category;
+    if (params.classification) {
+      query['filter[classifications][:id:]'] = params.classification;
     }
 
     return hash({
