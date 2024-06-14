@@ -12,7 +12,7 @@
   </:menu>
   <:header as |header|>
     <header.Sortable
-      @field="trafficLightConceptCode"
+      @field="label"
       @label={{t "traffic-light-concept.attr.code"}}
     />
     <th>
@@ -28,12 +28,12 @@
   </:header>
   <:body as |trafficLightConcept|>
     <td>
-      {{trafficLightConcept.trafficLightConceptCode}}
+      {{trafficLightConcept.label}}
     </td>
     <td>
       <img
         class="au-c-thumbnail"
-        src={{trafficLightConcept.image}}
+        src={{trafficLightConcept.image.file.downloadLink}}
         alt=""
       />
     </td>
@@ -48,7 +48,7 @@
       {{/if}}
     </td>
     <td>
-      {{yield trafficLightConcept to='rowAction'}}
+      {{yield trafficLightConcept to="rowAction"}}
     </td>
   </:body>
 </ReactiveTable>

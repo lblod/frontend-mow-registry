@@ -13,12 +13,8 @@ export default helper(function sortByTrafficLightCode([trafficLightConcepts]: [
   }
 
   return [...trafficLightConcepts.slice()].sort((a, b) => {
-    return unwrap(a.trafficLightConceptCode).localeCompare(
-      unwrap(b.trafficLightConceptCode),
-      undefined,
-      {
-        numeric: true,
-      },
-    );
+    return unwrap(a.label).localeCompare(unwrap(b.label), undefined, {
+      numeric: true,
+    });
   });
 });

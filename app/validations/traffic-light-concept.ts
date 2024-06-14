@@ -4,7 +4,7 @@ export default {
   image: validatePresence({ presence: true, ignoreBlank: true }),
   definition: validatePresence({ presence: true, ignoreBlank: true }),
   meaning: validatePresence({ presence: true, ignoreBlank: true }),
-  trafficLightConceptCode: validatePresence({
+  label: validatePresence({
     presence: true,
     ignoreBlank: true,
   }),

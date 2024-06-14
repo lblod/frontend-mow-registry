@@ -6,7 +6,7 @@
     @model={{@model.trafficLightConcept.id}}
     class={{linkClass}}
   >
-    {{@model.trafficLightConcept.trafficLightConceptCode}}
+    {{@model.trafficLightConcept.label}}
   </LinkTo>
 </BreadcrumbsItem>
 
@@ -42,7 +42,7 @@
                 {{t "traffic-light-concept.attr.code"}}
               </AuLabel>
               <p>
-                {{@model.trafficLightConcept.trafficLightConceptCode}}
+                {{@model.trafficLightConcept.label}}
               </p>
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-4@medium">
@@ -347,7 +347,7 @@
             }}
               <SidebarTrafficLight
                 @imageUrl={{relatedTrafficLightByCategory.image}}
-                @code={{relatedTrafficLightByCategory.TrafficLightConceptCode}}
+                @code={{relatedTrafficLightByCategory.label}}
                 @meaning={{relatedTrafficLightByCategory.meaning}}
                 @onAdd={{perform
                   this.addRelatedTrafficLight

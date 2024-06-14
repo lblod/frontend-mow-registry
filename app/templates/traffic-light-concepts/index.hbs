@@ -17,7 +17,7 @@
         {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
         <div class="au-c-data-table__search traffic-light-code-search">
           <AuInput
-            @value={{this.code}}
+            @value={{this.label}}
             placeholder={{t "traffic-light-concept.crud.code-filter"}}
             @icon="search"
             @iconAlignment="right"

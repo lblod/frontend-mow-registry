@@ -6,17 +6,17 @@ import { ModelFrom } from 'mow-registry/utils/type-utils';
 import TrafficlightConceptsIndexRoute from 'mow-registry/routes/traffic-light-concepts/index';
 
 export default class RoadsignConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'code', 'meaning', 'sort', 'category'];
+  queryParams = ['page', 'size', 'label', 'meaning', 'sort', 'category'];
   declare model: ModelFrom<TrafficlightConceptsIndexRoute>;
   @tracked page = 0;
   @tracked size = 30;
-  @tracked code = '';
+  @tracked label = '';
   @tracked meaning = '';
   @tracked category: string | null = null;
-  @tracked sort = 'traffic-light-concept-code';
+  @tracked sort = 'label';
 
   updateSearchFilterTask = restartableTask(
-    async (queryParamProperty: 'meaning' | 'code', event: InputEvent) => {
+    async (queryParamProperty: 'meaning' | 'label', event: InputEvent) => {
       await timeout(300);
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;

@@ -9,21 +9,22 @@ import ConceptModel from './concept';
 import type TrafficLightConceptStatusCodeModel from 'mow-registry/models/traffic-light-concept-status-code';
 import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
+import TrafficSignConceptModel from './traffic-sign-concept';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
     'traffic-light-concept': TrafficLightConceptModel;
   }
 }
-export default class TrafficLightConceptModel extends ConceptModel {
-  @attr declare image?: string;
-  @attr declare meaning?: string;
+export default class TrafficLightConceptModel extends TrafficSignConceptModel {
+  // @attr declare image?: string;
+  // @attr declare meaning?: string;
   @attr declare definition?: string;
-  @attr declare trafficLightConceptCode?: string;
+  // @attr declare trafficLightConceptCode?: string;
 
-  get label() {
-    return this.trafficLightConceptCode;
-  }
+  // get label() {
+  //   return this.trafficLightConceptCode;
+  // }
 
   @belongsTo('traffic-light-concept-status-code', {
     inverse: 'trafficLightConcepts',

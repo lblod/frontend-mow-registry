@@ -6,6 +6,7 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import { BufferedChangeset } from 'ember-changeset/types';
 import Router from '@ember/routing/router';
 import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
+import Store from '@ember-data/store';
 
 type Args = {
   trafficLightConcept: TrafficLightConceptModel;
@@ -13,6 +14,7 @@ type Args = {
 
 export default class TrafficLightFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: Router;
+  @service declare store: Store;
 
   TrafficLightConceptValidations = TrafficLightConceptValidations;
 
@@ -36,9 +38,17 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
       await changeset.validate();
 
       if (changeset.isValid) {
-        await this.saveImage(changeset);
-        await changeset.save();
-
+        const image = await this.saveImage(this.store);
+        if (image) {
+          changeset.image = image;
+          console.log('changeset.image', changeset.image);
+        }
+        try {
+          await changeset.save();
+          console.log('changeset saved');
+        } catch (error) {
+          console.error('Error saving changeset:', error);
+        }
         await this.router.transitionTo(
           'traffic-light-concepts.traffic-light-concept',
           changeset.id,
