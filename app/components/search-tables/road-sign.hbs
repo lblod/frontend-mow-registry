@@ -30,6 +30,9 @@
       {{t "road-sign-concept.attr.shape"}}
     </th>
     <th>
+      {{t "road-sign-concept.attr.dimensions"}}
+    </th>
+    <th>
       {{t "utility.zonality"}}
     </th>
     <th>
@@ -62,6 +65,14 @@
     </td>
     <td>
       {{roadSignConcept.shape.label}}
+    </td>
+    <td>
+      {{#each roadSignConcept.shape.dimensions as |dimension index|}}
+        {{#if (gt index 0)}}
+          <br />
+        {{/if}}
+        {{dimension.value}}
+      {{/each}}
     </td>
     <td>
       {{zonality-label (await roadSignConcept.zonality)}}

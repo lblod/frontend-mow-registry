@@ -296,7 +296,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   removeRoadSignConcept = task(
     async (roadSignConcept: RoadSignConceptModel, event: InputEvent) => {
       event.preventDefault();
-
       await roadSignConcept.destroyRecord();
       await this.router.transitionTo('road-sign-concepts');
     },

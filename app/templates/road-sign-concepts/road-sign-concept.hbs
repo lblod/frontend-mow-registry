@@ -85,9 +85,9 @@
               <AuLabel>
                 {{t "road-sign-concept.attr.dimensions"}}
               </AuLabel>
-              <p>
-                {{@model.roadSignConcept.dimensions.value}}
-              </p>
+              {{#each @model.roadSignConcept.shape.dimensions as |dimension|}}
+                <p>{{dimension.value}}</p>
+              {{/each}}
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>

@@ -12,5 +12,5 @@ export default class TribontShapeModel extends Model {
   @attr declare label?: string;
 
   @hasMany('dimension', { inverse: null, async: true })
-  declare hasDimension?: AsyncHasMany<DimensionModel>;
+  declare dimensions: AsyncHasMany<DimensionModel>;
 }
