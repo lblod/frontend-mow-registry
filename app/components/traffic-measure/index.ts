@@ -21,6 +21,7 @@ import CodeListModel from 'mow-registry/models/code-list';
 import ArrayProxy from '@ember/array/proxy';
 import ApplicationInstance from '@ember/application/instance';
 import { SignType } from 'mow-registry/components/traffic-measure/select-type';
+import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 
 const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
 
@@ -41,7 +42,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @tracked codeLists?: ArrayProxy<CodeListModel>;
   @tracked declare trafficMeasureConcept: TrafficMeasureConceptModel;
-  @tracked signs: ConceptModel[] = [];
+  @tracked signs: TrafficSignConceptModel[] = [];
   @tracked mappings: MappingModel[] = [];
   @tracked template?: TemplateModel;
   @tracked searchString?: string;
@@ -135,7 +136,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     const relations = await this.trafficMeasureConcept.getOrderedRelations();
 
     this.signs = await Promise.all(
-      relations.map((relation) => relation.concept),
+      relations.map((relation) => relation.trafficSignConcept),
     );
 
     await this.fetchInstructions.perform();
@@ -148,7 +149,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     this.instructions = [];
     for (let i = 0; i < this.signs.length; i++) {
       const sign = this.signs[i];
-      const instructions = await sign.templates;
+      const instructions = await sign.hasInstruction;
       instructions.forEach((instr) => this.instructions.pushObject(instr));
     }
 
@@ -187,14 +188,14 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  async addSign(sign: ConceptModel) {
+  async addSign(sign: TrafficSignConceptModel) {
     this.signs.pushObject(sign);
     await this.fetchInstructions.perform();
     this.selectedType = null;
   }
 
   @action
-  async removeSign(sign: ConceptModel) {
+  async removeSign(sign: TrafficSignConceptModel) {
     this.signs.removeObject(sign);
     await this.fetchInstructions.perform();
   }
