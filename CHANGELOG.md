@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 1.4.4
+
+### Patch Changes
+
+- [#249](https://github.com/lblod/frontend-mow-registry/pull/249) [`3663a4e`](https://github.com/lblod/frontend-mow-registry/commit/3663a4e2c033e36eee82a910af79489e0fcdc865) Thanks [@elpoelma](https://github.com/elpoelma)! - Ensure that traffic-measures and road-signs have a default zonality of 'non-zonal'
+
 ## 1.4.3
 
 ### Patch Changes
