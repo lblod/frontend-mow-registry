@@ -1,5 +1,13 @@
 # frontend-mow-registry
 
+## 1.4.5
+
+### Patch Changes
+
+- [#250](https://github.com/lblod/frontend-mow-registry/pull/250) [`1715a27`](https://github.com/lblod/frontend-mow-registry/commit/1715a273571a6484c3724c2cf555b9c39aab998a) Thanks [@elpoelma](https://github.com/elpoelma)! - Add hacky workaround to ensure road-marking and traffic-light concepts can be correctly consumed:
+  - Addition of a `zonality` relationship to road-marking and traffic-light concepts
+  - Give new road-marking and traffic-light concepts a default zonality of 'non-zonal'
+
 ## 1.4.4
 
 ### Patch Changes
