@@ -106,7 +106,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       } else if (sign instanceof RoadMarkingConceptModel) {
         result = `${result}${sign.label ?? ''}-`;
       } else if (sign instanceof TrafficLightConceptModel) {
-        result = `${result}${sign.trafficLightConceptCode ?? ''}-`;
+        result = `${result}${sign.label ?? ''}-`;
       }
     });
 

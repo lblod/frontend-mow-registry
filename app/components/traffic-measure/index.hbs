@@ -1,7 +1,12 @@
-<div class="au-o-grid au-o-grid--flush au-o-grid--split" {{did-insert this.didInsert}}>
-  {{!-- template-lint-disable no-inline-styles --}}
+<div
+  class="au-o-grid au-o-grid--flush au-o-grid--split"
+  {{did-insert this.didInsert}}
+>
+  {{! template-lint-disable no-inline-styles }}
   <div class="au-o-grid__item au-u-1-2@medium">
-    <div class="au-o-box au-c-body-container au-c-body-container--scroll au-c-body-container--table">
+    <div
+      class="au-o-box au-c-body-container au-c-body-container--scroll au-c-body-container--table"
+    >
       <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
         {{this.label}}
       </AuHeading>
@@ -11,7 +16,10 @@
             {{t "utility.zonality"}}
           </AuHeading>
           {{#let (load @trafficMeasureConcept.zonality) as |zonality|}}
-            <ZonalitySelector @zonality={{zonality.value}} @onChange={{(fn (mut @trafficMeasureConcept.zonality))}} />
+            <ZonalitySelector
+              @zonality={{zonality.value}}
+              @onChange={{(fn (mut @trafficMeasureConcept.zonality))}}
+            />
           {{/let}}
         </div>
         <div class="au-o-grid__item au-u-1-2">
@@ -21,126 +29,179 @@
           <TemporalSelector @concept={{@trafficMeasureConcept}} />
         </div>
       </div>
-      <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small au-u-margin-top-small">
+      <AuHeading
+        @level="4"
+        @skin="4"
+        class="au-u-margin-bottom-small au-u-margin-top-small"
+      >
         {{t "traffic-measure-concept.attr.traffic-sign"}}
       </AuHeading>
       <div class="au-o-grid au-o-grid--tiny">
         <div class="au-o-grid__item au-u-1-3@medium">
-          <TrafficMeasure::SelectType @selectedType={{this.selectedType}} @updateTypeFilter={{this.updateTypeFilter}} />
+          <TrafficMeasure::SelectType
+            @selectedType={{this.selectedType}}
+            @updateTypeFilter={{this.updateTypeFilter}}
+          />
         </div>
         <div class="au-o-grid__item au-u-2-3@medium">
-          <TrafficMeasure::AddSign @selectedType={{this.selectedType}} @addSign={{this.addSign}} @disabled={{this.isSelectedTypeEmpty}}/>
+          <TrafficMeasure::AddSign
+            @selectedType={{this.selectedType}}
+            @addSign={{this.addSign}}
+            @disabled={{this.isSelectedTypeEmpty}}
+          />
         </div>
         <div class="au-o-grid__item">
-          <TrafficMeasure::SignList @removeSign={{this.removeSign}} @addInstructionToTemplate={{this.addInstructionToTemplate}} @signs={{this.signs}} />
+          <TrafficMeasure::SignList
+            @removeSign={{this.removeSign}}
+            @addInstructionToTemplate={{this.addInstructionToTemplate}}
+            @signs={{this.signs}}
+          />
         </div>
       </div>
       <div class="au-u-margin-bottom-small">
         <AuHeading @level="4" @skin="4">
           {{t "traffic-measure-concept.attr.template"}}
         </AuHeading>
-        <AuHelpText @skin="secondary" class="au-u-margin-bottom-small au-u-flex-center">
-          <AuBadge @icon="info-circle" @size="small" class="au-u-margin-right-tiny" /> {{t "traffic-measure-concept.help"}}
+        <AuHelpText
+          @skin="secondary"
+          class="au-u-margin-bottom-small au-u-flex-center"
+        >
+          <AuBadge
+            @icon="info-circle"
+            @size="small"
+            class="au-u-margin-right-tiny"
+          />
+          {{t "traffic-measure-concept.help"}}
         </AuHelpText>
-        {{!-- template-lint-disable no-inline-styles --}}
-        <AuTextarea id="textarea" @width="block"  {{on "input" this.updateTemplate}} {{on "input" this.parseTemplate}} @value={{this.template.value}} style="resize: none; height: 200px;" class="au-u-margin-bottom-small"></AuTextarea>
+        {{! template-lint-disable no-inline-styles }}
+        <AuTextarea
+          id="textarea"
+          @width="block"
+          {{on "input" this.updateTemplate}}
+          {{on "input" this.parseTemplate}}
+          @value={{this.template.value}}
+          style="resize: none; height: 200px;"
+          class="au-u-margin-bottom-small"
+        />
       </div>
       {{#if this.mappings.length}}
-      <AuHeading @level="4" @skin="4"  class="au-u-margin-bottom-small">
-        {{t "traffic-measure-concept.attr.variables"}}
-      </AuHeading>
-      <div class="au-c-card">
-        <div class="au-data-table">
-          <div class="au-c-data-table__wrapper">
-            <table class="au-c-data-table__table au-c-data-table__table--small">
-              <thead class="au-c-data-table__header">
-                <tr>
-                  <th>{{t "traffic-measure-concept.attr.variable"}}</th>
-                  <th>{{t "traffic-measure-concept.attr.type"}}</th>
-                </tr>
-              </thead>
-              <tbody>
-              {{#each this.mappings as |mapping|}}
-                <tr>
-                  <td>{{mapping.variable}}</td>
-                  {{!-- template-lint-disable no-inline-styles --}}
-                  <td style="width: 50%;">
-                    <PowerSelect
-                      @allowClear={{false}}
-                      @searchEnabled={{false}}
-                      @options={{this.inputTypes}}
-                      @selected={{find-by-value this.inputTypes mapping.type}}
-                      @onChange={{fn this.updateMappingType mapping}} as |type|
-                    >
-                      {{type.label}}
-                    </PowerSelect>
-                    {{#if (eq mapping.type "codelist")}}
-                      <PowerSelect
-                        @triggerClass="au-u-margin-top-tiny"
-                        @allowClear={{false}}
-                        @searchEnabled={{false}}
-                        @options={{this.codeLists}}
-                        @selected={{mapping.codeList}}
-                        @onChange={{fn this.updateCodelist mapping}} as |codeList|
-                      >
-                        {{codeList.label}}
-                      </PowerSelect>
-                      <ul class="au-c-list-help au-c-help-text au-c-help-text--secondary">
-                        {{#each mapping.codeList.concepts as |option|}}
-                          <li class="au-c-list-help__item">{{option.label}}</li>
-                        {{/each}}
-                      </ul>
-                    {{/if}}
-                    {{#if (eq mapping.type "instruction")}}
-                      <PowerSelect
-                        @triggerClass="au-u-margin-top-tiny"
-                        @allowClear={{false}}
-                        @searchEnabled={{false}}
-                        @options={{this.instructions}}
-                        @selected={{mapping.instruction}}
-                        @onChange={{fn this.updateInstruction mapping}} as |instruction|
-                      >
-                        <div class="au-c-thumbnail-holder">
-                          <img
-                            class="au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny"
-                            src={{instruction.parentConcept.image}}
-                            alt=""
-                          />
-                          <span title={{instruction.value}}>{{truncate instruction.value}}</span>
-                        </div>
-                      </PowerSelect>
-                    {{/if}}
-                  </td>
-                </tr>
-              {{/each}}
-              </tbody>
-            </table>
+        <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
+          {{t "traffic-measure-concept.attr.variables"}}
+        </AuHeading>
+        <div class="au-c-card">
+          <div class="au-data-table">
+            <div class="au-c-data-table__wrapper">
+              <table
+                class="au-c-data-table__table au-c-data-table__table--small"
+              >
+                <thead class="au-c-data-table__header">
+                  <tr>
+                    <th>{{t "traffic-measure-concept.attr.variable"}}</th>
+                    <th>{{t "traffic-measure-concept.attr.type"}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each this.mappings as |mapping|}}
+                    <tr>
+                      <td>{{mapping.variable}}</td>
+                      {{! template-lint-disable no-inline-styles }}
+                      <td style="width: 50%;">
+                        <PowerSelect
+                          @allowClear={{false}}
+                          @searchEnabled={{false}}
+                          @options={{this.inputTypes}}
+                          @selected={{find-by-value
+                            this.inputTypes
+                            mapping.type
+                          }}
+                          @onChange={{fn this.updateMappingType mapping}}
+                          as |type|
+                        >
+                          {{type.label}}
+                        </PowerSelect>
+                        {{#if (eq mapping.type "codelist")}}
+                          <PowerSelect
+                            @triggerClass="au-u-margin-top-tiny"
+                            @allowClear={{false}}
+                            @searchEnabled={{false}}
+                            @options={{this.codeLists}}
+                            @selected={{mapping.codeList}}
+                            @onChange={{fn this.updateCodelist mapping}}
+                            as |codeList|
+                          >
+                            {{codeList.label}}
+                          </PowerSelect>
+                          <ul
+                            class="au-c-list-help au-c-help-text au-c-help-text--secondary"
+                          >
+                            {{#each mapping.codeList.concepts as |option|}}
+                              <li
+                                class="au-c-list-help__item"
+                              >{{option.label}}</li>
+                            {{/each}}
+                          </ul>
+                        {{/if}}
+                        {{#if (eq mapping.type "instruction")}}
+                          <PowerSelect
+                            @triggerClass="au-u-margin-top-tiny"
+                            @allowClear={{false}}
+                            @searchEnabled={{false}}
+                            @options={{this.instructions}}
+                            @selected={{mapping.instruction}}
+                            @onChange={{fn this.updateInstruction mapping}}
+                            as |instruction|
+                          >
+                            <div class="au-c-thumbnail-holder">
+                              <img
+                                class="au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny"
+                                src={{instruction.parentConcept.image.file.downloadLink}}
+                                alt=""
+                              />
+                              <span title={{instruction.value}}>{{truncate
+                                  instruction.value
+                                }}</span>
+                            </div>
+                          </PowerSelect>
+                        {{/if}}
+                      </td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
       {{/if}}
       {{#unless @new}}
         <div class="au-u-margin-top-small">
-          <ContentCheck @concept={{@trafficMeasureConcept}}/>
+          <ContentCheck @concept={{@trafficMeasureConcept}} />
         </div>
       {{/unless}}
     </div>
   </div>
 
   <div class="au-o-grid__item au-u-1-2@medium">
-    <div class="au-o-box au-c-body-container au-c-body-container--scroll au-c-theme-gray-100">
+    <div
+      class="au-o-box au-c-body-container au-c-body-container--scroll au-c-theme-gray-100"
+    >
       <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
         {{t "traffic-measure-concept.attr.preview"}}
       </AuHeading>
       <div class="au-u-margin-bottom">
-      {{#each this.signs as |sign|}}
-        <img src={{sign.image}} alt="" class="au-c-thumbnail">
-      {{/each}}
+        {{#each this.signs as |sign|}}
+          <img
+            src={{sign.image.file.downloadLink}}
+            alt=""
+            class="au-c-thumbnail"
+          />
+        {{/each}}
       </div>
       <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
         {{t "traffic-measure-concept.attr.template"}}
       </AuHeading>
-      <div class="au-o-box au-o-box--small au-c-theme-gray-200 au-u-margin-bottom">
+      <div
+        class="au-o-box au-o-box--small au-c-theme-gray-200 au-u-margin-bottom"
+      >
         {{this.previewHtml}}
       </div>
     </div>
@@ -149,15 +210,19 @@
 <AuToolbar @border="top" @size="large" as |Group|>
   <Group>
     <AuButtonGroup>
-        <AuButton
-          {{on "click" (perform this.save)}}
-          @loading={{if this.save.isRunning true false}}
-          @disabled={{if this.save.isRunning true false}}
-        >
-          {{t "traffic-measure-concept.crud.save"}}
-        </AuButton>
+      <AuButton
+        {{on "click" (perform this.save)}}
+        @loading={{if this.save.isRunning true false}}
+        @disabled={{if this.save.isRunning true false}}
+      >
+        {{t "traffic-measure-concept.crud.save"}}
+      </AuButton>
       {{#unless this.new}}
-        <AuButton  @alert={{true}} @skin="secondary" {{on "click" (perform this.delete)}}>
+        <AuButton
+          @alert={{true}}
+          @skin="secondary"
+          {{on "click" (perform this.delete)}}
+        >
           {{t "traffic-measure-concept.crud.delete"}}
         </AuButton>
       {{/unless}}
@@ -165,10 +230,7 @@
   </Group>
   <Group>
     <AuButtonGroup>
-      <AuLink
-        @skin="button-secondary"
-        @route="traffic-measure-concepts.index"
-      >
+      <AuLink @skin="button-secondary" @route="traffic-measure-concepts.index">
         {{t "utility.cancel"}}
       </AuLink>
     </AuButtonGroup>
