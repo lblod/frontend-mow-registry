@@ -52,6 +52,42 @@
                   id="road-sign-concept-code"
                   required="required"
                   @value={{changeset.roadSignConceptCode}}
+                  {{on
+                    "input"
+                    (fn
+                      this.setRoadSignConceptValue
+                      changeset
+                      "roadSignConceptCode"
+                    )
+                  }}
+                />
+                {{#if isInvalid}}
+                  <AuHelpText @error={{true}}>
+                    {{t "utility.field-required"}}
+                  </AuHelpText>
+                {{/if}}
+              </AuFormRow>
+            {{/let}}
+            {{#let changeset.error.definition as |isInvalid|}}
+              <AuFormRow>
+                <AuLabel @error={{isInvalid}} for="definition" @required={{true}}>
+                  {{t "road-sign-concept.attr.definition"}}&nbsp;
+                </AuLabel>
+                <AuTextarea
+                  @error={{isInvalid}}
+                  @width="block"
+                  class="u-min-h-20"
+                  id="definition"
+                  required="required"
+                  @value={{changeset.definition}}
+                  {{on
+                    "input"
+                    (fn
+                      this.setRoadSignConceptValue
+                      changeset
+                      "definition"
+                    )
+                  }}
                 />
                 {{#if isInvalid}}
                   <AuHelpText @error={{true}}>
@@ -72,6 +108,14 @@
                   id="meaning"
                   required="required"
                   @value={{changeset.meaning}}
+                  {{on
+                    "input"
+                    (fn
+                      this.setRoadSignConceptValue
+                      changeset
+                      "meaning"
+                    )
+                  }}
                 />
                 {{#if isInvalid}}
                   <AuHelpText @error={{true}}>

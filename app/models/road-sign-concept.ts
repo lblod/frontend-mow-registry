@@ -20,6 +20,7 @@ declare module 'ember-data/types/registries/model' {
 
 export default class RoadSignConceptModel extends ConceptModel {
   @attr declare image?: string;
+  @attr declare definition?: string;
   @attr declare meaning?: string;
   @attr declare roadSignConceptCode?: string;
 

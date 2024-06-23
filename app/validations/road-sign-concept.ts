@@ -5,6 +5,7 @@ import {
 
 export default {
   image: validatePresence({ presence: true, ignoreBlank: true }),
+  definition: validatePresence({ presence: true, ignoreBlank: true }),
   meaning: validatePresence({ presence: true, ignoreBlank: true }),
   roadSignConceptCode: validatePresence({ presence: true, ignoreBlank: true }),
   categories: validateLength({ min: 1 }),
