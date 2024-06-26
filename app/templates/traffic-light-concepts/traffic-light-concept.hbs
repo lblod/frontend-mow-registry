@@ -204,7 +204,7 @@
             }}
               <SidebarRoadSign
                 @imageUrl={{relatedRoadSignByCategory.image}}
-                @code={{relatedRoadSignByCategory.roadSignConceptCode}}
+                @code={{relatedRoadSignByCategory.label}}
                 @meaning={{relatedRoadSignByCategory.meaning}}
                 @onAdd={{perform
                   this.addRelatedRoadSign
@@ -261,7 +261,7 @@
           }}
             <SidebarRoadSign
               @imageUrl={{relatedRoadMarking.image}}
-              @code={{relatedRoadMarking.roadSignConceptCode}}
+              @code={{relatedRoadMarking.label}}
               @meaning={{relatedRoadMarking.definition}}
               @onAdd={{perform this.addRelatedRoadMarking relatedRoadMarking}}
               @addText={{t "related-road-marking.crud.add-one"}}
@@ -332,7 +332,7 @@
           }}
             <SidebarRoadSign
               @imageUrl={{relatedTrafficLight.image}}
-              @code={{relatedTrafficLight.roadSignConceptCode}}
+              @code={{relatedTrafficLight.label}}
               @meaning={{relatedTrafficLight.definition}}
               @onAdd={{perform this.addRelatedTrafficLight relatedTrafficLight}}
               @addText={{t "related-traffic-light.crud.add-one"}}

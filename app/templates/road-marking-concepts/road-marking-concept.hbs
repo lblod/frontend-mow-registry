@@ -333,7 +333,7 @@
           }}
             <SidebarRoadSign
               @imageUrl={{relatedTrafficLight.image.file.downloadLink}}
-              @code={{relatedTrafficLight.roadSignConceptCode}}
+              @code={{relatedTrafficLight.label}}
               @meaning={{relatedTrafficLight.definition}}
               @onAdd={{perform this.addRelatedTrafficLight relatedTrafficLight}}
               @addText={{t "related-traffic-light.crud.add-one"}}
