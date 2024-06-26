@@ -3,7 +3,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
 type Params = {
-  code?: string;
+  label?: string;
   page: number;
   size: number;
   sort: string;
@@ -12,7 +12,7 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    code: { refreshModel: true },
+    label: { refreshModel: true },
     template: { refreshModel: true },
     page: { refreshModel: true },
     size: { refreshModel: true },
@@ -26,11 +26,11 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
         number: params.page,
         size: params.size,
       },
-      include: 'templates',
+      include: 'template',
     };
 
-    if (params.code) {
-      query['filter[label]'] = params.code;
+    if (params.label) {
+      query['filter[label]'] = params.label;
     }
 
     const result = await this.store.query('traffic-measure-concept', query);
