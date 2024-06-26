@@ -398,16 +398,11 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //if new save relationships
     if (this.new) {
       await this.trafficMeasureConcept.save();
-      const trafficMeasureResource = await this.store.findRecord(
-        'resource',
-        TRAFFIC_MEASURE_RESOURCE_UUID,
-      );
-      const nodeShape = this.store.createRecord('node-shape');
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      nodeShape.targetClass = trafficMeasureResource;
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      nodeShape.targetHasConcept = this.trafficMeasureConcept;
-      await nodeShape.save();
+      // const trafficMeasureResource = await this.store.findRecord(
+      //   'resource',
+      //   TRAFFIC_MEASURE_RESOURCE_UUID,
+      // );
+
       await template.save();
       await this.trafficMeasureConcept.save();
     }
