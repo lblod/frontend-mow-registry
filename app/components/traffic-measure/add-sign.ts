@@ -22,7 +22,7 @@ export default class TrafficMeasureAddSignComponent extends Component<Args> {
     const queryParams: Record<string, unknown> = {};
     queryParams[this.args.selectedType.searchFilter] = searchData;
     queryParams['sort'] = this.args.selectedType.sortingField;
-    queryParams['include'] = 'has-instruction';
+    queryParams['include'] = 'has-instructions';
 
     const options = await this.store.query(
       this.args.selectedType.modelName,
