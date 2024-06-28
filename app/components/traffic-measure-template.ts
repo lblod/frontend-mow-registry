@@ -6,9 +6,10 @@ import { action } from '@ember/object';
 import { SafeString } from '@ember/template/-private/handlebars';
 import { unwrap } from 'mow-registry/utils/option';
 import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
+import TrafficMeasureConceptModel from 'mow-registry/models/traffic-measure-concept';
 
 type Args = {
-  concept: TrafficSignConceptModel;
+  concept: TrafficMeasureConceptModel;
 };
 
 export default class TrafficMeasureTemplateComponent extends Component<Args> {
@@ -16,11 +17,12 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
 
   @action
   async didInsert() {
+    console.log('this.args.concept', this.args.concept);
     await this.fetchTemplate.perform(this.args.concept);
   }
 
-  fetchTemplate = task(async (concept: TrafficSignConceptModel) => {
-    const template = unwrap(await concept.hasInstructions);
+  fetchTemplate = task(async (concept: TrafficMeasureConceptModel) => {
+    const template = unwrap(await concept.template);
     console.log('template', template);
     let preview = template?.value ?? '';
     const mappings = (await template.mappings).slice();
