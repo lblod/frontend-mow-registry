@@ -5,14 +5,14 @@ import { inject as service } from '@ember/service';
 export default class TrafficMeasureConceptsNewRoute extends Route {
   @service declare store: Store;
 
-  model() {
+  async model() {
     const template = this.store.createRecord('template');
     const trafficMeasureConcept = this.store.createRecord(
       'traffic-measure-concept',
     );
 
     template.value = '';
-    trafficMeasureConcept.templates.pushObject(template);
+    trafficMeasureConcept.template = template;
 
     return trafficMeasureConcept;
   }

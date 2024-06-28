@@ -14,17 +14,4 @@ export default class ConceptModel extends ResourceModel {
 
   @hasMany('template', { inverse: 'parentConcept', async: true })
   declare templates: AsyncHasMany<TemplateModel>;
-
-  @hasMany('relation', { inverse: null, async: true, polymorphic: true })
-  declare relations: AsyncHasMany<RelationModel>;
-
-  async getOrderedRelations() {
-    const relations = await this.relations;
-    return relations.slice().sort((a, b) => unwrap(a.order) - unwrap(b.order));
-  }
-
-  //TODO: we still use this getter in the template of the SearchTables::TrafficMeasure component, but we should refactor this
-  get orderedRelations() {
-    return this.relations.sortBy('order');
-  }
 }

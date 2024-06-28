@@ -3,12 +3,12 @@ import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
 import { task } from 'ember-concurrency';
 import { action } from '@ember/object';
-import ConceptModel from 'mow-registry/models/concept';
 import { SafeString } from '@ember/template/-private/handlebars';
 import { unwrap } from 'mow-registry/utils/option';
+import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {
-  concept: ConceptModel;
+  concept: TrafficSignConceptModel;
 };
 
 export default class TrafficMeasureTemplateComponent extends Component<Args> {
@@ -19,8 +19,9 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
     await this.fetchTemplate.perform(this.args.concept);
   }
 
-  fetchTemplate = task(async (concept: ConceptModel) => {
-    const template = unwrap((await concept.templates).firstObject);
+  fetchTemplate = task(async (concept: TrafficSignConceptModel) => {
+    const template = unwrap(await concept.hasInstructions);
+    console.log('template', template);
     let preview = template?.value ?? '';
     const mappings = (await template.mappings).slice();
     for (const mapping of mappings) {
