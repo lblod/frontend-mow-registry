@@ -23,8 +23,6 @@ export default class RoadMarkingConceptModel extends TrafficSignConceptModel {
     inverse: 'roadMarkingConcepts',
     async: true,
   })
-  declare status: AsyncBelongsTo<RoadSignConceptStatusCodeModel>;
-
   @hasMany('road-marking-concept', {
     inverse: 'relatedFromRoadMarkingConcepts',
     async: true,
