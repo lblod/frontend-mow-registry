@@ -21,8 +21,9 @@ import CodeListModel from 'mow-registry/models/code-list';
 import ArrayProxy from '@ember/array/proxy';
 import ApplicationInstance from '@ember/application/instance';
 import { SignType } from 'mow-registry/components/traffic-measure/select-type';
+import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 
-const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
+// const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
 
 export type InputType = {
   value: string;
@@ -41,7 +42,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @tracked codeLists?: ArrayProxy<CodeListModel>;
   @tracked declare trafficMeasureConcept: TrafficMeasureConceptModel;
-  @tracked signs: ConceptModel[] = [];
+  @tracked signs: TrafficSignConceptModel[] = [];
   @tracked mappings: MappingModel[] = [];
   @tracked template?: TemplateModel;
   @tracked searchString?: string;
@@ -122,21 +123,18 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   fetchData = task(async () => {
     // Wait for data loading
-    await this.trafficMeasureConcept.relations;
+    const relatedTrafficSigns = await this.trafficMeasureConcept.signs;
 
     this.codeLists = await this.codeListService.all.perform();
 
     // We assume that a measure has only one template
-    const templates = await this.trafficMeasureConcept.templates;
-    this.template = unwrap(templates.firstObject);
+    this.template = await this.trafficMeasureConcept.template;
     this.mappings = (await this.template.mappings)
       .slice()
       .sort((a, b) => (a.id < b.id ? -1 : 1));
-    const relations = await this.trafficMeasureConcept.getOrderedRelations();
+    // const relations = await this.trafficMeasureConcept.getOrderedRelations();
 
-    this.signs = await Promise.all(
-      relations.map((relation) => relation.concept),
-    );
+    this.signs = relatedTrafficSigns.toArray();
 
     await this.fetchInstructions.perform();
 
@@ -148,7 +146,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     this.instructions = [];
     for (let i = 0; i < this.signs.length; i++) {
       const sign = this.signs[i];
-      const instructions = await sign.templates;
+      const instructions = await sign.hasInstructions;
       instructions.forEach((instr) => this.instructions.pushObject(instr));
     }
 
@@ -187,14 +185,14 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  async addSign(sign: ConceptModel) {
+  async addSign(sign: TrafficSignConceptModel) {
     this.signs.pushObject(sign);
     await this.fetchInstructions.perform();
     this.selectedType = null;
   }
 
   @action
-  async removeSign(sign: ConceptModel) {
+  async removeSign(sign: TrafficSignConceptModel) {
     this.signs.removeObject(sign);
     await this.fetchInstructions.perform();
   }
@@ -372,7 +370,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       await nodeShape.firstObject?.destroyRecord();
     }
     // We assume a measure only has one template
-    const template = (await this.trafficMeasureConcept.templates).firstObject;
+    const template = await this.trafficMeasureConcept.template;
     if (template) {
       (await template.mappings).forEach(
         (mapping) => void mapping.destroyRecord(),
@@ -380,7 +378,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       await template.destroyRecord();
     }
 
-    (await this.trafficMeasureConcept.relations).forEach(
+    (await this.trafficMeasureConcept.signs).forEach(
       (relation) => void relation.destroyRecord(),
     );
 
@@ -390,24 +388,18 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   save = task(async () => {
     // We assume a measure only has one template
-    const template = unwrap(
-      (await this.trafficMeasureConcept.templates).firstObject,
-    );
+    const template = unwrap(await this.trafficMeasureConcept.template);
 
     //if new save relationships
     if (this.new) {
       await this.trafficMeasureConcept.save();
-      const trafficMeasureResource = await this.store.findRecord(
-        'resource',
-        TRAFFIC_MEASURE_RESOURCE_UUID,
-      );
-      const nodeShape = this.store.createRecord('node-shape');
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      nodeShape.targetClass = trafficMeasureResource;
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      nodeShape.targetHasConcept = this.trafficMeasureConcept;
-      await nodeShape.save();
+      // const trafficMeasureResource = await this.store.findRecord(
+      //   'resource',
+      //   TRAFFIC_MEASURE_RESOURCE_UUID,
+      // );
+
       await template.save();
+
       await this.trafficMeasureConcept.save();
     }
 
@@ -433,22 +425,25 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   saveRoadsigns = task(
     async (trafficMeasureConcept: TrafficMeasureConceptModel) => {
       // delete existing ones
-      const relations = (await trafficMeasureConcept.relations).slice();
-      for (const relation of relations) {
-        await relation.destroyRecord();
+      // const relations = (await trafficMeasureConcept.relations).slice();
+      // for (const relation of relations) {
+      //   await relation.destroyRecord();
+      // }
+      // // creating signs
+      // //@ts-expect-error currently the ts types don't allow direct assignment of relationships
+      // trafficMeasureConcept.relations = [];
+      //   const mustUseRelation = this.store.createRecord('must-use-relation');
+      //   //@ts-expect-error currently the ts types don't allow direct assignment of relationships
+      //   mustUseRelation.concept = this.signs[i];
+      //   mustUseRelation.order = i;
+      //   trafficMeasureConcept.relations.pushObject(mustUseRelation);
+      //   await mustUseRelation.save();
+      // }
+      // await trafficMeasureConcept.save();
+      for (const sign of this.signs) {
+        sign.measures.pushObject(trafficMeasureConcept);
+        await sign.save();
       }
-      // creating signs
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      trafficMeasureConcept.relations = [];
-      for (let i = 0; i < this.signs.length; i++) {
-        const mustUseRelation = this.store.createRecord('must-use-relation');
-        //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-        mustUseRelation.concept = this.signs[i];
-        mustUseRelation.order = i;
-        trafficMeasureConcept.relations.pushObject(mustUseRelation);
-        await mustUseRelation.save();
-      }
-      await trafficMeasureConcept.save();
     },
   );
 

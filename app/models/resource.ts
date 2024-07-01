@@ -1,5 +1,5 @@
 import Model, { AsyncHasMany, hasMany } from '@ember-data/model';
-import type ConceptModel from 'mow-registry/models/concept';
+import TrafficSignConceptModel from './traffic-sign-concept';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -8,6 +8,6 @@ declare module 'ember-data/types/registries/model' {
 }
 
 export default class ResourceModel extends Model {
-  @hasMany('concept', { inverse: null, async: true })
-  declare used: AsyncHasMany<ConceptModel>;
+  @hasMany('traffic-sign-concept', { inverse: null, async: true })
+  declare used: AsyncHasMany<TrafficSignConceptModel>;
 }

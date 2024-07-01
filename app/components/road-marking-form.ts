@@ -6,6 +6,7 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import { BufferedChangeset } from 'ember-changeset/types';
 import Router from '@ember/routing/router';
 import RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
+import Store from '@ember-data/store';
 
 type Args = {
   roadMarkingConcept: RoadMarkingConceptModel;
@@ -13,6 +14,7 @@ type Args = {
 
 export default class RoadMarkingFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: Router;
+  @service declare store: Store;
 
   RoadMarkingConceptValidations = RoadMarkingConceptValidations;
 
@@ -36,8 +38,15 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
       await changeset.validate();
 
       if (changeset.isValid) {
-        await this.saveImage(changeset);
-        await changeset.save();
+        const image = await this.saveImage(this.store);
+        if (image) {
+          changeset.image = image;
+        }
+        try {
+          await changeset.save();
+        } catch (error) {
+          console.error('Error saving changeset:', error);
+        }
 
         await this.router.transitionTo(
           'road-marking-concepts.road-marking-concept',

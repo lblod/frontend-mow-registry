@@ -34,7 +34,7 @@
               <img
                 class="au-c-thumbnail au-c-thumbnail--full"
                 alt=""
-                src={{@model.trafficLightConcept.image}}
+                src={{@model.trafficLightConcept.image.file.downloadLink}}
               />
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
@@ -203,8 +203,8 @@
               as |relatedRoadSignByCategory|
             }}
               <SidebarRoadSign
-                @imageUrl={{relatedRoadSignByCategory.image}}
-                @code={{relatedRoadSignByCategory.roadSignConceptCode}}
+                @imageUrl={{relatedRoadSignByCategory.image.file.downloadLink}}
+                @code={{relatedRoadSignByCategory.label}}
                 @meaning={{relatedRoadSignByCategory.meaning}}
                 @onAdd={{perform
                   this.addRelatedRoadSign
@@ -260,8 +260,8 @@
             as |relatedRoadMarking|
           }}
             <SidebarRoadSign
-              @imageUrl={{relatedRoadMarking.image}}
-              @code={{relatedRoadMarking.roadSignConceptCode}}
+              @imageUrl={{relatedRoadMarking.image.file.downloadLink}}
+              @code={{relatedRoadMarking.label}}
               @meaning={{relatedRoadMarking.definition}}
               @onAdd={{perform this.addRelatedRoadMarking relatedRoadMarking}}
               @addText={{t "related-road-marking.crud.add-one"}}
@@ -274,7 +274,7 @@
               as |relatedRoadMarkingByCategory|
             }}
               <SidebarRoadMarking
-                @imageUrl={{relatedRoadMarkingByCategory.image}}
+                @imageUrl={{relatedRoadMarkingByCategory.image.file.downloadLink}}
                 @code={{relatedRoadMarkingByCategory.label}}
                 @meaning={{relatedRoadMarkingByCategory.meaning}}
                 @onAdd={{perform
@@ -331,8 +331,8 @@
             as |relatedTrafficLight|
           }}
             <SidebarRoadSign
-              @imageUrl={{relatedTrafficLight.image}}
-              @code={{relatedTrafficLight.roadSignConceptCode}}
+              @imageUrl={{relatedTrafficLight.image.file.downloadLink}}
+              @code={{relatedTrafficLight.label}}
               @meaning={{relatedTrafficLight.definition}}
               @onAdd={{perform this.addRelatedTrafficLight relatedTrafficLight}}
               @addText={{t "related-traffic-light.crud.add-one"}}
@@ -346,7 +346,7 @@
               as |relatedTrafficLightByCategory|
             }}
               <SidebarTrafficLight
-                @imageUrl={{relatedTrafficLightByCategory.image}}
+                @imageUrl={{relatedTrafficLightByCategory.image.file.downloadLink}}
                 @code={{relatedTrafficLightByCategory.label}}
                 @meaning={{relatedTrafficLightByCategory.meaning}}
                 @onAdd={{perform

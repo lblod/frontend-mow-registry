@@ -29,9 +29,6 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
   @hasMany('road-sign-concept', { inverse: 'subSigns', async: true })
   declare mainSigns: AsyncHasMany<RoadSignConceptModel>;
 
-  @belongsTo('skos-concept', { inverse: null, async: true })
-  declare zonality: AsyncBelongsTo<SkosConcept>;
-
   @hasMany('road-sign-concept', {
     inverse: 'relatedFromRoadSignConcepts',
     async: true,

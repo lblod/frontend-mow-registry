@@ -41,7 +41,6 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
         const image = await this.saveImage(this.store);
         if (image) {
           changeset.image = image;
-          console.log('changeset.image', changeset.image);
         }
         try {
           await changeset.save();

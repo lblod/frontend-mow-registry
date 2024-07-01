@@ -39,7 +39,7 @@
             {{#let changeset.error.image as |isInvalid|}}
               <AuFormRow>
                 <ImageInput
-                  @oldImage={{@roadMarkingConcept.image}}
+                  @oldImage={{@roadMarkingConcept.image.file.downloadLink}}
                   @error={{isInvalid}}
                   @setImage={{(fn this.setImage changeset)}}
                 />
