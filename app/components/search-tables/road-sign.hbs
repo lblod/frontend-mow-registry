@@ -33,9 +33,6 @@
       {{t "road-sign-concept.attr.dimensions"}}
     </th>
     <th>
-      {{t "utility.zonality"}}
-    </th>
-    <th>
       {{t "road-marking-concept.attr.valid"}}
     </th>
     <th></th>
@@ -73,9 +70,6 @@
         {{/if}}
         {{dimension.value}}
       {{/each}}
-    </td>
-    <td>
-      {{zonality-label (await roadSignConcept.zonality)}}
     </td>
     <td>
       {{#if roadSignConcept.valid}}
