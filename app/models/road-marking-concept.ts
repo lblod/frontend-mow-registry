@@ -19,10 +19,6 @@ declare module 'ember-data/types/registries/model' {
 export default class RoadMarkingConceptModel extends TrafficSignConceptModel {
   @attr declare definition?: string;
 
-  @belongsTo('road-marking-concept-status-code', {
-    inverse: 'roadMarkingConcepts',
-    async: true,
-  })
   @hasMany('road-marking-concept', {
     inverse: 'relatedFromRoadMarkingConcepts',
     async: true,
