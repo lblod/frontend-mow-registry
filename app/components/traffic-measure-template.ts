@@ -17,13 +17,11 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
 
   @action
   async didInsert() {
-    console.log('this.args.concept', this.args.concept);
     await this.fetchTemplate.perform(this.args.concept);
   }
 
   fetchTemplate = task(async (concept: TrafficMeasureConceptModel) => {
     const template = unwrap(await concept.template);
-    console.log('template', template);
     let preview = template?.value ?? '';
     const mappings = (await template.mappings).slice();
     for (const mapping of mappings) {
