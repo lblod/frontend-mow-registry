@@ -44,7 +44,6 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
         }
         try {
           await changeset.save();
-          console.log('changeset saved');
         } catch (error) {
           console.error('Error saving changeset:', error);
         }
