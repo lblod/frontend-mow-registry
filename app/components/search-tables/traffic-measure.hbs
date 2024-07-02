@@ -35,7 +35,7 @@
       {{trafficMeasureConcept.label}}
     </td>
     <td>
-      {{#each trafficMeasureConcept.signs as |sign|}}
+      {{#each trafficMeasureConcept.relatedTrafficSignConcepts as |sign|}}
         <img src={{sign.image.file.downloadLink}} alt="" height="50" />
       {{/each}}
     </td>

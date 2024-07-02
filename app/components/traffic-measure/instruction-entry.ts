@@ -9,16 +9,4 @@ type Args = {
     | RoadMarkingConceptModel
     | TrafficLightConceptModel;
 };
-export default class TrafficMeasureInstructionEntryComponent extends Component<Args> {
-  get label() {
-    const { sign } = this.args;
-    if ('roadSignConceptCode' in sign) {
-      return sign.roadSignConceptCode;
-    } else if ('label' in sign) {
-      return sign.label;
-    } else if ('trafficLightConceptCode' in sign) {
-      return sign.trafficLightConceptCode;
-    }
-    return;
-  }
-}
+export default class TrafficMeasureInstructionEntryComponent extends Component<Args> {}

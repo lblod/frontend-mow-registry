@@ -17,20 +17,13 @@ declare module 'ember-data/types/registries/model' {
   }
 }
 export default class TrafficLightConceptModel extends TrafficSignConceptModel {
-  // @attr declare image?: string;
-  // @attr declare meaning?: string;
   @attr declare definition?: string;
-  // @attr declare trafficLightConceptCode?: string;
 
-  // get label() {
-  //   return this.trafficLightConceptCode;
-  // }
-
-  @belongsTo('traffic-light-concept-status-code', {
-    inverse: 'trafficLightConcepts',
-    async: true,
-  })
-  declare status: AsyncBelongsTo<TrafficLightConceptStatusCodeModel>;
+  // @belongsTo('traffic-light-concept-status-code', {
+  //   inverse: 'trafficLightConcepts',
+  //   async: true,
+  // })
+  // declare status: AsyncBelongsTo<TrafficLightConceptStatusCodeModel>;
 
   @hasMany('traffic-light-concept', {
     inverse: 'relatedFromTrafficLightConcepts',

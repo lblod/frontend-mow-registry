@@ -123,7 +123,8 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   fetchData = task(async () => {
     // Wait for data loading
-    const relatedTrafficSigns = await this.trafficMeasureConcept.signs;
+    const relatedTrafficSigns = await this.trafficMeasureConcept
+      .relatedTrafficSignConcepts;
 
     this.codeLists = await this.codeListService.all.perform();
 
@@ -378,10 +379,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       await template.destroyRecord();
     }
 
-    (await this.trafficMeasureConcept.signs).forEach(
-      (relation) => void relation.destroyRecord(),
-    );
-
     await this.trafficMeasureConcept.destroyRecord();
     await this.router.transitionTo('traffic-measure-concepts.index');
   });
@@ -425,9 +422,12 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   saveRoadsigns = task(
     async (trafficMeasureConcept: TrafficMeasureConceptModel) => {
       // delete existing ones
-      // const relations = (await trafficMeasureConcept.relations).slice();
-      // for (const relation of relations) {
-      //   await relation.destroyRecord();
+      const existingRelatedSigns = (
+        await trafficMeasureConcept.relatedTrafficSignConcepts
+      ).slice();
+      console.log('relations', existingRelatedSigns);
+      // for (const sign of existingRelatedSigns) {
+      //   await sign.destroyRecord();
       // }
       // // creating signs
       // //@ts-expect-error currently the ts types don't allow direct assignment of relationships
@@ -441,7 +441,8 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       // }
       // await trafficMeasureConcept.save();
       for (const sign of this.signs) {
-        sign.measures.pushObject(trafficMeasureConcept);
+        console.log('sign', sign);
+        sign.relatedTrafficMeasureConcepts.pushObject(trafficMeasureConcept);
         await sign.save();
       }
     },
