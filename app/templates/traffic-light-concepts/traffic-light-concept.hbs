@@ -122,7 +122,7 @@
         class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables"
       >
         <InstructionsTable
-          @templates={{@model.trafficLightConcept.templates}}
+          @templates={{@model.trafficLightConcept.hasInstructions}}
           @removeTemplate={{perform this.removeTemplate}}
           @editInstruction={{this.editInstruction}}
           @addInstruction={{this.addInstruction}}

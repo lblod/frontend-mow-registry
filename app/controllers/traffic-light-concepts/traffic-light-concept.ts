@@ -247,7 +247,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   }
 
   removeTemplate = task(async (template: TemplateModel) => {
-    const templates = await this.model.trafficLightConcept.templates;
+    const templates = await this.model.trafficLightConcept.hasInstructions;
 
     templates.removeObject(template);
 
