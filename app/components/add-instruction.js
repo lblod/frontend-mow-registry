@@ -42,7 +42,7 @@ export default class AddInstructionComponent extends Component {
       this.new = true;
       this.template = this.store.createRecord('template');
       this.template.value = '';
-      this.concept.templates.pushObject(this.template);
+      this.concept.hasInstructions.pushObject(this.template);
       this.mappings = this.template.mappings;
     }
     this.parseTemplate();
@@ -196,7 +196,7 @@ export default class AddInstructionComponent extends Component {
 
   save = task(async () => {
     await this.template.save();
-    this.concept.templates.pushObject(this.template);
+    this.concept.hasInstructions.pushObject(this.template);
     await this.concept.save();
 
     for (let i = 0; i < this.mappings.length; i++) {

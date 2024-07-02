@@ -332,7 +332,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   removeTemplate = task(async (template: TemplateModel) => {
-    const templates = await this.model.roadSignConcept.templates;
+    const templates = await this.model.roadSignConcept.hasInstructions;
 
     templates.removeObject(template);
 
