@@ -1,4 +1,5 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { AsyncHasMany, attr, hasMany } from '@ember-data/model';
+import RoadSignConceptModel from './road-sign-concept';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -8,9 +9,9 @@ declare module 'ember-data/types/registries/model' {
 
 export default class RoadSignCategoryModel extends Model {
   @attr declare label?: string;
-  // @hasMany('skos-concept', {
-  //   async: true,
-  //   inverse: null,
-  // })
-  // declare skosConcepts: AsyncHasMany<SkosConcept>;
+  @hasMany('road-sign-concept', {
+    async: true,
+    inverse: 'classifications',
+  })
+  declare roadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
 }

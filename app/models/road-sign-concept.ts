@@ -17,7 +17,7 @@ declare module 'ember-data/types/registries/model' {
   }
 }
 export default class RoadSignConceptModel extends TrafficSignConceptModel {
-  @hasMany('road-sign-category', { inverse: null, async: true })
+  @hasMany('road-sign-category', { inverse: 'roadSignConcepts', async: true })
   declare classifications: AsyncHasMany<RoadSignCategoryModel>;
 
   @belongsTo('tribont-shape', { inverse: null, async: true })
