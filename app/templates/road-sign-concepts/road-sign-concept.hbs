@@ -69,11 +69,6 @@
               </p>
             </li>
 
-            {{#unless this.showSidebar}}
-              <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-                <ContentCheck @concept={{@model.roadSignConcept}} />
-              </li>
-            {{/unless}}
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>
                 {{t "road-sign-concept.attr.dimensions"}}
@@ -90,7 +85,11 @@
                 {{@model.roadSignConcept.shape.label}}
               </p>
             </li>
-
+            {{#unless this.showSidebar}}
+              <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+                <ContentCheck @concept={{@model.roadSignConcept}} />
+              </li>
+            {{/unless}}
           </ul>
         </Group>
       </AuToolbar>
@@ -180,6 +179,7 @@
             <s.content as |c|>
               <c.header>
                 <th class="data-table__header-title">
+                  hehehe
                   {{t "road-sign-concept.attr.code"}}
                 </th>
                 <th class="data-table__header-title">
