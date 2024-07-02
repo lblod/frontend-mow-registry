@@ -21,7 +21,7 @@
             placeholder={{t "road-marking-concept.crud.code-filter"}}
             @icon="search"
             @iconAlignment="right"
-            {{on "input" (perform this.updateSearchFilterTask "code")}}
+            {{on "input" (perform this.updateSearchFilterTask "label")}}
           />
         </div>
         <div class="au-c-data-table__search road-marking-meaning-search">
@@ -48,5 +48,5 @@
       {{t "utility.view"}}
     </LinkTo>
   </:rowAction>
-  
+
 </SearchTables::RoadMarking>
