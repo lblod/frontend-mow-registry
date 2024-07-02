@@ -28,8 +28,8 @@ export default class RoadsignConcept extends Route {
         .then((subsigns) => subsigns.slice()),
       classifications: this.store
         .findAll('road-sign-category')
-        .then((category) => {
-          return category.filter(({ label }) => label !== 'Onderbord');
+        .then((classification) => {
+          return classification.filter(({ label }) => label !== 'Onderbord');
         }),
       allRoadMarkings: this.store.query('road-marking-concept', {
         page: {
