@@ -234,7 +234,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   }
 
   removeTemplate = task(async (template: TemplateModel) => {
-    const templates = await this.model.roadMarkingConcept.templates;
+    const templates = await this.model.roadMarkingConcept.hasInstructions;
 
     templates.removeObject(template);
 
