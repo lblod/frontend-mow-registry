@@ -425,22 +425,20 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       const existingRelatedSigns = (
         await trafficMeasureConcept.relatedTrafficSignConcepts
       ).slice();
-      console.log('relations', existingRelatedSigns);
-      // for (const sign of existingRelatedSigns) {
-      //   await sign.destroyRecord();
-      // }
-      // // creating signs
-      // //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      // trafficMeasureConcept.relations = [];
-      //   const mustUseRelation = this.store.createRecord('must-use-relation');
-      //   //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      //   mustUseRelation.concept = this.signs[i];
-      //   mustUseRelation.order = i;
-      //   trafficMeasureConcept.relations.pushObject(mustUseRelation);
-      //   await mustUseRelation.save();
-      // }
-      // await trafficMeasureConcept.save();
-      for (const sign of this.signs) {
+
+      const deletedSigns = existingRelatedSigns.filter(
+        (sign) => !this.signs.includes(sign),
+      );
+      const addedSigns = this.signs.filter(
+        (sign) => !existingRelatedSigns.includes(sign),
+      );
+
+      for (const sign of deletedSigns) {
+        sign.relatedTrafficMeasureConcepts.removeObject(trafficMeasureConcept);
+        await sign.save();
+      }
+
+      for (const sign of addedSigns) {
         console.log('sign', sign);
         sign.relatedTrafficMeasureConcepts.pushObject(trafficMeasureConcept);
         await sign.save();
