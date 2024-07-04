@@ -5,7 +5,6 @@ import { task } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { SafeString } from '@ember/template/-private/handlebars';
 import { unwrap } from 'mow-registry/utils/option';
-import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 import TrafficMeasureConceptModel from 'mow-registry/models/traffic-measure-concept';
 
 type Args = {

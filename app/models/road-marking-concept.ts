@@ -6,7 +6,6 @@ import {
   AsyncHasMany,
 } from '@ember-data/model';
 import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
-import type RoadSignConceptStatusCodeModel from 'mow-registry/models/road-sign-concept-status-code';
 import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import TrafficSignConceptModel from './traffic-sign-concept';
 import SkosConcept from './skos-concept';

@@ -4,7 +4,6 @@ import {
   AsyncBelongsTo,
   AsyncHasMany,
 } from '@ember-data/model';
-import type SkosConcept from 'mow-registry/models/skos-concept';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
 import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import TrafficSignConceptModel from './traffic-sign-concept';

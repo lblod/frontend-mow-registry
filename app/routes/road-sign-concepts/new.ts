@@ -13,7 +13,9 @@ export default class RoadsignConceptsNewRoute extends Route {
       ZON_NON_ZONAL_ID,
     );
     return hash({
-      newRoadSignConcept: this.store.createRecord('road-sign-concept'),
+      newRoadSignConcept: this.store.createRecord('road-sign-concept', {
+        zonality: nonZonalConcept,
+      }),
       classifications: this.store.findAll('road-sign-category'),
       shapes: this.store.findAll('tribont-shape'),
       dimensions: this.store.findAll('dimension'),
