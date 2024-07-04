@@ -5,11 +5,10 @@ import {
   AsyncBelongsTo,
   AsyncHasMany,
 } from '@ember-data/model';
-import ConceptModel from './concept';
-import type TrafficLightConceptStatusCodeModel from 'mow-registry/models/traffic-light-concept-status-code';
 import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
 import TrafficSignConceptModel from './traffic-sign-concept';
+import SkosConcept from './skos-concept';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -19,11 +18,8 @@ declare module 'ember-data/types/registries/model' {
 export default class TrafficLightConceptModel extends TrafficSignConceptModel {
   @attr declare definition?: string;
 
-  // @belongsTo('traffic-light-concept-status-code', {
-  //   inverse: 'trafficLightConcepts',
-  //   async: true,
-  // })
-  // declare status: AsyncBelongsTo<TrafficLightConceptStatusCodeModel>;
+  @belongsTo('skos-concept', { inverse: null, async: true })
+  declare zonality: AsyncBelongsTo<SkosConcept>;
 
   @hasMany('traffic-light-concept', {
     inverse: 'relatedFromTrafficLightConcepts',

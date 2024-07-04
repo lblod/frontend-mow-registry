@@ -1,4 +1,3 @@
-import { attr } from '@ember-data/model';
 import DocumentModel from 'mow-registry/models/document';
 
 declare module 'ember-data/types/registries/model' {
@@ -7,6 +6,4 @@ declare module 'ember-data/types/registries/model' {
   }
 }
 
-export default class ImageModel extends DocumentModel {
-  // @attr declare uri?: string;
-}
+export default class ImageModel extends DocumentModel {}

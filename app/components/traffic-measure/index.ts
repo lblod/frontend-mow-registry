@@ -13,7 +13,6 @@ import TrafficMeasureConceptModel from 'mow-registry/models/traffic-measure-conc
 import TemplateModel from 'mow-registry/models/template';
 import { unwrap } from 'mow-registry/utils/option';
 import MappingModel from 'mow-registry/models/mapping';
-import ConceptModel from 'mow-registry/models/concept';
 import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
 import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
@@ -22,8 +21,6 @@ import ArrayProxy from '@ember/array/proxy';
 import ApplicationInstance from '@ember/application/instance';
 import { SignType } from 'mow-registry/components/traffic-measure/select-type';
 import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
-
-// const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
 
 export type InputType = {
   value: string;
@@ -390,13 +387,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //if new save relationships
     if (this.new) {
       await this.trafficMeasureConcept.save();
-      // const trafficMeasureResource = await this.store.findRecord(
-      //   'resource',
-      //   TRAFFIC_MEASURE_RESOURCE_UUID,
-      // );
-
       await template.save();
-
       await this.trafficMeasureConcept.save();
     }
 

@@ -5,7 +5,6 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import Store from '@ember-data/store';
 import { SignType } from 'mow-registry/components/traffic-measure/select-type';
-import ConceptModel from 'mow-registry/models/concept';
 import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {

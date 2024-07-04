@@ -1,5 +1,29 @@
 # frontend-mow-registry
 
+## 1.4.5
+
+### Patch Changes
+
+- [#250](https://github.com/lblod/frontend-mow-registry/pull/250) [`1715a27`](https://github.com/lblod/frontend-mow-registry/commit/1715a273571a6484c3724c2cf555b9c39aab998a) Thanks [@elpoelma](https://github.com/elpoelma)! - Add hacky workaround to ensure road-marking and traffic-light concepts can be correctly consumed:
+  - Addition of a `zonality` relationship to road-marking and traffic-light concepts
+  - Give new road-marking and traffic-light concepts a default zonality of 'non-zonal'
+
+## 1.4.4
+
+### Patch Changes
+
+- [#249](https://github.com/lblod/frontend-mow-registry/pull/249) [`3663a4e`](https://github.com/lblod/frontend-mow-registry/commit/3663a4e2c033e36eee82a910af79489e0fcdc865) Thanks [@elpoelma](https://github.com/elpoelma)! - Ensure that traffic-measures and road-signs have a default zonality of 'non-zonal'
+
+## 1.4.3
+
+### Patch Changes
+
+- [#241](https://github.com/lblod/frontend-mow-registry/pull/241) [`bce0fdf`](https://github.com/lblod/frontend-mow-registry/commit/bce0fdff606a53ebe78680292f7cfaf423ac64ef) Thanks [@elpoelma](https://github.com/elpoelma)! - Show alert to user when template variable names contain invalid characters
+
+- [#238](https://github.com/lblod/frontend-mow-registry/pull/238) [`2a4141f`](https://github.com/lblod/frontend-mow-registry/commit/2a4141fd7ab13f69ba3e734c07bc565e61a095d3) Thanks [@elpoelma](https://github.com/elpoelma)! - Enable no-bare-strings template-lint rule
+
+- [#238](https://github.com/lblod/frontend-mow-registry/pull/238) [`2a4141f`](https://github.com/lblod/frontend-mow-registry/commit/2a4141fd7ab13f69ba3e734c07bc565e61a095d3) Thanks [@elpoelma](https://github.com/elpoelma)! - Fill-in missing translations
+
 ## 1.4.2
 
 ### Patch Changes
