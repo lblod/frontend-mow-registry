@@ -9,6 +9,7 @@ import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import type RoadSignConceptStatusCodeModel from 'mow-registry/models/road-sign-concept-status-code';
 import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import TrafficSignConceptModel from './traffic-sign-concept';
+import SkosConcept from './skos-concept';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -18,6 +19,9 @@ declare module 'ember-data/types/registries/model' {
 
 export default class RoadMarkingConceptModel extends TrafficSignConceptModel {
   @attr declare definition?: string;
+
+  @belongsTo('skos-concept', { inverse: null, async: true })
+  declare zonality: AsyncBelongsTo<SkosConcept>;
 
   @hasMany('road-marking-concept', {
     inverse: 'relatedFromRoadMarkingConcepts',
