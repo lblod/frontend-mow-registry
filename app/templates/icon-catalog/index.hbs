@@ -1,0 +1,23 @@
+<SearchTables::IconCatalog
+  @content={{this.model.icons}}
+  @pageSize={{this.size}}
+  @page={{this.page}}
+  @sort={{this.sort}}
+  @onPageChange={{this.onPageChange}}
+  @onSortChange={{this.onSortChange}}
+>
+  <:menu>
+    <AuToolbar class="au-o-box" as |Group|>
+      <Group>
+        <AuHeading @skin="2">
+          {{t "icon-catalog.name"}}
+        </AuHeading>
+      </Group>
+      <Group class="au-c-toolbar__group--center">
+        <LinkTo class="au-c-button" @route="icon-catalog.new">
+          {{t "icon-catalog.crud.new"}}
+        </LinkTo>
+      </Group>
+    </AuToolbar>
+  </:menu>
+</SearchTables::IconCatalog>

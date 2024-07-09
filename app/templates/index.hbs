@@ -126,6 +126,28 @@
           </c.footer>
         </AuCard>
       </li>
+      <li class="au-o-grid__item au-u-1-2@medium au-u-1-3@large">
+        <AuCard @flex={{true}} as |c|>
+          <c.header @badgeSkin="brand" @badgeIcon="unordered-list">
+            <AuHeading @level="2" @skin="4">
+              {{t "icon-catalog.name"}}
+            </AuHeading>
+          </c.header>
+          <c.content>
+            <p>
+              {{t "icon-catalog.landing-page.content"}}
+            </p>
+          </c.content>
+          <c.footer>
+            <AuLink
+              @route="icon-catalog"
+              @query={{hash page=0 search=""}}
+              @skin="button">
+              {{t "icon-catalog.landing-page.button"}}
+            </AuLink>
+          </c.footer>
+        </AuCard>
+      </li>
     </ul>
   </div>
 </div>

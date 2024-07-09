@@ -237,3 +237,20 @@ codelist:
   landing-page:
     content: Overzicht en beheer van beschikbare codelijsten.
     button: Ga naar Codelijsten
+icon-catalog:
+  name: Cataloguspictogram
+  attr:
+    name: Naam
+    image: Afbeelding
+  crud:
+    new: Nieuwe pictogram
+    no-data: Geen pictogram
+    edit: Mobiliteitsmaatregel bewerken
+    delete: Mobiliteitsmaatregel verwijderen
+    save: Mobiliteitsmaatregel bewaren
+    type-filter: Filteren op type
+    no-matches: Geen resultaten gevonden
+    type-to-search: Typ om te zoeken
+  landing-page:
+    content: Overzichtscode bevat pictogrammen.
+    button: Ga naar Cataloguspictogram
