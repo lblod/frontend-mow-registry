@@ -8,6 +8,12 @@ import {
 import ConceptScheme from 'mow-registry/models/concept-scheme';
 import type MappingModel from 'mow-registry/models/mapping';
 import type SkosConcept from 'mow-registry/models/skos-concept';
+import {
+  validateBelongsToOptional,
+  validateHasManyOptional,
+  validateStringOptional,
+  validateStringRequired,
+} from 'mow-registry/validators/schema';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -21,4 +27,13 @@ export default class CodeListModel extends ConceptScheme {
   declare mappings: AsyncHasMany<MappingModel>;
   @belongsTo('skos-concept', { inverse: null, async: true })
   declare type: AsyncBelongsTo<SkosConcept>;
+
+  get validationSchema() {
+    return super.validationSchema.keys({
+      uri: validateStringOptional(),
+      label: validateStringRequired('errors.label.required'),
+      mappings: validateHasManyOptional(),
+      type: validateBelongsToOptional(),
+    });
+  }
 }

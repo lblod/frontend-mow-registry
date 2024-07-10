@@ -40,3 +40,12 @@ export const validateHasManyOptional = () => {
 export const validateStringOptional = () => {
   return Joi.string().empty('').allow(null);
 };
+
+/**
+ * Rules for validating a string as a required field.
+ */
+export const validateStringRequired = (message = 'errors.label.required') => {
+  return Joi.string().empty('').required().messages({
+    'any.required': message,
+  });
+};
