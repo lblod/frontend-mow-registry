@@ -22,7 +22,7 @@ export default class TrafficMeasureConceptModel extends Model {
   declare zonality: AsyncBelongsTo<SkosConcept>;
 
   @hasMany('traffic-sign-concept', {
-    inverse: 'relatedTrafficMeasureConcepts',
+    inverse: 'hasTrafficMeasureConcepts',
     async: true,
     polymorphic: true,
   })

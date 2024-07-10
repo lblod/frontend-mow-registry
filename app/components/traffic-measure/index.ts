@@ -425,13 +425,13 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       );
 
       for (const sign of deletedSigns) {
-        sign.relatedTrafficMeasureConcepts.removeObject(trafficMeasureConcept);
+        sign.hasTrafficMeasureConcepts.removeObject(trafficMeasureConcept);
         await sign.save();
       }
 
       for (const sign of addedSigns) {
         console.log('sign', sign);
-        sign.relatedTrafficMeasureConcepts.pushObject(trafficMeasureConcept);
+        sign.hasTrafficMeasureConcepts.pushObject(trafficMeasureConcept);
         await sign.save();
       }
     },

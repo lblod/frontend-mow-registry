@@ -32,5 +32,5 @@ export default class TrafficSignConceptModel extends SkosConcept {
     async: true,
     inverse: 'relatedTrafficSignConcepts',
   })
-  declare relatedTrafficMeasureConcepts: AsyncHasMany<TrafficMeasureConceptModel>;
+  declare hasTrafficMeasureConcepts: AsyncHasMany<TrafficMeasureConceptModel>;
 }
