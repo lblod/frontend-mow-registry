@@ -174,7 +174,7 @@ traffic-measure-concept:
   help: Add $'{variableName} to add a variable/instruction
   attr:
     name: Name
-    temporal: Temporal signage
+    variable-signage: Variable signage
     traffic-sign: Traffic sign
     code: Code
     sign: Sign

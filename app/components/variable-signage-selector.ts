@@ -4,9 +4,9 @@ import TrafficMeasureConceptModel from 'mow-registry/models/traffic-measure-conc
 type Args = {
   concept: TrafficMeasureConceptModel;
 };
-export default class TemporalSelectorComponent extends Component<Args> {
+export default class VariableSignageSelectorComponent extends Component<Args> {
   @action
   update(value: string) {
-    this.args.concept.temporal = value;
+    this.args.concept.variableSignage = value;
   }
 }

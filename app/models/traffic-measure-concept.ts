@@ -16,7 +16,7 @@ declare module 'ember-data/types/registries/model' {
 }
 export default class TrafficMeasureConceptModel extends Model {
   @attr declare label?: string;
-  @attr declare temporal?: string;
+  @attr declare variableSignage?: string;
 
   @belongsTo('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;

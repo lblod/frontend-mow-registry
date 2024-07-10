@@ -168,7 +168,7 @@ traffic-measure-concept:
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
     name: Naam
-    temporal: Variabele signalisatie
+    variable-signage: Variabele signalisatie
     traffic-sign: Verkeersteken
     code: Code
     sign: Verkeersbord
