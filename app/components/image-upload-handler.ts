@@ -1,8 +1,6 @@
 import Component from '@glimmer/component';
-import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import FileService from 'mow-registry/services/file-service';
-import { BufferedChangeset } from 'ember-changeset/types';
 
 /**
  * A helper for uploading images, used in conjunction with `image-input.js`
@@ -21,20 +19,21 @@ export default class ImageUploadHandlerComponent<
     return typeof file === 'string';
   }
 
-  @action
-  setImage(changeset: BufferedChangeset, image: File | string) {
+  setImage(model: { image?: string }, image: File | string) {
     if (this.isFileUrl(image)) {
-      changeset.image = image;
+      model.image = image;
       this.fileData = null;
     } else {
       this.fileData = image;
-      changeset.image = this.fileData.name;
+      model.image = this.fileData.name;
     }
   }
 
-  async saveImage(changeset: BufferedChangeset) {
+  async saveImage() {
     if (this.fileData) {
-      changeset.image = await this.fileService.upload(this.fileData);
+      return await this.fileService.upload(this.fileData);
     }
+
+    return null;
   }
 }

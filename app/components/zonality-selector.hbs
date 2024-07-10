@@ -3,7 +3,7 @@
   @searchEnabled={{false}}
   @loadingMessage={{t "utility.loading"}}
   @options={{this.zonalities.value}}
-  @selected={{this.selectedZonality}}
+  @selected={{@zonality}}
   @onChange={{@onChange}} as |zonality|
 >
   {{zonality-label zonality}}

@@ -6,7 +6,7 @@ import SkosConcept from 'mow-registry/models/skos-concept';
 export default class ZonalityLabel extends Helper {
   @service declare intl: IntlService;
   compute([zonality]: [SkosConcept | undefined]) {
-    const label = zonality?.label;
+    const label = zonality?.get('label');
     if (label) {
       return this.intl.t('utility.' + label);
     } else {

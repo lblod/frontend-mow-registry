@@ -1,169 +1,166 @@
-{{#let
-  (changeset
-    @trafficLightConcept this.TrafficLightConceptValidations
-  ) as |changeset|
-}}
-  <BreadcrumbsItem as |linkClass|>
-    {{#if @trafficLightConcept.isNew}}
-      <LinkTo @route="traffic-light-concepts.new" class={{linkClass}}>
+<BreadcrumbsItem as |linkClass|>
+  {{#if @trafficLightConcept.isNew}}
+    <LinkTo @route="traffic-light-concepts.new" class={{linkClass}}>
+      {{t "traffic-light-concept.crud.new"}}
+    </LinkTo>
+  {{else}}
+    <LinkTo
+      @route="traffic-light-concepts.edit"
+      @model={{@trafficLightConcept.id}}
+      class={{linkClass}}
+    >
+      {{@trafficLightConcept.trafficLightConceptCode}}
+    </LinkTo>
+  {{/if}}
+
+</BreadcrumbsItem>
+
+<AuToolbar @border="bottom" @size="large" as |Group|>
+  <Group>
+    <AuHeading @skin="2">
+      {{#if @trafficLightConcept.isNew}}
         {{t "traffic-light-concept.crud.new"}}
-      </LinkTo>
-    {{else}}
-      <LinkTo
-        @route="traffic-light-concepts.edit"
-        @model={{@trafficLightConcept.id}}
-        class={{linkClass}}
-      >
-        {{@trafficLightConcept.trafficLightConceptCode}}
-      </LinkTo>
-    {{/if}}
+      {{else}}
+        {{t "traffic-light-concept.crud.edit"}}
+      {{/if}}
+    </AuHeading>
+  </Group>
+</AuToolbar>
 
-  </BreadcrumbsItem>
-
-  <AuToolbar @border="bottom" @size="large" as |Group|>
-    <Group>
-      <AuHeading @skin="2">
-        {{#if @trafficLightConcept.isNew}}
-          {{t "traffic-light-concept.crud.new"}}
-        {{else}}
-          {{t "traffic-light-concept.crud.edit"}}
-        {{/if}}
-      </AuHeading>
-    </Group>
-  </AuToolbar>
-
-  <div class="au-c-body-container au-c-body-container--scroll">
-    <div class="au-o-box">
-      <div class="au-o-grid">
-        <div class="au-o-grid__item au-u-2-3@medium">
-          <form
-            class="au-c-form"
-            id="edit-traffic-light-concept-form"
-            novalidate
-          >
-            {{#let changeset.error.image as |isInvalid|}}
-              <AuFormRow>
-                <ImageInput @oldImage={{@trafficLightConcept.image}} @error={{isInvalid}} @setImage={{(fn this.setImage changeset)}} />
-              </AuFormRow>
-            {{/let}}
-            {{#let
-              changeset.error.trafficLightConceptCode as |isInvalid|
-            }}
-              <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="traffic-light-concept-code" @required={{true}} @requiredLabel={{t "utility.required"}}>
-                  {{t "traffic-light-concept.attr.code"}}&nbsp;
-                </AuLabel>
-                <AuInput
-                  @error={{isInvalid}}
-                  id="traffic-light-concept-code"
-                  required="required"
-                  @value={{changeset.trafficLightConceptCode}}
-                  {{on
-                    "input"
-                    (fn
-                      this.setTrafficLightConceptValue
-                      changeset
-                      "trafficLightConceptCode"
-                    )
-                  }}
-                />
-                {{#if isInvalid}}
-                  <AuHelpText @error={{true}}>
-                    {{t "utility.field-required"}}
-                  </AuHelpText>
-                {{/if}}
-              </AuFormRow>
-            {{/let}}
-            {{#let changeset.error.definition as |isInvalid|}}
-              <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="definition" @required={{true}} @requiredLabel={{t "utility.required"}}>
-                  {{t "traffic-light-concept.attr.definition"}}&nbsp;
-                </AuLabel>
-                <AuTextarea
-                  @error={{isInvalid}}
-                  @width="block"
-                  class="u-min-h-20"
-                  id="definition"
-                  required="required"
-                  @value={{changeset.definition}}
-                  {{on
-                    "input"
-                    (fn
-                      this.setTrafficLightConceptValue
-                      changeset
-                      "definition"
-                    )
-                  }}
-                />
-                {{#if isInvalid}}
-                  <AuHelpText @error={{true}}>
-                    {{t "utility.field-required"}}
-                  </AuHelpText>
-                {{/if}}
-              </AuFormRow>
-            {{/let}}
-            {{#let changeset.error.meaning as |isInvalid|}}
-              <AuFormRow>
-                <AuLabel @error={{isInvalid}} for="meaning" @required={{true}} @requiredLabel={{t "utility.required"}}>
-                  {{t "traffic-light-concept.attr.meaning"}}&nbsp;
-                </AuLabel>
-                <AuTextarea
-                  @error={{isInvalid}}
-                  @width="block"
-                  class="u-min-h-20"
-                  id="meaning"
-                  required="required"
-                  @value={{changeset.meaning}}
-                  {{on
-                    "input"
-                    (fn
-                      this.setTrafficLightConceptValue
-                      changeset
-                      "meaning"
-                    )
-                  }}
-                />
-                {{#if isInvalid}}
-                  <AuHelpText @error={{true}}>
-                    {{t "utility.field-required"}}
-                  </AuHelpText>
-                {{/if}}
-              </AuFormRow>
-            {{/let}}
-          </form>
-        </div>
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box">
+    <div class="au-o-grid">
+      <div class="au-o-grid__item au-u-2-3@medium">
+        <form class="au-c-form" id="edit-traffic-light-concept-form" novalidate>
+          {{#let @trafficLightConcept.error.image as |isInvalid|}}
+            <AuFormRow>
+              <ImageInput
+                @oldImage={{@trafficLightConcept.image}}
+                @error={{isInvalid}}
+                @setImage={{(fn this.setImage @trafficLightConcept)}}
+              />
+            </AuFormRow>
+          {{/let}}
+          {{#let
+            @trafficLightConcept.error.trafficLightConceptCode
+            as |isInvalid|
+          }}
+            <AuFormRow>
+              <AuLabel
+                @error={{isInvalid}}
+                for="traffic-light-concept-code"
+                @required={{true}}
+                @requiredLabel={{t "utility.required"}}
+              >
+                {{t "traffic-light-concept.attr.code"}}&nbsp;
+              </AuLabel>
+              <AuInput
+                @error={{isInvalid}}
+                id="traffic-light-concept-code"
+                required="required"
+                @value={{@trafficLightConcept.trafficLightConceptCode}}
+                {{on
+                  "input"
+                  (fn
+                    this.setTrafficLightConceptValue "trafficLightConceptCode"
+                  )
+                }}
+              />
+              {{#if isInvalid}}
+                <AuHelpText @error={{true}}>
+                  {{t "utility.field-required"}}
+                </AuHelpText>
+              {{/if}}
+            </AuFormRow>
+          {{/let}}
+          {{#let @trafficLightConcept.error.definition as |isInvalid|}}
+            <AuFormRow>
+              <AuLabel
+                @error={{isInvalid}}
+                for="definition"
+                @required={{true}}
+                @requiredLabel={{t "utility.required"}}
+              >
+                {{t "traffic-light-concept.attr.definition"}}&nbsp;
+              </AuLabel>
+              <AuTextarea
+                @error={{isInvalid}}
+                @width="block"
+                class="u-min-h-20"
+                id="definition"
+                required="required"
+                @value={{@trafficLightConcept.definition}}
+                {{on
+                  "input"
+                  (fn this.setTrafficLightConceptValue "definition")
+                }}
+              />
+              {{#if isInvalid}}
+                <AuHelpText @error={{true}}>
+                  {{t "utility.field-required"}}
+                </AuHelpText>
+              {{/if}}
+            </AuFormRow>
+          {{/let}}
+          {{#let @trafficLightConcept.error.meaning as |isInvalid|}}
+            <AuFormRow>
+              <AuLabel
+                @error={{isInvalid}}
+                for="meaning"
+                @required={{true}}
+                @requiredLabel={{t "utility.required"}}
+              >
+                {{t "traffic-light-concept.attr.meaning"}}&nbsp;
+              </AuLabel>
+              <AuTextarea
+                @error={{isInvalid}}
+                @width="block"
+                class="u-min-h-20"
+                id="meaning"
+                required="required"
+                @value={{@trafficLightConcept.meaning}}
+                {{on "input" (fn this.setTrafficLightConceptValue "meaning")}}
+              />
+              {{#if isInvalid}}
+                <AuHelpText @error={{true}}>
+                  {{t "utility.field-required"}}
+                </AuHelpText>
+              {{/if}}
+            </AuFormRow>
+          {{/let}}
+        </form>
       </div>
     </div>
   </div>
+</div>
 
-  <AuToolbar @border="top" @size="large" as |Group|>
-    <Group>
-      <AuButtonGroup>
-        <AuButton
-          @disabled={{or changeset.isPristine this.isSaving}}
-          @loading={{this.isSaving}}
-          form="edit-traffic-light-concept-form"
-          {{on "click" (perform this.editTrafficLightConceptTask changeset)}}
+<AuToolbar @border="top" @size="large" as |Group|>
+  <Group>
+    <AuButtonGroup>
+      <AuButton
+        @disabled={{or @trafficLightConcept.error this.isSaving}}
+        @loading={{this.isSaving}}
+        form="edit-traffic-light-concept-form"
+        {{on "click" (perform this.editTrafficLightConceptTask)}}
+      >
+        {{t "utility.save"}}
+      </AuButton>
+      {{#if @trafficLightConcept.isNew}}
+        <LinkTo
+          @route="traffic-light-concepts"
+          class="au-c-button au-c-button--secondary"
         >
-          {{t "utility.save"}}
-        </AuButton>
-        {{#if @trafficLightConcept.isNew}}
-          <LinkTo
-            @route="traffic-light-concepts"
-            class="au-c-button au-c-button--secondary"
-          >
-            {{t "utility.cancel"}}
-          </LinkTo>
-        {{else}}
-          <LinkTo
-            @route="traffic-light-concepts.traffic-light-concept"
-            @model={{changeset.id}}
-            class="au-c-button au-c-button--secondary"
-          >
-            {{t "utility.cancel"}}
-          </LinkTo>
-        {{/if}}
-      </AuButtonGroup>
-    </Group>
-  </AuToolbar>
-{{/let}}
+          {{t "utility.cancel"}}
+        </LinkTo>
+      {{else}}
+        <LinkTo
+          @route="traffic-light-concepts.traffic-light-concept"
+          @model={{@trafficLightConcept.id}}
+          class="au-c-button au-c-button--secondary"
+        >
+          {{t "utility.cancel"}}
+        </LinkTo>
+      {{/if}}
+    </AuButtonGroup>
+  </Group>
+</AuToolbar>

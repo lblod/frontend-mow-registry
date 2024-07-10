@@ -3,6 +3,8 @@ import ResourceModel from 'mow-registry/models/resource';
 import type RelationModel from 'mow-registry/models/relation';
 import type TemplateModel from 'mow-registry/models/template';
 import { unwrap } from 'mow-registry/utils/option';
+import Joi from 'joi';
+import { validateHasManyOptional } from 'mow-registry/validators/schema';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -26,5 +28,13 @@ export default class ConceptModel extends ResourceModel {
   //TODO: we still use this getter in the template of the SearchTables::TrafficMeasure component, but we should refactor this
   get orderedRelations() {
     return this.relations.sortBy('order');
+  }
+
+  get validationSchema() {
+    return super.validationSchema.keys({
+      valid: Joi.boolean().optional(),
+      templates: validateHasManyOptional(),
+      relations: validateHasManyOptional(),
+    });
   }
 }

@@ -23,7 +23,7 @@ export const validateBelongsToOptional = () => {
  * Validate and require an array for "has many" relationships.
  * @param [message] - Custom error message for validation failure.
  */
-export const validateHasManyRequired = (message = 'errors.label.required') => {
+export const validateHasManyRequired = (message = 'errors.field.required') => {
   return Joi.array().required().messages({ 'any.required': message });
 };
 
