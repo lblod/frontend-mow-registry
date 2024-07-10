@@ -430,7 +430,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       }
 
       for (const sign of addedSigns) {
-        console.log('sign', sign);
         sign.hasTrafficMeasureConcepts.pushObject(trafficMeasureConcept);
         await sign.save();
       }
