@@ -10,6 +10,11 @@ import type TrafficLightConceptStatusCodeModel from 'mow-registry/models/traffic
 import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
 import SkosConcept from './skos-concept';
+import {
+  validateBelongsToOptional,
+  validateHasManyOptional,
+  validateStringRequired,
+} from 'mow-registry/validators/schema';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -60,4 +65,19 @@ export default class TrafficLightConceptModel extends ConceptModel {
     async: true,
   })
   declare relatedRoadMarkingConcepts: AsyncHasMany<RoadMarkingConceptModel>;
+
+  get validationSchema() {
+    return super.validationSchema.keys({
+      image: validateStringRequired(),
+      meaning: validateStringRequired(),
+      definition: validateStringRequired(),
+      trafficLightConceptCode: validateStringRequired(),
+      status: validateBelongsToOptional(),
+      zonality: validateBelongsToOptional(),
+      relatedToTrafficLightConcepts: validateHasManyOptional(),
+      relatedFromTrafficLightConcepts: validateHasManyOptional(),
+      relatedRoadSignConcepts: validateHasManyOptional(),
+      relatedRoadMarkingConcepts: validateHasManyOptional(),
+    });
+  }
 }
