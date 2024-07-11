@@ -1,9 +1,7 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import TrafficLightConceptValidations from 'mow-registry/validations/traffic-light-concept';
 import ImageUploadHandlerComponent from './image-upload-handler';
-import { BufferedChangeset } from 'ember-changeset/types';
 import Router from '@ember/routing/router';
 import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import Store from '@ember-data/store';
@@ -16,47 +14,47 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   @service declare router: Router;
   @service declare store: Store;
 
-  TrafficLightConceptValidations = TrafficLightConceptValidations;
-
   get isSaving() {
     return this.editTrafficLightConceptTask.isRunning;
   }
 
   @action
-  setTrafficLightConceptValue(
-    changeset: BufferedChangeset,
-    attributeName: string,
+  async setTrafficLightConceptValue(
+    attributeName: keyof TrafficLightConceptModel,
     event: InputEvent,
   ) {
-    changeset[attributeName] = (event.target as HTMLInputElement).value;
+    await this.args.trafficLightConcept.set(
+      attributeName,
+      (event.target as HTMLInputElement).value,
+    );
+    await this.args.trafficLightConcept.validate();
   }
 
-  editTrafficLightConceptTask = dropTask(
-    async (changeset: BufferedChangeset, event: InputEvent) => {
-      event.preventDefault();
+  editTrafficLightConceptTask = dropTask(async (event: InputEvent) => {
+    event.preventDefault();
 
-      await changeset.validate();
+    await this.args.trafficLightConcept.validate();
 
-      if (changeset.isValid) {
-        const image = await this.saveImage(this.store);
-        if (image) {
-          changeset.image = image;
-        }
-        try {
-          await changeset.save();
-        } catch (error) {
-          console.error('Error saving changeset:', error);
-        }
-        await this.router.transitionTo(
-          'traffic-light-concepts.traffic-light-concept',
-          changeset.id,
-        );
-      }
-    },
-  );
+    if (!this.args.trafficLightConcept.error) {
+      const imagePath = await this.saveImage();
+      if (imagePath) this.args.trafficLightConcept.image = imagePath;
+      await this.args.trafficLightConcept.save();
+
+      await this.router.transitionTo(
+        'traffic-light-concepts.traffic-light-concept',
+        this.args.trafficLightConcept.id,
+      );
+    }
+  });
+
+  @action
+  async setImage(model: TrafficLightConceptModel, image: File | string) {
+    super.setImage(model, image);
+    await this.args.trafficLightConcept.validate();
+  }
 
   willDestroy() {
     super.willDestroy();
-    this.args.trafficLightConcept.rollbackAttributes();
+    this.args.trafficLightConcept.reset();
   }
 }
