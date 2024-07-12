@@ -5,14 +5,12 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
-import SkosConcept from 'mow-registry/models/skos-concept';
 
 type Args = {
   roadSignConcept: RoadSignConceptModel;
 };
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: Router;
-  @service declare store: Store;
 
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
@@ -31,19 +29,13 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  async setRoadSignConceptCategory(selection: RoadSignCategoryModel[]) {
-    this.args.roadSignConcept.set('categories', selection);
+  async setRoadSignConceptClassification(selection: RoadSignCategoryModel[]) {
+    this.args.roadSignConcept.set('classifications', selection);
     await this.args.roadSignConcept.validate();
   }
 
   @action
-  async setRoadSignConceptZonality(selection: SkosConcept) {
-    this.args.roadSignConcept.set('zonality', selection);
-    await this.args.roadSignConcept.validate();
-  }
-
-  @action
-  async setImage(model: RoadSignConceptModel, image: File | string) {
+  async setImage(model: RoadSignConceptModel, image: File) {
     super.setImage(model, image);
     await this.args.roadSignConcept.validate();
   }
@@ -54,8 +46,9 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     await this.args.roadSignConcept.validate();
 
     if (!this.args.roadSignConcept.error) {
-      const imagePath = await this.saveImage();
-      if (imagePath) this.args.roadSignConcept.image = imagePath;
+      const imageRecord = await this.saveImage();
+      console.log('here');
+      if (imageRecord) this.args.roadSignConcept.set('image', imageRecord);
       await this.args.roadSignConcept.save();
 
       await this.router.transitionTo(

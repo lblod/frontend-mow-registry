@@ -20,7 +20,6 @@ export default class ConceptModel extends ResourceModel {
     return super.validationSchema.keys({
       valid: Joi.boolean().optional(),
       templates: validateHasManyOptional(),
-      relations: validateHasManyOptional(),
     });
   }
 }

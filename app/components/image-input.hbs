@@ -23,19 +23,6 @@
     @accept={{"image/jpeg,image/jpg,image/png,image/svg+xml"}}
     @onFileSet={{this.setImageUpload}}
   />
-  <div class="au-u-margin-right au-u-margin-left">
-    {{t "utility.or"}}
-  </div>
-  <AuInput
-    @error={{@error}}
-    id="image-url"
-    required="required"
-    type="text"
-    placeholder={{t "image-input.url-placeholder"}}
-    @value={{this.url}}
-    class="full-width"
-    {{on "input" this.setImageUrl}}
-  />
 </div>
 {{#if this.showUrlError}}
   <AuHelpText @size="small" @error={{true}}>{{t

@@ -93,11 +93,11 @@
               {{/if}}
             </AuFormRow>
           {{/let}}
-          {{#let @roadSignConcept.error.categories as |isInvalid|}}
+          {{#let @roadSignConcept.error.classifications as |isInvalid|}}
             <AuFormRow>
               <AuLabel
                 @error={{isInvalid}}
-                for="categories"
+                for="classifications"
                 @required={{true}}
                 @requiredLabel={{t "utility.required"}}
               >
@@ -111,14 +111,14 @@
                   @searchMessage={{t "utility.search-placeholder"}}
                   @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
                   @searchField="label"
-                  @options={{@categories}}
+                  @options={{@classifications}}
                   @loadingMessage={{t "utility.loading"}}
-                  @selected={{@roadSignConcept.categories}}
-                  @onChange={{this.setRoadSignConceptCategory}}
+                  @selected={{@roadSignConcept.classifications}}
+                  @onChange={{this.setRoadSignConceptClassification}}
                   @triggerId="categories"
-                  as |category|
+                  as |classification|
                 >
-                  {{category.label}}
+                  {{classification.label}}
                 </PowerSelectMultiple>
               </div>
               {{#if isInvalid}}
@@ -128,15 +128,7 @@
               {{/if}}
             </AuFormRow>
           {{/let}}
-          <AuFormRow>
-            <AuLabel for="zonality">
-              {{t "utility.zonality"}}&nbsp;
-            </AuLabel>
-            <ZonalitySelector
-              @zonality={{@roadSignConcept.zonality}}
-              @onChange={{this.setRoadSignConceptZonality}}
-            />
-          </AuFormRow>
+
         </form>
       </div>
     </div>
