@@ -9,7 +9,7 @@
       @model={{@trafficLightConcept.id}}
       class={{linkClass}}
     >
-      {{@trafficLightConcept.trafficLightConceptCode}}
+      {{@trafficLightConcept.label}}
     </LinkTo>
   {{/if}}
 
@@ -41,10 +41,7 @@
               />
             </AuFormRow>
           {{/let}}
-          {{#let
-            @trafficLightConcept.error.trafficLightConceptCode
-            as |isInvalid|
-          }}
+          {{#let @trafficLightConcept.error.label as |isInvalid|}}
             <AuFormRow>
               <AuLabel
                 @error={{isInvalid}}
@@ -52,19 +49,14 @@
                 @required={{true}}
                 @requiredLabel={{t "utility.required"}}
               >
-                {{t "traffic-light-concept.attr.code"}}&nbsp;
+                {{t "traffic-light-concept.attr.label"}}&nbsp;
               </AuLabel>
               <AuInput
                 @error={{isInvalid}}
                 id="traffic-light-concept-code"
                 required="required"
-                @value={{@trafficLightConcept.trafficLightConceptCode}}
-                {{on
-                  "input"
-                  (fn
-                    this.setTrafficLightConceptValue "trafficLightConceptCode"
-                  )
-                }}
+                @value={{@trafficLightConcept.label}}
+                {{on "input" (fn this.setTrafficLightConceptValue "label")}}
               />
               {{#if isInvalid}}
                 <AuHelpText @error={{true}}>

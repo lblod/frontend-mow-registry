@@ -3,7 +3,7 @@ import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept'
 import { unwrap } from 'mow-registry/utils/option';
 
 /**
- * Sort an array of road-sign-concepts numerically based on their roadSignConceptCode
+ * Sort an array of road-sign-concepts numerically based on their label
  */
 export default helper(function sortByTrafficLightCode([trafficLightConcepts]: [
   TrafficLightConceptModel[],

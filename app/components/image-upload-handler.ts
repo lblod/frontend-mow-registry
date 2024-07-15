@@ -22,12 +22,7 @@ export default class ImageUploadHandlerComponent<
   }
 
   setImage(model: any, image: File) {
-    console.log('model', model);
-    console.log('image', image);
-
     this.fileData = image;
-
-    console.log('set image done');
   }
 
   async saveImage() {

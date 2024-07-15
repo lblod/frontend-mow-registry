@@ -7,7 +7,7 @@
     {{#if @roadMarkingConcept.isNew}}
       {{t "road-marking-concept.crud.new"}}
     {{else}}
-      {{@roadMarkingConcept.roadMarkingConceptCode}}
+      {{@roadMarkingConcept.label}}
     {{/if}}
   </LinkTo>
 </BreadcrumbsItem>
@@ -37,10 +37,7 @@
               />
             </AuFormRow>
           {{/let}}
-          {{#let
-            @roadMarkingConcept.error.roadMarkingConceptCode
-            as |isInvalid|
-          }}
+          {{#let @roadMarkingConcept.error.label as |isInvalid|}}
             <AuFormRow>
               <AuLabel
                 @error={{isInvalid}}
@@ -48,17 +45,14 @@
                 @required={{true}}
                 @requiredLabel={{t "utility.required"}}
               >
-                {{t "road-marking-concept.attr.code"}}&nbsp;
+                {{t "road-marking-concept.attr.label"}}&nbsp;
               </AuLabel>
               <AuInput
                 @error={{isInvalid}}
                 id="road-marking-concept-code"
                 required="required"
-                @value={{@roadMarkingConcept.roadMarkingConceptCode}}
-                {{on
-                  "input"
-                  (fn this.setRoadMarkingConceptValue "roadMarkingConceptCode")
-                }}
+                @value={{@roadMarkingConcept.label}}
+                {{on "input" (fn this.setRoadMarkingConceptValue "label")}}
               />
               {{#if isInvalid}}
                 <AuHelpText @error={{true}}>

@@ -58,7 +58,7 @@ export default class RoadMarkingConceptModel extends TrafficSignConceptModel {
       image: validateStringRequired(),
       meaning: validateStringRequired(),
       definition: validateStringRequired(),
-      roadMarkingConceptCode: validateStringRequired(),
+      label: validateStringRequired(),
       status: validateBelongsToOptional(),
       zonality: validateBelongsToOptional(),
       relatedToRoadMarkingConcepts: validateHasManyOptional(),

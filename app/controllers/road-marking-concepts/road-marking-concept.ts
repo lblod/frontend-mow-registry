@@ -23,9 +23,9 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   @tracked isAddingRelatedTrafficLights = false;
   @tracked isOpen = false;
 
-  @tracked category?: RoadSignCategoryModel | null;
-  @tracked categoryRoadMarkings = null;
-  @tracked categoryRoadSigns?: ArrayProxy<RoadSignConceptModel> | null;
+  @tracked classification?: RoadSignCategoryModel | null;
+  @tracked classificationRoadMarkings = null;
+  @tracked classificationRoadSigns?: ArrayProxy<RoadSignConceptModel> | null;
 
   @tracked relatedRoadMarkingCodeFilter = '';
   @tracked newDescription = '';
@@ -121,7 +121,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
       .relatedRoadSignConcepts;
 
     relatedRoadSigns.pushObject(relatedRoadSign);
-    this.categoryRoadSigns?.removeObject(relatedRoadSign);
+    this.classificationRoadSigns?.removeObject(relatedRoadSign);
     await this.model.roadMarkingConcept.save();
   });
 
@@ -132,25 +132,27 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
       relatedRoadSigns.removeObject(relatedRoadSign);
 
-      if (this.categoryRoadSigns) {
-        this.categoryRoadSigns.pushObject(relatedRoadSign);
+      if (this.classificationRoadSigns) {
+        this.classificationRoadSigns.pushObject(relatedRoadSign);
       }
 
       await this.model.roadMarkingConcept.save();
     },
   );
 
-  handleCategorySelection = task(async (category: RoadSignCategoryModel) => {
-    if (category) {
-      this.category = category;
-      const categoryRoadSigns = await category.roadSignConcepts;
+  handleCategorySelection = task(
+    async (classification: RoadSignCategoryModel) => {
+      if (classification) {
+        this.classification = classification;
+        const classificationRoadSigns = await classification.roadSignConcepts;
 
-      this.categoryRoadSigns = categoryRoadSigns;
-    } else {
-      this.category = null;
-      this.categoryRoadSigns = null;
-    }
-  });
+        this.classificationRoadSigns = classificationRoadSigns;
+      } else {
+        this.classification = null;
+        this.classificationRoadSigns = null;
+      }
+    },
+  );
 
   addRelatedTrafficLight = task(
     async (relatedTrafficLight: TrafficLightConceptModel) => {
@@ -247,7 +249,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     this.isAddingRelatedRoadMarkings = false;
     this.isAddingRelatedRoadSigns = false;
     this.isOpen = false;
-    this.category = null;
-    this.categoryRoadMarkings = null;
+    this.classification = null;
+    this.classificationRoadMarkings = null;
   }
 }

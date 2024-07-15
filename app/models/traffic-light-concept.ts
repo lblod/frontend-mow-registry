@@ -57,7 +57,7 @@ export default class TrafficLightConceptModel extends TrafficSignConceptModel {
       image: validateStringRequired(),
       meaning: validateStringRequired(),
       definition: validateStringRequired(),
-      trafficLightConceptCode: validateStringRequired(),
+      label: validateStringRequired(),
       status: validateBelongsToOptional(),
       zonality: validateBelongsToOptional(),
       relatedToTrafficLightConcepts: validateHasManyOptional(),

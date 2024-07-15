@@ -41,7 +41,7 @@
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>
-                {{t "road-sign-concept.attr.code"}}
+                {{t "road-sign-concept.attr.label"}}
               </AuLabel>
               <p>
                 {{@model.roadSignConcept.label}}
@@ -49,7 +49,7 @@
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>
-                {{t "road-sign-concept.attr.categories"}}
+                {{t "road-sign-concept.attr.classifications"}}
               </AuLabel>
               {{#each
                 @model.roadSignConcept.classifications
@@ -179,7 +179,7 @@
             <s.content as |c|>
               <c.header>
                 <th class="data-table__header-title">
-                  {{t "road-sign-concept.attr.code"}}
+                  {{t "road-sign-concept.attr.label"}}
                 </th>
                 <th class="data-table__header-title">
                   {{t "road-sign-concept.attr.image-header"}}
@@ -188,7 +188,7 @@
                   {{t "road-sign-concept.attr.meaning"}}
                 </th>
                 <th class="data-table__header-title">
-                  {{t "road-sign-concept.attr.categories"}}
+                  {{t "road-sign-concept.attr.classifications"}}
                 </th>
                 <th>
                   <span class="au-u-hidden-visually">
@@ -259,7 +259,7 @@
             <s.content as |c|>
               <c.header>
                 <th class="data-table__header-title">
-                  {{t "road-sign-concept.attr.code"}}
+                  {{t "road-sign-concept.attr.label"}}
                 </th>
                 <th class="data-table__header-title">
                   {{t "road-sign-concept.attr.image-header"}}
@@ -403,7 +403,7 @@
           </AuToolbar>
           <AuContent @skin="small">
             <AuLabel>
-              {{t "main-sign.attr.category"}}
+              {{t "main-sign.attr.classification"}}
             </AuLabel>
             <PowerSelect
               @allowClear={{true}}
@@ -414,18 +414,18 @@
               @loadingMessage={{t "utility.loading"}}
               @searchField="label"
               @options={{@model.classifications}}
-              @selected={{this.category}}
+              @selected={{this.classification}}
               @onChange={{perform this.handleCategorySelection}}
-              as |category|
+              as |classification|
             >
-              {{category.label}}
+              {{classification.label}}
             </PowerSelect>
           </AuContent>
         </div>
         <div class="au-c-body-container au-c-body-container--scroll">
-          {{#if this.category}}
+          {{#if this.classification}}
             {{#each
-              (sort-by-road-sign-code this.categoryRoadSigns)
+              (sort-by-road-sign-code this.classificationRoadSigns)
               as |mainSignByCategory|
             }}
               <SidebarRoadSign
@@ -468,7 +468,7 @@
           </AuToolbar>
           <AuContent @skin="small">
             <AuLabel>
-              {{t "related-road-sign.attr.category"}}
+              {{t "related-road-sign.attr.classification"}}
             </AuLabel>
             <PowerSelect
               @allowClear={{true}}
@@ -479,18 +479,18 @@
               @loadingMessage={{t "utility.loading"}}
               @searchField="label"
               @options={{@model.classifications}}
-              @selected={{this.category}}
+              @selected={{this.classification}}
               @onChange={{perform this.handleCategorySelection}}
-              as |category|
+              as |classification|
             >
-              {{category.label}}
+              {{classification.label}}
             </PowerSelect>
           </AuContent>
         </div>
         <div class="au-c-body-container au-c-body-container--scroll">
-          {{#if this.category}}
+          {{#if this.classification}}
             {{#each
-              (sort-by-road-sign-code this.categoryRoadSigns)
+              (sort-by-road-sign-code this.classificationRoadSigns)
               as |relatedRoadSignByCategory|
             }}
               <SidebarRoadSign
@@ -559,9 +559,9 @@
               class="au-c-action-sidebar__item"
             />
           {{/each}}
-          {{#if this.category}}
+          {{#if this.classification}}
             {{#each
-              (sort-by-road-marking-code this.categoryRoadMarkings)
+              (sort-by-road-marking-code this.classificationRoadMarkings)
               as |relatedRoadMarkingByCategory|
             }}
               <SidebarRoadMarking
@@ -631,9 +631,9 @@
               class="au-c-action-sidebar__item"
             />
           {{/each}}
-          {{#if this.category}}
+          {{#if this.classification}}
             {{#each
-              (sort-by-traffic-light-code this.categoryTrafficLights)
+              (sort-by-traffic-light-code this.classificationTrafficLights)
               as |relatedTrafficLightByCategory|
             }}
               <SidebarTrafficLight

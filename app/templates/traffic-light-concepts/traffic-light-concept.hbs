@@ -39,7 +39,7 @@
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>
-                {{t "traffic-light-concept.attr.code"}}
+                {{t "traffic-light-concept.attr.label"}}
               </AuLabel>
               <p>
                 {{@model.trafficLightConcept.label}}
@@ -178,7 +178,7 @@
           </AuToolbar>
           <AuContent @skin="small">
             <AuLabel>
-              {{t "related-road-sign.attr.category"}}
+              {{t "related-road-sign.attr.classification"}}
             </AuLabel>
             <PowerSelect
               @allowClear={{true}}
@@ -187,19 +187,19 @@
               @searchMessage={{t "utility.search-placeholder"}}
               @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
               @searchField="label"
-              @options={{@model.roadSignCategories}}
-              @selected={{this.category}}
+              @options={{@model.classifications}}
+              @selected={{this.classification}}
               @onChange={{perform this.handleCategorySelection}}
-              as |category|
+              as |classification|
             >
-              {{category.label}}
+              {{classification.label}}
             </PowerSelect>
           </AuContent>
         </div>
         <div class="au-c-body-container au-c-body-container--scroll">
-          {{#if this.category}}
+          {{#if this.classification}}
             {{#each
-              (sort-by-road-sign-code this.categoryRoadSigns)
+              (sort-by-road-sign-code this.classificationRoadSigns)
               as |relatedRoadSignByCategory|
             }}
               <SidebarRoadSign
@@ -268,9 +268,9 @@
               class="au-c-action-sidebar__item"
             />
           {{/each}}
-          {{#if this.category}}
+          {{#if this.classification}}
             {{#each
-              (sort-by-road-marking-code this.categoryRoadMarkings)
+              (sort-by-road-marking-code this.classificationRoadMarkings)
               as |relatedRoadMarkingByCategory|
             }}
               <SidebarRoadMarking
@@ -340,9 +340,9 @@
             />
           {{/each}}
 
-          {{#if this.category}}
+          {{#if this.classification}}
             {{#each
-              (sort-by-traffic-light-code this.categoryTrafficLights)
+              (sort-by-traffic-light-code this.classificationTrafficLights)
               as |relatedTrafficLightByCategory|
             }}
               <SidebarTrafficLight

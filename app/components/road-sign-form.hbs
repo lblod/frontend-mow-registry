@@ -9,7 +9,7 @@
       @model={{@roadSignConcept.id}}
       class={{linkClass}}
     >
-      {{@roadSignConcept.roadSignConceptCode}}
+      {{@roadSignConcept.label}}
     </LinkTo>
   {{/if}}
 </BreadcrumbsItem>
@@ -40,25 +40,22 @@
               />
             </AuFormRow>
           {{/let}}
-          {{#let @roadSignConcept.error.roadSignConceptCode as |isInvalid|}}
+          {{#let @roadSignConcept.error.label as |isInvalid|}}
             <AuFormRow>
               <AuLabel
                 @error={{isInvalid}}
-                for="road-sign-concept-code"
+                for="label"
                 @required={{true}}
                 @requiredLabel={{t "utility.required"}}
               >
-                {{t "road-sign-concept.attr.code"}}&nbsp;
+                {{t "road-sign-concept.attr.label"}}&nbsp;
               </AuLabel>
               <AuInput
                 @error={{isInvalid}}
-                id="road-sign-concept-code"
+                id="label"
                 required="required"
-                @value={{@roadSignConcept.roadSignConceptCode}}
-                {{on
-                  "input"
-                  (fn this.setRoadSignConceptValue "roadSignConceptCode")
-                }}
+                @value={{@roadSignConcept.label}}
+                {{on "input" (fn this.setRoadSignConceptValue "label")}}
               />
               {{#if isInvalid}}
                 <AuHelpText @error={{true}}>
@@ -101,7 +98,7 @@
                 @required={{true}}
                 @requiredLabel={{t "utility.required"}}
               >
-                {{t "road-sign-concept.attr.categories"}}&nbsp;
+                {{t "road-sign-concept.attr.classifications"}}&nbsp;
               </AuLabel>
               <div class={{if isInvalid "ember-power-select--error"}}>
                 <PowerSelectMultiple
@@ -115,7 +112,7 @@
                   @loadingMessage={{t "utility.loading"}}
                   @selected={{@roadSignConcept.classifications}}
                   @onChange={{this.setRoadSignConceptClassification}}
-                  @triggerId="categories"
+                  @triggerId="classifications"
                   as |classification|
                 >
                   {{classification.label}}

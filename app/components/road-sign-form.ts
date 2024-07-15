@@ -47,7 +47,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
     if (!this.args.roadSignConcept.error) {
       const imageRecord = await this.saveImage();
-      console.log('here');
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord);
       await this.args.roadSignConcept.save();
 
