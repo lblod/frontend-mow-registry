@@ -36,8 +36,8 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
     await this.args.roadMarkingConcept.validate();
 
     if (!this.args.roadMarkingConcept.error) {
-      const imagePath = await this.saveImage();
-      if (imagePath) this.args.roadMarkingConcept.image = imagePath;
+      const imageRecord = await this.saveImage();
+      if (imageRecord) this.args.roadMarkingConcept.set('image', imageRecord);
       await this.args.roadMarkingConcept.save();
 
       await this.router.transitionTo(
@@ -48,7 +48,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   });
 
   @action
-  async setImage(model: RoadMarkingConceptModel, image: File | string) {
+  async setImage(model: RoadMarkingConceptModel, image: File) {
     super.setImage(model, image);
     await this.args.roadMarkingConcept.validate();
   }

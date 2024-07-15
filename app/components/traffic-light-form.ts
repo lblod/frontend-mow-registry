@@ -36,8 +36,8 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
     await this.args.trafficLightConcept.validate();
 
     if (!this.args.trafficLightConcept.error) {
-      const imagePath = await this.saveImage();
-      if (imagePath) this.args.trafficLightConcept.image = imagePath;
+      const imageRecord = await this.saveImage();
+      if (imageRecord) this.args.trafficLightConcept.set('image', imageRecord);
       await this.args.trafficLightConcept.save();
 
       await this.router.transitionTo(
@@ -48,7 +48,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   });
 
   @action
-  async setImage(model: TrafficLightConceptModel, image: File | string) {
+  async setImage(model: TrafficLightConceptModel, image: File) {
     super.setImage(model, image);
     await this.args.trafficLightConcept.validate();
   }
