@@ -44,9 +44,8 @@ export default class TrafficSignConceptModel extends SkosConcept {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      image: validateBelongsToOptional(),
+      image: validateBelongsToRequired(),
       meaning: validateStringRequired(),
-      label: validateStringOptional(),
       status: validateBelongsToOptional(),
       hasInstructions: validateHasManyOptional(),
       hasTrafficMeasureConcepts: validateHasManyOptional(),

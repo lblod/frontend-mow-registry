@@ -5,6 +5,7 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import Router from '@ember/routing/router';
 import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import Store from '@ember-data/store';
+import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {
   trafficLightConcept: TrafficLightConceptModel;
@@ -27,17 +28,15 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
       attributeName,
       (event.target as HTMLInputElement).value,
     );
-    await this.args.trafficLightConcept.validate();
   }
 
   editTrafficLightConceptTask = dropTask(async (event: InputEvent) => {
     event.preventDefault();
-
     await this.args.trafficLightConcept.validate();
 
     if (!this.args.trafficLightConcept.error) {
       const imageRecord = await this.saveImage();
-      if (imageRecord) this.args.trafficLightConcept.set('image', imageRecord);
+      if (imageRecord) this.args.trafficLightConcept.set('image', imageRecord); // image gets uploaded but not replaced
       await this.args.trafficLightConcept.save();
 
       await this.router.transitionTo(
@@ -48,9 +47,8 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   });
 
   @action
-  async setImage(model: TrafficLightConceptModel, image: File) {
+  async setImage(model: TrafficSignConceptModel, image: File) {
     super.setImage(model, image);
-    await this.args.trafficLightConcept.validate();
   }
 
   willDestroy() {

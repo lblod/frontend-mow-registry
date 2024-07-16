@@ -4,6 +4,7 @@ import type ConceptScheme from 'mow-registry/models/concept-scheme';
 import {
   validateBelongsToOptional,
   validateStringOptional,
+  validateStringRequired,
 } from 'mow-registry/validators/schema';
 import AbstractValidationModel from './abstract-validation-model';
 
@@ -24,7 +25,7 @@ export default class SkosConcept extends AbstractValidationModel {
   get validationSchema() {
     return Joi.object({
       uri: validateStringOptional(),
-      label: validateStringOptional(),
+      label: validateStringRequired(),
       inScheme: validateBelongsToOptional(),
     });
   }

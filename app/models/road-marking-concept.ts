@@ -55,7 +55,6 @@ export default class RoadMarkingConceptModel extends TrafficSignConceptModel {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      image: validateStringRequired(),
       meaning: validateStringRequired(),
       definition: validateStringRequired(),
       label: validateStringRequired(),

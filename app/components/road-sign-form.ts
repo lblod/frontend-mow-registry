@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
+import DimensionModel from 'mow-registry/models/dimension';
 
 type Args = {
   roadSignConcept: RoadSignConceptModel;
@@ -25,19 +26,24 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       attributeName,
       (event.target as HTMLInputElement).value,
     );
-    await this.args.roadSignConcept.validate();
   }
 
   @action
   async setRoadSignConceptClassification(selection: RoadSignCategoryModel[]) {
     this.args.roadSignConcept.set('classifications', selection);
-    await this.args.roadSignConcept.validate();
   }
+
+  @action
+  async setRoadSignConceptShape(selection: RoadSignConceptModel) {
+    this.args.roadSignConcept.set('shape', selection);
+  }
+
+  @action
+  async setRoadSignConceptDimensions(selection: DimensionModel) {}
 
   @action
   async setImage(model: RoadSignConceptModel, image: File) {
     super.setImage(model, image);
-    await this.args.roadSignConcept.validate();
   }
 
   editRoadSignConceptTask = dropTask(async (event: InputEvent) => {

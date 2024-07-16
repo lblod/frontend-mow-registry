@@ -66,8 +66,7 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      shape: validateBelongsToOptional(),
-      meaning: validateStringRequired(),
+      shape: validateBelongsToRequired(),
       classifications: validateHasManyRequired(),
       subSigns: validateHasManyOptional(),
       mainSigns: validateHasManyOptional(),

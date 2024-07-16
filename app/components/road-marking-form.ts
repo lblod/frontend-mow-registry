@@ -5,6 +5,7 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import Router from '@ember/routing/router';
 import RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
 import Store from '@ember-data/store';
+import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {
   roadMarkingConcept: RoadMarkingConceptModel;
@@ -27,7 +28,6 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
       attributeName,
       (event.target as HTMLInputElement).value,
     );
-    await this.args.roadMarkingConcept.validate();
   }
 
   editRoadMarkingConceptTask = dropTask(async (event: InputEvent) => {
@@ -48,9 +48,8 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   });
 
   @action
-  async setImage(model: RoadMarkingConceptModel, image: File) {
+  async setImage(model: TrafficSignConceptModel, image: File) {
     super.setImage(model, image);
-    await this.args.roadMarkingConcept.validate();
   }
 
   willDestroy() {

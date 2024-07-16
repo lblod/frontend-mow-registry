@@ -35,7 +35,7 @@
           {{#let @trafficLightConcept.error.image as |isInvalid|}}
             <AuFormRow>
               <ImageInput
-                @oldImage={{@trafficLightConcept.image}}
+                @oldImage={{@trafficLightConcept.image.file.downloadLink}}
                 @error={{isInvalid}}
                 @setImage={{(fn this.setImage @trafficLightConcept)}}
               />
@@ -129,8 +129,9 @@
 <AuToolbar @border="top" @size="large" as |Group|>
   <Group>
     <AuButtonGroup>
+      {{! or @trafficLightConcept.error   }}
       <AuButton
-        @disabled={{or @trafficLightConcept.error this.isSaving}}
+        @disabled={{this.isSaving}}
         @loading={{this.isSaving}}
         form="edit-traffic-light-concept-form"
         {{on "click" (perform this.editTrafficLightConceptTask)}}

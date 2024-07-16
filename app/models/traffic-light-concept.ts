@@ -54,11 +54,7 @@ export default class TrafficLightConceptModel extends TrafficSignConceptModel {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      image: validateStringRequired(),
-      meaning: validateStringRequired(),
       definition: validateStringRequired(),
-      label: validateStringRequired(),
-      status: validateBelongsToOptional(),
       zonality: validateBelongsToOptional(),
       relatedToTrafficLightConcepts: validateHasManyOptional(),
       relatedFromTrafficLightConcepts: validateHasManyOptional(),
