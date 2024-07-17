@@ -26,24 +26,28 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       attributeName,
       (event.target as HTMLInputElement).value,
     );
+    this.args.roadSignConcept.validate();
   }
 
   @action
   async setRoadSignConceptClassification(selection: RoadSignCategoryModel[]) {
     this.args.roadSignConcept.set('classifications', selection);
+    this.args.roadSignConcept.validate();
   }
 
   @action
   async setRoadSignConceptShape(selection: RoadSignConceptModel) {
     this.args.roadSignConcept.set('shape', selection);
+    this.args.roadSignConcept.validate();
   }
 
   @action
-  async setRoadSignConceptDimensions(selection: DimensionModel) {}
+  async setRoadSignConceptDimensions(selection: DimensionModel[]) {} // to do: validate dimensions
 
   @action
   async setImage(model: RoadSignConceptModel, image: File) {
     super.setImage(model, image);
+    this.args.roadSignConcept.validate();
   }
 
   editRoadSignConceptTask = dropTask(async (event: InputEvent) => {
@@ -53,7 +57,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
     if (!this.args.roadSignConcept.error) {
       const imageRecord = await this.saveImage();
-      if (imageRecord) this.args.roadSignConcept.set('image', imageRecord);
+      if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
       await this.args.roadSignConcept.save();
 
       await this.router.transitionTo(
