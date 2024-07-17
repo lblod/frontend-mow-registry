@@ -41,10 +41,10 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     await this.args.roadSignConcept.validate();
   }
 
-  @action
-  async setRoadSignConceptDimensions(selection: DimensionModel[]) {
+  @action // to do: validate dimensions
+  async setRoadSignConceptDimensions() {
     await this.args.roadSignConcept.validate();
-  } // to do: validate dimensions
+  }
 
   @action
   async setImage(model: RoadSignConceptModel, image: File) {
