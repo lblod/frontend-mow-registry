@@ -28,6 +28,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
       attributeName,
       (event.target as HTMLInputElement).value,
     );
+    await this.args.roadMarkingConcept.validate();
   }
 
   editRoadMarkingConceptTask = dropTask(async (event: InputEvent) => {
@@ -50,6 +51,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   @action
   async setImage(model: TrafficSignConceptModel, image: File) {
     super.setImage(model, image);
+    this.args.roadMarkingConcept.validate();
   }
 
   willDestroy() {
