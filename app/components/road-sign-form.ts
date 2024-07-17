@@ -5,7 +5,6 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
-import DimensionModel from 'mow-registry/models/dimension';
 
 type Args = {
   roadSignConcept: RoadSignConceptModel;
