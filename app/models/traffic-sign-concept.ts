@@ -13,8 +13,6 @@ import {
   validateBelongsToOptional,
   validateBelongsToRequired,
   validateHasManyOptional,
-  validateHasManyRequired,
-  validateStringOptional,
   validateStringRequired,
 } from 'mow-registry/validators/schema';
 

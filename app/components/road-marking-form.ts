@@ -51,7 +51,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   @action
   async setImage(model: TrafficSignConceptModel, image: File) {
     super.setImage(model, image);
-    this.args.roadMarkingConcept.validate();
+    await this.args.roadMarkingConcept.validate();
   }
 
   willDestroy() {

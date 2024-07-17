@@ -1,7 +1,6 @@
 import { hasMany, attr, AsyncHasMany } from '@ember-data/model';
 import ResourceModel from 'mow-registry/models/resource';
 import type TemplateModel from 'mow-registry/models/template';
-import { unwrap } from 'mow-registry/utils/option';
 import Joi from 'joi';
 import { validateHasManyOptional } from 'mow-registry/validators/schema';
 

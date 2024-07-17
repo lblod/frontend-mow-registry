@@ -26,28 +26,30 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       attributeName,
       (event.target as HTMLInputElement).value,
     );
-    this.args.roadSignConcept.validate();
+    await this.args.roadSignConcept.validate();
   }
 
   @action
   async setRoadSignConceptClassification(selection: RoadSignCategoryModel[]) {
     this.args.roadSignConcept.set('classifications', selection);
-    this.args.roadSignConcept.validate();
+    await this.args.roadSignConcept.validate();
   }
 
   @action
   async setRoadSignConceptShape(selection: RoadSignConceptModel) {
     this.args.roadSignConcept.set('shape', selection);
-    this.args.roadSignConcept.validate();
+    await this.args.roadSignConcept.validate();
   }
 
   @action
-  async setRoadSignConceptDimensions(selection: DimensionModel[]) {} // to do: validate dimensions
+  async setRoadSignConceptDimensions(selection: DimensionModel[]) {
+    await this.args.roadSignConcept.validate();
+  } // to do: validate dimensions
 
   @action
   async setImage(model: RoadSignConceptModel, image: File) {
     super.setImage(model, image);
-    this.args.roadSignConcept.validate();
+    await this.args.roadSignConcept.validate();
   }
 
   editRoadSignConceptTask = dropTask(async (event: InputEvent) => {

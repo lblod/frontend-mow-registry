@@ -28,6 +28,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
       attributeName,
       (event.target as HTMLInputElement).value,
     );
+    await this.args.trafficLightConcept.validate();
   }
 
   editTrafficLightConceptTask = dropTask(async (event: InputEvent) => {
@@ -49,6 +50,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   @action
   async setImage(model: TrafficSignConceptModel, image: File) {
     super.setImage(model, image);
+    await this.args.trafficLightConcept.validate();
   }
 
   willDestroy() {
