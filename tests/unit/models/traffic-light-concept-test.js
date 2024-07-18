@@ -24,10 +24,10 @@ module('Unit | Model | traffic light concept', function (hooks) {
 
   test('it does not have error when all mandatory fields are filled in', async function (assert) {
     const model = this.store().createRecord('traffic-light-concept', {
-      label: 'test',
-      image: 'test',
-      definition: 'test',
-      meaning: 'test',
+      label: 'label',
+      image: this.store().createRecord('image'),
+      definition: 'definition',
+      meaning: 'meaning',
     });
 
     const isValid = await model.validate();
