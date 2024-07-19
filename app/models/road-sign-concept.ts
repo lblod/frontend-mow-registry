@@ -5,7 +5,12 @@ import {
   AsyncHasMany,
 } from '@ember-data/model';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
-import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
+import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
+import {
+  validateBelongsToRequired,
+  validateHasManyOptional,
+  validateHasManyRequired,
+} from 'mow-registry/validators/schema';
 import TrafficSignConceptModel from './traffic-sign-concept';
 import RoadSignCategoryModel from './road-sign-category';
 import TribontShapeModel from './tribont-shape';
@@ -16,7 +21,10 @@ declare module 'ember-data/types/registries/model' {
   }
 }
 export default class RoadSignConceptModel extends TrafficSignConceptModel {
-  @hasMany('road-sign-category', { inverse: 'roadSignConcepts', async: true })
+  @hasMany('road-sign-category', {
+    inverse: 'roadSignConcepts',
+    async: true,
+  })
   declare classifications: AsyncHasMany<RoadSignCategoryModel>;
 
   @belongsTo('tribont-shape', { inverse: null, async: true })
@@ -53,4 +61,17 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
     async: true,
   })
   declare relatedTrafficLightConcepts: AsyncHasMany<TrafficLightConceptModel>;
+
+  get validationSchema() {
+    return super.validationSchema.keys({
+      shape: validateBelongsToRequired(),
+      classifications: validateHasManyRequired(),
+      subSigns: validateHasManyOptional(),
+      mainSigns: validateHasManyOptional(),
+      relatedToRoadSignConcepts: validateHasManyOptional(),
+      relatedFromRoadSignConcepts: validateHasManyOptional(),
+      relatedRoadMarkingConcepts: validateHasManyOptional(),
+      relatedTrafficLightConcepts: validateHasManyOptional(),
+    });
+  }
 }

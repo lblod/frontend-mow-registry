@@ -2,7 +2,6 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask, task } from 'ember-concurrency';
-import CodelistValidations from 'mow-registry/validations/codelist';
 import { tracked } from '@glimmer/tracking';
 import {
   COD_SINGLE_SELECT_ID,
@@ -13,7 +12,6 @@ import SkosConcept from 'mow-registry/models/skos-concept';
 import ArrayProxy from '@ember/array/proxy';
 import Store from '@ember-data/store';
 import Router from '@ember/routing/router';
-import { BufferedChangeset } from 'ember-changeset/types';
 
 type Args = {
   codelist: CodeListModel;
@@ -29,8 +27,6 @@ export default class CodelistFormComponent extends Component<Args> {
 
   @tracked codelistTypes?: ArrayProxy<SkosConcept>;
   @tracked selectedType?: SkosConcept;
-
-  CodelistValidations = CodelistValidations;
 
   @action
   async didInsert() {
@@ -59,12 +55,15 @@ export default class CodelistFormComponent extends Component<Args> {
   });
 
   @action
-  setCodelistValue(
-    codelist: BufferedChangeset,
-    attributeName: string,
+  async setCodelistValue(
+    attributeName: keyof CodeListModel,
     event: InputEvent,
   ) {
-    codelist[attributeName] = (event.target as HTMLInputElement).value;
+    await this.args.codelist.set(
+      attributeName,
+      (event.target as HTMLInputElement).value,
+    );
+    await this.args.codelist.validate();
   }
 
   @action
@@ -97,12 +96,12 @@ export default class CodelistFormComponent extends Component<Args> {
   }
 
   editCodelistTask = dropTask(
-    async (codelist: BufferedChangeset, event: InputEvent) => {
+    async (codelist: CodeListModel, event: InputEvent) => {
       event.preventDefault();
 
       await codelist.validate();
 
-      if (codelist.isValid) {
+      if (!codelist.error) {
         await Promise.all(
           this.toDelete.map((option) => option.destroyRecord()),
         );
@@ -145,5 +144,10 @@ export default class CodelistFormComponent extends Component<Args> {
         this.args.codelist.id,
       );
     }
+  }
+
+  willDestroy() {
+    super.willDestroy();
+    this.args.codelist.reset();
   }
 }

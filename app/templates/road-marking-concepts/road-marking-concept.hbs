@@ -39,7 +39,7 @@
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
               <AuLabel>
-                {{t "road-marking-concept.attr.code"}}
+                {{t "road-marking-concept.attr.label"}}
               </AuLabel>
               <p>
                 {{@model.roadMarkingConcept.label}}
@@ -179,7 +179,7 @@
           <div class="au-c-data-table__search">
             <AuInput
               @value={{this.relatedRoadMarkingCodeFilter}}
-              placeholder={{t "related-road-marking.filter.code"}}
+              placeholder={{t "related-road-marking.filter.label"}}
               @icon="search"
               @iconAlignment="right"
               {{on "input" this.setRelatedRoadMarkingCodeFilter}}
@@ -201,9 +201,9 @@
               class="au-c-action-sidebar__item"
             />
           {{/each}}
-          {{#if this.category}}
+          {{#if this.classification}}
             {{#each
-              (sort-by-road-marking-code this.categoryRoadMarkings)
+              (sort-by-road-marking-code this.classificationRoadMarkings)
               as |relatedRoadMarkingByCategory|
             }}
               <SidebarRoadMarking
@@ -249,7 +249,7 @@
           </AuToolbar>
           <AuContent @skin="small">
             <AuLabel>
-              {{t "related-road-sign.attr.category"}}
+              {{t "related-road-sign.attr.classification"}}
             </AuLabel>
             <PowerSelect
               @allowClear={{true}}
@@ -259,19 +259,19 @@
               @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
               @loadingMessage={{t "utility.loading"}}
               @searchField="label"
-              @options={{@model.roadSignCategories}}
-              @selected={{this.category}}
+              @options={{@model.classifications}}
+              @selected={{this.classification}}
               @onChange={{perform this.handleCategorySelection}}
-              as |category|
+              as |classification|
             >
-              {{category.label}}
+              {{classification.label}}
             </PowerSelect>
           </AuContent>
         </div>
         <div class="au-c-body-container au-c-body-container--scroll">
-          {{#if this.category}}
+          {{#if this.classification}}
             {{#each
-              (sort-by-road-sign-code this.categoryRoadSigns)
+              (sort-by-road-sign-code this.classificationRoadSigns)
               as |relatedRoadSignByCategory|
             }}
               <SidebarRoadSign
@@ -318,7 +318,7 @@
           <div class="au-c-data-table__search">
             <AuInput
               @value={{this.relatedTrafficLightCodeFilter}}
-              placeholder={{t "related-traffic-light.filter.code"}}
+              placeholder={{t "related-traffic-light.filter.label"}}
               @icon="search"
               @iconAlignment="right"
               {{on "input" this.setRelatedTrafficLightCodeFilter}}
@@ -340,9 +340,9 @@
               class="au-c-action-sidebar__item"
             />
           {{/each}}
-          {{#if this.category}}
+          {{#if this.classification}}
             {{#each
-              (sort-by-traffic-light-code this.categoryTrafficLights)
+              (sort-by-traffic-light-code this.classificationTrafficLights)
               as |relatedTrafficLightByCategory|
             }}
               <SidebarTrafficLight

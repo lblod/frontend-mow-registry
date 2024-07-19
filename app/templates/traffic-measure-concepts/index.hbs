@@ -18,7 +18,7 @@
         <div class="au-c-data-table__search traffic-light-code-search">
           <AuInput
             @value={{this.label}}
-            placeholder={{t "traffic-measure-concept.attr.code"}}
+            placeholder={{t "traffic-measure-concept.attr.label"}}
             @icon="search"
             @iconAlignment="right"
             {{on "input" (perform this.updateSearchFilterTask "label")}}

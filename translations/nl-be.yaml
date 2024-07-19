@@ -79,8 +79,8 @@ road-sign-concept:
     image-header: Afbeelding
     image-url: Afbeelding URL
     meaning: Betekenis
-    code: Code
-    categories: Categorieën
+    label: Label
+    classifications: Classificaties
     sub-sign: Mogelijke onderborden
     main-sign: Mogelijke hoofdborden
     related-sign: Gerelateerde verkeersborden
@@ -96,9 +96,9 @@ road-sign-concept:
     no-instruction: Geen instructies gevonden
     edit: Verkeersbord bewerken
     delete: Verkeersbord verwijderen
-    code-filter: Code
+    label-filter: Code
     meaning-filter: Zoeken op betekenis
-    category-filter: Filteren op categorie
+    classification-filter: Filteren op classificatie
   landing-page:
     content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden
@@ -109,7 +109,7 @@ traffic-light-concept:
     image-header: Afbeelding
     meaning: Betekenis
     definition: Definitie
-    code: Code
+    label: Label
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
     related-traffic-light: Gerelateerde verkeerslichten
@@ -120,7 +120,7 @@ traffic-light-concept:
     no-data: Geen verkeerslichten gevonden
     edit: Verkeerslicht bewerken
     delete: Verkeerslicht verwijderen
-    code-filter: Code
+    label-filter: Label
     meaning-filter: Zoeken op betekenis
   landing-page:
     content: Beheer verkeerlichten en instructies.
@@ -131,7 +131,7 @@ related-traffic-light:
     add-one: Gerelateerd verkeerslicht toevoegen
     delete: Gerelateerd verkeerslicht verwijderen
   filter:
-    code: Zoek
+    label: Zoek
 road-marking-concept:
   name: Wegmarkeringen
   details: Details wegmarkering
@@ -140,7 +140,7 @@ road-marking-concept:
     image-url: Afbeelding URL
     meaning: Betekenis
     definition: Definitie
-    code: Code
+    label: Label
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
     related-traffic-light: Gerelateerde verkeerslichten
@@ -151,7 +151,7 @@ road-marking-concept:
     no-data: Geen wegmarkeringen gevonden
     edit: Wegmarkering bewerken
     delete: Wegmarkering verwijderen
-    code-filter: Code
+    label-filter: Label
     meaning-filter: Zoeken op betekenis
   landing-page:
     content: Beheer wegmarkeringen en instructies.
@@ -162,15 +162,15 @@ related-road-marking:
     add-one: Gerelateerde wegmarkering toevoegen
     delete: Gerelateerde wegmarkering verwijderen
   filter:
-    code: Zoek
+    label: Zoek
 traffic-measure-concept:
   name: Mobiliteitsmaatregel
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
     name: Naam
-    temporal: Variabele signalisatie
+    variable-signage: Variabele signalisatie
     traffic-sign: Verkeersteken
-    code: Code
+    label: Label
     sign: Verkeersbord
     add-sign: Verkeersteken toevoegen
     template: Template
@@ -192,14 +192,14 @@ traffic-measure-concept:
     button: Ga naar Mobiliteitsmaatregelen
 sub-sign:
   filter:
-    code: Zoek onderborden op code
+    label: Zoek onderborden op code
   crud:
     add: Onderborden toevoegen
     add-one: Onderbord toevoegen
     delete: Onderbord verwijderen
 main-sign:
   attr:
-    category: Zoek verkeersborden op categorie
+    classification: Zoek verkeersborden op classificatie
   crud:
     add: Hoofdborden toevoegen
     add-one: Hoofdbord toevoegen
@@ -207,7 +207,7 @@ main-sign:
     edit: Hoofdbord bewerken
 related-road-sign:
   attr:
-    category: Zoek verkeersborden op categorie
+    classification: Zoek verkeersborden op classificatie
   crud:
     add: Gerelateerde verkeersborden toevoegen
     add-one: Gerelateerd verkeersbord toevoegen

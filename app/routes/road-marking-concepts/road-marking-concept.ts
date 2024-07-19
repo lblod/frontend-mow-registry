@@ -27,10 +27,10 @@ export default class RoadmarkingConcept extends Route {
           size: 10000,
         },
       }),
-      roadSignCategories: this.store
+      classifications: this.store
         .findAll('road-sign-category')
-        .then((category) => {
-          return category.filter(({ label }) => label !== 'Onderbord');
+        .then((classification) => {
+          return classification.filter(({ label }) => label !== 'Onderbord');
         }),
     });
 

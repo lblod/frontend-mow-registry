@@ -6,13 +6,13 @@ import { ModelFrom } from 'mow-registry/utils/type-utils';
 import TrafficlightConceptsIndexRoute from 'mow-registry/routes/traffic-light-concepts/index';
 
 export default class RoadsignConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'label', 'meaning', 'sort', 'category'];
+  queryParams = ['page', 'size', 'label', 'meaning', 'sort', 'classification'];
   declare model: ModelFrom<TrafficlightConceptsIndexRoute>;
   @tracked page = 0;
   @tracked size = 30;
   @tracked label = '';
   @tracked meaning = '';
-  @tracked category: string | null = null;
+  @tracked classification: string | null = null;
   @tracked sort = 'label';
 
   updateSearchFilterTask = restartableTask(
@@ -25,26 +25,26 @@ export default class RoadsignConceptsIndexController extends Controller {
   );
 
   get selectedClassification() {
-    if (!this.category) {
+    if (!this.classification) {
       return null;
     }
-    //@ts-expect-error categories is not defined on model
+    //@ts-expect-error classifications is not defined on model
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    return this.model.categories.find((category) => {
+    return this.model.classifications.find((classification) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      return category.id === this.category;
+      return classification.id === this.classification;
     });
   }
 
   @action
-  //@ts-expect-error this.category is not defined
+  //@ts-expect-error this.classification is not defined
   updateCategoryFilter(selectedClassification) {
     if (selectedClassification) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      this.category = selectedClassification.id;
+      this.classification = selectedClassification.id;
       this.resetPagination();
     } else {
-      this.category = null;
+      this.classification = null;
     }
   }
 

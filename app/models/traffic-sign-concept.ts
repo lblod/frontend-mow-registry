@@ -9,6 +9,12 @@ import SkosConcept from 'mow-registry/models/skos-concept';
 import type ImageModel from 'mow-registry/models/image';
 import TemplateModel from './template';
 import TrafficMeasureConceptModel from './traffic-measure-concept';
+import {
+  validateBelongsToOptional,
+  validateBelongsToRequired,
+  validateHasManyOptional,
+  validateStringRequired,
+} from 'mow-registry/validators/schema';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -19,7 +25,7 @@ declare module 'ember-data/types/registries/model' {
 export default class TrafficSignConceptModel extends SkosConcept {
   @attr declare meaning?: string;
 
-  @belongsTo('image', { async: true, inverse: null })
+  @belongsTo('image', { async: true, inverse: null, polymorphic: true })
   declare image: AsyncBelongsTo<ImageModel>;
 
   @belongsTo('skos-concept', { async: true, inverse: null })
@@ -32,5 +38,15 @@ export default class TrafficSignConceptModel extends SkosConcept {
     async: true,
     inverse: 'relatedTrafficSignConcepts',
   })
-  declare relatedTrafficMeasureConcepts: AsyncHasMany<TrafficMeasureConceptModel>;
+  declare hasTrafficMeasureConcepts: AsyncHasMany<TrafficMeasureConceptModel>;
+
+  get validationSchema() {
+    return super.validationSchema.keys({
+      image: validateBelongsToRequired(),
+      meaning: validateStringRequired(),
+      status: validateBelongsToOptional(),
+      hasInstructions: validateHasManyOptional(),
+      hasTrafficMeasureConcepts: validateHasManyOptional(),
+    });
+  }
 }

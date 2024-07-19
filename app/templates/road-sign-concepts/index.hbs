@@ -18,7 +18,7 @@
         <div class="au-c-data-table__search road-sign-code-search">
           <AuInput
             @value={{this.label}}
-            placeholder={{t "road-sign-concept.crud.code-filter"}}
+            placeholder={{t "road-sign-concept.crud.label-filter"}}
             @icon="search"
             @iconAlignment="right"
             {{on "input" (perform this.updateSearchFilterTask "label")}}
@@ -35,19 +35,19 @@
         </div>
         <label>
           <span class="au-u-hidden-visually">{{t
-              "road-sign-concept.crud.category-filter"
+              "road-sign-concept.crud.classification-filter"
             }}</span>
           <PowerSelect
             @allowClear={{true}}
             @options={{this.model.classifications}}
             @selected={{this.selectedClassification}}
-            @placeholder={{t "road-sign-concept.crud.category-filter"}}
+            @placeholder={{t "road-sign-concept.crud.classification-filter"}}
             @loadingMessage={{t "utility.loading"}}
             @onChange={{this.updateCategoryFilter}}
-            @triggerClass="category-select"
-            as |category|
+            @triggerClass="classification-select"
+            as |classification|
           >
-            {{category.label}}
+            {{classification.label}}
           </PowerSelect>
         </label>
         <LinkTo class="au-c-button" @route="road-sign-concepts.new">
