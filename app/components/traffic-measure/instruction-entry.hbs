@@ -1,14 +1,28 @@
-<DraggableObject @tagName="tr" @content={{@sign}} @isSortable={{true}} class="au-c-table__row--centered">
+<DraggableObject
+  @tagName="tr"
+  @content={{@sign}}
+  @isSortable={{true}}
+  class="au-c-table__row--centered"
+>
   <td class="w-px au-u-padding-right-small">
-    <AuButton @icon="drag" @skin="tertiary" @hideText={{true}} class="au-c-button--drag">
+    <AuButton
+      @icon="drag"
+      @skin="tertiary"
+      @hideText={{true}}
+      class="au-c-button--drag"
+    >
       {{t "utility.drag"}}
     </AuButton>
   </td>
   <td>
     <div class="au-o-flex au-o-flex--center">
-      <img src={{@sign.image}} alt="" class="au-c-thumbnail au-c-thumbnail--table">
+      <img
+        src={{@sign.image.file.downloadLink}}
+        alt=""
+        class="au-c-thumbnail au-c-thumbnail--table"
+      />
       <span>
-        {{this.label}}
+        {{@sign.label}}
       </span>
     </div>
   </td>

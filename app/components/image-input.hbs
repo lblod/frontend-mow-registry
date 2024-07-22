@@ -1,4 +1,9 @@
-<AuLabel @error={{@error}} for="image-url" @required={{true}} @requiredLabel={{t "utility.required"}}>
+<AuLabel
+  @error={{@error}}
+  for="image-url"
+  @required={{true}}
+  @requiredLabel={{t "utility.required"}}
+>
   {{t "image-input.image-url"}}&nbsp;
 </AuLabel>
 {{#if this.source}}
@@ -8,30 +13,21 @@
     class="image-preview"
   />
 {{/if}}
-<AuHelpText @size="small" @skin="tertiary">{{t "image-input.helptext"}}</AuHelpText>
+<AuHelpText @size="small" @skin="tertiary">{{t
+    "image-input.helptext"
+  }}</AuHelpText>
 
-{{!-- because of AU bug @medium is part of wrap instead of no-wrap --}}
+{{! because of AU bug @medium is part of wrap instead of no-wrap }}
 <div class="flex au-u-flex--wrap@medium au-u-flex--no-wrap full-width">
   <FileUploader
     @accept={{"image/jpeg,image/jpg,image/png,image/svg+xml"}}
     @onFileSet={{this.setImageUpload}}
   />
-  <div class="au-u-margin-right au-u-margin-left">
-    {{t "utility.or"}}
-  </div>
-  <AuInput
-    @error={{@error}}
-    id="image-url"
-    required="required"
-    type="text"
-    placeholder={{t "image-input.url-placeholder"}}
-    @value={{this.url}}
-    class="full-width"
-    {{on "input" this.setImageUrl}}
-  />
 </div>
 {{#if this.showUrlError}}
-  <AuHelpText @size="small" @error={{true}}>{{t 'image-input.invalid-url'}}</AuHelpText>
+  <AuHelpText @size="small" @error={{true}}>{{t
+      "image-input.invalid-url"
+    }}</AuHelpText>
 {{/if}}
 {{#if @error}}
   <AuHelpText @error={{true}}>

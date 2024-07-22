@@ -1,5 +1,5 @@
 import Model, { AsyncHasMany, attr, hasMany } from '@ember-data/model';
-import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
+import RoadSignConceptModel from './road-sign-concept';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
@@ -10,8 +10,8 @@ declare module 'ember-data/types/registries/model' {
 export default class RoadSignCategoryModel extends Model {
   @attr declare label?: string;
   @hasMany('road-sign-concept', {
-    inverse: 'categories',
     async: true,
+    inverse: 'classifications',
   })
   declare roadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
 }

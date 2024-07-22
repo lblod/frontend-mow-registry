@@ -23,10 +23,11 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   @tracked isAddingMainSigns = false;
   @tracked isAddingSubSigns = false;
 
-  @tracked category: RoadSignCategoryModel | null = null;
-  @tracked categoryTrafficLights = null;
-  @tracked categoryRoadMarkings = null;
-  @tracked categoryRoadSigns: ArrayProxy<RoadSignConceptModel> | null = null;
+  @tracked classification: RoadSignCategoryModel | null = null;
+  @tracked classificationTrafficLights = null;
+  @tracked classificationRoadMarkings = null;
+  @tracked classificationRoadSigns: ArrayProxy<RoadSignConceptModel> | null =
+    null;
 
   @tracked relatedTrafficLightCodeFilter = '';
   @tracked relatedRoadMarkingCodeFilter = '';
@@ -92,7 +93,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
       .relatedRoadSignConcepts;
 
     relatedRoadSigns.pushObject(relatedRoadSign);
-    this.categoryRoadSigns?.removeObject(relatedRoadSign);
+    this.classificationRoadSigns?.removeObject(relatedRoadSign);
     await this.model.trafficLightConcept.save();
   });
 
@@ -102,8 +103,8 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
 
     relatedRoadSigns.removeObject(relatedRoadSign);
 
-    if (this.categoryRoadSigns) {
-      this.categoryRoadSigns.pushObject(relatedRoadSign);
+    if (this.classificationRoadSigns) {
+      this.classificationRoadSigns.pushObject(relatedRoadSign);
     }
 
     await this.model.trafficLightConcept.save();
@@ -126,17 +127,19 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     await this.model.trafficLightConcept.save();
   });
 
-  handleCategorySelection = task(async (category: RoadSignCategoryModel) => {
-    if (category) {
-      this.category = category;
-      const categoryRoadSigns = await category.roadSignConcepts;
+  handleCategorySelection = task(
+    async (classification: RoadSignCategoryModel) => {
+      if (classification) {
+        this.classification = classification;
+        const classificationRoadSigns = await classification.roadSignConcepts;
 
-      this.categoryRoadSigns = categoryRoadSigns;
-    } else {
-      this.category = null;
-      this.categoryRoadSigns = null;
-    }
-  });
+        this.classificationRoadSigns = classificationRoadSigns;
+      } else {
+        this.classification = null;
+        this.classificationRoadSigns = null;
+      }
+    },
+  );
 
   removeRelatedTrafficLight = task(
     async (relatedTrafficLight: TrafficLightConceptModel) => {
@@ -247,7 +250,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   }
 
   removeTemplate = task(async (template: TemplateModel) => {
-    const templates = await this.model.trafficLightConcept.templates;
+    const templates = await this.model.trafficLightConcept.hasInstructions;
 
     templates.removeObject(template);
 
@@ -261,7 +264,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     this.isAddingMainSigns = false;
     this.isAddingRelatedTrafficLights = false;
     this.isOpen = false;
-    // this.category = null;
-    // this.categoryTrafficLights = null;
+    // this.classification = null;
+    // this.classificationTrafficLights = null;
   }
 }

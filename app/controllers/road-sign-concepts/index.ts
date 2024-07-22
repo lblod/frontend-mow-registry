@@ -7,19 +7,22 @@ import RoadsignConceptsIndexRoute from 'mow-registry/routes/road-sign-concepts/i
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
 
 export default class RoadsignConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'code', 'meaning', 'sort', 'category'];
+  queryParams = ['page', 'size', 'label', 'meaning', 'sort', 'classifications'];
 
   declare model: ModelFrom<RoadsignConceptsIndexRoute>;
 
   @tracked page = 0;
   @tracked size = 30;
-  @tracked code = '';
+  @tracked label = '';
   @tracked meaning = '';
-  @tracked category?: string | null;
-  @tracked sort = 'road-sign-concept-code';
+  @tracked classification?: string | null;
+  @tracked sort = 'label';
 
   updateSearchFilterTask = restartableTask(
-    async (queryParamProperty: 'category' | 'meaning', event: InputEvent) => {
+    async (
+      queryParamProperty: 'classification' | 'meaning',
+      event: InputEvent,
+    ) => {
       await timeout(300);
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;
@@ -27,22 +30,22 @@ export default class RoadsignConceptsIndexController extends Controller {
     },
   );
 
-  get selectedCategory() {
-    if (!this.category) {
+  get selectedClassification() {
+    if (!this.classification) {
       return null;
     }
-    return this.model.categories.find((category) => {
-      return category.id === this.category;
+    return this.model.classifications.find((classification) => {
+      return classification.id === this.classification;
     });
   }
 
   @action
-  updateCategoryFilter(selectedCategory: RoadSignCategoryModel) {
-    if (selectedCategory) {
-      this.category = selectedCategory.id;
+  updateCategoryFilter(selectedClassification: RoadSignCategoryModel) {
+    if (selectedClassification) {
+      this.classification = selectedClassification.id;
       this.resetPagination();
     } else {
-      this.category = null;
+      this.classification = null;
     }
   }
 

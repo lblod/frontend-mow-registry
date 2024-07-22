@@ -4,6 +4,8 @@ import { dropTask } from 'ember-concurrency';
 import ImageUploadHandlerComponent from './image-upload-handler';
 import Router from '@ember/routing/router';
 import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
+import Store from '@ember-data/store';
+import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {
   trafficLightConcept: TrafficLightConceptModel;
@@ -11,6 +13,7 @@ type Args = {
 
 export default class TrafficLightFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: Router;
+  @service declare store: Store;
 
   get isSaving() {
     return this.editTrafficLightConceptTask.isRunning;
@@ -30,12 +33,11 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
 
   editTrafficLightConceptTask = dropTask(async (event: InputEvent) => {
     event.preventDefault();
-
     await this.args.trafficLightConcept.validate();
 
     if (!this.args.trafficLightConcept.error) {
-      const imagePath = await this.saveImage();
-      if (imagePath) this.args.trafficLightConcept.image = imagePath;
+      const imageRecord = await this.saveImage();
+      if (imageRecord) this.args.trafficLightConcept.set('image', imageRecord); // image gets uploaded but not replaced
       await this.args.trafficLightConcept.save();
 
       await this.router.transitionTo(
@@ -46,7 +48,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   });
 
   @action
-  async setImage(model: TrafficLightConceptModel, image: File | string) {
+  async setImage(model: TrafficSignConceptModel, image: File) {
     super.setImage(model, image);
     await this.args.trafficLightConcept.validate();
   }

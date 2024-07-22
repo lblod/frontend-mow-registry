@@ -13,7 +13,9 @@ export default class RoadsignConceptsEditRoute extends Route {
   model(params: Params) {
     return hash({
       roadSignConcept: this.store.findRecord('road-sign-concept', params.id),
-      categories: this.store.findAll('road-sign-category'),
+      classifications: this.store.findAll('road-sign-category'),
+      shapes: this.store.findAll('tribont-shape'),
+      dimensions: this.store.findAll('dimension'),
     });
   }
   resetController(controller: RoadsignConceptsEditController) {

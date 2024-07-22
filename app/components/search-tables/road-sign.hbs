@@ -13,8 +13,8 @@
   <:header as |header|>
 
     <header.Sortable
-      @field="roadSignConceptCode"
-      @label={{t "road-sign-concept.attr.code"}}
+      @field="label"
+      @label={{t "road-sign-concept.attr.label"}}
     />
     <th>
       {{t "road-sign-concept.attr.image-header"}}
@@ -23,11 +23,14 @@
       {{t "road-sign-concept.attr.meaning"}}
     </th>
     <header.Sortable
-      @field="categories.label"
-      @label={{t "road-sign-concept.attr.categories"}}
+      @field="classifications"
+      @label={{t "road-sign-concept.attr.classifications"}}
     />
     <th>
-      {{t "utility.zonality"}}
+      {{t "road-sign-concept.attr.shape"}}
+    </th>
+    <th>
+      {{t "road-sign-concept.attr.dimensions"}}
     </th>
     <th>
       {{t "road-marking-concept.attr.valid"}}
@@ -37,24 +40,36 @@
   <:body as |roadSignConcept|>
 
     <td>
-      {{roadSignConcept.roadSignConceptCode}}
+      {{roadSignConcept.label}}
     </td>
     <td>
-      <img class="au-c-thumbnail" src={{roadSignConcept.image}} alt="" />
+      <img
+        class="au-c-thumbnail"
+        src={{roadSignConcept.image.file.downloadLink}}
+        alt=""
+      />
     </td>
     <td>
       {{roadSignConcept.meaning}}
     </td>
     <td>
-      {{#each roadSignConcept.categories as |category index|}}
+      {{#each roadSignConcept.classifications as |classification index|}}
         {{#if (gt index 0)}}
-          <br>
+          <br />
         {{/if}}
-        {{category.label}}
+        {{classification.label}}
       {{/each}}
     </td>
     <td>
-      {{zonality-label (await roadSignConcept.zonality)}}
+      {{roadSignConcept.shape.label}}
+    </td>
+    <td>
+      {{#each roadSignConcept.shape.dimensions as |dimension index|}}
+        {{#if (gt index 0)}}
+          <br />
+        {{/if}}
+        {{dimension.value}}
+      {{/each}}
     </td>
     <td>
       {{#if roadSignConcept.valid}}
@@ -64,7 +79,7 @@
       {{/if}}
     </td>
     <td>
-      {{yield roadSignConcept to='rowAction'}}
+      {{yield roadSignConcept to="rowAction"}}
     </td>
   </:body>
 </ReactiveTable>

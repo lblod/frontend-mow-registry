@@ -64,6 +64,7 @@ utility:
       title: Invalid character detected
       message: One of the mentioned variable names contains an invalid character. Variable names may only contains letters, numbers, '-', '_' and '.'
   search-placeholder: Type to search
+  shape: Shape
 image-input:
   helptext: Press the button to upload a new image or insert a URL of an existing image
   preview-alt: A preview of the uploaded or linked image
@@ -77,14 +78,16 @@ road-sign-concept:
     image-header: Image
     image-url: Image URL
     meaning: Meaning
-    code: Code
-    categories: Categories
+    label: Label
+    classifications: Classifications
     sub-sign: Possible subsigns
     main-sign: Possible main signs
     related-sign: Related road signs
     related-marking: Related road markings
     related-traffic-light: Related traffic light
     valid: Is valid
+    shape: Shape
+    dimensions: Dimensions
   crud:
     create: Create road sign
     new: New Road Sign
@@ -92,15 +95,15 @@ road-sign-concept:
     no-instruction: No instructions found
     edit: Edit Road Sign
     delete: Delete Road Sign
-    code-filter: Code
+    label-filter: Label
     meaning-filter: Search by meaning
-    category-filter: Filter by category
+    classification-filter: Filter by classification
   landing-page:
     content: Manage traffic signs, sub-signs and instructions.
     button: Go to Road Signs
 related-road-sign:
   attr:
-    category: Search road signs by category
+    classification: Search road signs by classification
   crud:
     add: Add related road signs
     add-one: Add related road sign
@@ -112,7 +115,7 @@ traffic-light-concept:
     image-header: Image
     meaning: Meaning
     definition: Definition
-    code: Code
+    label: Label
     related-traffic-light: Related traffic lights
     related-sign: Related sign
     related-marking: Related marking
@@ -123,7 +126,7 @@ traffic-light-concept:
     no-data: No traffic light
     edit: Edit traffic light
     delete: Delete traffic light
-    code-filter: Code
+    label-filter: Label
     meaning-filter: Search by meaning
   landing-page:
     content: Manage traffic lights and instructions.
@@ -134,7 +137,7 @@ related-traffic-light:
     add-one: Add related traffic light
     delete: Remove related traffic light
   filter:
-    code: Search
+    label: Search
 road-marking-concept:
   name: Road Markings
   details: Road marking details
@@ -143,7 +146,7 @@ road-marking-concept:
     image-url: Image URL
     meaning: Meaning
     definition: Definition
-    code: Code
+    label: Label
     related-sign: Related road signs
     related-marking: Related road markings
     related-traffic-light: Related traffic light
@@ -154,7 +157,7 @@ road-marking-concept:
     no-data: No Road markings
     edit: Edit Road marking
     delete: Delete Road marking
-    code-filter: Code
+    label-filter: Label
     meaning-filter: Search by meaning
   landing-page:
     content: Manage road markings and instructions.
@@ -165,15 +168,15 @@ related-road-marking:
     add-one: Add related road marking
     delete: Remove related road marking
   filter:
-    code: Search
+    label: Search
 traffic-measure-concept:
   name: Traffic measure
   help: Add $'{variableName} to add a variable/instruction
   attr:
     name: Name
-    temporal: Temporal signage
+    variable-signage: Variable signage
     traffic-sign: Traffic sign
-    code: Code
+    label: Label
     sign: Sign
     add-sign: Add sign
     template: Template
@@ -195,21 +198,21 @@ traffic-measure-concept:
     button: Go to traffic measures
 sub-sign:
   filter:
-    code: Search sub signs by code
+    label: Search sub signs by code
   crud:
     add: Add subsigns
     add-one: Add subsign
     delete: Remove subsign
 main-sign:
   attr:
-    category: Search road signs by category
+    classification: Search road signs by classification
   crud:
     add: Add main signs
     add-one: Add main sign
     delete: Remove main sign
     edit: Edit main sign
 sparql:
-    name: 'MOW Registry: SPARQL'
+  name: 'MOW Registry: SPARQL'
 codelist:
   name: Codelists management
   details: Codelist details

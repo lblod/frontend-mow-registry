@@ -4,16 +4,16 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 export default class RoadmarkingConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'code', 'meaning', 'sort'];
+  queryParams = ['page', 'size', 'label', 'meaning', 'sort'];
 
   @tracked page = 0;
   @tracked size = 30;
-  @tracked code = '';
+  @tracked label = '';
   @tracked meaning = '';
-  @tracked sort = 'road-marking-concept-code';
+  @tracked sort = 'label';
 
   updateSearchFilterTask = restartableTask(
-    async (queryParamProperty: 'code' | 'meaning', event: InputEvent) => {
+    async (queryParamProperty: 'label' | 'meaning', event: InputEvent) => {
       await timeout(300);
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;

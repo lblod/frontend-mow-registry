@@ -6,17 +6,17 @@ import { ModelFrom } from 'mow-registry/utils/type-utils';
 import TrafficlightConceptsIndexRoute from 'mow-registry/routes/traffic-light-concepts/index';
 
 export default class RoadsignConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'code', 'meaning', 'sort', 'category'];
+  queryParams = ['page', 'size', 'label', 'meaning', 'sort', 'classification'];
   declare model: ModelFrom<TrafficlightConceptsIndexRoute>;
   @tracked page = 0;
   @tracked size = 30;
-  @tracked code = '';
+  @tracked label = '';
   @tracked meaning = '';
-  @tracked category: string | null = null;
-  @tracked sort = 'traffic-light-concept-code';
+  @tracked classification: string | null = null;
+  @tracked sort = 'label';
 
   updateSearchFilterTask = restartableTask(
-    async (queryParamProperty: 'meaning' | 'code', event: InputEvent) => {
+    async (queryParamProperty: 'meaning' | 'label', event: InputEvent) => {
       await timeout(300);
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;
@@ -24,27 +24,27 @@ export default class RoadsignConceptsIndexController extends Controller {
     },
   );
 
-  get selectedCategory() {
-    if (!this.category) {
+  get selectedClassification() {
+    if (!this.classification) {
       return null;
     }
-    //@ts-expect-error categories is not defined on model
+    //@ts-expect-error classifications is not defined on model
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    return this.model.categories.find((category) => {
+    return this.model.classifications.find((classification) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      return category.id === this.category;
+      return classification.id === this.classification;
     });
   }
 
   @action
-  //@ts-expect-error this.category is not defined
-  updateCategoryFilter(selectedCategory) {
-    if (selectedCategory) {
+  //@ts-expect-error this.classification is not defined
+  updateCategoryFilter(selectedClassification) {
+    if (selectedClassification) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      this.category = selectedCategory.id;
+      this.classification = selectedClassification.id;
       this.resetPagination();
     } else {
-      this.category = null;
+      this.classification = null;
     }
   }
 

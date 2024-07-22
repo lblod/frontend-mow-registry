@@ -4,6 +4,8 @@ import { dropTask } from 'ember-concurrency';
 import ImageUploadHandlerComponent from './image-upload-handler';
 import Router from '@ember/routing/router';
 import RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
+import Store from '@ember-data/store';
+import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {
   roadMarkingConcept: RoadMarkingConceptModel;
@@ -11,6 +13,7 @@ type Args = {
 
 export default class RoadMarkingFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: Router;
+  @service declare store: Store;
 
   get isSaving() {
     return this.editRoadMarkingConceptTask.isRunning;
@@ -34,8 +37,8 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
     await this.args.roadMarkingConcept.validate();
 
     if (!this.args.roadMarkingConcept.error) {
-      const imagePath = await this.saveImage();
-      if (imagePath) this.args.roadMarkingConcept.image = imagePath;
+      const imageRecord = await this.saveImage();
+      if (imageRecord) this.args.roadMarkingConcept.set('image', imageRecord);
       await this.args.roadMarkingConcept.save();
 
       await this.router.transitionTo(
@@ -46,7 +49,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   });
 
   @action
-  async setImage(model: RoadMarkingConceptModel, image: File | string) {
+  async setImage(model: TrafficSignConceptModel, image: File) {
     super.setImage(model, image);
     await this.args.roadMarkingConcept.validate();
   }

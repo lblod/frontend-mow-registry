@@ -4,51 +4,52 @@ import { inject as service } from '@ember/service';
 import { hash } from 'rsvp';
 
 type Params = {
-  code?: string;
+  label?: string;
   meaning?: string;
   page: number;
   size: number;
   sort: string;
-  category?: string;
+  classification?: string;
 };
 
 export default class RoadsignConceptsIndexRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    code: { refreshModel: true },
+    label: { refreshModel: true },
     meaning: { refreshModel: true },
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
-    category: { refreshModel: true },
+    classification: { refreshModel: true },
   };
 
   async model(params: Params) {
     const query: Record<string, unknown> = {
       sort: params.sort,
-      include: 'categories',
       page: {
         number: params.page,
         size: params.size,
       },
     };
 
-    if (params.code) {
-      query['filter[road-sign-concept-code]'] = params.code;
+    if (params.label) {
+      query['filter[label]'] = params.label;
     }
 
     if (params.meaning) {
       query['filter[meaning]'] = params.meaning;
     }
 
-    if (params.category) {
-      query['filter[categories][:id:]'] = params.category;
+    if (params.classification) {
+      query['filter[classifications][:id:]'] = params.classification;
     }
 
     return hash({
       roadSignConcepts: this.store.query('road-sign-concept', query),
-      categories: this.store.findAll('road-sign-category', { reload: true }),
+      classifications: this.store.findAll('road-sign-category', {
+        reload: true,
+      }),
     });
   }
 }

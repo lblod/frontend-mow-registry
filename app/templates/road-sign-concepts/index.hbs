@@ -14,14 +14,14 @@
         </AuHeading>
       </Group>
       <Group class="au-c-toolbar__group--center">
-        {{!-- Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input--}}
+        {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
         <div class="au-c-data-table__search road-sign-code-search">
           <AuInput
-            @value={{this.code}}
-            placeholder={{t "road-sign-concept.crud.code-filter"}}
+            @value={{this.label}}
+            placeholder={{t "road-sign-concept.crud.label-filter"}}
             @icon="search"
             @iconAlignment="right"
-            {{on "input" (perform this.updateSearchFilterTask "code")}}
+            {{on "input" (perform this.updateSearchFilterTask "label")}}
           />
         </div>
         <div class="au-c-data-table__search road-sign-meaning-search">
@@ -34,18 +34,20 @@
           />
         </div>
         <label>
-          <span class="au-u-hidden-visually">{{t "road-sign-concept.crud.category-filter"}}</span>
+          <span class="au-u-hidden-visually">{{t
+              "road-sign-concept.crud.classification-filter"
+            }}</span>
           <PowerSelect
             @allowClear={{true}}
-            @options={{this.model.categories}}
-            @selected={{this.selectedCategory}}
-            @placeholder={{t "road-sign-concept.crud.category-filter"}}
+            @options={{this.model.classifications}}
+            @selected={{this.selectedClassification}}
+            @placeholder={{t "road-sign-concept.crud.classification-filter"}}
             @loadingMessage={{t "utility.loading"}}
             @onChange={{this.updateCategoryFilter}}
-            @triggerClass="category-select"
-            as |category|
+            @triggerClass="classification-select"
+            as |classification|
           >
-            {{category.label}}
+            {{classification.label}}
           </PowerSelect>
         </label>
         <LinkTo class="au-c-button" @route="road-sign-concepts.new">

@@ -1,7 +1,8 @@
 <AuDataTable
   @content={{@content}}
   @fields="Image Meaning Code Categories"
-  @noDataMessage={{t "road-marking-concept.crud.no-data"}} as |s|
+  @noDataMessage={{t "road-marking-concept.crud.no-data"}}
+  as |s|
 >
   <s.menu as |menu|>
     <menu.general>
@@ -22,7 +23,7 @@
   <s.content as |c|>
     <c.header>
       <th class="data-table__header-title">
-        {{t "road-marking-concept.attr.code"}}
+        {{t "road-marking-concept.attr.label"}}
       </th>
       <th class="data-table__header-title">
         {{t "road-marking-concept.attr.image-header"}}
@@ -34,19 +35,19 @@
         {{t "road-marking-concept.attr.meaning"}}
       </th>
       <th>
-                <span class="au-u-hidden-visually">
-                  {{t "related-road-marking.crud.delete"}}
-                </span>
+        <span class="au-u-hidden-visually">
+          {{t "related-road-marking.crud.delete"}}
+        </span>
       </th>
     </c.header>
     <c.body as |relatedRoadMarkingConcept|>
       <td>
-        {{relatedRoadMarkingConcept.roadMarkingConceptCode}}
+        {{relatedRoadMarkingConcept.label}}
       </td>
       <td>
         <img
           class="au-c-thumbnail"
-          src={{relatedRoadMarkingConcept.image}}
+          src={{relatedRoadMarkingConcept.image.file.downloadLink}}
           alt=""
         />
       </td>

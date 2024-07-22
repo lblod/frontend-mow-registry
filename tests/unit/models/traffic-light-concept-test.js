@@ -19,18 +19,15 @@ module('Unit | Model | traffic light concept', function (hooks) {
     assert.strictEqual(model.error.image.message, 'errors.label.required');
     assert.strictEqual(model.error.definition.message, 'errors.label.required');
     assert.strictEqual(model.error.meaning.message, 'errors.label.required');
-    assert.strictEqual(
-      model.error.trafficLightConceptCode.message,
-      'errors.label.required',
-    );
+    assert.strictEqual(model.error.label.message, 'errors.label.required');
   });
 
   test('it does not have error when all mandatory fields are filled in', async function (assert) {
     const model = this.store().createRecord('traffic-light-concept', {
-      trafficLightConceptCode: 'test',
-      image: 'test',
-      definition: 'test',
-      meaning: 'test',
+      label: 'label',
+      image: this.store().createRecord('image'),
+      definition: 'definition',
+      meaning: 'meaning',
     });
 
     const isValid = await model.validate();

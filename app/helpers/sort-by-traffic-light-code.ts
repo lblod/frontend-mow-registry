@@ -3,7 +3,7 @@ import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept'
 import { unwrap } from 'mow-registry/utils/option';
 
 /**
- * Sort an array of road-sign-concepts numerically based on their roadSignConceptCode
+ * Sort an array of road-sign-concepts numerically based on their label
  */
 export default helper(function sortByTrafficLightCode([trafficLightConcepts]: [
   TrafficLightConceptModel[],
@@ -13,12 +13,8 @@ export default helper(function sortByTrafficLightCode([trafficLightConcepts]: [
   }
 
   return [...trafficLightConcepts.slice()].sort((a, b) => {
-    return unwrap(a.trafficLightConceptCode).localeCompare(
-      unwrap(b.trafficLightConceptCode),
-      undefined,
-      {
-        numeric: true,
-      },
-    );
+    return unwrap(a.label).localeCompare(unwrap(b.label), undefined, {
+      numeric: true,
+    });
   });
 });

@@ -1,6 +1,8 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import FileService from 'mow-registry/services/file-service';
+import Store from '@ember-data/store';
+import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 
 /**
  * A helper for uploading images, used in conjunction with `image-input.js`
@@ -12,6 +14,7 @@ export default class ImageUploadHandlerComponent<
   T = unknown,
 > extends Component<T> {
   @service declare fileService: FileService;
+  @service declare store: Store;
 
   fileData?: File | null;
 
@@ -19,21 +22,21 @@ export default class ImageUploadHandlerComponent<
     return typeof file === 'string';
   }
 
-  setImage(model: { image?: string }, image: File | string) {
-    if (this.isFileUrl(image)) {
-      model.image = image;
-      this.fileData = null;
-    } else {
-      this.fileData = image;
-      model.image = this.fileData.name;
+  setImage(model: TrafficSignConceptModel, image: File) {
+    this.fileData = image;
+    if (!model.image.content) {
+      model.set('image', this.store.createRecord('image'));
     }
   }
 
   async saveImage() {
     if (this.fileData) {
-      return await this.fileService.upload(this.fileData);
+      const imageFileData = await this.fileService.upload(this.fileData);
+      const imageRecord = this.store.createRecord('image');
+      imageRecord.set('file', imageFileData);
+      await imageRecord.save();
+      return imageRecord;
     }
-
     return null;
   }
 }

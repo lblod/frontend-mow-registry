@@ -23,8 +23,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @tracked isAddingRelatedTrafficLights = false;
   @tracked isOpen = false;
 
-  @tracked category: RoadSignCategoryModel | null = null;
-  @tracked categoryRoadSigns: RoadSignConceptModel[] | null = null;
+  @tracked classification: RoadSignCategoryModel | null = null;
+  @tracked classificationRoadSigns: RoadSignConceptModel[] | null = null;
 
   @tracked subSignCodeFilter = '';
   @tracked mainSignCodeFilter = '';
@@ -38,9 +38,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   @action
   async didInsert() {
     this.isSubSign =
-      (await this.model.roadSignConcept.categories).filter((category) => {
-        return category.label === 'Onderbord';
-      }).length === 1;
+      (await this.model.roadSignConcept.classifications).filter(
+        (classification) => {
+          return classification.label === 'Onderbord';
+        },
+      ).length === 1;
   }
 
   get showSidebar() {
@@ -60,7 +62,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     }
 
     return this.model.allSubSigns.filter((subSign) => {
-      return subSign.roadSignConceptCode
+      return subSign.label
         ?.toLowerCase()
         .includes(this.subSignCodeFilter.toLowerCase());
     });
@@ -132,7 +134,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     const mainSigns = await this.model.roadSignConcept.mainSigns;
 
     mainSigns.pushObject(mainSign);
-    this.categoryRoadSigns?.removeObject(mainSign);
+    this.classificationRoadSigns?.removeObject(mainSign);
     await this.model.roadSignConcept.save();
   });
 
@@ -141,8 +143,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
     mainSigns.removeObject(mainSign);
 
-    if (this.categoryRoadSigns) {
-      this.categoryRoadSigns.pushObject(mainSign);
+    if (this.classificationRoadSigns) {
+      this.classificationRoadSigns.pushObject(mainSign);
     }
 
     await this.model.roadSignConcept.save();
@@ -262,26 +264,30 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingRelatedRoadMarkings = false;
   }
 
-  handleCategorySelection = task(async (category: RoadSignCategoryModel) => {
-    if (category) {
-      this.category = category;
-      const categoryRoadSigns = await category.roadSignConcepts;
-      const relatedRoadSigns =
-        this.model.roadSignConcept.relatedRoadSignConcepts;
-      const mainRoadSigns = await this.model.roadSignConcept.mainSigns;
+  handleCategorySelection = task(
+    async (classification: RoadSignCategoryModel) => {
+      if (classification) {
+        this.classification = classification;
+        const classificationRoadSigns = await classification.roadSignConcepts;
+        const relatedRoadSigns =
+          this.model.roadSignConcept.relatedRoadSignConcepts;
+        const mainRoadSigns = await this.model.roadSignConcept.mainSigns;
 
-      this.categoryRoadSigns = categoryRoadSigns.filter((roadSign) => {
-        return (
-          roadSign.id !== this.model.roadSignConcept.id &&
-          !relatedRoadSigns?.includes(roadSign) &&
-          !mainRoadSigns.includes(roadSign)
+        this.classificationRoadSigns = classificationRoadSigns.filter(
+          (roadSign) => {
+            return (
+              roadSign.id !== this.model.roadSignConcept.id &&
+              !relatedRoadSigns?.includes(roadSign) &&
+              !mainRoadSigns.includes(roadSign)
+            );
+          },
         );
-      });
-    } else {
-      this.category = null;
-      this.categoryRoadSigns = null;
-    }
-  });
+      } else {
+        this.classification = null;
+        this.classificationRoadSigns = null;
+      }
+    },
+  );
 
   get isAddingInstructions() {
     return (
@@ -294,7 +300,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   removeRoadSignConcept = task(
     async (roadSignConcept: RoadSignConceptModel, event: InputEvent) => {
       event.preventDefault();
-
       await roadSignConcept.destroyRecord();
       await this.router.transitionTo('road-sign-concepts');
     },
@@ -331,7 +336,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   removeTemplate = task(async (template: TemplateModel) => {
-    const templates = await this.model.roadSignConcept.templates;
+    const templates = await this.model.roadSignConcept.hasInstructions;
 
     templates.removeObject(template);
 
@@ -345,7 +350,7 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     this.isAddingMainSigns = false;
     this.isAddingRelatedRoadSigns = false;
     this.isOpen = false;
-    this.category = null;
-    this.categoryRoadSigns = null;
+    this.classification = null;
+    this.classificationRoadSigns = null;
   }
 }

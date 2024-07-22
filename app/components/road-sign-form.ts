@@ -5,7 +5,6 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
-import SkosConcept from 'mow-registry/models/skos-concept';
 
 type Args = {
   roadSignConcept: RoadSignConceptModel;
@@ -30,19 +29,24 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  async setRoadSignConceptCategory(selection: RoadSignCategoryModel[]) {
-    this.args.roadSignConcept.set('categories', selection);
+  async setRoadSignConceptClassification(selection: RoadSignCategoryModel[]) {
+    this.args.roadSignConcept.set('classifications', selection);
     await this.args.roadSignConcept.validate();
   }
 
   @action
-  async setRoadSignConceptZonality(selection: SkosConcept) {
-    this.args.roadSignConcept.set('zonality', selection);
+  async setRoadSignConceptShape(selection: RoadSignConceptModel) {
+    this.args.roadSignConcept.set('shape', selection);
+    await this.args.roadSignConcept.validate();
+  }
+
+  @action // to do: validate dimensions
+  async setRoadSignConceptDimensions() {
     await this.args.roadSignConcept.validate();
   }
 
   @action
-  async setImage(model: RoadSignConceptModel, image: File | string) {
+  async setImage(model: RoadSignConceptModel, image: File) {
     super.setImage(model, image);
     await this.args.roadSignConcept.validate();
   }
@@ -53,8 +57,8 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     await this.args.roadSignConcept.validate();
 
     if (!this.args.roadSignConcept.error) {
-      const imagePath = await this.saveImage();
-      if (imagePath) this.args.roadSignConcept.image = imagePath;
+      const imageRecord = await this.saveImage();
+      if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
       await this.args.roadSignConcept.save();
 
       await this.router.transitionTo(

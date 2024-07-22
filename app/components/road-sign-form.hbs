@@ -9,7 +9,7 @@
       @model={{@roadSignConcept.id}}
       class={{linkClass}}
     >
-      {{@roadSignConcept.roadSignConceptCode}}
+      {{@roadSignConcept.label}}
     </LinkTo>
   {{/if}}
 </BreadcrumbsItem>
@@ -34,28 +34,28 @@
           {{#let @roadSignConcept.error.image as |isInvalid|}}
             <AuFormRow>
               <ImageInput
-                @oldImage={{@roadSignConcept.image}}
+                @oldImage={{@roadSignConcept.image.file.downloadLink}}
                 @error={{isInvalid}}
                 @setImage={{(fn this.setImage @roadSignConcept)}}
               />
             </AuFormRow>
           {{/let}}
-          {{#let @roadSignConcept.error.roadSignConceptCode as |isInvalid|}}
+          {{#let @roadSignConcept.error.label as |isInvalid|}}
             <AuFormRow>
               <AuLabel
                 @error={{isInvalid}}
-                for="road-sign-concept-code"
+                for="label"
                 @required={{true}}
                 @requiredLabel={{t "utility.required"}}
               >
-                {{t "road-sign-concept.attr.code"}}&nbsp;
+                {{t "road-sign-concept.attr.label"}}&nbsp;
               </AuLabel>
               <AuInput
                 @error={{isInvalid}}
-                id="road-sign-concept-code"
+                id="label"
                 required="required"
-                @value={{@roadSignConcept.roadSignConceptCode}}
-                {{on "input" (fn this.setRoadSignConceptValue "roadSignConceptCode")}}
+                @value={{@roadSignConcept.label}}
+                {{on "input" (fn this.setRoadSignConceptValue "label")}}
               />
               {{#if isInvalid}}
                 <AuHelpText @error={{true}}>
@@ -90,15 +90,15 @@
               {{/if}}
             </AuFormRow>
           {{/let}}
-          {{#let @roadSignConcept.error.categories as |isInvalid|}}
+          {{#let @roadSignConcept.error.classifications as |isInvalid|}}
             <AuFormRow>
               <AuLabel
                 @error={{isInvalid}}
-                for="categories"
+                for="classifications"
                 @required={{true}}
                 @requiredLabel={{t "utility.required"}}
               >
-                {{t "road-sign-concept.attr.categories"}}&nbsp;
+                {{t "road-sign-concept.attr.classifications"}}&nbsp;
               </AuLabel>
               <div class={{if isInvalid "ember-power-select--error"}}>
                 <PowerSelectMultiple
@@ -108,14 +108,14 @@
                   @searchMessage={{t "utility.search-placeholder"}}
                   @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
                   @searchField="label"
-                  @options={{@categories}}
+                  @options={{@classifications}}
                   @loadingMessage={{t "utility.loading"}}
-                  @selected={{@roadSignConcept.categories}}
-                  @onChange={{this.setRoadSignConceptCategory}}
-                  @triggerId="categories"
-                  as |category|
+                  @selected={{@roadSignConcept.classifications}}
+                  @onChange={{this.setRoadSignConceptClassification}}
+                  @triggerId="classifications"
+                  as |classification|
                 >
-                  {{category.label}}
+                  {{classification.label}}
                 </PowerSelectMultiple>
               </div>
               {{#if isInvalid}}
@@ -125,15 +125,74 @@
               {{/if}}
             </AuFormRow>
           {{/let}}
-          <AuFormRow>
-            <AuLabel for="zonality">
-              {{t "utility.zonality"}}&nbsp;
-            </AuLabel>
-            <ZonalitySelector
-              @zonality={{@roadSignConcept.zonality}}
-              @onChange={{this.setRoadSignConceptZonality}}
-            />
-          </AuFormRow>
+
+          {{#let @roadSignConcept.error.shape as |isInvalid|}}
+            <AuFormRow>
+              <AuLabel
+                for="shapes"
+                @error={{isInvalid}}
+                @required={{true}}
+                @requiredLabel={{t "utility.required"}}
+              >
+                {{t "utility.shape"}}&nbsp;
+              </AuLabel>
+              <div class={{if isInvalid "ember-power-select--error"}}>
+                <PowerSelect
+                  @allowClear={{false}}
+                  @searchEnabled={{true}}
+                  @placeholder={{t "utility.search-placeholder"}}
+                  @loadingMessage={{t "utility.loading"}}
+                  @options={{@shapes}}
+                  @selected={{@roadSignConcept.shape}}
+                  @onChange={{this.setRoadSignConceptShape}}
+                  @triggerId="shapes"
+                  as |shape|
+                >
+                  {{shape.label}}
+                </PowerSelect>
+              </div>
+              {{#if isInvalid}}
+                <AuHelpText @error={{true}}>
+                  {{t "utility.field-required"}}
+                </AuHelpText>
+              {{/if}}
+            </AuFormRow>
+          {{/let}}
+          {{#let @roadSignConcept.error.shape.dimensions as |isInvalid|}}
+            <AuFormRow>
+              <AuLabel
+                @error={{isInvalid}}
+                for="dimensions"
+                @required={{true}}
+                @requiredLabel={{t "utility.required"}}
+              >
+                {{t "road-sign-concept.attr.dimensions"}}&nbsp;
+              </AuLabel>
+              <div class={{if isInvalid "ember-power-select--error"}}>
+                <PowerSelectMultiple
+                  @allowClear={{true}}
+                  @placeholder={{t "utility.search-placeholder"}}
+                  @searchEnabled={{true}}
+                  @searchMessage={{t "utility.search-placeholder"}}
+                  @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
+                  @searchField="label"
+                  @options={{@dimensions}}
+                  @loadingMessage={{t "utility.loading"}}
+                  @selected={{@roadSignConcept.shape.dimensions}}
+                  @onChange={{this.setRoadSignConceptDimensions}}
+                  @triggerId="dimensions"
+                  as |dimension|
+                >
+                  {{dimension.value}}
+                </PowerSelectMultiple>
+              </div>
+              {{#if isInvalid}}
+                <AuHelpText @error={{true}}>
+                  {{t "utility.field-required"}}
+                </AuHelpText>
+              {{/if}}
+            </AuFormRow>
+          {{/let}}
         </form>
       </div>
     </div>

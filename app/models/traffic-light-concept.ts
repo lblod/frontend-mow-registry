@@ -5,10 +5,9 @@ import {
   AsyncBelongsTo,
   AsyncHasMany,
 } from '@ember-data/model';
-import ConceptModel from './concept';
-import type TrafficLightConceptStatusCodeModel from 'mow-registry/models/traffic-light-concept-status-code';
 import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
+import TrafficSignConceptModel from './traffic-sign-concept';
 import SkosConcept from './skos-concept';
 import {
   validateBelongsToOptional,
@@ -21,21 +20,8 @@ declare module 'ember-data/types/registries/model' {
     'traffic-light-concept': TrafficLightConceptModel;
   }
 }
-export default class TrafficLightConceptModel extends ConceptModel {
-  @attr declare image?: string;
-  @attr declare meaning?: string;
+export default class TrafficLightConceptModel extends TrafficSignConceptModel {
   @attr declare definition?: string;
-  @attr declare trafficLightConceptCode?: string;
-
-  get label() {
-    return this.trafficLightConceptCode;
-  }
-
-  @belongsTo('traffic-light-concept-status-code', {
-    inverse: 'trafficLightConcepts',
-    async: true,
-  })
-  declare status: AsyncBelongsTo<TrafficLightConceptStatusCodeModel>;
 
   @belongsTo('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;
@@ -68,11 +54,7 @@ export default class TrafficLightConceptModel extends ConceptModel {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      image: validateStringRequired(),
-      meaning: validateStringRequired(),
       definition: validateStringRequired(),
-      trafficLightConceptCode: validateStringRequired(),
-      status: validateBelongsToOptional(),
       zonality: validateBelongsToOptional(),
       relatedToTrafficLightConcepts: validateHasManyOptional(),
       relatedFromTrafficLightConcepts: validateHasManyOptional(),

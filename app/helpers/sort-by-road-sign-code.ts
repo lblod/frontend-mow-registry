@@ -3,7 +3,7 @@ import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import { unwrap } from 'mow-registry/utils/option';
 
 /**
- * Sort an array of road-sign-concepts numerically based on their roadSignConceptCode
+ * Sort an array of road-sign-concepts numerically based on their label
  */
 export default helper(function sortByRoadSignCode([roadSignConcepts]: [
   RoadSignConceptModel[],
@@ -13,12 +13,8 @@ export default helper(function sortByRoadSignCode([roadSignConcepts]: [
   }
 
   return [...roadSignConcepts.slice()].sort((a, b) => {
-    return unwrap(a.roadSignConceptCode).localeCompare(
-      unwrap(b.roadSignConceptCode),
-      undefined,
-      {
-        numeric: true,
-      },
-    );
+    return unwrap(a.label).localeCompare(unwrap(b.label), undefined, {
+      numeric: true,
+    });
   });
 });

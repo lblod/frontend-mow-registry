@@ -18,19 +18,23 @@ module('Unit | Model | road sign concept', function (hooks) {
     assert.strictEqual(Object.keys(model.error).length, 4);
     assert.strictEqual(model.error.image.message, 'errors.label.required');
     assert.strictEqual(model.error.meaning.message, 'errors.label.required');
+    assert.strictEqual(model.error.label.message, 'errors.label.required');
     assert.strictEqual(
-      model.error.roadSignConceptCode.message,
-      'errors.label.required',
+      model.error.classifications.message,
+      'errors.field.required',
     );
-    assert.strictEqual(model.error.categories.message, 'errors.field.required');
+    assert.strictEqual(model.error.shape.message, 'errors.label.required');
+    assert.strictEqual(model.error.shape.dimensions, 'errors.label.required');
   });
 
   test('it does not have error when all required fields are filled in', async function (assert) {
     const model = this.store().createRecord('road-sign-concept', {
-      image: 'test',
-      meaning: 'test',
-      categories: [this.store().createRecord('road-sign-category')],
-      roadSignConceptCode: 'test',
+      image: this.store().createRecord('image'),
+      meaning: 'meaning',
+      classifications: [this.store().createRecord('road-sign-category')],
+      label: 'label',
+      shape: this.store().createRecord('shape'),
+      dimensions: [this.store().createRecord('dimension')],
     });
 
     const isValid = await model.validate();

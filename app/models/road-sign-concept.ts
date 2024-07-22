@@ -1,55 +1,40 @@
 import {
-  attr,
   hasMany,
   belongsTo,
   AsyncBelongsTo,
   AsyncHasMany,
 } from '@ember-data/model';
-import ConceptModel from 'mow-registry/models/concept';
-import type RoadSignConceptStatusCodeModel from 'mow-registry/models/road-sign-concept-status-code';
-import type RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
-import type SkosConcept from 'mow-registry/models/skos-concept';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import {
-  validateBelongsToOptional,
+  validateBelongsToRequired,
   validateHasManyOptional,
   validateHasManyRequired,
-  validateStringRequired,
 } from 'mow-registry/validators/schema';
+import TrafficSignConceptModel from './traffic-sign-concept';
+import RoadSignCategoryModel from './road-sign-category';
+import TribontShapeModel from './tribont-shape';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
     'road-sign-concept': RoadSignConceptModel;
   }
 }
-
-export default class RoadSignConceptModel extends ConceptModel {
-  @attr declare image?: string;
-  @attr declare meaning?: string;
-  @attr declare roadSignConceptCode?: string;
-
-  get label() {
-    return this.roadSignConceptCode;
-  }
-
-  @belongsTo('road-sign-concept-status-code', {
+export default class RoadSignConceptModel extends TrafficSignConceptModel {
+  @hasMany('road-sign-category', {
     inverse: 'roadSignConcepts',
     async: true,
   })
-  declare status: AsyncBelongsTo<RoadSignConceptStatusCodeModel>;
+  declare classifications: AsyncHasMany<RoadSignCategoryModel>;
 
-  @hasMany('road-sign-category', { inverse: 'roadSignConcepts', async: true })
-  declare categories: AsyncHasMany<RoadSignCategoryModel>;
+  @belongsTo('tribont-shape', { inverse: null, async: true })
+  declare shape: AsyncBelongsTo<TribontShapeModel>;
 
   @hasMany('road-sign-concept', { inverse: 'mainSigns', async: true })
   declare subSigns: AsyncHasMany<RoadSignConceptModel>;
 
   @hasMany('road-sign-concept', { inverse: 'subSigns', async: true })
   declare mainSigns: AsyncHasMany<RoadSignConceptModel>;
-
-  @belongsTo('skos-concept', { inverse: null, async: true })
-  declare zonality: AsyncBelongsTo<SkosConcept>;
 
   @hasMany('road-sign-concept', {
     inverse: 'relatedFromRoadSignConcepts',
@@ -79,14 +64,10 @@ export default class RoadSignConceptModel extends ConceptModel {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      image: validateStringRequired(),
-      meaning: validateStringRequired(),
-      roadSignConceptCode: validateStringRequired(),
-      status: validateBelongsToOptional(),
-      categories: validateHasManyRequired(),
+      shape: validateBelongsToRequired(),
+      classifications: validateHasManyRequired(),
       subSigns: validateHasManyOptional(),
       mainSigns: validateHasManyOptional(),
-      zonality: validateBelongsToOptional(),
       relatedToRoadSignConcepts: validateHasManyOptional(),
       relatedFromRoadSignConcepts: validateHasManyOptional(),
       relatedRoadMarkingConcepts: validateHasManyOptional(),

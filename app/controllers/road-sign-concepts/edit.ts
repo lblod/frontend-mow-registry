@@ -9,6 +9,6 @@ export default class RoadsignConceptsEditController extends Controller {
   reset() {
     this.file = null;
     this.model.roadSignConcept.rollbackAttributes();
-    void this.model.roadSignConcept.hasMany('categories').reload();
+    void this.model.roadSignConcept.hasMany('classifications').reload();
   }
 }
