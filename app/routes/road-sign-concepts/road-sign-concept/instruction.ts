@@ -27,7 +27,7 @@ export default class RoadSignConceptsRoadSignConceptInstructionRoute extends Rou
         'template',
         params.instruction_id,
         {
-          include: 'mappings',
+          include: 'variables',
         },
       );
       return {
