@@ -149,7 +149,7 @@ export default class AbstractValidationModel extends Model {
   #removeValidationError(key: string) {
     if (this._validationError && key in this._validationError) {
       // delete on copy and reassign to trigger tracking
-      let newValidationError = { ...this._validationError };
+      const newValidationError = { ...this._validationError };
       delete newValidationError[key];
 
       this._validationError =
