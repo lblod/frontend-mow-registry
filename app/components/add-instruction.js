@@ -3,20 +3,17 @@ import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-// import includeMappings from 'mow-registry/utils/include-mappings';
+import includeMappings from 'mow-registry/utils/include-mappings';
 
 export default class AddInstructionComponent extends Component {
   @service store;
   @service router;
   @service('codelists') codeListService;
   @service intl;
-
   @tracked template;
   @tracked concept;
-
   @tracked variables;
   @tracked codeLists;
-
   @tracked new;
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
@@ -65,7 +62,6 @@ export default class AddInstructionComponent extends Component {
 
   @action
   updateTemplate(event) {
-    console.log('this.template', this.template);
     this.template.value = event.target.value;
     this.parseTemplate();
   }
@@ -142,22 +138,15 @@ export default class AddInstructionComponent extends Component {
     //add new variable values
     filteredRegexResult.forEach((reg) => {
       // Find or create the resource that matches reg[1]
-      let resource = this.store.peekRecord('resource', reg[1]);
-
-      if (!resource) {
-        resource = this.store.createRecord('resource', { id: reg[1] });
+      for (const vari of this.template.variables.toArray()) {
+        console.log('vari', vari);
       }
 
-      if (
-        !this.variables.find((variable) => variable.value.get('id') === reg[1])
-      ) {
-        const variable = this.store.createRecord('variable', {
-          value: resource,
-          type: 'text',
-        });
-        this.variables.pushObject(variable);
-        console.log('this.variables after push', this.variables);
-      }
+      const variable = this.store.createRecord('variable', {
+        value: reg[1],
+        type: 'text',
+      });
+      this.variables.pushObject(variable);
     });
 
     //remove duplicates in case something went wrong
@@ -207,18 +196,17 @@ export default class AddInstructionComponent extends Component {
     await this.template.save();
     this.concept.hasInstructions.pushObject(this.template);
     await this.concept.save();
-
+    console.log('iterating over', this.variables);
     for (let i = 0; i < this.variables.length; i++) {
       const variable = this.variables[i];
       this.template.variables.pushObject(variable);
       await variable.save();
     }
-
-    this.template.annotated = await includeMappings(
+    this.template.value = await includeMappings(
       this.template.value,
       this.variables,
     );
-
+    console.log('saving', this.template);
     await this.template.save();
     await Promise.all(
       this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
