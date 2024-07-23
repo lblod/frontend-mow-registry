@@ -10,6 +10,7 @@ declare module 'ember-data/types/registries/model' {
 }
 
 export default class VariableModel extends Model {
+  @attr declare uri: string;
   @attr declare label?: string;
   @attr declare type?: string;
 
