@@ -137,11 +137,6 @@ export default class AddInstructionComponent extends Component {
 
     //add new variable values
     filteredRegexResult.forEach((reg) => {
-      // Find or create the resource that matches reg[1]
-      for (const vari of this.template.variables.toArray()) {
-        console.log('vari', vari);
-      }
-
       const variable = this.store.createRecord('variable', {
         value: reg[1],
         type: 'text',
@@ -196,17 +191,17 @@ export default class AddInstructionComponent extends Component {
     await this.template.save();
     this.concept.hasInstructions.pushObject(this.template);
     await this.concept.save();
-    console.log('iterating over', this.variables);
     for (let i = 0; i < this.variables.length; i++) {
       const variable = this.variables[i];
       this.template.variables.pushObject(variable);
       await variable.save();
     }
-    this.template.value = await includeMappings(
-      this.template.value,
-      this.variables,
-    );
-    console.log('saving', this.template);
+    // New datamodel misses relationship for rdfA notation
+    // this.template.value = await includeMappings(
+    //   this.template.value,
+    //   this.variables,
+    // );
+
     await this.template.save();
     await Promise.all(
       this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
