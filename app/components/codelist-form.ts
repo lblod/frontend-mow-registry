@@ -63,7 +63,7 @@ export default class CodelistFormComponent extends Component<Args> {
       attributeName,
       (event.target as HTMLInputElement).value,
     );
-    await this.args.codelist.validate();
+    await this.args.codelist.validateProperty(attributeName);
   }
 
   @action
