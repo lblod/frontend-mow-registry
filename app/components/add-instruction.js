@@ -3,7 +3,7 @@ import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import includeMappings from 'mow-registry/utils/include-mappings';
+import includeVariables from 'mow-registry/utils/include-variables';
 
 export default class AddInstructionComponent extends Component {
   @service store;
@@ -199,7 +199,7 @@ export default class AddInstructionComponent extends Component {
       await variable.save();
     }
     // New datamodel misses relationship for rdfA notation
-    // this.template.value = await includeMappings(
+    // this.template.value = await includeVariables(
     //   this.template.value,
     //   this.variables,
     // );

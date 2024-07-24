@@ -23,7 +23,6 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
     const template = unwrap(await concept.template);
     let preview = template?.value ?? '';
     const variables = (await template.variables).slice();
-    console.log('variables', variables);
     for (const variable of variables) {
       let replaceString;
       if (variable.type === 'instruction') {

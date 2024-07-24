@@ -25,7 +25,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptInstructionRoute exten
         'template',
         params.instruction_id,
         {
-          include: 'mappings',
+          include: 'variables',
         },
       );
       return {

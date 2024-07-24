@@ -1,5 +1,4 @@
 import config from 'mow-registry/config/environment';
-import MappingModel from 'mow-registry/models/mapping';
 import VariableModel from 'mow-registry/models/variable';
 import { unwrap } from 'mow-registry/utils/option';
 
@@ -41,7 +40,7 @@ function generateDateTemplate(uri: string, name: string) {
   `;
 }
 
-export default async function includeMappings(
+export default async function includeVariables(
   html: string,
   variables: VariableModel[],
 ) {
