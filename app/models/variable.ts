@@ -16,7 +16,7 @@ export default class VariableModel extends ResourceModel {
   @attr declare value?: string;
   @attr declare defaultValue?: string;
 
-  @belongsTo('code-list', { inverse: null, async: true })
+  @belongsTo('code-list', { inverse: 'variables', async: true })
   declare codeList: AsyncBelongsTo<CodeListModel>;
 
   @belongsTo('template', { inverse: null, async: true })
