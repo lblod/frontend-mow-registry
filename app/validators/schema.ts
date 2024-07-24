@@ -7,7 +7,7 @@ import Joi from 'joi';
  * @param {string} [message] - Custom error message for validation failure.
  */
 export const validateBelongsToRequired = (
-  message = 'errors.field.required.',
+  message = 'errors.field.required',
 ) => {
   return Joi.object().required().messages({ 'any.required': message });
 };

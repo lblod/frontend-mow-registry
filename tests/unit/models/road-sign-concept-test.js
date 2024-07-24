@@ -15,16 +15,15 @@ module('Unit | Model | road sign concept', function (hooks) {
     const isValid = await model.validate();
 
     assert.false(isValid);
-    assert.strictEqual(Object.keys(model.error).length, 4);
-    assert.strictEqual(model.error.image.message, 'errors.label.required');
+    assert.strictEqual(Object.keys(model.error).length, 5);
+    assert.strictEqual(model.error.image.message, 'errors.field.required');
     assert.strictEqual(model.error.meaning.message, 'errors.label.required');
     assert.strictEqual(model.error.label.message, 'errors.label.required');
     assert.strictEqual(
       model.error.classifications.message,
       'errors.field.required',
     );
-    assert.strictEqual(model.error.shape.message, 'errors.label.required');
-    assert.strictEqual(model.error.shape.dimensions, 'errors.label.required');
+    assert.strictEqual(model.error.shape.message, 'errors.field.required');
   });
 
   test('it does not have error when all required fields are filled in', async function (assert) {
@@ -33,7 +32,7 @@ module('Unit | Model | road sign concept', function (hooks) {
       meaning: 'meaning',
       classifications: [this.store().createRecord('road-sign-category')],
       label: 'label',
-      shape: this.store().createRecord('shape'),
+      shape: this.store().createRecord('tribont-shape'),
       dimensions: [this.store().createRecord('dimension')],
     });
 
