@@ -20,5 +20,5 @@ export default class VariableModel extends ResourceModel {
   declare codeList: AsyncBelongsTo<CodeListModel>;
 
   @belongsTo('template', { inverse: null, async: true })
-  declare template: AsyncBelongsTo<TemplateModel>;
+  declare instruction: AsyncBelongsTo<TemplateModel>;
 }
