@@ -6,7 +6,7 @@ import IconCatalogEditController from 'mow-registry/controllers/icon-catalog/edi
 type Params = {
   id: string;
 };
-export default class RoadsignConceptsEditRoute extends Route {
+export default class IconCatalogEditRoute extends Route {
   @service declare store: Store;
 
   async model(params: Params) {
