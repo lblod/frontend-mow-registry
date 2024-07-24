@@ -137,11 +137,13 @@ export default class AddInstructionComponent extends Component {
 
     //add new variable values
     filteredRegexResult.forEach((reg) => {
-      const variable = this.store.createRecord('variable', {
-        value: reg[1],
-        type: 'text',
-      });
-      this.variables.pushObject(variable);
+      if (!this.variables.find((variable) => variable.value === reg[1])) {
+        const variable = this.store.createRecord('variable', {
+          value: reg[1],
+          type: 'text',
+        });
+        this.variables.pushObject(variable);
+      }
     });
 
     //remove duplicates in case something went wrong
@@ -201,7 +203,7 @@ export default class AddInstructionComponent extends Component {
     //   this.template.value,
     //   this.variables,
     // );
-
+    console.log('this.variablesToBeDeleted', this.variablesToBeDeleted);
     await this.template.save();
     await Promise.all(
       this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
