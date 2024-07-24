@@ -1,0 +1,101 @@
+<BreadcrumbsItem as |linkClass|>
+  {{#if @icon.isNew}}
+    <LinkTo @route="icon-catalog.new" class={{linkClass}}>
+      {{t "icon-catalog.crud.new"}}
+    </LinkTo>
+  {{else}}
+    <LinkTo
+      @route="icon-catalog.edit"
+      @model={{@icon.id}}
+      class={{linkClass}}
+    >
+      {{@icon.label}}
+    </LinkTo>
+  {{/if}}
+</BreadcrumbsItem>
+
+<AuToolbar @border="bottom" @size="large" as |Group|>
+  <Group>
+    <AuHeading @skin="2">
+      {{#if @icon.isNew}}
+        {{t "icon-catalog.crud.new"}}
+      {{else}}
+        {{t "icon-catalog.crud.edit"}}
+      {{/if}}
+    </AuHeading>
+  </Group>
+</AuToolbar>
+
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box">
+    <div class="au-o-grid">
+      <div class="au-o-grid__item au-u-2-3@medium">
+        <form class="au-c-form" id="edit-icon-catalog-form" novalidate>
+          {{#let @icon.error.image as |isInvalid|}}
+            <AuFormRow>
+              <ImageInput
+                @oldImage={{@icon.image.file.downloadLink}}
+                @error={{isInvalid}}
+                @setImage={{(fn this.setImage @icon)}}
+              />
+            </AuFormRow>
+          {{/let}}
+          {{#let @icon.error.label as |isInvalid|}}
+            <AuFormRow>
+              <AuLabel
+                @error={{isInvalid}}
+                for="label"
+                @required={{true}}
+                @requiredLabel={{t "utility.required"}}
+              >
+                {{t "icon-catalog.attr.label"}}&nbsp;
+              </AuLabel>
+              <AuInput
+                @error={{isInvalid}}
+                id="label"
+                required="required"
+                @value={{@icon.label}}
+                {{on "input" (fn this.setIconValue "label")}}
+              />
+              {{#if isInvalid}}
+                <AuHelpText @error={{true}}>
+                  {{t "utility.field-required"}}
+                </AuHelpText>
+              {{/if}}
+            </AuFormRow>
+          {{/let}}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<AuToolbar @border="top" @size="large" as |Group|>
+  <Group>
+    <AuButtonGroup>
+      <AuButton
+        @disabled={{or @icon.error this.isSaving}}
+        @loading={{this.isSaving}}
+        {{on "click" (perform this.editIconTask)}}
+      >
+        {{t "utility.save"}}
+      </AuButton>
+      {{#if @icon.isNew}}
+        <LinkTo
+          @route="icon-catalog"
+          class="au-c-button au-c-button--secondary"
+        >
+          {{t "utility.cancel"}}
+        </LinkTo>
+      {{else}}
+        <LinkTo
+          @route="icon-catalog.icon"
+          @model={{@icon.id}}
+          class="au-c-button au-c-button--secondary"
+        >
+          {{t "utility.cancel"}}
+        </LinkTo>
+      {{/if}}
+    </AuButtonGroup>
+  </Group>
+</AuToolbar>

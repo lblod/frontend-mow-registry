@@ -238,15 +238,17 @@ codelist:
     button: Go to codelists management
 icon-catalog:
   name: Icon Catalog
+  details: Icon details
   attr:
     name: Name
     image: Image
+    label: Label
   crud:
     new: New icon
     no-data: No icon
-    edit: Edit traffic measure
-    delete: Delete traffic measure
-    save: Save traffic measure
+    edit: Edit icon
+    delete: Delete icon
+    save: Save icon
     type-filter: Filter by type
     no-matches: No results found
     type-to-search: Type to search

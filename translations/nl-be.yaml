@@ -239,15 +239,17 @@ codelist:
     button: Ga naar Codelijsten
 icon-catalog:
   name: Cataloguspictogram
+  details: Pictogram details
   attr:
     name: Naam
     image: Afbeelding
+    label: Label
   crud:
     new: Nieuwe pictogram
     no-data: Geen pictogram
-    edit: Mobiliteitsmaatregel bewerken
-    delete: Mobiliteitsmaatregel verwijderen
-    save: Mobiliteitsmaatregel bewaren
+    edit: Pictogram bewerken
+    delete: Pictogram verwijderen
+    save: Pictogram bewaren
     type-filter: Filteren op type
     no-matches: Geen resultaten gevonden
     type-to-search: Typ om te zoeken

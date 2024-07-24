@@ -20,4 +20,13 @@
       </Group>
     </AuToolbar>
   </:menu>
+  <:rowAction as |icon|>
+    <LinkTo
+      class="au-c-link"
+      @route="icon-catalog.icon"
+      @model={{icon.id}}
+    >
+      {{t "utility.view"}}
+    </LinkTo>
+  </:rowAction>
 </SearchTables::IconCatalog>
