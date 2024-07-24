@@ -240,7 +240,6 @@ icon-catalog:
   name: Icon Catalog
   details: Icon details
   attr:
-    name: Name
     image: Image
     label: Label
   crud:
@@ -249,9 +248,8 @@ icon-catalog:
     edit: Edit icon
     delete: Delete icon
     save: Save icon
-    type-filter: Filter by type
+    label-filter: Label
     no-matches: No results found
-    type-to-search: Type to search
   landing-page:
     content: Manage codelist icons.
     button: Go to Icon Catalog

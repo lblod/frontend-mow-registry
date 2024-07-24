@@ -16,14 +16,13 @@
     </th>
     <header.Sortable
       @field="label"
-      @currentSorting={{this.sort}}
-      @label={{t "icon-catalog.attr.name"}}
+      @label={{t "icon-catalog.attr.label"}}
     />
     <th></th>
   </:header>
   <:body as |icon|>
     <td>
-      <img src={{icon.image.file.downloadLink}} alt="" height="50" />
+      <img src={{icon.image.file.downloadLink}} alt={{icon.label}} height="50" />
     </td>
     <td>
       {{icon.label}}

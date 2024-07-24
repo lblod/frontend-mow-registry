@@ -241,7 +241,6 @@ icon-catalog:
   name: Cataloguspictogram
   details: Pictogram details
   attr:
-    name: Naam
     image: Afbeelding
     label: Label
   crud:
@@ -250,9 +249,8 @@ icon-catalog:
     edit: Pictogram bewerken
     delete: Pictogram verwijderen
     save: Pictogram bewaren
-    type-filter: Filteren op type
+    label-filter: Label
     no-matches: Geen resultaten gevonden
-    type-to-search: Typ om te zoeken
   landing-page:
     content: Overzichtscode bevat pictogrammen.
     button: Ga naar Cataloguspictogram

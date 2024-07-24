@@ -14,6 +14,16 @@
         </AuHeading>
       </Group>
       <Group class="au-c-toolbar__group--center">
+        {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
+        <div class="au-c-data-table__search road-marking-code-search">
+          <AuInput
+            @value={{this.code}}
+            placeholder={{t "icon-catalog.crud.label-filter"}}
+            @icon="search"
+            @iconAlignment="right"
+            {{on "input" (perform this.updateSearchFilterTask)}}
+          />
+        </div>
         <LinkTo class="au-c-button" @route="icon-catalog.new">
           {{t "icon-catalog.crud.new"}}
         </LinkTo>
