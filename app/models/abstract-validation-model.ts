@@ -1,7 +1,7 @@
 import { tracked } from '@glimmer/tracking';
 import { assert } from '@ember/debug';
 import Model from '@ember-data/model';
-import { ObjectSchema, ValidationError, ValidationErrorItem } from 'joi';
+import Joi, { ObjectSchema, ValidationError, ValidationErrorItem } from 'joi';
 // eslint-disable-next-line ember/use-ember-data-rfc-395-imports
 import { ModelSchema } from 'ember-data';
 
@@ -27,6 +27,7 @@ export default class AbstractValidationModel extends Model {
   get error() {
     return this._validationError;
   }
+
   /**
    * Validate the model using the validation schema.
    */
@@ -44,12 +45,42 @@ export default class AbstractValidationModel extends Model {
       });
     } catch (error: unknown) {
       if (error instanceof ValidationError) {
-        this._validationError = error.details?.reduce((acc, err) => {
-          if (err?.context?.key) {
-            acc[err.context.key] = err;
-          }
-          return acc;
-        }, {} as ValidationErrorDetails);
+        this._validationError = this.#mapValidationError(error);
+      }
+
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Validate a single property of the model. Useful for form validation.
+   */
+  async validateProperty(
+    propertyName: string,
+    options: object = {},
+  ): Promise<boolean> {
+    this.#removeValidationError(propertyName);
+    const serializedModel = this.#serializeModel();
+
+    try {
+      const propertyRule = this.validationSchema.extract([propertyName]);
+      const partialSchema = Joi.object({ [propertyName]: propertyRule });
+      await partialSchema.validateAsync(serializedModel, {
+        abortEarly: false,
+        allowUnknown: true,
+        context: {
+          changedAttributes: this.changedAttributes(),
+          ...options,
+        },
+      });
+    } catch (error: unknown) {
+      if (error instanceof ValidationError) {
+        this._validationError = {
+          ...this._validationError,
+          ...this.#mapValidationError(error),
+        };
       }
 
       return false;
@@ -104,6 +135,28 @@ export default class AbstractValidationModel extends Model {
     if (serializedModel) delete serializedModel.id;
 
     return serializedModel;
+  }
+
+  #mapValidationError(error: ValidationError) {
+    return error.details?.reduce((acc, err) => {
+      if (err?.context?.key) {
+        acc[err.context.key] = err;
+      }
+      return acc;
+    }, {} as ValidationErrorDetails);
+  }
+
+  #removeValidationError(key: string) {
+    if (this._validationError && key in this._validationError) {
+      // delete on copy and reassign to trigger tracking
+      const newValidationError = { ...this._validationError };
+      delete newValidationError[key];
+
+      this._validationError =
+        Object.keys(newValidationError).length === 0
+          ? undefined
+          : newValidationError;
+    }
   }
 
   /**

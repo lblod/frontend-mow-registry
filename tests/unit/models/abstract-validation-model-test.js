@@ -17,110 +17,121 @@ module('Unit | Model | abstract validation model', function (hooks) {
     return this.owner.lookup('service:store');
   };
 
-  module('attribute validation', function () {
-    test('it returns null when schema is valid', async function (assert) {
-      this.owner.register('model:test-validation-model', BasicValidationModel);
-      const model = this.store().createRecord('test-validation-model', {
-        name: 'test',
+  module('validate', function () {
+    module('attribute validation', function () {
+      test('it returns null when schema is valid', async function (assert) {
+        this.owner.register(
+          'model:test-validation-model',
+          BasicValidationModel,
+        );
+        const model = this.store().createRecord('test-validation-model', {
+          name: 'test',
+        });
+
+        const isValid = await model.validate();
+
+        assert.true(isValid);
+        assert.strictEqual(model.error, undefined);
       });
 
-      const isValid = await model.validate();
+      test('it returns default error message when name is missing', async function (assert) {
+        this.owner.register(
+          'model:test-validation-model',
+          BasicValidationModel,
+        );
+        const model = this.store().createRecord('test-validation-model');
 
-      assert.true(isValid);
-      assert.strictEqual(model.error, undefined);
+        const isValid = await model.validate();
+
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 1);
+        assert.strictEqual(model.error.name.message, '"name" is required');
+      });
+
+      test('it reset error when attribute is filled in', async function (assert) {
+        this.owner.register(
+          'model:test-validation-model',
+          BasicValidationModel,
+        );
+        const model = this.store().createRecord('test-validation-model');
+        await model.validate();
+        assert.strictEqual(
+          model.error.name.message,
+          '"name" is required',
+          'error is set',
+        );
+
+        model.name = 'test';
+        await model.validate();
+
+        assert.strictEqual(model.error, undefined, 'error is reset');
+      });
     });
 
-    test('it returns default error message when name is missing', async function (assert) {
-      this.owner.register('model:test-validation-model', BasicValidationModel);
-      const model = this.store().createRecord('test-validation-model');
+    module('belongsTo validation', function () {
+      test('it returns an error when required belongsTo is missing', async function (assert) {
+        this.owner.register(
+          'model:test-validation-model',
+          BelongsToValidationModel,
+        );
+        const model = this.store().createRecord('test-validation-model');
 
-      const isValid = await model.validate();
+        const isValid = await model.validate();
 
-      assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 1);
-      assert.strictEqual(model.error.name.message, '"name" is required');
-    });
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 1);
+        assert.strictEqual(
+          model.error.oneRequired.message,
+          'Selecteer een optie',
+        );
+      });
 
-    test('it reset error when attribute is filled in', async function (assert) {
-      this.owner.register('model:test-validation-model', BasicValidationModel);
-      const model = this.store().createRecord('test-validation-model');
-      await model.validate();
-      assert.strictEqual(
-        model.error.name.message,
-        '"name" is required',
-        'error is set',
-      );
+      test('it returns no error when required belongsTo is fulfilled', async function (assert) {
+        this.owner.register(
+          'model:test-validation-model',
+          BelongsToValidationModel,
+        );
+        const oneRequired = this.store().createRecord('test-validation-model');
+        const model = this.store().createRecord('test-validation-model', {
+          oneRequired,
+        });
 
-      model.name = 'test';
-      await model.validate();
+        const isValid = await model.validate();
 
-      assert.strictEqual(model.error, undefined, 'error is reset');
+        assert.true(isValid);
+        assert.strictEqual(model.error, undefined);
+      });
+
+      test('it returns no error when an optional belongsTo is provided', async function (assert) {
+        this.owner.register(
+          'model:test-validation-model',
+          BelongsToValidationModel,
+        );
+
+        const oneRequired = this.store().createRecord('test-validation-model');
+        const oneOptional = this.store().createRecord('test-validation-model');
+        const model = this.store().createRecord('test-validation-model', {
+          oneRequired,
+          oneOptional,
+        });
+
+        const isValid = await model.validate();
+
+        assert.true(isValid);
+        assert.strictEqual(model.error, undefined);
+      });
     });
   });
 
-  module('belongsTo validation', function () {
-    test('it returns an error when required belongsTo is missing', async function (assert) {
-      this.owner.register(
-        'model:test-validation-model',
-        BelongsToValidationModel,
-      );
-      const model = this.store().createRecord('test-validation-model');
-
-      const isValid = await model.validate();
-
-      assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 1);
-      assert.strictEqual(
-        model.error.oneRequired.message,
-        'Selecteer een optie',
-      );
-    });
-
-    test('it returns no error when required belongsTo is fulfilled', async function (assert) {
-      this.owner.register(
-        'model:test-validation-model',
-        BelongsToValidationModel,
-      );
-      const oneRequired = this.store().createRecord('test-validation-model');
-      const model = this.store().createRecord('test-validation-model', {
-        oneRequired,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.strictEqual(model.error, undefined);
-    });
-
-    test('it returns no error when an optional belongsTo is provided', async function (assert) {
-      this.owner.register(
-        'model:test-validation-model',
-        BelongsToValidationModel,
-      );
-
-      const oneRequired = this.store().createRecord('test-validation-model');
-      const oneOptional = this.store().createRecord('test-validation-model');
-      const model = this.store().createRecord('test-validation-model', {
-        oneRequired,
-        oneOptional,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.strictEqual(model.error, undefined);
-    });
-  });
-
-  module('hasMany validation', function () {
-    test('it returns error when required hasMany is missing', async function (assert) {
+  module('validateProperty', function () {
+    test('it returns an error when required hasMany is missing', async function (assert) {
       this.owner.register(
         'model:test-validation-model',
         HasManyValidationModel,
       );
       const model = this.store().createRecord('test-validation-model');
 
-      const isValid = await model.validate();
+      const isValid = await model.validateProperty('manyRequired');
 
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 1);
@@ -130,17 +141,38 @@ module('Unit | Model | abstract validation model', function (hooks) {
       );
     });
 
-    test('it returns no error when required hasMany is fulfilled', async function (assert) {
+    test('it update property tested error', async function (assert) {
       this.owner.register(
         'model:test-validation-model',
         HasManyValidationModel,
       );
-      const manyRequired = this.store().createRecord('test-validation-model');
-      const model = this.store().createRecord('test-validation-model', {
-        manyRequired: [manyRequired],
-      });
+      const model = this.store().createRecord('test-validation-model');
 
-      const isValid = await model.validate();
+      let isValid = await model.validate();
+
+      // Validate all properties
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.strictEqual(
+        model.error.manyRequired.message,
+        'Selecteer een optie',
+      );
+
+      // Validate optional property
+      isValid = await model.validateProperty('manyOptional');
+
+      assert.true(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.strictEqual(
+        model.error.manyRequired.message,
+        'Selecteer een optie',
+      );
+
+      // Fix required property
+      const manyRequired = this.store().createRecord('test-validation-model');
+      model.manyRequired.pushObject(manyRequired);
+
+      isValid = await model.validateProperty('manyRequired');
 
       assert.true(isValid);
       assert.strictEqual(model.error, undefined);
