@@ -131,7 +131,7 @@
     <AuButtonGroup>
       {{! or @trafficLightConcept.error   }}
       <AuButton
-        @disabled={{this.isSaving}}
+        @disabled={{or @trafficLightConcept.error this.isSaving}}
         @loading={{this.isSaving}}
         form="edit-traffic-light-concept-form"
         {{on "click" (perform this.editTrafficLightConceptTask)}}
