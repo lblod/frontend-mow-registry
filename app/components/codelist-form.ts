@@ -12,6 +12,7 @@ import SkosConcept from 'mow-registry/models/skos-concept';
 import ArrayProxy from '@ember/array/proxy';
 import Store from '@ember-data/store';
 import Router from '@ember/routing/router';
+import IconModel from 'mow-registry/models/icon';
 
 type Args = {
   codelist: CodeListModel;
@@ -27,6 +28,16 @@ export default class CodelistFormComponent extends Component<Args> {
 
   @tracked codelistTypes?: ArrayProxy<SkosConcept>;
   @tracked selectedType?: SkosConcept;
+
+  @tracked selectedIcon: IconModel | null = null;
+
+  get valueOptions() {
+    return this.options?.filter((model) => !(model instanceof IconModel));
+  }
+
+  get iconOptions() {
+    return this.options?.filter((model) => model instanceof IconModel);
+  }
 
   @action
   async didInsert() {
@@ -93,6 +104,25 @@ export default class CodelistFormComponent extends Component<Args> {
   removeOption(option: SkosConcept) {
     this.options.removeObject(option);
     this.toDelete.pushObject(option);
+  }
+
+  @action
+  updateIconSelector(icon: IconModel) {
+    this.selectedIcon = icon;
+  }
+
+  @action
+  addNewIcon(event: InputEvent) {
+    event.preventDefault();
+    if (this.selectedIcon) {
+      this.options.pushObject(this.selectedIcon);
+      this.selectedIcon = null;
+    }
+  }
+
+  @action
+  removeIcon(icon: IconModel) {
+    this.options.removeObject(icon);
   }
 
   editCodelistTask = dropTask(
