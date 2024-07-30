@@ -243,6 +243,7 @@ icon-catalog:
   attr:
     image: Afbeelding
     label: Label
+    used: Gebruikt
   crud:
     new: Nieuwe pictogram
     no-data: Geen pictogram
@@ -251,6 +252,7 @@ icon-catalog:
     save: Pictogram bewaren
     label-filter: Label
     no-matches: Geen resultaten gevonden
+    use-in-codelist: Gebruik in codelijst
   landing-page:
     content: Overzichtscode bevat pictogrammen.
     button: Ga naar Cataloguspictogram

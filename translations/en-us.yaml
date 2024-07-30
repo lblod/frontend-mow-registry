@@ -242,6 +242,7 @@ icon-catalog:
   attr:
     image: Image
     label: Label
+    used: Used
   crud:
     new: New icon
     no-data: No icon
@@ -250,6 +251,7 @@ icon-catalog:
     save: Save icon
     label-filter: Label
     no-matches: No results found
+    use-in-codelist: Use in codelist
   landing-page:
     content: Manage codelist icons.
     button: Go to Icon Catalog
