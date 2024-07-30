@@ -236,3 +236,20 @@ codelist:
   landing-page:
     content: Overview and management of available code lists.
     button: Go to codelists management
+icon-catalog:
+  name: Icon Catalog
+  details: Icon details
+  attr:
+    image: Image
+    label: Label
+  crud:
+    new: New icon
+    no-data: No icon
+    edit: Edit icon
+    delete: Delete icon
+    save: Save icon
+    label-filter: Label
+    no-matches: No results found
+  landing-page:
+    content: Manage codelist icons.
+    button: Go to Icon Catalog

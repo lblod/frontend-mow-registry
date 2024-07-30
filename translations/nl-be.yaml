@@ -237,3 +237,20 @@ codelist:
   landing-page:
     content: Overzicht en beheer van beschikbare codelijsten.
     button: Ga naar Codelijsten
+icon-catalog:
+  name: Cataloguspictogram
+  details: Pictogram details
+  attr:
+    image: Afbeelding
+    label: Label
+  crud:
+    new: Nieuwe pictogram
+    no-data: Geen pictogram
+    edit: Pictogram bewerken
+    delete: Pictogram verwijderen
+    save: Pictogram bewaren
+    label-filter: Label
+    no-matches: Geen resultaten gevonden
+  landing-page:
+    content: Overzichtscode bevat pictogrammen.
+    button: Ga naar Cataloguspictogram

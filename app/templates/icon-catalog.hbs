@@ -1,0 +1,12 @@
+{{page-title (t "icon-catalog.name")}}
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo @route="icon-catalog.index" class={{linkClass}}>
+    {{t "icon-catalog.name"}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<div class="au-c-body-container au-c-body-container--scroll">
+  <NavigationBar />
+  {{outlet}}
+</div>

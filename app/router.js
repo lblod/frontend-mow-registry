@@ -36,7 +36,6 @@ Router.map(function () {
     this.route('new');
     this.route('traffic-measure-concept', { path: '/:id' });
   });
-
   this.route('instruction', function () {
     this.route('new');
     this.route('edit');
@@ -47,7 +46,11 @@ Router.map(function () {
     this.route('edit', { path: '/edit/:id' });
     this.route('codelist', { path: '/:id' });
   });
-
+  this.route('icon-catalog', function () {
+    this.route('new');
+    this.route('edit', { path: '/edit/:id' });
+    this.route('icon', { path: '/:id' });
+  });
   this.route('authorization', function () {
     this.route('callback');
   });

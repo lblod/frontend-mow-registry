@@ -1,0 +1,98 @@
+{{page-title (t "icon-catalog.details")}}
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo
+    @route="icon-catalog.icon"
+    @model={{@model.icon.id}}
+    class={{linkClass}}
+  >
+    {{@model.icon.label}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
+  <div
+    class="au-o-grid__item au-u-1-1@medium"
+  >
+    <div class="au-c-body-container au-c-body-container--scroll">
+      <AuToolbar @size="large" as |Group|>
+        <Group>
+          <AuHeading @skin="2">
+            {{t "icon-catalog.details"}}
+          </AuHeading>
+        </Group>
+      </AuToolbar>
+      <AuToolbar @size="medium" as |Group|>
+        <Group class="au-c-toolbar__group--row">
+          <ul class="au-o-grid">
+            <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+              <img
+                class="au-c-thumbnail au-c-thumbnail--full"
+                alt=""
+                src={{@model.icon.image.file.downloadLink}}
+              />
+            </li>
+            <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
+              <AuLabel>
+                {{t "icon-catalog.attr.label"}}
+              </AuLabel>
+              <p>
+                {{@model.icon.label}}
+              </p>
+            </li>
+          </ul>
+        </Group>
+      </AuToolbar>
+      <AuToolbar @border="bottom" @size="large" as |Group|>
+        <Group>
+          <AuLink
+            @skin="button"
+            @route="icon-catalog.edit"
+            @model={{@model.icon.id}}
+          >
+            {{t "icon-catalog.crud.edit"}}
+          </AuLink>
+          <AuButton
+            @skin="secondary"
+            @alert={{true}}
+            {{on "click" (fn (mut this.isOpen) true)}}
+          >
+            {{t "icon-catalog.crud.delete"}}
+          </AuButton>
+          <AuModal
+            @modalTitle={{t "utility.confirmation.title"}}
+            @modalOpen={{this.isOpen}}
+            @closeModal={{fn (mut this.isOpen) false}}
+            as |Modal|
+          >
+            <Modal.Body>
+              <p>
+                {{t "utility.confirmation.body"}}
+              </p>
+            </Modal.Body>
+            <Modal.Footer>
+              <AuButton
+                @alert={{true}}
+                {{on
+                  "click"
+                  (perform
+                    this.removeIcon @model.icon
+                  )
+                }}
+              >
+                {{t "icon-catalog.crud.delete"}}
+              </AuButton>
+              <AuButton
+                @skin="secondary"
+                {{on "click" (fn (mut this.isOpen) false)}}
+              >
+                {{t "utility.cancel"}}
+              </AuButton>
+            </Modal.Footer>
+          </AuModal>
+        </Group>
+      </AuToolbar>
+    </div>
+  </div>
+  {{outlet}}
+</div>
