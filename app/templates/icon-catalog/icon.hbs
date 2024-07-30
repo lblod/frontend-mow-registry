@@ -11,9 +11,7 @@
 </BreadcrumbsItem>
 
 <div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
-  <div
-    class="au-o-grid__item au-u-1-1@medium"
-  >
+  <div class="au-o-grid__item au-u-1-1@medium">
     <div class="au-c-body-container au-c-body-container--scroll">
       <AuToolbar @size="large" as |Group|>
         <Group>
@@ -41,8 +39,31 @@
               </p>
             </li>
           </ul>
+
         </Group>
       </AuToolbar>
+      <SearchTables::Codelist
+        @content={{@model.icon.inScheme}}
+      >
+        <:menu>
+          <AuToolbar class="au-o-box" as |Group|>
+            <Group @size="large">
+              <AuHeading @skin="4">
+                {{t "icon-catalog.crud.use-in-codelist"}}
+              </AuHeading>
+            </Group>
+          </AuToolbar>
+        </:menu>
+        <:rowAction as |codelist|>
+          <AuLink
+            @skin="primary"
+            @route="codelists-management.codelist"
+            @model={{codelist.id}}
+          >
+            {{t "utility.view"}}
+          </AuLink>
+        </:rowAction>
+      </SearchTables::Codelist>
       <AuToolbar @border="bottom" @size="large" as |Group|>
         <Group>
           <AuLink
@@ -54,6 +75,7 @@
           </AuLink>
           <AuButton
             @skin="secondary"
+            @disabled={{@model.icon.inScheme.length}}
             @alert={{true}}
             {{on "click" (fn (mut this.isOpen) true)}}
           >
@@ -73,9 +95,10 @@
             <Modal.Footer>
               <AuButton
                 @alert={{true}}
-                {{on
-                  "click"
-                  (perform
+                @disabled={{@model.icon.inScheme.length}}
+                {{on 
+                  "click" 
+                  (perform 
                     this.removeIcon @model.icon
                   )
                 }}

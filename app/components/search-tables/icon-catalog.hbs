@@ -18,6 +18,7 @@
       @field="label"
       @label={{t "icon-catalog.attr.label"}}
     />
+    <th>{{t "icon-catalog.crud.use-in-codelist"}}</th>
     <th></th>
   </:header>
   <:body as |icon|>
@@ -26,6 +27,9 @@
     </td>
     <td>
       {{icon.label}}
+    </td>
+    <td>
+      {{icon.inScheme.length}}
     </td>
     <td>
       {{yield icon to="rowAction"}}
