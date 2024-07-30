@@ -5,10 +5,10 @@ import { validateBelongsToRequired } from 'mow-registry/validators/schema';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
-    icon: Icon;
+    icon: IconModel;
   }
 }
-export default class Icon extends SkosConcept {
+export default class IconModel extends SkosConcept {
   @belongsTo('image', {
     async: true,
     inverse: null,

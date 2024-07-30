@@ -31,6 +31,7 @@ utility:
   required: Verplicht
   optional: Optioneel
   loading: Aan het laden...
+  no-result: Geen resultaten
   zonality: Zonaal karakter
   zonal: Zonaal
   nonZonal: Niet zonaal
@@ -223,8 +224,10 @@ codelist:
     delete: Codelijst verwijderen
     no-data: Geen codelijst
     no-value: Geen waarde
+    no-icon: Geen pictogram
     label-filter: Label
     add-value: Waarde toevoegen
+    add-icon: Pictogram toevoegen
     delete-value: Waarde verwijderen
   attr:
     label: Label
@@ -233,6 +236,7 @@ codelist:
       singleSelect: Enkele selecteren
       multiSelect: Meerkeuze selectie
     values: Waarden
+    icons: Pictogrammen
     id: Id
   landing-page:
     content: Overzicht en beheer van beschikbare codelijsten.

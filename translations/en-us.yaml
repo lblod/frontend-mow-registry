@@ -31,6 +31,7 @@ utility:
   required: Required
   optional: Optional
   loading: Loading...
+  no-result: No results
   zonality: Zonality
   zonal: Zonal
   nonZonal: Non-Zonal
@@ -222,13 +223,16 @@ codelist:
     delete: Delete codelist
     no-data: No codelist
     no-value: No value
+    no-icon: No icon
     label-filter: Label
     add-value: Add value
+    add-icon: Add icon
     delete-value: Delete value
   attr:
     label: Label
     type: Type
     values: Values
+    icons: Icons
     id: Id
     types:
       singleSelect: 'Single select'
