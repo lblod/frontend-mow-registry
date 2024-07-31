@@ -84,7 +84,7 @@
           class="au-u-margin-bottom-small"
         />
       </div>
-      {{#if this.mappings.length}}
+      {{#if this.variables.length}}
         <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
           {{t "traffic-measure-concept.attr.variables"}}
         </AuHeading>
@@ -101,9 +101,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {{#each this.mappings as |mapping|}}
+                  {{#each this.variables as |variable|}}
                     <tr>
-                      <td>{{mapping.variable}}</td>
+                      <td>{{variable.value}}</td>
                       {{! template-lint-disable no-inline-styles }}
                       <td style="width: 50%;">
                         <PowerSelect
@@ -112,21 +112,21 @@
                           @options={{this.inputTypes}}
                           @selected={{find-by-value
                             this.inputTypes
-                            mapping.type
+                            variable.type
                           }}
-                          @onChange={{fn this.updateMappingType mapping}}
+                          @onChange={{fn this.updateVariableType variable}}
                           as |type|
                         >
                           {{type.label}}
                         </PowerSelect>
-                        {{#if (eq mapping.type "codelist")}}
+                        {{#if (eq variable.type "codelist")}}
                           <PowerSelect
                             @triggerClass="au-u-margin-top-tiny"
                             @allowClear={{false}}
                             @searchEnabled={{false}}
                             @options={{this.codeLists}}
-                            @selected={{mapping.codeList}}
-                            @onChange={{fn this.updateCodelist mapping}}
+                            @selected={{variable.codeList}}
+                            @onChange={{fn this.updateCodelist variable}}
                             as |codeList|
                           >
                             {{codeList.label}}
@@ -134,21 +134,21 @@
                           <ul
                             class="au-c-list-help au-c-help-text au-c-help-text--secondary"
                           >
-                            {{#each mapping.codeList.concepts as |option|}}
+                            {{#each variable.codeList.concepts as |option|}}
                               <li
                                 class="au-c-list-help__item"
                               >{{option.label}}</li>
                             {{/each}}
                           </ul>
                         {{/if}}
-                        {{#if (eq mapping.type "instruction")}}
+                        {{#if (eq variable.type "instruction")}}
                           <PowerSelect
                             @triggerClass="au-u-margin-top-tiny"
                             @allowClear={{false}}
                             @searchEnabled={{false}}
                             @options={{this.instructions}}
-                            @selected={{mapping.instruction}}
-                            @onChange={{fn this.updateInstruction mapping}}
+                            @selected={{variable.instruction}}
+                            @onChange={{fn this.updateInstruction variable}}
                             as |instruction|
                           >
                             <div class="au-c-thumbnail-holder">

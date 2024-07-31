@@ -68,34 +68,34 @@
             </tr>
           </thead>
           <tbody>
-            {{#each this.mappings as |mapping|}}
+            {{#each this.variables as |variable|}}
               <tr>
-                <td>{{mapping.variable}}</td>
+                <td>{{variable.value}}</td>
                 {{! template-lint-disable no-inline-styles }}
                 <td style="width: 50%;">
                   <PowerSelect
                     @allowClear={{false}}
                     @searchEnabled={{false}}
                     @options={{this.inputTypes}}
-                    @selected={{mapping.type}}
-                    @onChange={{fn this.updateMappingType mapping}}
+                    @selected={{variable.type}}
+                    @onChange={{fn this.updateVariableType variable}}
                     as |type|
                   >
                     {{type}}
                   </PowerSelect>
-                  {{#if (eq mapping.type "codelist")}}
+                  {{#if (eq variable.type "codelist")}}
                     <PowerSelect
                       @allowClear={{false}}
                       @searchEnabled={{false}}
                       @options={{this.codeLists}}
-                      @selected={{mapping.codeList}}
-                      @onChange={{fn this.updateCodeList mapping}}
+                      @selected={{variable.codeList}}
+                      @onChange={{fn this.updateCodeList variable}}
                       as |codeList|
                     >
                       {{codeList.label}}
                     </PowerSelect>
                     <ul>
-                      {{#each mapping.codeList.concepts as |option|}}
+                      {{#each variable.codeList.concepts as |option|}}
                         <li> - {{option.label}}</li>
                       {{/each}}
                     </ul>

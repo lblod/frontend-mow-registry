@@ -22,17 +22,17 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
   fetchTemplate = task(async (concept: TrafficMeasureConceptModel) => {
     const template = unwrap(await concept.template);
     let preview = template?.value ?? '';
-    const mappings = (await template.mappings).slice();
-    for (const mapping of mappings) {
+    const variables = (await template.variables).slice();
+    for (const variable of variables) {
       let replaceString;
-      if (mapping.type === 'instruction') {
-        const instruction = await mapping.instruction;
+      if (variable.type === 'instruction') {
+        const instruction = await variable.instruction;
         replaceString =
           "<span style='background-color: #ffffff'>" +
           (instruction.value ?? '') +
           '</span>';
         preview = preview.replaceAll(
-          '${' + (mapping.variable ?? '') + '}',
+          '${' + (variable.value ?? '') + '}',
           replaceString,
         );
       }

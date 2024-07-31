@@ -25,7 +25,7 @@ export default class TrafficLightConceptsTrafficLightConceptInstructionRoute ext
     } else {
       return {
         template: this.store.findRecord('template', params.instruction_id, {
-          include: 'mappings',
+          include: 'variables',
         }),
         concept,
         from: PARENT_ROUTE,

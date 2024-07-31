@@ -6,7 +6,7 @@ import {
   AsyncBelongsTo,
 } from '@ember-data/model';
 import ConceptScheme from 'mow-registry/models/concept-scheme';
-import type MappingModel from 'mow-registry/models/mapping';
+import type VariableModel from 'mow-registry/models/variable';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 import {
   validateBelongsToOptional,
@@ -23,8 +23,8 @@ declare module 'ember-data/types/registries/model' {
 
 export default class CodeListModel extends ConceptScheme {
   @attr declare uri?: string;
-  @hasMany('mapping', { inverse: 'codeList', async: true })
-  declare mappings: AsyncHasMany<MappingModel>;
+  @hasMany('variable', { inverse: 'codeList', async: true })
+  declare variables: AsyncHasMany<VariableModel>;
   @belongsTo('skos-concept', { inverse: null, async: true })
   declare type: AsyncBelongsTo<SkosConcept>;
 
@@ -32,7 +32,7 @@ export default class CodeListModel extends ConceptScheme {
     return super.validationSchema.keys({
       uri: validateStringOptional(),
       label: validateStringRequired('errors.label.required'),
-      mappings: validateHasManyOptional(),
+      variables: validateHasManyOptional(),
       type: validateBelongsToOptional(),
     });
   }

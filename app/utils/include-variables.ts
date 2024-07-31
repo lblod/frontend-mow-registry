@@ -1,10 +1,10 @@
 import config from 'mow-registry/config/environment';
-import MappingModel from 'mow-registry/models/mapping';
+import VariableModel from 'mow-registry/models/variable';
 import { unwrap } from 'mow-registry/utils/option';
 
 function generateTextTemplate(uri: string, name: string) {
   return `
-    <span typeof="ext:Mapping" resource="${uri}">
+    <span typeof="mobiliteit:Variabele" resource="${uri}">
       <span class="mark-highlight-manual">\${${name}}</span>
     </span>
   `;
@@ -12,7 +12,7 @@ function generateTextTemplate(uri: string, name: string) {
 
 function generateCodelistTemplate(uri: string, name: string, codelist: string) {
   return `
-    <span resource="${uri}" typeof="ext:Mapping">
+    <span resource="${uri}" typeof="mobiliteit:Variabele">
       <span property="dct:source" resource="${config.sparqlEndpoint}"></span>
       <span property="dct:type" content="codelist"></span>
       <span property="ext:codelist" resource="${codelist}"></span>
@@ -23,7 +23,7 @@ function generateCodelistTemplate(uri: string, name: string, codelist: string) {
 
 function generateLocationTemplate(uri: string, name: string) {
   return `
-    <span resource="${uri}" typeof="ext:Mapping">
+    <span resource="${uri}" typeof="mobiliteit:Variabele">
       <span property="dct:source" resource="${config.sparqlEndpoint}"></span>
       <span property="dct:type" content="location"></span>
       <span property="ext:content">\${${name}}</span>
@@ -33,46 +33,46 @@ function generateLocationTemplate(uri: string, name: string) {
 
 function generateDateTemplate(uri: string, name: string) {
   return `
-    <span resource="${uri}" typeof="ext:Mapping">
+    <span resource="${uri}" typeof="mobiliteit:Variabele">
       <span property="dct:type" content="date"></span>
       <span property="ext:content" datatype="xsd:date">\${${name}}</span>
     </span>
   `;
 }
 
-export default async function includeMappings(
+export default async function includeVariables(
   html: string,
-  mappings: MappingModel[],
+  variables: VariableModel[],
 ) {
   let finalHtml = html;
-  for (const mapping of mappings) {
-    if (mapping.type === 'instruction') {
+  for (const variable of variables) {
+    if (variable.type === 'instruction') {
       continue;
-    } else if (mapping.type === 'codelist') {
-      const codeList = await mapping.get('codeList');
+    } else if (variable.type === 'codelist') {
+      const codeList = await variable.get('codeList');
       const codeListUri = codeList.uri;
       finalHtml = finalHtml.replaceAll(
-        `\${${unwrap(mapping.variable)}}`,
+        `\${${unwrap(variable.value)}}`,
         generateCodelistTemplate(
-          unwrap(mapping.uri),
-          unwrap(mapping.variable),
+          unwrap(variable.uri),
+          unwrap(variable.value),
           unwrap(codeListUri),
         ),
       );
-    } else if (mapping.type === 'location') {
+    } else if (variable.type === 'location') {
       finalHtml = finalHtml.replaceAll(
-        `\${${unwrap(mapping.variable)}}`,
-        generateLocationTemplate(unwrap(mapping.uri), unwrap(mapping.variable)),
+        `\${${unwrap(variable.value)}}`,
+        generateLocationTemplate(unwrap(variable.uri), unwrap(variable.value)),
       );
-    } else if (mapping.type === 'date') {
+    } else if (variable.type === 'date') {
       finalHtml = finalHtml.replaceAll(
-        `\${${unwrap(mapping.variable)}}`,
-        generateDateTemplate(unwrap(mapping.uri), unwrap(mapping.variable)),
+        `\${${unwrap(variable.value)}}`,
+        generateDateTemplate(unwrap(variable.uri), unwrap(variable.value)),
       );
     } else {
       finalHtml = finalHtml.replaceAll(
-        `\${${unwrap(mapping.variable)}}`,
-        generateTextTemplate(unwrap(mapping.uri), unwrap(mapping.variable)),
+        `\${${unwrap(variable.value)}}`,
+        generateTextTemplate(unwrap(variable.uri), unwrap(variable.value)),
       );
     }
   }
