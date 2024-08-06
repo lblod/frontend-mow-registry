@@ -65,35 +65,6 @@
               {{/if}}
             </AuFormRow>
           {{/let}}
-          {{#let @trafficLightConcept.error.definition as |isInvalid|}}
-            <AuFormRow>
-              <AuLabel
-                @error={{isInvalid}}
-                for="definition"
-                @required={{true}}
-                @requiredLabel={{t "utility.required"}}
-              >
-                {{t "traffic-light-concept.attr.definition"}}&nbsp;
-              </AuLabel>
-              <AuTextarea
-                @error={{isInvalid}}
-                @width="block"
-                class="u-min-h-20"
-                id="definition"
-                required="required"
-                @value={{@trafficLightConcept.definition}}
-                {{on
-                  "input"
-                  (fn this.setTrafficLightConceptValue "definition")
-                }}
-              />
-              {{#if isInvalid}}
-                <AuHelpText @error={{true}}>
-                  {{t "utility.field-required"}}
-                </AuHelpText>
-              {{/if}}
-            </AuFormRow>
-          {{/let}}
           {{#let @trafficLightConcept.error.meaning as |isInvalid|}}
             <AuFormRow>
               <AuLabel

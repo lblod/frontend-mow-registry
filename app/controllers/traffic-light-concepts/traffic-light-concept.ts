@@ -51,7 +51,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     }
 
     return this.model.allTrafficLights.filter((trafficLight) => {
-      return trafficLight.definition
+      return trafficLight.meaning
         ?.toLowerCase()
         .includes(this.relatedTrafficLightCodeFilter.toLowerCase());
     });
@@ -63,7 +63,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     }
 
     return this.model.allRoadMarkings.filter((roadMarking) => {
-      return roadMarking.definition
+      return roadMarking.meaning
         ?.toLowerCase()
         .includes(this.relatedRoadMarkingCodeFilter.toLowerCase());
     });

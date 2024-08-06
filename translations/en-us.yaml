@@ -115,7 +115,6 @@ traffic-light-concept:
   attr:
     image-header: Image
     meaning: Meaning
-    definition: Definition
     label: Label
     related-traffic-light: Related traffic lights
     related-sign: Related sign
@@ -146,7 +145,6 @@ road-marking-concept:
     image-header: Image
     image-url: Image URL
     meaning: Meaning
-    definition: Definition
     label: Label
     related-sign: Related road signs
     related-marking: Related road markings

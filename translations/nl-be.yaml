@@ -109,7 +109,6 @@ traffic-light-concept:
   attr:
     image-header: Afbeelding
     meaning: Betekenis
-    definition: Definitie
     label: Label
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
@@ -140,7 +139,6 @@ road-marking-concept:
     image-header: Afbeelding
     image-url: Afbeelding URL
     meaning: Betekenis
-    definition: Definitie
     label: Label
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen

@@ -21,8 +21,6 @@ declare module 'ember-data/types/registries/model' {
   }
 }
 export default class TrafficLightConceptModel extends TrafficSignConceptModel {
-  @attr declare definition?: string;
-
   @belongsTo('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;
 
@@ -54,7 +52,6 @@ export default class TrafficLightConceptModel extends TrafficSignConceptModel {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      definition: validateStringRequired(),
       zonality: validateBelongsToOptional(),
       relatedToTrafficLightConcepts: validateHasManyOptional(),
       relatedFromTrafficLightConcepts: validateHasManyOptional(),

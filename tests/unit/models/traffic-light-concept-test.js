@@ -17,7 +17,6 @@ module('Unit | Model | traffic light concept', function (hooks) {
     assert.false(isValid);
     assert.strictEqual(Object.keys(model.error).length, 4);
     assert.strictEqual(model.error.image.message, 'errors.field.required');
-    assert.strictEqual(model.error.definition.message, 'errors.label.required');
     assert.strictEqual(model.error.meaning.message, 'errors.label.required');
     assert.strictEqual(model.error.label.message, 'errors.label.required');
   });
@@ -26,7 +25,6 @@ module('Unit | Model | traffic light concept', function (hooks) {
     const model = this.store().createRecord('traffic-light-concept', {
       label: 'label',
       image: this.store().createRecord('image'),
-      definition: 'definition',
       meaning: 'meaning',
     });
 
