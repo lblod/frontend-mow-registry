@@ -30,9 +30,9 @@ export default class IconCatalogIndexRoute extends Route {
     if (params.label) {
       query['filter[label]'] = params.label;
     }
-    let icons = await this.store.query('icon', query);
+    const icons = await this.store.query('icon', query);
 
-    let sortedIcons = icons.toArray().sort((a, b) => {
+    const sortedIcons = icons.toArray().sort((a, b) => {
       const labelA = (a.label || '').toLowerCase();
       const labelB = (b.label || '').toLowerCase();
 
