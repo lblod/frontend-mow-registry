@@ -17,10 +17,15 @@ export default class IconCatalogFormComponent extends ImageUploadHandlerComponen
 
   @action
   async setIconValue(attributeName: keyof IconModel, event: InputEvent) {
-    await this.args.icon.set(
-      attributeName,
-      (event.target as HTMLInputElement).value,
-    );
+    // remove leading spaces so they don't mess up the sorting mechanism
+    const inputElement = event.target as HTMLInputElement;
+    const trimmedValue = inputElement.value.trimStart();
+    if (inputElement.value !== trimmedValue) {
+      inputElement.value = trimmedValue;
+    }
+    await this.args.icon.set(attributeName, trimmedValue);
+
+    // Validate the icon model
     await this.args.icon.validate();
   }
 

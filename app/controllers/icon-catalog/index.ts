@@ -18,7 +18,7 @@ export default class IconCatalogIndexController extends Controller {
   updateSearchFilterTask = restartableTask(async (event: InputEvent) => {
     await timeout(300);
 
-    this.label = (event.target as HTMLInputElement).value.trim();
+    this.label = (event.target as HTMLInputElement).value.trimStart();
     this.resetPagination();
   });
 
