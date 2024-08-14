@@ -27,12 +27,6 @@
       @label={{t "road-sign-concept.attr.classifications"}}
     />
     <th>
-      {{t "road-sign-concept.attr.shape"}}
-    </th>
-    <th>
-      {{t "road-sign-concept.attr.dimensions"}}
-    </th>
-    <th>
       {{t "road-marking-concept.attr.valid"}}
     </th>
     <th></th>
@@ -58,17 +52,6 @@
           <br />
         {{/if}}
         {{classification.label}}
-      {{/each}}
-    </td>
-    <td>
-      {{roadSignConcept.shape.label}}
-    </td>
-    <td>
-      {{#each roadSignConcept.shape.dimensions as |dimension index|}}
-        {{#if (gt index 0)}}
-          <br />
-        {{/if}}
-        {{dimension.value}}
       {{/each}}
     </td>
     <td>
