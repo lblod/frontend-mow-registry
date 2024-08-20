@@ -9,5 +9,6 @@ declare module 'ember-data/types/registries/model' {
 
 export default class DimensionModel extends Model {
   @attr declare unit?: string;
+  @attr declare quantityKind?: string;
   @attr declare value?: number;
 }
