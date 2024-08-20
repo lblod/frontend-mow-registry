@@ -66,6 +66,11 @@ utility:
       message: One of the mentioned variable names contains an invalid character. Variable names may only contains letters, numbers, '-', '_' and '.'
   search-placeholder: Type to search
   shape: Shape
+  dimensions: Dimensions
+  width: Width
+  height: Height
+  diameter: Diameter
+  add-shape: Add shape
 image-input:
   helptext: Press the button to upload a new image or insert a URL of an existing image
   preview-alt: A preview of the uploaded or linked image
@@ -89,11 +94,16 @@ road-sign-concept:
     valid: Is valid
     shape: Shape
     dimensions: Dimensions
+    height: Height
+    width: Width
+    radius: Radius
+    side: Length (side)
   crud:
     create: Create road sign
     new: New Road Sign
     no-data: No Road Signs
     no-instruction: No instructions found
+    no-shape: No shapes found
     edit: Edit Road Sign
     delete: Delete Road Sign
     label-filter: Label

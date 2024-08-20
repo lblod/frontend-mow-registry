@@ -67,6 +67,10 @@ utility:
       message: Een van de opgegeven variabelenamen bevat een ongeldig karakter. Variabelenamen mogen enkel letters, cijfers, '-', '_' en '.' bevatten
   search-placeholder: Typ om te zoeken
   shape: Vorm
+  dimensions: Afmetingen
+  height: Hoogte
+  width: Breedte
+  add-shape: Vorm toevoegen
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden of plak de URL van een bestaande afbeelding
   preview-alt: Een voorbeeld van het geüploade bestand of de URL
@@ -89,12 +93,17 @@ road-sign-concept:
     related-traffic-light: Gerelateerde verkeerslichten
     valid: Gevalideerd
     shape: Vorm
-    dimensions: Dimensies
+    dimensions: Afmetingen
+    height: Hoogte
+    width: Breedte
+    radius: Straal
+    side: Lengte (zijde)
   crud:
     create: Verkeersbord aanmaken
     new: Nieuw verkeersbord
     no-data: Geen verkeersborden gevonden
     no-instruction: Geen instructies gevonden
+    no-shape: Geen vormen gevonden
     edit: Verkeersbord bewerken
     delete: Verkeersbord verwijderen
     label-filter: Code
@@ -103,6 +112,8 @@ road-sign-concept:
   landing-page:
     content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden
+  shape-selector:
+    label: Vormen en afmetingen
 traffic-light-concept:
   name: Verkeerslichten
   details: Verkeerslicht details
