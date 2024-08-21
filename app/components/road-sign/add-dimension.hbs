@@ -1,0 +1,46 @@
+{{#let @roadSignConcept.error.dimensions as |isInvalid|}}
+  <AuFormRow>
+    {{#if (eq @selectedShape.label "Rond")}}
+      <AuLabel @error={{isInvalid}} for="radius">
+        {{t "road-sign-concept.attr.radius"}}
+      </AuLabel>
+      <AuInput @error={{isInvalid}} {{on "input" this.setValue}} id="radius" />
+    {{/if}}
+    {{#if
+      (includes
+        @selectedShape.label
+        "Driehoekig"
+        "Ruitvormig"
+        "Klein ruitvormig"
+        "Achthoekig"
+      )
+    }}
+      <AuLabel @error={{isInvalid}} for="radius">
+        {{t "road-sign-concept.attr.side"}}
+      </AuLabel>
+      <AuInput @error={{isInvalid}} id="side" {{on "input" this.setValue}} />
+    {{/if}}
+    {{#if
+      (includes @selectedShape.label "Groot bord" "Wegwijzer met puntvorm")
+    }}
+      <AuLabel @error={{isInvalid}} for="height">
+        {{t "road-sign-concept.attr.height"}}
+      </AuLabel>
+      <AuInput @error={{isInvalid}} id="height" {{on "input" this.setValue}} />
+      <AuLabel @error={{isInvalid}} for="width">
+        {{t "road-sign-concept.attr.width"}}
+      </AuLabel>
+      <AuInput
+        @error={{isInvalid}}
+        id="width"
+        {{on "input" this.setSecondValue}}
+      />
+    {{/if}}
+    <br />
+    <AuButton
+      @skin="secondary"
+      @icon="add"
+      @disabled={{this.isButtonDisabled}}
+    >{{t "utility.add-shape"}}</AuButton>
+  </AuFormRow>
+{{/let}}

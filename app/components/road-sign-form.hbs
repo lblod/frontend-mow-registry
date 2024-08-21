@@ -125,7 +125,13 @@
               {{/if}}
             </AuFormRow>
           {{/let}}
-          <RoadSign::ShapeSelector @shapes={{@shapes}} />
+
+          {{! Shapes and dimensions }}
+          <RoadSign::ShapeSelect @shapes={{@shapes}} />
+          <RoadSign::ShapeList
+            @shapesAndDimensions={{this.shapesAndDimensions}}
+          />
+
         </form>
       </div>
     </div>

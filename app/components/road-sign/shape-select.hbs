@@ -1,0 +1,35 @@
+{{#let @roadSignConcept.error.shapes as |isInvalid|}}
+  <AuFormRow>
+    <AuLabel
+      for="shapes"
+      @error={{isInvalid}}
+      @required={{true}}
+      @requiredLabel={{t "utility.required"}}
+    >
+      {{t "utility.shape"}}&nbsp;
+    </AuLabel>
+    <div class={{if isInvalid "ember-power-select--error"}}>
+      <PowerSelect
+        @allowClear={{false}}
+        @searchEnabled={{true}}
+        @placeholder={{t "utility.search-placeholder"}}
+        @loadingMessage={{t "utility.loading"}}
+        @options={{@shapes}}
+        @selected={{this.selectedShape}}
+        @onChange={{this.setRoadSignConceptShape}}
+        @triggerId="shapes"
+        as |shape|
+      >
+        {{shape.label}}
+      </PowerSelect>
+    </div>
+    {{#if isInvalid}}
+      <AuHelpText @error={{true}}>
+        {{t "utility.field-required"}}
+      </AuHelpText>
+    {{/if}}
+  </AuFormRow>
+{{/let}}
+{{#if this.selectedShape}}
+  <RoadSign::AddDimension @selectedShape={{this.selectedShape}} />
+{{/if}}
