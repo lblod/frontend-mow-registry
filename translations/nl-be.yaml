@@ -112,8 +112,6 @@ road-sign-concept:
   landing-page:
     content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden
-  shape-selector:
-    label: Vormen en afmetingen
 traffic-light-concept:
   name: Verkeerslichten
   details: Verkeerslicht details
