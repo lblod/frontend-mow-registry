@@ -98,6 +98,7 @@ road-sign-concept:
     width: Width
     radius: Radius
     side: Length (side)
+    unit: Unit
   crud:
     create: Create road sign
     new: New Road Sign
