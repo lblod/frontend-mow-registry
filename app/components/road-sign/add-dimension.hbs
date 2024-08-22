@@ -41,6 +41,44 @@
       @skin="secondary"
       @icon="add"
       @disabled={{this.isButtonDisabled}}
+      {{on "click" this.addShapeAndDimensions}}
     >{{t "utility.add-shape"}}</AuButton>
   </AuFormRow>
 {{/let}}
+
+<div class="au-c-table-wrapper au-u-margin-bottom">
+  <table class="au-c-table">
+    <thead class="au-c-table__header">
+      <tr>
+        <th>{{t "utility.shape"}}</th>
+        <th>{{t "utility.dimensions"}}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="au-c-table__body">
+      {{#each this.shapeDimensionArray as |shape|}}
+        <tr>
+          <td>{{shape.label}}</td>
+          <td>{{shape.dimensions}}</td>
+          <td><AuButton
+              @icon="trash"
+              @alert={{true}}
+              @skin="secondary"
+              @hideText={{true}}
+              {{on "click" (fn this.removeShape shape)}}
+            /></td>
+        </tr>
+      {{/each}}
+
+      {{#unless this.shapeDimensionArray.length}}
+        <tr>
+          <td colspan="3">
+            <AuHelpText @size="normal" @skin="tertiary">
+              {{t "road-sign-concept.crud.no-shape"}}
+            </AuHelpText>
+          </td>
+        </tr>
+      {{/unless}}
+    </tbody>
+  </table>
+</div>

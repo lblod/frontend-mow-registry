@@ -7,11 +7,17 @@ type Args = {
   selectedShape: TribontShapeModel;
 };
 
+interface ShapeDimension {
+  label: string;
+  dimensions: string;
+}
+
 export default class RoadSignAddDimensionComponent extends Component<Args> {
   @tracked value?: string;
   @tracked secondValue?: string;
+  @tracked shapeDimensionArray: ShapeDimension[] = [];
 
-  get isButtonDisabled() {
+  get isButtonDisabled(): boolean {
     const selectedShape = this.args.selectedShape.label;
     if (
       selectedShape === 'Groot bord' ||
@@ -31,5 +37,28 @@ export default class RoadSignAddDimensionComponent extends Component<Args> {
   @action
   setSecondValue(event: Event): void {
     this.secondValue = (event.target as HTMLInputElement).value;
+  }
+
+  @action
+  addShapeAndDimensions() {
+    const selectedShape = this.args.selectedShape.label;
+    let dimensions = `${this.value} mm`;
+    if (
+      selectedShape === 'Groot bord' ||
+      selectedShape === 'Wegwijzer met puntvorm'
+    ) {
+      dimensions = `${this.value} x ${this.secondValue} mm`;
+    }
+
+    this.shapeDimensionArray = [
+      ...this.shapeDimensionArray,
+      { label: selectedShape ?? '', dimensions: dimensions ?? '' },
+    ];
+  }
+  @action
+  removeShape(shapeToDelete: ShapeDimension): void {
+    this.shapeDimensionArray = this.shapeDimensionArray.filter(
+      (shape) => shape !== shapeToDelete,
+    );
   }
 }
