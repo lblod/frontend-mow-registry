@@ -1,10 +1,30 @@
 {{#let @roadSignConcept.error.dimensions as |isInvalid|}}
   <AuFormRow>
     {{#if (eq @selectedShape.label "Rond")}}
-      <AuLabel @error={{isInvalid}} for="radius">
-        {{t "road-sign-concept.attr.radius"}}
-      </AuLabel>
-      <AuInput @error={{isInvalid}} {{on "input" this.setValue}} id="radius" />
+      <div class="au-u-flex au-u-flex--row au-u-flex--spaced-small">
+        <AuLabel @error={{isInvalid}} for="radius">
+          {{t "road-sign-concept.attr.radius"}}
+        </AuLabel>
+        <AuInput
+          @error={{isInvalid}}
+          {{on "input" this.setValue}}
+          id="radius"
+        />
+        <AuLabel @error={{isInvalid}} for="unit">
+          {{t "road-sign-concept.attr.unit"}}
+        </AuLabel>
+        <PowerSelect
+          @allowClear={{false}}
+          @searchEnabled={{true}}
+          @placeholder={{t "utility.search-placeholder"}}
+          @loadingMessage={{t "utility.loading"}}
+          @options={{this.unitTypes}}
+          @selected={{this.selectedUnitType}}
+          @onChange={{this.setUnitType}}
+          @triggerId="unitType"
+          as |unitType|
+        >{{unitType}}</PowerSelect>
+      </div>
     {{/if}}
     {{#if
       (includes
@@ -15,26 +35,62 @@
         "Achthoekig"
       )
     }}
-      <AuLabel @error={{isInvalid}} for="radius">
-        {{t "road-sign-concept.attr.side"}}
-      </AuLabel>
-      <AuInput @error={{isInvalid}} id="side" {{on "input" this.setValue}} />
+      <div class="au-u-flex au-u-flex--row au-u-flex--spaced-small">
+        <AuLabel @error={{isInvalid}} for="radius">
+          {{t "road-sign-concept.attr.side"}}
+        </AuLabel>
+        <AuInput @error={{isInvalid}} id="side" {{on "input" this.setValue}} />
+        <AuLabel @error={{isInvalid}} for="unit">
+          {{t "road-sign-concept.attr.unit"}}
+        </AuLabel>
+        <PowerSelect
+          @allowClear={{false}}
+          @searchEnabled={{true}}
+          @placeholder={{t "utility.search-placeholder"}}
+          @loadingMessage={{t "utility.loading"}}
+          @options={{this.unitTypes}}
+          @selected={{this.selectedUnitType}}
+          @onChange={{this.setUnitType}}
+          @triggerId="unitType"
+          as |unitType|
+        >{{unitType}}</PowerSelect>
+      </div>
     {{/if}}
     {{#if
       (includes @selectedShape.label "Groot bord" "Wegwijzer met puntvorm")
     }}
-      <AuLabel @error={{isInvalid}} for="height">
-        {{t "road-sign-concept.attr.height"}}
-      </AuLabel>
-      <AuInput @error={{isInvalid}} id="height" {{on "input" this.setValue}} />
-      <AuLabel @error={{isInvalid}} for="width">
-        {{t "road-sign-concept.attr.width"}}
-      </AuLabel>
-      <AuInput
-        @error={{isInvalid}}
-        id="width"
-        {{on "input" this.setSecondValue}}
-      />
+      <div class="au-u-flex au-u-flex--row au-u-flex--spaced-small">
+        <AuLabel @error={{isInvalid}} for="height">
+          {{t "road-sign-concept.attr.height"}}
+        </AuLabel>
+        <AuInput
+          @error={{isInvalid}}
+          id="height"
+          {{on "input" this.setValue}}
+        />
+        <AuLabel @error={{isInvalid}} for="width">
+          {{t "road-sign-concept.attr.width"}}
+        </AuLabel>
+        <AuInput
+          @error={{isInvalid}}
+          id="width"
+          {{on "input" this.setSecondValue}}
+        />
+        <AuLabel @error={{isInvalid}} for="unit">
+          {{t "road-sign-concept.attr.unit"}}
+        </AuLabel>
+        <PowerSelect
+          @allowClear={{false}}
+          @searchEnabled={{true}}
+          @placeholder={{t "utility.search-placeholder"}}
+          @loadingMessage={{t "utility.loading"}}
+          @options={{this.unitTypes}}
+          @selected={{this.selectedUnitType}}
+          @onChange={{this.setUnitType}}
+          @triggerId="unitType"
+          as |unitType|
+        >{{unitType}}</PowerSelect>
+      </div>
     {{/if}}
     <br />
     <AuButton
