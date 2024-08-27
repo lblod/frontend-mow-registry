@@ -127,7 +127,12 @@
           {{/let}}
 
           {{! Shapes and dimensions }}
-          <RoadSign::ShapeSelect @shapes={{@shapes}} />
+          <RoadSign::ShapeSelect
+            @shapeConcepts={{@shapeConcepts}}
+            @units={{@units}}
+            @quantityKinds={{@quantityKinds}}
+            @onNewShape={{this.updateShape}}
+          />
 
         </form>
       </div>

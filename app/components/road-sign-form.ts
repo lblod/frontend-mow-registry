@@ -5,6 +5,8 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
+import TribontShapeModel from 'mow-registry/models/tribont-shape';
+import { tracked } from '@glimmer/tracking';
 
 type Args = {
   roadSignConcept: RoadSignConceptModel;
@@ -12,6 +14,8 @@ type Args = {
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: Router;
 
+  @tracked deletedShapes: TribontShapeModel[] = [];
+  @tracked updatedShapes: TribontShapeModel[] = [];
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
   }
@@ -32,6 +36,15 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   async setRoadSignConceptClassification(selection: RoadSignCategoryModel[]) {
     this.args.roadSignConcept.set('classifications', selection);
     await this.args.roadSignConcept.validateProperty('classifications');
+  }
+
+  @action
+  removeShape(shape: TribontShapeModel) {
+    this.deletedShapes.push(shape);
+  }
+  @action
+  updateShape(shape: TribontShapeModel) {
+    this.updatedShapes.push(shape);
   }
 
   @action

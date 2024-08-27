@@ -11,6 +11,6 @@ declare module 'ember-data/types/registries/model' {
 export default class QuantityKindModel extends Model {
   @attr declare symbol?: string;
   @attr declare label?: string;
-  @hasMany('unit', { inverse: null, async: true })
-  declare applicableUnits: AsyncHasMany<UnitModel>;
+  @hasMany('unit', { inverse: null, async: false })
+  declare units: AsyncHasMany<UnitModel>;
 }
