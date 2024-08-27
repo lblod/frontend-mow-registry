@@ -19,6 +19,7 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
   @tracked quantityKind?: QuantityKindModel;
   @tracked unitType?: UnitModel;
   @tracked showDimensionForm = false;
+  @tracked showShapeForm = false;
   @tracked shape: TribontShapeModel;
 
   @tracked value?: number;
@@ -65,5 +66,6 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
   saveShape() {
     this.args.onNewShape(this.shape);
     this.shape = this.store.createRecord('tribont-shape');
+    this.showShapeForm = false;
   }
 }

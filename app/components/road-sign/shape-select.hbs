@@ -1,138 +1,182 @@
-<AuFormRow>
-  <AuLabel
-    for="shapeConcepts"
-    @required={{true}}
-    @requiredLabel={{t "utility.required"}}
-  >
-    {{t "utility.shape"}}&nbsp;
-  </AuLabel>
-  <PowerSelect
-    @allowClear={{false}}
-    @searchEnabled={{false}}
-    @placeholder={{t "utility.search-placeholder"}}
-    @loadingMessage={{t "utility.loading"}}
-    @options={{@shapeConcepts}}
-    @selected={{this.shape.classification}}
-    @onChange={{this.setClassificatie}}
-    @triggerId="shapeConcepts"
-    as |shapeConcept|
-  >
-    {{shapeConcept.label}}
-  </PowerSelect>
-
-</AuFormRow>
-{{#if this.shape.classification}}
-  <AuButton
-    @skin="secondary"
-    {{on "click" (fn (mut this.showDimensionForm) true)}}
-  >
-    Add dimension
-  </AuButton>
-{{/if}}
-{{#if (and this.shape.classification this.showDimensionForm)}}
-  <AuFormRow>
-    <AuLabel
-      for="quantityKinds"
-      @required={{true}}
-      @requiredLabel={{t "utility.required"}}
+{{#if this.showShapeForm}}
+  <AuCard as |c|>
+    <c.header
+      @badgeIcon={{this.badgeIcon}}
+      @badgeSkin={{this.badgeSkin}}
+      @badgeSize={{this.badgeSize}}
     >
-      Dimension type
-    </AuLabel>
-    <PowerSelect
-      @allowClear={{false}}
-      @searchEnabled={{false}}
-      @placeholder={{t "utility.search-placeholder"}}
-      @loadingMessage={{t "utility.loading"}}
-      @options={{@quantityKinds}}
-      @selected={{this.quantityKind}}
-      @onChange={{this.setQuantityKind}}
-      @triggerId="quantityKinds"
-      as |qt|
-    >
-      {{qt.label}}
-    </PowerSelect>
-  </AuFormRow>
+      <AuHeading @level="2" @skin="4">
+        New Shape
+      </AuHeading>
+    </c.header>
+    <c.content>
+      <AuFormRow>
+        <AuLabel
+          for="shapeConcepts"
+          @required={{true}}
+          @requiredLabel={{t "utility.required"}}
+        >
+          {{t "utility.shape"}}&nbsp;
+        </AuLabel>
+        <PowerSelect
+          @allowClear={{false}}
+          @searchEnabled={{false}}
+          @placeholder={{t "utility.search-placeholder"}}
+          @loadingMessage={{t "utility.loading"}}
+          @options={{@shapeConcepts}}
+          @selected={{this.shape.classification}}
+          @onChange={{this.setClassificatie}}
+          @triggerId="shapeConcepts"
+          as |shapeConcept|
+        >
+          {{shapeConcept.label}}
+        </PowerSelect>
 
-  {{#if this.quantityKind}}
-    <AuFormRow>
-      <AuLabel
-        for="unitType"
-        @required={{true}}
-        @requiredLabel={{t "utility.required"}}
-      >
-        Unit type
-      </AuLabel>
-      <PowerSelect
-        @allowClear={{false}}
-        @searchEnabled={{false}}
-        @placeholder={{t "utility.search-placeholder"}}
-        @loadingMessage={{t "utility.loading"}}
-        @options={{(await this.quantityKind.units)}}
-        @selected={{this.unitType}}
-        @onChange={{this.setUnitType}}
-        @triggerId="unitType"
-        as |u|
-      >
-        {{u.symbol}}
-      </PowerSelect>
-    </AuFormRow>
-  {{/if}}
+      </AuFormRow>
 
-  {{#if (and this.unitType this.quantityKind)}}
-    <AuFormRow>
-      <AuLabel
-        for="quantityKinds"
-        @required={{true}}
-        @requiredLabel={{t "utility.required"}}
-      >
-        Value
-      </AuLabel>
-      <AuInput
-        @type="number"
-        id="label"
-        required="required"
-        @value={{this.value}}
-      />
-    </AuFormRow>
+      {{#if this.shape.classification}}
+        <AuButton
+          @skin="secondary"
+          {{on "click" (fn (mut this.showDimensionForm) true)}}
+        >
+          Add dimension
+        </AuButton>
+      {{/if}}
+      {{#if (and this.shape.classification this.showDimensionForm)}}
+        <AuCard as |d|>
+          <d.header
+            @badgeIcon={{this.badgeIcon}}
+            @badgeSkin={{this.badgeSkin}}
+            @badgeSize={{this.badgeSize}}
+          >
+            <AuHeading @level="2" @skin="4">
+              New Dimension
+            </AuHeading>
+          </d.header>
+          <d.content>
+            <AuFormRow>
+              <AuLabel
+                for="quantityKinds"
+                @required={{true}}
+                @requiredLabel={{t "utility.required"}}
+              >
+                Kind
+              </AuLabel>
+              <PowerSelect
+                @allowClear={{false}}
+                @searchEnabled={{false}}
+                @placeholder={{t "utility.search-placeholder"}}
+                @loadingMessage={{t "utility.loading"}}
+                @options={{@quantityKinds}}
+                @selected={{this.quantityKind}}
+                @onChange={{this.setQuantityKind}}
+                @triggerId="quantityKinds"
+                as |qt|
+              >
+                {{qt.label}}
+              </PowerSelect>
+            </AuFormRow>
 
-    {{#if this.value}}
-      <AuButton @skin="secondary" {{on "click" (fn this.addDimension)}}>
-        Save dimension
+            {{#if this.quantityKind}}
+              <AuFormRow>
+                <AuLabel
+                  for="unitType"
+                  @required={{true}}
+                  @requiredLabel={{t "utility.required"}}
+                >
+                  Unit type
+                </AuLabel>
+                <PowerSelect
+                  @allowClear={{false}}
+                  @searchEnabled={{false}}
+                  @placeholder={{t "utility.search-placeholder"}}
+                  @loadingMessage={{t "utility.loading"}}
+                  @options={{(await this.quantityKind.units)}}
+                  @selected={{this.unitType}}
+                  @onChange={{this.setUnitType}}
+                  @triggerId="unitType"
+                  as |u|
+                >
+                  {{u.symbol}}
+                </PowerSelect>
+              </AuFormRow>
+            {{/if}}
+
+            {{#if (and this.unitType this.quantityKind)}}
+              <AuFormRow>
+                <AuLabel
+                  for="quantityKinds"
+                  @required={{true}}
+                  @requiredLabel={{t "utility.required"}}
+                >
+                  Value
+                </AuLabel>
+                <AuInput
+                  @type="number"
+                  id="label"
+                  required="required"
+                  @value={{this.value}}
+                />
+              </AuFormRow>
+
+            {{/if}}
+          </d.content>
+          <d.footer>
+            <AuButton
+              @disabled={{(or
+                (not this.value) (not this.unitType) (not this.quantityKind)
+              )}}
+              @skin="secondary"
+              {{on "click" (fn this.addDimension)}}
+            >
+              Save dimension
+            </AuButton>
+          </d.footer>
+        </AuCard>
+      {{/if}}
+
+      {{#if this.shape.dimensions}}
+        <table class="au-c-data-table__table">
+          <thead class="au-c-table__header">
+            <tr>
+              <th>Dimension</th>
+              <th>Unit</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody class="au-c-table__body">
+            {{#each this.shape.dimensions as |dimension|}}
+              <tr>
+                <td>
+                  {{dimension.kind.label}}
+                </td>
+                <td>{{dimension.unit.symbol}}</td>
+                <td>{{dimension.value}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{/if}}
+
+    </c.content>
+
+    <c.footer>
+
+      <AuButton
+        @disabled={{(or
+          this.showDimensionForm
+          (not this.shape.classification)
+          (not this.shape.dimensions)
+        )}}
+        @skin="secondary"
+        {{on "click" (fn this.saveShape)}}
+      >
+        Save Shape
       </AuButton>
-
-    {{/if}}
-  {{/if}}
-
-{{/if}}
-
-{{#if this.shape.dimensions}}
-  <table class="au-c-data-table__table">
-    <thead class="au-c-table__header">
-      <tr>
-        <th>Dimension</th>
-        <th>Unit</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody class="au-c-table__body">
-      {{#each this.shape.dimensions as |dimension|}}
-        <tr>
-          <td>
-            {{dimension.kind.label}}
-          </td>
-          <td>{{dimension.unitType.symbol}}</td>
-          <td>{{dimension.value}}</td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
-{{/if}}
-{{#if
-  (and
-    (not this.showDimensionForm) this.shape.classification this.shape.dimensions
-  )
-}}
-  <AuButton @skin="secondary" {{on "click" (fn this.saveShape)}}>
-    Save Shape
+    </c.footer>
+  </AuCard>
+{{else}}
+  <AuButton @skin="secondary" {{on "click" (fn (mut this.showShapeForm) true)}}>
+    Add Shape
   </AuButton>
 {{/if}}
