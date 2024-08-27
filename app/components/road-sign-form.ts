@@ -6,7 +6,6 @@ import { dropTask } from 'ember-concurrency';
 import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
 import TribontShapeModel from 'mow-registry/models/tribont-shape';
-import { tracked } from '@glimmer/tracking';
 
 type Args = {
   roadSignConcept: RoadSignConceptModel;
@@ -14,8 +13,6 @@ type Args = {
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: Router;
 
-  @tracked deletedShapes: TribontShapeModel[] = [];
-  @tracked updatedShapes: TribontShapeModel[] = [];
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
   }
@@ -39,12 +36,9 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  removeShape(shape: TribontShapeModel) {
-    this.deletedShapes.push(shape);
-  }
-  @action
-  updateShape(shape: TribontShapeModel) {
-    this.updatedShapes.push(shape);
+  async addShape(shape: TribontShapeModel) {
+    const shapes = await this.args.roadSignConcept.shapes;
+    shapes.pushObject(shape);
   }
 
   @action
@@ -61,12 +55,25 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     if (!this.args.roadSignConcept.error) {
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
-      await this.args.roadSignConcept.save();
 
+      await Promise.all(
+        this.args.roadSignConcept.shapes.map(async (shape) => {
+          await Promise.all(
+            shape.dimensions.map(async (dimension) => {
+              await dimension.save();
+            }),
+          );
+          await shape.save();
+        }),
+      );
+
+      await this.args.roadSignConcept.save();
       await this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
         this.args.roadSignConcept.id,
       );
+    } else {
+      console.log(this.args.roadSignConcept.error);
     }
   });
 

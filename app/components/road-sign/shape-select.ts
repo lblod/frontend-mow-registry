@@ -2,37 +2,33 @@ import { action } from '@ember/object';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import TribontShapeModel from 'mow-registry/models/tribont-shape';
 import Store from '@ember-data/store';
 import TribontShapeClassificatieCodeModel from 'mow-registry/models/tribont-shape-classificatie-code';
 import ApplicationInstance from '@ember/application/instance';
 import QuantityKindModel from 'mow-registry/models/quantity-kind';
-import DimensionModel from 'mow-registry/models/dimension';
 import UnitModel from 'mow-registry/models/unit';
+import TribontShapeModel from 'mow-registry/models/tribont-shape';
+
 type Args = {
   onNewShape: (shape: TribontShapeModel) => void;
-  shape?: TribontShapeModel;
   quantityKinds: QuantityKindModel[];
 };
 
 export default class RoadSignShapeSelectComponent extends Component<Args> {
   @service declare store: Store;
-  @tracked classificatie?: TribontShapeClassificatieCodeModel;
   @tracked quantityKind?: QuantityKindModel;
   @tracked unitType?: UnitModel;
-  @tracked dimensions: DimensionModel[] = [];
   @tracked showDimensionForm = false;
+  @tracked shape: TribontShapeModel;
 
   @tracked value?: number;
   constructor(owner: ApplicationInstance, args: Args) {
     super(owner, args);
-    if (this.args.shape) {
-      // todo initialize tracked stuff
-    }
+    this.shape = this.store.createRecord('tribont-shape');
   }
   @action
   setClassificatie(classificatie: TribontShapeClassificatieCodeModel) {
-    this.classificatie = classificatie;
+    this.shape.set('classification', classificatie);
     this.quantityKind = undefined;
     this.unitType = undefined;
   }
@@ -55,15 +51,19 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
       const dimension = this.store.createRecord('dimension', {
         value: this.value,
         unit: this.unitType,
-        quantityKind: this.quantityKind,
+        kind: this.quantityKind,
       });
+      this.shape.dimensions.pushObject(dimension);
 
-      this.dimensions = [...this.dimensions, dimension];
       this.quantityKind = undefined;
       this.unitType = undefined;
       this.value = undefined;
       this.showDimensionForm = false;
     }
-    console.log(this.dimensions);
+  }
+  @action
+  saveShape() {
+    this.args.onNewShape(this.shape);
+    this.shape = this.store.createRecord('tribont-shape');
   }
 }

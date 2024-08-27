@@ -29,7 +29,6 @@ export default class RoadsignConceptsNewRoute extends Route {
       shapeConcepts,
       quantityKinds,
       units,
-      shapes: [],
       classifications: this.store.findAll('road-sign-category'),
       dimensions: this.store.findAll('dimension'),
     });

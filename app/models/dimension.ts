@@ -16,5 +16,5 @@ export default class DimensionModel extends Model {
   declare unit: AsyncBelongsTo<UnitModel>;
 
   @belongsTo('quantity-kind', { inverse: null, async: true })
-  declare quantityKind: AsyncBelongsTo<QuantityKindModel>;
+  declare kind: AsyncBelongsTo<QuantityKindModel>;
 }

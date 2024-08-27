@@ -12,7 +12,7 @@
     @placeholder={{t "utility.search-placeholder"}}
     @loadingMessage={{t "utility.loading"}}
     @options={{@shapeConcepts}}
-    @selected={{this.classificatie}}
+    @selected={{this.shape.classification}}
     @onChange={{this.setClassificatie}}
     @triggerId="shapeConcepts"
     as |shapeConcept|
@@ -21,7 +21,7 @@
   </PowerSelect>
 
 </AuFormRow>
-{{#if this.classificatie}}
+{{#if this.shape.classification}}
   <AuButton
     @skin="secondary"
     {{on "click" (fn (mut this.showDimensionForm) true)}}
@@ -29,7 +29,7 @@
     Add dimension
   </AuButton>
 {{/if}}
-{{#if (and this.classificatie this.showDimensionForm)}}
+{{#if (and this.shape.classification this.showDimensionForm)}}
   <AuFormRow>
     <AuLabel
       for="quantityKinds"
@@ -105,7 +105,7 @@
 
 {{/if}}
 
-{{#if this.dimensions}}
+{{#if this.shape.dimensions}}
   <table class="au-c-data-table__table">
     <thead class="au-c-table__header">
       <tr>
@@ -115,10 +115,10 @@
       </tr>
     </thead>
     <tbody class="au-c-table__body">
-      {{#each this.dimensions as |dimension|}}
+      {{#each this.shape.dimensions as |dimension|}}
         <tr>
           <td>
-            {{dimension.quantityKind.label}}
+            {{dimension.kind.label}}
           </td>
           <td>{{dimension.unitType.symbol}}</td>
           <td>{{dimension.value}}</td>
@@ -127,6 +127,12 @@
     </tbody>
   </table>
 {{/if}}
-{{#if (and (not this.showDimensionForm) this.classificatie this.dimensions)}}
-  save me shape
+{{#if
+  (and
+    (not this.showDimensionForm) this.shape.classification this.shape.dimensions
+  )
+}}
+  <AuButton @skin="secondary" {{on "click" (fn this.saveShape)}}>
+    Save Shape
+  </AuButton>
 {{/if}}

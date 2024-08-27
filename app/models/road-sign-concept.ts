@@ -1,9 +1,4 @@
-import {
-  hasMany,
-  belongsTo,
-  AsyncBelongsTo,
-  AsyncHasMany,
-} from '@ember-data/model';
+import { hasMany, AsyncHasMany } from '@ember-data/model';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import {
@@ -64,7 +59,7 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      shape: validateBelongsToRequired(),
+      shapes: validateHasManyRequired(),
       classifications: validateHasManyRequired(),
       subSigns: validateHasManyOptional(),
       mainSigns: validateHasManyOptional(),
