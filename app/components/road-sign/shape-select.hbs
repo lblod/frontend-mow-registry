@@ -6,7 +6,7 @@
       @badgeSize={{this.badgeSize}}
     >
       <AuHeading @level="2" @skin="4">
-        New Shape
+        {{t "road-sign-concept.newShape"}}
       </AuHeading>
     </c.header>
     <c.content>
@@ -39,7 +39,7 @@
           @skin="secondary"
           {{on "click" (fn (mut this.showDimensionForm) true)}}
         >
-          Add dimension
+          {{t "road-sign-concept.addDimension"}}
         </AuButton>
       {{/if}}
       {{#if (and this.shape.classification this.showDimensionForm)}}
@@ -50,7 +50,9 @@
             @badgeSize={{this.badgeSize}}
           >
             <AuHeading @level="2" @skin="4">
-              New Dimension
+
+              {{t "road-sign-concept.addDimension"}}
+
             </AuHeading>
           </d.header>
           <d.content>
@@ -60,7 +62,9 @@
                 @required={{true}}
                 @requiredLabel={{t "utility.required"}}
               >
-                Kind
+
+                {{t "road-sign-concept.kind"}}
+
               </AuLabel>
               <PowerSelect
                 @allowClear={{false}}
@@ -84,7 +88,9 @@
                   @required={{true}}
                   @requiredLabel={{t "utility.required"}}
                 >
-                  Unit type
+
+                  {{t "road-sign-concept.attr.unit"}}
+
                 </AuLabel>
                 <PowerSelect
                   @allowClear={{false}}
@@ -109,7 +115,9 @@
                   @required={{true}}
                   @requiredLabel={{t "utility.required"}}
                 >
-                  Value
+
+                  {{t "road-sign-concept.value"}}
+
                 </AuLabel>
                 <AuInput
                   @type="number"
@@ -127,9 +135,11 @@
                 (not this.value) (not this.unitType) (not this.quantityKind)
               )}}
               @skin="secondary"
-              {{on "click" (fn this.addDimension)}}
+              {{on "click" this.addDimension}}
             >
-              Save dimension
+
+              {{t "road-sign-concept.saveDimension"}}
+
             </AuButton>
           </d.footer>
         </AuCard>
@@ -139,9 +149,11 @@
         <table class="au-c-data-table__table">
           <thead class="au-c-table__header">
             <tr>
-              <th>Dimension</th>
-              <th>Unit</th>
-              <th>Value</th>
+              <th>{{t "road-sign-concept.dimension"}}
+              </th>
+              <th>{{t "road-sign-concept.attr.unit"}}
+              </th>
+              <th>{{t "road-sign-concept.value"}}</th>
             </tr>
           </thead>
           <tbody class="au-c-table__body">
@@ -169,14 +181,15 @@
           (not this.shape.dimensions)
         )}}
         @skin="secondary"
-        {{on "click" (fn this.saveShape)}}
+        {{on "click" this.saveShape}}
       >
-        Save Shape
+        {{t "road-sign-concept.saveShape"}}
       </AuButton>
     </c.footer>
   </AuCard>
 {{else}}
   <AuButton @skin="secondary" {{on "click" (fn (mut this.showShapeForm) true)}}>
-    Add Shape
+    {{t "road-sign-concept.newShape"}}
+
   </AuButton>
 {{/if}}

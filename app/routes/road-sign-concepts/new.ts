@@ -1,8 +1,6 @@
-import { AsyncHasMany } from '@ember-data/model';
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import QuantityKindModel from 'mow-registry/models/quantity-kind';
 import { ZON_NON_ZONAL_ID } from 'mow-registry/utils/constants';
 import { hash } from 'rsvp';
 

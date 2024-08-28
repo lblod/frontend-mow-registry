@@ -2,7 +2,6 @@ import { hasMany, AsyncHasMany } from '@ember-data/model';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import {
-  validateBelongsToRequired,
   validateHasManyOptional,
   validateHasManyRequired,
 } from 'mow-registry/validators/schema';

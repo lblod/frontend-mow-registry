@@ -137,8 +137,12 @@
             <table class="au-c-data-table__table">
               <thead class="au-c-table__header">
                 <tr>
-                  <th>Shape</th>
-                  <th>Dimensions</th>
+                  <th>
+                    {{t "road-sign-concept.attr.shape"}}
+                  </th>
+                  <th>
+                    {{t "road-sign-concept.attr.dimensions"}}
+                  </th>
                   <th></th>
                 </tr>
               </thead>
@@ -178,7 +182,7 @@
             <AuCard @size="small" as |c|>
               <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">
                 <AuHeading @level="2" @skin="4">
-                  You must add at least one shape
+                  {{t "road-sign-concept.atLeastOneShapeRequired"}}
                 </AuHeading>
               </c.header>
             </AuCard>

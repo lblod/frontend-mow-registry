@@ -99,6 +99,15 @@ road-sign-concept:
     radius: Radius
     side: Length (side)
     unit: Unit
+    atLeastOneShapeRequired: You must add at least one shape
+    newShape: New Shape
+    addDimension: Add dimension
+    kind: Kind
+    value: Value
+    saveDimension: Save dimension
+    dimension: Dimension
+    saveShape: Save shape
+
   crud:
     create: Create road sign
     new: New Road Sign
