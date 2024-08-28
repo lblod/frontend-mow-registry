@@ -9,13 +9,13 @@ module('Unit | Model | traffic light concept', function (hooks) {
     return this.owner.lookup('service:store');
   };
 
-  test('it has error when mandatory fiels are missing', async function (assert) {
+  test('it has error when mandatory fields are missing', async function (assert) {
     const model = this.store().createRecord('traffic-light-concept');
 
     const isValid = await model.validate();
 
     assert.false(isValid);
-    assert.strictEqual(Object.keys(model.error).length, 4);
+    assert.strictEqual(Object.keys(model.error).length, 3);
     assert.strictEqual(model.error.image.message, 'errors.field.required');
     assert.strictEqual(model.error.meaning.message, 'errors.label.required');
     assert.strictEqual(model.error.label.message, 'errors.label.required');
