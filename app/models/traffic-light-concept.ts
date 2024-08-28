@@ -1,5 +1,4 @@
 import {
-  attr,
   hasMany,
   belongsTo,
   AsyncBelongsTo,
@@ -12,7 +11,6 @@ import SkosConcept from './skos-concept';
 import {
   validateBelongsToOptional,
   validateHasManyOptional,
-  validateStringRequired,
 } from 'mow-registry/validators/schema';
 
 declare module 'ember-data/types/registries/model' {

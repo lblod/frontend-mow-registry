@@ -1,5 +1,4 @@
 import {
-  attr,
   hasMany,
   belongsTo,
   AsyncBelongsTo,
