@@ -68,7 +68,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     }
 
     return this.model.allRoadMarkings.filter((roadMarking) => {
-      return roadMarking.definition
+      return roadMarking.meaning
         ?.toLowerCase()
         .includes(this.relatedRoadMarkingCodeFilter.toLowerCase().trim());
     });
@@ -80,7 +80,7 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     }
 
     return this.model.allTrafficLights.filter((trafficLight) => {
-      return trafficLight.definition
+      return trafficLight.meaning
         ?.toLowerCase()
         .includes(this.relatedTrafficLightCodeFilter.toLowerCase().trim());
     });

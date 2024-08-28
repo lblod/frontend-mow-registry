@@ -553,7 +553,7 @@
             <SidebarRoadSign
               @imageUrl={{relatedRoadMarking.image.file.downloadLink}}
               @code={{relatedRoadMarking.label}}
-              @meaning={{relatedRoadMarking.definition}}
+              @meaning={{relatedRoadMarking.meaning}}
               @onAdd={{perform this.addRelatedRoadMarking relatedRoadMarking}}
               @addText={{t "related-road-marking.crud.add-one"}}
               class="au-c-action-sidebar__item"
@@ -625,7 +625,7 @@
             <SidebarRoadSign
               @imageUrl={{relatedTrafficLight.image.file.downloadLink}}
               @code={{relatedTrafficLight.label}}
-              @meaning={{relatedTrafficLight.definition}}
+              @meaning={{relatedTrafficLight.meaning}}
               @onAdd={{perform this.addRelatedTrafficLight relatedTrafficLight}}
               @addText={{t "related-traffic-light.crud.add-one"}}
               class="au-c-action-sidebar__item"

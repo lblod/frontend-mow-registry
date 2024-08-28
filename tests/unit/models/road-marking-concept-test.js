@@ -9,15 +9,14 @@ module('Unit | Model | road marking concept', function (hooks) {
     return this.owner.lookup('service:store');
   };
 
-  test('it has error when mandatory fiels are missing', async function (assert) {
+  test('it has error when mandatory fields are missing', async function (assert) {
     const model = this.store().createRecord('road-marking-concept');
 
     const isValid = await model.validate();
 
     assert.false(isValid);
-    assert.strictEqual(Object.keys(model.error).length, 4);
+    assert.strictEqual(Object.keys(model.error).length, 3);
     assert.strictEqual(model.error.image.message, 'errors.field.required');
-    assert.strictEqual(model.error.definition.message, 'errors.label.required');
     assert.strictEqual(model.error.meaning.message, 'errors.label.required');
     assert.strictEqual(model.error.label.message, 'errors.label.required');
   });
@@ -26,7 +25,6 @@ module('Unit | Model | road marking concept', function (hooks) {
     const model = this.store().createRecord('road-marking-concept', {
       label: 'label',
       image: this.store().createRecord('image'),
-      definition: 'definition',
       meaning: 'meaning',
     });
 
