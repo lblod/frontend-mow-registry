@@ -133,6 +133,56 @@
             @quantityKinds={{@quantityKinds}}
             @onNewShape={{this.addShape}}
           />
+          {{#if @roadSignConcept.shapes}}
+            <table class="au-c-data-table__table">
+              <thead class="au-c-table__header">
+                <tr>
+                  <th>Shape</th>
+                  <th>Dimensions</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody class="au-c-table__body">
+                {{#each @roadSignConcept.shapes as |shape|}}
+                  <tr>
+                    <td>
+                      {{shape.classification.label}}
+                    </td>
+                    <td>
+                      <ul>
+                        {{#each shape.dimensions as |dimension|}}
+                          <li>
+                            {{dimension.value}}{{dimension.unit.symbol}}
+                            ({{dimension.kind.label}})
+                          </li>
+                        {{/each}}
+                      </ul>
+                    </td>
+                    <td>
+                      <AuButton
+                        @icon="bin"
+                        @alert={{true}}
+                        @skin="secondary"
+                        @hideText={{true}}
+                        {{on "click" (fn this.removeShape shape)}}
+                      >
+                        {{t "utility.delete"}}
+                      </AuButton>
+                    </td>
+
+                  </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          {{else}}
+            <AuCard @size="small" as |c|>
+              <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">
+                <AuHeading @level="2" @skin="4">
+                  You must add at least one shape
+                </AuHeading>
+              </c.header>
+            </AuCard>
+          {{/if}}
 
         </form>
       </div>

@@ -6,6 +6,7 @@ import { dropTask } from 'ember-concurrency';
 import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
 import TribontShapeModel from 'mow-registry/models/tribont-shape';
+import { tracked } from '@glimmer/tracking';
 
 type Args = {
   roadSignConcept: RoadSignConceptModel;
@@ -13,6 +14,7 @@ type Args = {
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: Router;
 
+  @tracked shapesToRemove: TribontShapeModel[] = [];
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
   }
@@ -36,9 +38,13 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  async addShape(shape: TribontShapeModel) {
-    const shapes = await this.args.roadSignConcept.shapes;
-    shapes.pushObject(shape);
+  addShape(shape: TribontShapeModel) {
+    this.args.roadSignConcept.shapes.pushObject(shape);
+  }
+  @action
+  removeShape(shape: TribontShapeModel) {
+    this.args.roadSignConcept.shapes.removeObject(shape);
+    this.shapesToRemove.push(shape);
   }
 
   @action
@@ -64,6 +70,17 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
             }),
           );
           await shape.save();
+        }),
+      );
+
+      await Promise.all(
+        this.shapesToRemove.map(async (shape) => {
+          await Promise.all(
+            shape.dimensions.map(async (dimension) => {
+              await dimension.destroyRecord();
+            }),
+          );
+          await shape.destroyRecord();
         }),
       );
 

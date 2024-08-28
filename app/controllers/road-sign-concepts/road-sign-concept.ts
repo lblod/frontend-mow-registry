@@ -300,6 +300,16 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   removeRoadSignConcept = task(
     async (roadSignConcept: RoadSignConceptModel, event: InputEvent) => {
       event.preventDefault();
+      await Promise.all(
+        roadSignConcept.shapes.map(async (shape) => {
+          await Promise.all(
+            shape.dimensions.map(async (dimension) => {
+              await dimension.destroyRecord();
+            }),
+          );
+          await shape.destroyRecord();
+        }),
+      );
       await roadSignConcept.destroyRecord();
       await this.router.transitionTo('road-sign-concepts');
     },
