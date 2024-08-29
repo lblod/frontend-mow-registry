@@ -8,6 +8,7 @@ import ApplicationInstance from '@ember/application/instance';
 import QuantityKindModel from 'mow-registry/models/quantity-kind';
 import UnitModel from 'mow-registry/models/unit';
 import TribontShapeModel from 'mow-registry/models/tribont-shape';
+import DimensionModel from 'mow-registry/models/dimension';
 
 type Args = {
   onNewShape: (shape: TribontShapeModel) => void;
@@ -16,56 +17,49 @@ type Args = {
 
 export default class RoadSignShapeSelectComponent extends Component<Args> {
   @service declare store: Store;
-  @tracked quantityKind?: QuantityKindModel;
-  @tracked unitType?: UnitModel;
   @tracked showDimensionForm = false;
   @tracked showShapeForm = false;
   @tracked shape: TribontShapeModel;
+  @tracked dimension: DimensionModel;
 
-  @tracked value?: number;
   constructor(owner: ApplicationInstance, args: Args) {
     super(owner, args);
     this.shape = this.store.createRecord('tribont-shape');
+    this.dimension = this.store.createRecord('dimension');
   }
   @action
   setClassificatie(classificatie: TribontShapeClassificatieCodeModel) {
     this.shape.set('classification', classificatie);
-    this.quantityKind = undefined;
-    this.unitType = undefined;
+    this.dimension = this.store.createRecord('dimension');
   }
 
   @action
   setQuantityKind(qt: QuantityKindModel) {
-    this.quantityKind = qt;
-    this.unitType = undefined;
+    this.dimension.set('kind', qt);
+    this.dimension.set('unit', undefined);
   }
 
   @action
   setUnitType(u: UnitModel) {
-    this.unitType = u;
+    this.dimension.set('unit', u);
   }
 
   @action
-  addDimension() {
-    // fixme the dimension could be on its own component probably
-    if (this.quantityKind && this.unitType && this.value) {
-      const dimension = this.store.createRecord('dimension', {
-        value: this.value,
-        unit: this.unitType,
-        kind: this.quantityKind,
-      });
-      this.shape.dimensions.pushObject(dimension);
-
-      this.quantityKind = undefined;
-      this.unitType = undefined;
-      this.value = undefined;
+  async addDimension() {
+    await this.dimension.validate();
+    if (!this.dimension.error) {
+      this.shape.dimensions.pushObject(this.dimension);
+      this.dimension = this.store.createRecord('dimension');
       this.showDimensionForm = false;
     }
   }
   @action
-  saveShape() {
-    this.args.onNewShape(this.shape);
-    this.shape = this.store.createRecord('tribont-shape');
-    this.showShapeForm = false;
+  async saveShape() {
+    await this.shape.validate();
+    if (!this.shape.error) {
+      this.args.onNewShape(this.shape);
+      this.shape = this.store.createRecord('tribont-shape');
+      this.showShapeForm = false;
+    }
   }
 }
