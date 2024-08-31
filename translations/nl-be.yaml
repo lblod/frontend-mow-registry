@@ -99,14 +99,14 @@ road-sign-concept:
     radius: Straal
     side: Lengte (zijde)
     unit: Eenheid
-  atLeastOneShapeRequired: You must add at least one shape
-  newShape: New Shape
-  addDimension: Add dimension
-  kind: Kind
-  value: Value
-  saveDimension: Save dimension
-  saveShape: Save shape
-  dimension: Dimension
+  atLeastOneShapeRequired: Voeg minstens één vorm toe
+  newShape: Nieuwe vorm
+  addDimension: Afmeting toevoegen
+  kind: Type
+  value: Waarde
+  saveDimension: Afmeting opslaan
+  saveShape: Vorm opslaan
+  dimension: Afmeting
 
   crud:
     create: Verkeersbord aanmaken
