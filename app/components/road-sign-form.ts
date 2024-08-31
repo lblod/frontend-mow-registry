@@ -39,7 +39,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
   @action
   addShape(shape: TribontShapeModel) {
-    this.args.roadSignConcept.shapes.pushObject(shape);
+    this.args.roadSignConcept.hasMany('shapes').value().push(shape);
   }
   @action
   removeShape(shape: TribontShapeModel) {
