@@ -48,7 +48,7 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
   async addDimension() {
     await this.dimension.validate();
     if (!this.dimension.error) {
-      this.shape.dimensions.pushObject(this.dimension);
+      (await this.shape.dimensions).pushObject(this.dimension);
       this.dimension = this.store.createRecord('dimension');
       this.showDimensionForm = false;
     }

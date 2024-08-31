@@ -38,12 +38,12 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  addShape(shape: TribontShapeModel) {
-    this.args.roadSignConcept.hasMany('shapes').value().push(shape);
+  async addShape(shape: TribontShapeModel) {
+    (await this.args.roadSignConcept.shapes).pushObject(shape);
   }
   @action
-  removeShape(shape: TribontShapeModel) {
-    this.args.roadSignConcept.shapes.removeObject(shape);
+  async removeShape(shape: TribontShapeModel) {
+    (await this.args.roadSignConcept.shapes).removeObject(shape);
     this.shapesToRemove.push(shape);
   }
 
@@ -63,7 +63,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
 
       await Promise.all(
-        this.args.roadSignConcept.shapes.map(async (shape) => {
+        (await this.args.roadSignConcept.shapes).map(async (shape) => {
           await Promise.all(
             shape.dimensions.map(async (dimension) => {
               await dimension.save();
@@ -89,8 +89,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
         'road-sign-concepts.road-sign-concept',
         this.args.roadSignConcept.id,
       );
-    } else {
-      console.log(this.args.roadSignConcept.error);
     }
   });
 
