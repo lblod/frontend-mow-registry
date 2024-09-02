@@ -23,7 +23,7 @@ module('Unit | Model | road sign concept', function (hooks) {
       model.error.classifications.message,
       'errors.field.required',
     );
-    assert.strictEqual(model.error.shape.message, 'errors.field.required');
+    assert.strictEqual(model.error.shapes.message, 'errors.field.required');
   });
 
   test('it does not have error when all required fields are filled in', async function (assert) {
@@ -32,7 +32,7 @@ module('Unit | Model | road sign concept', function (hooks) {
       meaning: 'meaning',
       classifications: [this.store().createRecord('road-sign-category')],
       label: 'label',
-      shape: this.store().createRecord('tribont-shape'),
+      shapes: [this.store().createRecord('tribont-shape')],
       dimensions: [this.store().createRecord('dimension')],
     });
 
