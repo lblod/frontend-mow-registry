@@ -1,6 +1,6 @@
 {
   "name": "mow-registry",
-  "version": "1.4.5",
+  "version": "2.0.0-beta.0",
   "private": true,
   "description": "Small description for mow-registry goes here",
   "repository": "https://github.com/lblod/frontend-mow-registry",
