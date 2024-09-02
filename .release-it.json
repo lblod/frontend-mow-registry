@@ -2,9 +2,6 @@
   "github": {
     "release": true
   },
-  "plugins": {
-    "changesets-release-it-plugin": {}
-  },
   "npm": {
     "publish": false,
     "ignoreVersion": true,
