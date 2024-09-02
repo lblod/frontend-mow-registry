@@ -134,19 +134,13 @@
             @onNewShape={{this.addShape}}
           />
           {{#if @roadSignConcept.shapes}}
-            <table class="au-c-data-table__table">
-              <thead class="au-c-table__header">
-                <tr>
-                  <th>
-                    {{t "road-sign-concept.attr.shape"}}
-                  </th>
-                  <th>
-                    {{t "road-sign-concept.attr.dimensions"}}
-                  </th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody class="au-c-table__body">
+            <AuTable @size={{this.size}}>
+              <:header>
+                <th>{{t "road-sign-concept.attr.shape"}}</th>
+                <th>{{t "road-sign-concept.attr.dimensions"}}</th>
+                <th>{{! Actions }}</th>
+              </:header>
+              <:body>
                 {{#each @roadSignConcept.shapes as |shape|}}
                   <tr>
                     <td>
@@ -173,11 +167,10 @@
                         {{t "utility.delete"}}
                       </AuButton>
                     </td>
-
                   </tr>
                 {{/each}}
-              </tbody>
-            </table>
+              </:body>
+            </AuTable>
           {{else}}
             <AuCard @size="small" as |c|>
               <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">

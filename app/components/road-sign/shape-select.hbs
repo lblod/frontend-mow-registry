@@ -142,17 +142,16 @@
       {{/if}}
 
       {{#if this.shape.dimensions}}
-        <table class="au-c-data-table__table">
-          <thead class="au-c-table__header">
+        <AuTable @size={{this.size}}>
+          <:title>{{t "utility.dimensions"}}</:title>
+          <:header>
             <tr>
-              <th>{{t "road-sign-concept.dimension"}}
-              </th>
-              <th>{{t "road-sign-concept.attr.unit"}}
-              </th>
+              <th>{{t "road-sign-concept.dimension"}}</th>
+              <th>{{t "road-sign-concept.attr.unit"}}</th>
               <th>{{t "road-sign-concept.value"}}</th>
             </tr>
-          </thead>
-          <tbody class="au-c-table__body">
+          </:header>
+          <:body>
             {{#each this.shape.dimensions as |dimension|}}
               <tr>
                 <td>
@@ -162,8 +161,8 @@
                 <td>{{dimension.value}}</td>
               </tr>
             {{/each}}
-          </tbody>
-        </table>
+          </:body>
+        </AuTable>
       {{/if}}
 
     </c.content>
