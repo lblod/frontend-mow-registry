@@ -7,6 +7,7 @@ import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
 import TribontShapeModel from 'mow-registry/models/tribont-shape';
 import { tracked } from '@glimmer/tracking';
+import { removeItem } from 'mow-registry/utils/array';
 
 type Args = {
   roadSignConcept: RoadSignConceptModel;
@@ -39,11 +40,15 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
   @action
   async addShape(shape: TribontShapeModel) {
-    (await this.args.roadSignConcept.shapes).pushObject(shape);
+    // @ts-expect-error .push isn't part of the @types/ember_data packages. Remove this once we switch to the official types.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    (await this.args.roadSignConcept.shapes).push(shape);
   }
   @action
   async removeShape(shape: TribontShapeModel) {
-    (await this.args.roadSignConcept.shapes).removeObject(shape);
+    const shapes = await this.args.roadSignConcept.shapes;
+    // @ts-expect-error ArrayProxy doesn't match the array type yet. This can probably be removed when we switch to the official types.
+    removeItem(shapes, shape);
     this.shapesToRemove.push(shape);
   }
 
@@ -65,7 +70,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       await Promise.all(
         (await this.args.roadSignConcept.shapes).map(async (shape) => {
           await Promise.all(
-            shape.dimensions.map(async (dimension) => {
+            (await shape.dimensions).map(async (dimension) => {
               await dimension.save();
             }),
           );
@@ -76,7 +81,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       await Promise.all(
         this.shapesToRemove.map(async (shape) => {
           await Promise.all(
-            shape.dimensions.map(async (dimension) => {
+            (await shape.dimensions).map(async (dimension) => {
               await dimension.destroyRecord();
             }),
           );
