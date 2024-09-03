@@ -52,6 +52,7 @@
 
 // UTILITIES
 $au-flex-utilities-responsive: true;
+$au-flex-utilities-reverse-responsive-breakpoints: true;
 @import "@appuniversum/ember-appuniversum/styles/a-utilities";
 @import "u-heights";
 @import "shame";
