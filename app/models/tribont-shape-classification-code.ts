@@ -2,9 +2,9 @@ import Model, { attr } from '@ember-data/model';
 
 declare module 'ember-data/types/registries/model' {
   export default interface ModelRegistry {
-    'tribont-shape-classificatie-code': TribontShapeClassificatieCodeModel;
+    'tribont-shape-classification-code': TribontShapeClassificationCodeModel;
   }
 }
-export default class TribontShapeClassificatieCodeModel extends Model {
+export default class TribontShapeClassificationCodeModel extends Model {
   @attr declare label?: string;
 }

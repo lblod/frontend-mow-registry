@@ -12,7 +12,7 @@ export default class RoadsignConceptsEditRoute extends Route {
 
   async model(params: Params) {
     const shapeConcepts = await this.store.findAll(
-      'tribont-shape-classificatie-code',
+      'tribont-shape-classification-code',
     );
     const quantityKinds = await this.store.query('quantity-kind', {
       include: 'units',
