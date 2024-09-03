@@ -1,0 +1,182 @@
+{{#if this.showShapeForm}}
+  <AuCard @size="small" as |c|>
+    <c.header
+      @badgeIcon={{this.badgeIcon}}
+      @badgeSkin={{this.badgeSkin}}
+      @badgeSize={{this.badgeSize}}
+    >
+      <AuHeading @level="2" @skin="4">
+        {{t "road-sign-concept.newShape"}}
+      </AuHeading>
+    </c.header>
+    <c.content>
+      {{#let this.shape.error.classification as |isInvalid|}}
+
+        <AuFormRow @alignment="inline">
+          <div class={{if isInvalid "ember-power-select--error"}}>
+
+            <PowerSelect
+              @allowClear={{false}}
+              @searchEnabled={{false}}
+              @placeholder={{t "utility.search-placeholder"}}
+              @loadingMessage={{t "utility.loading"}}
+              @options={{@shapeConcepts}}
+              @selected={{this.shape.classification}}
+              @onChange={{this.setClassificatie}}
+              @triggerId="shapeConcepts"
+              as |shapeConcept|
+            >
+              {{shapeConcept.label}}
+            </PowerSelect>
+          </div>
+          <AuButton
+            @disabled={{(or
+              (not this.shape.classification) this.showDimensionForm
+            )}}
+            @skin="secondary"
+            {{on "click" (fn (mut this.showDimensionForm) true)}}
+          >
+            {{t "road-sign-concept.addDimension"}}
+          </AuButton>
+        </AuFormRow>
+      {{/let}}
+      {{#if (and this.shape.classification this.showDimensionForm)}}
+
+        <AuFormRow @alignment="inline">
+          {{#let this.dimension.error.kind as |isInvalid|}}
+
+            <div class="au-o-grid-item au-u-margin-right">
+              <AuLabel
+                @error={{isInvalid}}
+                for="quantityKinds"
+                @required={{true}}
+                @requiredLabel={{t "utility.required"}}
+              >
+
+                {{t "road-sign-concept.kind"}}
+
+              </AuLabel>
+              <div class={{if isInvalid "ember-power-select--error"}}>
+                <PowerSelect
+                  @allowClear={{false}}
+                  @searchEnabled={{false}}
+                  @placeholder={{t "utility.search-placeholder"}}
+                  @loadingMessage={{t "utility.loading"}}
+                  @options={{@quantityKinds}}
+                  @selected={{this.dimension.kind}}
+                  @onChange={{this.setQuantityKind}}
+                  @triggerId="quantityKinds"
+                  as |qt|
+                >
+                  {{qt.label}}
+                </PowerSelect>
+              </div>
+
+            </div>
+          {{/let}}
+          {{#let this.dimension.error.unit as |isInvalid|}}
+
+            <div class="au-o-grid-item au-u-margin-right">
+              <AuLabel
+                @error={{isInvalid}}
+                for="unitType"
+                @required={{true}}
+                @requiredLabel={{t "utility.required"}}
+              >
+
+                {{t "road-sign-concept.attr.unit"}}
+
+              </AuLabel>
+              <div class={{if isInvalid "ember-power-select--error"}}>
+
+                <PowerSelect
+                  @disabled={{(not this.dimension.kind)}}
+                  @allowClear={{false}}
+                  @searchEnabled={{false}}
+                  @placeholder={{t "utility.search-placeholder"}}
+                  @loadingMessage={{t "utility.loading"}}
+                  @options={{(await this.dimension.kind.units)}}
+                  @selected={{this.dimension.unit}}
+                  @onChange={{this.setUnitType}}
+                  @triggerId="unitType"
+                  as |u|
+                >
+                  {{u.symbol}}
+                </PowerSelect>
+              </div>
+            </div>
+          {{/let}}
+
+          {{#let this.dimension.error.value as |isInvalid|}}
+            <div class="au-o-grid-item au-u-margin-right">
+              <AuLabel
+                @error={{isInvalid}}
+                for="quantityKinds"
+                @required={{true}}
+                @requiredLabel={{t "utility.required"}}
+              >
+
+                {{t "road-sign-concept.value"}}
+
+              </AuLabel>
+              <AuInput
+                @error={{isInvalid}}
+                @disabled={{(or
+                  (not this.dimension.unit) (not this.dimension.kind)
+                )}}
+                @type="number"
+                id="label"
+                required="required"
+                @value={{this.dimension.value}}
+              />
+            </div>
+          {{/let}}
+          <div class="au-o-grid-item au-u-margin-right au-u-flex-self-end">
+            <AuButton @skin="secondary" {{on "click" this.addDimension}}>
+
+              {{t "road-sign-concept.saveDimension"}}
+
+            </AuButton>
+          </div>
+        </AuFormRow>
+      {{/if}}
+
+      {{#if this.shape.dimensions}}
+        <AuTable @size={{this.size}}>
+          <:title>{{t "utility.dimensions"}}</:title>
+          <:header>
+            <tr>
+              <th>{{t "road-sign-concept.dimension"}}</th>
+              <th>{{t "road-sign-concept.attr.unit"}}</th>
+              <th>{{t "road-sign-concept.value"}}</th>
+            </tr>
+          </:header>
+          <:body>
+            {{#each this.shape.dimensions as |dimension|}}
+              <tr>
+                <td>
+                  {{dimension.kind.label}}
+                </td>
+                <td>{{dimension.unit.symbol}}</td>
+                <td>{{dimension.value}}</td>
+              </tr>
+            {{/each}}
+          </:body>
+        </AuTable>
+      {{/if}}
+
+    </c.content>
+
+    <c.footer>
+
+      <AuButton @skin="secondary" {{on "click" this.saveShape}}>
+        {{t "road-sign-concept.saveShape"}}
+      </AuButton>
+    </c.footer>
+  </AuCard>
+{{else}}
+  <AuButton @skin="secondary" {{on "click" (fn (mut this.showShapeForm) true)}}>
+    {{t "road-sign-concept.newShape"}}
+
+  </AuButton>
+{{/if}}

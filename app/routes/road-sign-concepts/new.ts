@@ -12,12 +12,22 @@ export default class RoadsignConceptsNewRoute extends Route {
       'skos-concept',
       ZON_NON_ZONAL_ID,
     );
+    const shapeConcepts = await this.store.findAll(
+      'tribont-shape-classificatie-code',
+    );
+    const quantityKinds = await this.store.query('quantity-kind', {
+      include: 'units',
+    });
+
+    const units = await this.store.findAll('unit');
     return hash({
       newRoadSignConcept: this.store.createRecord('road-sign-concept', {
         zonality: nonZonalConcept,
       }),
+      shapeConcepts,
+      quantityKinds,
+      units,
       classifications: this.store.findAll('road-sign-category'),
-      shapes: this.store.findAll('tribont-shape'),
       dimensions: this.store.findAll('dimension'),
     });
   }
