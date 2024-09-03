@@ -51,7 +51,7 @@
                 @error={{isInvalid}}
                 id="road-marking-concept-code"
                 required="required"
-                @value={{@roadMarkingConcept.label}}
+                value={{@roadMarkingConcept.label}}
                 {{on "input" (fn this.setRoadMarkingConceptValue "label")}}
               />
               {{#if isInvalid}}

@@ -55,7 +55,7 @@
                 @error={{isInvalid}}
                 id="traffic-light-concept-code"
                 required="required"
-                @value={{@trafficLightConcept.label}}
+                value={{@trafficLightConcept.label}}
                 {{on "input" (fn this.setTrafficLightConceptValue "label")}}
               />
               {{#if isInvalid}}

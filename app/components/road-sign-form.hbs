@@ -54,7 +54,7 @@
                 @error={{isInvalid}}
                 id="label"
                 required="required"
-                @value={{@roadSignConcept.label}}
+                value={{@roadSignConcept.label}}
                 {{on "input" (fn this.setRoadSignConceptValue "label")}}
               />
               {{#if isInvalid}}
