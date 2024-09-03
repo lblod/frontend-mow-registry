@@ -13,7 +13,7 @@ export default class RoadsignConceptsNewRoute extends Route {
       ZON_NON_ZONAL_ID,
     );
     const shapeConcepts = await this.store.findAll(
-      'tribont-shape-classificatie-code',
+      'tribont-shape-classification-code',
     );
     const quantityKinds = await this.store.query('quantity-kind', {
       include: 'units',

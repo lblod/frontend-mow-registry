@@ -3,7 +3,7 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import Store from '@ember-data/store';
-import TribontShapeClassificatieCodeModel from 'mow-registry/models/tribont-shape-classificatie-code';
+import TribontShapeClassificationCodeModel from 'mow-registry/models/tribont-shape-classification-code';
 import ApplicationInstance from '@ember/application/instance';
 import QuantityKindModel from 'mow-registry/models/quantity-kind';
 import UnitModel from 'mow-registry/models/unit';
@@ -28,7 +28,7 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
     this.dimension = this.store.createRecord('dimension');
   }
   @action
-  setClassificatie(classificatie: TribontShapeClassificatieCodeModel) {
+  setClassificatie(classificatie: TribontShapeClassificationCodeModel) {
     this.shape.set('classification', classificatie);
     this.dimension = this.store.createRecord('dimension');
   }
