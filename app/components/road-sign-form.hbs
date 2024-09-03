@@ -80,7 +80,7 @@
                 class="u-min-h-20"
                 id="meaning"
                 required="required"
-                @value={{@roadSignConcept.meaning}}
+                value={{@roadSignConcept.meaning}}
                 {{on "input" (fn this.setRoadSignConceptValue "meaning")}}
               />
               {{#if isInvalid}}

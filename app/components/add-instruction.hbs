@@ -33,7 +33,7 @@
             {{on "input" this.updateTemplate}}
             id="textarea-description"
             @width="block"
-            @value={{this.template.value}}
+            value={{this.template.value}}
           />
           {{#if this.templateSyntaxError}}
             <AuAlert

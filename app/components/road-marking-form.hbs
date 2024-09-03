@@ -77,7 +77,7 @@
                 class="u-min-h-20"
                 id="meaning"
                 required="required"
-                @value={{@roadMarkingConcept.meaning}}
+                value={{@roadMarkingConcept.meaning}}
                 {{on "input" (fn this.setRoadMarkingConceptValue "meaning")}}
               />
               {{#if isInvalid}}
