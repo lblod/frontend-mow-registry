@@ -38,7 +38,6 @@ export default class AddInstructionComponent extends Component {
       this.new = true;
       this.template = this.store.createRecord('template');
       this.template.value = '';
-      this.concept.hasInstructions.pushObject(this.template);
       this.variables = this.template.variables;
     }
     this.parseTemplate();
