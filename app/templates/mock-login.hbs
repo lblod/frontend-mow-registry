@@ -10,7 +10,9 @@
             }}</AuHeading>
           <MockLogin as |login|>
             {{#if login.isLoading}}
-              <AuLoader />
+              <AuLoader @hideMessage={{true}} @centered={{false}}>
+                {{t "utility.loading"}}
+              </AuLoader>
             {{else}}
               {{#if login.errorMessage}}
                 {{login.errorMessage}}
@@ -22,7 +24,7 @@
                       class='au-o-box au-o-box--small au-c-card au-u-margin-bottom-small'
                     >
                       <AuButton
-                        @skin='tertiary'
+                        @skin='link'
                         {{on
                           'click'
                           (fn login.login entity.account.id entity.group.id)

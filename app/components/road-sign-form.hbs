@@ -54,7 +54,7 @@
                 @error={{isInvalid}}
                 id="label"
                 required="required"
-                @value={{@roadSignConcept.label}}
+                value={{@roadSignConcept.label}}
                 {{on "input" (fn this.setRoadSignConceptValue "label")}}
               />
               {{#if isInvalid}}
@@ -80,7 +80,7 @@
                 class="u-min-h-20"
                 id="meaning"
                 required="required"
-                @value={{@roadSignConcept.meaning}}
+                value={{@roadSignConcept.meaning}}
                 {{on "input" (fn this.setRoadSignConceptValue "meaning")}}
               />
               {{#if isInvalid}}
@@ -193,6 +193,7 @@
       <AuButton
         @disabled={{or @roadSignConcept.error this.isSaving}}
         @loading={{this.isSaving}}
+        @loadingMessage={{t "utility.save"}}
         {{on "click" (perform this.editRoadSignConceptTask)}}
       >
         {{t "utility.save"}}

@@ -10,7 +10,7 @@ module.exports = function (environment) {
     modulePrefix: 'mow-registry',
     environment,
     rootURL: '/',
-    locationType: 'auto',
+    locationType: 'history',
     sparqlEndpoint: '{{SPARQL_ENDPOINT}}',
     yasgui: {
       // NOTE: look at app/modifiers/yasgui.js when changing this variable
