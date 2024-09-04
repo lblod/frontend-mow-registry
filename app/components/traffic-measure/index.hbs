@@ -213,6 +213,7 @@
       <AuButton
         {{on "click" (perform this.save)}}
         @loading={{if this.save.isRunning true false}}
+        @loadingMessage={{t "traffic-measure-concept.crud.save"}}
         @disabled={{if this.save.isRunning true false}}
       >
         {{t "traffic-measure-concept.crud.save"}}

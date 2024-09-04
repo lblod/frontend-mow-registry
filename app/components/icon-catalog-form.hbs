@@ -76,6 +76,7 @@
       <AuButton
         @disabled={{or @icon.error this.isSaving}}
         @loading={{this.isSaving}}
+        @loadingMessage={{t "utility.save"}}
         {{on "click" (perform this.editIconTask)}}
       >
         {{t "utility.save"}}

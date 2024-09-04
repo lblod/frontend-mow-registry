@@ -99,6 +99,7 @@
       <AuButton
         @disabled={{or @roadMarkingConcept.error this.isSaving}}
         @loading={{this.isSaving}}
+        @loadingMessage={{t "utility.save"}}
         {{on "click" (perform this.editRoadMarkingConceptTask)}}
       >
         {{t "utility.save"}}

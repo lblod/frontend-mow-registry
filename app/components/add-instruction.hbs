@@ -52,6 +52,7 @@
             {{on "click" (perform this.save)}}
             @disabled={{not this.canSave}}
             @loading={{this.save.isRunning}}
+            @loadingMessage={{t "utility.save"}}
           >
             {{t "utility.save"}}
           </AuButton>
