@@ -55,6 +55,17 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
       this.showDimensionForm = false;
     }
   }
+
+  setDimensionValue = (event: Event) => {
+    const newValue = (event.target as HTMLInputElement).valueAsNumber;
+    if (!isNaN(newValue)) {
+      this.dimension.value = newValue;
+    } else {
+      // This forces the error state if the user entered a non-number value
+      this.dimension.value = undefined;
+    }
+  };
+
   @action
   async saveShape() {
     await this.shape.validate();
