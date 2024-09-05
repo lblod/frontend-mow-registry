@@ -5,7 +5,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
 import Store from '@ember-data/store';
-import Router from '@ember/routing/router';
+import type RouterService from '@ember/routing/router-service';
 import IntlService from 'ember-intl/services/intl';
 import CodelistsService from 'mow-registry/services/codelists';
 import TrafficMeasureConceptModel from 'mow-registry/models/traffic-measure-concept';
@@ -32,7 +32,7 @@ type Args = {
 
 export default class TrafficMeasureIndexComponent extends Component<Args> {
   @service declare store: Store;
-  @service declare router: Router;
+  @service declare router: RouterService;
   @service declare intl: IntlService;
   @service('codelists') declare codeListService: CodelistsService;
 
