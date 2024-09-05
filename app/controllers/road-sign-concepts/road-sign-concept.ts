@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import Router from '@ember/routing/router';
+import type RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
@@ -13,7 +13,7 @@ import RoadsignConcept from 'mow-registry/routes/road-sign-concepts/road-sign-co
 import { ModelFrom } from 'mow-registry/utils/type-utils';
 
 export default class RoadsignConceptsRoadsignConceptController extends Controller {
-  @service declare router: Router;
+  @service declare router: RouterService;
   declare model: ModelFrom<RoadsignConcept>;
 
   @tracked isAddingSubSigns = false;
@@ -291,7 +291,6 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   get isAddingInstructions() {
     return (
-      //@ts-expect-error for some reason, the currentRouteName property is not included in the types
       this.router.currentRouteName ===
       'road-sign-concepts.road-sign-concept.instruction'
     );
@@ -332,14 +331,10 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   get hasActiveChildRoute(): boolean {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return (
-      //@ts-expect-error for some reason, the currentRouteName property is not included in the types
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       this.router.currentRouteName.startsWith(
         'road-sign-concepts.road-sign-concept',
       ) &&
-      //@ts-expect-error for some reason, the currentRouteName property is not included in the types
       this.router.currentRouteName !==
         'road-sign-concepts.road-sign-concept.index'
     );

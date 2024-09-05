@@ -11,7 +11,7 @@ import CodeListModel from 'mow-registry/models/code-list';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import ArrayProxy from '@ember/array/proxy';
 import Store from '@ember-data/store';
-import Router from '@ember/routing/router';
+import type RouterService from '@ember/routing/router-service';
 import IconModel from 'mow-registry/models/icon';
 
 type Args = {
@@ -19,7 +19,7 @@ type Args = {
 };
 
 export default class CodelistFormComponent extends Component<Args> {
-  @service declare router: Router;
+  @service declare router: RouterService;
   @service declare store: Store;
 
   @tracked newValue = '';

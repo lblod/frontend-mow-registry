@@ -1,4 +1,4 @@
-import Router from '@ember/routing/router';
+import type RouterService from '@ember/routing/router-service';
 import ImageUploadHandlerComponent from './image-upload-handler';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
@@ -9,7 +9,7 @@ type Args = {
   icon: IconModel;
 };
 export default class IconCatalogFormComponent extends ImageUploadHandlerComponent<Args> {
-  @service declare router: Router;
+  @service declare router: RouterService;
 
   get isSaving() {
     return this.editIconTask.isRunning;

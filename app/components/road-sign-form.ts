@@ -1,4 +1,4 @@
-import Router from '@ember/routing/router';
+import type RouterService from '@ember/routing/router-service';
 import ImageUploadHandlerComponent from './image-upload-handler';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
@@ -13,7 +13,7 @@ type Args = {
   roadSignConcept: RoadSignConceptModel;
 };
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
-  @service declare router: Router;
+  @service declare router: RouterService;
 
   @tracked shapesToRemove: TribontShapeModel[] = [];
   get isSaving() {

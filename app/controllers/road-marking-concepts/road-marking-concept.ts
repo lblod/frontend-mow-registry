@@ -1,7 +1,7 @@
 import ArrayProxy from '@ember/array/proxy';
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import Router from '@ember/routing/router';
+import type RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
@@ -15,7 +15,7 @@ import { unwrap } from 'mow-registry/utils/option';
 import { ModelFrom } from 'mow-registry/utils/type-utils';
 
 export default class RoadmarkingConceptsRoadmarkingConceptController extends Controller {
-  @service declare router: Router;
+  @service declare router: RouterService;
   declare model: ModelFrom<RoadmarkingConcept>;
 
   @tracked isAddingRelatedRoadSigns = false;
@@ -42,14 +42,10 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   }
 
   get hasActiveChildRoute(): boolean {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return (
-      //@ts-expect-error for some reason, the currentRouteName property is not included in the types
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       this.router.currentRouteName.startsWith(
         'road-marking-concepts.road-marking-concept',
       ) &&
-      //@ts-expect-error for some reason, the currentRouteName property is not included in the types
       this.router.currentRouteName !==
         'road-marking-concepts.road-marking-concept.index'
     );
@@ -57,7 +53,6 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
   get isAddingInstructions() {
     return (
-      //@ts-expect-error for some reason, the currentRouteName property is not included in the types
       this.router.currentRouteName ===
       'road-marking-concepts.road-marking-concept.instruction'
     );

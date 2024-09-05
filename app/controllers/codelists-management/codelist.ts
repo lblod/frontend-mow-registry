@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import Router from '@ember/routing/router';
+import type RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import IconModel from 'mow-registry/models/icon';
@@ -9,7 +9,7 @@ import { ModelFrom } from 'mow-registry/utils/type-utils';
 
 export default class CodelistController extends Controller {
   declare model: ModelFrom<CodelistsManagementCodelistRoute>;
-  @service declare router: Router;
+  @service declare router: RouterService;
   @tracked isOpen = false;
 
   @action
