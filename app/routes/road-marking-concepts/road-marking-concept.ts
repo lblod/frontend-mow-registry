@@ -3,6 +3,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import RoadmarkingConceptsRoadmarkingConceptController from 'mow-registry/controllers/road-marking-concepts/road-marking-concept';
 import { hash } from 'rsvp';
+import { TrackedArray } from 'tracked-built-ins';
 
 type Params = {
   id: string;
@@ -34,12 +35,12 @@ export default class RoadmarkingConcept extends Route {
         }),
     });
 
-    model.roadMarkingConcept.relatedRoadMarkingConcepts = [];
-    model.roadMarkingConcept.relatedRoadMarkingConcepts
-      .addObjects(await model.roadMarkingConcept.relatedToRoadMarkingConcepts)
-      .addObjects(
-        await model.roadMarkingConcept.relatedFromRoadMarkingConcepts,
-      );
+    model.roadMarkingConcept.relatedRoadMarkingConcepts = new TrackedArray([
+      // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
+      ...(await model.roadMarkingConcept.relatedToRoadMarkingConcepts),
+      // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
+      ...(await model.roadMarkingConcept.relatedFromRoadMarkingConcepts),
+    ]);
 
     return model;
   }
