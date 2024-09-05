@@ -20,6 +20,8 @@ import ApplicationInstance from '@ember/application/instance';
 import { SignType } from 'mow-registry/components/traffic-measure/select-type';
 import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 import VariableModel from 'mow-registry/models/variable';
+import type NodeShapeModel from 'mow-registry/models/node-shape';
+import { removeItem } from 'mow-registry/utils/array';
 
 export type InputType = {
   value: string;
@@ -131,7 +133,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       .sort((a, b) => (a.id < b.id ? -1 : 1));
     // const relations = await this.trafficMeasureConcept.getOrderedRelations();
 
-    this.signs = relatedTrafficSigns.toArray();
+    this.signs = relatedTrafficSigns.slice();
 
     await this.fetchInstructions.perform();
 
@@ -227,7 +229,8 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       typeof selectedType === 'string' ? selectedType : selectedType.value;
     if (variable.type === 'codelist') {
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      variable.codeList = this.codeLists?.firstObject;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      variable.codeList = this.codeLists[0];
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
       variable.instruction = null;
     } else if (variable.type === 'instruction') {
@@ -358,11 +361,15 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   });
 
   delete = task(async () => {
-    const nodeShape = await this.store.query('node-shape', {
+    const nodeShapes = await this.store.query('node-shape', {
       'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
     });
-    if (nodeShape.firstObject) {
-      await nodeShape.firstObject?.destroyRecord();
+
+    // @ts-expect-error array index access is supported, the types are wrong
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const nodeShape: NodeShapeModel = nodeShapes[0];
+    if (nodeShape) {
+      await nodeShape.destroyRecord();
     }
     // We assume a measure only has one template
     const template = await this.trafficMeasureConcept.template;
@@ -422,12 +429,16 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       );
 
       for (const sign of deletedSigns) {
-        sign.hasTrafficMeasureConcepts.removeObject(trafficMeasureConcept);
+        // @ts-expect-error array index access is supported, the types are wrong
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        removeItem(await sign.hasTrafficMeasureConcepts, trafficMeasureConcept);
         await sign.save();
       }
 
       for (const sign of addedSigns) {
-        sign.hasTrafficMeasureConcepts.pushObject(trafficMeasureConcept);
+        // @ts-expect-error array index access is supported, the types are wrong
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        (await sign.hasTrafficMeasureConcepts).push(trafficMeasureConcept);
         await sign.save();
       }
     },
@@ -441,7 +452,9 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     //create new ones
     for (const variable of this.variables) {
-      template.variables.pushObject(variable);
+      // @ts-expect-error array index access is supported, the types are wrong
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      (await template.variables).push(variable);
       await variable.save();
     }
 
