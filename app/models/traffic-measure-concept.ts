@@ -28,6 +28,6 @@ export default class TrafficMeasureConceptModel extends Model {
   })
   declare relatedTrafficSignConcepts: AsyncHasMany<TrafficSignConceptModel>;
 
-  @belongsTo('template', { async: true })
+  @belongsTo('template', { async: true, inverse: 'parentConcept' })
   declare template: AsyncBelongsTo<TemplateModel>;
 }

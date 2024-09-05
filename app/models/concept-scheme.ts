@@ -19,6 +19,7 @@ export default class ConceptScheme extends AbstractValidationModel {
     inverse: 'inScheme',
     async: true,
     polymorphic: true,
+    as: 'concept-scheme',
   })
   declare concepts: AsyncHasMany<SkosConcept>;
 
