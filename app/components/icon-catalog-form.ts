@@ -20,9 +20,7 @@ export default class IconCatalogFormComponent extends ImageUploadHandlerComponen
     // remove leading spaces so they don't mess up the sorting mechanism
     const inputElement = event.target as HTMLInputElement;
     const trimmedValue = inputElement.value.trim();
-    if (inputElement.value !== trimmedValue) {
-      inputElement.value = trimmedValue;
-    }
+
     await this.args.icon.set(attributeName, trimmedValue);
 
     // Validate the icon model
