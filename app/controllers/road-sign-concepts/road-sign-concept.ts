@@ -161,8 +161,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   });
 
   addRelatedRoadSign = task(async (relatedRoadSign) => {
-    const relatedToRoadSignConcepts = await this.model.roadSignConcept
-      .relatedToRoadSignConcepts;
+    const relatedToRoadSignConcepts =
+      await this.model.roadSignConcept.relatedToRoadSignConcepts;
     const relatedRoadSignConcepts =
       this.model.roadSignConcept.relatedRoadSignConcepts;
 
@@ -176,10 +176,10 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   removeRelatedRoadSign = task(
     async (relatedRoadSign: RoadSignConceptModel) => {
-      const relatedToRoadSignConcepts = await this.model.roadSignConcept
-        .relatedToRoadSignConcepts;
-      const relatedFromRoadSignConcepts = await this.model.roadSignConcept
-        .relatedFromRoadSignConcepts;
+      const relatedToRoadSignConcepts =
+        await this.model.roadSignConcept.relatedToRoadSignConcepts;
+      const relatedFromRoadSignConcepts =
+        await this.model.roadSignConcept.relatedFromRoadSignConcepts;
       const relatedRoadSignConcepts =
         this.model.roadSignConcept.relatedRoadSignConcepts;
 
@@ -196,8 +196,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   addRelatedRoadMarking = task(
     async (relatedRoadMarking: RoadMarkingConceptModel) => {
-      const relatedRoadMarkings = await this.model.roadSignConcept
-        .relatedRoadMarkingConcepts;
+      const relatedRoadMarkings =
+        await this.model.roadSignConcept.relatedRoadMarkingConcepts;
 
       // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -208,8 +208,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   removeRelatedRoadMarking = task(
     async (relatedRoadMarking: RoadMarkingConceptModel) => {
-      const relatedRoadMarkings = await this.model.roadSignConcept
-        .relatedRoadMarkingConcepts;
+      const relatedRoadMarkings =
+        await this.model.roadSignConcept.relatedRoadMarkingConcepts;
       // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
       removeItem(relatedRoadMarkings, relatedRoadMarking);
       await relatedRoadMarking.save();
@@ -218,8 +218,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
 
   addRelatedTrafficLight = task(
     async (relatedTrafficLight: TrafficLightConceptModel) => {
-      const relatedTrafficLights = await this.model.roadSignConcept
-        .relatedTrafficLightConcepts;
+      const relatedTrafficLights =
+        await this.model.roadSignConcept.relatedTrafficLightConcepts;
 
       // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -229,8 +229,8 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   );
 
   removeRelatedTrafficLight = task(async (relatedTrafficLight) => {
-    const relatedTrafficLights = await this.model.roadSignConcept
-      .relatedTrafficLightConcepts;
+    const relatedTrafficLights =
+      await this.model.roadSignConcept.relatedTrafficLightConcepts;
 
     // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
     removeItem(relatedTrafficLights, relatedTrafficLight);

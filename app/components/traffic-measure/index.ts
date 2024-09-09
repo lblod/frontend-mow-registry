@@ -123,8 +123,8 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   fetchData = task(async () => {
     // Wait for data loading
-    const relatedTrafficSigns = await this.trafficMeasureConcept
-      .relatedTrafficSignConcepts;
+    const relatedTrafficSigns =
+      await this.trafficMeasureConcept.relatedTrafficSignConcepts;
 
     this.codeLists = await this.codeListService.all.perform();
 
@@ -197,7 +197,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @action
   async removeSign(sign: TrafficSignConceptModel) {
-    removeItem(this.signs,sign);
+    removeItem(this.signs, sign);
     await this.fetchInstructions.perform();
   }
 
