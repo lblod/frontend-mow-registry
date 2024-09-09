@@ -154,7 +154,7 @@ export default class CodelistFormComponent extends Component<Args> {
       await this.router.transitionTo('codelists-management');
     } else {
       for (let i = 0; i < this.options.length; i++) {
-        const option = this.options.objectAt(i);
+        const option = this.options[i];
         //@ts-expect-error for some reason the type of isNew is not Boolean
         if (option && option.isNew) {
           option.rollbackAttributes();
@@ -163,7 +163,7 @@ export default class CodelistFormComponent extends Component<Args> {
       }
 
       for (let i = 0; i < this.toDelete.length; i++) {
-        const option = this.toDelete.objectAt(i);
+        const option = this.toDelete[i];
         if (option && !option.isNew) {
           option.rollbackAttributes();
           this.options.push(option);

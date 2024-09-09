@@ -22,6 +22,7 @@ import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
 import VariableModel from 'mow-registry/models/variable';
 import type NodeShapeModel from 'mow-registry/models/node-shape';
 import { removeItem } from 'mow-registry/utils/array';
+import { TrackedArray } from 'tracked-built-ins';
 
 export type InputType = {
   value: string;
@@ -47,14 +48,14 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   @tracked preview?: string;
   @tracked selectedType?: SignType | null;
   @tracked instructions: TemplateModel[] = [];
-  @tracked inputTypes: InputType[] = [];
+  @tracked inputTypes: InputType[];
   @tracked instructionType: InputType;
 
   variablesToBeDeleted: VariableModel[] = [];
 
   constructor(owner: ApplicationInstance, args: Args) {
     super(owner, args);
-    this.inputTypes = [
+    this.inputTypes = new TrackedArray([
       {
         value: 'text',
         label: this.intl.t('utility.template-variables.text'),
@@ -75,7 +76,8 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
         value: 'codelist',
         label: this.intl.t('utility.template-variables.codelist'),
       },
-    ];
+    ]);
+
     this.instructionType = {
       value: 'instruction',
       label: this.intl.t('utility.template-variables.instruction'),
@@ -133,7 +135,8 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       .sort((a, b) => (a.id < b.id ? -1 : 1));
     // const relations = await this.trafficMeasureConcept.getOrderedRelations();
 
-    this.signs = relatedTrafficSigns.slice();
+    // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
+    this.signs = new TrackedArray(relatedTrafficSigns);
 
     await this.fetchInstructions.perform();
 
@@ -142,19 +145,21 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   fetchInstructions = task(async () => {
     //refresh instruction list from available signs
-    this.instructions = [];
+    const instructions: TemplateModel[] = [];
     for (let i = 0; i < this.signs.length; i++) {
       const sign = this.signs[i];
-      const instructions = await sign.hasInstructions;
-      instructions.forEach((instr) => this.instructions.pushObject(instr));
+      const signInstructions = await sign.hasInstructions;
+      signInstructions.forEach((instr) => instructions.push(instr));
     }
 
+    this.instructions = instructions;
+
     //remove input type instruction if there are none available and reset variables with instructions
-    if (this.instructions.length != 0) {
+    if (instructions.length != 0) {
       if (this.inputTypes.indexOf(this.instructionType) == -1) {
-        this.inputTypes.pushObject(this.instructionType);
+        this.inputTypes.push(this.instructionType);
       }
-    } else if (this.instructions.length == 0) {
+    } else if (instructions.length == 0) {
       if (this.inputTypes.indexOf(this.instructionType) != -1) {
         this.inputTypes.splice(
           this.inputTypes.indexOf(this.instructionType),
@@ -185,14 +190,14 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @action
   async addSign(sign: TrafficSignConceptModel) {
-    this.signs.pushObject(sign);
+    this.signs.push(sign);
     await this.fetchInstructions.perform();
     this.selectedType = null;
   }
 
   @action
   async removeSign(sign: TrafficSignConceptModel) {
-    this.signs.removeObject(sign);
+    removeItem(this.signs,sign);
     await this.fetchInstructions.perform();
   }
 
@@ -288,7 +293,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //add new variable variables
     filteredRegexResult.forEach((reg) => {
       if (!this.variables.find((variable) => variable.value === reg[1])) {
-        this.variables.pushObject(
+        this.variables.push(
           this.store.createRecord('variable', {
             value: reg[1],
             type: 'text',
@@ -326,8 +331,10 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       this.variablesToBeDeleted.forEach((dVariable, dI) => {
         if (sVariable.value === dVariable.value) {
           if (dVariable.type !== 'text' && sVariable.type === 'text') {
-            sortedVariables.replace(sI, 1, [dVariable]);
-            this.variablesToBeDeleted.replace(dI, 1, [sVariable]);
+            // sortedVariables.replace(sI, 1, [dVariable]);
+            sortedVariables[sI] = dVariable;
+            // this.variablesToBeDeleted.replace(dI, 1, [sVariable]);
+            this.variablesToBeDeleted[dI] = sVariable;
           }
         }
       });
