@@ -35,6 +35,6 @@ export default class IconSelectComponent extends Component<Signature> {
 
     const result = await this.store.query('icon', query);
 
-    return result.toArray();
+    return result.slice();
   });
 }

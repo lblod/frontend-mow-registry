@@ -1,13 +1,7 @@
-import {
-  hasMany,
-  belongsTo,
-  AsyncBelongsTo,
-  AsyncHasMany,
-} from '@ember-data/model';
+import { hasMany, AsyncHasMany } from '@ember-data/model';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import {
-  validateBelongsToRequired,
   validateHasManyOptional,
   validateHasManyRequired,
 } from 'mow-registry/validators/schema';
@@ -27,8 +21,8 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
   })
   declare classifications: AsyncHasMany<RoadSignCategoryModel>;
 
-  @belongsTo('tribont-shape', { inverse: null, async: true })
-  declare shape: AsyncBelongsTo<TribontShapeModel>;
+  @hasMany('tribont-shape', { inverse: null, async: true })
+  declare shapes: AsyncHasMany<TribontShapeModel>;
 
   @hasMany('road-sign-concept', { inverse: 'mainSigns', async: true })
   declare subSigns: AsyncHasMany<RoadSignConceptModel>;
@@ -48,7 +42,10 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
   })
   declare relatedFromRoadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
 
-  relatedRoadSignConcepts?: Array<RoadSignConceptModel>;
+  // This property is used to house the combined data of the relatedToRoadSignConcepts and relatedFromRoadSignConcepts relationships.
+  // We need both since we want to display all related signs, not only a single direction.
+  // TODO: move this state to the edit page, we don't need to store this on the record itself
+  relatedRoadSignConcepts: Array<RoadSignConceptModel> = [];
 
   @hasMany('road-marking-concept', {
     inverse: 'relatedRoadSignConcepts',
@@ -64,7 +61,7 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      shape: validateBelongsToRequired(),
+      shapes: validateHasManyRequired(),
       classifications: validateHasManyRequired(),
       subSigns: validateHasManyOptional(),
       mainSigns: validateHasManyOptional(),

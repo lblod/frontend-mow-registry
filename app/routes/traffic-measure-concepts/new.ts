@@ -12,6 +12,7 @@ export default class TrafficMeasureConceptsNewRoute extends Route {
     );
 
     template.value = '';
+    // @ts-expect-error setting belongsTo relationships like this is valid, but TS doesn't like it (yet).
     trafficMeasureConcept.template = template;
 
     return trafficMeasureConcept;

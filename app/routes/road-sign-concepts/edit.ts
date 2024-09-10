@@ -10,12 +10,21 @@ type Params = {
 export default class RoadsignConceptsEditRoute extends Route {
   @service declare store: Store;
 
-  model(params: Params) {
+  async model(params: Params) {
+    const shapeConcepts = await this.store.findAll(
+      'tribont-shape-classification-code',
+    );
+    const quantityKinds = await this.store.query('quantity-kind', {
+      include: 'units',
+    });
+    const units = await this.store.findAll('unit');
+
     return hash({
       roadSignConcept: this.store.findRecord('road-sign-concept', params.id),
       classifications: this.store.findAll('road-sign-category'),
-      shapes: this.store.findAll('tribont-shape'),
-      dimensions: this.store.findAll('dimension'),
+      shapeConcepts,
+      quantityKinds,
+      units,
     });
   }
   resetController(controller: RoadsignConceptsEditController) {

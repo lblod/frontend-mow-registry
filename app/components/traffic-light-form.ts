@@ -2,7 +2,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import ImageUploadHandlerComponent from './image-upload-handler';
-import Router from '@ember/routing/router';
+import type RouterService from '@ember/routing/router-service';
 import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import Store from '@ember-data/store';
 import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
@@ -12,7 +12,7 @@ type Args = {
 };
 
 export default class TrafficLightFormComponent extends ImageUploadHandlerComponent<Args> {
-  @service declare router: Router;
+  @service declare router: RouterService;
   @service declare store: Store;
 
   get isSaving() {

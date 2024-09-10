@@ -54,7 +54,7 @@
                 @error={{isInvalid}}
                 id="label"
                 required="required"
-                @value={{@icon.label}}
+                value={{@icon.label}}
                 {{on "input" (fn this.setIconValue "label")}}
               />
               {{#if isInvalid}}
@@ -76,6 +76,7 @@
       <AuButton
         @disabled={{or @icon.error this.isSaving}}
         @loading={{this.isSaving}}
+        @loadingMessage={{t "utility.save"}}
         {{on "click" (perform this.editIconTask)}}
       >
         {{t "utility.save"}}

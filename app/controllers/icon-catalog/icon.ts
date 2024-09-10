@@ -2,13 +2,13 @@ import Controller from '@ember/controller';
 import { task } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import Router from '@ember/routing/router';
+import type RouterService from '@ember/routing/router-service';
 import { ModelFrom } from 'mow-registry/utils/type-utils';
 import IconCatalogIconRoute from 'mow-registry/routes/icon-catalog/icon';
 import IconModel from 'mow-registry/models/icon';
 
 export default class IconCatalogIconController extends Controller {
-  @service declare router: Router;
+  @service declare router: RouterService;
   declare model: ModelFrom<IconCatalogIconRoute>;
 
   @tracked isOpen = false;

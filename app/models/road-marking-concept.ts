@@ -1,5 +1,4 @@
 import {
-  attr,
   hasMany,
   belongsTo,
   AsyncBelongsTo,
@@ -22,8 +21,6 @@ declare module 'ember-data/types/registries/model' {
 }
 
 export default class RoadMarkingConceptModel extends TrafficSignConceptModel {
-  @attr declare definition?: string;
-
   @belongsTo('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;
 
@@ -39,7 +36,10 @@ export default class RoadMarkingConceptModel extends TrafficSignConceptModel {
   })
   declare relatedFromRoadMarkingConcepts: AsyncHasMany<RoadMarkingConceptModel>;
 
-  relatedRoadMarkingConcepts?: RoadMarkingConceptModel[];
+  // This property is used to house the combined data of the relatedToRoadMarkingConcepts and relatedFromRoadMarkingConcepts relationships.
+  // We need both since we want to display all related signs, not only a single direction.
+  // TODO: move this state to the edit page, we don't need to store this on the record itself
+  relatedRoadMarkingConcepts: RoadMarkingConceptModel[] = [];
 
   @hasMany('road-sign-concept', {
     inverse: 'relatedRoadMarkingConcepts',
@@ -56,7 +56,6 @@ export default class RoadMarkingConceptModel extends TrafficSignConceptModel {
   get validationSchema() {
     return super.validationSchema.keys({
       meaning: validateStringRequired(),
-      definition: validateStringRequired(),
       zonality: validateBelongsToOptional(),
       relatedToRoadMarkingConcepts: validateHasManyOptional(),
       relatedFromRoadMarkingConcepts: validateHasManyOptional(),

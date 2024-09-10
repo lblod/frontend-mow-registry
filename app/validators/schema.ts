@@ -49,3 +49,12 @@ export const validateStringRequired = (message = 'errors.label.required') => {
     'any.required': message,
   });
 };
+
+/**
+ * Rules for validating a number as a required field.
+ */
+export const validateNumberRequired = (message = 'errors.label.required') => {
+  return Joi.number().required().messages({
+    'any.required': message,
+  });
+};
