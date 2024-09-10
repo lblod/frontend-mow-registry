@@ -11,7 +11,7 @@ import type { Type } from '@warp-drive/core-types/symbols';
 export default class ConceptScheme extends AbstractValidationModel {
   declare [Type]: 'concept-scheme';
   @attr declare label?: string;
-  @hasMany('skos-concept', {
+  @hasMany<SkosConcept>('skos-concept', {
     inverse: 'inScheme',
     async: true,
     polymorphic: true,

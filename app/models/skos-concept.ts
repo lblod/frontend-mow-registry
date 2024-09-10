@@ -13,13 +13,15 @@ export default class SkosConcept extends AbstractValidationModel {
   declare [Type]: 'skos-concept';
   @attr declare uri?: string;
   @attr declare label?: string;
-  @hasMany('concept-scheme', {
+
+  @hasMany<ConceptScheme>('concept-scheme', {
     inverse: 'concepts',
     polymorphic: true,
     as: 'skos-concept',
     async: true,
   })
   declare inScheme: AsyncBelongsTo<ConceptScheme>;
+
   get validationSchema() {
     return Joi.object({
       uri: validateStringOptional(),

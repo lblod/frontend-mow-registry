@@ -1,6 +1,6 @@
 import { hasMany, AsyncHasMany } from '@ember-data/model';
-import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
-import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
+import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
+import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import {
   validateHasManyOptional,
   validateHasManyRequired,
@@ -50,13 +50,13 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
     inverse: 'relatedRoadSignConcepts',
     async: true,
   })
-  declare relatedRoadMarkingConcepts: AsyncHasMany<RoadMarkingConceptModel>;
+  declare relatedRoadMarkingConcepts: AsyncHasMany<RoadMarkingConcept>;
 
   @hasMany('traffic-light-concept', {
     inverse: 'relatedRoadSignConcepts',
     async: true,
   })
-  declare relatedTrafficLightConcepts: AsyncHasMany<TrafficLightConceptModel>;
+  declare relatedTrafficLightConcepts: AsyncHasMany<TrafficLightConcept>;
 
   get validationSchema() {
     return super.validationSchema.keys({

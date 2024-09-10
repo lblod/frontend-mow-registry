@@ -1,7 +1,7 @@
 import { AsyncBelongsTo, belongsTo } from '@ember-data/model';
 import { attr } from '@ember-data/model';
-import UnitModel from './unit';
-import QuantityKindModel from './quantity-kind';
+import Unit from './unit';
+import QuantityKind from './quantity-kind';
 import AbstractValidationModel from './abstract-validation-model';
 import {
   validateBelongsToRequired,
@@ -14,11 +14,11 @@ export default class DimensionModel extends AbstractValidationModel {
   declare [Type]: 'dimension';
   @attr declare value?: number;
 
-  @belongsTo('unit', { inverse: null, async: true })
-  declare unit: AsyncBelongsTo<UnitModel>;
+  @belongsTo<Unit>('unit', { inverse: null, async: true })
+  declare unit: AsyncBelongsTo<Unit>;
 
-  @belongsTo('quantity-kind', { inverse: null, async: true })
-  declare kind: AsyncBelongsTo<QuantityKindModel>;
+  @belongsTo<QuantityKind>('quantity-kind', { inverse: null, async: true })
+  declare kind: AsyncBelongsTo<QuantityKind>;
 
   get validationSchema() {
     return Joi.object({

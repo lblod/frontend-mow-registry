@@ -1,7 +1,7 @@
 import { AsyncBelongsTo, belongsTo, attr } from '@ember-data/model';
 import type { Type } from '@warp-drive/core-types/symbols';
-import type CodeListModel from './code-list';
-import type TemplateModel from './template';
+import type CodeList from './code-list';
+import type Template from './template';
 import ResourceModel from './resource';
 
 export default class VariableModel extends ResourceModel {
@@ -13,9 +13,9 @@ export default class VariableModel extends ResourceModel {
   @attr declare value?: string;
   @attr declare defaultValue?: string;
 
-  @belongsTo('code-list', { inverse: 'variables', async: true })
-  declare codeList: AsyncBelongsTo<CodeListModel>;
+  @belongsTo<CodeList>('code-list', { inverse: 'variables', async: true })
+  declare codeList: AsyncBelongsTo<CodeList>;
 
-  @belongsTo('template', { inverse: null, async: true })
-  declare instruction: AsyncBelongsTo<TemplateModel>;
+  @belongsTo<Template>('template', { inverse: null, async: true })
+  declare instruction: AsyncBelongsTo<Template>;
 }

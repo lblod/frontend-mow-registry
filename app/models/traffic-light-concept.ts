@@ -5,8 +5,8 @@ import {
   AsyncHasMany,
 } from '@ember-data/model';
 import type { Type } from '@warp-drive/core-types/symbols';
-import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
-import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
+import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import TrafficSignConceptModel from './traffic-sign-concept';
 import SkosConcept from './skos-concept';
 import {
@@ -14,41 +14,41 @@ import {
   validateHasManyOptional,
 } from 'mow-registry/validators/schema';
 
-export default class TrafficLightConceptModel extends TrafficSignConceptModel {
+export default class TrafficLightConcept extends TrafficSignConceptModel {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'traffic-light-concept';
 
-  @belongsTo('skos-concept', { inverse: null, async: true })
+  @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;
 
-  @hasMany('traffic-light-concept', {
+  @hasMany<TrafficLightConcept>('traffic-light-concept', {
     inverse: 'relatedFromTrafficLightConcepts',
     async: true,
   })
-  declare relatedToTrafficLightConcepts: AsyncHasMany<TrafficLightConceptModel>;
+  declare relatedToTrafficLightConcepts: AsyncHasMany<TrafficLightConcept>;
 
-  @hasMany('traffic-light-concept', {
+  @hasMany<TrafficLightConcept>('traffic-light-concept', {
     inverse: 'relatedToTrafficLightConcepts',
     async: true,
   })
-  declare relatedFromTrafficLightConcepts: AsyncHasMany<TrafficLightConceptModel>;
+  declare relatedFromTrafficLightConcepts: AsyncHasMany<TrafficLightConcept>;
 
   // This property is used to house the combined data of the relatedToTrafficLightConcepts and relatedFromTrafficLightConcepts relationships.
   // We need both since we want to display all related signs, not only a single direction.
   // TODO: move this state to the edit page, we don't need to store this on the record itself
-  relatedTrafficLightConcepts: TrafficLightConceptModel[] = [];
+  relatedTrafficLightConcepts: TrafficLightConcept[] = [];
 
-  @hasMany('road-sign-concept', {
+  @hasMany<RoadSignConcept>('road-sign-concept', {
     inverse: 'relatedTrafficLightConcepts',
     async: true,
   })
-  declare relatedRoadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
+  declare relatedRoadSignConcepts: AsyncHasMany<RoadSignConcept>;
 
-  @hasMany('road-marking-concept', {
+  @hasMany<RoadMarkingConcept>('road-marking-concept', {
     inverse: 'relatedTrafficLightConcepts',
     async: true,
   })
-  declare relatedRoadMarkingConcepts: AsyncHasMany<RoadMarkingConceptModel>;
+  declare relatedRoadMarkingConcepts: AsyncHasMany<RoadMarkingConcept>;
 
   get validationSchema() {
     return super.validationSchema.keys({

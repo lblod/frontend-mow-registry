@@ -5,8 +5,8 @@ import {
   hasMany,
 } from '@ember-data/model';
 import type { Type } from '@warp-drive/core-types/symbols';
-import DimensionModel from './dimension';
-import TribontShapeClassificationCodeModel from './tribont-shape-classification-code';
+import type Dimension from './dimension';
+import type TribontShapeClassificationCode from './tribont-shape-classification-code';
 import AbstractValidationModel from './abstract-validation-model';
 import {
   validateBelongsToRequired,
@@ -16,13 +16,19 @@ import Joi from 'joi';
 
 export default class TribontShapeModel extends AbstractValidationModel {
   declare [Type]: 'tribont-shape';
-  @hasMany('dimension', { inverse: null, async: true })
-  declare dimensions: AsyncHasMany<DimensionModel>;
-  @belongsTo('tribont-shape-classification-code', {
-    inverse: null,
-    async: true,
-  })
-  declare classification: AsyncBelongsTo<TribontShapeClassificationCodeModel>;
+
+  @hasMany<Dimension>('dimension', { inverse: null, async: true })
+  declare dimensions: AsyncHasMany<Dimension>;
+
+  @belongsTo<TribontShapeClassificationCode>(
+    'tribont-shape-classification-code',
+    {
+      inverse: null,
+      async: true,
+    },
+  )
+  declare classification: AsyncBelongsTo<TribontShapeClassificationCode>;
+
   get validationSchema() {
     return Joi.object({
       dimensions: validateHasManyRequired(),
