@@ -1,9 +1,7 @@
 import ShapeModel from 'mow-registry/models/shape';
+import type { Type } from '@warp-drive/core-types/symbols';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'node-shape': NodeShapeModel;
-  }
+export default class NodeShapeModel extends ShapeModel {
+  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+  declare [Type]: 'node-shape';
 }
-
-export default class NodeShapeModel extends ShapeModel {}

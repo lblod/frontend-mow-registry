@@ -1,15 +1,12 @@
 import { AsyncBelongsTo, belongsTo, attr } from '@ember-data/model';
+import type { Type } from '@warp-drive/core-types/symbols';
 import type CodeListModel from './code-list';
 import type TemplateModel from './template';
 import ResourceModel from './resource';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    variable: VariableModel;
-  }
-}
-
 export default class VariableModel extends ResourceModel {
+  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+  declare [Type]: 'variable';
   @attr declare uri: string;
   @attr declare label?: string;
   @attr declare type?: string;

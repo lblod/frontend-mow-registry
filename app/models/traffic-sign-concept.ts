@@ -5,6 +5,7 @@ import {
   AsyncBelongsTo,
   AsyncHasMany,
 } from '@ember-data/model';
+import type { Type } from '@warp-drive/core-types/symbols';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import type ImageModel from 'mow-registry/models/image';
 import TemplateModel from './template';
@@ -16,13 +17,9 @@ import {
   validateStringRequired,
 } from 'mow-registry/validators/schema';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'traffic-sign-concept': TrafficSignConceptModel;
-  }
-}
-
 export default class TrafficSignConceptModel extends SkosConcept {
+  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+  declare [Type]: 'traffic-sign-concept';
   @attr declare meaning?: string;
 
   @belongsTo('image', { async: true, inverse: null, polymorphic: true })

@@ -4,6 +4,7 @@ import {
   AsyncBelongsTo,
   AsyncHasMany,
 } from '@ember-data/model';
+import type { Type } from '@warp-drive/core-types/symbols';
 import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
 import TrafficSignConceptModel from './traffic-sign-concept';
@@ -13,12 +14,10 @@ import {
   validateHasManyOptional,
 } from 'mow-registry/validators/schema';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'traffic-light-concept': TrafficLightConceptModel;
-  }
-}
 export default class TrafficLightConceptModel extends TrafficSignConceptModel {
+  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+  declare [Type]: 'traffic-light-concept';
+
   @belongsTo('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;
 

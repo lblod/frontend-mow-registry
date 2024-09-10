@@ -3,14 +3,11 @@ import Joi from 'joi';
 import AbstractValidationModel from './abstract-validation-model';
 import { validateHasManyOptional } from 'mow-registry/validators/schema';
 import type ConceptModel from 'mow-registry/models/concept';
-
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    resource: ResourceModel;
-  }
-}
+import type { Type } from '@warp-drive/core-types/symbols';
 
 export default class ResourceModel extends AbstractValidationModel {
+  declare [Type]: 'resource';
+
   @hasMany('concept', { inverse: null, async: true })
   declare used: AsyncHasMany<ConceptModel>;
 

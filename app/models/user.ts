@@ -1,15 +1,11 @@
 import { get } from '@ember/object';
 import Model, { AsyncHasMany, attr, hasMany } from '@ember-data/model';
+import type { Type } from '@warp-drive/core-types/symbols';
 import type AccountModel from 'mow-registry/models/account';
 import type GroupModel from 'mow-registry/models/group';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    user: UserModel;
-  }
-}
-
 export default class UserModel extends Model {
+  declare [Type]: 'user';
   @attr() declare firstName?: string;
   @attr() declare familyName?: string;
 

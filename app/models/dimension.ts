@@ -8,14 +8,10 @@ import {
   validateNumberRequired,
 } from 'mow-registry/validators/schema';
 import Joi from 'joi';
-
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    dimension: DimensionModel;
-  }
-}
+import type { Type } from '@warp-drive/core-types/symbols';
 
 export default class DimensionModel extends AbstractValidationModel {
+  declare [Type]: 'dimension';
   @attr declare value?: number;
 
   @belongsTo('unit', { inverse: null, async: true })

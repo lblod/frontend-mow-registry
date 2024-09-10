@@ -14,14 +14,11 @@ import {
   validateStringOptional,
   validateStringRequired,
 } from 'mow-registry/validators/schema';
-
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'code-list': CodeListModel;
-  }
-}
+import type { Type } from '@warp-drive/core-types/symbols';
 
 export default class CodeListModel extends ConceptScheme {
+  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+  declare [Type]: 'code-list';
   @attr declare uri?: string;
   @hasMany('variable', { inverse: 'codeList', async: true })
   declare variables: AsyncHasMany<VariableModel>;

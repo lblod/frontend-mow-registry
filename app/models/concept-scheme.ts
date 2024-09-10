@@ -6,14 +6,10 @@ import {
   validateHasManyOptional,
   validateStringOptional,
 } from 'mow-registry/validators/schema';
-
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'concept-scheme': ConceptScheme;
-  }
-}
+import type { Type } from '@warp-drive/core-types/symbols';
 
 export default class ConceptScheme extends AbstractValidationModel {
+  declare [Type]: 'concept-scheme';
   @attr declare label?: string;
   @hasMany('skos-concept', {
     inverse: 'inScheme',

@@ -5,16 +5,13 @@ import Model, {
   belongsTo,
   hasMany,
 } from '@ember-data/model';
+import type { Type } from '@warp-drive/core-types/symbols';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 import TrafficSignConceptModel from './traffic-sign-concept';
 import TemplateModel from './template';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'traffic-measure-concept': TrafficMeasureConceptModel;
-  }
-}
 export default class TrafficMeasureConceptModel extends Model {
+  declare [Type]: 'traffic-measure-concept';
   @attr declare label?: string;
   @attr declare variableSignage?: string;
 

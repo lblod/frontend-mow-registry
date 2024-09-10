@@ -1,9 +1,7 @@
 import Model, { attr } from '@ember-data/model';
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    group: GroupModel;
-  }
-}
+import type { Type } from '@warp-drive/core-types/symbols';
+
 export default class GroupModel extends Model {
+  declare [Type]: 'group';
   @attr declare name?: string;
 }

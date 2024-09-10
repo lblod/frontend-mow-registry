@@ -1,10 +1,7 @@
 import Model, { attr } from '@ember-data/model';
+import type { Type } from '@warp-drive/core-types/symbols';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'tribont-shape-classification-code': TribontShapeClassificationCodeModel;
-  }
-}
 export default class TribontShapeClassificationCodeModel extends Model {
+  declare [Type]: 'tribont-shape-classification-code';
   @attr declare label?: string;
 }
