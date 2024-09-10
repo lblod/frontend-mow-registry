@@ -26,6 +26,8 @@ export default class RoadsignConceptsNewRoute extends Route {
     const quantityKinds = await this.store.query<QuantityKind>(
       'quantity-kind',
       {
+        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+        // TODO: fix the query types
         include: 'units',
       },
     );

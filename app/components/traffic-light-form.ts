@@ -20,11 +20,8 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   }
 
   @action
-  async setTrafficLightConceptValue(
-    attributeName: keyof TrafficLightConcept,
-    event: InputEvent,
-  ) {
-    await this.args.trafficLightConcept.set(
+  async setTrafficLightConceptValue(attributeName: string, event: InputEvent) {
+    this.args.trafficLightConcept.set(
       attributeName,
       (event.target as HTMLInputElement).value,
     );

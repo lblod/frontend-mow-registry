@@ -20,11 +20,8 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   }
 
   @action
-  async setRoadMarkingConceptValue(
-    attributeName: keyof RoadMarkingConcept,
-    event: InputEvent,
-  ) {
-    await this.args.roadMarkingConcept.set(
+  async setRoadMarkingConceptValue(attributeName: string, event: InputEvent) {
+    this.args.roadMarkingConcept.set(
       attributeName,
       (event.target as HTMLInputElement).value,
     );

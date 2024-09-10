@@ -21,11 +21,8 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  async setRoadSignConceptValue(
-    attributeName: keyof RoadSignConcept,
-    event: InputEvent,
-  ) {
-    await this.args.roadSignConcept.set(
+  async setRoadSignConceptValue(attributeName: string, event: InputEvent) {
+    this.args.roadSignConcept.set(
       attributeName,
       (event.target as HTMLInputElement).value,
     );

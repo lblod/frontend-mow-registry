@@ -14,6 +14,8 @@ export default class CodelistsService extends Service {
     if (!this.codeLists) {
       const codeLists = await this.store.query<CodeList>('code-list', {
         'page[size]': 100,
+        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+        // TODO: fix the query types
         include: 'concepts',
         sort: 'label',
       });

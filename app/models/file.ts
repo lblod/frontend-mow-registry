@@ -9,6 +9,6 @@ export default class File extends Model {
   @attr declare extension?: string;
 
   get downloadLink() {
-    return `/files/${this.id}/download`;
+    return this.id ? `/files/${this.id}/download` : '';
   }
 }

@@ -42,6 +42,8 @@ export default class TrafficlightConceptsIndexRoute extends Route {
     return hash({
       trafficLightConcepts: this.store.query<TrafficLightConcept>(
         'traffic-light-concept',
+        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+        // TODO: fix the query types
         query,
       ),
     });

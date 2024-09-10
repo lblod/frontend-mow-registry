@@ -1,4 +1,9 @@
-import { hasMany, AsyncHasMany } from '@ember-data/model';
+import {
+  belongsTo,
+  hasMany,
+  AsyncBelongsTo,
+  AsyncHasMany,
+} from '@ember-data/model';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import {
@@ -8,6 +13,7 @@ import {
 import TrafficSignConcept from './traffic-sign-concept';
 import RoadSignCategory from './road-sign-category';
 import TribontShape from './tribont-shape';
+import type SkosConcept from './skos-concept';
 import type { Type } from '@warp-drive/core-types/symbols';
 
 export default class RoadSignConcept extends TrafficSignConcept {
@@ -58,6 +64,9 @@ export default class RoadSignConcept extends TrafficSignConcept {
   })
   declare relatedTrafficLightConcepts: AsyncHasMany<TrafficLightConcept>;
 
+  @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
+  declare zonality: AsyncBelongsTo<SkosConcept>;
+
   get validationSchema() {
     return super.validationSchema.keys({
       shapes: validateHasManyRequired(),
@@ -68,6 +77,7 @@ export default class RoadSignConcept extends TrafficSignConcept {
       relatedFromRoadSignConcepts: validateHasManyOptional(),
       relatedRoadMarkingConcepts: validateHasManyOptional(),
       relatedTrafficLightConcepts: validateHasManyOptional(),
+      zonality: validateHasManyOptional(),
     });
   }
 }

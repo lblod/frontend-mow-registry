@@ -36,6 +36,8 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
 
     const result = await this.store.query<TrafficMeasureConcept>(
       'traffic-measure-concept',
+      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+      // TODO: fix the query types
       query,
     );
 

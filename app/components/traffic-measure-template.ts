@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
+import { type SafeString } from '@ember/template';
 import { task } from 'ember-concurrency';
 import { action } from '@ember/object';
-import { SafeString } from '@ember/template/-private/handlebars';
 import { unwrap } from 'mow-registry/utils/option';
 import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 
@@ -29,7 +29,7 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
         const instruction = await variable.instruction;
         replaceString =
           "<span style='background-color: #ffffff'>" +
-          (instruction.value ?? '') +
+          (instruction?.value ?? '') +
           '</span>';
         preview = preview.replaceAll(
           '${' + (variable.value ?? '') + '}',

@@ -25,6 +25,8 @@ export default class MockLoginRoute extends Route {
   async model(params: Params) {
     const filter = { provider: 'https://github.com/lblod/mock-login-service' };
     const accounts = await this.store.query<Account>('account', {
+      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+      // TODO: fix the query types
       include: 'user.groups',
       filter: filter,
       page: { size: 10, number: params.page },
@@ -32,7 +34,7 @@ export default class MockLoginRoute extends Route {
     const promises = accounts.map(async (account) => {
       const user = await account.user;
 
-      const group = (await user.groups).slice()[0];
+      const group = (await user?.groups)?.slice()[0];
       return {
         account,
         user,

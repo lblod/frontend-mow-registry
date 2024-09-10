@@ -2,9 +2,10 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import FileService from 'mow-registry/services/file-service';
 import Store from '@ember-data/store';
-import type Model from '@ember-data/model';
-import { type AsyncBelongsTo } from '@ember-data/model';
 import Image from 'mow-registry/models/image';
+import type TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import type Icon from 'mow-registry/models/icon';
+import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 
 /**
  * A helper for uploading images, used in conjunction with `image-input.js`
@@ -43,6 +44,5 @@ export default class ImageUploadHandlerComponent<
   }
 }
 
-interface ModelWithImage extends Model {
-  image: AsyncBelongsTo<Image>;
-}
+// RoadSignConcept is redundant, but inheritance doesn't work as expected because of the brands.
+type ModelWithImage = TrafficSignConcept | RoadSignConcept | Icon;

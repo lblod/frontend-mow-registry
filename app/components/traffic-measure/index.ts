@@ -15,7 +15,6 @@ import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import CodeList from 'mow-registry/models/code-list';
-import ArrayProxy from '@ember/array/proxy';
 import ApplicationInstance from '@ember/application/instance';
 import { SignType } from 'mow-registry/components/traffic-measure/select-type';
 import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
@@ -39,11 +38,11 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   @service declare intl: IntlService;
   @service('codelists') declare codeListService: CodelistsService;
 
-  @tracked codeLists?: ArrayProxy<CodeList>;
+  @tracked codeLists?: CodeList[];
   @tracked declare trafficMeasureConcept: TrafficMeasureConcept;
   @tracked signs: TrafficSignConcept[] = [];
   @tracked variables: Variable[] = [];
-  @tracked template?: Template;
+  @tracked template?: Template | null;
   @tracked searchString?: string;
   @tracked preview?: string;
   @tracked selectedType?: SignType | null;
@@ -130,10 +129,16 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     // We assume that a measure has only one template
     this.template = await this.trafficMeasureConcept.template;
-    this.variables = (await this.template.variables)
-      .slice()
-      .sort((a, b) => (a.id < b.id ? -1 : 1));
-    // const relations = await this.trafficMeasureConcept.getOrderedRelations();
+    if (this.template) {
+      this.variables = (await this.template.variables).slice().sort((a, b) => {
+        if (a.id && b.id) {
+          return a.id < b.id ? -1 : 1;
+        } else {
+          return 0;
+        }
+      });
+      // const relations = await this.trafficMeasureConcept.getOrderedRelations();
+    }
 
     this.signs = new TrackedArray(relatedTrafficSigns);
 
@@ -356,7 +361,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
         const instruction = await variable.instruction;
         replaceString =
           "<span style='background-color: #ffffff'>" +
-          (instruction.value ?? '') +
+          (instruction?.value ?? '') +
           '</span>';
         this.preview = this.preview.replaceAll(
           '${' + (variable.value ?? '') + '}',

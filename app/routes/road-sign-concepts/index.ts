@@ -50,6 +50,8 @@ export default class RoadsignConceptsIndexRoute extends Route {
     return hash({
       roadSignConcepts: this.store.query<RoadSignConcept>(
         'road-sign-concept',
+        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+        // TODO: fix the query types
         query,
       ),
       classifications: this.store.findAll<RoadSignCategory>(

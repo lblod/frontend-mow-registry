@@ -41,12 +41,13 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
   }
 
   get hasActiveChildRoute(): boolean {
+    const currentRouteName = this.router.currentRouteName;
     return (
-      this.router.currentRouteName.startsWith(
+      !!currentRouteName &&
+      currentRouteName.startsWith(
         'road-marking-concepts.road-marking-concept',
       ) &&
-      this.router.currentRouteName !==
-        'road-marking-concepts.road-marking-concept.index'
+      currentRouteName !== 'road-marking-concepts.road-marking-concept.index'
     );
   }
 

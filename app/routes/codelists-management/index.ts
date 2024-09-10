@@ -35,6 +35,8 @@ export default class CodelistsManagementIndexRoute extends Route {
     }
 
     return hash({
+      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+      // TODO: fix the query types
       codelists: this.store.query<CodeList>('code-list', query),
     });
   }

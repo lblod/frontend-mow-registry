@@ -301,9 +301,9 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
     async (roadSignConcept: RoadSignConcept, event: InputEvent) => {
       event.preventDefault();
       await Promise.all(
-        roadSignConcept.shapes.map(async (shape) => {
+        (await roadSignConcept.shapes).map(async (shape) => {
           await Promise.all(
-            shape.dimensions.map(async (dimension) => {
+            (await shape.dimensions).map(async (dimension) => {
               await dimension.destroyRecord();
             }),
           );
@@ -332,12 +332,11 @@ export default class RoadsignConceptsRoadsignConceptController extends Controlle
   }
 
   get hasActiveChildRoute(): boolean {
+    const currentRouteName = this.router.currentRouteName;
     return (
-      this.router.currentRouteName.startsWith(
-        'road-sign-concepts.road-sign-concept',
-      ) &&
-      this.router.currentRouteName !==
-        'road-sign-concepts.road-sign-concept.index'
+      !!currentRouteName &&
+      currentRouteName.startsWith('road-sign-concepts.road-sign-concept') &&
+      currentRouteName !== 'road-sign-concepts.road-sign-concept.index'
     );
   }
 

@@ -20,7 +20,7 @@ export default class IconCatalogFormComponent extends ImageUploadHandlerComponen
     const inputElement = event.target as HTMLInputElement;
     const trimmedValue = inputElement.value.trim();
 
-    await this.args.icon.set(attributeName, trimmedValue);
+    this.args.icon.set(attributeName, trimmedValue);
 
     // Validate the icon model
     await this.args.icon.validate();

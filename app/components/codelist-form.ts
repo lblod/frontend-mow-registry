@@ -25,10 +25,11 @@ export default class CodelistFormComponent extends Component<Args> {
 
   @tracked newValue = '';
   @tracked toDelete: SkosConcept[] = [];
-  @tracked options: SkosConcept[] = [];
+  // Icon is a subclass of SkosConcept, but inheritance types are broken due to the type brands.
+  @tracked options: Array<SkosConcept | Icon> = [];
 
   @tracked codelistTypes?: SkosConcept[];
-  @tracked selectedType?: SkosConcept;
+  @tracked selectedType?: SkosConcept | null;
 
   @tracked selectedIcon: Icon | null = null;
 
@@ -67,8 +68,8 @@ export default class CodelistFormComponent extends Component<Args> {
   });
 
   @action
-  async setCodelistValue(attributeName: keyof CodeList, event: InputEvent) {
-    await this.args.codelist.set(
+  async setCodelistValue(attributeName: string, event: InputEvent) {
+    this.args.codelist.set(
       attributeName,
       (event.target as HTMLInputElement).value,
     );

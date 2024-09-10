@@ -43,6 +43,8 @@ export default class RoadmarkingConceptsIndexRoute extends Route {
     return hash({
       roadMarkingConcepts: await this.store.query<RoadMarkingConcept>(
         'road-marking-concept',
+        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+        // TODO: fix the query types
         query,
       ),
     });

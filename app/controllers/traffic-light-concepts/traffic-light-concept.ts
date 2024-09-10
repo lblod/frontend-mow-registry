@@ -219,12 +219,13 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   }
 
   get hasActiveChildRoute(): boolean {
+    const currentRouteName = this.router.currentRouteName;
     return (
-      this.router.currentRouteName.startsWith(
+      !!currentRouteName &&
+      currentRouteName?.startsWith(
         'traffic-light-concepts.traffic-light-concept',
       ) &&
-      this.router.currentRouteName !==
-        'traffic-light-concepts.traffic-light-concept.index'
+      currentRouteName !== 'traffic-light-concepts.traffic-light-concept.index'
     );
   }
 

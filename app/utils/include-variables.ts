@@ -49,8 +49,8 @@ export default async function includeVariables(
     if (variable.type === 'instruction') {
       continue;
     } else if (variable.type === 'codelist') {
-      const codeList = await variable.get('codeList');
-      const codeListUri = codeList.uri;
+      const codeList = await variable.codeList;
+      const codeListUri = codeList?.uri;
       finalHtml = finalHtml.replaceAll(
         `\${${unwrap(variable.value)}}`,
         generateCodelistTemplate(

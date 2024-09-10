@@ -33,6 +33,8 @@ export default class IconSelectComponent extends Component<Signature> {
       query['filter[label]'] = search;
     }
 
+    // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+    // TODO: fix the query types
     const result = await this.store.query<Icon>('icon', query);
 
     return result.slice();

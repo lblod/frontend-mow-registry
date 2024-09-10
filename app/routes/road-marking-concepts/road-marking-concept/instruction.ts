@@ -27,6 +27,8 @@ export default class RoadMarkingConceptsRoadMarkingConceptInstructionRoute exten
         'template',
         params.instruction_id,
         {
+          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+          // TODO: fix the query types
           include: 'variables',
         },
       );
