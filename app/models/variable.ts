@@ -1,4 +1,4 @@
-import Model, { AsyncBelongsTo, belongsTo, attr } from '@ember-data/model';
+import { AsyncBelongsTo, belongsTo, attr } from '@ember-data/model';
 import type CodeListModel from './code-list';
 import type TemplateModel from './template';
 import ResourceModel from './resource';

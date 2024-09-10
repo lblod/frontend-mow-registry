@@ -170,7 +170,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
 
       // Fix required property
       const manyRequired = this.store().createRecord('test-validation-model');
-      model.manyRequired.pushObject(manyRequired);
+      (await model.manyRequired).push(manyRequired);
 
       isValid = await model.validateProperty('manyRequired');
 
@@ -192,11 +192,13 @@ class BasicValidationModel extends AbstractValidationModel {
 
 class BelongsToValidationModel extends AbstractValidationModel {
   @belongsTo('test-validation-model', {
+    async: true,
     inverse: null,
   })
   oneRequired;
 
   @belongsTo('test-validation-model', {
+    async: true,
     inverse: null,
   })
   oneOptional;
@@ -211,11 +213,13 @@ class BelongsToValidationModel extends AbstractValidationModel {
 
 class HasManyValidationModel extends AbstractValidationModel {
   @hasMany('test-validation-model', {
+    async: true,
     inverse: null,
   })
   manyRequired;
 
   @hasMany('test-validation-model', {
+    async: true,
     inverse: null,
   })
   manyOptional;

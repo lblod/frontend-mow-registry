@@ -79,7 +79,7 @@
           @width="block"
           {{on "input" this.updateTemplate}}
           {{on "input" this.parseTemplate}}
-          @value={{this.template.value}}
+          value={{this.template.value}}
           style="resize: none; height: 200px;"
           class="au-u-margin-bottom-small"
         />
@@ -213,6 +213,7 @@
       <AuButton
         {{on "click" (perform this.save)}}
         @loading={{if this.save.isRunning true false}}
+        @loadingMessage={{t "traffic-measure-concept.crud.save"}}
         @disabled={{if this.save.isRunning true false}}
       >
         {{t "traffic-measure-concept.crud.save"}}

@@ -55,37 +55,8 @@
                 @error={{isInvalid}}
                 id="traffic-light-concept-code"
                 required="required"
-                @value={{@trafficLightConcept.label}}
+                value={{@trafficLightConcept.label}}
                 {{on "input" (fn this.setTrafficLightConceptValue "label")}}
-              />
-              {{#if isInvalid}}
-                <AuHelpText @error={{true}}>
-                  {{t "utility.field-required"}}
-                </AuHelpText>
-              {{/if}}
-            </AuFormRow>
-          {{/let}}
-          {{#let @trafficLightConcept.error.definition as |isInvalid|}}
-            <AuFormRow>
-              <AuLabel
-                @error={{isInvalid}}
-                for="definition"
-                @required={{true}}
-                @requiredLabel={{t "utility.required"}}
-              >
-                {{t "traffic-light-concept.attr.definition"}}&nbsp;
-              </AuLabel>
-              <AuTextarea
-                @error={{isInvalid}}
-                @width="block"
-                class="u-min-h-20"
-                id="definition"
-                required="required"
-                @value={{@trafficLightConcept.definition}}
-                {{on
-                  "input"
-                  (fn this.setTrafficLightConceptValue "definition")
-                }}
               />
               {{#if isInvalid}}
                 <AuHelpText @error={{true}}>
@@ -110,7 +81,7 @@
                 class="u-min-h-20"
                 id="meaning"
                 required="required"
-                @value={{@trafficLightConcept.meaning}}
+                value={{@trafficLightConcept.meaning}}
                 {{on "input" (fn this.setTrafficLightConceptValue "meaning")}}
               />
               {{#if isInvalid}}
@@ -133,6 +104,7 @@
       <AuButton
         @disabled={{or @trafficLightConcept.error this.isSaving}}
         @loading={{this.isSaving}}
+        @loadingMessage={{t "utility.save"}}
         form="edit-traffic-light-concept-form"
         {{on "click" (perform this.editTrafficLightConceptTask)}}
       >

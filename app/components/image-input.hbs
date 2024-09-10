@@ -17,8 +17,7 @@
     "image-input.helptext"
   }}</AuHelpText>
 
-{{! because of AU bug @medium is part of wrap instead of no-wrap }}
-<div class="flex au-u-flex--wrap@medium au-u-flex--no-wrap full-width">
+<div class="flex au-u-flex--wrap au-u-flex--no-wrap@medium full-width">
   <FileUploader
     @accept={{"image/jpeg,image/jpg,image/png,image/svg+xml"}}
     @onFileSet={{this.setImageUpload}}

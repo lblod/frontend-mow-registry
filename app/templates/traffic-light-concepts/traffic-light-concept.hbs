@@ -47,14 +47,6 @@
             </li>
             <li class="au-o-grid__item au-u-1-2 au-u-1-4@medium">
               <AuLabel>
-                {{t "traffic-light-concept.attr.definition"}}
-              </AuLabel>
-              <p>
-                {{@model.trafficLightConcept.definition}}
-              </p>
-            </li>
-            <li class="au-o-grid__item au-u-1-2 au-u-1-4@medium">
-              <AuLabel>
                 {{t "traffic-light-concept.attr.meaning"}}
               </AuLabel>
               <p>
@@ -122,7 +114,7 @@
         class="au-c-body-container au-c-body-container--scroll au-c-body-container--tables"
       >
         <InstructionsTable
-          @templates={{@model.trafficLightConcept.hasInstructions}}
+          @templates={{await @model.trafficLightConcept.hasInstructions}}
           @removeTemplate={{perform this.removeTemplate}}
           @editInstruction={{this.editInstruction}}
           @addInstruction={{this.addInstruction}}
@@ -245,7 +237,7 @@
           </AuToolbar>
           <div class="au-c-data-table__search">
             <AuInput
-              @value={{this.relatedRoadMarkingCodeFilter}}
+              value={{this.relatedRoadMarkingCodeFilter}}
               placeholder={{t "related-road-marking.filter.label"}}
               @icon="search"
               @iconAlignment="right"
@@ -262,7 +254,7 @@
             <SidebarRoadSign
               @imageUrl={{relatedRoadMarking.image.file.downloadLink}}
               @code={{relatedRoadMarking.label}}
-              @meaning={{relatedRoadMarking.definition}}
+              @meaning={{relatedRoadMarking.meaning}}
               @onAdd={{perform this.addRelatedRoadMarking relatedRoadMarking}}
               @addText={{t "related-road-marking.crud.add-one"}}
               class="au-c-action-sidebar__item"
@@ -316,7 +308,7 @@
           </AuToolbar>
           <div class="au-c-data-table__search">
             <AuInput
-              @value={{this.relatedTrafficLightCodeFilter}}
+              value={{this.relatedTrafficLightCodeFilter}}
               placeholder={{t "related-traffic-light.filter.label"}}
               @icon="search"
               @iconAlignment="right"
@@ -333,7 +325,7 @@
             <SidebarRoadSign
               @imageUrl={{relatedTrafficLight.image.file.downloadLink}}
               @code={{relatedTrafficLight.label}}
-              @meaning={{relatedTrafficLight.definition}}
+              @meaning={{relatedTrafficLight.meaning}}
               @onAdd={{perform this.addRelatedTrafficLight relatedTrafficLight}}
               @addText={{t "related-traffic-light.crud.add-one"}}
               class="au-c-action-sidebar__item"

@@ -17,7 +17,7 @@
         {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
         <div class="au-c-data-table__search road-marking-code-search">
           <AuInput
-            @value={{this.code}}
+            value={{this.label}}
             placeholder={{t "road-marking-concept.crud.label-filter"}}
             @icon="search"
             @iconAlignment="right"
@@ -26,7 +26,7 @@
         </div>
         <div class="au-c-data-table__search road-marking-meaning-search">
           <AuInput
-            @value={{this.meaning}}
+            value={{this.meaning}}
             placeholder={{t "road-marking-concept.crud.meaning-filter"}}
             @icon="search"
             @iconAlignment="right"

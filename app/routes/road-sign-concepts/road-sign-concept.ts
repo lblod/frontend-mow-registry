@@ -3,6 +3,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import RoadsignConceptsRoadsignConceptController from 'mow-registry/controllers/road-sign-concepts/road-sign-concept';
 import { hash } from 'rsvp';
+import { TrackedArray } from 'tracked-built-ins';
 
 type Params = {
   id: string;
@@ -12,20 +13,18 @@ export default class RoadsignConcept extends Route {
   @service declare store: Store;
 
   async model(params: Params) {
-    const model = await hash({
+    const data = await hash({
       roadSignConcept: this.store.findRecord('road-sign-concept', params.id),
-      allSubSigns: this.store
-        .query('road-sign-concept', {
-          filter: {
-            classifications: {
-              label: 'Onderbord',
-            },
+      allSubSigns: this.store.query('road-sign-concept', {
+        filter: {
+          classifications: {
+            label: 'Onderbord',
           },
-          page: {
-            size: 10000,
-          },
-        })
-        .then((subsigns) => subsigns.slice()),
+        },
+        page: {
+          size: 10000,
+        },
+      }),
       classifications: this.store
         .findAll('road-sign-category')
         .then((classification) => {
@@ -43,20 +42,26 @@ export default class RoadsignConcept extends Route {
       }),
     });
 
-    const relatedSubSigns = await model.roadSignConcept.subSigns;
-    model.allSubSigns = model.allSubSigns.filter((subSign) => {
-      return (
-        subSign.id !== model.roadSignConcept.id &&
-        !relatedSubSigns.includes(subSign)
-      );
-    });
+    const relatedSubSigns = await data.roadSignConcept.subSigns;
 
-    model.roadSignConcept.relatedRoadSignConcepts = [];
-    model.roadSignConcept.relatedRoadSignConcepts
-      .addObjects(await model.roadSignConcept.relatedToRoadSignConcepts)
-      .addObjects(await model.roadSignConcept.relatedFromRoadSignConcepts);
+    data.roadSignConcept.relatedRoadSignConcepts = new TrackedArray([
+      // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
+      ...(await data.roadSignConcept.relatedToRoadSignConcepts),
+      // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
+      ...(await data.roadSignConcept.relatedFromRoadSignConcepts),
+    ]);
 
-    return model;
+    return {
+      ...data,
+      allSubSigns: new TrackedArray(
+        data.allSubSigns.filter((subSign) => {
+          return (
+            subSign.id !== data.roadSignConcept.id &&
+            !relatedSubSigns.includes(subSign)
+          );
+        }),
+      ),
+    };
   }
 
   resetController(controller: RoadsignConceptsRoadsignConceptController) {

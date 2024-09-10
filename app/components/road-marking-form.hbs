@@ -51,34 +51,8 @@
                 @error={{isInvalid}}
                 id="road-marking-concept-code"
                 required="required"
-                @value={{@roadMarkingConcept.label}}
+                value={{@roadMarkingConcept.label}}
                 {{on "input" (fn this.setRoadMarkingConceptValue "label")}}
-              />
-              {{#if isInvalid}}
-                <AuHelpText @error={{true}}>
-                  {{t "utility.field-required"}}
-                </AuHelpText>
-              {{/if}}
-            </AuFormRow>
-          {{/let}}
-          {{#let @roadMarkingConcept.error.definition as |isInvalid|}}
-            <AuFormRow>
-              <AuLabel
-                @error={{isInvalid}}
-                for="definition"
-                @required={{true}}
-                @requiredLabel={{t "utility.required"}}
-              >
-                {{t "road-marking-concept.attr.definition"}}&nbsp;
-              </AuLabel>
-              <AuTextarea
-                @error={{isInvalid}}
-                @width="block"
-                class="u-min-h-20"
-                id="definition"
-                required="required"
-                @value={{@roadMarkingConcept.definition}}
-                {{on "input" (fn this.setRoadMarkingConceptValue "definition")}}
               />
               {{#if isInvalid}}
                 <AuHelpText @error={{true}}>
@@ -103,7 +77,7 @@
                 class="u-min-h-20"
                 id="meaning"
                 required="required"
-                @value={{@roadMarkingConcept.meaning}}
+                value={{@roadMarkingConcept.meaning}}
                 {{on "input" (fn this.setRoadMarkingConceptValue "meaning")}}
               />
               {{#if isInvalid}}
@@ -125,6 +99,7 @@
       <AuButton
         @disabled={{or @roadMarkingConcept.error this.isSaving}}
         @loading={{this.isSaving}}
+        @loadingMessage={{t "utility.save"}}
         {{on "click" (perform this.editRoadMarkingConceptTask)}}
       >
         {{t "utility.save"}}

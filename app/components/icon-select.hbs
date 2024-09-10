@@ -3,15 +3,15 @@
   @searchEnabled={{true}}
   @loadingMessage={{t "utility.loading"}}
   @noMatchesMessage={{t "utility.no-result"}}
-  @searchMessage={{t "search-placeholder"}}
+  @searchMessage={{t "utility.search-placeholder"}}
   @searchField="label"
   @search={{perform this.loadIconCatalogTask}}
   @options={{this.icons}}
   @selected={{@selected}}
   @onChange={{@onChange}}
   @triggerId={{@id}}
-  as |icon|
   {{did-insert this.didInsert}}
+  as |icon|
 >
   {{icon.label}}
 </PowerSelect>

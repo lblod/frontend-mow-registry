@@ -2,7 +2,7 @@
 <AuModalContainer/>
 <AuApp class='{{if this.showEnvironment "au-c-app--environment"}}'>
   {{#if this.showEnvironment}}
-    <EnvironmentBanner 
+    <EnvironmentBanner
       @applicationName='{{t "utility.app-name"}}'
       @environmentName={{this.environmentName}}
     />
@@ -10,8 +10,8 @@
   <AuMainHeader @brandLink="https://www.vlaanderen.be/nl" @homeRoute="index" @appTitle={{t "utility.app-name"}}>
       {{#if this.session.isAuthenticated}}
         {{!-- template-lint-disable require-context-role --}}
-        <AuButton @skin="tertiary" role="menuitem" {{on "click" this.logout}}>
-          <AuIcon @icon="logout" @alignment="left" />{{t "utility.logout"}}
+        <AuButton @icon="logout" @skin="link" role="menuitem" {{on "click" this.logout}}>
+          {{t "utility.logout"}}
         </AuButton>
       {{else}}
         <AuLink @route="login">
