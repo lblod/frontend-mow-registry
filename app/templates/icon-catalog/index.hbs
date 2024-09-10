@@ -17,7 +17,7 @@
         {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
         <div class="au-c-data-table__search">
           <AuInput
-            value={{this.code}}
+            value={{this.label}}
             placeholder={{t "icon-catalog.crud.label-filter"}}
             @icon="search"
             @iconAlignment="right"
@@ -31,11 +31,7 @@
     </AuToolbar>
   </:menu>
   <:rowAction as |icon|>
-    <LinkTo
-      class="au-c-link"
-      @route="icon-catalog.icon"
-      @model={{icon.id}}
-    >
+    <LinkTo class="au-c-link" @route="icon-catalog.icon" @model={{icon.id}}>
       {{t "utility.view"}}
     </LinkTo>
   </:rowAction>

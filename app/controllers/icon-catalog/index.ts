@@ -13,12 +13,12 @@ export default class IconCatalogIndexController extends Controller {
   @tracked page = 0;
   @tracked size = 30;
   @tracked label = '';
-  @tracked sort = 'label';
+  @tracked sort = ':no-case:label';
 
   updateSearchFilterTask = restartableTask(async (event: InputEvent) => {
     await timeout(300);
 
-    this.label = (event.target as HTMLInputElement).value;
+    this.label = (event.target as HTMLInputElement).value.trimStart();
     this.resetPagination();
   });
 
