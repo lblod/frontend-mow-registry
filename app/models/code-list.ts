@@ -16,7 +16,7 @@ import {
 } from 'mow-registry/validators/schema';
 import type { Type } from '@warp-drive/core-types/symbols';
 
-export default class CodeListModel extends ConceptScheme {
+export default class CodeList extends ConceptScheme {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'code-list';
   @attr declare uri?: string;

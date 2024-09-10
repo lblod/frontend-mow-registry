@@ -5,7 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import type RouterService from '@ember/routing/router-service';
 import { ModelFrom } from 'mow-registry/utils/type-utils';
 import IconCatalogIconRoute from 'mow-registry/routes/icon-catalog/icon';
-import IconModel from 'mow-registry/models/icon';
+import Icon from 'mow-registry/models/icon';
 
 export default class IconCatalogIconController extends Controller {
   @service declare router: RouterService;
@@ -13,7 +13,7 @@ export default class IconCatalogIconController extends Controller {
 
   @tracked isOpen = false;
 
-  removeIcon = task(async (icon: IconModel, event: InputEvent) => {
+  removeIcon = task(async (icon: Icon, event: InputEvent) => {
     event.preventDefault();
 
     await icon.destroyRecord();

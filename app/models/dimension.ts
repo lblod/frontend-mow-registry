@@ -10,7 +10,7 @@ import {
 import Joi from 'joi';
 import type { Type } from '@warp-drive/core-types/symbols';
 
-export default class DimensionModel extends AbstractValidationModel {
+export default class Dimension extends AbstractValidationModel {
   declare [Type]: 'dimension';
   @attr declare value?: number;
 

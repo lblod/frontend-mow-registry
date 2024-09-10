@@ -7,14 +7,14 @@ import {
 import type { Type } from '@warp-drive/core-types/symbols';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
-import TrafficSignConceptModel from './traffic-sign-concept';
+import TrafficSignConcept from './traffic-sign-concept';
 import SkosConcept from './skos-concept';
 import {
   validateBelongsToOptional,
   validateHasManyOptional,
 } from 'mow-registry/validators/schema';
 
-export default class TrafficLightConcept extends TrafficSignConceptModel {
+export default class TrafficLightConcept extends TrafficSignConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'traffic-light-concept';
 

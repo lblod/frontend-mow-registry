@@ -5,12 +5,12 @@ import {
   validateHasManyOptional,
   validateHasManyRequired,
 } from 'mow-registry/validators/schema';
-import TrafficSignConceptModel from './traffic-sign-concept';
-import RoadSignCategoryModel from './road-sign-category';
-import TribontShapeModel from './tribont-shape';
+import TrafficSignConcept from './traffic-sign-concept';
+import RoadSignCategory from './road-sign-category';
+import TribontShape from './tribont-shape';
 import type { Type } from '@warp-drive/core-types/symbols';
 
-export default class RoadSignConceptModel extends TrafficSignConceptModel {
+export default class RoadSignConcept extends TrafficSignConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'road-sign-concept';
 
@@ -18,33 +18,33 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
     inverse: 'roadSignConcepts',
     async: true,
   })
-  declare classifications: AsyncHasMany<RoadSignCategoryModel>;
+  declare classifications: AsyncHasMany<RoadSignCategory>;
 
   @hasMany('tribont-shape', { inverse: null, async: true })
-  declare shapes: AsyncHasMany<TribontShapeModel>;
+  declare shapes: AsyncHasMany<TribontShape>;
 
   @hasMany('road-sign-concept', { inverse: 'mainSigns', async: true })
-  declare subSigns: AsyncHasMany<RoadSignConceptModel>;
+  declare subSigns: AsyncHasMany<RoadSignConcept>;
 
   @hasMany('road-sign-concept', { inverse: 'subSigns', async: true })
-  declare mainSigns: AsyncHasMany<RoadSignConceptModel>;
+  declare mainSigns: AsyncHasMany<RoadSignConcept>;
 
   @hasMany('road-sign-concept', {
     inverse: 'relatedFromRoadSignConcepts',
     async: true,
   })
-  declare relatedToRoadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
+  declare relatedToRoadSignConcepts: AsyncHasMany<RoadSignConcept>;
 
   @hasMany('road-sign-concept', {
     inverse: 'relatedToRoadSignConcepts',
     async: true,
   })
-  declare relatedFromRoadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
+  declare relatedFromRoadSignConcepts: AsyncHasMany<RoadSignConcept>;
 
   // This property is used to house the combined data of the relatedToRoadSignConcepts and relatedFromRoadSignConcepts relationships.
   // We need both since we want to display all related signs, not only a single direction.
   // TODO: move this state to the edit page, we don't need to store this on the record itself
-  relatedRoadSignConcepts: Array<RoadSignConceptModel> = [];
+  relatedRoadSignConcepts: Array<RoadSignConcept> = [];
 
   @hasMany('road-marking-concept', {
     inverse: 'relatedRoadSignConcepts',

@@ -4,7 +4,7 @@ import type { Type } from '@warp-drive/core-types/symbols';
 import type Account from 'mow-registry/models/account';
 import type Group from 'mow-registry/models/group';
 
-export default class UserModel extends Model {
+export default class User extends Model {
   declare [Type]: 'user';
   @attr() declare firstName?: string;
   @attr() declare familyName?: string;

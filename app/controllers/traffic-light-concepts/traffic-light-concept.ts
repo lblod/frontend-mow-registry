@@ -6,10 +6,10 @@ import { tracked } from '@glimmer/tracking';
 import type RouterService from '@ember/routing/router-service';
 import { ModelFrom } from 'mow-registry/utils/type-utils';
 import TrafficlightConcept from 'mow-registry/routes/traffic-light-concepts/traffic-light-concept';
-import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
-import TemplateModel from 'mow-registry/models/template';
-import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
-import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
+import RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import Template from 'mow-registry/models/template';
+import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
+import RoadSignCategory from 'mow-registry/models/road-sign-category';
 import { removeItem } from 'mow-registry/utils/array';
 
 export default class TrafficLightConceptsTrafficLightConceptController extends Controller {
@@ -23,15 +23,15 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   @tracked isAddingMainSigns = false;
   @tracked isAddingSubSigns = false;
 
-  @tracked classification: RoadSignCategoryModel | null = null;
+  @tracked classification: RoadSignCategory | null = null;
   @tracked classificationTrafficLights = null;
   @tracked classificationRoadMarkings = null;
-  @tracked classificationRoadSigns: RoadSignConceptModel[] | null = null;
+  @tracked classificationRoadSigns: RoadSignConcept[] | null = null;
 
   @tracked relatedTrafficLightCodeFilter = '';
   @tracked relatedRoadMarkingCodeFilter = '';
   @tracked newDescription = '';
-  @tracked editedTemplate: TemplateModel | null = null;
+  @tracked editedTemplate: Template | null = null;
 
   get showSidebar() {
     return (
@@ -87,7 +87,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     await this.model.trafficLightConcept.save();
   });
 
-  addRelatedRoadSign = task(async (relatedRoadSign: RoadSignConceptModel) => {
+  addRelatedRoadSign = task(async (relatedRoadSign: RoadSignConcept) => {
     const relatedRoadSigns =
       await this.model.trafficLightConcept.relatedRoadSignConcepts;
 
@@ -128,22 +128,20 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     await this.model.trafficLightConcept.save();
   });
 
-  handleCategorySelection = task(
-    async (classification: RoadSignCategoryModel) => {
-      if (classification) {
-        this.classification = classification;
-        const classificationRoadSigns = await classification.roadSignConcepts;
+  handleCategorySelection = task(async (classification: RoadSignCategory) => {
+    if (classification) {
+      this.classification = classification;
+      const classificationRoadSigns = await classification.roadSignConcepts;
 
-        this.classificationRoadSigns = classificationRoadSigns;
-      } else {
-        this.classification = null;
-        this.classificationRoadSigns = null;
-      }
-    },
-  );
+      this.classificationRoadSigns = classificationRoadSigns;
+    } else {
+      this.classification = null;
+      this.classificationRoadSigns = null;
+    }
+  });
 
   removeRelatedTrafficLight = task(
-    async (relatedTrafficLight: TrafficLightConceptModel) => {
+    async (relatedTrafficLight: TrafficLightConcept) => {
       const relatedToTrafficLightConcepts =
         await this.model.trafficLightConcept.relatedToTrafficLightConcepts;
       const relatedFromTrafficLightConcepts =
@@ -189,10 +187,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   }
 
   removeTrafficLightConcept = task(
-    async (
-      trafficLightConcept: TrafficLightConceptModel,
-      event: InputEvent,
-    ) => {
+    async (trafficLightConcept: TrafficLightConcept, event: InputEvent) => {
       event.preventDefault();
 
       await trafficLightConcept.destroyRecord();
@@ -216,7 +211,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     this.resetInstruction();
   });
 
-  @action async editInstruction(template: TemplateModel) {
+  @action async editInstruction(template: Template) {
     await this.router.transitionTo(
       'traffic-light-concepts.traffic-light-concept.instruction',
       template.id,
@@ -246,7 +241,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     this.editedTemplate = null;
   }
 
-  removeTemplate = task(async (template: TemplateModel) => {
+  removeTemplate = task(async (template: Template) => {
     const templates = await this.model.trafficLightConcept.hasInstructions;
 
     removeItem(templates, template);

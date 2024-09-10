@@ -3,24 +3,24 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import Store from '@ember-data/store';
-import TribontShapeClassificationCodeModel from 'mow-registry/models/tribont-shape-classification-code';
+import TribontShapeClassificationCode from 'mow-registry/models/tribont-shape-classification-code';
 import ApplicationInstance from '@ember/application/instance';
-import QuantityKindModel from 'mow-registry/models/quantity-kind';
-import UnitModel from 'mow-registry/models/unit';
-import TribontShapeModel from 'mow-registry/models/tribont-shape';
-import DimensionModel from 'mow-registry/models/dimension';
+import QuantityKind from 'mow-registry/models/quantity-kind';
+import Unit from 'mow-registry/models/unit';
+import TribontShape from 'mow-registry/models/tribont-shape';
+import Dimension from 'mow-registry/models/dimension';
 
 type Args = {
-  onNewShape: (shape: TribontShapeModel) => void;
-  quantityKinds: QuantityKindModel[];
+  onNewShape: (shape: TribontShape) => void;
+  quantityKinds: QuantityKind[];
 };
 
 export default class RoadSignShapeSelectComponent extends Component<Args> {
   @service declare store: Store;
   @tracked showDimensionForm = false;
   @tracked showShapeForm = false;
-  @tracked shape: TribontShapeModel;
-  @tracked dimension: DimensionModel;
+  @tracked shape: TribontShape;
+  @tracked dimension: Dimension;
 
   constructor(owner: ApplicationInstance, args: Args) {
     super(owner, args);
@@ -28,19 +28,19 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
     this.dimension = this.store.createRecord('dimension');
   }
   @action
-  setClassificatie(classificatie: TribontShapeClassificationCodeModel) {
+  setClassificatie(classificatie: TribontShapeClassificationCode) {
     this.shape.set('classification', classificatie);
     this.dimension = this.store.createRecord('dimension');
   }
 
   @action
-  setQuantityKind(qt: QuantityKindModel) {
+  setQuantityKind(qt: QuantityKind) {
     this.dimension.set('kind', qt);
     this.dimension.set('unit', undefined);
   }
 
   @action
-  setUnitType(u: UnitModel) {
+  setUnitType(u: Unit) {
     this.dimension.set('unit', u);
   }
 

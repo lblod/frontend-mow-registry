@@ -3,7 +3,7 @@ import type Resource from 'mow-registry/models/resource';
 import type Concept from 'mow-registry/models/concept';
 import type { Type } from '@warp-drive/core-types/symbols';
 
-export default class ShapeModel extends Model {
+export default class Shape extends Model {
   declare [Type]: 'shape';
 
   @belongsTo<Resource>('resource', {

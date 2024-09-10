@@ -3,12 +3,12 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import ImageUploadHandlerComponent from './image-upload-handler';
 import type RouterService from '@ember/routing/router-service';
-import RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
+import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import Store from '@ember-data/store';
-import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
+import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {
-  roadMarkingConcept: RoadMarkingConceptModel;
+  roadMarkingConcept: RoadMarkingConcept;
 };
 
 export default class RoadMarkingFormComponent extends ImageUploadHandlerComponent<Args> {
@@ -21,7 +21,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
 
   @action
   async setRoadMarkingConceptValue(
-    attributeName: keyof RoadMarkingConceptModel,
+    attributeName: keyof RoadMarkingConcept,
     event: InputEvent,
   ) {
     await this.args.roadMarkingConcept.set(
@@ -49,7 +49,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   });
 
   @action
-  async setImage(model: TrafficSignConceptModel, image: File) {
+  async setImage(model: TrafficSignConcept, image: File) {
     super.setImage(model, image);
     await this.args.roadMarkingConcept.validateProperty('image');
   }

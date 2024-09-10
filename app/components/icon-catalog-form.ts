@@ -3,10 +3,10 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import IconModel from 'mow-registry/models/icon';
+import Icon from 'mow-registry/models/icon';
 
 type Args = {
-  icon: IconModel;
+  icon: Icon;
 };
 export default class IconCatalogFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: RouterService;
@@ -16,7 +16,7 @@ export default class IconCatalogFormComponent extends ImageUploadHandlerComponen
   }
 
   @action
-  async setIconValue(attributeName: keyof IconModel, event: InputEvent) {
+  async setIconValue(attributeName: keyof Icon, event: InputEvent) {
     const inputElement = event.target as HTMLInputElement;
     const trimmedValue = inputElement.value.trim();
 
@@ -27,7 +27,7 @@ export default class IconCatalogFormComponent extends ImageUploadHandlerComponen
   }
 
   @action
-  async setImage(model: IconModel, image: File) {
+  async setImage(model: Icon, image: File) {
     super.setImage(model, image);
     await this.args.icon.validate();
   }

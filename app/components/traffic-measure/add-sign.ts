@@ -5,16 +5,16 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import Store from '@ember-data/store';
 import { SignType } from 'mow-registry/components/traffic-measure/select-type';
-import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
+import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {
   selectedType: SignType;
-  addSign: (sign: TrafficSignConceptModel) => void;
+  addSign: (sign: TrafficSignConcept) => void;
 };
 export default class TrafficMeasureAddSignComponent extends Component<Args> {
   @service declare store: Store;
 
-  @tracked selected?: TrafficSignConceptModel | null;
+  @tracked selected?: TrafficSignConcept | null;
 
   search = restartableTask(async (searchData: string) => {
     await timeout(300);
@@ -32,12 +32,12 @@ export default class TrafficMeasureAddSignComponent extends Component<Args> {
   });
 
   @action
-  select(selected: TrafficSignConceptModel) {
+  select(selected: TrafficSignConcept) {
     this.selected = selected;
   }
 
   @action
-  addSign(selected: TrafficSignConceptModel) {
+  addSign(selected: TrafficSignConcept) {
     if (selected) {
       this.args.addSign(selected);
       this.selected = null;

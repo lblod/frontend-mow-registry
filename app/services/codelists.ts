@@ -3,11 +3,11 @@ import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import Store from '@ember-data/store';
-import CodeListModel from 'mow-registry/models/code-list';
+import CodeList from 'mow-registry/models/code-list';
 import ArrayProxy from '@ember/array/proxy';
 
 export default class CodelistsService extends Service {
-  @tracked codeLists?: ArrayProxy<CodeListModel>;
+  @tracked codeLists?: ArrayProxy<CodeList>;
 
   @service declare store: Store;
 

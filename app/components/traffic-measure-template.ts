@@ -5,10 +5,10 @@ import { task } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { SafeString } from '@ember/template/-private/handlebars';
 import { unwrap } from 'mow-registry/utils/option';
-import TrafficMeasureConceptModel from 'mow-registry/models/traffic-measure-concept';
+import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 
 type Args = {
-  concept: TrafficMeasureConceptModel;
+  concept: TrafficMeasureConcept;
 };
 
 export default class TrafficMeasureTemplateComponent extends Component<Args> {
@@ -19,7 +19,7 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
     await this.fetchTemplate.perform(this.args.concept);
   }
 
-  fetchTemplate = task(async (concept: TrafficMeasureConceptModel) => {
+  fetchTemplate = task(async (concept: TrafficMeasureConcept) => {
     const template = unwrap(await concept.template);
     let preview = template?.value ?? '';
     const variables = (await template.variables).slice();

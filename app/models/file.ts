@@ -1,7 +1,7 @@
 import Model, { attr } from '@ember-data/model';
 import type { Type } from '@warp-drive/core-types/symbols';
 
-export default class FileModel extends Model {
+export default class File extends Model {
   declare [Type]: 'file';
   @attr declare name?: string;
   @attr declare format?: string;

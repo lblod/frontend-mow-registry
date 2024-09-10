@@ -7,16 +7,16 @@ import {
   COD_SINGLE_SELECT_ID,
   COD_CONCEPT_SCHEME_ID,
 } from '../utils/constants';
-import CodeListModel from 'mow-registry/models/code-list';
+import CodeList from 'mow-registry/models/code-list';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import ArrayProxy from '@ember/array/proxy';
 import Store from '@ember-data/store';
 import type RouterService from '@ember/routing/router-service';
-import IconModel from 'mow-registry/models/icon';
+import Icon from 'mow-registry/models/icon';
 import { removeItem } from 'mow-registry/utils/array';
 
 type Args = {
-  codelist: CodeListModel;
+  codelist: CodeList;
 };
 
 export default class CodelistFormComponent extends Component<Args> {
@@ -30,14 +30,14 @@ export default class CodelistFormComponent extends Component<Args> {
   @tracked codelistTypes?: ArrayProxy<SkosConcept>;
   @tracked selectedType?: SkosConcept;
 
-  @tracked selectedIcon: IconModel | null = null;
+  @tracked selectedIcon: Icon | null = null;
 
   get valueOptions() {
-    return this.options?.filter((model) => !(model instanceof IconModel));
+    return this.options?.filter((model) => !(model instanceof Icon));
   }
 
   get iconOptions() {
-    return this.options?.filter((model) => model instanceof IconModel);
+    return this.options?.filter((model) => model instanceof Icon);
   }
 
   @action
@@ -67,10 +67,7 @@ export default class CodelistFormComponent extends Component<Args> {
   });
 
   @action
-  async setCodelistValue(
-    attributeName: keyof CodeListModel,
-    event: InputEvent,
-  ) {
+  async setCodelistValue(attributeName: keyof CodeList, event: InputEvent) {
     await this.args.codelist.set(
       attributeName,
       (event.target as HTMLInputElement).value,
@@ -108,7 +105,7 @@ export default class CodelistFormComponent extends Component<Args> {
   }
 
   @action
-  updateIconSelector(icon: IconModel) {
+  updateIconSelector(icon: Icon) {
     this.selectedIcon = icon;
   }
 
@@ -122,29 +119,25 @@ export default class CodelistFormComponent extends Component<Args> {
   }
 
   @action
-  removeIcon(icon: IconModel) {
+  removeIcon(icon: Icon) {
     removeItem(this.options, icon);
   }
 
-  editCodelistTask = dropTask(
-    async (codelist: CodeListModel, event: InputEvent) => {
-      event.preventDefault();
+  editCodelistTask = dropTask(async (codelist: CodeList, event: InputEvent) => {
+    event.preventDefault();
 
-      await codelist.validate();
+    await codelist.validate();
 
-      if (!codelist.error) {
-        await Promise.all(
-          this.toDelete.map((option) => option.destroyRecord()),
-        );
-        await codelist.save();
-        await Promise.all(this.options.map((option) => option.save()));
-        await this.router.transitionTo(
-          'codelists-management.codelist',
-          codelist.id,
-        );
-      }
-    },
-  );
+    if (!codelist.error) {
+      await Promise.all(this.toDelete.map((option) => option.destroyRecord()));
+      await codelist.save();
+      await Promise.all(this.options.map((option) => option.save()));
+      await this.router.transitionTo(
+        'codelists-management.codelist',
+        codelist.id,
+      );
+    }
+  });
 
   @action
   async cancelEditingTask() {

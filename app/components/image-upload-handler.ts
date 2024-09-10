@@ -4,7 +4,7 @@ import FileService from 'mow-registry/services/file-service';
 import Store from '@ember-data/store';
 import type Model from '@ember-data/model';
 import { type AsyncBelongsTo } from '@ember-data/model';
-import type ImageModel from 'mow-registry/models/image';
+import type Image from 'mow-registry/models/image';
 
 /**
  * A helper for uploading images, used in conjunction with `image-input.js`
@@ -44,5 +44,5 @@ export default class ImageUploadHandlerComponent<
 }
 
 interface ModelWithImage extends Model {
-  image: AsyncBelongsTo<ImageModel>;
+  image: AsyncBelongsTo<Image>;
 }

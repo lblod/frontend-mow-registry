@@ -14,7 +14,7 @@ import {
 } from 'mow-registry/validators/schema';
 import Joi from 'joi';
 
-export default class TribontShapeModel extends AbstractValidationModel {
+export default class TribontShape extends AbstractValidationModel {
   declare [Type]: 'tribont-shape';
 
   @hasMany<Dimension>('dimension', { inverse: null, async: true })

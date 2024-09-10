@@ -8,19 +8,19 @@ import Store from '@ember-data/store';
 import type RouterService from '@ember/routing/router-service';
 import IntlService from 'ember-intl/services/intl';
 import CodelistsService from 'mow-registry/services/codelists';
-import TrafficMeasureConceptModel from 'mow-registry/models/traffic-measure-concept';
-import TemplateModel from 'mow-registry/models/template';
+import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
+import Template from 'mow-registry/models/template';
 import { unwrap } from 'mow-registry/utils/option';
-import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
-import RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
-import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
-import CodeListModel from 'mow-registry/models/code-list';
+import RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
+import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
+import CodeList from 'mow-registry/models/code-list';
 import ArrayProxy from '@ember/array/proxy';
 import ApplicationInstance from '@ember/application/instance';
 import { SignType } from 'mow-registry/components/traffic-measure/select-type';
-import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
-import VariableModel from 'mow-registry/models/variable';
-import type NodeShapeModel from 'mow-registry/models/node-shape';
+import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import Variable from 'mow-registry/models/variable';
+import type NodeShape from 'mow-registry/models/node-shape';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
 
@@ -30,7 +30,7 @@ export type InputType = {
 };
 
 type Args = {
-  trafficMeasureConcept: TrafficMeasureConceptModel;
+  trafficMeasureConcept: TrafficMeasureConcept;
 };
 
 export default class TrafficMeasureIndexComponent extends Component<Args> {
@@ -39,19 +39,19 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   @service declare intl: IntlService;
   @service('codelists') declare codeListService: CodelistsService;
 
-  @tracked codeLists?: ArrayProxy<CodeListModel>;
-  @tracked declare trafficMeasureConcept: TrafficMeasureConceptModel;
-  @tracked signs: TrafficSignConceptModel[] = [];
-  @tracked variables: VariableModel[] = [];
-  @tracked template?: TemplateModel;
+  @tracked codeLists?: ArrayProxy<CodeList>;
+  @tracked declare trafficMeasureConcept: TrafficMeasureConcept;
+  @tracked signs: TrafficSignConcept[] = [];
+  @tracked variables: Variable[] = [];
+  @tracked template?: Template;
   @tracked searchString?: string;
   @tracked preview?: string;
   @tracked selectedType?: SignType | null;
-  @tracked instructions: TemplateModel[] = [];
+  @tracked instructions: Template[] = [];
   @tracked inputTypes: InputType[];
   @tracked instructionType: InputType;
 
-  variablesToBeDeleted: VariableModel[] = [];
+  variablesToBeDeleted: Variable[] = [];
 
   constructor(owner: ApplicationInstance, args: Args) {
     super(owner, args);
@@ -102,11 +102,11 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     let result = '';
 
     this.signs.forEach((sign) => {
-      if (sign instanceof RoadSignConceptModel) {
+      if (sign instanceof RoadSignConcept) {
         result = `${result}${sign.label ?? ''}-`;
-      } else if (sign instanceof RoadMarkingConceptModel) {
+      } else if (sign instanceof RoadMarkingConcept) {
         result = `${result}${sign.label ?? ''}-`;
-      } else if (sign instanceof TrafficLightConceptModel) {
+      } else if (sign instanceof TrafficLightConcept) {
         result = `${result}${sign.label ?? ''}-`;
       }
     });
@@ -144,7 +144,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   fetchInstructions = task(async () => {
     //refresh instruction list from available signs
-    const instructions: TemplateModel[] = [];
+    const instructions: Template[] = [];
     for (let i = 0; i < this.signs.length; i++) {
       const sign = this.signs[i];
       const signInstructions = await sign.hasInstructions;
@@ -174,28 +174,28 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   });
 
   @action
-  async updateCodelist(variable: VariableModel, codeList: CodeListModel) {
+  async updateCodelist(variable: Variable, codeList: CodeList) {
     //@ts-expect-error currently the ts types don't allow direct assignment of relationships
     variable.codeList = codeList;
     await this.generatePreview.perform();
   }
 
   @action
-  async updateInstruction(variable: VariableModel, instruction: TemplateModel) {
+  async updateInstruction(variable: Variable, instruction: Template) {
     //@ts-expect-error currently the ts types don't allow direct assignment of relationships
     variable.instruction = instruction;
     await this.generatePreview.perform();
   }
 
   @action
-  async addSign(sign: TrafficSignConceptModel) {
+  async addSign(sign: TrafficSignConcept) {
     this.signs.push(sign);
     await this.fetchInstructions.perform();
     this.selectedType = null;
   }
 
   @action
-  async removeSign(sign: TrafficSignConceptModel) {
+  async removeSign(sign: TrafficSignConcept) {
     removeItem(this.signs, sign);
     await this.fetchInstructions.perform();
   }
@@ -217,7 +217,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  async addInstructionToTemplate(instruction: TemplateModel) {
+  async addInstructionToTemplate(instruction: Template) {
     if (this.template) {
       this.template.value += `${instruction.value ?? ''} `;
       await this.parseTemplate();
@@ -226,7 +226,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @action
   async updateVariableType(
-    variable: VariableModel,
+    variable: Variable,
     selectedType: InputType | string,
   ) {
     variable.type =
@@ -302,7 +302,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     });
 
     //remove duplicates in case something went wrong
-    const filteredVariables: VariableModel[] = [];
+    const filteredVariables: Variable[] = [];
     this.variables.forEach((variable) => {
       if (
         !filteredVariables.find(
@@ -316,7 +316,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     });
 
     //sort variables in the same order as the regex result
-    const sortedVariables: VariableModel[] = [];
+    const sortedVariables: Variable[] = [];
     filteredRegexResult.forEach((reg) => {
       filteredVariables.forEach((variable) => {
         if (reg[1] == variable.value) {
@@ -373,7 +373,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     // @ts-expect-error array index access is supported, the types are wrong
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const nodeShape: NodeShapeModel = nodeShapes[0];
+    const nodeShape: NodeShape = nodeShapes[0];
     if (nodeShape) {
       await nodeShape.destroyRecord();
     }
@@ -420,33 +420,31 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     await this.router.transitionTo('traffic-measure-concepts.index');
   });
 
-  saveRoadsigns = task(
-    async (trafficMeasureConcept: TrafficMeasureConceptModel) => {
-      // delete existing ones
-      const existingRelatedSigns = (
-        await trafficMeasureConcept.relatedTrafficSignConcepts
-      ).slice();
+  saveRoadsigns = task(async (trafficMeasureConcept: TrafficMeasureConcept) => {
+    // delete existing ones
+    const existingRelatedSigns = (
+      await trafficMeasureConcept.relatedTrafficSignConcepts
+    ).slice();
 
-      const deletedSigns = existingRelatedSigns.filter(
-        (sign) => !this.signs.includes(sign),
-      );
-      const addedSigns = this.signs.filter(
-        (sign) => !existingRelatedSigns.includes(sign),
-      );
+    const deletedSigns = existingRelatedSigns.filter(
+      (sign) => !this.signs.includes(sign),
+    );
+    const addedSigns = this.signs.filter(
+      (sign) => !existingRelatedSigns.includes(sign),
+    );
 
-      for (const sign of deletedSigns) {
-        removeItem(await sign.hasTrafficMeasureConcepts, trafficMeasureConcept);
-        await sign.save();
-      }
+    for (const sign of deletedSigns) {
+      removeItem(await sign.hasTrafficMeasureConcepts, trafficMeasureConcept);
+      await sign.save();
+    }
 
-      for (const sign of addedSigns) {
-        (await sign.hasTrafficMeasureConcepts).push(trafficMeasureConcept);
-        await sign.save();
-      }
-    },
-  );
+    for (const sign of addedSigns) {
+      (await sign.hasTrafficMeasureConcepts).push(trafficMeasureConcept);
+      await sign.save();
+    }
+  });
 
-  saveVariables = task(async (template: TemplateModel) => {
+  saveVariables = task(async (template: Template) => {
     //destroy old ones
     await Promise.all(
       this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),

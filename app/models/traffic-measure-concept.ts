@@ -10,7 +10,7 @@ import type SkosConcept from 'mow-registry/models/skos-concept';
 import type TrafficSignConcept from './traffic-sign-concept';
 import type Template from './template';
 
-export default class TrafficMeasureConceptModel extends Model {
+export default class TrafficMeasureConcept extends Model {
   declare [Type]: 'traffic-measure-concept';
   @attr declare label?: string;
   @attr declare variableSignage?: string;

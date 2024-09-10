@@ -3,19 +3,19 @@ import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
 import Store from '@ember-data/store';
 import { tracked } from '@glimmer/tracking';
-import IconModel from 'mow-registry/models/icon';
+import Icon from 'mow-registry/models/icon';
 import { action } from '@ember/object';
 
 interface Signature {
   Args: {
-    selected: IconModel | null;
-    onChange: (icon: IconModel) => void;
+    selected: Icon | null;
+    onChange: (icon: Icon) => void;
   };
 }
 
 export default class IconSelectComponent extends Component<Signature> {
   @service declare store: Store;
-  @tracked icons?: IconModel[];
+  @tracked icons?: Icon[];
 
   @action
   async didInsert() {
