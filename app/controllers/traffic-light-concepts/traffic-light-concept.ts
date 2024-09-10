@@ -81,8 +81,6 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     const relatedTrafficLightConcepts =
       this.model.trafficLightConcept.relatedTrafficLightConcepts;
 
-    // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     relatedToTrafficLightConcepts.push(relatedTrafficLight);
     relatedTrafficLightConcepts.push(relatedTrafficLight);
 
@@ -93,8 +91,6 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     const relatedRoadSigns =
       await this.model.trafficLightConcept.relatedRoadSignConcepts;
 
-    // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     relatedRoadSigns.push(relatedRoadSign);
     if (this.classificationRoadSigns) {
       removeItem(this.classificationRoadSigns, relatedRoadSign);
@@ -106,8 +102,6 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     const relatedRoadSigns =
       await this.model.trafficLightConcept.relatedRoadSignConcepts;
 
-    // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     removeItem(relatedRoadSigns, relatedRoadSign);
 
     if (this.classificationRoadSigns) {
@@ -121,8 +115,6 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     const relatedRoadMarkings =
       await this.model.trafficLightConcept.relatedRoadMarkingConcepts;
 
-    // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     relatedRoadMarkings.push(relatedRoadMarking);
     await this.model.trafficLightConcept.save();
   });
@@ -131,8 +123,6 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
     const relatedRoadMarkings =
       await this.model.trafficLightConcept.relatedRoadMarkingConcepts;
 
-    // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     removeItem(relatedRoadMarkings, relatedRoadMarking);
 
     await this.model.trafficLightConcept.save();
@@ -144,8 +134,6 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
         this.classification = classification;
         const classificationRoadSigns = await classification.roadSignConcepts;
 
-        // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         this.classificationRoadSigns = classificationRoadSigns;
       } else {
         this.classification = null;
@@ -163,11 +151,7 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
       const relatedTrafficLightConcepts =
         this.model.trafficLightConcept.relatedTrafficLightConcepts;
 
-      // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       removeItem(relatedToTrafficLightConcepts, relatedTrafficLight);
-      // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       removeItem(relatedFromTrafficLightConcepts, relatedTrafficLight);
       removeItem(relatedTrafficLightConcepts, relatedTrafficLight);
 
@@ -265,8 +249,6 @@ export default class TrafficLightConceptsTrafficLightConceptController extends C
   removeTemplate = task(async (template: TemplateModel) => {
     const templates = await this.model.trafficLightConcept.hasInstructions;
 
-    // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     removeItem(templates, template);
 
     await template.destroyRecord();

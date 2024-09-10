@@ -42,7 +42,6 @@ export default class CodelistFormComponent extends Component<Args> {
 
   @action
   async didInsert() {
-    // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
     this.options = await this.args.codelist.concepts;
     await this.fetchCodelistTypes.perform();
   }
@@ -149,13 +148,11 @@ export default class CodelistFormComponent extends Component<Args> {
 
   @action
   async cancelEditingTask() {
-    //@ts-expect-error for some reason the type of isNew is not Boolean
     if (this.args.codelist.isNew) {
       await this.router.transitionTo('codelists-management');
     } else {
       for (let i = 0; i < this.options.length; i++) {
         const option = this.options[i];
-        //@ts-expect-error for some reason the type of isNew is not Boolean
         if (option && option.isNew) {
           option.rollbackAttributes();
           i--;

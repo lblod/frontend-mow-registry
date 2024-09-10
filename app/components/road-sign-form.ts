@@ -40,14 +40,11 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
   @action
   async addShape(shape: TribontShapeModel) {
-    // @ts-expect-error .push isn't part of the @types/ember_data packages. Remove this once we switch to the official types.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     (await this.args.roadSignConcept.shapes).push(shape);
   }
   @action
   async removeShape(shape: TribontShapeModel) {
     const shapes = await this.args.roadSignConcept.shapes;
-    // @ts-expect-error ArrayProxy doesn't match the array type yet. This can probably be removed when we switch to the official types.
     removeItem(shapes, shape);
     this.shapesToRemove.push(shape);
   }

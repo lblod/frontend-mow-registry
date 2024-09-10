@@ -48,8 +48,6 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
   async addDimension() {
     await this.dimension.validate();
     if (!this.dimension.error) {
-      // @ts-expect-error .push isn't part of the @types/ember_data packages. Remove this once we switch to the official types.
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       (await this.shape.dimensions).push(this.dimension);
       this.dimension = this.store.createRecord('dimension');
       this.showDimensionForm = false;

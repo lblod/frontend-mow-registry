@@ -135,7 +135,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       .sort((a, b) => (a.id < b.id ? -1 : 1));
     // const relations = await this.trafficMeasureConcept.getOrderedRelations();
 
-    // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
     this.signs = new TrackedArray(relatedTrafficSigns);
 
     await this.fetchInstructions.perform();
@@ -436,15 +435,11 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       );
 
       for (const sign of deletedSigns) {
-        // @ts-expect-error array index access is supported, the types are wrong
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         removeItem(await sign.hasTrafficMeasureConcepts, trafficMeasureConcept);
         await sign.save();
       }
 
       for (const sign of addedSigns) {
-        // @ts-expect-error array index access is supported, the types are wrong
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         (await sign.hasTrafficMeasureConcepts).push(trafficMeasureConcept);
         await sign.save();
       }
@@ -459,8 +454,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     //create new ones
     for (const variable of this.variables) {
-      // @ts-expect-error array index access is supported, the types are wrong
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       (await template.variables).push(variable);
       await variable.save();
     }
