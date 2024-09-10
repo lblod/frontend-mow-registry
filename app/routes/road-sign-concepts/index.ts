@@ -1,6 +1,8 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type RoadSignCategory from 'mow-registry/models/road-sign-category';
+import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import { hash } from 'rsvp';
 
 type Params = {
@@ -46,10 +48,16 @@ export default class RoadsignConceptsIndexRoute extends Route {
     }
 
     return hash({
-      roadSignConcepts: this.store.query('road-sign-concept', query),
-      classifications: this.store.findAll('road-sign-category', {
-        reload: true,
-      }),
+      roadSignConcepts: this.store.query<RoadSignConcept>(
+        'road-sign-concept',
+        query,
+      ),
+      classifications: this.store.findAll<RoadSignCategory>(
+        'road-sign-category',
+        {
+          reload: true,
+        },
+      ),
     });
   }
 }

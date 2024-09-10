@@ -1,6 +1,7 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type Template from 'mow-registry/models/template';
 import RoadmarkingConcept from 'mow-registry/routes/road-marking-concepts/road-marking-concept';
 import { ModelFrom } from 'mow-registry/utils/type-utils';
 const PARENT_ROUTE = 'road-marking-concepts.road-marking-concept';
@@ -8,6 +9,7 @@ const PARENT_ROUTE = 'road-marking-concepts.road-marking-concept';
 type Params = {
   instruction_id: string;
 };
+
 export default class RoadMarkingConceptsRoadMarkingConceptInstructionRoute extends Route {
   @service declare store: Store;
   async model(params: Params) {
@@ -21,7 +23,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptInstructionRoute exten
         from: PARENT_ROUTE,
       };
     } else {
-      const template = await this.store.findRecord(
+      const template = await this.store.findRecord<Template>(
         'template',
         params.instruction_id,
         {

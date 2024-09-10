@@ -20,7 +20,7 @@ import ApplicationInstance from '@ember/application/instance';
 import { SignType } from 'mow-registry/components/traffic-measure/select-type';
 import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 import Variable from 'mow-registry/models/variable';
-import type NodeShape from 'mow-registry/models/node-shape';
+import NodeShape from 'mow-registry/models/node-shape';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
 
@@ -293,7 +293,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     filteredRegexResult.forEach((reg) => {
       if (!this.variables.find((variable) => variable.value === reg[1])) {
         this.variables.push(
-          this.store.createRecord('variable', {
+          this.store.createRecord<Variable>('variable', {
             value: reg[1],
             type: 'text',
           }),
@@ -367,13 +367,11 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   });
 
   delete = task(async () => {
-    const nodeShapes = await this.store.query('node-shape', {
+    const nodeShapes = await this.store.query<NodeShape>('node-shape', {
       'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
     });
 
-    // @ts-expect-error array index access is supported, the types are wrong
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const nodeShape: NodeShape = nodeShapes[0];
+    const nodeShape = nodeShapes[0];
     if (nodeShape) {
       await nodeShape.destroyRecord();
     }

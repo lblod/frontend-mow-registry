@@ -1,6 +1,7 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type Template from 'mow-registry/models/template';
 import TrafficlightConcept from 'mow-registry/routes/traffic-light-concepts/traffic-light-concept';
 import { ModelFrom } from 'mow-registry/utils/type-utils';
 const PARENT_ROUTE = 'traffic-light-concepts.traffic-light-concept.index';
@@ -24,9 +25,13 @@ export default class TrafficLightConceptsTrafficLightConceptInstructionRoute ext
       };
     } else {
       return {
-        template: this.store.findRecord('template', params.instruction_id, {
-          include: 'variables',
-        }),
+        template: this.store.findRecord<Template>(
+          'template',
+          params.instruction_id,
+          {
+            include: 'variables',
+          },
+        ),
         concept,
         from: PARENT_ROUTE,
       };

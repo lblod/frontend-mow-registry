@@ -1,6 +1,7 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type Template from 'mow-registry/models/template';
 import RoadsignConcept from 'mow-registry/routes/road-sign-concepts/road-sign-concept';
 import { ModelFrom } from 'mow-registry/utils/type-utils';
 const PARENT_ROUTE = 'road-sign-concepts.road-sign-concept';
@@ -23,7 +24,7 @@ export default class RoadSignConceptsRoadSignConceptInstructionRoute extends Rou
         from: PARENT_ROUTE,
       };
     } else {
-      const template = await this.store.findRecord(
+      const template = await this.store.findRecord<Template>(
         'template',
         params.instruction_id,
         {

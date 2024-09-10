@@ -1,6 +1,7 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type Account from 'mow-registry/models/account';
 import SessionService from 'mow-registry/services/session';
 
 type Params = {
@@ -23,7 +24,7 @@ export default class MockLoginRoute extends Route {
   }
   async model(params: Params) {
     const filter = { provider: 'https://github.com/lblod/mock-login-service' };
-    const accounts = await this.store.query('account', {
+    const accounts = await this.store.query<Account>('account', {
       include: 'user.groups',
       filter: filter,
       page: { size: 10, number: params.page },

@@ -1,6 +1,7 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type Icon from 'mow-registry/models/icon';
 
 type Params = {
   label?: string;
@@ -32,7 +33,7 @@ export default class IconCatalogIndexRoute extends Route {
     }
 
     return {
-      icons: await this.store.query('icon', query),
+      icons: await this.store.query<Icon>('icon', query),
     };
   }
 }

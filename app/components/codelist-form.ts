@@ -9,11 +9,11 @@ import {
 } from '../utils/constants';
 import CodeList from 'mow-registry/models/code-list';
 import SkosConcept from 'mow-registry/models/skos-concept';
-import ArrayProxy from '@ember/array/proxy';
 import Store from '@ember-data/store';
 import type RouterService from '@ember/routing/router-service';
 import Icon from 'mow-registry/models/icon';
 import { removeItem } from 'mow-registry/utils/array';
+import type ConceptScheme from 'mow-registry/models/concept-scheme';
 
 type Args = {
   codelist: CodeList;
@@ -27,7 +27,7 @@ export default class CodelistFormComponent extends Component<Args> {
   @tracked toDelete: SkosConcept[] = [];
   @tracked options: SkosConcept[] = [];
 
-  @tracked codelistTypes?: ArrayProxy<SkosConcept>;
+  @tracked codelistTypes?: SkosConcept[];
   @tracked selectedType?: SkosConcept;
 
   @tracked selectedIcon: Icon | null = null;
@@ -51,7 +51,7 @@ export default class CodelistFormComponent extends Component<Args> {
   }
 
   fetchCodelistTypes = task(async () => {
-    const typesScheme = await this.store.findRecord(
+    const typesScheme = await this.store.findRecord<ConceptScheme>(
       'concept-scheme',
       COD_CONCEPT_SCHEME_ID,
     );
@@ -91,7 +91,10 @@ export default class CodelistFormComponent extends Component<Args> {
   addNewValue(event: InputEvent) {
     event.preventDefault();
     if (this.newValue) {
-      const codeListOption = this.store.createRecord('skos-concept');
+      const codeListOption = this.store.createRecord<SkosConcept>(
+        'skos-concept',
+        {},
+      );
       codeListOption.label = this.newValue;
       this.options.push(codeListOption);
       this.newValue = '';

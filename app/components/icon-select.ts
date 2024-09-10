@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
 import Store from '@ember-data/store';
 import { tracked } from '@glimmer/tracking';
-import Icon from 'mow-registry/models/icon';
+import type Icon from 'mow-registry/models/icon';
 import { action } from '@ember/object';
 
 interface Signature {
@@ -33,7 +33,7 @@ export default class IconSelectComponent extends Component<Signature> {
       query['filter[label]'] = search;
     }
 
-    const result = await this.store.query('icon', query);
+    const result = await this.store.query<Icon>('icon', query);
 
     return result.slice();
   });

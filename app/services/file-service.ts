@@ -2,6 +2,7 @@ import Store from '@ember-data/store';
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import fetch from 'fetch';
+import File from 'mow-registry/models/file';
 
 type Response = {
   data: {
@@ -20,7 +21,7 @@ export default class FileService extends Service {
     });
     const upload = (await response.json()) as Response;
     this.store.pushPayload('file', upload);
-    const fileRecord = this.store.peekRecord('file', upload.data.id);
+    const fileRecord = this.store.peekRecord<File>('file', upload.data.id);
     if (!fileRecord) {
       throw Error(`Failed upload file`);
     }

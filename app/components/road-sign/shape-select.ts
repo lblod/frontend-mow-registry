@@ -24,13 +24,13 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
 
   constructor(owner: ApplicationInstance, args: Args) {
     super(owner, args);
-    this.shape = this.store.createRecord('tribont-shape');
-    this.dimension = this.store.createRecord('dimension');
+    this.shape = this.store.createRecord<TribontShape>('tribont-shape', {});
+    this.dimension = this.store.createRecord<Dimension>('dimension', {});
   }
   @action
   setClassificatie(classificatie: TribontShapeClassificationCode) {
     this.shape.set('classification', classificatie);
-    this.dimension = this.store.createRecord('dimension');
+    this.dimension = this.store.createRecord<Dimension>('dimension', {});
   }
 
   @action
@@ -49,7 +49,7 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
     await this.dimension.validate();
     if (!this.dimension.error) {
       (await this.shape.dimensions).push(this.dimension);
-      this.dimension = this.store.createRecord('dimension');
+      this.dimension = this.store.createRecord<Dimension>('dimension', {});
       this.showDimensionForm = false;
     }
   }
@@ -69,7 +69,7 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
     await this.shape.validate();
     if (!this.shape.error) {
       this.args.onNewShape(this.shape);
-      this.shape = this.store.createRecord('tribont-shape');
+      this.shape = this.store.createRecord<TribontShape>('tribont-shape', {});
       this.showShapeForm = false;
     }
   }
