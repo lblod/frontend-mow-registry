@@ -13,7 +13,7 @@ export default class IconCatalogIndexController extends Controller {
   @tracked page = 0;
   @tracked size = 30;
   @tracked label = '';
-  @tracked sort = 'label';
+  @tracked sort = ':no-case:label';
 
   updateSearchFilterTask = restartableTask(async (event: InputEvent) => {
     await timeout(300);
