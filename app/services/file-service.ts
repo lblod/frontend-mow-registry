@@ -1,7 +1,9 @@
-import Store from '@ember-data/store';
+// eslint-disable-next-line ember/use-ember-data-rfc-395-imports -- ember-data/store is not the same as @ember-data/store. We need the preconfigured one.
+import Store from 'ember-data/store';
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import fetch from 'fetch';
+import type FileModel from 'mow-registry/models/file';
 
 type Response = {
   data: {
@@ -20,7 +22,7 @@ export default class FileService extends Service {
     });
     const upload = (await response.json()) as Response;
     this.store.pushPayload('file', upload);
-    const fileRecord = this.store.peekRecord('file', upload.data.id);
+    const fileRecord = this.store.peekRecord<FileModel>('file', upload.data.id);
     if (!fileRecord) {
       throw Error(`Failed upload file`);
     }

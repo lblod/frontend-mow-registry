@@ -1,6 +1,7 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type Icon from 'mow-registry/models/icon';
 
 type Params = {
   label?: string;
@@ -32,7 +33,9 @@ export default class IconCatalogIndexRoute extends Route {
     }
 
     return {
-      icons: await this.store.query('icon', query),
+      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+      // TODO: fix the query types
+      icons: await this.store.query<Icon>('icon', query),
     };
   }
 }

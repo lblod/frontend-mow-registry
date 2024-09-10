@@ -2,8 +2,8 @@ import { tracked } from '@glimmer/tracking';
 import { assert } from '@ember/debug';
 import Model from '@ember-data/model';
 import Joi, { ObjectSchema, ValidationError, ValidationErrorItem } from 'joi';
-// eslint-disable-next-line ember/use-ember-data-rfc-395-imports
-import { ModelSchema } from 'ember-data';
+
+type ModelSchema = typeof Model;
 
 interface ValidationErrorDetails {
   [key: string]: ValidationErrorItem;
@@ -105,14 +105,16 @@ export default class AbstractValidationModel extends Model {
       if (type === 'attribute') {
         return [key, model[key]];
       } else if (type === 'belongsTo') {
-        // @ts-expect-error TS type in ember-data is not correct
-        const belongsTo = model.belongsTo(key).value();
+        // @ts-expect-error We can't pass types to .belongsTo since we don't know them. As a result this throws an error, but the code is valid.
+        // TODO: I think we can achieve the same with different model methods, which maybe don't have this type issue.
+        const belongsTo = model.belongsTo(key).value() as Model | null;
         return [
           key,
           this.#serializeModelWithDepthControl(belongsTo, maxDepth - 1),
         ];
       } else if (type === 'hasMany') {
-        // @ts-expect-error TS type in ember-data is not correct
+        // @ts-expect-error We can't pass types to .belongsTo since we don't know them. As a result this throws an error, but the code is valid.
+        // TODO: I think we can achieve the same with different model methods, which maybe don't have this type issue.
         const hasMany = model.hasMany(key).value();
         if (!hasMany?.length) return [key, undefined];
         const values = hasMany.map((item) => {

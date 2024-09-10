@@ -1,6 +1,7 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import { hash } from 'rsvp';
 
 type Params = {
@@ -40,8 +41,10 @@ export default class RoadmarkingConceptsIndexRoute extends Route {
     }
 
     return hash({
-      roadMarkingConcepts: await this.store.query(
+      roadMarkingConcepts: await this.store.query<RoadMarkingConcept>(
         'road-marking-concept',
+        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+        // TODO: fix the query types
         query,
       ),
     });

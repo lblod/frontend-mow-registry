@@ -1,17 +1,13 @@
 import Model, { AsyncHasMany, attr, hasMany } from '@ember-data/model';
-import RoadSignConceptModel from './road-sign-concept';
+import RoadSignConcept from './road-sign-concept';
+import type { Type } from '@warp-drive/core-types/symbols';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'road-sign-category': RoadSignCategoryModel;
-  }
-}
-
-export default class RoadSignCategoryModel extends Model {
+export default class RoadSignCategory extends Model {
+  declare [Type]: 'road-sign-category';
   @attr declare label?: string;
-  @hasMany('road-sign-concept', {
+  @hasMany<RoadSignConcept>('road-sign-concept', {
     async: true,
     inverse: 'classifications',
   })
-  declare roadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
+  declare roadSignConcepts: AsyncHasMany<RoadSignConcept>;
 }

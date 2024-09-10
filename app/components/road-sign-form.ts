@@ -3,29 +3,26 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
-import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
-import TribontShapeModel from 'mow-registry/models/tribont-shape';
+import RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import RoadSignCategory from 'mow-registry/models/road-sign-category';
+import TribontShape from 'mow-registry/models/tribont-shape';
 import { tracked } from '@glimmer/tracking';
 import { removeItem } from 'mow-registry/utils/array';
 
 type Args = {
-  roadSignConcept: RoadSignConceptModel;
+  roadSignConcept: RoadSignConcept;
 };
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: RouterService;
 
-  @tracked shapesToRemove: TribontShapeModel[] = [];
+  @tracked shapesToRemove: TribontShape[] = [];
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
   }
 
   @action
-  async setRoadSignConceptValue(
-    attributeName: keyof RoadSignConceptModel,
-    event: InputEvent,
-  ) {
-    await this.args.roadSignConcept.set(
+  async setRoadSignConceptValue(attributeName: string, event: InputEvent) {
+    this.args.roadSignConcept.set(
       attributeName,
       (event.target as HTMLInputElement).value,
     );
@@ -33,27 +30,24 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  async setRoadSignConceptClassification(selection: RoadSignCategoryModel[]) {
+  async setRoadSignConceptClassification(selection: RoadSignCategory[]) {
     this.args.roadSignConcept.set('classifications', selection);
     await this.args.roadSignConcept.validateProperty('classifications');
   }
 
   @action
-  async addShape(shape: TribontShapeModel) {
-    // @ts-expect-error .push isn't part of the @types/ember_data packages. Remove this once we switch to the official types.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  async addShape(shape: TribontShape) {
     (await this.args.roadSignConcept.shapes).push(shape);
   }
   @action
-  async removeShape(shape: TribontShapeModel) {
+  async removeShape(shape: TribontShape) {
     const shapes = await this.args.roadSignConcept.shapes;
-    // @ts-expect-error ArrayProxy doesn't match the array type yet. This can probably be removed when we switch to the official types.
     removeItem(shapes, shape);
     this.shapesToRemove.push(shape);
   }
 
   @action
-  async setImage(model: RoadSignConceptModel, image: File) {
+  async setImage(model: RoadSignConcept, image: File) {
     super.setImage(model, image);
     await this.args.roadSignConcept.validateProperty('image');
   }

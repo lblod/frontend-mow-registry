@@ -1,16 +1,12 @@
 import Model, { AsyncHasMany, hasMany } from '@ember-data/model';
 import { attr } from '@ember-data/model';
-import UnitModel from './unit';
+import type Unit from './unit';
+import type { Type } from '@warp-drive/core-types/symbols';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'quantity-kind': QuantityKindModel;
-  }
-}
-
-export default class QuantityKindModel extends Model {
+export default class QuantityKind extends Model {
+  declare [Type]: 'quantity-kind';
   @attr declare symbol?: string;
   @attr declare label?: string;
-  @hasMany('unit', { inverse: null, async: false })
-  declare units: AsyncHasMany<UnitModel>;
+  @hasMany<Unit>('unit', { inverse: null, async: false })
+  declare units: AsyncHasMany<Unit>;
 }

@@ -7,22 +7,21 @@ import {
   validateStringRequired,
 } from 'mow-registry/validators/schema';
 import AbstractValidationModel from './abstract-validation-model';
+import type { Type } from '@warp-drive/core-types/symbols';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'skos-concept': SkosConcept;
-  }
-}
 export default class SkosConcept extends AbstractValidationModel {
+  declare [Type]: 'skos-concept';
   @attr declare uri?: string;
   @attr declare label?: string;
-  @hasMany('concept-scheme', {
+
+  @hasMany<ConceptScheme>('concept-scheme', {
     inverse: 'concepts',
     polymorphic: true,
     as: 'skos-concept',
     async: true,
   })
   declare inScheme: AsyncBelongsTo<ConceptScheme>;
+
   get validationSchema() {
     return Joi.object({
       uri: validateStringOptional(),

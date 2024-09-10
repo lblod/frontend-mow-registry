@@ -4,7 +4,7 @@ import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { ModelFrom } from 'mow-registry/utils/type-utils';
 import RoadsignConceptsIndexRoute from 'mow-registry/routes/road-sign-concepts/index';
-import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
+import RoadSignCategory from 'mow-registry/models/road-sign-category';
 
 export default class RoadsignConceptsIndexController extends Controller {
   queryParams = ['page', 'size', 'label', 'meaning', 'sort', 'classifications'];
@@ -40,7 +40,7 @@ export default class RoadsignConceptsIndexController extends Controller {
   }
 
   @action
-  updateCategoryFilter(selectedClassification: RoadSignCategoryModel) {
+  updateCategoryFilter(selectedClassification: RoadSignCategory) {
     if (selectedClassification) {
       this.classification = selectedClassification.id;
       this.resetPagination();

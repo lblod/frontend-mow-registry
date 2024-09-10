@@ -5,16 +5,19 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import Store from '@ember-data/store';
 import { SignType } from 'mow-registry/components/traffic-measure/select-type';
-import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
+import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
+import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 
 type Args = {
   selectedType: SignType;
-  addSign: (sign: TrafficSignConceptModel) => void;
+  addSign: (sign: TrafficSignConcept) => void;
 };
 export default class TrafficMeasureAddSignComponent extends Component<Args> {
   @service declare store: Store;
 
-  @tracked selected?: TrafficSignConceptModel | null;
+  @tracked selected?: TrafficSignConcept | null;
 
   search = restartableTask(async (searchData: string) => {
     await timeout(300);
@@ -24,20 +27,24 @@ export default class TrafficMeasureAddSignComponent extends Component<Args> {
     queryParams['sort'] = this.args.selectedType.sortingField;
     queryParams['include'] = 'hasInstructions';
 
-    const options = await this.store.query(
+    const options = await this.store.query<
+      RoadSignConcept | RoadMarkingConcept | TrafficLightConcept
+    >(
       this.args.selectedType.modelName,
+      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+      // TODO: fix the query types
       queryParams,
     );
     return options;
   });
 
   @action
-  select(selected: TrafficSignConceptModel) {
+  select(selected: TrafficSignConcept) {
     this.selected = selected;
   }
 
   @action
-  addSign(selected: TrafficSignConceptModel) {
+  addSign(selected: TrafficSignConcept) {
     if (selected) {
       this.args.addSign(selected);
       this.selected = null;

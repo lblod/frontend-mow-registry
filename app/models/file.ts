@@ -1,17 +1,14 @@
 import Model, { attr } from '@ember-data/model';
+import type { Type } from '@warp-drive/core-types/symbols';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    file: FileModel;
-  }
-}
-export default class FileModel extends Model {
+export default class File extends Model {
+  declare [Type]: 'file';
   @attr declare name?: string;
   @attr declare format?: string;
   @attr declare size?: number;
   @attr declare extension?: string;
 
   get downloadLink() {
-    return `/files/${this.id}/download`;
+    return this.id ? `/files/${this.id}/download` : '';
   }
 }

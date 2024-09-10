@@ -3,44 +3,44 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import Store from '@ember-data/store';
-import TribontShapeClassificationCodeModel from 'mow-registry/models/tribont-shape-classification-code';
+import TribontShapeClassificationCode from 'mow-registry/models/tribont-shape-classification-code';
 import ApplicationInstance from '@ember/application/instance';
-import QuantityKindModel from 'mow-registry/models/quantity-kind';
-import UnitModel from 'mow-registry/models/unit';
-import TribontShapeModel from 'mow-registry/models/tribont-shape';
-import DimensionModel from 'mow-registry/models/dimension';
+import QuantityKind from 'mow-registry/models/quantity-kind';
+import Unit from 'mow-registry/models/unit';
+import TribontShape from 'mow-registry/models/tribont-shape';
+import Dimension from 'mow-registry/models/dimension';
 
 type Args = {
-  onNewShape: (shape: TribontShapeModel) => void;
-  quantityKinds: QuantityKindModel[];
+  onNewShape: (shape: TribontShape) => void;
+  quantityKinds: QuantityKind[];
 };
 
 export default class RoadSignShapeSelectComponent extends Component<Args> {
   @service declare store: Store;
   @tracked showDimensionForm = false;
   @tracked showShapeForm = false;
-  @tracked shape: TribontShapeModel;
-  @tracked dimension: DimensionModel;
+  @tracked shape: TribontShape;
+  @tracked dimension: Dimension;
 
   constructor(owner: ApplicationInstance, args: Args) {
     super(owner, args);
-    this.shape = this.store.createRecord('tribont-shape');
-    this.dimension = this.store.createRecord('dimension');
+    this.shape = this.store.createRecord<TribontShape>('tribont-shape', {});
+    this.dimension = this.store.createRecord<Dimension>('dimension', {});
   }
   @action
-  setClassificatie(classificatie: TribontShapeClassificationCodeModel) {
+  setClassificatie(classificatie: TribontShapeClassificationCode) {
     this.shape.set('classification', classificatie);
-    this.dimension = this.store.createRecord('dimension');
+    this.dimension = this.store.createRecord<Dimension>('dimension', {});
   }
 
   @action
-  setQuantityKind(qt: QuantityKindModel) {
+  setQuantityKind(qt: QuantityKind) {
     this.dimension.set('kind', qt);
     this.dimension.set('unit', undefined);
   }
 
   @action
-  setUnitType(u: UnitModel) {
+  setUnitType(u: Unit) {
     this.dimension.set('unit', u);
   }
 
@@ -48,10 +48,8 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
   async addDimension() {
     await this.dimension.validate();
     if (!this.dimension.error) {
-      // @ts-expect-error .push isn't part of the @types/ember_data packages. Remove this once we switch to the official types.
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       (await this.shape.dimensions).push(this.dimension);
-      this.dimension = this.store.createRecord('dimension');
+      this.dimension = this.store.createRecord<Dimension>('dimension', {});
       this.showDimensionForm = false;
     }
   }
@@ -71,7 +69,7 @@ export default class RoadSignShapeSelectComponent extends Component<Args> {
     await this.shape.validate();
     if (!this.shape.error) {
       this.args.onNewShape(this.shape);
-      this.shape = this.store.createRecord('tribont-shape');
+      this.shape = this.store.createRecord<TribontShape>('tribont-shape', {});
       this.showShapeForm = false;
     }
   }

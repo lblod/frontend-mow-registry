@@ -1,6 +1,7 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import { hash } from 'rsvp';
 
 type Params = {
@@ -39,7 +40,12 @@ export default class TrafficlightConceptsIndexRoute extends Route {
     }
 
     return hash({
-      trafficLightConcepts: this.store.query('traffic-light-concept', query),
+      trafficLightConcepts: this.store.query<TrafficLightConcept>(
+        'traffic-light-concept',
+        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+        // TODO: fix the query types
+        query,
+      ),
     });
   }
 }

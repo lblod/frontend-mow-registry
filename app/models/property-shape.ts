@@ -1,14 +1,15 @@
 import { AsyncBelongsTo, belongsTo } from '@ember-data/model';
-import type ResourceModel from 'mow-registry/models/resource';
-import ShapeModel from 'mow-registry/models/shape';
+import type Resource from 'mow-registry/models/resource';
+import Shape from 'mow-registry/models/shape';
+import type { Type } from '@warp-drive/core-types/symbols';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'property-shape': PropertyShapeModel;
-  }
-}
-
-export default class PropertyShapeModel extends ShapeModel {
-  @belongsTo('resource', { inverse: null, async: true, polymorphic: true })
-  declare path: AsyncBelongsTo<ResourceModel>;
+export default class PropertyShape extends Shape {
+  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+  declare [Type]: 'property-shape';
+  @belongsTo<Resource>('resource', {
+    inverse: null,
+    async: true,
+    polymorphic: true,
+  })
+  declare path: AsyncBelongsTo<Resource>;
 }

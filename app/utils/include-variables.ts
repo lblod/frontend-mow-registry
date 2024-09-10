@@ -1,5 +1,5 @@
 import config from 'mow-registry/config/environment';
-import VariableModel from 'mow-registry/models/variable';
+import Variable from 'mow-registry/models/variable';
 import { unwrap } from 'mow-registry/utils/option';
 
 function generateTextTemplate(uri: string, name: string) {
@@ -42,15 +42,15 @@ function generateDateTemplate(uri: string, name: string) {
 
 export default async function includeVariables(
   html: string,
-  variables: VariableModel[],
+  variables: Variable[],
 ) {
   let finalHtml = html;
   for (const variable of variables) {
     if (variable.type === 'instruction') {
       continue;
     } else if (variable.type === 'codelist') {
-      const codeList = await variable.get('codeList');
-      const codeListUri = codeList.uri;
+      const codeList = await variable.codeList;
+      const codeListUri = codeList?.uri;
       finalHtml = finalHtml.replaceAll(
         `\${${unwrap(variable.value)}}`,
         generateCodelistTemplate(

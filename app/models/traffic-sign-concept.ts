@@ -5,10 +5,11 @@ import {
   AsyncBelongsTo,
   AsyncHasMany,
 } from '@ember-data/model';
+import type { Type } from '@warp-drive/core-types/symbols';
 import SkosConcept from 'mow-registry/models/skos-concept';
-import type ImageModel from 'mow-registry/models/image';
-import TemplateModel from './template';
-import TrafficMeasureConceptModel from './traffic-measure-concept';
+import type Image from 'mow-registry/models/image';
+import type Template from './template';
+import type TrafficMeasureConcept from './traffic-measure-concept';
 import {
   validateBelongsToOptional,
   validateBelongsToRequired,
@@ -16,30 +17,26 @@ import {
   validateStringRequired,
 } from 'mow-registry/validators/schema';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'traffic-sign-concept': TrafficSignConceptModel;
-  }
-}
-
-export default class TrafficSignConceptModel extends SkosConcept {
+export default class TrafficSignConcept extends SkosConcept {
+  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+  declare [Type]: 'traffic-sign-concept';
   @attr declare meaning?: string;
 
-  @belongsTo('image', { async: true, inverse: null, polymorphic: true })
-  declare image: AsyncBelongsTo<ImageModel>;
+  @belongsTo<Image>('image', { async: true, inverse: null, polymorphic: true })
+  declare image: AsyncBelongsTo<Image>;
 
-  @belongsTo('skos-concept', { async: true, inverse: null })
+  @belongsTo<SkosConcept>('skos-concept', { async: true, inverse: null })
   declare status: AsyncBelongsTo<SkosConcept>;
 
-  @hasMany('template', { async: true, inverse: null })
-  declare hasInstructions: AsyncHasMany<TemplateModel>;
+  @hasMany<Template>('template', { async: true, inverse: null })
+  declare hasInstructions: AsyncHasMany<Template>;
 
-  @hasMany('traffic-measure-concept', {
+  @hasMany<TrafficMeasureConcept>('traffic-measure-concept', {
     async: true,
     inverse: 'relatedTrafficSignConcepts',
     as: 'traffic-sign-concept',
   })
-  declare hasTrafficMeasureConcepts: AsyncHasMany<TrafficMeasureConceptModel>;
+  declare hasTrafficMeasureConcepts: AsyncHasMany<TrafficMeasureConcept>;
 
   get validationSchema() {
     return super.validationSchema.keys({

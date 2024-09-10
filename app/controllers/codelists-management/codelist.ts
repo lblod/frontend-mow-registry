@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import type RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import IconModel from 'mow-registry/models/icon';
+import Icon from 'mow-registry/models/icon';
 import CodelistsManagementCodelistRoute from 'mow-registry/routes/codelists-management/codelist';
 import { ModelFrom } from 'mow-registry/utils/type-utils';
 
@@ -17,8 +17,8 @@ export default class CodelistController extends Controller {
     event.preventDefault();
 
     await Promise.all(
-      this.model.codelist.concepts
-        .filter((model) => !(model instanceof IconModel))
+      (await this.model.codelist.concepts)
+        .filter((model) => !(model instanceof Icon))
         .map((option) => option.destroyRecord()),
     );
 

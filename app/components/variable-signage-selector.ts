@@ -1,8 +1,8 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import TrafficMeasureConceptModel from 'mow-registry/models/traffic-measure-concept';
+import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 type Args = {
-  concept: TrafficMeasureConceptModel;
+  concept: TrafficMeasureConcept;
 };
 export default class VariableSignageSelectorComponent extends Component<Args> {
   @action

@@ -3,12 +3,12 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import ImageUploadHandlerComponent from './image-upload-handler';
 import type RouterService from '@ember/routing/router-service';
-import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
+import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import Store from '@ember-data/store';
-import TrafficSignConceptModel from 'mow-registry/models/traffic-sign-concept';
+import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {
-  trafficLightConcept: TrafficLightConceptModel;
+  trafficLightConcept: TrafficLightConcept;
 };
 
 export default class TrafficLightFormComponent extends ImageUploadHandlerComponent<Args> {
@@ -20,11 +20,8 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   }
 
   @action
-  async setTrafficLightConceptValue(
-    attributeName: keyof TrafficLightConceptModel,
-    event: InputEvent,
-  ) {
-    await this.args.trafficLightConcept.set(
+  async setTrafficLightConceptValue(attributeName: string, event: InputEvent) {
+    this.args.trafficLightConcept.set(
       attributeName,
       (event.target as HTMLInputElement).value,
     );
@@ -48,7 +45,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   });
 
   @action
-  async setImage(model: TrafficSignConceptModel, image: File) {
+  async setImage(model: TrafficSignConcept, image: File) {
     super.setImage(model, image);
     await this.args.trafficLightConcept.validateProperty('image');
   }
