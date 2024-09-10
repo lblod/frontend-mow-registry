@@ -15,7 +15,7 @@ declare module 'ember-data/types/registries/model' {
   }
 }
 export default class TemplateModel extends DocumentModel {
-  @attr('string') declare value?: string;
+  @attr declare value?: string;
 
   @hasMany('variable', { inverse: null, async: true })
   declare variables: AsyncHasMany<VariableModel>;

@@ -3,6 +3,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import TrafficLightConceptsTrafficLightConceptController from 'mow-registry/controllers/traffic-light-concepts/traffic-light-concept';
 import { hash } from 'rsvp';
+import { TrackedArray } from 'tracked-built-ins';
 
 type Params = {
   id: string;
@@ -33,12 +34,12 @@ export default class TrafficlightConcept extends Route {
         }),
     });
 
-    model.trafficLightConcept.relatedTrafficLightConcepts = [];
-    model.trafficLightConcept.relatedTrafficLightConcepts
-      .addObjects(await model.trafficLightConcept.relatedToTrafficLightConcepts)
-      .addObjects(
-        await model.trafficLightConcept.relatedFromTrafficLightConcepts,
-      );
+    model.trafficLightConcept.relatedTrafficLightConcepts = new TrackedArray([
+      // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
+      ...(await model.trafficLightConcept.relatedToTrafficLightConcepts),
+      // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
+      ...(await model.trafficLightConcept.relatedFromTrafficLightConcepts),
+    ]);
 
     return model;
   }

@@ -40,6 +40,7 @@
           </AuButton>
         </AuFormRow>
       {{/let}}
+
       {{#if (and this.shape.classification this.showDimensionForm)}}
 
         <AuFormRow @alignment="inline">
@@ -142,7 +143,7 @@
         </AuFormRow>
       {{/if}}
 
-      {{#if this.shape.dimensions}}
+      {{#if (await this.shape.dimensions)}}
         <AuTable @size={{this.size}}>
           <:title>{{t "utility.dimensions"}}</:title>
           <:header>
@@ -153,7 +154,7 @@
             </tr>
           </:header>
           <:body>
-            {{#each this.shape.dimensions as |dimension|}}
+            {{#each (await this.shape.dimensions) as |dimension|}}
               <tr>
                 <td>
                   {{dimension.kind.label}}
@@ -165,11 +166,9 @@
           </:body>
         </AuTable>
       {{/if}}
-
     </c.content>
 
     <c.footer>
-
       <AuButton @skin="secondary" {{on "click" this.saveShape}}>
         {{t "road-sign-concept.saveShape"}}
       </AuButton>
@@ -178,6 +177,5 @@
 {{else}}
   <AuButton @skin="secondary" {{on "click" (fn (mut this.showShapeForm) true)}}>
     {{t "road-sign-concept.newShape"}}
-
   </AuButton>
 {{/if}}

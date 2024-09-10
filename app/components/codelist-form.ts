@@ -13,6 +13,7 @@ import ArrayProxy from '@ember/array/proxy';
 import Store from '@ember-data/store';
 import type RouterService from '@ember/routing/router-service';
 import IconModel from 'mow-registry/models/icon';
+import { removeItem } from 'mow-registry/utils/array';
 
 type Args = {
   codelist: CodeListModel;
@@ -24,7 +25,7 @@ export default class CodelistFormComponent extends Component<Args> {
 
   @tracked newValue = '';
   @tracked toDelete: SkosConcept[] = [];
-  @tracked declare options: ArrayProxy<SkosConcept>;
+  @tracked options: SkosConcept[] = [];
 
   @tracked codelistTypes?: ArrayProxy<SkosConcept>;
   @tracked selectedType?: SkosConcept;
@@ -41,6 +42,7 @@ export default class CodelistFormComponent extends Component<Args> {
 
   @action
   async didInsert() {
+    // @ts-expect-error: awaited async hasMany relationship act like arrays, so this code is valid. The types are wrong.
     this.options = await this.args.codelist.concepts;
     await this.fetchCodelistTypes.perform();
   }
@@ -95,15 +97,15 @@ export default class CodelistFormComponent extends Component<Args> {
     if (this.newValue) {
       const codeListOption = this.store.createRecord('skos-concept');
       codeListOption.label = this.newValue;
-      this.options.pushObject(codeListOption);
+      this.options.push(codeListOption);
       this.newValue = '';
     }
   }
 
   @action
   removeOption(option: SkosConcept) {
-    this.options.removeObject(option);
-    this.toDelete.pushObject(option);
+    removeItem(this.options, option);
+    this.toDelete.push(option);
   }
 
   @action
@@ -115,14 +117,14 @@ export default class CodelistFormComponent extends Component<Args> {
   addNewIcon(event: InputEvent) {
     event.preventDefault();
     if (this.selectedIcon) {
-      this.options.pushObject(this.selectedIcon);
+      this.options.push(this.selectedIcon);
       this.selectedIcon = null;
     }
   }
 
   @action
   removeIcon(icon: IconModel) {
-    this.options.removeObject(icon);
+    removeItem(this.options, icon);
   }
 
   editCodelistTask = dropTask(
@@ -151,9 +153,8 @@ export default class CodelistFormComponent extends Component<Args> {
     if (this.args.codelist.isNew) {
       await this.router.transitionTo('codelists-management');
     } else {
-      //@ts-expect-error for some reason, the type of .length is not number
       for (let i = 0; i < this.options.length; i++) {
-        const option = this.options.objectAt(i);
+        const option = this.options[i];
         //@ts-expect-error for some reason the type of isNew is not Boolean
         if (option && option.isNew) {
           option.rollbackAttributes();
@@ -162,10 +163,10 @@ export default class CodelistFormComponent extends Component<Args> {
       }
 
       for (let i = 0; i < this.toDelete.length; i++) {
-        const option = this.toDelete.objectAt(i);
+        const option = this.toDelete[i];
         if (option && !option.isNew) {
           option.rollbackAttributes();
-          this.options.pushObject(option);
+          this.options.push(option);
         }
       }
 

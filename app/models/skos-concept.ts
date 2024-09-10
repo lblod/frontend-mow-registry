@@ -19,6 +19,7 @@ export default class SkosConcept extends AbstractValidationModel {
   @hasMany('concept-scheme', {
     inverse: 'concepts',
     polymorphic: true,
+    as: 'skos-concept',
     async: true,
   })
   declare inScheme: AsyncBelongsTo<ConceptScheme>;

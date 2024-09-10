@@ -34,7 +34,10 @@ export default class TrafficLightConceptModel extends TrafficSignConceptModel {
   })
   declare relatedFromTrafficLightConcepts: AsyncHasMany<TrafficLightConceptModel>;
 
-  relatedTrafficLightConcepts?: TrafficLightConceptModel[];
+  // This property is used to house the combined data of the relatedToTrafficLightConcepts and relatedFromTrafficLightConcepts relationships.
+  // We need both since we want to display all related signs, not only a single direction.
+  // TODO: move this state to the edit page, we don't need to store this on the record itself
+  relatedTrafficLightConcepts: TrafficLightConceptModel[] = [];
 
   @hasMany('road-sign-concept', {
     inverse: 'relatedTrafficLightConcepts',

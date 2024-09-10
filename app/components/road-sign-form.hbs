@@ -133,54 +133,55 @@
             @quantityKinds={{@quantityKinds}}
             @onNewShape={{this.addShape}}
           />
-          {{#if @roadSignConcept.shapes}}
-            <AuTable @size={{this.size}}>
-              <:header>
-                <th>{{t "road-sign-concept.attr.shape"}}</th>
-                <th>{{t "road-sign-concept.attr.dimensions"}}</th>
-                <th>{{! Actions }}</th>
-              </:header>
-              <:body>
-                {{#each @roadSignConcept.shapes as |shape|}}
-                  <tr>
-                    <td>
-                      {{shape.classification.label}}
-                    </td>
-                    <td>
-                      <ul>
-                        {{#each shape.dimensions as |dimension|}}
-                          <li>
-                            {{dimension.value}}{{dimension.unit.symbol}}
-                            ({{dimension.kind.label}})
-                          </li>
-                        {{/each}}
-                      </ul>
-                    </td>
-                    <td>
-                      <AuButton
-                        @icon="bin"
-                        @alert={{true}}
-                        @skin="secondary"
-                        @hideText={{true}}
-                        {{on "click" (fn this.removeShape shape)}}
-                      >
-                        {{t "utility.delete"}}
-                      </AuButton>
-                    </td>
-                  </tr>
-                {{/each}}
-              </:body>
-            </AuTable>
-          {{else}}
-            <AuCard @size="small" as |c|>
-              <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">
-                <AuHeading @level="2" @skin="4">
-                  {{t "road-sign-concept.atLeastOneShapeRequired"}}
-                </AuHeading>
-              </c.header>
-            </AuCard>
-          {{/if}}
-
+          {{#let (await @roadSignConcept.shapes) as |shapes|}}
+            {{#if shapes}}
+              <AuTable @size={{this.size}}>
+                <:header>
+                  <th>{{t "road-sign-concept.attr.shape"}}</th>
+                  <th>{{t "road-sign-concept.attr.dimensions"}}</th>
+                  <th>{{! Actions }}</th>
+                </:header>
+                <:body>
+                  {{#each shapes as |shape|}}
+                    <tr>
+                      <td>
+                        {{shape.classification.label}}
+                      </td>
+                      <td>
+                        <ul>
+                          {{#each shape.dimensions as |dimension|}}
+                            <li>
+                              {{dimension.value}}{{dimension.unit.symbol}}
+                              ({{dimension.kind.label}})
+                            </li>
+                          {{/each}}
+                        </ul>
+                      </td>
+                      <td>
+                        <AuButton
+                          @icon="bin"
+                          @alert={{true}}
+                          @skin="secondary"
+                          @hideText={{true}}
+                          {{on "click" (fn this.removeShape shape)}}
+                        >
+                          {{t "utility.delete"}}
+                        </AuButton>
+                      </td>
+                    </tr>
+                  {{/each}}
+                </:body>
+              </AuTable>
+            {{else}}
+              <AuCard @size="small" as |c|>
+                <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">
+                  <AuHeading @level="2" @skin="4">
+                    {{t "road-sign-concept.atLeastOneShapeRequired"}}
+                  </AuHeading>
+                </c.header>
+              </AuCard>
+            {{/if}}
+          {{/let}}
         </form>
       </div>
     </div>

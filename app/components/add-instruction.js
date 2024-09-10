@@ -38,7 +38,7 @@ export default class AddInstructionComponent extends Component {
       this.new = true;
       this.template = this.store.createRecord('template');
       this.template.value = '';
-      this.variables = this.template.variables;
+      this.variables = await this.template.variables;
     }
     this.parseTemplate();
   });
@@ -140,7 +140,7 @@ export default class AddInstructionComponent extends Component {
           value: reg[1],
           type: 'text',
         });
-        this.variables.pushObject(variable);
+        this.variables.push(variable);
       }
     });
 
@@ -189,11 +189,11 @@ export default class AddInstructionComponent extends Component {
 
   save = task(async () => {
     await this.template.save();
-    this.concept.hasInstructions.pushObject(this.template);
+    (await this.concept.hasInstructions).push(this.template);
     await this.concept.save();
     for (let i = 0; i < this.variables.length; i++) {
       const variable = this.variables[i];
-      this.template.variables.pushObject(variable);
+      (await this.template.variables).push(variable);
       await variable.save();
     }
     // New datamodel misses relationship for rdfA notation

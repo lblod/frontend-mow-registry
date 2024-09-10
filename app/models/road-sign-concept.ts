@@ -42,7 +42,10 @@ export default class RoadSignConceptModel extends TrafficSignConceptModel {
   })
   declare relatedFromRoadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
 
-  relatedRoadSignConcepts?: Array<RoadSignConceptModel>;
+  // This property is used to house the combined data of the relatedToRoadSignConcepts and relatedFromRoadSignConcepts relationships.
+  // We need both since we want to display all related signs, not only a single direction.
+  // TODO: move this state to the edit page, we don't need to store this on the record itself
+  relatedRoadSignConcepts: Array<RoadSignConceptModel> = [];
 
   @hasMany('road-marking-concept', {
     inverse: 'relatedRoadSignConcepts',
