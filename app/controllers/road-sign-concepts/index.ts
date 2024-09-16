@@ -18,6 +18,14 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked classification?: string | null;
   @tracked sort = 'label';
 
+  get hasActiveFilter() {
+    return Boolean(this.label || this.meaning || this.classification);
+  }
+
+  get canResetFilters() {
+    return !this.hasActiveFilter;
+  }
+
   updateSearchFilterTask = restartableTask(
     async (
       queryParamProperty: 'classification' | 'meaning',
@@ -56,6 +64,13 @@ export default class RoadsignConceptsIndexController extends Controller {
   @action onSortChange(newSort: string) {
     this.sort = newSort;
   }
+
+  resetFilters = () => {
+    this.label = '';
+    this.meaning = '';
+    this.classification = null;
+    this.resetPagination();
+  };
 
   resetPagination() {
     this.page = 0;

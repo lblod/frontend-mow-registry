@@ -201,7 +201,6 @@ export default class AddInstructionComponent extends Component {
     //   this.template.value,
     //   this.variables,
     // );
-    console.log('this.variablesToBeDeleted', this.variablesToBeDeleted);
     await this.template.save();
     await Promise.all(
       this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),

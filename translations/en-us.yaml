@@ -40,12 +40,17 @@ utility:
   or: Or
   field-required: This field is required
   app-name: MOW Registry
-  delete: delete
+  delete: Delete
   instructions: Instructions
+  instruction-details: Instruction details
+  main-signs: Main signs
+  sub-signs: Sub signs
+  related-traffic-signs: Related traffic signs
   description: Description
   order: Order
   sign: Sign
   add-instruction: Add instruction
+  edit-instruction: Edit instruction
   drag: Drag
   add: Add
   no-instruction: No instructions found
@@ -54,6 +59,7 @@ utility:
   valid-content: content validated
   yes: Yes
   no: No
+  validation-status: Validation status
   template-variables:
     text: text
     number: number
@@ -61,6 +67,7 @@ utility:
     location: location
     codelist: codelist
     instruction: instruction
+    no-variables: Use $'{variableName} to add a new variable
     invalid-character:
       title: Invalid character detected
       message: One of the mentioned variable names contains an invalid character. Variable names may only contains letters, numbers, '-', '_' and '.'
@@ -71,6 +78,8 @@ utility:
   height: Height
   diameter: Diameter
   add-shape: Add shape
+  filters: Filters
+  reset-filters: Reset all filters
 image-input:
   helptext: Press the button to upload a new image or insert a URL of an existing image
   preview-alt: A preview of the uploaded or linked image
@@ -79,7 +88,7 @@ image-input:
   image-url: Image URL
 road-sign-concept:
   name: Road Signs
-  details: Road Sign details
+  details: Road sign {label}
   attr:
     image-header: Image
     image-url: Image URL
@@ -91,7 +100,6 @@ road-sign-concept:
     related-sign: Related road signs
     related-marking: Related road markings
     related-traffic-light: Related traffic light
-    valid: Is valid
     shape: Shape
     dimensions: Dimensions
     height: Height
@@ -107,18 +115,22 @@ road-sign-concept:
     saveDimension: Save dimension
     dimension: Dimension
     saveShape: Save shape
+    properties: Road sign properties
 
   crud:
     create: Create road sign
-    new: New Road Sign
+    new: Add new road sign
     no-data: No Road Signs
     no-instruction: No instructions found
     no-shape: No shapes found
-    edit: Edit Road Sign
+    edit: Edit properties
     delete: Delete Road Sign
     label-filter: Label
-    meaning-filter: Search by meaning
-    classification-filter: Filter by classification
+    label-filter-placeholder: Search by label
+    meaning-filter: Meaning
+    meaning-filter-placeholder: Search by meaning
+    classification-filter: Classification
+    classification-filter-placeholder: Filter by classification
   landing-page:
     content: Manage traffic signs, sub-signs and instructions.
     button: Go to Road Signs
@@ -217,7 +229,7 @@ traffic-measure-concept:
     button: Go to traffic measures
 sub-sign:
   filter:
-    label: Search sub signs by code
+    label: Search sub signs by label
   crud:
     add: Add subsigns
     add-one: Add subsign
@@ -277,3 +289,6 @@ icon-catalog:
   landing-page:
     content: Manage codelist icons.
     button: Go to Icon Catalog
+  validation-status:
+    valid: Validated
+    draft: Draft

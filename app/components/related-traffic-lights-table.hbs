@@ -9,21 +9,21 @@
     <menu.general>
       <AuToolbar class="au-o-box" as |Group|>
         <Group>
-          <AuHeading @level="2" @skin="3">
+          <AuHeading @level="2" @skin="4">
             {{t "road-marking-concept.attr.related-traffic-light"}}
           </AuHeading>
         </Group>
         <Group>
-          <AuButton {{on "click" @onClickAdd}}>
+          <AuButton @icon="add" {{on "click" @onClickAdd}}>
             {{t "related-traffic-light.crud.add"}}
           </AuButton>
         </Group>
       </AuToolbar>
     </menu.general>
   </s.menu>
-  <s.content as |c|>
+  <s.content class="table-centered-content" as |c|>
     <c.header>
-      <th class="data-table__header-title">
+      <th class="data-table__header-title w-px">
         {{t "traffic-light-concept.attr.label"}}
       </th>
       <th class="data-table__header-title">
@@ -37,7 +37,12 @@
     </c.header>
     <c.body as |relatedTrafficLightConcept|>
       <td>
-        {{relatedTrafficLightConcept.label}}
+        <AuLink
+          @route="traffic-light-concepts.traffic-light-concept"
+          @model={{relatedTrafficLightConcept.id}}
+        >
+          {{relatedTrafficLightConcept.label}}
+        </AuLink>
       </td>
       <td>
         <img
@@ -48,13 +53,11 @@
       </td>
       <td class="w-px au-u-padding-right-small">
         <AuButton
-          @icon="bin"
           @alert={{true}}
-          @skin="secondary"
-          @hideText={{true}}
+          @skin="naked"
           {{on "click" (fn @onClickRemove relatedTrafficLightConcept)}}
         >
-          {{t "related-traffic-light.crud.delete"}}
+          {{t "utility.delete"}}
         </AuButton>
       </td>
     </c.body>

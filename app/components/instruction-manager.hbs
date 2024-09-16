@@ -1,0 +1,136 @@
+<div>
+  <AuToolbar @size="large" as |Group|>
+    <Group>
+      <AuHeading @level="2" @skin="3">
+        {{#if this.new}}
+          {{t "utility.add-instruction"}}
+        {{else}}
+          {{t "utility.edit-instruction"}}
+        {{/if}}
+      </AuHeading>
+    </Group>
+
+    <Group>
+      <AuButtonGroup>
+        <AuButton
+          {{on "click" (perform this.save)}}
+          @disabled={{not this.canSave}}
+          @loading={{this.save.isRunning}}
+          @loadingMessage={{t "utility.save"}}
+        >
+          {{t "utility.save"}}
+        </AuButton>
+        <AuButton @skin="secondary" {{on "click" this.reset}}>
+          {{t "utility.cancel"}}
+        </AuButton>
+        {{#if this.canDelete}}
+          <AuButton
+            @skin="secondary"
+            @alert={{true}}
+            @loading={{this.removeTemplate.isRunning}}
+            @loadingMessage={{t "utility.delete"}}
+            {{on "click" this.removeTemplate.perform}}
+          >
+            {{t "utility.delete"}}
+          </AuButton>
+        {{/if}}
+      </AuButtonGroup>
+    </Group>
+  </AuToolbar>
+
+  <div class="au-o-box">
+    <div class="au-o-grid">
+      <div
+        class="au-o-grid__item au-u-1-2@medium"
+        {{did-insert this.didInsert}}
+      >
+        <AuFormRow>
+          <AuLabel for="textarea-description">
+            {{t "utility.description"}}
+          </AuLabel>
+          <AuTextarea
+            {{on "input" this.updateTemplate}}
+            id="textarea-description"
+            @width="block"
+            value={{this.template.value}}
+            class="u-min-h-20"
+          />
+          {{#if this.templateSyntaxError}}
+            <AuAlert
+              @title={{this.templateSyntaxError.title}}
+              @skin="error"
+              @icon="alert-triangle"
+              class="au-u-margin-top-small"
+            >
+              {{this.templateSyntaxError.message}}
+            </AuAlert>
+          {{/if}}
+        </AuFormRow>
+      </div>
+
+      <div
+        class="au-o-grid__item au-u-1-2@medium"
+        style="margin-top: 30px;"
+        {{! template-lint-disable no-inline-styles }}
+      >
+        <AuTable
+          style="min-width: unset;"
+          {{! template-lint-disable no-inline-styles }}
+        >
+          <:header>
+            <tr>
+              <th class="w-px">{{t
+                  "traffic-measure-concept.attr.variable"
+                }}</th>
+              <th>{{t "traffic-measure-concept.attr.type"}}</th>
+            </tr>
+          </:header>
+          <:body>
+            {{#each this.variables as |variable|}}
+              <tr>
+                <td>{{variable.value}}</td>
+                <td>
+                  <PowerSelect
+                    @allowClear={{false}}
+                    @searchEnabled={{false}}
+                    @options={{this.inputTypes}}
+                    @selected={{variable.type}}
+                    @onChange={{fn this.updateVariableType variable}}
+                    as |type|
+                  >
+                    {{type}}
+                  </PowerSelect>
+                  {{#if (eq variable.type "codelist")}}
+                    <PowerSelect
+                      @allowClear={{false}}
+                      @searchEnabled={{false}}
+                      @options={{this.codeLists}}
+                      @selected={{variable.codeList}}
+                      @onChange={{fn this.updateCodeList variable}}
+                      as |codeList|
+                    >
+                      {{codeList.label}}
+                    </PowerSelect>
+                    <ul>
+                      {{#each variable.codeList.concepts as |option|}}
+                        <li> - {{option.label}}</li>
+                      {{/each}}
+                    </ul>
+                  {{/if}}
+                </td>
+              </tr>
+            {{else}}
+              <tr>
+                <td colspan="2">
+                  <AuHelpText @skin="secondary">
+                    {{t "utility.template-variables.no-variables"}}
+                  </AuHelpText>
+                </td>
+              </tr>
+            {{/each}}
+          </:body>
+        </AuTable>
+      </div>
+    </div>
+  </div>
+</div>

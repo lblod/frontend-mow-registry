@@ -1,0 +1,20 @@
+.sidebar-overlay-container {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sidebar-overlay-container__content {
+  height: 100%;
+}
+
+.sidebar-overlay-container__sidebar {
+  z-index: var(--au-z-index-alpha);
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 400px;
+  background-color: var(--au-page-bg);
+}

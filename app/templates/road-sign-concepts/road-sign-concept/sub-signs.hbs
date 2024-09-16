@@ -1,0 +1,138 @@
+{{page-title (t "utility.sub-signs")}}
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo
+    @route="road-sign-concepts.road-sign-concept.sub-signs"
+    class={{linkClass}}
+  >
+    {{t "utility.sub-signs"}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<RoadSignConcept::Header @roadSignConcept={{@model.roadSignConcept}} />
+
+<SidebarOverlayContainer @isOpen={{this.isAddingSubSigns}}>
+  <:content>
+    <AuDataTable
+      @content={{sort-by-road-sign-code
+        (await @model.roadSignConcept.subSigns)
+      }}
+      @fields="Image Meaning Code"
+      @noDataMessage={{t "road-sign-concept.crud.no-data"}}
+      as |s|
+    >
+      <s.menu as |menu|>
+        <menu.general>
+          <AuToolbar class="au-o-box" as |Group|>
+            <Group>
+              <AuHeading @level="2" @skin="3" class="au-u-hidden-visually">
+                {{t "road-sign-concept.attr.sub-sign"}}
+              </AuHeading>
+            </Group>
+            <Group>
+              <AuButton
+                @icon="add"
+                @disabled={{this.isAddingSubSigns}}
+                {{on "click" this.toggleAddSubSigns}}
+              >
+                {{t "sub-sign.crud.add"}}
+              </AuButton>
+            </Group>
+          </AuToolbar>
+        </menu.general>
+      </s.menu>
+      <s.content class="table-centered-content" as |c|>
+        <c.header>
+          <th class="data-table__header-title w-px">
+            {{t "road-sign-concept.attr.label"}}
+          </th>
+          <th class="data-table__header-title">
+            {{t "road-sign-concept.attr.image-header"}}
+          </th>
+          <th class="data-table__header-title">
+            {{t "road-sign-concept.attr.meaning"}}
+          </th>
+          <th>
+            <span class="au-u-hidden-visually">
+              {{t "sub-sign.crud.delete"}}
+            </span>
+          </th>
+        </c.header>
+        <c.body as |subSign|>
+          <td>
+            <AuLink
+              @route="road-sign-concepts.road-sign-concept"
+              @model={{subSign.id}}
+            >
+              {{subSign.label}}
+            </AuLink>
+          </td>
+          <td>
+            <img
+              class="au-c-thumbnail"
+              src={{subSign.image.file.downloadLink}}
+              alt=""
+            />
+          </td>
+          <td>
+            <p class="max-w-prose">
+              {{subSign.meaning}}
+            </p>
+          </td>
+          <td class="w-px au-u-padding-right-small">
+            <AuButton
+              @alert={{true}}
+              @skin="naked"
+              {{on "click" (perform this.removeSubSign subSign)}}
+            >
+              {{t "utility.delete"}}
+            </AuButton>
+          </td>
+        </c.body>
+      </s.content>
+    </AuDataTable>
+  </:content>
+  <:sidebar>
+    <div class="au-o-box au-c-action-sidebar__header" tabindex="0">
+      <AuToolbar class="au-u-margin-bottom-small" as |Group|>
+        <Group>
+          <AuHeading @level="2" @skin="3">
+            {{t "sub-sign.crud.add"}}
+          </AuHeading>
+        </Group>
+        <button
+          type="button"
+          class="au-c-close au-c-close--large"
+          {{on "click" this.toggleAddSubSigns}}
+        >
+          <AuIcon @icon="cross" @size="large" />
+          <span class="au-u-hidden-visually">
+            {{t "utility.close"}}
+          </span>
+        </button>
+      </AuToolbar>
+      <div class="au-c-data-table__search">
+        <AuInput
+          value={{this.subSignCodeFilter}}
+          placeholder={{t "sub-sign.filter.label"}}
+          @icon="search"
+          @iconAlignment="right"
+          @width="block"
+          {{on "input" this.setSubSignCodeFilter}}
+          {{auto-focus}}
+        />
+      </div>
+    </div>
+    <div class="au-c-body-container au-c-body-container--scroll">
+      {{#each (sort-by-road-sign-code this.subSigns) as |subSign|}}
+        <SidebarRoadSign
+          @imageUrl={{subSign.image.file.downloadLink}}
+          @code={{subSign.label}}
+          @meaning={{subSign.meaning}}
+          @onAdd={{perform this.addSubSign subSign}}
+          @addText={{t "sub-sign.crud.add-one"}}
+          class="au-c-action-sidebar__item"
+        />
+      {{/each}}
+    </div>
+  </:sidebar>
+</SidebarOverlayContainer>
