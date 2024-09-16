@@ -21,6 +21,7 @@ export default class TrafficSignConcept extends SkosConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'traffic-sign-concept';
   @attr declare meaning?: string;
+  @attr declare valid?: boolean;
 
   @belongsTo<Image>('image', { async: true, inverse: null, polymorphic: true })
   declare image: AsyncBelongsTo<Image>;
