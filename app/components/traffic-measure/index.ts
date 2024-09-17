@@ -186,9 +186,9 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  async updateInstruction(variable: Variable, instruction: Template) {
+  async updateInstruction(variable: Variable, template: Template) {
     //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-    variable.instruction = instruction;
+    variable.template = template;
     await this.generatePreview.perform();
   }
 
@@ -241,15 +241,15 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       variable.codeList = this.codeLists[0];
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      variable.instruction = null;
+      variable.template = null;
     } else if (variable.type === 'instruction') {
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      variable.instruction = this.instructions[0];
+      variable.template = this.instructions[0];
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
       variable.codeList = null;
     } else {
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      variable.instruction = null;
+      variable.template = null;
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
       variable.codeList = null;
     }
@@ -358,7 +358,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     for (const variable of this.variables) {
       let replaceString;
       if (variable.type === 'instruction') {
-        const instruction = await variable.instruction;
+        const instruction = await variable.template;
         replaceString =
           "<span style='background-color: #ffffff'>" +
           (instruction?.value ?? '') +

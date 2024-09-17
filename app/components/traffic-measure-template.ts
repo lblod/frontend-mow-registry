@@ -26,7 +26,7 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
     for (const variable of variables) {
       let replaceString;
       if (variable.type === 'instruction') {
-        const instruction = await variable.instruction;
+        const instruction = await variable.template;
         replaceString =
           "<span style='background-color: #ffffff'>" +
           (instruction?.value ?? '') +
