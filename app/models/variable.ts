@@ -17,5 +17,5 @@ export default class Variable extends Resource {
   declare codeList: AsyncBelongsTo<CodeList>;
 
   @belongsTo<Template>('template', { inverse: null, async: true })
-  declare instruction: AsyncBelongsTo<Template>;
+  declare template: AsyncBelongsTo<Template>;
 }
