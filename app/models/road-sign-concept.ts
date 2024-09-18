@@ -7,7 +7,6 @@ import {
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import {
-  validateBooleanRequired,
   validateHasManyOptional,
   validateHasManyRequired,
 } from 'mow-registry/validators/schema';

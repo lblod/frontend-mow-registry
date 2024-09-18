@@ -10,7 +10,6 @@ import TrafficSignConcept from './traffic-sign-concept';
 import type SkosConcept from './skos-concept';
 import {
   validateBelongsToOptional,
-  validateBooleanRequired,
   validateHasManyOptional,
   validateStringRequired,
 } from 'mow-registry/validators/schema';

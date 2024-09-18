@@ -11,7 +11,6 @@ import TrafficSignConcept from './traffic-sign-concept';
 import SkosConcept from './skos-concept';
 import {
   validateBelongsToOptional,
-  validateBooleanRequired,
   validateHasManyOptional,
 } from 'mow-registry/validators/schema';
 
