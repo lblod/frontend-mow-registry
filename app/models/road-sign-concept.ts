@@ -7,6 +7,7 @@ import {
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import {
+  validateBooleanRequired,
   validateHasManyOptional,
   validateHasManyRequired,
 } from 'mow-registry/validators/schema';
@@ -69,6 +70,7 @@ export default class RoadSignConcept extends TrafficSignConcept {
 
   get validationSchema() {
     return super.validationSchema.keys({
+      valid: validateBooleanRequired(),
       shapes: validateHasManyRequired(),
       classifications: validateHasManyRequired(),
       subSigns: validateHasManyOptional(),

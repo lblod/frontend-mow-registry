@@ -11,6 +11,7 @@ import TrafficSignConcept from './traffic-sign-concept';
 import SkosConcept from './skos-concept';
 import {
   validateBelongsToOptional,
+  validateBooleanRequired,
   validateHasManyOptional,
 } from 'mow-registry/validators/schema';
 
@@ -52,6 +53,7 @@ export default class TrafficLightConcept extends TrafficSignConcept {
 
   get validationSchema() {
     return super.validationSchema.keys({
+      valid: validateBooleanRequired(),
       zonality: validateBelongsToOptional(),
       relatedToTrafficLightConcepts: validateHasManyOptional(),
       relatedFromTrafficLightConcepts: validateHasManyOptional(),
