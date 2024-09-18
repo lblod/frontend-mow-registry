@@ -13,6 +13,7 @@ import type TrafficMeasureConcept from './traffic-measure-concept';
 import {
   validateBelongsToOptional,
   validateBelongsToRequired,
+  validateBooleanRequired,
   validateHasManyOptional,
   validateStringRequired,
 } from 'mow-registry/validators/schema';
@@ -41,6 +42,7 @@ export default class TrafficSignConcept extends SkosConcept {
 
   get validationSchema() {
     return super.validationSchema.keys({
+      valid: validateBooleanRequired(),
       image: validateBelongsToRequired(),
       meaning: validateStringRequired(),
       status: validateBelongsToOptional(),
