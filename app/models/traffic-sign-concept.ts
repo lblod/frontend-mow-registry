@@ -13,6 +13,7 @@ import type TrafficMeasureConcept from './traffic-measure-concept';
 import {
   validateBelongsToOptional,
   validateBelongsToRequired,
+  validateBooleanOptional,
   validateHasManyOptional,
   validateStringRequired,
 } from 'mow-registry/validators/schema';
@@ -21,6 +22,7 @@ export default class TrafficSignConcept extends SkosConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'traffic-sign-concept';
   @attr declare meaning?: string;
+  @attr declare valid?: boolean;
 
   @belongsTo<Image>('image', { async: true, inverse: null, polymorphic: true })
   declare image: AsyncBelongsTo<Image>;
@@ -40,6 +42,7 @@ export default class TrafficSignConcept extends SkosConcept {
 
   get validationSchema() {
     return super.validationSchema.keys({
+      valid: validateBooleanOptional(),
       image: validateBelongsToRequired(),
       meaning: validateStringRequired(),
       status: validateBelongsToOptional(),

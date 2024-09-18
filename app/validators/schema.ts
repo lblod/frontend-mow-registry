@@ -42,6 +42,20 @@ export const validateStringOptional = () => {
 };
 
 /**
+ * Rules for validating a boolean as an optional field.
+ */
+export const validateBooleanOptional = () => {
+  return Joi.boolean().allow(null);
+};
+
+/**
+ * Rules for validating a boolean as an required field.
+ */
+export const validateBooleanRequired = () => {
+  return Joi.boolean().required();
+};
+
+/**
  * Rules for validating a string as a required field.
  */
 export const validateStringRequired = (message = 'errors.label.required') => {
