@@ -7,6 +7,7 @@ import {
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import {
+  validateBelongsToOptional,
   validateHasManyOptional,
   validateHasManyRequired,
 } from 'mow-registry/validators/schema';
@@ -77,7 +78,7 @@ export default class RoadSignConcept extends TrafficSignConcept {
       relatedFromRoadSignConcepts: validateHasManyOptional(),
       relatedRoadMarkingConcepts: validateHasManyOptional(),
       relatedTrafficLightConcepts: validateHasManyOptional(),
-      zonality: validateHasManyOptional(),
+      zonality: validateBelongsToOptional(),
     });
   }
 }
