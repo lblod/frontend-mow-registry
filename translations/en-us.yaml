@@ -73,6 +73,7 @@ utility:
       message: One of the mentioned variable names contains an invalid character. Variable names may only contains letters, numbers, '-', '_' and '.'
   search-placeholder: Type to search
   shape: Shape
+  shapes: Shapes
   dimensions: Dimensions
   width: Width
   height: Height
@@ -106,14 +107,14 @@ road-sign-concept:
     side: Length (side)
     unit: Unit
     atLeastOneShapeRequired: You must add at least one shape
-    newShape: New Shape
-    addDimension: Add dimension
+    new-shape: Add new Shape
+    add-dimension: Add new dimension
     kind: Kind
     value: Value
-    saveDimension: Save dimension
     dimension: Dimension
-    saveShape: Save shape
     properties: Road sign properties
+    shapes:
+      title: Shape {index}
 
   crud:
     create: Create road sign

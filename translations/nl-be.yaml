@@ -74,6 +74,7 @@ utility:
       message: Een van de opgegeven variabelenamen bevat een ongeldig karakter. Variabelenamen mogen enkel letters, cijfers, '-', '_' en '.' bevatten
   search-placeholder: Typ om te zoeken
   shape: Vorm
+  shapes: Vormen
   dimensions: Afmetingen
   height: Hoogte
   width: Breedte
@@ -106,14 +107,14 @@ road-sign-concept:
     side: Lengte (zijde)
     unit: Eenheid
   atLeastOneShapeRequired: Voeg minstens één vorm toe
-  newShape: Nieuwe vorm
-  addDimension: Afmeting toevoegen
+  add-shape: Nieuwe vorm toevoegen
+  add-dimension: Nieuwe afmeting toevoegen
   kind: Type
   value: Waarde
-  saveDimension: Afmeting opslaan
-  saveShape: Vorm opslaan
   dimension: Afmeting
   properties: Verkeersbordeigenschappen
+  shapes:
+    title: Vorm {index}
 
   crud:
     create: Verkeersbord aanmaken
