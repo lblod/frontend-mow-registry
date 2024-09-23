@@ -81,11 +81,9 @@ utility:
   filters: Filters
   reset-filters: Reset all filters
 image-input:
-  helptext: Press the button to upload a new image or insert a URL of an existing image
-  preview-alt: A preview of the uploaded or linked image
-  url-placeholder: http(s)://...
-  invalid-url: Only image URLs starting with http(s) are allowed
-  image-url: Image URL
+  helptext: Press the button to upload a new image
+  preview-alt: A preview of the uploaded image
+  image-upload: Image
 road-sign-concept:
   name: Road Signs
   details: Road sign {label}

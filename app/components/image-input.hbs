@@ -4,7 +4,7 @@
   @required={{true}}
   @requiredLabel={{t "utility.required"}}
 >
-  {{t "image-input.image-url"}}&nbsp;
+  {{t "image-input.image-upload"}}
 </AuLabel>
 {{#if this.source}}
   <img
@@ -13,9 +13,6 @@
     class="image-preview"
   />
 {{/if}}
-<AuHelpText @size="small" @skin="tertiary">{{t
-    "image-input.helptext"
-  }}</AuHelpText>
 
 <div class="flex au-u-flex--wrap au-u-flex--no-wrap@medium full-width">
   <FileUploader
@@ -23,11 +20,9 @@
     @onFileSet={{this.setImageUpload}}
   />
 </div>
-{{#if this.showUrlError}}
-  <AuHelpText @size="small" @error={{true}}>{{t
-      "image-input.invalid-url"
-    }}</AuHelpText>
-{{/if}}
+<AuHelpText @size="small" @skin="tertiary">
+  {{t "image-input.helptext"}}
+</AuHelpText>
 {{#if @error}}
   <AuHelpText @error={{true}}>
     {{t "utility.field-required"}}

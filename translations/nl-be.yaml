@@ -81,11 +81,9 @@ utility:
   filters: Filters
   reset-filters: Herstel alle filters
 image-input:
-  helptext: Druk op de upload knop om een nieuw bestand te uploaden of plak de URL van een bestaande afbeelding
-  preview-alt: Een voorbeeld van het geüploade bestand of de URL
-  url-placeholder: http(s)://...
-  invalid-url: Enkel afbeeldings-URLs die beginnen met http(s) zijn toegelaten
-  image-url: Afbeelding URL
+  helptext: Druk op de upload knop om een nieuw bestand te uploaden
+  preview-alt: Een voorbeeld van het geüploade bestand
+  image-upload: Afbeelding
 road-sign-concept:
   name: Verkeersborden
   details: Verkeersbord {label}
