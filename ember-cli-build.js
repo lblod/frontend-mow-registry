@@ -31,6 +31,15 @@ module.exports = function (defaults) {
     // The inspector acts strange when this flag is enabled so we only do it for production builds for now.
     // https://github.com/emberjs/ember.js/pull/20580
     staticEmberSource: isProductionBuild,
+    splitAtRoutes: [
+      'road-sign-concepts',
+      'road-marking-concepts',
+      'traffic-light-concepts',
+      'traffic-measure-concepts',
+      'codelists-management',
+      'icon-catalog',
+      'sparql',
+    ],
     skipBabel: [
       {
         package: 'qunit',
