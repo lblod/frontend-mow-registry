@@ -11,7 +11,7 @@ import Template from 'mow-registry/models/template';
 import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import RoadsignConcept from 'mow-registry/routes/road-sign-concepts/road-sign-concept';
 import { removeItem } from 'mow-registry/utils/array';
-import { ModelFrom } from 'mow-registry/utils/type-utils';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import { TrackedArray } from 'tracked-built-ins';
 
 export default class RoadsignConceptsRoadsignConceptController extends Controller {

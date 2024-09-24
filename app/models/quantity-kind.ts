@@ -1,4 +1,4 @@
-import Model, { AsyncHasMany, hasMany } from '@ember-data/model';
+import Model, { type AsyncHasMany, hasMany } from '@ember-data/model';
 import { attr } from '@ember-data/model';
 import type Unit from './unit';
 import type { Type } from '@warp-drive/core-types/symbols';

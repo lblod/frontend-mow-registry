@@ -11,7 +11,7 @@ import Template from 'mow-registry/models/template';
 import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import RoadmarkingConcept from 'mow-registry/routes/road-marking-concepts/road-marking-concept';
 import { removeItem } from 'mow-registry/utils/array';
-import { ModelFrom } from 'mow-registry/utils/type-utils';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
 
 export default class RoadmarkingConceptsRoadmarkingConceptController extends Controller {
   @service declare router: RouterService;

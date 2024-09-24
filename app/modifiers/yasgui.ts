@@ -1,5 +1,5 @@
 import { modifier } from 'ember-modifier';
-import Yasgui, { PartialConfig } from '@triply/yasgui';
+import Yasgui, { type PartialConfig } from '@triply/yasgui';
 
 export default modifier(function yasgui(
   element: HTMLElement /*, params, hash*/,

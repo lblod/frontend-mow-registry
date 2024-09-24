@@ -1,5 +1,5 @@
 import AbstractValidationModel from './abstract-validation-model';
-import { AsyncHasMany, attr, hasMany } from '@ember-data/model';
+import { type AsyncHasMany, attr, hasMany } from '@ember-data/model';
 import Joi from 'joi';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 import {

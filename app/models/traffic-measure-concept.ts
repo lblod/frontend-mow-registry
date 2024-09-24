@@ -1,6 +1,6 @@
 import Model, {
-  AsyncBelongsTo,
-  AsyncHasMany,
+  type AsyncBelongsTo,
+  type AsyncHasMany,
   attr,
   belongsTo,
   hasMany,

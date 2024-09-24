@@ -59,7 +59,7 @@ function afterRender(element: HTMLElement, options?: FocusOptions) {
 }
 
 function focus(element: HTMLElement, options?: FocusOptions) {
-  element.dataset.programmaticallyFocused = 'true';
+  element.dataset['programmaticallyFocused'] = 'true';
   element.focus(options);
-  next(() => delete element.dataset.programmaticallyFocused);
+  next(() => delete element.dataset['programmaticallyFocused']);
 }

@@ -1,4 +1,4 @@
-import { AsyncBelongsTo, belongsTo } from '@ember-data/model';
+import { type AsyncBelongsTo, belongsTo } from '@ember-data/model';
 import { attr } from '@ember-data/model';
 import Unit from './unit';
 import QuantityKind from './quantity-kind';

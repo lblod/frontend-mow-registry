@@ -3,7 +3,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type Template from 'mow-registry/models/template';
 import RoadsignConcept from 'mow-registry/routes/road-sign-concepts/road-sign-concept';
-import { ModelFrom } from 'mow-registry/utils/type-utils';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
 const PARENT_ROUTE = 'road-sign-concepts.road-sign-concept';
 
 type Params = {

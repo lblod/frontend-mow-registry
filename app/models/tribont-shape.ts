@@ -1,6 +1,6 @@
 import {
-  AsyncBelongsTo,
-  AsyncHasMany,
+  type AsyncBelongsTo,
+  type AsyncHasMany,
   belongsTo,
   hasMany,
 } from '@ember-data/model';

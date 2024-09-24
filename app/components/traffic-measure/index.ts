@@ -16,7 +16,7 @@ import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import CodeList from 'mow-registry/models/code-list';
 import ApplicationInstance from '@ember/application/instance';
-import { SignType } from 'mow-registry/components/traffic-measure/select-type';
+import type { SignType } from 'mow-registry/components/traffic-measure/select-type';
 import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 import Variable from 'mow-registry/models/variable';
 import NodeShape from 'mow-registry/models/node-shape';
@@ -152,8 +152,10 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     const instructions: Template[] = [];
     for (let i = 0; i < this.signs.length; i++) {
       const sign = this.signs[i];
-      const signInstructions = await sign.hasInstructions;
-      signInstructions.forEach((instr) => instructions.push(instr));
+      if (sign) {
+        const signInstructions = await sign.hasInstructions;
+        signInstructions.forEach((instr) => instructions.push(instr));
+      }
     }
 
     this.instructions = instructions;
