@@ -2,8 +2,8 @@ import {
   attr,
   hasMany,
   belongsTo,
-  AsyncHasMany,
-  AsyncBelongsTo,
+  type AsyncHasMany,
+  type AsyncBelongsTo,
 } from '@ember-data/model';
 import type { Type } from '@warp-drive/core-types/symbols';
 import type TrafficMeasureConcept from './traffic-measure-concept';

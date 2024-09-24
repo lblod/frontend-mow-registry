@@ -1,7 +1,11 @@
 import { tracked } from '@glimmer/tracking';
 import { assert } from '@ember/debug';
 import Model from '@ember-data/model';
-import Joi, { ObjectSchema, ValidationError, ValidationErrorItem } from 'joi';
+import Joi, {
+  type ObjectSchema,
+  ValidationError,
+  type ValidationErrorItem,
+} from 'joi';
 
 type ModelSchema = typeof Model;
 
@@ -134,7 +138,7 @@ export default class AbstractValidationModel extends Model {
   #serializeModel() {
     const serializedModel = this.#serializeModelWithDepthControl(this);
     // Remove id on the top level, as it is not part of the validation schema
-    if (serializedModel) delete serializedModel.id;
+    if (serializedModel) delete serializedModel['id'];
 
     return serializedModel;
   }

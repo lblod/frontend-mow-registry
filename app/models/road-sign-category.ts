@@ -1,4 +1,4 @@
-import Model, { AsyncHasMany, attr, hasMany } from '@ember-data/model';
+import Model, { type AsyncHasMany, attr, hasMany } from '@ember-data/model';
 import RoadSignConcept from './road-sign-concept';
 import type { Type } from '@warp-drive/core-types/symbols';
 

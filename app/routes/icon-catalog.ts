@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import Transition from '@ember/routing/transition';
+import type Transition from '@ember/routing/transition';
 import { inject as service } from '@ember/service';
 import SessionService from 'mow-registry/services/session';
 

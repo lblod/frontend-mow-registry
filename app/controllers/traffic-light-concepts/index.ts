@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import { ModelFrom } from 'mow-registry/utils/type-utils';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import TrafficlightConceptsIndexRoute from 'mow-registry/routes/traffic-light-concepts/index';
 
 export default class RoadsignConceptsIndexController extends Controller {

@@ -1,47 +1,17 @@
 {
+  "extends": "@tsconfig/ember/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2020",
-    "allowJs": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noImplicitReturns": true,
-    "noEmitOnError": false,
-    "noEmit": true,
-    "inlineSourceMap": true,
-    "inlineSources": true,
+    // The combination of `baseUrl` with `paths` allows Ember's classic package
+    // layout, which is not resolvable with the Node resolution algorithm, to
+    // work with TypeScript.
     "baseUrl": ".",
-    "module": "es2020",
-    "experimentalDecorators": true,
-    "lib": [
-      "ES2017",
-      "ES2019.Object",
-      "ES2020",
-      "DOM",
-      "DOM.Iterable",
-      "ES2021.String"
-    ],
+    // TODO: this fixes the SessionService types, but ideally we would just follow the blueprint config
+    "allowJs": true,
     "paths": {
-      "*": [
-        "types/*"
-      ],
-      "mow-registry": [
-        "app"
-      ],
-      "mow-registry/*": [
-        "app/*"
-      ],
-      "fetch": [
-        "node_modules/ember-fetch"
-      ]
+      "mow-registry/tests/*": ["tests/*"],
+      "mow-registry/*": ["app/*"],
+      "*": ["types/*"],
+      "fetch": ["node_modules/ember-fetch"]
     },
     "types": [
       "./node_modules/@ember-data-types/adapter/unstable-preview-types",
@@ -59,10 +29,6 @@
       "ember-source/types"
     ]
   },
-  "include": [
-    "app/**/*",
-    "tests/**/*",
-    "types/**/*",
-    "test-support/**/*"
-  ]
+  // Only needed because we use allowJS: true, otherwise it would typecheck the dist folder
+  "include": ["app/**/*", "tests/**/*", "types/**/*", "test-support/**/*"]
 }

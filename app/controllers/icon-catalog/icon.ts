@@ -3,7 +3,7 @@ import { task } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import type RouterService from '@ember/routing/router-service';
-import { ModelFrom } from 'mow-registry/utils/type-utils';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import IconCatalogIconRoute from 'mow-registry/routes/icon-catalog/icon';
 import Icon from 'mow-registry/models/icon';
 

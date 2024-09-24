@@ -1,4 +1,4 @@
-import { AsyncBelongsTo, belongsTo, attr } from '@ember-data/model';
+import { type AsyncBelongsTo, belongsTo, attr } from '@ember-data/model';
 import type { Type } from '@warp-drive/core-types/symbols';
 import type CodeList from './code-list';
 import type Template from './template';

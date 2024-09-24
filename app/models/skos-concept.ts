@@ -1,4 +1,4 @@
-import { AsyncBelongsTo, attr, hasMany } from '@ember-data/model';
+import { type AsyncBelongsTo, attr, hasMany } from '@ember-data/model';
 import Joi from 'joi';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
 import {

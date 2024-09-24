@@ -3,7 +3,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type Template from 'mow-registry/models/template';
 import TrafficlightConcept from 'mow-registry/routes/traffic-light-concepts/traffic-light-concept';
-import { ModelFrom } from 'mow-registry/utils/type-utils';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
 const PARENT_ROUTE = 'traffic-light-concepts.traffic-light-concept.index';
 
 type Params = {

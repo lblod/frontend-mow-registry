@@ -1,8 +1,8 @@
 import {
   hasMany,
   belongsTo,
-  AsyncBelongsTo,
-  AsyncHasMany,
+  type AsyncBelongsTo,
+  type AsyncHasMany,
 } from '@ember-data/model';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';

@@ -4,7 +4,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import type RouterService from '@ember/routing/router-service';
-import { ModelFrom } from 'mow-registry/utils/type-utils';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import TrafficlightConcept from 'mow-registry/routes/traffic-light-concepts/traffic-light-concept';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import Template from 'mow-registry/models/template';

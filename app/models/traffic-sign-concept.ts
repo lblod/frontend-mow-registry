@@ -2,8 +2,8 @@ import {
   attr,
   hasMany,
   belongsTo,
-  AsyncBelongsTo,
-  AsyncHasMany,
+  type AsyncBelongsTo,
+  type AsyncHasMany,
 } from '@ember-data/model';
 import type { Type } from '@warp-drive/core-types/symbols';
 import SkosConcept from 'mow-registry/models/skos-concept';

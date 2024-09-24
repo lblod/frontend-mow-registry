@@ -2,8 +2,8 @@ import {
   hasMany,
   belongsTo,
   attr,
-  AsyncHasMany,
-  AsyncBelongsTo,
+  type AsyncHasMany,
+  type AsyncBelongsTo,
 } from '@ember-data/model';
 import ConceptScheme from 'mow-registry/models/concept-scheme';
 import type Variable from 'mow-registry/models/variable';

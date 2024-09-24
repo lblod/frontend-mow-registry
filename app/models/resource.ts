@@ -1,4 +1,4 @@
-import { AsyncHasMany, hasMany } from '@ember-data/model';
+import { type AsyncHasMany, hasMany } from '@ember-data/model';
 import Joi from 'joi';
 import AbstractValidationModel from './abstract-validation-model';
 import { validateHasManyOptional } from 'mow-registry/validators/schema';

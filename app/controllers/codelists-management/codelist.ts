@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import Icon from 'mow-registry/models/icon';
 import CodelistsManagementCodelistRoute from 'mow-registry/routes/codelists-management/codelist';
-import { ModelFrom } from 'mow-registry/utils/type-utils';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
 
 export default class CodelistController extends Controller {
   declare model: ModelFrom<CodelistsManagementCodelistRoute>;
