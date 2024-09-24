@@ -19,8 +19,6 @@ module.exports = function (defaults) {
     },
   });
 
-  app.import('node_modules/@triply/yasgui/build/yasgui.min.css');
-
   const { Webpack } = require('@embroider/webpack');
   return require('@embroider/compat').compatBuild(app, Webpack, {
     staticAddonTestSupportTrees: true,
