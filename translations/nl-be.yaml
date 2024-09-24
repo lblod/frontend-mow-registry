@@ -290,3 +290,7 @@ icon-catalog:
 validation-status:
   valid: Gevalideerd
   draft: Ontwerp
+errors:
+  field:
+    required: Dit veld is verplicht
+  number: Geef een getal in

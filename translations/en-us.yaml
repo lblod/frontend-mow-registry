@@ -290,3 +290,7 @@ icon-catalog:
   validation-status:
     valid: Validated
     draft: Draft
+errors:
+  field:
+    required: This field is required
+  number: Enter a number

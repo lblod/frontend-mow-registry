@@ -58,7 +58,7 @@ export const validateBooleanRequired = () => {
 /**
  * Rules for validating a string as a required field.
  */
-export const validateStringRequired = (message = 'errors.label.required') => {
+export const validateStringRequired = (message = 'errors.field.required') => {
   return Joi.string().empty('').required().messages({
     'any.required': message,
   });
@@ -67,7 +67,7 @@ export const validateStringRequired = (message = 'errors.label.required') => {
 /**
  * Rules for validating a number as a required field.
  */
-export const validateNumberRequired = (message = 'errors.label.required') => {
+export const validateNumberRequired = (message = 'errors.number') => {
   return Joi.number().required().messages({
     'any.required': message,
   });
