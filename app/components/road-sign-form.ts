@@ -126,7 +126,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       );
 
       await this.args.roadSignConcept.save();
-      await this.router.transitionTo(
+      void this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
         this.args.roadSignConcept.id,
       );
