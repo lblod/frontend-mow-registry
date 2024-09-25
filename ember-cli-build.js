@@ -1,6 +1,7 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const isProductionBuild = process.env.EMBER_ENV === 'production';
 
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
@@ -18,19 +19,29 @@ module.exports = function (defaults) {
     },
   });
 
-  // Use `app.import` to add additional libraries to the generated
-  // output files.
-  //
-  // If you need to use different assets in different
-  // environments, specify an object as the first parameter. That
-  // object's keys should be the environment name and the values
-  // should be the asset to use in that environment.
-  //
-  // If the library that you are including contains AMD or ES6
-  // modules that you would like to import into your application
-  // please specify an object with the list of modules as keys
-  // along with the exports of each module as its value.
-  app.import('node_modules/@triply/yasgui/build/yasgui.min.css');
-
-  return app.toTree();
+  const { Webpack } = require('@embroider/webpack');
+  return require('@embroider/compat').compatBuild(app, Webpack, {
+    staticAddonTestSupportTrees: true,
+    staticAddonTrees: true,
+    staticHelpers: true,
+    staticModifiers: true,
+    staticComponents: true,
+    // The inspector acts strange when this flag is enabled so we only do it for production builds for now.
+    // https://github.com/emberjs/ember.js/pull/20580
+    staticEmberSource: isProductionBuild,
+    splitAtRoutes: [
+      'road-sign-concepts',
+      'road-marking-concepts',
+      'traffic-light-concepts',
+      'traffic-measure-concepts',
+      'codelists-management',
+      'icon-catalog',
+      'sparql',
+    ],
+    skipBabel: [
+      {
+        package: 'qunit',
+      },
+    ],
+  });
 };

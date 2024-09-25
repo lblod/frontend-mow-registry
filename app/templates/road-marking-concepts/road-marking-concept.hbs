@@ -193,24 +193,6 @@
               class="au-c-action-sidebar__item"
             />
           {{/each}}
-          {{#if this.classification}}
-            {{#each
-              (sort-by-road-marking-code this.classificationRoadMarkings)
-              as |relatedRoadMarkingByCategory|
-            }}
-              <SidebarRoadMarking
-                @imageUrl={{relatedRoadMarkingByCategory.image.file.downloadLink}}
-                @code={{relatedRoadMarkingByCategory.label}}
-                @meaning={{relatedRoadMarkingByCategory.meaning}}
-                @onAdd={{perform
-                  this.addRelatedRoadMarking
-                  relatedRoadMarkingByCategory
-                }}
-                @addText={{t "related-road-marking.crud.add-one"}}
-                class="au-c-action-sidebar__item"
-              />
-            {{/each}}
-          {{/if}}
         </div>
       </div>
     </div>
@@ -332,24 +314,6 @@
               class="au-c-action-sidebar__item"
             />
           {{/each}}
-          {{#if this.classification}}
-            {{#each
-              (sort-by-traffic-light-code this.classificationTrafficLights)
-              as |relatedTrafficLightByCategory|
-            }}
-              <SidebarTrafficLight
-                @imageUrl={{relatedTrafficLightByCategory.image.file.downloadLink}}
-                @code={{relatedTrafficLightByCategory.label}}
-                @meaning={{relatedTrafficLightByCategory.meaning}}
-                @onAdd={{perform
-                  this.addRelatedTrafficLight
-                  relatedTrafficLightByCategory
-                }}
-                @addText={{t "related-traffic-light.crud.add-one"}}
-                class="au-c-action-sidebar__item"
-              />
-            {{/each}}
-          {{/if}}
         </div>
       </div>
     </div>
