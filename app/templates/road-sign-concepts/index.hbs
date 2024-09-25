@@ -25,7 +25,9 @@
           <AuInput
             id="meaning-filter"
             value={{this.meaning}}
-            placeholder={{t "road-sign-concept.crud.meaning-filter-placeholder"}}
+            placeholder={{t
+              "road-sign-concept.crud.meaning-filter-placeholder"
+            }}
             @icon="search"
             @iconAlignment="right"
             {{on "input" (perform this.updateSearchFilterTask "meaning")}}
@@ -39,7 +41,9 @@
             @allowClear={{true}}
             @options={{this.model.classifications}}
             @selected={{this.selectedClassification}}
-            @placeholder={{t "road-sign-concept.crud.classification-filter-placeholder"}}
+            @placeholder={{t
+              "road-sign-concept.crud.classification-filter-placeholder"
+            }}
             @loadingMessage={{t "utility.loading"}}
             @onChange={{this.updateCategoryFilter}}
             @triggerId="classification-filter"
@@ -48,16 +52,10 @@
             {{classification.label}}
           </PowerSelect>
         </div>
-        <div class="au-u-text-right">
-          <AuButton
-            @skin="naked"
-            @disabled={{this.canResetFilters}}
-            {{on "click" this.resetFilters}}
-          >
-            <AuIcon @icon="cross" @size="large" />
-            {{t "utility.reset-filters"}}
-          </AuButton>
-        </div>
+        <ResetFilters
+          @canReset={{this.hasActiveFilter}}
+          @onReset={{this.resetFilters}}
+        />
       </form>
     </div>
   </:sidebar>

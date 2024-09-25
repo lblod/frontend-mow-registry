@@ -22,10 +22,6 @@ export default class RoadsignConceptsIndexController extends Controller {
     return Boolean(this.label || this.meaning || this.classification);
   }
 
-  get canResetFilters() {
-    return !this.hasActiveFilter;
-  }
-
   updateSearchFilterTask = restartableTask(
     async (
       queryParamProperty: 'classification' | 'meaning',
