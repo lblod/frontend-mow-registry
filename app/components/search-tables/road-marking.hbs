@@ -12,8 +12,9 @@
   </:menu>
   <:header as |header|>
     <header.Sortable
-      @field="label"
+      @field=":no-case:label"
       @label={{t "road-marking-concept.attr.label"}}
+      class="w-px"
     />
     <th>
       {{t "road-marking-concept.attr.image-header"}}
@@ -22,15 +23,19 @@
       {{t "road-marking-concept.attr.meaning"}}
     </th>
     <th>
-      {{t "road-marking-concept.attr.valid"}}
+      {{t "utility.validation-status"}}
     </th>
-    <th></th>
   </:header>
   <:body as |roadMarkingConcept|>
     <td>
-      {{roadMarkingConcept.label}}
+      <AuLink
+        @route="road-marking-concepts.road-marking-concept"
+        @model={{roadMarkingConcept.id}}
+      >
+        {{roadMarkingConcept.label}}
+      </AuLink>
     </td>
-    <td>
+    <td class="au-u-text-center">
       <img
         class="au-c-thumbnail"
         src={{roadMarkingConcept.image.file.downloadLink}}
@@ -41,14 +46,7 @@
       {{roadMarkingConcept.meaning}}
     </td>
     <td>
-      {{#if roadMarkingConcept.valid}}
-        {{t "utility.yes"}}
-      {{else}}
-        {{t "utility.no"}}
-      {{/if}}
-    </td>
-    <td>
-      {{yield roadMarkingConcept to="rowAction"}}
+      <ValidationStatus @valid={{roadMarkingConcept.valid}} />
     </td>
   </:body>
 </ReactiveTable>

@@ -188,7 +188,9 @@ road-marking-concept:
     edit: Edit Road marking
     delete: Delete Road marking
     label-filter: Label
-    meaning-filter: Search by meaning
+    label-filter-placeholder: Search by label
+    meaning-filter: Meaning
+    meaning-filter-placeholder: Search by meaning
   landing-page:
     content: Manage road markings and instructions.
     button: Go to Road Markings

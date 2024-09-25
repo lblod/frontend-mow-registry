@@ -181,7 +181,9 @@ road-marking-concept:
     edit: Wegmarkering bewerken
     delete: Wegmarkering verwijderen
     label-filter: Label
-    meaning-filter: Zoeken op betekenis
+    label-filter-placeholder: Zoeken op label
+    meaning-filter: Betekenis
+    meaning-filter-placeholder: Zoeken op betekenis
   landing-page:
     content: Beheer wegmarkeringen en instructies.
     button: Ga naar Wegmarkeringen
