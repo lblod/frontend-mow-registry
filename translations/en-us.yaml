@@ -82,6 +82,7 @@ utility:
   filters: Filters
   reset-filters: Reset all filters
   value: Value
+  type: Type
 image-input:
   helptext: Press the button to upload a new image
   preview-alt: A preview of the uploaded image
