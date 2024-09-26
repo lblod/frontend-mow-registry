@@ -115,6 +115,7 @@ road-sign-concept:
     properties: Road sign properties
     shapes:
       title: Shape {index}
+    variables: Variables
 
   crud:
     create: Create road sign
@@ -242,7 +243,7 @@ main-sign:
     delete: Remove main sign
     edit: Edit main sign
 sparql:
-  name: 'MOW Registry: SPARQL'
+  name: "MOW Registry: SPARQL"
 codelist:
   name: Codelists management
   details: Codelist details
@@ -264,8 +265,8 @@ codelist:
     icons: Icons
     id: Id
     types:
-      singleSelect: 'Single select'
-      multiSelect: 'Multi select'
+      singleSelect: "Single select"
+      multiSelect: "Multi select"
   landing-page:
     content: Overview and management of available code lists.
     button: Go to codelists management
