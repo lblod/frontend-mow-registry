@@ -28,7 +28,7 @@ export default class CodeList extends ConceptScheme {
   get validationSchema() {
     return super.validationSchema.keys({
       uri: validateStringOptional(),
-      label: validateStringRequired('errors.label.required'),
+      label: validateStringRequired(),
       variables: validateHasManyOptional(),
       type: validateBelongsToOptional(),
     });

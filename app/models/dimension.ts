@@ -17,8 +17,8 @@ export default class Dimension extends AbstractValidationModel {
   @belongsTo<Unit>('unit', { inverse: null, async: true })
   declare unit: AsyncBelongsTo<Unit>;
 
-  @belongsTo<QuantityKind>('quantity-kind', { inverse: null, async: true })
-  declare kind: AsyncBelongsTo<QuantityKind>;
+  @belongsTo<QuantityKind>('quantity-kind', { inverse: null, async: false })
+  declare kind: QuantityKind;
 
   get validationSchema() {
     return Joi.object({

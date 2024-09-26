@@ -73,6 +73,7 @@ utility:
       message: One of the mentioned variable names contains an invalid character. Variable names may only contains letters, numbers, '-', '_' and '.'
   search-placeholder: Type to search
   shape: Shape
+  shapes: Shapes
   dimensions: Dimensions
   width: Width
   height: Height
@@ -81,11 +82,9 @@ utility:
   filters: Filters
   reset-filters: Reset all filters
 image-input:
-  helptext: Press the button to upload a new image or insert a URL of an existing image
-  preview-alt: A preview of the uploaded or linked image
-  url-placeholder: http(s)://...
-  invalid-url: Only image URLs starting with http(s) are allowed
-  image-url: Image URL
+  helptext: Press the button to upload a new image
+  preview-alt: A preview of the uploaded image
+  image-upload: Image
 road-sign-concept:
   name: Road Signs
   details: Road sign {label}
@@ -108,14 +107,14 @@ road-sign-concept:
     side: Length (side)
     unit: Unit
     atLeastOneShapeRequired: You must add at least one shape
-    newShape: New Shape
-    addDimension: Add dimension
+    new-shape: Add new Shape
+    add-dimension: Add new dimension
     kind: Kind
     value: Value
-    saveDimension: Save dimension
     dimension: Dimension
-    saveShape: Save shape
     properties: Road sign properties
+    shapes:
+      title: Shape {index}
 
   crud:
     create: Create road sign
@@ -292,3 +291,7 @@ icon-catalog:
   validation-status:
     valid: Validated
     draft: Draft
+errors:
+  field:
+    required: This field is required
+  number: Enter a number

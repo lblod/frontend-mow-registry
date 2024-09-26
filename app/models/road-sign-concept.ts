@@ -70,7 +70,9 @@ export default class RoadSignConcept extends TrafficSignConcept {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      shapes: validateHasManyRequired(),
+      shapes: validateHasManyRequired(
+        'road-sign-concept.atLeastOneShapeRequired',
+      ),
       classifications: validateHasManyRequired(),
       subSigns: validateHasManyOptional(),
       mainSigns: validateHasManyOptional(),

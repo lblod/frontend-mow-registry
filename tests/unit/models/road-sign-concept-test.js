@@ -17,13 +17,16 @@ module('Unit | Model | road sign concept', function (hooks) {
     assert.false(isValid);
     assert.strictEqual(Object.keys(model.error).length, 5);
     assert.strictEqual(model.error.image.message, 'errors.field.required');
-    assert.strictEqual(model.error.meaning.message, 'errors.label.required');
-    assert.strictEqual(model.error.label.message, 'errors.label.required');
+    assert.strictEqual(model.error.meaning.message, 'errors.field.required');
+    assert.strictEqual(model.error.label.message, 'errors.field.required');
     assert.strictEqual(
       model.error.classifications.message,
       'errors.field.required',
     );
-    assert.strictEqual(model.error.shapes.message, 'errors.field.required');
+    assert.strictEqual(
+      model.error.shapes.message,
+      'road-sign-concept.atLeastOneShapeRequired',
+    );
   });
 
   test('it does not have error when all required fields are filled in', async function (assert) {

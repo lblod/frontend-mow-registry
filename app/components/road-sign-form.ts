@@ -3,19 +3,29 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
+import type Dimension from 'mow-registry/models/dimension';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import RoadSignCategory from 'mow-registry/models/road-sign-category';
 import TribontShape from 'mow-registry/models/tribont-shape';
 import { tracked } from '@glimmer/tracking';
 import { removeItem } from 'mow-registry/utils/array';
+// eslint-disable-next-line ember/use-ember-data-rfc-395-imports -- https://github.com/ember-cli/eslint-plugin-ember/issues/2156
+import type Store from 'ember-data/store';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
 };
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: RouterService;
+  @service declare store: Store;
+
+  isArray = function isArray(maybeArray: unknown) {
+    return Array.isArray(maybeArray);
+  };
 
   @tracked shapesToRemove: TribontShape[] = [];
+  dimensionsToRemove: Dimension[] = [];
+
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
   }
@@ -36,15 +46,23 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  async addShape(shape: TribontShape) {
+  async addShape() {
+    const shape = this.store.createRecord<TribontShape>('tribont-shape', {});
     (await this.args.roadSignConcept.shapes).push(shape);
   }
+
   @action
   async removeShape(shape: TribontShape) {
     const shapes = await this.args.roadSignConcept.shapes;
     removeItem(shapes, shape);
     this.shapesToRemove.push(shape);
   }
+
+  removeDimension = async (shape: TribontShape, dimension: Dimension) => {
+    removeItem(await shape.dimensions, dimension);
+
+    this.dimensionsToRemove.push(dimension);
+  };
 
   @action
   async setImage(model: RoadSignConcept, image: File) {
@@ -55,9 +73,30 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   editRoadSignConceptTask = dropTask(async (event: InputEvent) => {
     event.preventDefault();
 
-    await this.args.roadSignConcept.validate();
+    const isValid = await this.args.roadSignConcept.validate();
 
-    if (!this.args.roadSignConcept.error) {
+    // validate the shapes and dimensions
+    const shapes = await this.args.roadSignConcept.shapes;
+    const areShapesValid = !(
+      await Promise.all(
+        shapes.map(async (shape) => {
+          const isShapeValid = await shape.validate();
+
+          const dimensions = await shape.dimensions;
+          const areDimensionsValid = !(
+            await Promise.all(
+              dimensions.map((dimension) => {
+                return dimension.validate();
+              }),
+            )
+          ).includes(false);
+
+          return isShapeValid && areDimensionsValid;
+        }),
+      )
+    ).includes(false);
+
+    if (isValid && areShapesValid) {
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
 
@@ -82,9 +121,12 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
           await shape.destroyRecord();
         }),
       );
+      await Promise.all(
+        this.dimensionsToRemove.map((dimension) => dimension.destroyRecord()),
+      );
 
       await this.args.roadSignConcept.save();
-      await this.router.transitionTo(
+      void this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
         this.args.roadSignConcept.id,
       );

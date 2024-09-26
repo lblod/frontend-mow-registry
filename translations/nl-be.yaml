@@ -74,6 +74,7 @@ utility:
       message: Een van de opgegeven variabelenamen bevat een ongeldig karakter. Variabelenamen mogen enkel letters, cijfers, '-', '_' en '.' bevatten
   search-placeholder: Typ om te zoeken
   shape: Vorm
+  shapes: Vormen
   dimensions: Afmetingen
   height: Hoogte
   width: Breedte
@@ -81,11 +82,9 @@ utility:
   filters: Filters
   reset-filters: Herstel alle filters
 image-input:
-  helptext: Druk op de upload knop om een nieuw bestand te uploaden of plak de URL van een bestaande afbeelding
-  preview-alt: Een voorbeeld van het geüploade bestand of de URL
-  url-placeholder: http(s)://...
-  invalid-url: Enkel afbeeldings-URLs die beginnen met http(s) zijn toegelaten
-  image-url: Afbeelding URL
+  helptext: Druk op de upload knop om een nieuw bestand te uploaden
+  preview-alt: Een voorbeeld van het geüploade bestand
+  image-upload: Afbeelding
 road-sign-concept:
   name: Verkeersborden
   details: Verkeersbord {label}
@@ -108,14 +107,14 @@ road-sign-concept:
     side: Lengte (zijde)
     unit: Eenheid
   atLeastOneShapeRequired: Voeg minstens één vorm toe
-  newShape: Nieuwe vorm
-  addDimension: Afmeting toevoegen
+  add-shape: Nieuwe vorm toevoegen
+  add-dimension: Nieuwe afmeting toevoegen
   kind: Type
   value: Waarde
-  saveDimension: Afmeting opslaan
-  saveShape: Vorm opslaan
   dimension: Afmeting
   properties: Verkeersbordeigenschappen
+  shapes:
+    title: Vorm {index}
 
   crud:
     create: Verkeersbord aanmaken
@@ -292,3 +291,7 @@ icon-catalog:
 validation-status:
   valid: Gevalideerd
   draft: Ontwerp
+errors:
+  field:
+    required: Dit veld is verplicht
+  number: Geef een getal in

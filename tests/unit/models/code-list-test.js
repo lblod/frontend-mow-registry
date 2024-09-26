@@ -16,7 +16,7 @@ module('Unit | Model | code list', function (hooks) {
 
     assert.false(isValid);
     assert.strictEqual(Object.keys(model.error).length, 1);
-    assert.strictEqual(model.error.label.message, 'errors.label.required');
+    assert.strictEqual(model.error.label.message, 'errors.field.required');
   });
 
   test('it does not have error when label is filled in', async function (assert) {
