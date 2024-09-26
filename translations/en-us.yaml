@@ -81,6 +81,7 @@ utility:
   add-shape: Add shape
   filters: Filters
   reset-filters: Reset all filters
+  properties: Properties
 image-input:
   helptext: Press the button to upload a new image
   preview-alt: A preview of the uploaded image
@@ -171,7 +172,7 @@ related-traffic-light:
     label: Search
 road-marking-concept:
   name: Road Markings
-  details: Road marking details
+  details: Road marking {label}
   attr:
     image-header: Image
     image-url: Image URL
