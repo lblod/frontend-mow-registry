@@ -8,21 +8,21 @@
     <menu.general>
       <AuToolbar class="au-o-box" as |Group|>
         <Group>
-          <AuHeading @level="2" @skin="3">
+          <AuHeading @level="2" @skin="4">
             {{t "road-marking-concept.attr.related-marking"}}
           </AuHeading>
         </Group>
         <Group>
-          <AuButton {{on "click" @onClickAdd}}>
+          <AuButton @icon="add" {{on "click" @onClickAdd}}>
             {{t "related-road-marking.crud.add"}}
           </AuButton>
         </Group>
       </AuToolbar>
     </menu.general>
   </s.menu>
-  <s.content as |c|>
+  <s.content class="table-centered-content" as |c|>
     <c.header>
-      <th class="data-table__header-title">
+      <th class="data-table__header-title w-px">
         {{t "road-marking-concept.attr.label"}}
       </th>
       <th class="data-table__header-title">
@@ -39,7 +39,12 @@
     </c.header>
     <c.body as |relatedRoadMarkingConcept|>
       <td>
-        {{relatedRoadMarkingConcept.label}}
+        <AuLink
+          @route="road-marking-concepts.road-marking-concept"
+          @model={{relatedRoadMarkingConcept.id}}
+        >
+          {{relatedRoadMarkingConcept.label}}
+        </AuLink>
       </td>
       <td>
         <img
@@ -55,13 +60,11 @@
       </td>
       <td class="w-px au-u-padding-right-small">
         <AuButton
-          @icon="bin"
           @alert={{true}}
-          @skin="secondary"
-          @hideText={{true}}
+          @skin="naked"
           {{on "click" (fn @onClickRemove relatedRoadMarkingConcept)}}
         >
-          {{t "related-road-marking.crud.delete"}}
+          {{t "utility.delete"}}
         </AuButton>
       </td>
     </c.body>

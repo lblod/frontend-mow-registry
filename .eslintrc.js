@@ -15,7 +15,11 @@ module.exports = {
   env: {
     browser: true,
   },
-  rules: {},
+  rules: {
+    // This convention was only useful when depending on the default model hook implementation, which has been removed:
+    // More info: https://github.com/ember-cli/eslint-plugin-ember/issues/2060#issuecomment-2358844541
+    'ember/routes-segments-snake-case': 'off',
+  },
   overrides: [
     // ts files
     {

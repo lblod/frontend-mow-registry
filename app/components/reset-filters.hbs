@@ -1,0 +1,10 @@
+<div class="au-u-text-right">
+  <AuButton
+    @skin="naked"
+    @disabled={{not @canReset}}
+    {{on "click" @onReset}}
+  >
+    <AuIcon @icon="cross" @size="large" />
+    {{t "utility.reset-filters"}}
+  </AuButton>
+</div>

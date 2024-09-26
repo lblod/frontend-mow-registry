@@ -1,0 +1,12 @@
+<div class="sidebar-overlay-container" ...attributes>
+  <div class="sidebar-overlay-container__content">
+    {{yield to="content"}}
+  </div>
+  {{#if @isOpen}}
+    <div class="sidebar-overlay-container__sidebar">
+      <div class="au-c-body-container au-c-action-sidebar">
+        {{yield to="sidebar"}}
+      </div>
+    </div>
+  {{/if}}
+</div>

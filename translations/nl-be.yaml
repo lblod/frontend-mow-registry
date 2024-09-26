@@ -40,19 +40,25 @@ utility:
   or: Of
   field-required: Dit veld is verplicht
   app-name: MOW Register
-  delete: verwijderen
+  delete: Verwijderen
   instructions: Instructies
+  instruction-details: Instructie details
+  main-signs: Hoofdborden
+  sub-signs: Onderborden
+  related-traffic-signs: Gerelateerde verkeerstekens
   description: Beschrijving
   image-preview-alt: Een voorbeeldweergave van de geüploade of de gelinkte afbeelding
   order: Volgorde
   sign: Verkeersteken
   add-instruction: Voeg instructie toe
+  edit-instruction: Bewerk instructie
   drag: Sleep
   add: Voeg toe
   no-instruction: Geen instructies gevonden
   username: Gebruikersnaam
   password: Paswoord
   valid-content: Deze inhoud is gevalideerd
+  validation-status: Validatiestatus
   yes: Ja
   no: Nee
   template-variables:
@@ -62,6 +68,7 @@ utility:
     location: locatie
     codelist: codelijst
     instruction: instructie
+    no-variables: Voeg $'{variableName} toe om een variabele/instructie toe te voegen
     invalid-character:
       title: Ongeldig karakter gedetecteerd
       message: Een van de opgegeven variabelenamen bevat een ongeldig karakter. Variabelenamen mogen enkel letters, cijfers, '-', '_' en '.' bevatten
@@ -71,6 +78,8 @@ utility:
   height: Hoogte
   width: Breedte
   add-shape: Vorm toevoegen
+  filters: Filters
+  reset-filters: Herstel alle filters
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden of plak de URL van een bestaande afbeelding
   preview-alt: Een voorbeeld van het geüploade bestand of de URL
@@ -79,7 +88,7 @@ image-input:
   image-url: Afbeelding URL
 road-sign-concept:
   name: Verkeersborden
-  details: Verkeersbord details
+  details: Verkeersbord {label}
   attr:
     image-header: Afbeelding
     image-url: Afbeelding URL
@@ -91,7 +100,6 @@ road-sign-concept:
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
     related-traffic-light: Gerelateerde verkeerslichten
-    valid: Gevalideerd
     shape: Vorm
     dimensions: Afmetingen
     height: Hoogte
@@ -107,18 +115,22 @@ road-sign-concept:
   saveDimension: Afmeting opslaan
   saveShape: Vorm opslaan
   dimension: Afmeting
+  properties: Verkeersbordeigenschappen
 
   crud:
     create: Verkeersbord aanmaken
-    new: Nieuw verkeersbord
+    new: Voeg nieuw verkeersbord toe
     no-data: Geen verkeersborden gevonden
     no-instruction: Geen instructies gevonden
     no-shape: Geen vormen gevonden
-    edit: Verkeersbord bewerken
+    edit: Eigenschappen bewerken
     delete: Verkeersbord verwijderen
-    label-filter: Code
-    meaning-filter: Zoeken op betekenis
-    classification-filter: Filteren op classificatie
+    label-filter: Label
+    label-filter-placeholder: Zoeken op label
+    meaning-filter: Betekenis
+    meaning-filter-placeholder: Zoeken op betekenis
+    classification-filter: Classificatie
+    classification-filter-placeholder: Filteren op classificatie
   landing-page:
     content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden
@@ -210,7 +222,7 @@ traffic-measure-concept:
     button: Ga naar Mobiliteitsmaatregelen
 sub-sign:
   filter:
-    label: Zoek onderborden op code
+    label: Zoek onderborden op label
   crud:
     add: Onderborden toevoegen
     add-one: Onderbord toevoegen
@@ -277,3 +289,6 @@ icon-catalog:
   landing-page:
     content: Overzichtscode bevat pictogrammen.
     button: Ga naar Cataloguspictogram
+validation-status:
+  valid: Gevalideerd
+  draft: Ontwerp

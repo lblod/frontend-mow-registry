@@ -6,15 +6,16 @@
   @pageSize={{@pageSize}}
   @onPageChange={{@onPageChange}}
   @onSortChange={{@onSortChange}}
+  @tableClass="table-centered-content"
 >
   <:menu>
     {{yield to="menu"}}
   </:menu>
   <:header as |header|>
-
     <header.Sortable
       @field="label"
       @label={{t "road-sign-concept.attr.label"}}
+      class="w-px"
     />
     <th>
       {{t "road-sign-concept.attr.image-header"}}
@@ -27,16 +28,19 @@
       @label={{t "road-sign-concept.attr.classifications"}}
     />
     <th>
-      {{t "road-marking-concept.attr.valid"}}
+      {{t "utility.validation-status"}}
     </th>
-    <th></th>
   </:header>
   <:body as |roadSignConcept|>
-
     <td>
-      {{roadSignConcept.label}}
+      <AuLink
+        @route="road-sign-concepts.road-sign-concept"
+        @model={{roadSignConcept.id}}
+      >
+        {{roadSignConcept.label}}
+      </AuLink>
     </td>
-    <td>
+    <td class="au-u-text-center">
       <img
         class="au-c-thumbnail"
         src={{roadSignConcept.image.file.downloadLink}}
@@ -55,14 +59,7 @@
       {{/each}}
     </td>
     <td>
-      {{#if roadSignConcept.valid}}
-        {{t "utility.yes"}}
-      {{else}}
-        {{t "utility.no"}}
-      {{/if}}
-    </td>
-    <td>
-      {{yield roadSignConcept to="rowAction"}}
+      <ValidationStatus @valid={{roadSignConcept.valid}} />
     </td>
   </:body>
 </ReactiveTable>

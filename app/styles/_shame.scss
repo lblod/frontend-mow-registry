@@ -33,19 +33,6 @@
   right: $au-unit;
 }
 
-.road-sign-code-search {
-  width: 10rem;
-  min-width: unset;
-}
-
-.road-sign-meaning-search {
-  min-width: unset;
-}
-
-.classification-select {
-  min-width: 24rem;
-}
-
 // Sign container
 .au-c-sign-container {
   position: relative;
@@ -112,6 +99,12 @@
 .au-c-table__row--centered {
   td {
     vertical-align: center;
+  }
+}
+
+.table-centered-content {
+  td {
+    vertical-align: middle;
   }
 }
 
