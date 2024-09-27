@@ -1,0 +1,67 @@
+<AuFormRow>
+
+  <AuLabel for="variables" @required={{false}}>
+    {{t "road-sign-concept.attr.variables"}}&nbsp;
+  </AuLabel>
+  <AuButtonGroup @inline={{this.inline}}>
+    <AuLabel>{{t "utility.value"}}</AuLabel>
+    <AuInput {{on "input" this.setVariableValue}} />
+    <AuLabel>{{t "utility.type"}}</AuLabel>
+    <PowerSelect
+      @allowClear={{true}}
+      @searchField="label"
+      @options={{this.variableTypes}}
+      @loadingMessage={{t "utility.loading"}}
+      @selected={{null}}
+      @onChange={{this.setVariableType}}
+      @triggerId="variableTypes"
+      as |variableType|
+    >
+      {{variableType.value}}
+    </PowerSelect>
+    <AuButton {{on "click" this.addVariable}}>
+      {{t "utility.add"}}
+    </AuButton>
+  </AuButtonGroup>
+
+  <br />
+
+  <AuDataTable
+    @content={{@variables}}
+    @page={{this.page}}
+    @fields="title description"
+    @noDataMessage="Geen variabelen gevonden"
+    @sort={{this.sort}}
+    as |table|
+  >
+    <table.content as |c|>
+
+      <c.header>
+
+        <AuDataTableThSortable
+          @field="value"
+          @currentSorting={{this.sort}}
+          @label={{t "utility.value"}}
+          @class="data-table__header-title"
+        />
+
+        <AuDataTableThSortable
+          @field="type"
+          @currentSorting={{this.sort}}
+          @label={{t "utility.type"}}
+          @class="data-table__header-title"
+        />
+
+      </c.header>
+
+      <c.body as |variable|>
+
+        <td>{{variable.value}}</td>
+
+        <td>{{variable.type}}</td>
+
+      </c.body>
+
+    </table.content>
+  </AuDataTable>
+</AuFormRow>

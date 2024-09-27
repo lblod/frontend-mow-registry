@@ -80,6 +80,7 @@ export default class RoadSignConcept extends TrafficSignConcept {
       shapes: validateHasManyRequired(
         'road-sign-concept.atLeastOneShapeRequired',
       ),
+      variables: validateHasManyOptional(),
       classifications: validateHasManyRequired(),
       subSigns: validateHasManyOptional(),
       mainSigns: validateHasManyOptional(),
