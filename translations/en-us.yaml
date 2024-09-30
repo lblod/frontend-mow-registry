@@ -17,6 +17,8 @@ login-page:
     published-by: Published by
     abb: Agency for Home Affairs
 utility:
+  variable: Variable
+  variables: Variables
   login: Login
   logout: Logout
   back-to-overview: Back to overview
@@ -117,7 +119,6 @@ road-sign-concept:
     properties: Road sign properties
     shapes:
       title: Shape {index}
-    variables: Variables
 
   crud:
     create: Create road sign

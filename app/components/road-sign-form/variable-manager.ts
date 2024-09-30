@@ -11,7 +11,6 @@ import { tracked } from '@glimmer/tracking';
 interface Signature {
   Args: {
     roadSignConcept: RoadSignConcept;
-    variables: Variable[];
     addVariable: () => void;
     removeVariable: (variableToRemove: Variable) => void;
   };
@@ -21,8 +20,9 @@ export default class VariableManager extends Component<Signature> {
   @service declare store: Store;
   @service declare intl: IntlService;
 
-  @tracked variableValue = '';
-  @tracked variableType = '';
+  @tracked selectedValue?: string;
+  @tracked selectedType?: { value: string; label: string };
+
   variableTypes: TrackedArray<{ value: string; label: string }>;
 
   constructor(owner: unknown, args: Signature['Args']) {
@@ -54,28 +54,41 @@ export default class VariableManager extends Component<Signature> {
 
   @action
   setVariableValue(event: InputEvent) {
-    this.variableValue = (event.target as HTMLInputElement).value;
+    this.selectedValue = (event.target as HTMLInputElement).value;
   }
 
   @action
-  setVariableType(typeSelection: { value: string }) {
-    this.variableType = typeSelection.value;
+  setVariableType(selectedType: { value: string; label: string }) {
+    this.selectedType = selectedType;
   }
 
   @action
   async addVariable() {
-    const newVariable = this.store.createRecord<Variable>('variable', {
-      value: this.variableValue,
-      type: this.variableType,
-    });
+    if (this.selectedType && this.selectedValue) {
+      const newVariable = this.store.createRecord<Variable>('variable', {
+        value: this.selectedValue,
+        type: this.selectedType.value,
+        label: this.selectedType.label,
+      });
+      console.log(
+        `created variable with value ${this.selectedValue} and type ${this.selectedType.value}`,
+      );
 
+      const variables = await this.args.roadSignConcept.variables;
+      variables.push(newVariable);
+      await newVariable.save();
+      await this.args.roadSignConcept.save();
+    }
+  }
+
+  @action
+  async removeVariable(variableToBeRemoved: Variable) {
     const variables = await this.args.roadSignConcept.variables;
-    console.log('variables', variables);
-    variables.push(newVariable);
-    await newVariable.save();
-    await this.args.roadSignConcept.save();
 
-    this.variableValue = '';
-    this.variableType = '';
+    const updatedVariables = variables.filter(
+      (variable) => variable !== variableToBeRemoved,
+    );
+    this.args.roadSignConcept.set('variables', updatedVariables);
+    await variableToBeRemoved.destroyRecord();
   }
 }

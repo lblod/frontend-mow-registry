@@ -1,67 +1,81 @@
-<AuFormRow>
-
-  <AuLabel for="variables" @required={{false}}>
-    {{t "road-sign-concept.attr.variables"}}&nbsp;
-  </AuLabel>
-  <AuButtonGroup @inline={{this.inline}}>
-    <AuLabel>{{t "utility.value"}}</AuLabel>
-    <AuInput {{on "input" this.setVariableValue}} />
-    <AuLabel>{{t "utility.type"}}</AuLabel>
-    <PowerSelect
-      @allowClear={{true}}
-      @searchField="label"
-      @options={{this.variableTypes}}
-      @loadingMessage={{t "utility.loading"}}
-      @selected={{null}}
-      @onChange={{this.setVariableType}}
-      @triggerId="variableTypes"
-      as |variableType|
-    >
-      {{variableType.value}}
-    </PowerSelect>
-    <AuButton {{on "click" this.addVariable}}>
-      {{t "utility.add"}}
-    </AuButton>
-  </AuButtonGroup>
-
-  <br />
-
-  <AuDataTable
-    @content={{@variables}}
-    @page={{this.page}}
-    @fields="title description"
-    @noDataMessage="Geen variabelen gevonden"
-    @sort={{this.sort}}
-    as |table|
+<AuFieldset as |f|>
+  <f.legend
+    @skin={{this.skin}}
+    @required={{false}}
+    @error={{@roadSignConcept.error.variables}}
   >
-    <table.content as |c|>
+    {{t "utility.variables"}}
+  </f.legend>
+  <f.content class="au-u-1-1">
+    <div class="au-o-flow">
+      <AuButtonGroup>
+        <AuLabel>{{t "utility.variable"}}</AuLabel>
+        <AuInput {{on "input" this.setVariableValue}} />
+        <AuLabel>{{t "utility.type"}}</AuLabel>
+        <PowerSelect
+          @searchField="label"
+          @options={{this.variableTypes}}
+          @placeholder={{t "utility.search-placeholder"}}
+          @loadingMessage={{t "utility.loading"}}
+          @selected={{this.selectedType}}
+          @onChange={{this.setVariableType}}
+          @triggerId="variableTypes"
+          as |type|
+        >
+          {{type.label}}
+        </PowerSelect>
+        <AuButton @skin="secondary" {{on "click" this.addVariable}}>{{t
+            "utility.add"
+          }}</AuButton>
+      </AuButtonGroup>
 
-      <c.header>
+      <AuDataTable
+        @content={{@variables}}
+        @page={{this.page}}
+        @fields="title description"
+        @noDataMessage="Geen variabelen gevonden"
+        @sort={{this.sort}}
+        as |table|
+      >
+        <table.content as |c|>
 
-        <AuDataTableThSortable
-          @field="value"
-          @currentSorting={{this.sort}}
-          @label={{t "utility.value"}}
-          @class="data-table__header-title"
-        />
+          <c.header>
 
-        <AuDataTableThSortable
-          @field="type"
-          @currentSorting={{this.sort}}
-          @label={{t "utility.type"}}
-          @class="data-table__header-title"
-        />
+            <AuDataTableThSortable
+              @field="value"
+              @currentSorting={{this.sort}}
+              @label={{t "utility.variable"}}
+              @class="data-table__header-title"
+            />
 
-      </c.header>
+            <AuDataTableThSortable
+              @field="type"
+              @currentSorting={{this.sort}}
+              @label={{t "utility.type"}}
+              @class="data-table__header-title"
+            />
+            <th></th>
 
-      <c.body as |variable|>
+          </c.header>
 
-        <td>{{variable.value}}</td>
+          <c.body as |variable|>
+            <td>{{variable.value}}</td>
+            <td>{{variable.label}}</td>
+            <td>
+              <AuButton
+                @skin="naked"
+                @icon="bin"
+                @alert={{true}}
+                {{on "click" (fn this.removeVariable variable)}}
+              >
+                {{t "utility.delete"}}
+              </AuButton></td>
 
-        <td>{{variable.type}}</td>
+          </c.body>
 
-      </c.body>
+        </table.content>
+      </AuDataTable>
 
-    </table.content>
-  </AuDataTable>
-</AuFormRow>
+    </div>
+  </f.content>
+</AuFieldset>

@@ -17,6 +17,8 @@ login-page:
     published-by: Uitgegeven door
     abb: Agentschap Binnenlands Bestuur
 utility:
+  variable: Variabele
+  variables: Variabelen
   login: Aanmelden
   logout: Afmelden
   back-to-overview: Naar het overzicht
@@ -81,7 +83,6 @@ utility:
   add-shape: Vorm toevoegen
   filters: Filters
   reset-filters: Herstel alle filters
-  value: Waarde
   type: Type
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden
@@ -108,7 +109,6 @@ road-sign-concept:
     radius: Straal
     side: Lengte (zijde)
     unit: Eenheid
-    variables: Variabelen
   atLeastOneShapeRequired: Voeg minstens één vorm toe
   add-shape: Nieuwe vorm toevoegen
   add-dimension: Nieuwe afmeting toevoegen
