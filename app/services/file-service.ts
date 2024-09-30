@@ -1,4 +1,3 @@
-// eslint-disable-next-line ember/use-ember-data-rfc-395-imports -- ember-data/store is not the same as @ember-data/store. We need the preconfigured one.
 import Store from 'ember-data/store';
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
