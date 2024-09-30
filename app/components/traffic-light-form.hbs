@@ -37,7 +37,7 @@
               <ImageInput
                 @oldImage={{@trafficLightConcept.image.file.downloadLink}}
                 @error={{isInvalid}}
-                @setImage={{(fn this.setImage @trafficLightConcept)}}
+                @setImage={{fn this.setImage @trafficLightConcept}}
               />
             </AuFormRow>
           {{/let}}

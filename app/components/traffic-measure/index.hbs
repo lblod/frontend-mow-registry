@@ -18,7 +18,7 @@
           {{#let (load @trafficMeasureConcept.zonality) as |zonality|}}
             <ZonalitySelector
               @zonality={{zonality.value}}
-              @onChange={{(fn (mut @trafficMeasureConcept.zonality))}}
+              @onChange={{fn (mut @trafficMeasureConcept.zonality)}}
             />
           {{/let}}
         </div>
