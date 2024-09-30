@@ -1,3 +1,7 @@
-<span {{did-insert this.didInsert}}>
+<span
+  {{did-insert this.didInsert}}
+  {{! TODO: refactor did-insert }}
+  {{!template-lint-disable no-at-ember-render-modifiers}}
+>
   {{this.template}}
 </span>
