@@ -36,7 +36,7 @@
               <ImageInput
                 @oldImage={{@icon.image.file.downloadLink}}
                 @error={{isInvalid}}
-                @setImage={{(fn this.setImage @icon)}}
+                @setImage={{fn this.setImage @icon}}
               />
             </AuFormRow>
           {{/let}}

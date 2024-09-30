@@ -29,6 +29,8 @@
 <div
   class="au-c-body-container au-c-body-container--scroll"
   {{did-insert this.didInsert}}
+  {{! TODO: refactor did-insert}}
+  {{!template-lint-disable no-at-ember-render-modifiers}}
 >
   <div class="au-o-box au-o-box--small">
     {{#let @codelist.error.label as |isInvalid|}}

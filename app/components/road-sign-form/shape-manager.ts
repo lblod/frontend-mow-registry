@@ -1,7 +1,6 @@
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-// eslint-disable-next-line ember/use-ember-data-rfc-395-imports -- https://github.com/ember-cli/eslint-plugin-ember/issues/2156
 import type Store from 'ember-data/store';
 import Dimension from 'mow-registry/models/dimension';
 import type QuantityKind from 'mow-registry/models/quantity-kind';

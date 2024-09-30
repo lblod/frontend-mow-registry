@@ -1,4 +1,5 @@
 import Modifier from 'ember-modifier';
+/* eslint-disable  ember/no-runloop -- we inlined the addon, we'll try to keep the code as-is as long as possible */
 import { next, scheduleOnce } from '@ember/runloop';
 
 // This modifier is a copy of the `@zestia/ember-auto-focus` addon (v5.2.1): https://github.com/zestia/ember-auto-focus/blob/973e00749e6c4e9ab443b3bee08fbf7937a5bb4b/addon/modifiers/auto-focus.js

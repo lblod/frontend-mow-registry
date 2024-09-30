@@ -109,7 +109,7 @@
                           }}
                         >
                           <PowerSelect
-                            @disabled={{(not dimension.kind)}}
+                            @disabled={{not dimension.kind}}
                             @allowClear={{false}}
                             @searchEnabled={{false}}
                             @searchField="symbol"
@@ -132,9 +132,7 @@
                       <td>
                         <AuInput
                           @error={{dimension.error.value}}
-                          @disabled={{(or
-                            (not dimension.unit) (not dimension.kind)
-                          )}}
+                          @disabled={{or (not dimension.unit) (not dimension.kind)}}
                           @width="block"
                           type="number"
                           required="required"

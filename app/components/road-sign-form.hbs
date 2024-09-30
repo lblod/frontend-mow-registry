@@ -63,7 +63,7 @@
             <ImageInput
               @oldImage={{@roadSignConcept.image.file.downloadLink}}
               @error={{isInvalid}}
-              @setImage={{(fn this.setImage @roadSignConcept)}}
+              @setImage={{fn this.setImage @roadSignConcept}}
             />
           </AuFormRow>
         {{/let}}
