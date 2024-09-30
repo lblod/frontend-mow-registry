@@ -1,0 +1,21 @@
+{{#let (if this.model.template false true) as |isNew|}}
+  {{page-title
+    (if isNew (t "utility.add-instruction") (t "utility.edit-instruction"))
+  }}
+
+  <BreadcrumbsItem as |linkClass|>
+    <LinkTo
+      @route="traffic-light-concepts.traffic-light-concept.instructions.edit"
+      @model={{if isNew 'new' this.model.template.id}}
+      class={{linkClass}}
+    >
+      {{if isNew (t "utility.add-instruction") (t "utility.edit-instruction")}}
+    </LinkTo>
+  </BreadcrumbsItem>
+
+  <InstructionManager
+    @from="traffic-light-concepts.traffic-light-concept.instructions"
+    @editedTemplate={{this.model.template}}
+    @concept={{this.model.trafficLightConcept}}
+  />
+{{/let}}

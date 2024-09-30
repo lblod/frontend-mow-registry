@@ -136,7 +136,7 @@ road-sign-concept:
     button: Ga naar Verkeersborden
 traffic-light-concept:
   name: Verkeerslichten
-  details: Verkeerslicht details
+  details: Verkeerslicht {label}
   attr:
     image-header: Afbeelding
     meaning: Betekenis
