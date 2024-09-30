@@ -159,7 +159,9 @@ traffic-light-concept:
     edit: Edit traffic light
     delete: Delete traffic light
     label-filter: Label
-    meaning-filter: Search by meaning
+    label-filter-placeholder: Search by label
+    meaning-filter: Meaning
+    meaning-filter-placeholder: Search by meaning
   landing-page:
     content: Manage traffic lights and instructions.
     button: Go to Traffic Lights
