@@ -70,9 +70,6 @@ export default class VariableManager extends Component<Signature> {
         type: this.selectedType.value,
         label: this.selectedType.label,
       });
-      console.log(
-        `created variable with value ${this.selectedValue} and type ${this.selectedType.value}`,
-      );
 
       const variables = await this.args.roadSignConcept.variables;
       variables.push(newVariable);
