@@ -23,8 +23,4 @@
 <AuHelpText @size="small" @skin="tertiary">
   {{t "image-input.helptext"}}
 </AuHelpText>
-{{#if @error}}
-  <AuHelpText @error={{true}}>
-    {{t "utility.field-required"}}
-  </AuHelpText>
-{{/if}}
+<ErrorMessage @error={{@error}} />
