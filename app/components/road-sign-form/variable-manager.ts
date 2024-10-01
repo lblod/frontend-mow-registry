@@ -4,7 +4,6 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import Variable from 'mow-registry/models/variable';
-import { TrackedArray } from 'tracked-built-ins';
 import IntlService from 'ember-intl/services/intl';
 import { tracked } from '@glimmer/tracking';
 import { removeItem } from 'mow-registry/utils/array';
@@ -24,12 +23,12 @@ export default class VariableManager extends Component<Signature> {
   @tracked selectedValue?: string;
   @tracked selectedType?: { value: string; label: string };
 
-  variableTypes: TrackedArray<{ value: string; label: string }>;
+  variableTypes: Array<{ value: string; label: string }>;
 
   constructor(owner: unknown, args: Signature['Args']) {
     super(owner, args);
 
-    this.variableTypes = new TrackedArray([
+    this.variableTypes = [
       {
         value: 'text',
         label: this.intl.t('utility.template-variables.text'),
@@ -50,7 +49,7 @@ export default class VariableManager extends Component<Signature> {
         value: 'codelist',
         label: this.intl.t('utility.template-variables.codelist'),
       },
-    ]);
+    ];
   }
 
   @action
