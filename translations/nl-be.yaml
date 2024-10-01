@@ -198,7 +198,7 @@ related-road-marking:
   filter:
     label: Zoek
 traffic-measure-concept:
-  name: Mobiliteitsmaatregel
+  name: Mobiliteitsmaatregelen
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
     name: Naam
@@ -218,6 +218,7 @@ traffic-measure-concept:
     edit: Mobiliteitsmaatregel bewerken
     delete: Mobiliteitsmaatregel verwijderen
     save: Mobiliteitsmaatregel bewaren
+    label-filter-placeholder: Zoeken op label
     type-filter: Filteren op type
     no-matches: Geen resultaten gevonden
     type-to-search: Typ om te zoeken

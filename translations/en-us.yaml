@@ -205,7 +205,7 @@ related-road-marking:
   filter:
     label: Search
 traffic-measure-concept:
-  name: Traffic measure
+  name: Traffic measures
   help: Add $'{variableName} to add a variable/instruction
   attr:
     name: Name
@@ -225,6 +225,7 @@ traffic-measure-concept:
     edit: Edit traffic measure
     delete: Delete traffic measure
     save: Save traffic measure
+    label-filter-placeholder: Search by label
     type-filter: Filter by type
     no-matches: No results found
     type-to-search: Type to search
