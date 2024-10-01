@@ -77,7 +77,7 @@ export default class VariableManager extends Component<Signature> {
       await this.args.roadSignConcept.save();
 
       this.selectedType = undefined;
-      this.selectedValue = '';
+      this.selectedValue = undefined;
     }
   }
 

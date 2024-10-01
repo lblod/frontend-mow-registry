@@ -31,52 +31,34 @@
           }}</AuButton>
       </AuButtonGroup>
 
-      <AuDataTable
-        @content={{@variables}}
-        @page={{this.page}}
-        @fields="title description"
-        @noDataMessage="Geen variabelen gevonden"
-        @sort={{this.sort}}
-        as |table|
-      >
-        <table.content as |c|>
-
-          <c.header>
-
-            <AuDataTableThSortable
-              @field="value"
-              @currentSorting={{this.sort}}
-              @label={{t "utility.variable"}}
-              @class="data-table__header-title"
-            />
-
-            <AuDataTableThSortable
-              @field="type"
-              @currentSorting={{this.sort}}
-              @label={{t "utility.type"}}
-              @class="data-table__header-title"
-            />
-            <th></th>
-
-          </c.header>
-
-          <c.body as |variable|>
-            <td>{{variable.value}}</td>
-            <td>{{variable.label}}</td>
-            <td>
-              <AuButton
-                @skin="naked"
-                @icon="bin"
-                @alert={{true}}
-                {{on "click" (fn this.removeVariable variable)}}
-              >
-                {{t "utility.delete"}}
-              </AuButton></td>
-
-          </c.body>
-
-        </table.content>
-      </AuDataTable>
+      {{#each @variables as |variable|}}
+        {{#if @variables}}
+          <AuTable>
+            <:header>
+              <tr>
+                <th>{{t "utility.variable"}}</th>
+                <th>{{t "utility.type"}}</th>
+                <th></th>
+              </tr>
+            </:header>
+            <:body>
+              <tr>
+                <td>{{variable.value}}</td>
+                <td>{{variable.label}}</td>
+                <td>
+                  <AuButton
+                    @skin="naked"
+                    @icon="bin"
+                    @alert={{true}}
+                    {{on "click" (fn this.removeVariable variable)}}
+                  >
+                    {{t "utility.delete"}}
+                  </AuButton></td>
+              </tr>
+            </:body>
+          </AuTable>
+        {{/if}}
+      {{/each}}
 
     </div>
   </f.content>
