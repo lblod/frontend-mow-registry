@@ -7,6 +7,7 @@ import Variable from 'mow-registry/models/variable';
 import { TrackedArray } from 'tracked-built-ins';
 import IntlService from 'ember-intl/services/intl';
 import { tracked } from '@glimmer/tracking';
+import { removeItem } from 'mow-registry/utils/array';
 
 interface Signature {
   Args: {
@@ -84,11 +85,6 @@ export default class VariableManager extends Component<Signature> {
   @action
   async removeVariable(variableToBeRemoved: Variable) {
     const variables = await this.args.roadSignConcept.variables;
-
-    const updatedVariables = variables.filter(
-      (variable) => variable !== variableToBeRemoved,
-    );
-    this.args.roadSignConcept.set('variables', updatedVariables);
-    await variableToBeRemoved.destroyRecord();
+    removeItem(variables, variableToBeRemoved);
   }
 }
