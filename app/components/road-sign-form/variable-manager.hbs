@@ -31,17 +31,17 @@
           }}</AuButton>
       </AuButtonGroup>
 
-      {{#each @variables as |variable|}}
-        {{#if @variables}}
-          <AuTable>
-            <:header>
-              <tr>
-                <th>{{t "utility.variable"}}</th>
-                <th>{{t "utility.type"}}</th>
-                <th></th>
-              </tr>
-            </:header>
-            <:body>
+      {{#if @variables}}
+        <AuTable>
+          <:header>
+            <tr>
+              <th>{{t "utility.variable"}}</th>
+              <th>{{t "utility.type"}}</th>
+              <th></th>
+            </tr>
+          </:header>
+          <:body>
+            {{#each @variables as |variable|}}
               <tr>
                 <td>{{variable.value}}</td>
                 <td>{{variable.label}}</td>
@@ -55,10 +55,10 @@
                     {{t "utility.delete"}}
                   </AuButton></td>
               </tr>
-            </:body>
-          </AuTable>
-        {{/if}}
-      {{/each}}
+            {{/each}}
+          </:body>
+        </AuTable>
+      {{/if}}
 
     </div>
   </f.content>
