@@ -44,9 +44,9 @@ Router.map(function () {
     this.route('edit', { path: '/edit/:id' });
   });
   this.route('traffic-measure-concepts', function () {
+    this.route('details', { path: '/:id' });
     this.route('edit', { path: '/edit/:id' });
     this.route('new');
-    this.route('traffic-measure-concept', { path: '/:id' });
   });
   this.route('instruction', function () {
     this.route('new');

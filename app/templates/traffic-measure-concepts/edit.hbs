@@ -1,17 +1,26 @@
-{{page-title (t "traffic-measure-concept.crud.edit")}}
+{{page-title (t "traffic-measure-concept.details" label=@model.label)}}
+{{page-title (t "utility.edit")}}
 
 <BreadcrumbsItem as |linkClass|>
-  <LinkTo @route="traffic-measure-concepts.edit" class={{linkClass}}>
-    {{t "traffic-measure-concept.crud.edit"}}
+  <LinkTo
+    @route="traffic-measure-concepts.details"
+    @model={{@model.id}}
+    class={{linkClass}}
+  >
+    {{t "traffic-measure-concept.details" label=@model.label}}
   </LinkTo>
 </BreadcrumbsItem>
 
-<AuToolbar @border="bottom" @size="large" as |Group|>
-  <Group>
-    <AuHeading @skin="2">
-      {{t "traffic-measure-concept.crud.edit"}}
-    </AuHeading>
-  </Group>
-</AuToolbar>
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo @route="traffic-measure-concepts.edit" class={{linkClass}}>
+    {{t "utility.edit"}}
+  </LinkTo>
+</BreadcrumbsItem>
 
-<TrafficMeasure @trafficMeasureConcept={{@model}} />
+<TrafficMeasure @trafficMeasureConcept={{@model}}>
+  <:title>
+    <AuHeading @skin="2">
+      {{t "traffic-measure-concept.crud.edit" label=@model.label}}
+    </AuHeading>
+  </:title>
+</TrafficMeasure>

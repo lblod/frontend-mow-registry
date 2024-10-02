@@ -260,6 +260,22 @@ table.dataTable tbody th {
   width: 1px !important;
 }
 
+.u-rounded {
+  border-radius: var(--au-radius);
+}
+
+.u-border-solid {
+  border-style: solid;
+}
+
+.u-border-divider {
+  border-color: var(--au-divider-color);
+}
+
+.u-border-l {
+  border-left-width: 0.1rem;
+}
+
 // Fix app with environment banner @TODO: rework app component
 .au-c-app--environment {
   // Fix main container height

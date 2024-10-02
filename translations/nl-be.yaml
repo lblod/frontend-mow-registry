@@ -21,8 +21,8 @@ utility:
   logout: Afmelden
   back-to-overview: Naar het overzicht
   view: Bekijk
-  save: Opslaan
-  cancel: Annuleer
+  save: Bewaren
+  cancel: Annuleren
   close: Sluiten
   edit: Bewerken
   confirmation:
@@ -57,7 +57,7 @@ utility:
   no-instruction: Geen instructies gevonden
   username: Gebruikersnaam
   password: Paswoord
-  valid-content: Deze inhoud is gevalideerd
+  valid-content: Gevalideerd
   validation-status: Validatiestatus
   yes: Ja
   no: Nee
@@ -199,6 +199,7 @@ related-road-marking:
     label: Zoek
 traffic-measure-concept:
   name: Mobiliteitsmaatregelen
+  details: Maatregel {label}
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
     name: Naam
@@ -215,9 +216,7 @@ traffic-measure-concept:
   crud:
     new: Nieuwe mobiliteitsmaatregel
     no-data: Geen mobiliteitsmaatregelen
-    edit: Mobiliteitsmaatregel bewerken
-    delete: Mobiliteitsmaatregel verwijderen
-    save: Mobiliteitsmaatregel bewaren
+    edit: Maatregel {label} bewerken
     label-filter-placeholder: Zoeken op label
     type-filter: Filteren op type
     no-matches: Geen resultaten gevonden
@@ -297,6 +296,9 @@ icon-catalog:
 validation-status:
   valid: Gevalideerd
   draft: Ontwerp
+variable-signage-selector:
+  yes: Variabel
+  no: Niet variabel
 errors:
   field:
     required: Dit veld is verplicht
