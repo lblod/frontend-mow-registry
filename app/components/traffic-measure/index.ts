@@ -112,7 +112,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //get rid of the last dash
     result = result.slice(0, -1);
 
-    return `${result} Traffic Measure`;
+    return result;
   }
 
   get isSelectedTypeEmpty() {
