@@ -13,7 +13,11 @@ export default class CodelistsManagementCodelistRoute extends Route {
 
   async model(params: Params) {
     const model = await hash({
-      codelist: this.store.findRecord<CodeList>('code-list', params.id),
+      codelist: this.store.findRecord<CodeList>('code-list', params.id, {
+        // @ts-expect-error: The types expect an array, but the adapter doesn't convert that to the expected json:api include format
+        // More info: https://github.com/emberjs/data/pull/9507#issuecomment-2219588690
+        include: ['type', 'concepts'].join(),
+      }),
     });
 
     return model;

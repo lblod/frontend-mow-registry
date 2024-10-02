@@ -8,7 +8,7 @@ export default class CodelistsManagementIndexController extends Controller {
   @tracked page = 0;
   @tracked size = 30;
   @tracked label = '';
-  @tracked sort = 'label';
+  @tracked sort = ':no-case:label';
 
   updateSearchFilterTask = restartableTask(
     async (queryParamProperty: 'label', event: InputEvent) => {
