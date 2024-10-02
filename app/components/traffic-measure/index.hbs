@@ -61,10 +61,12 @@
             {{t "utility.zonality"}}
           </AuHeading>
           {{#let (load @trafficMeasureConcept.zonality) as |zonality|}}
-            <ZonalitySelector
-              @zonality={{zonality.value}}
-              @onChange={{fn (mut @trafficMeasureConcept.zonality)}}
-            />
+            {{#if zonality.isResolved}}
+              <ZonalitySelector
+                @zonality={{zonality.value}}
+                @onChange={{fn (mut @trafficMeasureConcept.zonality)}}
+              />
+            {{/if}}
           {{/let}}
         </div>
         <div class="au-o-grid__item au-u-1-2">

@@ -459,11 +459,15 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   async willDestroy() {
     super.willDestroy();
+
+    const wasNew = this.trafficMeasureConcept.isNew;
     this.template?.rollbackAttributes();
     for (const variable of this.variables) {
       variable.rollbackAttributes();
     }
     this.trafficMeasureConcept.rollbackAttributes();
-    await this.trafficMeasureConcept.belongsTo('zonality').reload();
+    if (!wasNew) {
+      await this.trafficMeasureConcept.belongsTo('zonality').reload();
+    }
   }
 }
