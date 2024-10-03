@@ -58,19 +58,19 @@
   <div class="au-o-box">
     <div class="au-u-max-width-small">
       <form class="au-c-form" id="edit-road-sign-concept-form" novalidate>
-        {{#let @roadSignConcept.error.image as |isInvalid|}}
+        {{#let @roadSignConcept.error.image as |error|}}
           <AuFormRow>
             <ImageInput
               @oldImage={{@roadSignConcept.image.file.downloadLink}}
-              @error={{isInvalid}}
+              @error={{error}}
               @setImage={{fn this.setImage @roadSignConcept}}
             />
           </AuFormRow>
         {{/let}}
-        {{#let @roadSignConcept.error.label as |isInvalid|}}
+        {{#let @roadSignConcept.error.label as |error|}}
           <AuFormRow>
             <AuLabel
-              @error={{isInvalid}}
+              @error={{error}}
               for="label"
               @required={{true}}
               @requiredLabel={{t "utility.required"}}
@@ -78,23 +78,19 @@
               {{t "road-sign-concept.attr.label"}}&nbsp;
             </AuLabel>
             <AuInput
-              @error={{isInvalid}}
+              @error={{error}}
               id="label"
               required="required"
               value={{@roadSignConcept.label}}
               {{on "input" (fn this.setRoadSignConceptValue "label")}}
             />
-            {{#if isInvalid}}
-              <AuHelpText @error={{true}}>
-                {{t "utility.field-required"}}
-              </AuHelpText>
-            {{/if}}
+            <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
-        {{#let @roadSignConcept.error.meaning as |isInvalid|}}
+        {{#let @roadSignConcept.error.meaning as |error|}}
           <AuFormRow>
             <AuLabel
-              @error={{isInvalid}}
+              @error={{error}}
               for="meaning"
               @required={{true}}
               @requiredLabel={{t "utility.required"}}
@@ -102,7 +98,7 @@
               {{t "road-sign-concept.attr.meaning"}}&nbsp;
             </AuLabel>
             <AuTextarea
-              @error={{isInvalid}}
+              @error={{error}}
               @width="block"
               class="u-min-h-20"
               id="meaning"
@@ -110,24 +106,20 @@
               value={{@roadSignConcept.meaning}}
               {{on "input" (fn this.setRoadSignConceptValue "meaning")}}
             />
-            {{#if isInvalid}}
-              <AuHelpText @error={{true}}>
-                {{t "utility.field-required"}}
-              </AuHelpText>
-            {{/if}}
+            <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
-        {{#let @roadSignConcept.error.classifications as |isInvalid|}}
+        {{#let @roadSignConcept.error.classifications as |error|}}
           <AuFormRow>
             <AuLabel
-              @error={{isInvalid}}
+              @error={{error}}
               for="classifications"
               @required={{true}}
               @requiredLabel={{t "utility.required"}}
             >
               {{t "road-sign-concept.attr.classifications"}}&nbsp;
             </AuLabel>
-            <div class={{if isInvalid "ember-power-select--error"}}>
+            <div class={{if error "ember-power-select--error"}}>
               <PowerSelectMultiple
                 @allowClear={{true}}
                 @placeholder={{t "utility.search-placeholder"}}
@@ -145,11 +137,7 @@
                 {{classification.label}}
               </PowerSelectMultiple>
             </div>
-            {{#if isInvalid}}
-              <AuHelpText @error={{true}}>
-                {{t "utility.field-required"}}
-              </AuHelpText>
-            {{/if}}
+            <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
 
