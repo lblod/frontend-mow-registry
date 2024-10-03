@@ -6,8 +6,8 @@ import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import Variable from 'mow-registry/models/variable';
 import IntlService from 'ember-intl/services/intl';
 import { removeItem } from 'mow-registry/utils/array';
-import type CodelistsService from 'mow-registry/services/codelists';
 import { tracked } from '@glimmer/tracking';
+import type CodelistsService from 'mow-registry/services/codelists';
 import type CodeList from 'mow-registry/models/code-list';
 
 interface Signature {
@@ -59,13 +59,26 @@ export default class VariableManager extends Component<Signature> {
   }
 
   @action
+  async fetchCodeLists() {
+    try {
+      this.codeLists = await this.codeListService.all.perform();
+    } catch (error) {
+      console.error('Error fetching code lists:', error);
+    }
+  }
+
+  @action
   setVariableValue(variable: Variable, event: InputEvent) {
     const newValue = (event.target as HTMLInputElement).value;
     variable.set('value', newValue);
   }
 
   @action
-  setVariableType(variable: Variable, selectedType: InputType) {
+  async setVariableType(variable: Variable, selectedType: InputType) {
+    if (variable.type === 'codelist') {
+      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
+      variable.codeList = this.codeLists[0];
+    }
     variable.set('type', selectedType.value);
     variable.set('label', selectedType.label);
   }
