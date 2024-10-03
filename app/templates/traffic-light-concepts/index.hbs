@@ -1,51 +1,70 @@
-<SearchTables::TrafficLight
-  @content={{this.model.trafficLightConcepts}}
-  @pageSize={{this.size}}
-  @page={{this.page}}
-  @sort={{this.sort}}
-  @onPageChange={{this.onPageChange}}
-  @onSortChange={{this.onSortChange}}
->
-  <:menu>
-    <AuToolbar class="au-o-box" as |Group|>
-      <Group>
-        <AuHeading @skin="2">
-          {{t "traffic-light-concept.name"}}
-        </AuHeading>
-      </Group>
-      <Group class="au-c-toolbar__group--center">
-        {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
-        <div class="au-c-data-table__search traffic-light-code-search">
+<SidebarContainer>
+  <:sidebar>
+    <div class="au-o-box">
+      <AuHeading @level="2" @skin="3" class="au-u-margin-bottom">
+        {{t "utility.filters"}}
+      </AuHeading>
+      <form class="au-c-form">
+        <AuFormRow>
+          <AuLabel for="label-filter">
+            {{t "traffic-light-concept.crud.label-filter"}}
+          </AuLabel>
           <AuInput
+            id="label-filter"
             value={{this.label}}
-            placeholder={{t "traffic-light-concept.crud.label-filter"}}
+            placeholder={{t
+              "traffic-light-concept.crud.label-filter-placeholder"
+            }}
             @icon="search"
             @iconAlignment="right"
             {{on "input" (perform this.updateSearchFilterTask "label")}}
           />
-        </div>
-        <div class="au-c-data-table__search traffic-light-meaning-search">
+        </AuFormRow>
+        <AuFormRow>
+          <AuLabel for="meaning-filter">
+            {{t "traffic-light-concept.crud.meaning-filter"}}
+          </AuLabel>
           <AuInput
+            id="meaning-filter"
             value={{this.meaning}}
-            placeholder={{t "traffic-light-concept.crud.meaning-filter"}}
+            placeholder={{t
+              "traffic-light-concept.crud.meaning-filter-placeholder"
+            }}
             @icon="search"
             @iconAlignment="right"
             {{on "input" (perform this.updateSearchFilterTask "meaning")}}
           />
-        </div>
-        <LinkTo class="au-c-button" @route="traffic-light-concepts.new">
-          {{t "traffic-light-concept.crud.new"}}
-        </LinkTo>
-      </Group>
-    </AuToolbar>
-  </:menu>
-  <:rowAction as |trafficLightConcept|>
-    <LinkTo
-      class="au-c-link"
-      @route="traffic-light-concepts.traffic-light-concept"
-      @model={{trafficLightConcept.id}}
+        </AuFormRow>
+        <ResetFilters
+          @canReset={{this.hasActiveFilter}}
+          @onReset={{this.resetFilters}}
+        />
+      </form>
+    </div>
+  </:sidebar>
+  <:content>
+    <SearchTables::TrafficLight
+      @content={{this.model.trafficLightConcepts}}
+      @pageSize={{this.size}}
+      @page={{this.page}}
+      @sort={{this.sort}}
+      @onPageChange={{this.onPageChange}}
+      @onSortChange={{this.onSortChange}}
     >
-      {{t "utility.view"}}
-    </LinkTo>
-  </:rowAction>
-</SearchTables::TrafficLight>
+      <:menu>
+        <AuToolbar class="au-o-box" as |Group|>
+          <Group>
+            <AuHeading @skin="2">
+              {{t "traffic-light-concept.name"}}
+            </AuHeading>
+          </Group>
+          <Group class="au-c-toolbar__group--center">
+            <AuLink @skin="button" @route="traffic-light-concepts.new">
+              {{t "traffic-light-concept.crud.new"}}
+            </AuLink>
+          </Group>
+        </AuToolbar>
+      </:menu>
+    </SearchTables::TrafficLight>
+  </:content>
+</SidebarContainer>

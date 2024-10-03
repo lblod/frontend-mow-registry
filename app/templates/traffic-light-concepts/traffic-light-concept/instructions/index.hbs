@@ -1,0 +1,62 @@
+<TrafficLightConcept::Header
+  @trafficLightConcept={{@model.trafficLightConcept}}
+/>
+
+<AuDataTable
+  @content={{@model.templates}}
+  @noDataMessage={{t "utility.no-instruction"}}
+  as |s|
+>
+  <s.menu as |menu|>
+    <menu.general>
+      <AuToolbar class="au-o-box" as |Group|>
+        <Group>
+          <AuHeading @level="2" @skin="3" class="au-u-hidden-visually">
+            {{t "utility.instructions"}}
+          </AuHeading>
+        </Group>
+        <Group>
+          <AuLink
+            @route="traffic-light-concepts.traffic-light-concept.instructions.edit"
+            @model="new"
+            @skin="button"
+            @icon="add"
+          >
+            {{t "utility.add-instruction"}}
+          </AuLink>
+        </Group>
+      </AuToolbar>
+    </menu.general>
+  </s.menu>
+  <s.content as |c|>
+    <c.header>
+      <th class="data-table__header-title">
+        {{t "utility.description"}}
+      </th>
+      <th>
+        <span class="au-u-hidden-visually">
+          {{t "main-sign.crud.delete"}}
+        </span>
+      </th>
+    </c.header>
+    <c.body as |template|>
+      <td>
+        <AuLink
+          @route="traffic-light-concepts.traffic-light-concept.instructions.edit"
+          @model={{template.id}}
+        >
+          {{template.value}}
+        </AuLink>
+      </td>
+      <td class="w-px au-u-padding-right-small">
+        <AuButton
+          @alert={{true}}
+          @skin="naked"
+          {{on "click" (fn this.removeTemplate.perform template)}}
+        >
+          {{t "utility.delete"}}
+        </AuButton>
+      </td>
+    </c.body>
+  </s.content>
+</AuDataTable>

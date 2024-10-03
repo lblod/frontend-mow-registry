@@ -37,7 +37,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
       if (imageRecord) this.args.trafficLightConcept.set('image', imageRecord); // image gets uploaded but not replaced
       await this.args.trafficLightConcept.save();
 
-      await this.router.transitionTo(
+      this.router.transitionTo(
         'traffic-light-concepts.traffic-light-concept',
         this.args.trafficLightConcept.id,
       );

@@ -143,7 +143,7 @@ related-road-sign:
     delete: Remove related road sign
 traffic-light-concept:
   name: Traffic Lights
-  details: Traffic Light details
+  details: Traffic Light {label}
   attr:
     image-header: Image
     meaning: Meaning
@@ -159,7 +159,9 @@ traffic-light-concept:
     edit: Edit traffic light
     delete: Delete traffic light
     label-filter: Label
-    meaning-filter: Search by meaning
+    label-filter-placeholder: Search by label
+    meaning-filter: Meaning
+    meaning-filter-placeholder: Search by meaning
   landing-page:
     content: Manage traffic lights and instructions.
     button: Go to Traffic Lights
