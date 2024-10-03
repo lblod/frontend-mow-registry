@@ -10,7 +10,11 @@ export default class RoadmarkingConceptsIndexController extends Controller {
   @tracked size = 30;
   @tracked label = '';
   @tracked meaning = '';
-  @tracked sort = 'label';
+  @tracked sort = ':no-case:label';
+
+  get hasActiveFilter() {
+    return Boolean(this.label || this.meaning);
+  }
 
   updateSearchFilterTask = restartableTask(
     async (queryParamProperty: 'label' | 'meaning', event: InputEvent) => {
@@ -28,6 +32,12 @@ export default class RoadmarkingConceptsIndexController extends Controller {
   @action onSortChange(newSort: string) {
     this.sort = newSort;
   }
+
+  resetFilters = () => {
+    this.label = '';
+    this.meaning = '';
+    this.resetPagination();
+  };
 
   resetPagination() {
     this.page = 0;

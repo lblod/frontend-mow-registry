@@ -81,6 +81,7 @@ utility:
   add-shape: Vorm toevoegen
   filters: Filters
   reset-filters: Herstel alle filters
+  properties: Eigenschappen
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden
   preview-alt: Een voorbeeld van het geüploade bestand
@@ -164,7 +165,7 @@ related-traffic-light:
     label: Zoek
 road-marking-concept:
   name: Wegmarkeringen
-  details: Details wegmarkering
+  details: Wegmarkering {label}
   attr:
     image-header: Afbeelding
     image-url: Afbeelding URL
@@ -181,7 +182,9 @@ road-marking-concept:
     edit: Wegmarkering bewerken
     delete: Wegmarkering verwijderen
     label-filter: Label
-    meaning-filter: Zoeken op betekenis
+    label-filter-placeholder: Zoeken op label
+    meaning-filter: Betekenis
+    meaning-filter-placeholder: Zoeken op betekenis
   landing-page:
     content: Beheer wegmarkeringen en instructies.
     button: Ga naar Wegmarkeringen
