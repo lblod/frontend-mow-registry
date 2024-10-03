@@ -96,7 +96,17 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       )
     ).includes(false);
 
-    if (isValid && areShapesValid) {
+    // validate variables
+    const variables = await this.args.roadSignConcept.variables;
+    const areVariablesValid = !(
+      await Promise.all(
+        variables.map(async (variable) => {
+          return await variable.validate();
+        }),
+      )
+    ).includes(false);
+
+    if (isValid && areShapesValid && areVariablesValid) {
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
 
@@ -124,13 +134,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       await Promise.all(
         this.dimensionsToRemove.map((dimension) => dimension.destroyRecord()),
       );
-
-      // validate variables
-      const variables = this.args.roadSignConcept.variables;
-      variables.forEach(async (variable) => {
-        await variable.validate();
-        console.log(variable);
-      });
 
       await this.args.roadSignConcept.save();
       void this.router.transitionTo(
