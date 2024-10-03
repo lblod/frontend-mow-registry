@@ -135,6 +135,12 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
         this.dimensionsToRemove.map((dimension) => dimension.destroyRecord()),
       );
 
+      await Promise.all(
+        (await this.args.roadSignConcept.variables).map(async (variable) => {
+          await variable.save();
+        }),
+      );
+
       await this.args.roadSignConcept.save();
       void this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',

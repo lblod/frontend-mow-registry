@@ -38,37 +38,55 @@
             {{#each @variables as |variable|}}
               <tr>
                 <td>
-                  <div
-                    class={{if
-                      variable.error.value
-                      "ember-power-select--error"
-                    }}
-                  >
-                    <AuInput
-                      value={{variable.value}}
-                      {{on "input" this.setVariableValue}}
-                    />
-                  </div>
+                  <AuInput
+                    value={{variable.value}}
+                    @error={{variable.error.value}}
+                    {{on "input" (fn this.setVariableValue variable)}}
+                  />
                   <ErrorMessage @error={{variable.error.value}} />
                 </td>
-                <td>
+                {{! template-lint-disable no-inline-styles }}
+                <td style="width: 50%;">
                   <div
                     class={{if variable.error.type "ember-power-select--error"}}
                   >
                     <PowerSelect
-                      @searchField="label"
+                      @allowClear={{false}}
+                      @searchEnabled={{false}}
                       @options={{this.variableTypes}}
-                      @placeholder={{t "utility.search-placeholder"}}
                       @loadingMessage={{t "utility.loading"}}
-                      @selected={{variable}}
-                      @onChange={{this.setVariableType}}
-                      @triggerId="variableTypes"
+                      @selected={{find-by-value
+                        this.variableTypes
+                        variable.type
+                      }}
+                      @onChange={{fn this.setVariableType variable}}
                       as |type|
                     >
                       {{type.label}}
                     </PowerSelect>
+                    <ErrorMessage @error={{variable.error.type}} />
                   </div>
-                  <ErrorMessage @error={{variable.error.type}} />
+                  {{#if (eq variable.type "codelist")}}
+                    <PowerSelect
+                      @triggerClass="au-u-margin-top-tiny"
+                      @allowClear={{false}}
+                      @searchEnabled={{false}}
+                      @options={{this.codeLists}}
+                      @selected={{variable.codeList}}
+                      @onChange={{fn this.updateCodelist variable}}
+                      as |codeList|
+                    >
+                      {{codeList.label}}
+                    </PowerSelect>
+                    <ul
+                      class="au-c-list-help au-c-help-text au-c-help-text--secondary"
+                    >
+                      {{#each variable.codeList.concepts as |option|}}
+                        <li class="au-c-list-help__item">{{option.label}}</li>
+                      {{/each}}
+                    </ul>
+                    <ErrorMessage @error={{variable.error.codelist}} />
+                  {{/if}}
                 </td>
                 <td>
                   <AuButton

@@ -5,8 +5,10 @@ import Component from '@glimmer/component';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import Variable from 'mow-registry/models/variable';
 import IntlService from 'ember-intl/services/intl';
-import { tracked } from '@glimmer/tracking';
 import { removeItem } from 'mow-registry/utils/array';
+import type CodelistsService from 'mow-registry/services/codelists';
+import { tracked } from '@glimmer/tracking';
+import type CodeList from 'mow-registry/models/code-list';
 
 interface Signature {
   Args: {
@@ -16,14 +18,18 @@ interface Signature {
   };
 }
 
+export type InputType = {
+  value: string;
+  label: string;
+};
+
 export default class VariableManager extends Component<Signature> {
   @service declare store: Store;
   @service declare intl: IntlService;
+  @service('codelists') declare codeListService: CodelistsService;
+  @tracked codeLists?: CodeList[];
 
-  @tracked selectedValue?: string;
-  @tracked selectedType?: Variable;
-
-  variableTypes: Array<{ value: string; label: string }>;
+  variableTypes: Array<InputType>;
 
   constructor(owner: unknown, args: Signature['Args']) {
     super(owner, args);
@@ -53,14 +59,21 @@ export default class VariableManager extends Component<Signature> {
   }
 
   @action
-  setVariableValue(event: InputEvent) {
-    this.selectedValue = (event.target as HTMLInputElement).value;
+  setVariableValue(variable: Variable, event: InputEvent) {
+    const newValue = (event.target as HTMLInputElement).value;
+    variable.set('value', newValue);
   }
 
   @action
-  setVariableType(selectedType: Variable) {
-    console.log('this.selectedType', this.selectedType);
-    this.selectedType = selectedType;
+  setVariableType(variable: Variable, selectedType: InputType) {
+    variable.set('type', selectedType.value);
+    variable.set('label', selectedType.label);
+  }
+
+  @action
+  async updateCodelist(variable: Variable, codeList: CodeList) {
+    //@ts-expect-error currently the ts types don't allow direct assignment of relationships
+    variable.codeList = codeList;
   }
 
   @action
@@ -68,10 +81,6 @@ export default class VariableManager extends Component<Signature> {
     const newVariable = this.store.createRecord<Variable>('variable', {});
     const variables = await this.args.roadSignConcept.variables;
     variables.push(newVariable);
-    await newVariable.save();
-    await this.args.roadSignConcept.save();
-    this.selectedType = undefined;
-    this.selectedValue = undefined;
   }
 
   @action
