@@ -84,6 +84,7 @@ utility:
   filters: Filters
   reset-filters: Herstel alle filters
   type: Type
+  add-variable: Nieuwe variabele toevoegen
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden
   preview-alt: Een voorbeeld van het geüploade bestand

@@ -21,7 +21,7 @@ export default class VariableManager extends Component<Signature> {
   @service declare intl: IntlService;
 
   @tracked selectedValue?: string;
-  @tracked selectedType?: { value: string; label: string };
+  @tracked selectedType?: Variable;
 
   variableTypes: Array<{ value: string; label: string }>;
 
@@ -58,27 +58,20 @@ export default class VariableManager extends Component<Signature> {
   }
 
   @action
-  setVariableType(selectedType: { value: string; label: string }) {
+  setVariableType(selectedType: Variable) {
+    console.log('this.selectedType', this.selectedType);
     this.selectedType = selectedType;
   }
 
   @action
   async addVariable() {
-    if (this.selectedType && this.selectedValue) {
-      const newVariable = this.store.createRecord<Variable>('variable', {
-        value: this.selectedValue,
-        type: this.selectedType.value,
-        label: this.selectedType.label,
-      });
-
-      const variables = await this.args.roadSignConcept.variables;
-      variables.push(newVariable);
-      await newVariable.save();
-      await this.args.roadSignConcept.save();
-
-      this.selectedType = undefined;
-      this.selectedValue = undefined;
-    }
+    const newVariable = this.store.createRecord<Variable>('variable', {});
+    const variables = await this.args.roadSignConcept.variables;
+    variables.push(newVariable);
+    await newVariable.save();
+    await this.args.roadSignConcept.save();
+    this.selectedType = undefined;
+    this.selectedValue = undefined;
   }
 
   @action

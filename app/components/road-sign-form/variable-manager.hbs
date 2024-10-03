@@ -4,32 +4,26 @@
   </f.legend>
   <f.content class="au-u-1-1">
     <div class="au-o-flow">
-      <AuButtonGroup>
 
-        <AuLabel>{{t "utility.variable"}}</AuLabel>
-        <AuInput
-          @value={{this.selectedValue}}
-          {{on "input" this.setVariableValue}}
-        />
+      {{!-- <AuLabel>{{t "utility.variable"}}</AuLabel>
+      <AuInput
+        value={{this.selectedValue}}
+        {{on "input" this.setVariableValue}}
+      />
 
-        <AuLabel>{{t "utility.type"}}</AuLabel>
-        <PowerSelect
-          @searchField="label"
-          @options={{this.variableTypes}}
-          @placeholder={{t "utility.search-placeholder"}}
-          @loadingMessage={{t "utility.loading"}}
-          @selected={{this.selectedType}}
-          @onChange={{this.setVariableType}}
-          @triggerId="variableTypes"
-          as |type|
-        >
-          {{type.label}}
-        </PowerSelect>
-
-        <AuButton @skin="secondary" {{on "click" this.addVariable}}>{{t
-            "utility.add"
-          }}</AuButton>
-      </AuButtonGroup>
+      <AuLabel>{{t "utility.type"}}</AuLabel>
+      <PowerSelect
+        @searchField="label"
+        @options={{this.variableTypes}}
+        @placeholder={{t "utility.search-placeholder"}}
+        @loadingMessage={{t "utility.loading"}}
+        @selected={{this.selectedType}}
+        @onChange={{this.setVariableType}}
+        @triggerId="variableTypes"
+        as |type|
+      >
+        {{type.label}}
+      </PowerSelect> --}}
 
       {{#if @variables}}
         <AuTable>
@@ -43,8 +37,39 @@
           <:body>
             {{#each @variables as |variable|}}
               <tr>
-                <td>{{variable.value}}</td>
-                <td>{{variable.label}}</td>
+                <td>
+                  <div
+                    class={{if
+                      variable.error.value
+                      "ember-power-select--error"
+                    }}
+                  >
+                    <AuInput
+                      value={{variable.value}}
+                      {{on "input" this.setVariableValue}}
+                    />
+                  </div>
+                  <ErrorMessage @error={{variable.error.value}} />
+                </td>
+                <td>
+                  <div
+                    class={{if variable.error.type "ember-power-select--error"}}
+                  >
+                    <PowerSelect
+                      @searchField="label"
+                      @options={{this.variableTypes}}
+                      @placeholder={{t "utility.search-placeholder"}}
+                      @loadingMessage={{t "utility.loading"}}
+                      @selected={{variable}}
+                      @onChange={{this.setVariableType}}
+                      @triggerId="variableTypes"
+                      as |type|
+                    >
+                      {{type.label}}
+                    </PowerSelect>
+                  </div>
+                  <ErrorMessage @error={{variable.error.type}} />
+                </td>
                 <td>
                   <AuButton
                     @skin="naked"
@@ -59,6 +84,13 @@
           </:body>
         </AuTable>
       {{/if}}
+
+      <AuButton
+        @skin="secondary"
+        @width="block"
+        @icon="plus"
+        {{on "click" this.addVariable}}
+      >{{t "utility.add-variable"}}</AuButton>
 
     </div>
   </f.content>
