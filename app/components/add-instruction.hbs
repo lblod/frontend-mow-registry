@@ -1,4 +1,9 @@
-<div class="au-o-grid__item au-u-2-5@medium" {{did-insert this.didInsert}}>
+<div
+  class="au-o-grid__item au-u-2-5@medium"
+  {{did-insert this.didInsert}}
+  {{! TODO: refactor did-insert}}
+  {{!template-lint-disable no-at-ember-render-modifiers}}
+>
   <div
     class="au-c-body-container au-c-action-sidebar"
     {{auto-focus ".au-c-action-sidebar__header"}}

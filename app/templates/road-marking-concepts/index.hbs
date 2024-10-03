@@ -1,52 +1,70 @@
-<SearchTables::RoadMarking
-  @content={{this.model.roadMarkingConcepts}}
-  @pageSize={{this.size}}
-  @page={{this.page}}
-  @sort={{this.sort}}
-  @onPageChange={{this.onPageChange}}
-  @onSortChange={{this.onSortChange}}
->
-  <:menu>
-    <AuToolbar class="au-o-box" as |Group|>
-      <Group>
-        <AuHeading @skin="2">
-          {{t "road-marking-concept.name"}}
-        </AuHeading>
-      </Group>
-      <Group class="au-c-toolbar__group--center">
-        {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
-        <div class="au-c-data-table__search road-marking-code-search">
+<SidebarContainer>
+  <:sidebar>
+    <div class="au-o-box">
+      <AuHeading @level="2" @skin="3" class="au-u-margin-bottom">
+        {{t "utility.filters"}}
+      </AuHeading>
+      <form class="au-c-form">
+        <AuFormRow>
+          <AuLabel for="label-filter">
+            {{t "road-marking-concept.crud.label-filter"}}
+          </AuLabel>
           <AuInput
+            id="label-filter"
             value={{this.label}}
-            placeholder={{t "road-marking-concept.crud.label-filter"}}
+            placeholder={{t
+              "road-marking-concept.crud.label-filter-placeholder"
+            }}
             @icon="search"
             @iconAlignment="right"
             {{on "input" (perform this.updateSearchFilterTask "label")}}
           />
-        </div>
-        <div class="au-c-data-table__search road-marking-meaning-search">
+        </AuFormRow>
+        <AuFormRow>
+          <AuLabel for="meaning-filter">
+            {{t "road-marking-concept.crud.meaning-filter"}}
+          </AuLabel>
           <AuInput
+            id="meaning-filter"
             value={{this.meaning}}
-            placeholder={{t "road-marking-concept.crud.meaning-filter"}}
+            placeholder={{t
+              "road-marking-concept.crud.meaning-filter-placeholder"
+            }}
             @icon="search"
             @iconAlignment="right"
             {{on "input" (perform this.updateSearchFilterTask "meaning")}}
           />
-        </div>
-        <LinkTo class="au-c-button" @route="road-marking-concepts.new">
-          {{t "road-marking-concept.crud.new"}}
-        </LinkTo>
-      </Group>
-    </AuToolbar>
-  </:menu>
-  <:rowAction as |roadMarkingConcept|>
-    <LinkTo
-      class="au-c-link"
-      @route="road-marking-concepts.road-marking-concept"
-      @model={{roadMarkingConcept.id}}
+        </AuFormRow>
+        <ResetFilters
+          @canReset={{this.hasActiveFilter}}
+          @onReset={{this.resetFilters}}
+        />
+      </form>
+    </div>
+  </:sidebar>
+  <:content>
+    <SearchTables::RoadMarking
+      @content={{this.model.roadMarkingConcepts}}
+      @pageSize={{this.size}}
+      @page={{this.page}}
+      @sort={{this.sort}}
+      @onPageChange={{this.onPageChange}}
+      @onSortChange={{this.onSortChange}}
     >
-      {{t "utility.view"}}
-    </LinkTo>
-  </:rowAction>
-
-</SearchTables::RoadMarking>
+      <:menu>
+        <AuToolbar class="au-o-box" as |Group|>
+          <Group>
+            <AuHeading @skin="2">
+              {{t "road-marking-concept.name"}}
+            </AuHeading>
+          </Group>
+          <Group class="au-c-toolbar__group--center">
+            <AuLink @route="road-marking-concepts.new" @skin="button">
+              {{t "road-marking-concept.crud.new"}}
+            </AuLink>
+          </Group>
+        </AuToolbar>
+      </:menu>
+    </SearchTables::RoadMarking>
+  </:content>
+</SidebarContainer>

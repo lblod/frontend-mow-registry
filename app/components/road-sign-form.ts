@@ -9,7 +9,6 @@ import RoadSignCategory from 'mow-registry/models/road-sign-category';
 import TribontShape from 'mow-registry/models/tribont-shape';
 import { tracked } from '@glimmer/tracking';
 import { removeItem } from 'mow-registry/utils/array';
-// eslint-disable-next-line ember/use-ember-data-rfc-395-imports -- https://github.com/ember-cli/eslint-plugin-ember/issues/2156
 import type Store from 'ember-data/store';
 
 type Args = {

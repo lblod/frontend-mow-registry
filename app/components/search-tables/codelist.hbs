@@ -11,17 +11,15 @@
     {{yield to="menu"}}
   </:menu>
   <:header as |header|>
-    <header.Sortable
-      @field="label"
-      @label={{t "codelist.attr.label"}}
-    />
+    <header.Sortable @field=":no-case:label" @label={{t "codelist.attr.label"}} />
     <th>{{t "codelist.attr.id"}}</th>
     <th>{{t "codelist.attr.type"}}</th>
-    <th></th>
   </:header>
   <:body as |codelist|>
     <td>
-      {{codelist.label}}
+      <AuLink @route="codelists-management.codelist" @model={{codelist.id}}>
+        {{codelist.label}}
+      </AuLink>
     </td>
     <td>
       {{codelist.id}}
@@ -32,9 +30,6 @@
       {{else}}
         {{t "codelist.attr.types.singleSelect"}}
       {{/if}}
-    </td>
-    <td>
-      {{yield codelist to='rowAction'}}
     </td>
   </:body>
 </ReactiveTable>

@@ -12,6 +12,12 @@ module.exports = function (defaults) {
     '@appuniversum/ember-appuniversum': {
       disableWormholeElement: true,
     },
+    // This is required to make the `staticEmberSource` flag work
+    // We should move away from ember-fetch (https://github.com/ember-cli/ember-fetch/issues/656), but some addons do still use it
+    'ember-fetch': {
+      preferNative: true,
+      nativePromise: true,
+    },
     autoprefixer: {
       enabled: true,
       cascade: true,

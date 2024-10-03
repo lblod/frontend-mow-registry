@@ -1,26 +1,23 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
 import type RouterService from '@ember/routing/router-service';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
-import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
-import RoadSignCategory from 'mow-registry/models/road-sign-category';
-import RoadSignConcept from 'mow-registry/models/road-sign-concept';
-import Template from 'mow-registry/models/template';
-import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
-import RoadmarkingConcept from 'mow-registry/routes/road-marking-concepts/road-marking-concept';
+import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
+import type RoadSignCategory from 'mow-registry/models/road-sign-category';
+import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
+import type Route from 'mow-registry/routes/road-marking-concepts/road-marking-concept/related';
 import { removeItem } from 'mow-registry/utils/array';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 
-export default class RoadmarkingConceptsRoadmarkingConceptController extends Controller {
+export default class RoadMarkingConceptsRoadMarkingConceptRelatedController extends Controller {
   @service declare router: RouterService;
-  declare model: ModelFrom<RoadmarkingConcept>;
+  declare model: ModelFrom<Route>;
 
   @tracked isAddingRelatedRoadSigns = false;
   @tracked isAddingRelatedRoadMarkings = false;
   @tracked isAddingRelatedTrafficLights = false;
-  @tracked isOpen = false;
 
   @tracked classification?: RoadSignCategory | null;
   @tracked classificationRoadMarkings = null;
@@ -28,35 +25,16 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
 
   @tracked relatedRoadMarkingCodeFilter = '';
   @tracked newDescription = '';
-  @tracked editedTemplate = null;
   @tracked relatedTrafficLightCodeFilter = '';
 
-  get showSidebar() {
+  get isSidebarOpen() {
     return (
-      this.hasActiveChildRoute ||
       this.isAddingRelatedRoadSigns ||
       this.isAddingRelatedRoadMarkings ||
       this.isAddingRelatedTrafficLights
     );
   }
 
-  get hasActiveChildRoute(): boolean {
-    const currentRouteName = this.router.currentRouteName;
-    return (
-      !!currentRouteName &&
-      currentRouteName.startsWith(
-        'road-marking-concepts.road-marking-concept',
-      ) &&
-      currentRouteName !== 'road-marking-concepts.road-marking-concept.index'
-    );
-  }
-
-  get isAddingInstructions() {
-    return (
-      this.router.currentRouteName ===
-      'road-marking-concepts.road-marking-concept.instruction'
-    );
-  }
   get roadMarkings() {
     if (!this.relatedRoadMarkingCodeFilter.trim()) {
       return this.model.allRoadMarkings;
@@ -170,80 +148,39 @@ export default class RoadmarkingConceptsRoadmarkingConceptController extends Con
     },
   );
 
-  @action
-  setRelatedRoadMarkingCodeFilter(event: InputEvent) {
+  setRelatedRoadMarkingCodeFilter = (event: InputEvent) => {
     this.relatedRoadMarkingCodeFilter = (
       event.target as HTMLInputElement
     ).value.trim();
-  }
+  };
 
-  @action
-  setRelatedTrafficLightCodeFilter(event: InputEvent) {
+  setRelatedTrafficLightCodeFilter = (event: InputEvent) => {
     this.relatedTrafficLightCodeFilter = (
       event.target as HTMLInputElement
     ).value.trim();
-  }
+  };
 
-  @action
-  toggleAddRelatedRoadSigns() {
+  toggleAddRelatedRoadSigns = () => {
     this.isAddingRelatedRoadSigns = !this.isAddingRelatedRoadSigns;
     this.isAddingRelatedRoadMarkings = false;
     this.isAddingRelatedTrafficLights = false;
-  }
+  };
 
-  @action
-  toggleAddRelatedRoadMarkings() {
+  toggleAddRelatedRoadMarkings = () => {
     this.isAddingRelatedRoadSigns = false;
     this.isAddingRelatedRoadMarkings = !this.isAddingRelatedRoadMarkings;
     this.isAddingRelatedTrafficLights = false;
-  }
+  };
 
-  @action
-  toggleAddRelatedTrafficLights() {
+  toggleAddRelatedTrafficLights = () => {
     this.isAddingRelatedRoadSigns = false;
     this.isAddingRelatedRoadMarkings = false;
     this.isAddingRelatedTrafficLights = !this.isAddingRelatedTrafficLights;
-  }
-
-  removeRoadMarkingConcept = task(
-    async (roadMarkingConcept: RoadMarkingConcept, event: InputEvent) => {
-      event.preventDefault();
-
-      await roadMarkingConcept.destroyRecord();
-      await this.router.transitionTo('road-marking-concepts');
-    },
-  );
-
-  @action
-  async addInstruction() {
-    await this.router.transitionTo(
-      'road-marking-concepts.road-marking-concept.instruction',
-      'new',
-    );
-  }
-
-  @action
-  async editInstruction(template: Template) {
-    await this.router.transitionTo(
-      'road-marking-concepts.road-marking-concept.instruction',
-      template.id,
-    );
-  }
-
-  removeTemplate = task(async (template: Template) => {
-    const templates = await this.model.roadMarkingConcept.hasInstructions;
-
-    removeItem(templates, template);
-
-    await template.destroyRecord();
-    await this.model.roadMarkingConcept.save();
-  });
+  };
 
   reset() {
-    this.editedTemplate = null;
     this.isAddingRelatedRoadMarkings = false;
     this.isAddingRelatedRoadSigns = false;
-    this.isOpen = false;
     this.classification = null;
     this.classificationRoadMarkings = null;
   }

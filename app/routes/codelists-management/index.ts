@@ -23,6 +23,7 @@ export default class CodelistsManagementIndexRoute extends Route {
 
   async model(params: Params) {
     const query: Record<string, unknown> = {
+      include: 'type',
       sort: params.sort,
       page: {
         number: params.page,
