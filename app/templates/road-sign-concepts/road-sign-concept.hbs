@@ -97,8 +97,28 @@
             {{/if}}
           </dd>
         </div>
+
+        <div>
+          <dt class="au-u-h5 au-u-medium">
+            {{t "utility.variables"}}
+          </dt>
+          <dd class="au-u-muted">
+            {{#if @model.roadSignConcept.variables}}
+              <ul>
+                {{#each @model.roadSignConcept.variables as |variable|}}
+                  <li>
+                    {{variable.value}}
+                  </li>
+                {{/each}}
+              </ul>
+            {{else}}
+              -
+            {{/if}}
+          </dd>
+        </div>
       </dl>
     </div>
+
   </:sidebar>
   <:content>
     {{outlet}}

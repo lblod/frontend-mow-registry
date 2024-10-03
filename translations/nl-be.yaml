@@ -17,6 +17,8 @@ login-page:
     published-by: Uitgegeven door
     abb: Agentschap Binnenlands Bestuur
 utility:
+  variable: Variabele
+  variables: Variabelen
   login: Aanmelden
   logout: Afmelden
   back-to-overview: Naar het overzicht
@@ -81,6 +83,8 @@ utility:
   add-shape: Vorm toevoegen
   filters: Filters
   reset-filters: Herstel alle filters
+  type: Type
+  add-variable: Nieuwe variabele toevoegen
   properties: Eigenschappen
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden
@@ -247,7 +251,7 @@ related-road-sign:
     add-one: Gerelateerd verkeersbord toevoegen
     delete: Gerelateerd verkeersbord verwijderen
 sparql:
-  name: 'MOW Register: SPARQL'
+  name: "MOW Register: SPARQL"
 codelist:
   name: Codelijsten beheer
   details: Codelijst details

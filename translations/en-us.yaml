@@ -17,6 +17,8 @@ login-page:
     published-by: Published by
     abb: Agency for Home Affairs
 utility:
+  variable: Variable
+  variables: Variables
   login: Login
   logout: Logout
   back-to-overview: Back to overview
@@ -81,6 +83,9 @@ utility:
   add-shape: Add shape
   filters: Filters
   reset-filters: Reset all filters
+  value: Value
+  type: Type
+  add-variable: Add new variable
   properties: Properties
 image-input:
   helptext: Press the button to upload a new image
@@ -247,7 +252,7 @@ main-sign:
     delete: Remove main sign
     edit: Edit main sign
 sparql:
-  name: 'MOW Registry: SPARQL'
+  name: "MOW Registry: SPARQL"
 codelist:
   name: Codelists management
   details: Codelist details
@@ -269,8 +274,8 @@ codelist:
     icons: Icons
     id: Id
     types:
-      singleSelect: 'Single select'
-      multiSelect: 'Multi select'
+      singleSelect: "Single select"
+      multiSelect: "Multi select"
   landing-page:
     content: Overview and management of available code lists.
     button: Go to codelists management

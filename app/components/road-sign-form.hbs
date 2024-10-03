@@ -141,6 +141,13 @@
           </AuFormRow>
         {{/let}}
 
+        {{#let (await @roadSignConcept.variables) as |variables|}}
+          <RoadSignForm::VariableManager
+            @roadSignConcept={{@roadSignConcept}}
+            @variables={{variables}}
+          />
+        {{/let}}
+
         {{! Shapes and dimensions }}
         {{#let (await @roadSignConcept.shapes) as |shapes|}}
           {{#if (this.isArray shapes)}}
