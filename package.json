@@ -28,9 +28,9 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "@appuniversum/ember-appuniversum": "^3.5.0",
+    "@appuniversum/ember-appuniversum": "^3.6.0",
     "@babel/core": "^7.24.4",
-    "@bagaar/ember-breadcrumbs": "^4.1.0",
+    "@bagaar/ember-breadcrumbs": "^5.0.0",
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.2",
     "@ember-data/adapter": "~5.3.8",
@@ -55,9 +55,11 @@
     "@glimmer/tracking": "^1.1.2",
     "@glint/environment-ember-loose": "^1.4.0",
     "@glint/template": "^1.4.0",
+    "@lblod/ember-acmidm-login": "^2.1.0",
     "@lblod/ember-environment-banner": "^0.5.0",
     "@lblod/ember-mock-login": "^0.10.0",
     "@release-it-plugins/lerna-changelog": "^7.0.0",
+    "@triply/yasgui": "^4.2.20",
     "@tsconfig/ember": "^3.0.6",
     "@types/qunit": "^2.19.10",
     "@types/rsvp": "^4.0.9",
@@ -67,9 +69,9 @@
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^8.2.2",
     "ember-async-data": "^1.0.2",
-    "ember-auto-import": "^2.7.2",
+    "ember-auto-import": "^2.8.1",
     "ember-cli": "~5.8.1",
-    "ember-cli-app-version": "^6.0.1",
+    "ember-cli-app-version": "^7.0.0",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-clean-css": "^3.0.0",
     "ember-cli-dependency-checker": "^3.3.2",
@@ -79,11 +81,12 @@
     "ember-concurrency": "^3.1.1",
     "ember-config-helper": "^0.1.4",
     "ember-data": "~5.3.8",
-    "ember-drag-drop": "^0.9.0-beta.0",
+    "ember-drag-drop": "^1.0.0",
     "ember-fetch": "^8.1.2",
-    "ember-intl": "^5.7.2",
-    "ember-load-initializers": "^2.1.2",
+    "ember-intl": "^7.0.6",
+    "ember-load-initializers": "^3.0.1",
     "ember-modifier": "^4.2.0",
+    "ember-mu-login": "^2.0.2",
     "ember-page-title": "^8.2.3",
     "ember-power-select": "^7.2.0",
     "ember-promise-helpers": "^2.0.0",
@@ -94,13 +97,13 @@
     "ember-source": "~5.8.0",
     "ember-template-lint": "^6.0.0",
     "ember-truth-helpers": "^3.0.0",
-    "ember-uuid": "^2.1.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-ember": "^12.2.1",
     "eslint-plugin-n": "^17.10.3",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-qunit": "^8.1.2",
+    "joi": "^17.13.3",
     "loader.js": "^4.7.0",
     "prettier": "^3.3.3",
     "qunit": "^2.20.1",
@@ -120,19 +123,9 @@
   "ember": {
     "edition": "octane"
   },
-  "dependencies": {
-    "@lblod/ember-acmidm-login": "^2.1.0",
-    "@triply/yasgui": "^4.2.20",
-    "ember-mu-login": "^2.0.2",
-    "eslint-plugin-deprecation": "^2.0.0",
-    "joi": "^17.13.3"
-  },
   "overrides": {
     "@lblod/ember-environment-banner": {
       "ember-source": "$ember-source"
-    },
-    "ember-intl": {
-      "typescript": "^5.0.0"
     }
   },
   "volta": {
