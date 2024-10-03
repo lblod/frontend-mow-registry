@@ -146,7 +146,7 @@ export default class CodelistFormComponent extends Component<Args> {
   @action
   async cancelEditingTask() {
     if (this.args.codelist.isNew) {
-      await this.router.transitionTo('codelists-management');
+      this.router.transitionTo('codelists-management');
     } else {
       for (let i = 0; i < this.options.length; i++) {
         const option = this.options[i];
@@ -164,7 +164,7 @@ export default class CodelistFormComponent extends Component<Args> {
         }
       }
 
-      await this.router.transitionTo(
+      this.router.transitionTo(
         'codelists-management.codelist',
         this.args.codelist.id,
       );
