@@ -1,4 +1,4 @@
-{{page-title (t "icon-catalog.details")}}
+{{page-title (t "icon-catalog.details" label=@model.icon.label)}}
 
 <BreadcrumbsItem as |linkClass|>
   <LinkTo
@@ -6,68 +6,47 @@
     @model={{@model.icon.id}}
     class={{linkClass}}
   >
-    {{@model.icon.label}}
+    {{t "icon-catalog.details" label=@model.icon.label}}
   </LinkTo>
 </BreadcrumbsItem>
 
-<div class="au-o-grid au-o-grid--flush au-o-grid--fixed">
-  <div class="au-o-grid__item au-u-1-1@medium">
-    <div class="au-c-body-container au-c-body-container--scroll">
-      <AuToolbar @size="large" as |Group|>
-        <Group>
-          <AuHeading @skin="2">
-            {{t "icon-catalog.details"}}
-          </AuHeading>
-        </Group>
-      </AuToolbar>
-      <AuToolbar @size="medium" as |Group|>
-        <Group class="au-c-toolbar__group--row">
-          <ul class="au-o-grid">
-            <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-              <img
-                class="au-c-thumbnail au-c-thumbnail--full"
-                alt=""
-                src={{@model.icon.image.file.downloadLink}}
-              />
-            </li>
-            <li class="au-o-grid__item au-u-1-2 au-u-1-6@medium">
-              <AuLabel>
-                {{t "icon-catalog.attr.label"}}
-              </AuLabel>
-              <p>
-                {{@model.icon.label}}
-              </p>
-            </li>
-          </ul>
-
-        </Group>
-      </AuToolbar>
-      <SearchTables::Codelist
-        @content={{await @model.icon.inScheme}}
+<SidebarContainer>
+  <:sidebar>
+    <h2 class="au-u-hidden-visually">{{t "utility.properties"}}</h2>
+    <div class="au-o-box">
+      <div
+        class="au-u-margin-top au-u-margin-bottom-large au-u-text-center"
       >
-        <:menu>
-          <AuToolbar class="au-o-box" as |Group|>
-            <Group @size="large">
-              <AuHeading @skin="4">
-                {{t "icon-catalog.crud.use-in-codelist"}}
-              </AuHeading>
-            </Group>
-          </AuToolbar>
-        </:menu>
-        <:rowAction as |codelist|>
-          <AuLink
-            @skin="primary"
-            @route="codelists-management.codelist"
-            @model={{codelist.id}}
-          >
-            {{t "utility.view"}}
-          </AuLink>
-        </:rowAction>
-      </SearchTables::Codelist>
+        <img
+          class="au-c-thumbnail au-c-thumbnail--full"
+          alt=""
+          src={{@model.icon.image.file.downloadLink}}
+        />
+      </div>
+
+      <dl class="au-o-flow">
+        <div>
+          <dt class="au-u-h5 au-u-medium">
+            {{t "icon-catalog.attr.label"}}
+          </dt>
+          <dd class="au-u-muted">
+            {{@model.icon.label}}
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </:sidebar>
+  <:content>
+    <div class="au-c-body-container au-c-body-container--scroll">
       <AuToolbar @border="bottom" @size="large" as |Group|>
         <Group>
+          <AuHeading @skin="2">
+            {{t "icon-catalog.details" label=@model.icon.label}}
+          </AuHeading>
+        </Group>
+        <Group>
           <AuLink
-            @skin="button"
+            @skin="button-secondary"
             @route="icon-catalog.edit"
             @model={{@model.icon.id}}
           >
@@ -96,12 +75,7 @@
               <AuButton
                 @alert={{true}}
                 @disabled={{@model.icon.inScheme.length}}
-                {{on 
-                  "click" 
-                  (perform 
-                    this.removeIcon @model.icon
-                  )
-                }}
+                {{on "click" (perform this.removeIcon @model.icon)}}
               >
                 {{t "icon-catalog.crud.delete"}}
               </AuButton>
@@ -115,7 +89,18 @@
           </AuModal>
         </Group>
       </AuToolbar>
+
+      <SearchTables::Codelist @content={{await @model.icon.inScheme}}>
+        <:menu>
+          <AuToolbar class="au-o-box" as |Group|>
+            <Group @size="large">
+              <AuHeading @skin="4">
+                {{t "icon-catalog.crud.use-in-codelist"}}
+              </AuHeading>
+            </Group>
+          </AuToolbar>
+        </:menu>
+      </SearchTables::Codelist>
     </div>
-  </div>
-  {{outlet}}
-</div>
+  </:content>
+</SidebarContainer>

@@ -275,24 +275,23 @@ codelist:
     content: Overzicht en beheer van beschikbare codelijsten.
     button: Ga naar Codelijsten
 icon-catalog:
-  name: Cataloguspictogram
-  details: Pictogram details
+  name: Pictogrammen
+  details: Pictogram {label}
   attr:
     image: Afbeelding
     label: Label
     used: Gebruikt
   crud:
-    new: Nieuwe pictogram
+    new: Nieuw pictogram
     no-data: Geen pictogram
     edit: Pictogram bewerken
     delete: Pictogram verwijderen
-    save: Pictogram bewaren
     label-filter: Label
     no-matches: Geen resultaten gevonden
     use-in-codelist: Gebruik in codelijst
   landing-page:
     content: Overzichtscode bevat pictogrammen.
-    button: Ga naar Cataloguspictogram
+    button: Ga naar de pictogram catalogus
 validation-status:
   valid: Gevalideerd
   draft: Ontwerp
