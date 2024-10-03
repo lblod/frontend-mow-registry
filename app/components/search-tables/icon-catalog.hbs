@@ -19,7 +19,6 @@
       @label={{t "icon-catalog.attr.label"}}
     />
     <th>{{t "icon-catalog.crud.use-in-codelist"}}</th>
-    <th></th>
   </:header>
   <:body as |icon|>
     <td>
@@ -30,13 +29,12 @@
       />
     </td>
     <td>
-      {{icon.label}}
+      <AuLink @route="icon-catalog.icon" @model={{icon.id}}>
+        {{icon.label}}
+      </AuLink>
     </td>
     <td>
       {{icon.inScheme.length}}
-    </td>
-    <td>
-      {{yield icon to="rowAction"}}
     </td>
   </:body>
 </ReactiveTable>

@@ -276,7 +276,7 @@ codelist:
     button: Go to codelists management
 icon-catalog:
   name: Icon Catalog
-  details: Icon details
+  details: Icon {label}
   attr:
     image: Image
     label: Label
@@ -286,7 +286,6 @@ icon-catalog:
     no-data: No icon
     edit: Edit icon
     delete: Delete icon
-    save: Save icon
     label-filter: Label
     no-matches: No results found
     use-in-codelist: Use in codelist
