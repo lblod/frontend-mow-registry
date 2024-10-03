@@ -56,7 +56,7 @@ utility:
   no-instruction: No instructions found
   username: Username
   password: Password
-  valid-content: content validated
+  valid-content: Validated
   yes: Yes
   no: No
   validation-status: Validation status
@@ -205,7 +205,8 @@ related-road-marking:
   filter:
     label: Search
 traffic-measure-concept:
-  name: Traffic measure
+  name: Traffic measures
+  details: Measure {label}
   help: Add $'{variableName} to add a variable/instruction
   attr:
     name: Name
@@ -222,9 +223,8 @@ traffic-measure-concept:
   crud:
     new: New traffic measure
     no-data: No traffic measures
-    edit: Edit traffic measure
-    delete: Delete traffic measure
-    save: Save traffic measure
+    edit: Edit measure {label}
+    label-filter-placeholder: Search by label
     type-filter: Filter by type
     no-matches: No results found
     type-to-search: Type to search
@@ -292,9 +292,12 @@ icon-catalog:
   landing-page:
     content: Manage codelist icons.
     button: Go to Icon Catalog
-  validation-status:
-    valid: Validated
-    draft: Draft
+validation-status:
+  valid: Validated
+  draft: Draft
+variable-signage-selector:
+  yes: Variable
+  no: Not variable
 errors:
   field:
     required: This field is required

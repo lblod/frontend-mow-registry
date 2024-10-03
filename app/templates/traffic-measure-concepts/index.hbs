@@ -14,29 +14,19 @@
         </AuHeading>
       </Group>
       <Group class="au-c-toolbar__group--center">
-        {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
-        <div class="au-c-data-table__search traffic-light-code-search">
+        <div>
           <AuInput
             value={{this.label}}
-            placeholder={{t "traffic-measure-concept.attr.label"}}
+            placeholder={{t "traffic-measure-concept.crud.label-filter-placeholder"}}
             @icon="search"
             @iconAlignment="right"
             {{on "input" (perform this.updateSearchFilterTask "label")}}
           />
         </div>
-        <LinkTo class="au-c-button" @route="traffic-measure-concepts.new">
+        <AuLink @route="traffic-measure-concepts.new" @skin="button">
           {{t "traffic-measure-concept.crud.new"}}
-        </LinkTo>
+        </AuLink>
       </Group>
     </AuToolbar>
   </:menu>
-  <:rowAction as |trafficMeasureConcept|>
-    <LinkTo
-      class="au-c-link"
-      @route="traffic-measure-concepts.edit"
-      @model={{trafficMeasureConcept.id}}
-    >
-      {{t "traffic-measure-concept.crud.edit"}}
-    </LinkTo>
-  </:rowAction>
 </SearchTables::TrafficMeasure>

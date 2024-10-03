@@ -1,7 +1,13 @@
-<AuToggleSwitch
-  @disabled={{false}}
-  @checked={{@concept.variableSignage}}
+<AuRadioGroup
+  @name="variable-signage-selector"
+  @selected={{this.selected}}
   @onChange={{this.update}}
+  as |Group|
 >
-  {{t "traffic-measure-concept.attr.variable-signage"}}
-</AuToggleSwitch>
+  <Group.Radio @value="yes">
+    {{t "variable-signage-selector.yes"}}
+  </Group.Radio>
+  <Group.Radio @value="no">
+    {{t "variable-signage-selector.no"}}
+  </Group.Radio>
+</AuRadioGroup>

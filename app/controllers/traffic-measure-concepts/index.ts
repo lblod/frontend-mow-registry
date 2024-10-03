@@ -10,7 +10,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   @tracked size = 30;
   @tracked label = '';
   @tracked template = null;
-  @tracked sort = 'label';
+  @tracked sort = ':no-case:label';
 
   updateSearchFilterTask = restartableTask(
     async (queryParamProperty: 'label', event: InputEvent) => {

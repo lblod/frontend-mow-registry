@@ -19,7 +19,6 @@ import ApplicationInstance from '@ember/application/instance';
 import type { SignType } from 'mow-registry/components/traffic-measure/select-type';
 import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 import Variable from 'mow-registry/models/variable';
-import NodeShape from 'mow-registry/models/node-shape';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
 
@@ -113,7 +112,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //get rid of the last dash
     result = result.slice(0, -1);
 
-    return `${result} Traffic Measure`;
+    return result;
   }
 
   get isSelectedTypeEmpty() {
@@ -373,28 +372,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     }
   });
 
-  delete = task(async () => {
-    const nodeShapes = await this.store.query<NodeShape>('node-shape', {
-      'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
-    });
-
-    const nodeShape = nodeShapes[0];
-    if (nodeShape) {
-      await nodeShape.destroyRecord();
-    }
-    // We assume a measure only has one template
-    const template = await this.trafficMeasureConcept.template;
-    if (template) {
-      (await template.variables).forEach(
-        (variable) => void variable.destroyRecord(),
-      );
-      await template.destroyRecord();
-    }
-
-    await this.trafficMeasureConcept.destroyRecord();
-    await this.router.transitionTo('traffic-measure-concepts.index');
-  });
-
   save = task(async () => {
     // We assume a measure only has one template
     const template = unwrap(await this.trafficMeasureConcept.template);
@@ -422,7 +399,10 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     // //5-annotate rdfa
     // await this.annotateRdfa.perform(template);
 
-    await this.router.transitionTo('traffic-measure-concepts.index');
+    this.router.transitionTo(
+      'traffic-measure-concepts.details',
+      this.trafficMeasureConcept.id,
+    );
   });
 
   saveRoadsigns = task(async (trafficMeasureConcept: TrafficMeasureConcept) => {
@@ -479,11 +459,15 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   async willDestroy() {
     super.willDestroy();
+
+    const wasNew = this.trafficMeasureConcept.isNew;
     this.template?.rollbackAttributes();
     for (const variable of this.variables) {
       variable.rollbackAttributes();
     }
     this.trafficMeasureConcept.rollbackAttributes();
-    await this.trafficMeasureConcept.belongsTo('zonality').reload();
+    if (!wasNew) {
+      await this.trafficMeasureConcept.belongsTo('zonality').reload();
+    }
   }
 }

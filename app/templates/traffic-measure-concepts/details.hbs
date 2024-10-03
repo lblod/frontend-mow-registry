@@ -1,0 +1,47 @@
+{{page-title (t "traffic-measure-concept.details" label=@model.trafficMeasureConcept.label)}}
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo
+    @route="traffic-measure-concepts.details"
+    @model={{@model.id}}
+    class={{linkClass}}
+  >
+    {{t "traffic-measure-concept.details" label=@model.trafficMeasureConcept.label}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<AuToolbar @border="bottom" @size="large" as |Group|>
+  <Group class="au-u-flex--vertical-center">
+    <AuHeading @skin="2">
+      {{t "traffic-measure-concept.details" label=@model.trafficMeasureConcept.label}}
+    </AuHeading>
+    <ValidationStatus @valid={{@model.trafficMeasureConcept.valid}} />
+  </Group>
+  <Group>
+    <AuButtonGroup>
+      <AuLink
+        @route="traffic-measure-concepts.edit"
+        @model={{@model.trafficMeasureConcept.id}}
+        @skin="button-secondary"
+      >
+        {{t "utility.edit"}}
+      </AuLink>
+      <AuButton
+        @skin="secondary"
+        @alert={{true}}
+        @loading={{this.delete.isRunning}}
+        @loadingMessage={{t "utility.delete"}}
+        {{on "click" (perform this.delete)}}
+      >
+        {{t "utility.delete"}}
+      </AuButton>
+    </AuButtonGroup>
+  </Group>
+</AuToolbar>
+<AuBodyContainer @scroll={{true}} class="au-o-box">
+  <TrafficMeasure::Preview @signs={{@model.signs}}>
+    <:template>
+      <TrafficMeasureTemplate @concept={{@model.trafficMeasureConcept}} />
+    </:template>
+  </TrafficMeasure::Preview>
+</AuBodyContainer>

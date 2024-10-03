@@ -1,3 +1,36 @@
+<AuToolbar @border="bottom" @size="large" as |Group|>
+  <Group class="au-u-flex--vertical-center">
+    {{yield to="title"}}
+    <ValidationStatus @valid={{@trafficMeasureConcept.valid}} />
+  </Group>
+  <Group>
+    <AuButtonGroup>
+      <AuButton
+        {{on "click" (perform this.save)}}
+        @loading={{if this.save.isRunning true false}}
+        @loadingMessage={{t "utility.save"}}
+        @disabled={{if this.save.isRunning true false}}
+      >
+        {{t "utility.save"}}
+      </AuButton>
+
+      {{#if @trafficMeasureConcept.isNew}}
+        <AuLink @skin="button-secondary" @route="traffic-measure-concepts">
+          {{t "utility.cancel"}}
+        </AuLink>
+      {{else}}
+        <AuLink
+          @skin="button-secondary"
+          @route="traffic-measure-concepts.details"
+          @model={{@trafficMeasureConcept.id}}
+        >
+          {{t "utility.cancel"}}
+        </AuLink>
+      {{/if}}
+    </AuButtonGroup>
+  </Group>
+</AuToolbar>
+
 <div
   class="au-o-grid au-o-grid--flush au-o-grid--split"
   {{did-insert this.didInsert}}
@@ -9,19 +42,31 @@
     <div
       class="au-o-box au-c-body-container au-c-body-container--scroll au-c-body-container--table"
     >
-      <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
-        {{this.label}}
-      </AuHeading>
+      <AuToolbar class="au-u-margin-bottom" as |Group|>
+        <Group>
+          <AuHeading @level="3" @skin="3">
+            {{!-- {{this.label}} --}}
+            {{t "utility.properties"}}
+          </AuHeading>
+        </Group>
+        {{#unless @trafficMeasureConcept.isNew}}
+          <Group>
+            <ContentCheck @concept={{@trafficMeasureConcept}} />
+          </Group>
+        {{/unless}}
+      </AuToolbar>
       <div class="au-o-grid">
         <div class="au-o-grid__item au-u-1-2">
           <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
             {{t "utility.zonality"}}
           </AuHeading>
           {{#let (load @trafficMeasureConcept.zonality) as |zonality|}}
-            <ZonalitySelector
-              @zonality={{zonality.value}}
-              @onChange={{fn (mut @trafficMeasureConcept.zonality)}}
-            />
+            {{#if zonality.isResolved}}
+              <ZonalitySelector
+                @zonality={{zonality.value}}
+                @onChange={{fn (mut @trafficMeasureConcept.zonality)}}
+              />
+            {{/if}}
           {{/let}}
         </div>
         <div class="au-o-grid__item au-u-1-2">
@@ -174,68 +219,18 @@
           </div>
         </div>
       {{/if}}
-      {{#unless @new}}
-        <div class="au-u-margin-top-small">
-          <ContentCheck @concept={{@trafficMeasureConcept}} />
-        </div>
-      {{/unless}}
     </div>
   </div>
 
-  <div class="au-o-grid__item au-u-1-2@medium">
-    <div
-      class="au-o-box au-c-body-container au-c-body-container--scroll au-c-theme-gray-100"
-    >
-      <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
-        {{t "traffic-measure-concept.attr.preview"}}
-      </AuHeading>
-      <div class="au-u-margin-bottom">
-        {{#each this.signs as |sign|}}
-          <img
-            src={{sign.image.file.downloadLink}}
-            alt=""
-            class="au-c-thumbnail"
-          />
-        {{/each}}
-      </div>
-      <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
-        {{t "traffic-measure-concept.attr.template"}}
-      </AuHeading>
-      <div
-        class="au-o-box au-o-box--small au-c-theme-gray-200 au-u-margin-bottom"
-      >
-        {{this.previewHtml}}
-      </div>
+  <div
+    class="au-o-grid__item au-u-1-2@medium u-border-solid u-border-l u-border-divider"
+  >
+    <div class="au-o-box au-c-body-container au-c-body-container--scroll">
+      <TrafficMeasure::Preview @signs={{this.signs}}>
+        <:template>
+          {{this.previewHtml}}
+        </:template>
+      </TrafficMeasure::Preview>
     </div>
   </div>
 </div>
-<AuToolbar @border="top" @size="large" as |Group|>
-  <Group>
-    <AuButtonGroup>
-      <AuButton
-        {{on "click" (perform this.save)}}
-        @loading={{if this.save.isRunning true false}}
-        @loadingMessage={{t "traffic-measure-concept.crud.save"}}
-        @disabled={{if this.save.isRunning true false}}
-      >
-        {{t "traffic-measure-concept.crud.save"}}
-      </AuButton>
-      {{#unless this.new}}
-        <AuButton
-          @alert={{true}}
-          @skin="secondary"
-          {{on "click" (perform this.delete)}}
-        >
-          {{t "traffic-measure-concept.crud.delete"}}
-        </AuButton>
-      {{/unless}}
-    </AuButtonGroup>
-  </Group>
-  <Group>
-    <AuButtonGroup>
-      <AuLink @skin="button-secondary" @route="traffic-measure-concepts.index">
-        {{t "utility.cancel"}}
-      </AuLink>
-    </AuButtonGroup>
-  </Group>
-</AuToolbar>
