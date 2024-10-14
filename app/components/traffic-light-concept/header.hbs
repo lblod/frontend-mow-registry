@@ -1,0 +1,65 @@
+<header ...attributes>
+  <AuToolbar @size="large" as |Group|>
+    <Group>
+      <AuHeading @skin="2">
+        {{t "traffic-light-concept.details" label=@trafficLightConcept.label}}
+      </AuHeading>
+    </Group>
+    <Group>
+      <AuLink
+        @skin="button-secondary"
+        @route="traffic-light-concepts.edit"
+        @model={{@trafficLightConcept.id}}
+      >
+        {{t "traffic-light-concept.crud.edit"}}
+      </AuLink>
+      <AuButton
+        @skin="secondary"
+        @alert={{true}}
+        {{on "click" (fn (mut this.isDeleteConfirmationOpen) true)}}
+      >
+        {{t "traffic-light-concept.crud.delete"}}
+      </AuButton>
+
+      <AuModal
+        @modalOpen={{this.isDeleteConfirmationOpen}}
+        @closeModal={{fn (mut this.isDeleteConfirmationOpen) false}}
+      >
+        <:title>
+          {{t "utility.confirmation.title"}}
+        </:title>
+        <:body>
+          <p>
+            {{t "utility.confirmation.body"}}
+          </p>
+        </:body>
+        <:footer>
+          <AuButton
+            @alert={{true}}
+            {{on "click" (perform this.removeRoadMarkingConcept)}}
+          >
+            {{t "traffic-light-concept.crud.delete"}}
+          </AuButton>
+          <AuButton
+            @skin="secondary"
+            {{on "click" (fn (mut this.isDeleteConfirmationOpen) false)}}
+          >
+            {{t "utility.cancel"}}
+          </AuButton>
+        </:footer>
+      </AuModal>
+    </Group>
+  </AuToolbar>
+  <AuTabs as |Tab|>
+    <Tab>
+      <AuLink @route="traffic-light-concepts.traffic-light-concept.instructions">
+        {{t "utility.instructions"}}
+      </AuLink>
+    </Tab>
+    <Tab>
+      <AuLink @route="traffic-light-concepts.traffic-light-concept.related">
+        {{t "utility.related-traffic-signs"}}
+      </AuLink>
+    </Tab>
+  </AuTabs>
+</header>

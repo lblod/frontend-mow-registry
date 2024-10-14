@@ -14,8 +14,7 @@
         </AuHeading>
       </Group>
       <Group class="au-c-toolbar__group--center">
-        {{! Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input}}
-        <div class="au-c-data-table__search codelist-label-search">
+        <div>
           <AuInput
             value={{this.label}}
             @icon="search"
@@ -24,21 +23,10 @@
             {{on "input" (perform this.updateSearchFilterTask "label")}}
           />
         </div>
-        <AuLink
-          @route="codelists-management.new"
-          @skin="button">
+        <AuLink @route="codelists-management.new" @skin="button">
           {{t "codelist.crud.new"}}
         </AuLink>
       </Group>
     </AuToolbar>
   </:menu>
-  <:rowAction as |codelist|>
-    <AuLink
-      @skin="primary"
-      @route="codelists-management.codelist"
-      @model={{codelist.id}}
-    >
-      {{t "utility.view"}}
-    </AuLink>
-  </:rowAction>
 </SearchTables::Codelist>

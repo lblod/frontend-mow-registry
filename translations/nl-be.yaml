@@ -23,8 +23,8 @@ utility:
   logout: Afmelden
   back-to-overview: Naar het overzicht
   view: Bekijk
-  save: Opslaan
-  cancel: Annuleer
+  save: Bewaren
+  cancel: Annuleren
   close: Sluiten
   edit: Bewerken
   confirmation:
@@ -59,7 +59,7 @@ utility:
   no-instruction: Geen instructies gevonden
   username: Gebruikersnaam
   password: Paswoord
-  valid-content: Deze inhoud is gevalideerd
+  valid-content: Gevalideerd
   validation-status: Validatiestatus
   yes: Ja
   no: Nee
@@ -85,6 +85,7 @@ utility:
   reset-filters: Herstel alle filters
   type: Type
   add-variable: Nieuwe variabele toevoegen
+  properties: Eigenschappen
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden
   preview-alt: Een voorbeeld van het geüploade bestand
@@ -139,7 +140,7 @@ road-sign-concept:
     button: Ga naar Verkeersborden
 traffic-light-concept:
   name: Verkeerslichten
-  details: Verkeerslicht details
+  details: Verkeerslicht {label}
   attr:
     image-header: Afbeelding
     meaning: Betekenis
@@ -155,7 +156,9 @@ traffic-light-concept:
     edit: Verkeerslicht bewerken
     delete: Verkeerslicht verwijderen
     label-filter: Label
-    meaning-filter: Zoeken op betekenis
+    label-filter-placeholder: Zoeken op label
+    meaning-filter: Betekenis
+    meaning-filter-placeholder: Zoeken op betekenis
   landing-page:
     content: Beheer verkeerlichten en instructies.
     button: Ga naar Verkeerslichten
@@ -168,7 +171,7 @@ related-traffic-light:
     label: Zoek
 road-marking-concept:
   name: Wegmarkeringen
-  details: Details wegmarkering
+  details: Wegmarkering {label}
   attr:
     image-header: Afbeelding
     image-url: Afbeelding URL
@@ -185,7 +188,9 @@ road-marking-concept:
     edit: Wegmarkering bewerken
     delete: Wegmarkering verwijderen
     label-filter: Label
-    meaning-filter: Zoeken op betekenis
+    label-filter-placeholder: Zoeken op label
+    meaning-filter: Betekenis
+    meaning-filter-placeholder: Zoeken op betekenis
   landing-page:
     content: Beheer wegmarkeringen en instructies.
     button: Ga naar Wegmarkeringen
@@ -197,7 +202,8 @@ related-road-marking:
   filter:
     label: Zoek
 traffic-measure-concept:
-  name: Mobiliteitsmaatregel
+  name: Mobiliteitsmaatregelen
+  details: Maatregel {label}
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
     name: Naam
@@ -214,9 +220,8 @@ traffic-measure-concept:
   crud:
     new: Nieuwe mobiliteitsmaatregel
     no-data: Geen mobiliteitsmaatregelen
-    edit: Mobiliteitsmaatregel bewerken
-    delete: Mobiliteitsmaatregel verwijderen
-    save: Mobiliteitsmaatregel bewaren
+    edit: Maatregel {label} bewerken
+    label-filter-placeholder: Zoeken op label
     type-filter: Filteren op type
     no-matches: Geen resultaten gevonden
     type-to-search: Typ om te zoeken
@@ -274,27 +279,29 @@ codelist:
     content: Overzicht en beheer van beschikbare codelijsten.
     button: Ga naar Codelijsten
 icon-catalog:
-  name: Cataloguspictogram
-  details: Pictogram details
+  name: Pictogrammen
+  details: Pictogram {label}
   attr:
     image: Afbeelding
     label: Label
     used: Gebruikt
   crud:
-    new: Nieuwe pictogram
+    new: Nieuw pictogram
     no-data: Geen pictogram
     edit: Pictogram bewerken
     delete: Pictogram verwijderen
-    save: Pictogram bewaren
     label-filter: Label
     no-matches: Geen resultaten gevonden
     use-in-codelist: Gebruik in codelijst
   landing-page:
     content: Overzichtscode bevat pictogrammen.
-    button: Ga naar Cataloguspictogram
+    button: Ga naar de pictogram catalogus
 validation-status:
   valid: Gevalideerd
   draft: Ontwerp
+variable-signage-selector:
+  yes: Variabel
+  no: Niet variabel
 errors:
   field:
     required: Dit veld is verplicht

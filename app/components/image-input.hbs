@@ -10,21 +10,17 @@
   <img
     src={{this.source}}
     alt={{t "image-input.preview-alt"}}
-    class="image-preview"
+    class="image-preview au-u-margin-bottom-small"
   />
 {{/if}}
 
 <div class="flex au-u-flex--wrap au-u-flex--no-wrap@medium full-width">
   <FileUploader
-    @accept={{"image/jpeg,image/jpg,image/png,image/svg+xml"}}
+    @accept="image/jpeg,image/jpg,image/png,image/svg+xml"
     @onFileSet={{this.setImageUpload}}
   />
 </div>
 <AuHelpText @size="small" @skin="tertiary">
   {{t "image-input.helptext"}}
 </AuHelpText>
-{{#if @error}}
-  <AuHelpText @error={{true}}>
-    {{t "utility.field-required"}}
-  </AuHelpText>
-{{/if}}
+<ErrorMessage @error={{@error}} />

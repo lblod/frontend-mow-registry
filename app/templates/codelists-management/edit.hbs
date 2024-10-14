@@ -1,2 +1,23 @@
-{{page-title (t "codelist.crud.edit")}}
-<CodelistForm @codelist={{this.model.codelist}}/>
+{{page-title this.model.codelist.label}}
+{{page-title (t "utility.edit")}}
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo
+    @route="codelists-management.codelist"
+    @model={{this.model.codelist.id}}
+    class={{linkClass}}
+  >
+    {{this.model.codelist.label}}
+  </LinkTo>
+</BreadcrumbsItem>
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo
+    @route="codelists-management.edit"
+    @model={{this.model.codelist.id}}
+    class={{linkClass}}
+  >
+    {{t "utility.edit"}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<CodelistForm @codelist={{this.model.codelist}} />

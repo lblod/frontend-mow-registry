@@ -12,9 +12,9 @@
   </:menu>
   <:header as |header|>
     <header.Sortable
-      @field="label"
-      @currentSorting={{this.sort}}
-      @label={{t "traffic-measure-concept.attr.name"}}
+      @field=":no-case:label"
+      @currentSorting={{@sort}}
+      @label={{t "traffic-measure-concept.attr.label"}}
     />
     <th>
       {{t "traffic-measure-concept.attr.sign"}}
@@ -26,13 +26,17 @@
       {{t "utility.zonality"}}
     </th>
     <th>
-      {{t "road-marking-concept.attr.valid"}}
+      {{t "utility.validation-status"}}
     </th>
-    <th></th>
   </:header>
   <:body as |trafficMeasureConcept|>
     <td>
-      {{trafficMeasureConcept.label}}
+      <AuLink
+        @route="traffic-measure-concepts.details"
+        @model={{trafficMeasureConcept.id}}
+      >
+        {{trafficMeasureConcept.label}}
+      </AuLink>
     </td>
     <td>
       {{#each trafficMeasureConcept.relatedTrafficSignConcepts as |sign|}}
@@ -46,14 +50,7 @@
       {{zonality-label (await trafficMeasureConcept.zonality)}}
     </td>
     <td>
-      {{#if trafficMeasureConcept.valid}}
-        {{t "utility.yes"}}
-      {{else}}
-        {{t "utility.no"}}
-      {{/if}}
-    </td>
-    <td>
-      {{yield trafficMeasureConcept to="rowAction"}}
+      <ValidationStatus @valid={{trafficMeasureConcept.valid}} />
     </td>
   </:body>
 </ReactiveTable>

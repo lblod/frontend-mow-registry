@@ -13,7 +13,7 @@ import type Template from './template';
 export default class TrafficMeasureConcept extends Model {
   declare [Type]: 'traffic-measure-concept';
   @attr declare label?: string;
-  @attr declare variableSignage?: string;
+  @attr declare variableSignage?: boolean;
   @attr declare valid?: boolean;
 
   @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })

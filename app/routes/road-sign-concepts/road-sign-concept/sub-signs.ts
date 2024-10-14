@@ -2,7 +2,6 @@ import Route from '@ember/routing/route';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import type RoadSignConceptRoute from '../road-sign-concept';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
-// eslint-disable-next-line ember/use-ember-data-rfc-395-imports -- https://github.com/ember-cli/eslint-plugin-ember/issues/2156
 import type Store from 'ember-data/store';
 import { service } from '@ember/service';
 import { TrackedArray } from 'tracked-built-ins';

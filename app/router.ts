@@ -25,22 +25,28 @@ Router.map(function () {
   });
   this.route('road-marking-concepts', function () {
     this.route('road-marking-concept', { path: '/:id' }, function () {
-      this.route('instruction', { path: '/instruction/:instruction_id' });
+      this.route('instructions', function () {
+        this.route('edit', { path: '/:instructionId' });
+      });
+      this.route('related');
     });
     this.route('new');
     this.route('edit', { path: '/edit/:id' });
   });
   this.route('traffic-light-concepts', function () {
     this.route('traffic-light-concept', { path: '/:id' }, function () {
-      this.route('instruction', { path: '/instruction//:instruction_id' });
+      this.route('instructions', function () {
+        this.route('edit', { path: '/:instructionId' });
+      });
+      this.route('related');
     });
     this.route('new');
     this.route('edit', { path: '/edit/:id' });
   });
   this.route('traffic-measure-concepts', function () {
+    this.route('details', { path: '/:id' });
     this.route('edit', { path: '/edit/:id' });
     this.route('new');
-    this.route('traffic-measure-concept', { path: '/:id' });
   });
   this.route('instruction', function () {
     this.route('new');

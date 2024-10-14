@@ -12,11 +12,9 @@ export default class IconCatalogIconRoute extends Route {
   @service declare store: Store;
 
   async model(params: Params) {
-    const model = {
+    return {
       icon: await this.store.findRecord<Icon>('icon', params.id),
     };
-
-    return model;
   }
 
   resetController(controller: IconCatalogIconController) {

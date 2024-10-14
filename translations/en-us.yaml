@@ -58,7 +58,7 @@ utility:
   no-instruction: No instructions found
   username: Username
   password: Password
-  valid-content: content validated
+  valid-content: Validated
   yes: Yes
   no: No
   validation-status: Validation status
@@ -86,6 +86,7 @@ utility:
   value: Value
   type: Type
   add-variable: Add new variable
+  properties: Properties
 image-input:
   helptext: Press the button to upload a new image
   preview-alt: A preview of the uploaded image
@@ -147,7 +148,7 @@ related-road-sign:
     delete: Remove related road sign
 traffic-light-concept:
   name: Traffic Lights
-  details: Traffic Light details
+  details: Traffic Light {label}
   attr:
     image-header: Image
     meaning: Meaning
@@ -163,7 +164,9 @@ traffic-light-concept:
     edit: Edit traffic light
     delete: Delete traffic light
     label-filter: Label
-    meaning-filter: Search by meaning
+    label-filter-placeholder: Search by label
+    meaning-filter: Meaning
+    meaning-filter-placeholder: Search by meaning
   landing-page:
     content: Manage traffic lights and instructions.
     button: Go to Traffic Lights
@@ -176,7 +179,7 @@ related-traffic-light:
     label: Search
 road-marking-concept:
   name: Road Markings
-  details: Road marking details
+  details: Road marking {label}
   attr:
     image-header: Image
     image-url: Image URL
@@ -193,7 +196,9 @@ road-marking-concept:
     edit: Edit Road marking
     delete: Delete Road marking
     label-filter: Label
-    meaning-filter: Search by meaning
+    label-filter-placeholder: Search by label
+    meaning-filter: Meaning
+    meaning-filter-placeholder: Search by meaning
   landing-page:
     content: Manage road markings and instructions.
     button: Go to Road Markings
@@ -205,7 +210,8 @@ related-road-marking:
   filter:
     label: Search
 traffic-measure-concept:
-  name: Traffic measure
+  name: Traffic measures
+  details: Measure {label}
   help: Add $'{variableName} to add a variable/instruction
   attr:
     name: Name
@@ -222,9 +228,8 @@ traffic-measure-concept:
   crud:
     new: New traffic measure
     no-data: No traffic measures
-    edit: Edit traffic measure
-    delete: Delete traffic measure
-    save: Save traffic measure
+    edit: Edit measure {label}
+    label-filter-placeholder: Search by label
     type-filter: Filter by type
     no-matches: No results found
     type-to-search: Type to search
@@ -276,7 +281,7 @@ codelist:
     button: Go to codelists management
 icon-catalog:
   name: Icon Catalog
-  details: Icon details
+  details: Icon {label}
   attr:
     image: Image
     label: Label
@@ -286,16 +291,18 @@ icon-catalog:
     no-data: No icon
     edit: Edit icon
     delete: Delete icon
-    save: Save icon
     label-filter: Label
     no-matches: No results found
     use-in-codelist: Use in codelist
   landing-page:
     content: Manage codelist icons.
     button: Go to Icon Catalog
-  validation-status:
-    valid: Validated
-    draft: Draft
+validation-status:
+  valid: Validated
+  draft: Draft
+variable-signage-selector:
+  yes: Variable
+  no: Not variable
 errors:
   field:
     required: This field is required

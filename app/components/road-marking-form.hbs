@@ -1,15 +1,30 @@
+{{#unless @roadMarkingConcept.isNew}}
+  {{! We match the breadcrumb from the details page so the breadcrumbs work as expected }}
+  <BreadcrumbsItem as |linkClass|>
+    <LinkTo
+      @route="road-marking-concepts.road-marking-concept"
+      @model={{@roadMarkingConcept.id}}
+      class={{linkClass}}
+    >
+      {{t "road-marking-concept.details" label=@roadMarkingConcept.label}}
+    </LinkTo>
+  </BreadcrumbsItem>
+{{/unless}}
+
 <BreadcrumbsItem as |linkClass|>
-  <LinkTo
-    @route="road-marking-concepts.edit"
-    @model={{@roadMarkingConcept.id}}
-    class={{linkClass}}
-  >
-    {{#if @roadMarkingConcept.isNew}}
+  {{#if @roadMarkingConcept.isNew}}
+    <LinkTo @route="road-marking-concepts.new" class={{linkClass}}>
       {{t "road-marking-concept.crud.new"}}
-    {{else}}
-      {{@roadMarkingConcept.label}}
-    {{/if}}
-  </LinkTo>
+    </LinkTo>
+  {{else}}
+    <LinkTo
+      @route="road-marking-concepts.edit"
+      @model={{@roadMarkingConcept.id}}
+      class={{linkClass}}
+    >
+      {{t "road-marking-concept.crud.edit"}}
+    </LinkTo>
+  {{/if}}
 </BreadcrumbsItem>
 
 <AuToolbar @border="bottom" @size="large" as |Group|>
@@ -22,78 +37,6 @@
       {{/if}}
     </AuHeading>
   </Group>
-</AuToolbar>
-<div class="au-c-body-container au-c-body-container--scroll">
-  <div class="au-o-box">
-    <div class="au-o-grid">
-      <div class="au-o-grid__item au-u-2-3@medium">
-        <form class="au-c-form" id="edit-road-marking-concept-form" novalidate>
-          {{#let @roadMarkingConcept.error.image as |isInvalid|}}
-            <AuFormRow>
-              <ImageInput
-                @oldImage={{@roadMarkingConcept.image.file.downloadLink}}
-                @error={{isInvalid}}
-                @setImage={{(fn this.setImage @roadMarkingConcept)}}
-              />
-            </AuFormRow>
-          {{/let}}
-          {{#let @roadMarkingConcept.error.label as |isInvalid|}}
-            <AuFormRow>
-              <AuLabel
-                @error={{isInvalid}}
-                for="road-marking-concept-code"
-                @required={{true}}
-                @requiredLabel={{t "utility.required"}}
-              >
-                {{t "road-marking-concept.attr.label"}}&nbsp;
-              </AuLabel>
-              <AuInput
-                @error={{isInvalid}}
-                id="road-marking-concept-code"
-                required="required"
-                value={{@roadMarkingConcept.label}}
-                {{on "input" (fn this.setRoadMarkingConceptValue "label")}}
-              />
-              {{#if isInvalid}}
-                <AuHelpText @error={{true}}>
-                  {{t "utility.field-required"}}
-                </AuHelpText>
-              {{/if}}
-            </AuFormRow>
-          {{/let}}
-          {{#let @roadMarkingConcept.error.meaning as |isInvalid|}}
-            <AuFormRow>
-              <AuLabel
-                @error={{isInvalid}}
-                for="meaning"
-                @required={{true}}
-                @requiredLabel={{t "utility.required"}}
-              >
-                {{t "road-marking-concept.attr.meaning"}}&nbsp;
-              </AuLabel>
-              <AuTextarea
-                @error={{isInvalid}}
-                @width="block"
-                class="u-min-h-20"
-                id="meaning"
-                required="required"
-                value={{@roadMarkingConcept.meaning}}
-                {{on "input" (fn this.setRoadMarkingConceptValue "meaning")}}
-              />
-              {{#if isInvalid}}
-                <AuHelpText @error={{true}}>
-                  {{t "utility.field-required"}}
-                </AuHelpText>
-              {{/if}}
-            </AuFormRow>
-          {{/let}}
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<AuToolbar @border="top" @size="large" as |Group|>
   <Group>
     <AuButtonGroup>
       <AuButton
@@ -105,21 +48,78 @@
         {{t "utility.save"}}
       </AuButton>
       {{#if @roadMarkingConcept.isNew}}
-        <LinkTo
-          @route="road-marking-concepts.index"
-          class="au-c-button au-c-button--secondary"
-        >
+        <AuLink @route="road-marking-concepts.index" @skin="button-secondary">
           {{t "utility.cancel"}}
-        </LinkTo>
+        </AuLink>
       {{else}}
-        <LinkTo
+        <AuLink
           @route="road-marking-concepts.road-marking-concept"
           @model={{@roadMarkingConcept.id}}
-          class="au-c-button au-c-button--secondary"
+          @skin="button-secondary"
         >
           {{t "utility.cancel"}}
-        </LinkTo>
+        </AuLink>
       {{/if}}
     </AuButtonGroup>
   </Group>
 </AuToolbar>
+
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box">
+    <div class="au-u-max-width-small">
+      <form class="au-c-form" id="edit-road-marking-concept-form" novalidate>
+        {{#let @roadMarkingConcept.error.image as |error|}}
+          <AuFormRow>
+            <ImageInput
+              @oldImage={{@roadMarkingConcept.image.file.downloadLink}}
+              @error={{error}}
+              @setImage={{fn this.setImage @roadMarkingConcept}}
+            />
+          </AuFormRow>
+        {{/let}}
+        {{#let @roadMarkingConcept.error.label as |error|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              for="road-marking-concept-code"
+              @required={{true}}
+              @requiredLabel={{t "utility.required"}}
+            >
+              {{t "road-marking-concept.attr.label"}}
+            </AuLabel>
+            <AuInput
+              @error={{error}}
+              id="road-marking-concept-code"
+              required="required"
+              value={{@roadMarkingConcept.label}}
+              {{on "input" (fn this.setRoadMarkingConceptValue "label")}}
+            />
+            <ErrorMessage @error={{error}} />
+          </AuFormRow>
+        {{/let}}
+        {{#let @roadMarkingConcept.error.meaning as |error|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              for="meaning"
+              @required={{true}}
+              @requiredLabel={{t "utility.required"}}
+            >
+              {{t "road-marking-concept.attr.meaning"}}
+            </AuLabel>
+            <AuTextarea
+              @error={{error}}
+              @width="block"
+              class="u-min-h-20"
+              id="meaning"
+              required="required"
+              value={{@roadMarkingConcept.meaning}}
+              {{on "input" (fn this.setRoadMarkingConceptValue "meaning")}}
+            />
+            <ErrorMessage @error={{error}} />
+          </AuFormRow>
+        {{/let}}
+      </form>
+    </div>
+  </div>
+</div>

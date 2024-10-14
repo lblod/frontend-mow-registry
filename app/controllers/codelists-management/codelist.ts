@@ -23,7 +23,7 @@ export default class CodelistController extends Controller {
     );
 
     await this.model.codelist.destroyRecord();
-    await this.router.transitionTo('codelists-management');
+    this.router.transitionTo('codelists-management');
   }
 
   reset() {

@@ -38,7 +38,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
       if (imageRecord) this.args.roadMarkingConcept.set('image', imageRecord);
       await this.args.roadMarkingConcept.save();
 
-      await this.router.transitionTo(
+      this.router.transitionTo(
         'road-marking-concepts.road-marking-concept',
         this.args.roadMarkingConcept.id,
       );

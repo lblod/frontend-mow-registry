@@ -11,6 +11,8 @@
   @onChange={{@onChange}}
   @triggerId={{@id}}
   {{did-insert this.didInsert}}
+  {{! TODO: refactor did-insert}}
+  {{!template-lint-disable no-at-ember-render-modifiers}}
   as |icon|
 >
   {{icon.label}}
