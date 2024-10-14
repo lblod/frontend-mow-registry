@@ -56,6 +56,7 @@ export default class VariableManager extends Component<Signature> {
         label: this.intl.t('utility.template-variables.codelist'),
       },
     ];
+    this.fetchCodeLists();
   }
 
   @action
