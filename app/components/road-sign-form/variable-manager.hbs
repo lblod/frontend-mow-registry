@@ -72,7 +72,7 @@
                     @skin="naked"
                     @icon="bin"
                     @alert={{true}}
-                    {{on "click" (fn this.removeVariable variable)}}
+                    {{on "click" (fn @removeVariable variable)}}
                   >
                     {{t "utility.delete"}}
                   </AuButton></td>
@@ -86,7 +86,7 @@
         @skin="secondary"
         @width="block"
         @icon="plus"
-        {{on "click" this.addVariable}}
+        {{on "click" @addVariable}}
       >{{t "utility.add-variable"}}</AuButton>
 
     </div>

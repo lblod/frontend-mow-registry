@@ -5,7 +5,6 @@ import Component from '@glimmer/component';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import Variable from 'mow-registry/models/variable';
 import IntlService from 'ember-intl/services/intl';
-import { removeItem } from 'mow-registry/utils/array';
 import { tracked } from '@glimmer/tracking';
 import type CodelistsService from 'mow-registry/services/codelists';
 import type CodeList from 'mow-registry/models/code-list';
@@ -88,18 +87,5 @@ export default class VariableManager extends Component<Signature> {
   async updateCodelist(variable: Variable, codeList: CodeList) {
     //@ts-expect-error currently the ts types don't allow direct assignment of relationships
     variable.codeList = codeList;
-  }
-
-  @action
-  async addVariable() {
-    const newVariable = this.store.createRecord<Variable>('variable', {});
-    const variables = await this.args.roadSignConcept.variables;
-    variables.push(newVariable);
-  }
-
-  @action
-  async removeVariable(variableToBeRemoved: Variable) {
-    const variables = await this.args.roadSignConcept.variables;
-    removeItem(variables, variableToBeRemoved);
   }
 }
