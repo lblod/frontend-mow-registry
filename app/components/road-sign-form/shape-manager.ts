@@ -1,7 +1,7 @@
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import type Store from 'ember-data/store';
+import type Store from '@ember-data/store';
 import Dimension from 'mow-registry/models/dimension';
 import type QuantityKind from 'mow-registry/models/quantity-kind';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
