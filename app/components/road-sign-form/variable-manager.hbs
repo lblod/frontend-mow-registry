@@ -1,0 +1,94 @@
+<AuFieldset as |f|>
+  <f.legend @skin={{this.skin}} @required={{false}}>
+    {{t "utility.variables"}}
+  </f.legend>
+  <f.content class="au-u-1-1">
+    <div class="au-o-flow">
+      {{#if @variables}}
+        <AuTable>
+          <:header>
+            <tr>
+              <th>{{t "utility.variable"}}</th>
+              <th>{{t "utility.type"}}</th>
+              <th></th>
+            </tr>
+          </:header>
+          <:body>
+            {{#each @variables as |variable|}}
+              <tr>
+                <td>
+                  <AuInput
+                    value={{variable.value}}
+                    @error={{variable.error.value}}
+                    {{on "input" (fn this.setVariableValue variable)}}
+                  />
+                  <ErrorMessage @error={{variable.error.value}} />
+                </td>
+                {{! template-lint-disable no-inline-styles }}
+                <td style="width: 50%;">
+                  <div
+                    class={{if variable.error.type "ember-power-select--error"}}
+                  >
+                    <PowerSelect
+                      @allowClear={{false}}
+                      @searchEnabled={{false}}
+                      @options={{this.variableTypes}}
+                      @loadingMessage={{t "utility.loading"}}
+                      @selected={{find-by-value
+                        this.variableTypes
+                        variable.type
+                      }}
+                      @onChange={{fn this.setVariableType variable}}
+                      as |type|
+                    >
+                      {{type.label}}
+                    </PowerSelect>
+                    <ErrorMessage @error={{variable.error.type}} />
+                  </div>
+                  {{#if (eq variable.type "codelist")}}
+                    <PowerSelect
+                      @triggerClass="au-u-margin-top-tiny"
+                      @allowClear={{false}}
+                      @searchEnabled={{true}}
+                      @options={{this.codeLists}}
+                      @selected={{variable.codeList}}
+                      @onChange={{fn this.updateCodelist variable}}
+                      as |codeList|
+                    >
+                      {{codeList.label}}
+                    </PowerSelect>
+                    <ul
+                      class="au-c-list-help au-c-help-text au-c-help-text--secondary"
+                    >
+                      {{#each variable.codeList.concepts as |option|}}
+                        <li class="au-c-list-help__item">{{option.label}}</li>
+                      {{/each}}
+                    </ul>
+                    <ErrorMessage @error={{variable.error.codelist}} />
+                  {{/if}}
+                </td>
+                <td>
+                  <AuButton
+                    @skin="naked"
+                    @icon="bin"
+                    @alert={{true}}
+                    {{on "click" (fn @removeVariable variable)}}
+                  >
+                    {{t "utility.delete"}}
+                  </AuButton></td>
+              </tr>
+            {{/each}}
+          </:body>
+        </AuTable>
+      {{/if}}
+
+      <AuButton
+        @skin="secondary"
+        @width="block"
+        @icon="plus"
+        {{on "click" @addVariable}}
+      >{{t "utility.add-variable"}}</AuButton>
+
+    </div>
+  </f.content>
+</AuFieldset>

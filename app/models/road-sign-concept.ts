@@ -16,10 +16,17 @@ import RoadSignCategory from './road-sign-category';
 import TribontShape from './tribont-shape';
 import type SkosConcept from './skos-concept';
 import type { Type } from '@warp-drive/core-types/symbols';
+import type Variable from './variable';
 
 export default class RoadSignConcept extends TrafficSignConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'road-sign-concept';
+
+  @hasMany('variable', {
+    inverse: null,
+    async: true,
+  })
+  declare variables: AsyncHasMany<Variable>;
 
   @hasMany('road-sign-category', {
     inverse: 'roadSignConcepts',
@@ -73,6 +80,7 @@ export default class RoadSignConcept extends TrafficSignConcept {
       shapes: validateHasManyRequired(
         'road-sign-concept.atLeastOneShapeRequired',
       ),
+      variables: validateHasManyOptional(),
       classifications: validateHasManyRequired(),
       subSigns: validateHasManyOptional(),
       mainSigns: validateHasManyOptional(),
