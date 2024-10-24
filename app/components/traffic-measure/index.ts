@@ -21,6 +21,7 @@ import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 import Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
+import { A } from '@ember/array';
 
 export type InputType = {
   value: string;
@@ -136,10 +137,10 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
           return 0;
         }
       });
-      // const relations = await this.trafficMeasureConcept.getOrderedRelations();
+      // const relations = await this.trafficMeasureConcept.getOrderedRelations(); 
     }
 
-    this.signs = new TrackedArray(relatedTrafficSigns);
+    this.signs = A(relatedTrafficSigns.slice())
 
     await this.fetchInstructions.perform();
 
