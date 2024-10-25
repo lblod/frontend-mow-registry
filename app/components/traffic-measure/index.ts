@@ -137,10 +137,10 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
           return 0;
         }
       });
-      // const relations = await this.trafficMeasureConcept.getOrderedRelations(); 
+      // const relations = await this.trafficMeasureConcept.getOrderedRelations();
     }
 
-    this.signs = A(relatedTrafficSigns.slice())
+    this.signs = A([...relatedTrafficSigns]);
 
     await this.fetchInstructions.perform();
 
@@ -196,14 +196,14 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @action
   async addSign(sign: TrafficSignConcept) {
-    this.signs.push(sign);
+    this.signs = [...this.signs, sign];
     await this.fetchInstructions.perform();
     this.selectedType = null;
   }
 
   @action
   async removeSign(sign: TrafficSignConcept) {
-    removeItem(this.signs, sign);
+    this.signs = this.signs.filter((existingSign) => existingSign !== sign);
     await this.fetchInstructions.perform();
   }
 
