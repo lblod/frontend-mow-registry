@@ -61,10 +61,11 @@
             {{t "utility.zonality"}}
           </AuHeading>
           {{#let (load @trafficMeasureConcept.zonality) as |zonality|}}
-            {{#if zonality.isResolved}}
+            {{#if zonality.isResolved}} 
               <ZonalitySelector
                 @zonality={{zonality.value}}
                 @onChange={{fn (mut @trafficMeasureConcept.zonality)}}
+                @trafficMeasureConcept={{@trafficMeasureConcept}}
               />
             {{/if}}
           {{/let}}

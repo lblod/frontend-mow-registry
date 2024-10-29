@@ -1,4 +1,4 @@
-import Model, {
+import {
   type AsyncBelongsTo,
   type AsyncHasMany,
   attr,
@@ -9,8 +9,17 @@ import type { Type } from '@warp-drive/core-types/symbols';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 import type TrafficSignConcept from './traffic-sign-concept';
 import type Template from './template';
+import Joi from 'joi';
+import {
+  validateBelongsToOptional,
+  validateBelongsToRequired,
+  validateBooleanOptional,
+  validateHasManyOptional,
+  validateStringOptional,
+} from 'mow-registry/validators/schema';
+import AbstractValidationModel from './abstract-validation-model';
 
-export default class TrafficMeasureConcept extends Model {
+export default class TrafficMeasureConcept extends AbstractValidationModel {
   declare [Type]: 'traffic-measure-concept';
   @attr declare label?: string;
   @attr declare variableSignage?: boolean;
@@ -28,4 +37,15 @@ export default class TrafficMeasureConcept extends Model {
 
   @belongsTo<Template>('template', { async: true, inverse: 'parentConcept' })
   declare template: AsyncBelongsTo<Template>;
+
+  get validationSchema() {
+    return Joi.object({
+      label: validateStringOptional(),
+      variableSignage: validateBooleanOptional(),
+      valid: validateBooleanOptional(),
+      zonality: validateBelongsToRequired(),
+      relatedTrafficSignConcepts: validateHasManyOptional(),
+      template: validateBelongsToOptional(),
+    });
+  }
 }

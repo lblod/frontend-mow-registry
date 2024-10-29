@@ -1,3 +1,5 @@
+{{#let @trafficMeasureConcept.error.zonality as |error|}}
+<div class={{if error "ember-power-select--error"}}>
 <PowerSelect
   @allowClear={{false}}
   @searchEnabled={{false}}
@@ -9,4 +11,7 @@
 >
   {{zonality-label zonality}}
 </PowerSelect>
+<ErrorMessage @error={{error}} />
+</div>
+{{/let}}
 <br />
