@@ -377,12 +377,21 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     // We assume a measure only has one template
     const template = unwrap(await this.trafficMeasureConcept.template);
 
-    const isValid = await this.args.trafficMeasureConcept.validate();
-
-    if (!isValid || !this.signs.length) {
+    // Show custom error if no signs selected
+    if (!this.signs.length) {
       this.signsError = true;
+    } else {
+      this.signsError = false;
+    }
+
+    // Validate measure fields
+    const isValid = await this.args.trafficMeasureConcept.validate();
+    if (!isValid) {
       return;
     }
+
+    // If there’s an error with the signs, return early to prevent the save from occurring
+    if (this.signsError) return;
 
     //if new save relationships
     if (this.new) {
@@ -391,22 +400,14 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       await this.trafficMeasureConcept.save();
     }
 
-    //1-parse everything again
-    await this.parseTemplate();
-
-    //2-update node shape
     this.trafficMeasureConcept.label = this.label;
-    await this.trafficMeasureConcept.save();
 
-    //3-update roadsigns
-    await this.saveRoadsigns.perform(this.trafficMeasureConcept);
-
-    //4-handle variable variables
-    await this.saveVariables.perform(template);
-
-    // //5-annotate rdfa
-    // await this.annotateRdfa.perform(template);
-    this.signsError = false;
+    await Promise.all([
+      this.parseTemplate(),
+      this.trafficMeasureConcept.save(),
+      this.saveRoadsigns.perform(this.trafficMeasureConcept),
+      this.saveVariables.perform(template),
+    ]);
 
     this.router.transitionTo(
       'traffic-measure-concepts.details',
