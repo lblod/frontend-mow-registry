@@ -48,6 +48,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   @tracked instructions: Template[] = [];
   @tracked inputTypes: InputType[];
   @tracked instructionType: InputType;
+  @tracked signsError: boolean = false;
 
   variablesToBeDeleted: Variable[] = [];
 
@@ -346,7 +347,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     });
 
     this.variables = sortedVariables;
-
+    await this.args.trafficMeasureConcept.validateProperty('variables');
     await this.generatePreview.perform();
   }
 
@@ -376,6 +377,13 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     // We assume a measure only has one template
     const template = unwrap(await this.trafficMeasureConcept.template);
 
+    const isValid = await this.args.trafficMeasureConcept.validate();
+
+    if (!isValid || !this.signs.length) {
+      this.signsError = true;
+      return;
+    }
+
     //if new save relationships
     if (this.new) {
       await this.trafficMeasureConcept.save();
@@ -398,6 +406,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     // //5-annotate rdfa
     // await this.annotateRdfa.perform(template);
+    this.signsError = false;
 
     this.router.transitionTo(
       'traffic-measure-concepts.details',

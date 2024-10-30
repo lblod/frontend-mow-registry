@@ -17,6 +17,7 @@ login-page:
     published-by: Uitgegeven door
     abb: Agentschap Binnenlands Bestuur
 utility:
+  incomplete-measure-error: Voeg minstens één verkeersteken toe
   variable: Variabele
   variables: Variabelen
   login: Aanmelden

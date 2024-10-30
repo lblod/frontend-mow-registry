@@ -1,3 +1,8 @@
+{{#if this.signsError}}
+  <AuAlert @icon="alert-triangle" @skin="warning">
+    {{t "utility.incomplete-measure-error"}}
+  </AuAlert>
+{{/if}}
 <AuToolbar @border="bottom" @size="large" as |Group|>
   <Group class="au-u-flex--vertical-center">
     {{yield to="title"}}
@@ -106,6 +111,7 @@
           />
         </div>
       </div>
+      {{#let @trafficMeasureConcept.error.template as |error| }}
       <div class="au-u-margin-bottom-small">
         <AuHeading @level="4" @skin="4">
           {{t "traffic-measure-concept.attr.template"}}
@@ -130,8 +136,11 @@
           value={{this.template.value}}
           style="resize: none; height: 200px;"
           class="au-u-margin-bottom-small"
+          @error={{error}}
         />
+        <ErrorMessage @error={{error}}/>
       </div>
+      {{/let}}
       {{#if this.variables.length}}
         <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
           {{t "traffic-measure-concept.attr.variables"}}
