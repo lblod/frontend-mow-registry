@@ -347,7 +347,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     });
 
     this.variables = sortedVariables;
-    await this.args.trafficMeasureConcept.validateProperty('variables');
     await this.generatePreview.perform();
   }
 
