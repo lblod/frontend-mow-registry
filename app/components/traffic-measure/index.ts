@@ -21,7 +21,7 @@ import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 import Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
-import { A } from '@ember/array';
+import { A, NativeArray } from '@ember/array';
 
 export type InputType = {
   value: string;
@@ -40,7 +40,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @tracked codeLists?: CodeList[];
   @tracked declare trafficMeasureConcept: TrafficMeasureConcept;
-  @tracked signs: TrafficSignConcept[] = [];
+  @tracked signs: NativeArray<TrafficSignConcept> = A([]);
   @tracked variables: Variable[] = [];
   @tracked template?: Template | null;
   @tracked searchString?: string;
@@ -196,14 +196,14 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @action
   async addSign(sign: TrafficSignConcept) {
-    this.signs = [...this.signs, sign];
+    this.signs.pushObject(sign);
     await this.fetchInstructions.perform();
     this.selectedType = null;
   }
 
   @action
   async removeSign(sign: TrafficSignConcept) {
-    this.signs = this.signs.filter((existingSign) => existingSign !== sign);
+    this.signs.removeObject(sign);
     await this.fetchInstructions.perform();
   }
 
@@ -411,20 +411,25 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     const existingRelatedSigns = (
       await trafficMeasureConcept.relatedTrafficSignConcepts
     ).slice();
+    console.log('existingRelatedSigns', existingRelatedSigns);
 
     const deletedSigns = existingRelatedSigns.filter(
       (sign) => !this.signs.includes(sign),
     );
+    console.log('deletedSigns', deletedSigns);
     const addedSigns = this.signs.filter(
       (sign) => !existingRelatedSigns.includes(sign),
     );
+    console.log('addedSigns', addedSigns);
 
     for (const sign of deletedSigns) {
+      console.log('sign that was deleted', sign);
       removeItem(await sign.hasTrafficMeasureConcepts, trafficMeasureConcept);
       await sign.save();
     }
 
     for (const sign of addedSigns) {
+      console.log('sign that was added', sign);
       (await sign.hasTrafficMeasureConcepts).push(trafficMeasureConcept);
       await sign.save();
     }
