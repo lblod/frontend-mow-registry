@@ -407,32 +407,23 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   });
 
   saveRoadsigns = task(async (trafficMeasureConcept: TrafficMeasureConcept) => {
-    // delete existing ones
     const existingRelatedSigns = (
       await trafficMeasureConcept.relatedTrafficSignConcepts
     ).slice();
-    console.log('existingRelatedSigns', existingRelatedSigns);
 
-    const deletedSigns = existingRelatedSigns.filter(
-      (sign) => !this.signs.includes(sign),
-    );
-    console.log('deletedSigns', deletedSigns);
-    const addedSigns = this.signs.filter(
-      (sign) => !existingRelatedSigns.includes(sign),
-    );
-    console.log('addedSigns', addedSigns);
-
-    for (const sign of deletedSigns) {
-      console.log('sign that was deleted', sign);
+    const removePromises = existingRelatedSigns.map(async (sign) => {
       removeItem(await sign.hasTrafficMeasureConcepts, trafficMeasureConcept);
-      await sign.save();
-    }
+      return sign.save();
+    });
+    await Promise.all(removePromises);
 
-    for (const sign of addedSigns) {
-      console.log('sign that was added', sign);
+    const addPromises = this.signs.map(async (sign) => {
       (await sign.hasTrafficMeasureConcepts).push(trafficMeasureConcept);
-      await sign.save();
-    }
+      return sign.save();
+    });
+    await Promise.all(addPromises);
+
+    await trafficMeasureConcept.save();
   });
 
   saveVariables = task(async (template: Template) => {
