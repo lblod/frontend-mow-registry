@@ -9,15 +9,7 @@ import Joi from 'joi';
 export const validateBelongsToRequired = (
   message = 'errors.field.required',
 ) => {
-  return Joi.object()
-    .required()
-    .messages({ 'any.required': message })
-    .custom((template, helpers) => {
-      if (template.value === '') {
-        return helpers.error('any.required');
-      }
-      return template;
-    });
+  return Joi.object().required().messages({ 'any.required': message });
 };
 
 /**
