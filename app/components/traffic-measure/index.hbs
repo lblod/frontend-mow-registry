@@ -111,7 +111,7 @@
           />
         </div>
       </div>
-      {{#let @trafficMeasureConcept.error.template as |error| }}
+      {{#let this.template.error.value as |error| }}
       <div class="au-u-margin-bottom-small">
         <AuHeading @level="4" @skin="4">
           {{t "traffic-measure-concept.attr.template"}}

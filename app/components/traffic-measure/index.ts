@@ -385,7 +385,9 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     // Validate measure fields
     const isValid = await this.args.trafficMeasureConcept.validate();
-    if (!isValid) {
+    const isTemplateValid = await template.validate()
+
+    if (!isValid || !isTemplateValid) {
       return;
     }
 

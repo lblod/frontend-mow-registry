@@ -11,6 +11,7 @@ import type TrafficSignConcept from './traffic-sign-concept';
 import type Template from './template';
 import Joi from 'joi';
 import {
+  validateBelongsToOptional,
   validateBelongsToRequired,
   validateBooleanOptional,
   validateHasManyOptional,
@@ -44,7 +45,7 @@ export default class TrafficMeasureConcept extends AbstractValidationModel {
       valid: validateBooleanOptional(),
       zonality: validateBelongsToRequired(),
       relatedTrafficSignConcepts: validateHasManyOptional(),
-      template: validateBelongsToRequired(),
+      template: validateBelongsToOptional(),
     });
   }
 }
