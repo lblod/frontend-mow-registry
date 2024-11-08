@@ -377,11 +377,11 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     const template = unwrap(await this.trafficMeasureConcept.template);
 
     // Show custom error if no signs selected
-    this.signsError = !this.signs.length
+    this.signsError = !this.signs.length;
 
     // Validate measure fields
     const isValid = await this.trafficMeasureConcept.validate();
-    const isTemplateValid = await template.validate()
+    const isTemplateValid = await template.validate();
 
     if (!isValid || !isTemplateValid) {
       return;
@@ -398,13 +398,10 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     }
 
     this.trafficMeasureConcept.label = this.label;
-
-    await Promise.all([
-      this.parseTemplate(),
-      this.trafficMeasureConcept.save(),
-      this.saveRoadsigns.perform(this.trafficMeasureConcept),
-      this.saveVariables.perform(template),
-    ]);
+    await this.parseTemplate();
+    await this.trafficMeasureConcept.save();
+    await this.saveRoadsigns.perform(this.trafficMeasureConcept);
+    await this.saveVariables.perform(template);
 
     this.router.transitionTo(
       'traffic-measure-concepts.details',
