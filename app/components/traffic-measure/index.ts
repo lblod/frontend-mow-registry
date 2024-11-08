@@ -377,11 +377,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     const template = unwrap(await this.trafficMeasureConcept.template);
 
     // Show custom error if no signs selected
-    if (!this.signs.length) {
-      this.signsError = true;
-    } else {
-      this.signsError = false;
-    }
+    this.signsError = !this.signs.length
 
     // Validate measure fields
     const isValid = await this.trafficMeasureConcept.validate();
