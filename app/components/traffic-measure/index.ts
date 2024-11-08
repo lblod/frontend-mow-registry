@@ -397,11 +397,21 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       await this.trafficMeasureConcept.save();
     }
 
-    this.trafficMeasureConcept.label = this.label;
+    //1-parse everything again
     await this.parseTemplate();
+
+    //2-update node shape
+    this.trafficMeasureConcept.label = this.label;
     await this.trafficMeasureConcept.save();
+
+    //3-update roadsigns
     await this.saveRoadsigns.perform(this.trafficMeasureConcept);
+
+    //4-handle variable variables
     await this.saveVariables.perform(template);
+
+    // //5-annotate rdfa
+    // await this.annotateRdfa.perform(template);
 
     this.router.transitionTo(
       'traffic-measure-concepts.details',
