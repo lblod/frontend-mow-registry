@@ -17,6 +17,7 @@ login-page:
     published-by: Published by
     abb: Agency for Home Affairs
 utility:
+  incomplete-measure-error: Please add at least one traffic sign.
   variable: Variable
   variables: Variables
   login: Login

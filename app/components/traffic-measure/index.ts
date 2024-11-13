@@ -48,6 +48,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   @tracked instructions: Template[] = [];
   @tracked inputTypes: InputType[];
   @tracked instructionType: InputType;
+  @tracked signsError: boolean = false;
 
   variablesToBeDeleted: Variable[] = [];
 
@@ -346,7 +347,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     });
 
     this.variables = sortedVariables;
-
     await this.generatePreview.perform();
   }
 
@@ -375,6 +375,20 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   save = task(async () => {
     // We assume a measure only has one template
     const template = unwrap(await this.trafficMeasureConcept.template);
+
+    // Show custom error if no signs selected
+    this.signsError = !this.signs.length;
+
+    // Validate measure fields
+    const isValid = await this.trafficMeasureConcept.validate();
+    const isTemplateValid = await template.validate();
+
+    if (!isValid || !isTemplateValid) {
+      return;
+    }
+
+    // If there’s an error with the signs, return early to prevent the save from occurring
+    if (this.signsError) return;
 
     //if new save relationships
     if (this.new) {
