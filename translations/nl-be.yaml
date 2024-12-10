@@ -301,6 +301,8 @@ icon-catalog:
 validation-status:
   valid: Gevalideerd
   draft: Ontwerp
+  ar-required: AR-Plichtig
+  ar-not-required: Niet AR-Plichtig
 variable-signage-selector:
   yes: Variabel
   no: Niet variabel
