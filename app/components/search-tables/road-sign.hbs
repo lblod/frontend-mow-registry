@@ -26,9 +26,10 @@
       @field="classifications"
       @label={{t "road-sign-concept.attr.classifications"}}
     />
-    <th>
-      {{t "utility.validation-status"}}
-    </th>
+    <header.Sortable
+      @field="valid"
+      @label={{t "utility.validation-status"}}
+    />
   </:header>
   <:body as |roadSignConcept|>
     <td>
