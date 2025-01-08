@@ -33,7 +33,6 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
     };
 
     if (params.label) {
-      console.log('here params.label');
       query['filter[label]'] = params.label;
     }
 
