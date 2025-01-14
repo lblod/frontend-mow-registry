@@ -170,6 +170,8 @@ traffic-light-concept:
     label-filter-placeholder: Search by label
     meaning-filter: Meaning
     meaning-filter-placeholder: Search by meaning
+    validation-filter: Validation
+    validation-filter-placeholder: Filter by validation status
   landing-page:
     content: Manage traffic lights and instructions.
     button: Go to Traffic Lights

@@ -162,6 +162,8 @@ traffic-light-concept:
     label-filter-placeholder: Zoeken op label
     meaning-filter: Betekenis
     meaning-filter-placeholder: Zoeken op betekenis
+    validation-filter: Validatie
+    validation-filter-placeholder: Filteren op validatie-status
   landing-page:
     content: Beheer verkeerlichten en instructies.
     button: Ga naar Verkeerslichten
