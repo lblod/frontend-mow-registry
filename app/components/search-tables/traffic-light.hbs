@@ -23,9 +23,10 @@
     <th>
       {{t "traffic-light-concept.attr.meaning"}}
     </th>
-    <th>
-      {{t "utility.validation-status"}}
-    </th>
+    <header.Sortable
+      @field="valid"
+      @label={{t "utility.validation-status"}}
+    />
   </:header>
   <:body as |trafficLightConcept|>
     <td>
