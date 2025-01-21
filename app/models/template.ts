@@ -13,6 +13,7 @@ import {
   validateBelongsToOptional,
   validateHasManyOptional,
   validateStringRequired,
+  validateStringOptional,
 } from 'mow-registry/validators/schema';
 
 export default class Template extends Document {
@@ -35,6 +36,7 @@ export default class Template extends Document {
       value: validateStringRequired(),
       variables: validateHasManyOptional(),
       parentConcept: validateBelongsToOptional(),
+      annotated: validateStringOptional(),
     });
   }
 }
