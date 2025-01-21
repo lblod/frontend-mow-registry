@@ -35,6 +35,26 @@
             {{on "input" (perform this.updateSearchFilterTask "meaning")}}
           />
         </AuFormRow>
+
+        <div>
+          <AuLabel for="validation-filter">
+            {{t "road-marking-concept.crud.validation-filter"}}
+          </AuLabel>
+          <PowerSelect
+            @allowClear={{true}}
+            @options={{this.validationStatusOptions}}
+            @selected={{this.selectedValidationStatus}}
+            @placeholder={{t
+              "road-marking-concept.crud.validation-filter-placeholder"
+            }}
+            @loadingMessage={{t "utility.loading"}}
+            @onChange={{this.updateValidationFilter}}
+            @triggerId="validation-filter"
+            as |validation|
+          >
+            {{validation.label}}
+          </PowerSelect>
+        </div>
         <ResetFilters
           @canReset={{this.hasActiveFilter}}
           @onReset={{this.resetFilters}}

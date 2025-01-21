@@ -5,11 +5,24 @@ import { tracked } from '@glimmer/tracking';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import RoadsignConceptsIndexRoute from 'mow-registry/routes/road-sign-concepts/index';
 import RoadSignCategory from 'mow-registry/models/road-sign-category';
+import type IntlService from 'ember-intl/services/intl';
+import { service } from '@ember/service';
 
 export default class RoadsignConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'label', 'meaning', 'sort', 'classifications'];
+  queryParams = [
+    'page',
+    'size',
+    'label',
+    'meaning',
+    'sort',
+    'classifications',
+    'validation',
+  ];
 
   declare model: ModelFrom<RoadsignConceptsIndexRoute>;
+
+  @service
+  declare intl: IntlService;
 
   @tracked page = 0;
   @tracked size = 30;
@@ -17,9 +30,19 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked meaning = '';
   @tracked classification?: string | null;
   @tracked sort = 'label';
+  @tracked validation?: string | null;
+
+  get validationStatusOptions() {
+    return [
+      { value: 'true', label: this.intl.t('validation-status.valid') },
+      { value: 'false', label: this.intl.t('validation-status.draft') },
+    ];
+  }
 
   get hasActiveFilter() {
-    return Boolean(this.label || this.meaning || this.classification);
+    return Boolean(
+      this.label || this.meaning || this.classification || this.validation,
+    );
   }
 
   updateSearchFilterTask = restartableTask(
@@ -39,7 +62,7 @@ export default class RoadsignConceptsIndexController extends Controller {
       return null;
     }
     return this.model.classifications.find((classification) => {
-      return classification.id === this.classification;
+      return classification.id === String(this.classification);
     });
   }
 
@@ -50,6 +73,23 @@ export default class RoadsignConceptsIndexController extends Controller {
       this.resetPagination();
     } else {
       this.classification = null;
+    }
+  }
+
+  get selectedValidationStatus() {
+    return this.validationStatusOptions.find(
+      (option) => option.value === this.validation,
+    );
+  }
+  @action
+  updateValidationFilter(
+    selectedValidationStatus: (typeof this.validationStatusOptions)[number],
+  ) {
+    if (selectedValidationStatus) {
+      this.validation = selectedValidationStatus.value;
+      this.resetPagination();
+    } else {
+      this.validation = null;
     }
   }
 
@@ -65,6 +105,7 @@ export default class RoadsignConceptsIndexController extends Controller {
     this.label = '';
     this.meaning = '';
     this.classification = null;
+    this.validation = null;
     this.resetPagination();
   };
 
