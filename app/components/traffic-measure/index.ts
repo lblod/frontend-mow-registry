@@ -282,7 +282,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       //search regex results if they contain this variable
       if (
         filteredRegexResult.find((fReg) => {
-          if (fReg[1] === variable.value) {
+          if (fReg[1] === variable.label) {
             return true;
           } else {
             return false;
@@ -298,10 +298,10 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     //add new variable variables
     filteredRegexResult.forEach((reg) => {
-      if (!this.variables.find((variable) => variable.value === reg[1])) {
+      if (!this.variables.find((variable) => variable.label === reg[1])) {
         this.variables.push(
           this.store.createRecord<Variable>('variable', {
-            value: reg[1],
+            label: reg[1],
             type: 'text',
           }),
         );
@@ -313,7 +313,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     this.variables.forEach((variable) => {
       if (
         !filteredVariables.find(
-          (fVariable) => fVariable.value === variable.value,
+          (fVariable) => fVariable.label === variable.label,
         )
       ) {
         filteredVariables.push(variable);
@@ -326,7 +326,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     const sortedVariables: Variable[] = [];
     filteredRegexResult.forEach((reg) => {
       filteredVariables.forEach((variable) => {
-        if (reg[1] == variable.value) {
+        if (reg[1] == variable.label) {
           sortedVariables.push(variable);
         }
       });
@@ -335,7 +335,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //check existing default variables with deleted non-default variables and swap them
     sortedVariables.forEach((sVariable, sI) => {
       this.variablesToBeDeleted.forEach((dVariable, dI) => {
-        if (sVariable.value === dVariable.value) {
+        if (sVariable.label === dVariable.label) {
           if (dVariable.type !== 'text' && sVariable.type === 'text') {
             // sortedVariables.replace(sI, 1, [dVariable]);
             sortedVariables[sI] = dVariable;
@@ -365,7 +365,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
           (instruction?.value ?? '') +
           '</span>';
         this.preview = this.preview.replaceAll(
-          '${' + (variable.value ?? '') + '}',
+          '${' + (variable.label ?? '') + '}',
           replaceString,
         );
       }

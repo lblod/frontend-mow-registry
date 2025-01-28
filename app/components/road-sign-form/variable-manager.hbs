@@ -18,11 +18,11 @@
               <tr>
                 <td>
                   <AuInput
-                    value={{variable.value}}
-                    @error={{variable.error.value}}
-                    {{on "input" (fn this.setVariableValue variable)}}
+                    value={{variable.label}}
+                    @error={{variable.error.label}}
+                    {{on "input" (fn this.setVariableLabel variable)}}
                   />
-                  <ErrorMessage @error={{variable.error.value}} />
+                  <ErrorMessage @error={{variable.error.label}} />
                 </td>
                 {{! template-lint-disable no-inline-styles }}
                 <td style="width: 50%;">

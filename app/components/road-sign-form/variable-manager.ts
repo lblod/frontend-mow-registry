@@ -68,9 +68,9 @@ export default class VariableManager extends Component<Signature> {
   }
 
   @action
-  setVariableValue(variable: Variable, event: InputEvent) {
-    const newValue = (event.target as HTMLInputElement).value;
-    variable.set('value', newValue);
+  setVariableLabel(variable: Variable, event: InputEvent) {
+    const newLabel = (event.target as HTMLInputElement).value;
+    variable.set('label', newLabel);
   }
 
   @action
