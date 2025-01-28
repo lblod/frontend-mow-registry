@@ -458,19 +458,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     await template.save();
   });
 
-  // annotateRdfa = task(async (template: TemplateModel) => {
-  //   const contentWithVariables = await includeVariables(
-  //     template.value ?? '',
-  //     this.variables,
-  //   );
-  //   template.annotated = `
-  //     <div property="dct:description">
-  //       ${contentWithVariables}
-  //     </div>
-  //   `;
-  //   await template.save();
-  // });
-
   async willDestroy() {
     super.willDestroy();
 

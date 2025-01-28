@@ -196,11 +196,6 @@ export default class AddInstructionComponent extends Component {
       (await this.template.variables).push(variable);
       await variable.save();
     }
-    // New datamodel misses relationship for rdfA notation
-    // this.template.value = await includeVariables(
-    //   this.template.value,
-    //   this.variables,
-    // );
     await this.template.save();
     await Promise.all(
       this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
