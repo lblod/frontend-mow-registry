@@ -237,6 +237,7 @@ traffic-measure-concept:
     no-data: No traffic measures
     edit: Edit measure {label}
     label-filter-placeholder: Search by label
+    text-filter-placeholder: Search by text
     type-filter: Filter by type
     no-matches: No results found
     type-to-search: Type to search

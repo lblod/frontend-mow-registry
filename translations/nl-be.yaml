@@ -229,6 +229,7 @@ traffic-measure-concept:
     no-data: Geen mobiliteitsmaatregelen
     edit: Maatregel {label} bewerken
     label-filter-placeholder: Zoeken op label
+    text-filter-placeholder: Zoeken op tekst
     type-filter: Filteren op type
     no-matches: Geen resultaten gevonden
     type-to-search: Typ om te zoeken
