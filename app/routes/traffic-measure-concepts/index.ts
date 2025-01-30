@@ -37,7 +37,7 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
     }
 
     if (params.templateValue) {
-      query['filter[template][annotated]'] = params.templateValue;
+      query['filter[template][preview]'] = params.templateValue;
     }
 
     const result = await this.store.query<TrafficMeasureConcept>(
