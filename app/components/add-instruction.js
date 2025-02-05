@@ -122,7 +122,7 @@ export default class AddInstructionComponent extends Component {
       //search regex results if they contain this variable
       if (
         filteredRegexResult.find((fReg) => {
-          if (fReg[1] === variable.value) {
+          if (fReg[1] === variable.label) {
             return true;
           }
         })
@@ -133,11 +133,11 @@ export default class AddInstructionComponent extends Component {
       }
     });
 
-    //add new variable values
+    //add new variables
     filteredRegexResult.forEach((reg) => {
-      if (!this.variables.find((variable) => variable.value === reg[1])) {
+      if (!this.variables.find((variable) => variable.label === reg[1])) {
         const variable = this.store.createRecord('variable', {
-          value: reg[1],
+          label: reg[1],
           type: 'text',
         });
         this.variables.push(variable);
@@ -149,7 +149,7 @@ export default class AddInstructionComponent extends Component {
     this.variables.forEach((variable) => {
       if (
         !filteredVariables.find(
-          (fVariable) => fVariable.value === variable.value,
+          (fVariable) => fVariable.label === variable.label,
         )
       ) {
         filteredVariables.push(variable);
@@ -162,7 +162,7 @@ export default class AddInstructionComponent extends Component {
     const sortedVariables = [];
     filteredRegexResult.forEach((reg) => {
       filteredVariables.forEach((variable) => {
-        if (reg[1] == variable.value) {
+        if (reg[1] == variable.label) {
           sortedVariables.push(variable);
         }
       });
@@ -171,7 +171,7 @@ export default class AddInstructionComponent extends Component {
     //check existing default variables with deleted non-default variables and swap them
     sortedVariables.forEach((sVariable, sI) => {
       this.variablesToBeDeleted.forEach((dVariable, dI) => {
-        if (sVariable.value === dVariable.value) {
+        if (sVariable.label === dVariable.label) {
           if (dVariable.type !== 'text' && sVariable.type === 'text') {
             sortedVariables.replace(sI, 1, [dVariable]);
             this.variablesToBeDeleted.replace(dI, 1, [sVariable]);

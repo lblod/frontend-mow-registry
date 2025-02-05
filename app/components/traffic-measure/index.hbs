@@ -66,7 +66,7 @@
             {{t "utility.zonality"}}
           </AuHeading>
           {{#let (load @trafficMeasureConcept.zonality) as |zonality|}}
-            {{#if zonality.isResolved}} 
+            {{#if zonality.isResolved}}
               <ZonalitySelector
                 @zonality={{zonality.value}}
                 @onChange={{fn (mut @trafficMeasureConcept.zonality)}}
@@ -160,7 +160,7 @@
                 <tbody>
                   {{#each this.variables as |variable|}}
                     <tr>
-                      <td>{{variable.value}}</td>
+                      <td>{{variable.label}}</td>
                       {{! template-lint-disable no-inline-styles }}
                       <td style="width: 50%;">
                         <PowerSelect
