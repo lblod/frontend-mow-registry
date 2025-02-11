@@ -74,6 +74,11 @@ export default class VariableManager extends Component<Signature> {
   }
 
   @action
+  setVariableRequired(variable: Variable) {
+    variable.set('required', !variable.required);
+  }
+
+  @action
   async setVariableType(variable: Variable, selectedType: InputType) {
     if (variable.type === 'codelist') {
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
