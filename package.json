@@ -67,6 +67,7 @@
     "@typescript-eslint/parser": "^8.7.0",
     "@warp-drive/core-types": "0.0.0-beta.11",
     "broccoli-asset-rev": "^3.0.0",
+    "changesets-release-it-plugin": "^0.1.2",
     "concurrently": "^8.2.2",
     "ember-async-data": "^1.0.2",
     "ember-auto-import": "^2.8.1",
