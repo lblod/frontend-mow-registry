@@ -2,21 +2,34 @@ import Controller from '@ember/controller';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import type Template from 'mow-registry/models/template';
 
 export default class TrafficMeasureConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'code', 'template', 'sort'];
+  queryParams = ['page', 'size', 'label', 'template', 'sort', 'templateValue'];
 
   @tracked page = 0;
   @tracked size = 30;
-  @tracked code = '';
-  @tracked template = null;
-  @tracked sort = 'label';
+  @tracked label = '';
+  @tracked template?: Template | null;
+  @tracked templateValue = '';
+  @tracked sort = ':no-case:label';
 
   updateSearchFilterTask = restartableTask(
-    async (queryParamProperty: 'code', event: InputEvent) => {
+    async (
+      queryParamProperty: 'label' | 'templateFilter',
+      event: InputEvent,
+    ) => {
       await timeout(300);
 
-      this[queryParamProperty] = (event.target as HTMLInputElement).value;
+      const target = event.target as HTMLInputElement | undefined;
+      const searchValue = target?.value || '';
+
+      if (queryParamProperty === 'label') {
+        this.label = searchValue;
+      } else if (queryParamProperty === 'templateFilter') {
+        this.templateValue = searchValue;
+      }
+
       this.resetPagination();
     },
   );

@@ -1,4 +1,9 @@
-<div class="au-o-grid__item au-u-2-5@medium" {{did-insert this.didInsert}}>
+<div
+  class="au-o-grid__item au-u-2-5@medium"
+  {{did-insert this.didInsert}}
+  {{! TODO: refactor did-insert}}
+  {{!template-lint-disable no-at-ember-render-modifiers}}
+>
   <div
     class="au-c-body-container au-c-action-sidebar"
     {{auto-focus ".au-c-action-sidebar__header"}}
@@ -33,7 +38,7 @@
             {{on "input" this.updateTemplate}}
             id="textarea-description"
             @width="block"
-            @value={{this.template.value}}
+            value={{this.template.value}}
           />
           {{#if this.templateSyntaxError}}
             <AuAlert
@@ -52,6 +57,7 @@
             {{on "click" (perform this.save)}}
             @disabled={{not this.canSave}}
             @loading={{this.save.isRunning}}
+            @loadingMessage={{t "utility.save"}}
           >
             {{t "utility.save"}}
           </AuButton>
@@ -68,34 +74,34 @@
             </tr>
           </thead>
           <tbody>
-            {{#each this.mappings as |mapping|}}
+            {{#each this.variables as |variable|}}
               <tr>
-                <td>{{mapping.variable}}</td>
+                <td>{{variable.label}}</td>
                 {{! template-lint-disable no-inline-styles }}
                 <td style="width: 50%;">
                   <PowerSelect
                     @allowClear={{false}}
                     @searchEnabled={{false}}
                     @options={{this.inputTypes}}
-                    @selected={{mapping.type}}
-                    @onChange={{fn this.updateMappingType mapping}}
+                    @selected={{variable.type}}
+                    @onChange={{fn this.updateVariableType variable}}
                     as |type|
                   >
                     {{type}}
                   </PowerSelect>
-                  {{#if (eq mapping.type "codelist")}}
+                  {{#if (eq variable.type "codelist")}}
                     <PowerSelect
                       @allowClear={{false}}
                       @searchEnabled={{false}}
                       @options={{this.codeLists}}
-                      @selected={{mapping.codeList}}
-                      @onChange={{fn this.updateCodeList mapping}}
+                      @selected={{variable.codeList}}
+                      @onChange={{fn this.updateCodeList variable}}
                       as |codeList|
                     >
                       {{codeList.label}}
                     </PowerSelect>
                     <ul>
-                      {{#each mapping.codeList.concepts as |option|}}
+                      {{#each variable.codeList.concepts as |option|}}
                         <li> - {{option.label}}</li>
                       {{/each}}
                     </ul>

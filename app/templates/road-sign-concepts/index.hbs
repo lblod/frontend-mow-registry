@@ -1,66 +1,107 @@
-<SearchTables::RoadSign
-  @content={{this.model.roadSignConcepts}}
-  @pageSize={{this.size}}
-  @page={{this.page}}
-  @sort={{this.sort}}
-  @onPageChange={{this.onPageChange}}
-  @onSortChange={{this.onSortChange}}
->
-  <:menu>
-    <AuToolbar class="au-o-box" as |Group|>
-      <Group>
-        <AuHeading @skin="2">
-          {{t "road-sign-concept.name"}}
-        </AuHeading>
-      </Group>
-      <Group class="au-c-toolbar__group--center">
-        {{!-- Copied from the AuDataTable::TextSearch component since that doesn't support calling actions on input--}}
-        <div class="au-c-data-table__search road-sign-code-search">
+<SidebarContainer>
+  <:sidebar>
+    <div class="au-o-box">
+      <AuHeading @level="2" @skin="3" class="au-u-margin-bottom">
+        {{t "utility.filters"}}
+      </AuHeading>
+      <form class="au-c-form">
+        <AuFormRow>
+          <AuLabel for="label-filter">
+            {{t "road-sign-concept.crud.label-filter"}}
+          </AuLabel>
           <AuInput
-            @value={{this.code}}
-            placeholder={{t "road-sign-concept.crud.code-filter"}}
+            id="label-filter"
+            value={{this.label}}
+            placeholder={{t "road-sign-concept.crud.label-filter-placeholder"}}
             @icon="search"
             @iconAlignment="right"
-            {{on "input" (perform this.updateSearchFilterTask "code")}}
+            {{on "input" (perform this.updateSearchFilterTask "label")}}
           />
-        </div>
-        <div class="au-c-data-table__search road-sign-meaning-search">
+        </AuFormRow>
+        <AuFormRow>
+          <AuLabel for="meaning-filter">
+            {{t "road-sign-concept.crud.meaning-filter"}}
+          </AuLabel>
           <AuInput
-            @value={{this.meaning}}
-            placeholder={{t "road-sign-concept.crud.meaning-filter"}}
+            id="meaning-filter"
+            value={{this.meaning}}
+            placeholder={{t
+              "road-sign-concept.crud.meaning-filter-placeholder"
+            }}
             @icon="search"
             @iconAlignment="right"
             {{on "input" (perform this.updateSearchFilterTask "meaning")}}
           />
-        </div>
-        <label>
-          <span class="au-u-hidden-visually">{{t "road-sign-concept.crud.category-filter"}}</span>
+        </AuFormRow>
+        <div>
+          <AuLabel for="classification-filter">
+            {{t "road-sign-concept.crud.classification-filter"}}
+          </AuLabel>
           <PowerSelect
             @allowClear={{true}}
-            @options={{this.model.categories}}
-            @selected={{this.selectedCategory}}
-            @placeholder={{t "road-sign-concept.crud.category-filter"}}
+            @options={{this.model.classifications}}
+            @selected={{this.selectedClassification}}
+            @placeholder={{t
+              "road-sign-concept.crud.classification-filter-placeholder"
+            }}
             @loadingMessage={{t "utility.loading"}}
             @onChange={{this.updateCategoryFilter}}
-            @triggerClass="category-select"
-            as |category|
+            @triggerId="classification-filter"
+            as |classification|
           >
-            {{category.label}}
+            {{classification.label}}
           </PowerSelect>
-        </label>
-        <LinkTo class="au-c-button" @route="road-sign-concepts.new">
-          {{t "road-sign-concept.crud.new"}}
-        </LinkTo>
-      </Group>
-    </AuToolbar>
-  </:menu>
-  <:rowAction as |roadSignConcept|>
-    <LinkTo
-      class="au-c-link"
-      @route="road-sign-concepts.road-sign-concept"
-      @model={{roadSignConcept.id}}
+        </div>
+
+        <div>
+          <AuLabel for="validation-filter">
+            {{t "road-sign-concept.crud.validation-filter"}}
+          </AuLabel>
+          <PowerSelect
+            @allowClear={{true}}
+            @options={{this.validationStatusOptions}}
+            @selected={{this.selectedValidationStatus}}
+            @placeholder={{t
+              "road-sign-concept.crud.validation-filter-placeholder"
+            }}
+            @loadingMessage={{t "utility.loading"}}
+            @onChange={{this.updateValidationFilter}}
+            @triggerId="validation-filter"
+            as |validation|
+          >
+            {{validation.label}}
+          </PowerSelect>
+        </div>
+        <ResetFilters
+          @canReset={{this.hasActiveFilter}}
+          @onReset={{this.resetFilters}}
+        />
+      </form>
+    </div>
+  </:sidebar>
+  <:content>
+    <SearchTables::RoadSign
+      @content={{this.model.roadSignConcepts}}
+      @pageSize={{this.size}}
+      @page={{this.page}}
+      @sort={{this.sort}}
+      @onPageChange={{this.onPageChange}}
+      @onSortChange={{this.onSortChange}}
     >
-      {{t "utility.view"}}
-    </LinkTo>
-  </:rowAction>
-</SearchTables::RoadSign>
+      <:menu>
+        <AuToolbar class="au-o-box" as |Group|>
+          <Group>
+            <AuHeading @skin="2">
+              {{t "road-sign-concept.name"}}
+            </AuHeading>
+          </Group>
+          <Group class="au-c-toolbar__group--center">
+            <AuLink @route="road-sign-concepts.new" @skin="button">
+              {{t "road-sign-concept.crud.new"}}
+            </AuLink>
+          </Group>
+        </AuToolbar>
+      </:menu>
+    </SearchTables::RoadSign>
+  </:content>
+</SidebarContainer>

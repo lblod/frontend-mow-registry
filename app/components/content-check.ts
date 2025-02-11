@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { task } from 'ember-concurrency';
-import ConceptModel from 'mow-registry/models/concept';
+import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {
-  concept: ConceptModel;
+  concept: TrafficSignConcept;
 };
 export default class ContentCheckComponent extends Component<Args> {
   update = task(async (value: boolean) => {

@@ -1,0 +1,23 @@
+{{page-title (t "icon-catalog.details" label=this.model.icon.label)}}
+{{page-title (t "utility.edit")}}
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo
+    @route="icon-catalog.icon"
+    @model={{this.model.icon.id}}
+    class={{linkClass}}
+  >
+    {{t "icon-catalog.details" label=this.model.icon.label}}
+  </LinkTo>
+</BreadcrumbsItem>
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo
+    @route="icon-catalog.edit"
+    @model={{this.model.icon.id}}
+    class={{linkClass}}
+  >
+    {{t "utility.edit"}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<IconCatalogForm @icon={{this.model.icon}} />

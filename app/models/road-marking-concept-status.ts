@@ -1,13 +1,13 @@
-import Model, { AsyncBelongsTo, belongsTo } from '@ember-data/model';
-import type RoadSignConceptStatusCodeModel from 'mow-registry/models/road-sign-concept-status-code';
+import Model, { type AsyncBelongsTo, belongsTo } from '@ember-data/model';
+import type { Type } from '@warp-drive/core-types/symbols';
+import type RoadMarkingConceptStatusCode from './road-marking-concept-status-code';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'road-marking-concept-status': RoadMarkingConceptStatusModel;
-  }
-}
+export default class RoadMarkingConceptStatus extends Model {
+  declare [Type]: 'road-marking-concept-status';
 
-export default class RoadMarkingConceptStatusModel extends Model {
-  @belongsTo('road-marking-concept-status-code', { inverse: null, async: true })
-  declare statusCode: AsyncBelongsTo<RoadSignConceptStatusCodeModel>;
+  @belongsTo<RoadMarkingConceptStatusCode>('road-marking-concept-status-code', {
+    inverse: null,
+    async: true,
+  })
+  declare statusCode: AsyncBelongsTo<RoadMarkingConceptStatusCode>;
 }

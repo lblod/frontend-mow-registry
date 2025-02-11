@@ -1,0 +1,13 @@
+<AuRadioGroup
+  @name="variable-signage-selector"
+  @selected={{this.selected}}
+  @onChange={{this.update}}
+  as |Group|
+>
+  <Group.Radio @value="yes">
+    {{t "variable-signage-selector.yes"}}
+  </Group.Radio>
+  <Group.Radio @value="no">
+    {{t "variable-signage-selector.no"}}
+  </Group.Radio>
+</AuRadioGroup>

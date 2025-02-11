@@ -1,25 +1,42 @@
-import Model, {
+import {
   attr,
   hasMany,
   belongsTo,
-  AsyncHasMany,
+  type AsyncHasMany,
+  type AsyncBelongsTo,
 } from '@ember-data/model';
-import type MappingModel from 'mow-registry/models/mapping';
+import type { Type } from '@warp-drive/core-types/symbols';
+import type TrafficMeasureConcept from './traffic-measure-concept';
+import Document from './document';
+import type Variable from './variable';
+import {
+  validateBelongsToOptional,
+  validateHasManyOptional,
+  validateStringRequired,
+  validateStringOptional,
+} from 'mow-registry/validators/schema';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    template: TemplateModel;
-  }
-}
-export default class TemplateModel extends Model {
-  @attr('string') declare value?: string;
-  @attr('string') declare annotated?: string;
-  @hasMany('mapping', { inverse: null, async: true })
-  declare mappings: AsyncHasMany<MappingModel>;
-  @belongsTo('concept', {
-    inverse: 'templates',
-    polymorphic: true,
+export default class Template extends Document {
+  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+  declare [Type]: 'template';
+  @attr declare value?: string;
+  @attr declare preview?: string;
+
+  @hasMany<Variable>('variable', { inverse: null, async: true })
+  declare variables: AsyncHasMany<Variable>;
+
+  @belongsTo<TrafficMeasureConcept>('traffic-measure-concept', {
+    inverse: 'template',
     async: true,
   })
-  declare parentConcept: AsyncHasMany<TemplateModel>;
+  declare parentConcept: AsyncBelongsTo<TrafficMeasureConcept>;
+
+  get validationSchema() {
+    return super.validationSchema.keys({
+      value: validateStringRequired(),
+      variables: validateHasManyOptional(),
+      parentConcept: validateBelongsToOptional(),
+      preview: validateStringOptional(),
+    });
+  }
 }

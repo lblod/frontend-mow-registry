@@ -1,0 +1,40 @@
+<ReactiveTable
+  @content={{@content}}
+  @noDataMessage={{t "icon-catalog.crud.no-data"}}
+  @page={{@page}}
+  @sort={{@sort}}
+  @pageSize={{@pageSize}}
+  @onPageChange={{@onPageChange}}
+  @onSortChange={{@onSortChange}}
+>
+  <:menu>
+    {{yield to="menu"}}
+  </:menu>
+  <:header as |header|>
+    <th>
+      {{t "icon-catalog.attr.image"}}
+    </th>
+    <header.Sortable
+      @field=":no-case:label"
+      @label={{t "icon-catalog.attr.label"}}
+    />
+    <th>{{t "icon-catalog.crud.use-in-codelist"}}</th>
+  </:header>
+  <:body as |icon|>
+    <td>
+      <img
+        src={{icon.image.file.downloadLink}}
+        alt={{icon.label}}
+        height="50"
+      />
+    </td>
+    <td>
+      <AuLink @route="icon-catalog.icon" @model={{icon.id}}>
+        {{icon.label}}
+      </AuLink>
+    </td>
+    <td>
+      {{icon.inScheme.length}}
+    </td>
+  </:body>
+</ReactiveTable>

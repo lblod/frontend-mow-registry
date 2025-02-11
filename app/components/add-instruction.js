@@ -3,24 +3,20 @@ import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import includeMappings from '../utils/include-mappings';
 
 export default class AddInstructionComponent extends Component {
   @service store;
   @service router;
   @service('codelists') codeListService;
   @service intl;
-
   @tracked template;
   @tracked concept;
-
-  @tracked mappings;
+  @tracked variables;
   @tracked codeLists;
-
   @tracked new;
   @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
-  mappingsToBeDeleted = [];
+  variablesToBeDeleted = [];
 
   @action
   async didInsert() {
@@ -34,33 +30,32 @@ export default class AddInstructionComponent extends Component {
     if (this.args.editedTemplate) {
       this.new = false;
       this.template = await this.args.editedTemplate;
-      this.mappings = await this.template.mappings;
-      this.mappings = this.mappings
+      this.variables = await this.template.variables;
+      this.variables = this.variables
         .slice()
         .sort((a, b) => (a.id < b.id ? -1 : 1));
     } else {
       this.new = true;
       this.template = this.store.createRecord('template');
       this.template.value = '';
-      this.concept.templates.pushObject(this.template);
-      this.mappings = this.template.mappings;
+      this.variables = await this.template.variables;
     }
     this.parseTemplate();
   });
 
   @action
-  async updateMappingType(mapping, type) {
-    mapping.type = type;
-    if (type === 'codelist' && !(await mapping.codeList)) {
-      mapping.codeList = this.codeLists[0];
+  async updateVariableType(variable, type) {
+    variable.type = type;
+    if (type === 'codelist' && !(await variable.codeList)) {
+      variable.codeList = this.codeLists[0];
     } else {
-      mapping.codeList = null;
+      variable.codeList = null;
     }
   }
 
   @action
-  updateCodeList(mapping, codeList) {
-    mapping.codeList = codeList;
+  updateCodeList(variable, codeList) {
+    variable.codeList = codeList;
   }
 
   @action
@@ -121,73 +116,71 @@ export default class AddInstructionComponent extends Component {
       }
     });
 
-    //remove non-existing variable mappings from current array
-    //turns mappings into a non ember data thing
-    this.mappings = this.mappings.filter((mapping) => {
-      //search regex results if they contain this mapping
+    //remove non-existing variable variables from current array
+    //turns variables into a non ember data thing
+    this.variables = this.variables.filter((variable) => {
+      //search regex results if they contain this variable
       if (
         filteredRegexResult.find((fReg) => {
-          if (fReg[1] === mapping.variable) {
+          if (fReg[1] === variable.label) {
             return true;
           }
         })
       ) {
         return true;
       } else {
-        this.mappingsToBeDeleted.push(mapping);
+        this.variablesToBeDeleted.push(variable);
       }
     });
 
-    //add new variable mappings
+    //add new variables
     filteredRegexResult.forEach((reg) => {
-      if (!this.mappings.find((mapping) => mapping.variable === reg[1])) {
-        this.mappings.pushObject(
-          this.store.createRecord('mapping', {
-            variable: reg[1],
-            type: 'text',
-            expects: this.nodeShape,
-          }),
-        );
+      if (!this.variables.find((variable) => variable.label === reg[1])) {
+        const variable = this.store.createRecord('variable', {
+          label: reg[1],
+          type: 'text',
+        });
+        this.variables.push(variable);
       }
     });
 
     //remove duplicates in case something went wrong
-    const filteredMappings = [];
-    this.mappings.forEach((mapping) => {
+    const filteredVariables = [];
+    this.variables.forEach((variable) => {
       if (
-        !filteredMappings.find(
-          (fMapping) => fMapping.variable === mapping.variable,
+        !filteredVariables.find(
+          (fVariable) => fVariable.label === variable.label,
         )
       ) {
-        filteredMappings.push(mapping);
+        filteredVariables.push(variable);
       } else {
-        this.mappingsToBeDeleted.push(mapping);
+        this.variablesToBeDeleted.push(variable);
       }
     });
 
-    //sort mappings in the same order as the regex result
-    const sortedMappings = [];
+    //sort variables in the same order as the regex result
+    const sortedVariables = [];
     filteredRegexResult.forEach((reg) => {
-      filteredMappings.forEach((mapping) => {
-        if (reg[1] == mapping.variable) {
-          sortedMappings.push(mapping);
+      filteredVariables.forEach((variable) => {
+        if (reg[1] == variable.label) {
+          sortedVariables.push(variable);
         }
       });
     });
 
-    //check existing default mappings with deleted non-default mappings and swap them
-    sortedMappings.forEach((sMapping, sI) => {
-      this.mappingsToBeDeleted.forEach((dMapping, dI) => {
-        if (sMapping.variable === dMapping.variable) {
-          if (dMapping.type !== 'text' && sMapping.type === 'text') {
-            sortedMappings.replace(sI, 1, [dMapping]);
-            this.mappingsToBeDeleted.replace(dI, 1, [sMapping]);
+    //check existing default variables with deleted non-default variables and swap them
+    sortedVariables.forEach((sVariable, sI) => {
+      this.variablesToBeDeleted.forEach((dVariable, dI) => {
+        if (sVariable.label === dVariable.label) {
+          if (dVariable.type !== 'text' && sVariable.type === 'text') {
+            sortedVariables.replace(sI, 1, [dVariable]);
+            this.variablesToBeDeleted.replace(dI, 1, [sVariable]);
           }
         }
       });
     });
 
-    this.mappings = sortedMappings;
+    this.variables = sortedVariables;
   }
 
   get canSave() {
@@ -196,23 +189,16 @@ export default class AddInstructionComponent extends Component {
 
   save = task(async () => {
     await this.template.save();
-    this.concept.templates.pushObject(this.template);
+    (await this.concept.hasInstructions).push(this.template);
     await this.concept.save();
-
-    for (let i = 0; i < this.mappings.length; i++) {
-      const mapping = this.mappings[i];
-      this.template.mappings.pushObject(mapping);
-      await mapping.save();
+    for (let i = 0; i < this.variables.length; i++) {
+      const variable = this.variables[i];
+      (await this.template.variables).push(variable);
+      await variable.save();
     }
-
-    this.template.annotated = await includeMappings(
-      this.template.value,
-      this.mappings,
-    );
-
     await this.template.save();
     await Promise.all(
-      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord()),
+      this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
     );
 
     this.reset();

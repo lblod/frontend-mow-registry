@@ -1,11 +1,17 @@
+{{#let @trafficMeasureConcept.error.zonality as |error|}}
+<div class={{if error "ember-power-select--error"}}>
 <PowerSelect
   @allowClear={{false}}
   @searchEnabled={{false}}
   @loadingMessage={{t "utility.loading"}}
   @options={{this.zonalities.value}}
-  @selected={{this.selectedZonality}}
-  @onChange={{@onChange}} as |zonality|
+  @selected={{@zonality}}
+  @onChange={{@onChange}}
+  as |zonality|
 >
   {{zonality-label zonality}}
 </PowerSelect>
-<br>
+<ErrorMessage @error={{error}} />
+</div>
+{{/let}}
+<br />

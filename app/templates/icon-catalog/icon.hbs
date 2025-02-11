@@ -1,0 +1,106 @@
+{{page-title (t "icon-catalog.details" label=@model.icon.label)}}
+
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo
+    @route="icon-catalog.icon"
+    @model={{@model.icon.id}}
+    class={{linkClass}}
+  >
+    {{t "icon-catalog.details" label=@model.icon.label}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<SidebarContainer>
+  <:sidebar>
+    <h2 class="au-u-hidden-visually">{{t "utility.properties"}}</h2>
+    <div class="au-o-box">
+      <div
+        class="au-u-margin-top au-u-margin-bottom-large au-u-text-center"
+      >
+        <img
+          class="au-c-thumbnail au-c-thumbnail--full"
+          alt=""
+          src={{@model.icon.image.file.downloadLink}}
+        />
+      </div>
+
+      <dl class="au-o-flow">
+        <div>
+          <dt class="au-u-h5 au-u-medium">
+            {{t "icon-catalog.attr.label"}}
+          </dt>
+          <dd class="au-u-muted">
+            {{@model.icon.label}}
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </:sidebar>
+  <:content>
+    <div class="au-c-body-container au-c-body-container--scroll">
+      <AuToolbar @border="bottom" @size="large" as |Group|>
+        <Group>
+          <AuHeading @skin="2">
+            {{t "icon-catalog.details" label=@model.icon.label}}
+          </AuHeading>
+        </Group>
+        <Group>
+          <AuLink
+            @skin="button-secondary"
+            @route="icon-catalog.edit"
+            @model={{@model.icon.id}}
+          >
+            {{t "icon-catalog.crud.edit"}}
+          </AuLink>
+          <AuButton
+            @skin="secondary"
+            @disabled={{@model.icon.inScheme.length}}
+            @alert={{true}}
+            {{on "click" (fn (mut this.isOpen) true)}}
+          >
+            {{t "icon-catalog.crud.delete"}}
+          </AuButton>
+          <AuModal
+            @modalTitle={{t "utility.confirmation.title"}}
+            @modalOpen={{this.isOpen}}
+            @closeModal={{fn (mut this.isOpen) false}}
+            as |Modal|
+          >
+            <Modal.Body>
+              <p>
+                {{t "utility.confirmation.body"}}
+              </p>
+            </Modal.Body>
+            <Modal.Footer>
+              <AuButton
+                @alert={{true}}
+                @disabled={{@model.icon.inScheme.length}}
+                {{on "click" (perform this.removeIcon @model.icon)}}
+              >
+                {{t "icon-catalog.crud.delete"}}
+              </AuButton>
+              <AuButton
+                @skin="secondary"
+                {{on "click" (fn (mut this.isOpen) false)}}
+              >
+                {{t "utility.cancel"}}
+              </AuButton>
+            </Modal.Footer>
+          </AuModal>
+        </Group>
+      </AuToolbar>
+
+      <SearchTables::Codelist @content={{await @model.icon.inScheme}}>
+        <:menu>
+          <AuToolbar class="au-o-box" as |Group|>
+            <Group @size="large">
+              <AuHeading @skin="4">
+                {{t "icon-catalog.crud.use-in-codelist"}}
+              </AuHeading>
+            </Group>
+          </AuToolbar>
+        </:menu>
+      </SearchTables::Codelist>
+    </div>
+  </:content>
+</SidebarContainer>

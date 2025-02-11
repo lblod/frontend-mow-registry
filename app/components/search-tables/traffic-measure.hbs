@@ -12,9 +12,9 @@
   </:menu>
   <:header as |header|>
     <header.Sortable
-      @field="label"
-      @currentSorting={{this.sort}}
-      @label={{t "traffic-measure-concept.attr.name"}}
+      @field=":no-case:label"
+      @currentSorting={{@sort}}
+      @label={{t "traffic-measure-concept.attr.label"}}
     />
     <th>
       {{t "traffic-measure-concept.attr.sign"}}
@@ -25,18 +25,23 @@
     <th>
       {{t "utility.zonality"}}
     </th>
-    <th>
-      {{t "road-marking-concept.attr.valid"}}
-    </th>
-    <th></th>
+    <header.Sortable
+      @field="valid"
+      @label={{t "utility.validation-status"}}
+    />
   </:header>
   <:body as |trafficMeasureConcept|>
     <td>
-      {{trafficMeasureConcept.label}}
+      <AuLink
+        @route="traffic-measure-concepts.details"
+        @model={{trafficMeasureConcept.id}}
+      >
+        {{trafficMeasureConcept.label}}
+      </AuLink>
     </td>
     <td>
-      {{#each trafficMeasureConcept.orderedRelations as |relation|}}
-        <img src={{relation.concept.image}} alt="" height="50">
+      {{#each trafficMeasureConcept.relatedTrafficSignConcepts as |sign|}}
+        <img src={{sign.image.file.downloadLink}} alt="" height="50" />
       {{/each}}
     </td>
     <td>
@@ -46,14 +51,7 @@
       {{zonality-label (await trafficMeasureConcept.zonality)}}
     </td>
     <td>
-      {{#if trafficMeasureConcept.valid}}
-        {{t "utility.yes"}}
-      {{else}}
-        {{t "utility.no"}}
-      {{/if}}
-    </td>
-    <td>
-      {{yield trafficMeasureConcept to='rowAction'}}
+      <ValidationStatus @valid={{trafficMeasureConcept.valid}} />
     </td>
   </:body>
 </ReactiveTable>

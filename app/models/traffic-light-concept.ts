@@ -1,63 +1,62 @@
 import {
-  attr,
   hasMany,
   belongsTo,
-  AsyncBelongsTo,
-  AsyncHasMany,
+  type AsyncBelongsTo,
+  type AsyncHasMany,
 } from '@ember-data/model';
-import ConceptModel from './concept';
-import type TrafficLightConceptStatusCodeModel from 'mow-registry/models/traffic-light-concept-status-code';
-import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
-import type RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
+import type { Type } from '@warp-drive/core-types/symbols';
+import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
+import TrafficSignConcept from './traffic-sign-concept';
 import SkosConcept from './skos-concept';
+import {
+  validateBelongsToOptional,
+  validateHasManyOptional,
+} from 'mow-registry/validators/schema';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'traffic-light-concept': TrafficLightConceptModel;
-  }
-}
-export default class TrafficLightConceptModel extends ConceptModel {
-  @attr declare image?: string;
-  @attr declare meaning?: string;
-  @attr declare definition?: string;
-  @attr declare trafficLightConceptCode?: string;
+export default class TrafficLightConcept extends TrafficSignConcept {
+  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+  declare [Type]: 'traffic-light-concept';
 
-  get label() {
-    return this.trafficLightConceptCode;
-  }
-
-  @belongsTo('traffic-light-concept-status-code', {
-    inverse: 'trafficLightConcepts',
-    async: true,
-  })
-  declare status: AsyncBelongsTo<TrafficLightConceptStatusCodeModel>;
-
-  @belongsTo('skos-concept', { inverse: null, async: true })
+  @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;
 
-  @hasMany('traffic-light-concept', {
+  @hasMany<TrafficLightConcept>('traffic-light-concept', {
     inverse: 'relatedFromTrafficLightConcepts',
     async: true,
   })
-  declare relatedToTrafficLightConcepts: AsyncHasMany<TrafficLightConceptModel>;
+  declare relatedToTrafficLightConcepts: AsyncHasMany<TrafficLightConcept>;
 
-  @hasMany('traffic-light-concept', {
+  @hasMany<TrafficLightConcept>('traffic-light-concept', {
     inverse: 'relatedToTrafficLightConcepts',
     async: true,
   })
-  declare relatedFromTrafficLightConcepts: AsyncHasMany<TrafficLightConceptModel>;
+  declare relatedFromTrafficLightConcepts: AsyncHasMany<TrafficLightConcept>;
 
-  relatedTrafficLightConcepts?: TrafficLightConceptModel[];
+  // This property is used to house the combined data of the relatedToTrafficLightConcepts and relatedFromTrafficLightConcepts relationships.
+  // We need both since we want to display all related signs, not only a single direction.
+  // TODO: move this state to the edit page, we don't need to store this on the record itself
+  relatedTrafficLightConcepts: TrafficLightConcept[] = [];
 
-  @hasMany('road-sign-concept', {
+  @hasMany<RoadSignConcept>('road-sign-concept', {
     inverse: 'relatedTrafficLightConcepts',
     async: true,
   })
-  declare relatedRoadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
+  declare relatedRoadSignConcepts: AsyncHasMany<RoadSignConcept>;
 
-  @hasMany('road-marking-concept', {
+  @hasMany<RoadMarkingConcept>('road-marking-concept', {
     inverse: 'relatedTrafficLightConcepts',
     async: true,
   })
-  declare relatedRoadMarkingConcepts: AsyncHasMany<RoadMarkingConceptModel>;
+  declare relatedRoadMarkingConcepts: AsyncHasMany<RoadMarkingConcept>;
+
+  get validationSchema() {
+    return super.validationSchema.keys({
+      zonality: validateBelongsToOptional(),
+      relatedToTrafficLightConcepts: validateHasManyOptional(),
+      relatedFromTrafficLightConcepts: validateHasManyOptional(),
+      relatedRoadSignConcepts: validateHasManyOptional(),
+      relatedRoadMarkingConcepts: validateHasManyOptional(),
+    });
+  }
 }

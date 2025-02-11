@@ -12,13 +12,15 @@
   {{did-update this.onSortChange this._sort}}
   {{did-update this.onExternalPageChange @page}}
   {{did-update this.onExternalSortChange @sort}}
+  {{! TODO: refactor did-insert and did-update }}
+  {{!template-lint-disable no-at-ember-render-modifiers}}
 ></span>
   <table.menu as |menu|>
     <menu.general>
       {{yield to="menu"}}
     </menu.general>
   </table.menu>
-  <table.content as |content|>
+  <table.content class="table-centered-content" as |content|>
     <content.header>
       {{yield (hash
                 Sortable=(

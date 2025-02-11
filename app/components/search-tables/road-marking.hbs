@@ -1,6 +1,6 @@
 <ReactiveTable
   @content={{@content}}
-  @noDataMessage={{t "road-marking-concept.crud.no-data"}}  
+  @noDataMessage={{t "road-marking-concept.crud.no-data"}}
   @page={{@page}}
   @sort={{@sort}}
   @pageSize={{@pageSize}}
@@ -10,45 +10,44 @@
   <:menu>
     {{yield to="menu"}}
   </:menu>
-    <:header as |header|>
-      <header.Sortable
-        @field="roadMarkingConceptCode"
-        @label={{t "road-marking-concept.attr.code"}}
+  <:header as |header|>
+    <header.Sortable
+      @field=":no-case:label"
+      @label={{t "road-marking-concept.attr.label"}}
+      class="w-px"
+    />
+    <th>
+      {{t "road-marking-concept.attr.image-header"}}
+    </th>
+    <th>
+      {{t "road-marking-concept.attr.meaning"}}
+    </th>
+    <header.Sortable
+      @field="valid"
+      @label={{t "utility.validation-status"}}
+    />
+  </:header>
+  <:body as |roadMarkingConcept|>
+    <td>
+      <AuLink
+        @route="road-marking-concepts.road-marking-concept"
+        @model={{roadMarkingConcept.id}}
+      >
+        {{roadMarkingConcept.label}}
+      </AuLink>
+    </td>
+    <td class="au-u-text-center">
+      <img
+        class="au-c-thumbnail"
+        src={{roadMarkingConcept.image.file.downloadLink}}
+        alt=""
       />
-      <th>
-        {{t "road-marking-concept.attr.image-header"}}
-      </th>
-      <th>
-        {{t "road-marking-concept.attr.meaning"}}
-      </th>
-      <th>
-        {{t "road-marking-concept.attr.valid"}}
-      </th>
-      <th></th>
-    </:header>
-    <:body as |roadMarkingConcept|>
-      <td>
-        {{roadMarkingConcept.roadMarkingConceptCode}}
-      </td>
-      <td>
-        <img
-          class="au-c-thumbnail"
-          src={{roadMarkingConcept.image}}
-          alt=""
-        />
-      </td>
-      <td>
-        {{roadMarkingConcept.meaning}}
-      </td>
-      <td>
-        {{#if roadMarkingConcept.valid}}
-          {{t "utility.yes"}}
-        {{else}}
-          {{t "utility.no"}}
-        {{/if}}
-      </td>
-      <td>
-        {{yield roadMarkingConcept to='rowAction'}}
-      </td>
-    </:body>
+    </td>
+    <td>
+      {{roadMarkingConcept.meaning}}
+    </td>
+    <td>
+      <ValidationStatus @valid={{roadMarkingConcept.valid}} />
+    </td>
+  </:body>
 </ReactiveTable>

@@ -1,54 +1,77 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type RoadSignCategory from 'mow-registry/models/road-sign-category';
+import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import { isSome } from 'mow-registry/utils/option';
 import { hash } from 'rsvp';
 
 type Params = {
-  code?: string;
+  label?: string;
   meaning?: string;
   page: number;
   size: number;
   sort: string;
-  category?: string;
+  classification?: string;
+  validation?: string;
 };
 
 export default class RoadsignConceptsIndexRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    code: { refreshModel: true },
+    label: { refreshModel: true },
     meaning: { refreshModel: true },
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
-    category: { refreshModel: true },
+    classification: { refreshModel: true },
+    validation: { refreshModel: true },
   };
 
   async model(params: Params) {
     const query: Record<string, unknown> = {
+      include: 'image.file,classifications',
       sort: params.sort,
-      include: 'categories',
       page: {
         number: params.page,
         size: params.size,
       },
     };
 
-    if (params.code) {
-      query['filter[road-sign-concept-code]'] = params.code;
+    if (params.label) {
+      query['filter[label]'] = params.label;
     }
 
     if (params.meaning) {
       query['filter[meaning]'] = params.meaning;
     }
 
-    if (params.category) {
-      query['filter[categories][:id:]'] = params.category;
+    if (params.classification) {
+      query['filter[classifications][:id:]'] = params.classification;
+    }
+    if (isSome(params.validation)) {
+      if (params.validation === 'true') {
+        query['filter[valid]'] = true;
+      } else {
+        query['filter[:or:][:has-no:valid]'] = 'yes';
+        query['filter[:or:][valid]'] = false;
+      }
     }
 
     return hash({
-      roadSignConcepts: this.store.query('road-sign-concept', query),
-      categories: this.store.findAll('road-sign-category', { reload: true }),
+      roadSignConcepts: this.store.query<RoadSignConcept>(
+        'road-sign-concept',
+        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+        // TODO: fix the query types
+        query,
+      ),
+      classifications: this.store.findAll<RoadSignCategory>(
+        'road-sign-category',
+        {
+          reload: true,
+        },
+      ),
     });
   }
 }

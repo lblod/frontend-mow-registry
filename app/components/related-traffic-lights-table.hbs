@@ -1,69 +1,65 @@
-        <AuDataTable
-          @content={{@content}}
-          @fields="Image Meaning Code"
-          @noDataMessage={{t "road-marking-concept.crud.no-data"}}
-          class="container-flex--contain table-no-overflow" as |s|
+<AuDataTable
+  @content={{@content}}
+  @fields="Image Meaning Code"
+  @noDataMessage={{t "traffic-light-concept.crud.no-data"}}
+  class="container-flex--contain table-no-overflow"
+  as |s|
+>
+  <s.menu as |menu|>
+    <menu.general>
+      <AuToolbar class="au-o-box" as |Group|>
+        <Group>
+          <AuHeading @level="2" @skin="4">
+            {{t "road-marking-concept.attr.related-traffic-light"}}
+          </AuHeading>
+        </Group>
+        <Group>
+          <AuButton @icon="add" {{on "click" @onClickAdd}}>
+            {{t "related-traffic-light.crud.add"}}
+          </AuButton>
+        </Group>
+      </AuToolbar>
+    </menu.general>
+  </s.menu>
+  <s.content class="table-centered-content" as |c|>
+    <c.header>
+      <th class="data-table__header-title w-px">
+        {{t "traffic-light-concept.attr.label"}}
+      </th>
+      <th class="data-table__header-title">
+        {{t "traffic-light-concept.attr.image-header"}}
+      </th>
+      <th>
+        <span class="au-u-hidden-visually">
+          {{t "related-traffic-light.crud.delete"}}
+        </span>
+      </th>
+    </c.header>
+    <c.body as |relatedTrafficLightConcept|>
+      <td>
+        <AuLink
+          @route="traffic-light-concepts.traffic-light-concept"
+          @model={{relatedTrafficLightConcept.id}}
         >
-          <s.menu as |menu|>
-            <menu.general>
-              <AuToolbar class="au-o-box" as |Group|>
-                <Group>
-                  <AuHeading @level="2" @skin="3">
-                    {{t "road-marking-concept.attr.related-traffic-light"}}
-                  </AuHeading>
-                </Group>
-                <Group>
-                  <AuButton {{on "click" @onClickAdd}}>
-                    {{t "related-traffic-light.crud.add"}}
-                  </AuButton>
-                </Group>
-              </AuToolbar>
-            </menu.general>
-          </s.menu>
-          <s.content as |c|>
-            <c.header>
-              <th class="data-table__header-title">
-                {{t "traffic-light-concept.attr.code"}}
-              </th>
-              <th class="data-table__header-title">
-                {{t "traffic-light-concept.attr.image-header"}}
-              </th>
-              <th class="data-table__header-title">
-                {{t "traffic-light-concept.attr.definition"}}
-              </th>
-              <th>
-                <span class="au-u-hidden-visually">
-                  {{t "related-traffic-light.crud.delete"}}
-                </span>
-              </th>
-            </c.header>
-            <c.body as |relatedTrafficLightConcept|>
-              <td>
-                {{relatedTrafficLightConcept.trafficLightConceptCode}}
-              </td>
-              <td>
-                <img
-                  class="traffic-light-image"
-                  src={{relatedTrafficLightConcept.image}}
-                  alt=""
-                />
-              </td>
-              <td>
-                <p class="max-w-prose">
-                  {{relatedTrafficLightConcept.definition}}
-                </p>
-              </td>
-              <td class="w-px au-u-padding-right-small">
-                <AuButton
-                  @icon="bin"
-                  @alert={{true}}
-                  @skin="secondary"
-                  @hideText={{true}}
-                  {{on "click" (fn @onClickRemove relatedTrafficLightConcept)}}
-                >
-                  {{t "related-traffic-light.crud.delete"}}
-                </AuButton>
-              </td>
-            </c.body>
-          </s.content>
-        </AuDataTable>
+          {{relatedTrafficLightConcept.label}}
+        </AuLink>
+      </td>
+      <td>
+        <img
+          class="traffic-light-image"
+          src={{relatedTrafficLightConcept.image.file.downloadLink}}
+          alt=""
+        />
+      </td>
+      <td class="w-px au-u-padding-right-small">
+        <AuButton
+          @alert={{true}}
+          @skin="naked"
+          {{on "click" (fn @onClickRemove relatedTrafficLightConcept)}}
+        >
+          {{t "utility.delete"}}
+        </AuButton>
+      </td>
+    </c.body>
+  </s.content>
+</AuDataTable>

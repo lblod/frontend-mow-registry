@@ -1,64 +1,64 @@
 import {
-  attr,
   hasMany,
   belongsTo,
-  AsyncBelongsTo,
-  AsyncHasMany,
+  type AsyncBelongsTo,
+  type AsyncHasMany,
 } from '@ember-data/model';
-import ConceptModel from 'mow-registry/models/concept';
-import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
-import type RoadSignConceptStatusCodeModel from 'mow-registry/models/road-sign-concept-status-code';
-import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
-import SkosConcept from './skos-concept';
+import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
+import TrafficSignConcept from './traffic-sign-concept';
+import type SkosConcept from './skos-concept';
+import {
+  validateBelongsToOptional,
+  validateHasManyOptional,
+  validateStringRequired,
+} from 'mow-registry/validators/schema';
+import type { Type } from '@warp-drive/core-types/symbols';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'road-marking-concept': RoadMarkingConceptModel;
-  }
-}
+export default class RoadMarkingConcept extends TrafficSignConcept {
+  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+  declare [Type]: 'road-marking-concept';
 
-export default class RoadMarkingConceptModel extends ConceptModel {
-  @attr declare image?: string;
-  @attr declare meaning?: string;
-  @attr declare definition?: string;
-  @attr declare roadMarkingConceptCode?: string;
-
-  get label() {
-    return this.roadMarkingConceptCode;
-  }
-
-  @belongsTo('road-marking-concept-status-code', {
-    inverse: 'roadMarkingConcepts',
-    async: true,
-  })
-  declare status: AsyncBelongsTo<RoadSignConceptStatusCodeModel>;
-
-  @belongsTo('skos-concept', { inverse: null, async: true })
+  @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;
 
-  @hasMany('road-marking-concept', {
+  @hasMany<RoadMarkingConcept>('road-marking-concept', {
     inverse: 'relatedFromRoadMarkingConcepts',
     async: true,
   })
-  declare relatedToRoadMarkingConcepts: AsyncHasMany<RoadMarkingConceptModel>;
+  declare relatedToRoadMarkingConcepts: AsyncHasMany<RoadMarkingConcept>;
 
-  @hasMany('road-marking-concept', {
+  @hasMany<RoadMarkingConcept>('road-marking-concept', {
     inverse: 'relatedToRoadMarkingConcepts',
     async: true,
   })
-  declare relatedFromRoadMarkingConcepts: AsyncHasMany<RoadMarkingConceptModel>;
+  declare relatedFromRoadMarkingConcepts: AsyncHasMany<RoadMarkingConcept>;
 
-  relatedRoadMarkingConcepts?: RoadMarkingConceptModel[];
+  // This property is used to house the combined data of the relatedToRoadMarkingConcepts and relatedFromRoadMarkingConcepts relationships.
+  // We need both since we want to display all related signs, not only a single direction.
+  // TODO: move this state to the edit page, we don't need to store this on the record itself
+  relatedRoadMarkingConcepts: RoadMarkingConcept[] = [];
 
-  @hasMany('road-sign-concept', {
+  @hasMany<RoadSignConcept>('road-sign-concept', {
     inverse: 'relatedRoadMarkingConcepts',
     async: true,
   })
-  declare relatedRoadSignConcepts: AsyncHasMany<RoadSignConceptModel>;
+  declare relatedRoadSignConcepts: AsyncHasMany<RoadSignConcept>;
 
-  @hasMany('traffic-light-concept', {
+  @hasMany<TrafficLightConcept>('traffic-light-concept', {
     inverse: 'relatedRoadMarkingConcepts',
     async: true,
   })
-  declare relatedTrafficLightConcepts: AsyncHasMany<TrafficLightConceptModel>;
+  declare relatedTrafficLightConcepts: AsyncHasMany<TrafficLightConcept>;
+
+  get validationSchema() {
+    return super.validationSchema.keys({
+      meaning: validateStringRequired(),
+      zonality: validateBelongsToOptional(),
+      relatedToRoadMarkingConcepts: validateHasManyOptional(),
+      relatedFromRoadMarkingConcepts: validateHasManyOptional(),
+      relatedRoadSignConcepts: validateHasManyOptional(),
+      relatedTrafficLightConcepts: validateHasManyOptional(),
+    });
+  }
 }

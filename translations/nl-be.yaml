@@ -17,12 +17,15 @@ login-page:
     published-by: Uitgegeven door
     abb: Agentschap Binnenlands Bestuur
 utility:
+  incomplete-measure-error: Voeg minstens één verkeersteken toe
+  variable: Variabele
+  variables: Variabelen
   login: Aanmelden
   logout: Afmelden
   back-to-overview: Naar het overzicht
   view: Bekijk
-  save: Opslaan
-  cancel: Annuleer
+  save: Bewaren
+  cancel: Annuleren
   close: Sluiten
   edit: Bewerken
   confirmation:
@@ -31,6 +34,7 @@ utility:
   required: Verplicht
   optional: Optioneel
   loading: Aan het laden...
+  no-result: Geen resultaten
   zonality: Zonaal karakter
   zonal: Zonaal
   nonZonal: Niet zonaal
@@ -39,19 +43,25 @@ utility:
   or: Of
   field-required: Dit veld is verplicht
   app-name: MOW Register
-  delete: verwijderen
+  delete: Verwijderen
   instructions: Instructies
+  instruction-details: Instructie details
+  main-signs: Hoofdborden
+  sub-signs: Onderborden
+  related-traffic-signs: Gerelateerde verkeerstekens
   description: Beschrijving
   image-preview-alt: Een voorbeeldweergave van de geüploade of de gelinkte afbeelding
   order: Volgorde
   sign: Verkeersteken
   add-instruction: Voeg instructie toe
+  edit-instruction: Bewerk instructie
   drag: Sleep
   add: Voeg toe
   no-instruction: Geen instructies gevonden
   username: Gebruikersnaam
   password: Paswoord
-  valid-content: Deze inhoud is gevalideerd
+  valid-content: Gevalideerd
+  validation-status: Validatiestatus
   yes: Ja
   no: Nee
   template-variables:
@@ -61,52 +71,83 @@ utility:
     location: locatie
     codelist: codelijst
     instruction: instructie
+    no-variables: Voeg $'{variableName} toe om een variabele/instructie toe te voegen
     invalid-character:
       title: Ongeldig karakter gedetecteerd
       message: Een van de opgegeven variabelenamen bevat een ongeldig karakter. Variabelenamen mogen enkel letters, cijfers, '-', '_' en '.' bevatten
   search-placeholder: Typ om te zoeken
+  shape: Vorm
+  shapes: Vormen
+  dimensions: Afmetingen
+  height: Hoogte
+  width: Breedte
+  add-shape: Vorm toevoegen
+  filters: Filters
+  reset-filters: Herstel alle filters
+  type: Type
+  add-variable: Nieuwe variabele toevoegen
+  properties: Eigenschappen
 image-input:
-  helptext: Druk op de upload knop om een nieuw bestand te uploaden of plak de URL van een bestaande afbeelding
-  preview-alt: Een voorbeeld van het geüploade bestand of de URL
-  url-placeholder: http(s)://...
-  invalid-url: Enkel afbeeldings-URLs die beginnen met http(s) zijn toegelaten
-  image-url: Afbeelding URL
+  helptext: Druk op de upload knop om een nieuw bestand te uploaden
+  preview-alt: Een voorbeeld van het geüploade bestand
+  image-upload: Afbeelding
 road-sign-concept:
   name: Verkeersborden
-  details: Verkeersbord details
+  details: Verkeersbord {label}
   attr:
     image-header: Afbeelding
     image-url: Afbeelding URL
     meaning: Betekenis
-    code: Code
-    categories: Categorieën
+    label: Label
+    classifications: Classificaties
     sub-sign: Mogelijke onderborden
     main-sign: Mogelijke hoofdborden
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
     related-traffic-light: Gerelateerde verkeerslichten
-    valid: Gevalideerd
+    shape: Vorm
+    dimensions: Afmetingen
+    height: Hoogte
+    width: Breedte
+    radius: Straal
+    side: Lengte (zijde)
+    unit: Eenheid
+  atLeastOneShapeRequired: Voeg minstens één vorm toe
+  add-shape: Nieuwe vorm toevoegen
+  add-dimension: Nieuwe afmeting toevoegen
+  kind: Type
+  value: Waarde
+  dimension: Afmeting
+  properties: Verkeersbordeigenschappen
+  shapes:
+    title: Vorm {index}
+
   crud:
     create: Verkeersbord aanmaken
-    new: Nieuw verkeersbord
+    new: Voeg nieuw verkeersbord toe
     no-data: Geen verkeersborden gevonden
     no-instruction: Geen instructies gevonden
-    edit: Verkeersbord bewerken
+    no-shape: Geen vormen gevonden
+    edit: Eigenschappen bewerken
     delete: Verkeersbord verwijderen
-    code-filter: Code
-    meaning-filter: Zoeken op betekenis
-    category-filter: Filteren op categorie
+    label-filter: Label
+    label-filter-placeholder: Zoeken op label
+    meaning-filter: Betekenis
+    meaning-filter-placeholder: Zoeken op betekenis
+    classification-filter: Classificatie
+    classification-filter-placeholder: Filteren op classificatie
+    validation-filter: Validatie
+    validation-filter-placeholder: Filteren op validatie-status
   landing-page:
     content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden
 traffic-light-concept:
   name: Verkeerslichten
-  details: Verkeerslicht details
+  details: Verkeerslicht {label}
   attr:
     image-header: Afbeelding
     meaning: Betekenis
-    definition: Definitie
-    code: Code
+    label: Label
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
     related-traffic-light: Gerelateerde verkeerslichten
@@ -117,8 +158,12 @@ traffic-light-concept:
     no-data: Geen verkeerslichten gevonden
     edit: Verkeerslicht bewerken
     delete: Verkeerslicht verwijderen
-    code-filter: Code
-    meaning-filter: Zoeken op betekenis
+    label-filter: Label
+    label-filter-placeholder: Zoeken op label
+    meaning-filter: Betekenis
+    meaning-filter-placeholder: Zoeken op betekenis
+    validation-filter: Validatie
+    validation-filter-placeholder: Filteren op validatie-status
   landing-page:
     content: Beheer verkeerlichten en instructies.
     button: Ga naar Verkeerslichten
@@ -128,16 +173,15 @@ related-traffic-light:
     add-one: Gerelateerd verkeerslicht toevoegen
     delete: Gerelateerd verkeerslicht verwijderen
   filter:
-    code: Zoek
+    label: Zoek
 road-marking-concept:
   name: Wegmarkeringen
-  details: Details wegmarkering
+  details: Wegmarkering {label}
   attr:
     image-header: Afbeelding
     image-url: Afbeelding URL
     meaning: Betekenis
-    definition: Definitie
-    code: Code
+    label: Label
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
     related-traffic-light: Gerelateerde verkeerslichten
@@ -148,8 +192,12 @@ road-marking-concept:
     no-data: Geen wegmarkeringen gevonden
     edit: Wegmarkering bewerken
     delete: Wegmarkering verwijderen
-    code-filter: Code
-    meaning-filter: Zoeken op betekenis
+    label-filter: Label
+    label-filter-placeholder: Zoeken op label
+    meaning-filter: Betekenis
+    meaning-filter-placeholder: Zoeken op betekenis
+    validation-filter: Validatie
+    validation-filter-placeholder: Filteren op validatie-status
   landing-page:
     content: Beheer wegmarkeringen en instructies.
     button: Ga naar Wegmarkeringen
@@ -159,15 +207,16 @@ related-road-marking:
     add-one: Gerelateerde wegmarkering toevoegen
     delete: Gerelateerde wegmarkering verwijderen
   filter:
-    code: Zoek
+    label: Zoek
 traffic-measure-concept:
-  name: Mobiliteitsmaatregel
+  name: Mobiliteitsmaatregelen
+  details: Maatregel {label}
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   attr:
     name: Naam
-    temporal: Variabele signalisatie
+    variable-signage: Variabele signalisatie
     traffic-sign: Verkeersteken
-    code: Code
+    label: Label
     sign: Verkeersbord
     add-sign: Verkeersteken toevoegen
     template: Template
@@ -178,9 +227,9 @@ traffic-measure-concept:
   crud:
     new: Nieuwe mobiliteitsmaatregel
     no-data: Geen mobiliteitsmaatregelen
-    edit: Mobiliteitsmaatregel bewerken
-    delete: Mobiliteitsmaatregel verwijderen
-    save: Mobiliteitsmaatregel bewaren
+    edit: Maatregel {label} bewerken
+    label-filter-placeholder: Zoeken op label
+    text-filter-placeholder: Zoeken op tekst
     type-filter: Filteren op type
     no-matches: Geen resultaten gevonden
     type-to-search: Typ om te zoeken
@@ -189,14 +238,14 @@ traffic-measure-concept:
     button: Ga naar Mobiliteitsmaatregelen
 sub-sign:
   filter:
-    code: Zoek onderborden op code
+    label: Zoek onderborden op label
   crud:
     add: Onderborden toevoegen
     add-one: Onderbord toevoegen
     delete: Onderbord verwijderen
 main-sign:
   attr:
-    category: Zoek verkeersborden op categorie
+    classification: Zoek verkeersborden op classificatie
   crud:
     add: Hoofdborden toevoegen
     add-one: Hoofdbord toevoegen
@@ -204,13 +253,13 @@ main-sign:
     edit: Hoofdbord bewerken
 related-road-sign:
   attr:
-    category: Zoek verkeersborden op categorie
+    classification: Zoek verkeersborden op classificatie
   crud:
     add: Gerelateerde verkeersborden toevoegen
     add-one: Gerelateerd verkeersbord toevoegen
     delete: Gerelateerd verkeersbord verwijderen
 sparql:
-    name: 'MOW Register: SPARQL'
+  name: "MOW Register: SPARQL"
 codelist:
   name: Codelijsten beheer
   details: Codelijst details
@@ -220,8 +269,10 @@ codelist:
     delete: Codelijst verwijderen
     no-data: Geen codelijst
     no-value: Geen waarde
+    no-icon: Geen pictogram
     label-filter: Label
     add-value: Waarde toevoegen
+    add-icon: Pictogram toevoegen
     delete-value: Waarde verwijderen
   attr:
     label: Label
@@ -230,7 +281,36 @@ codelist:
       singleSelect: Enkele selecteren
       multiSelect: Meerkeuze selectie
     values: Waarden
+    icons: Pictogrammen
     id: Id
   landing-page:
     content: Overzicht en beheer van beschikbare codelijsten.
     button: Ga naar Codelijsten
+icon-catalog:
+  name: Pictogrammen
+  details: Pictogram {label}
+  attr:
+    image: Afbeelding
+    label: Label
+    used: Gebruikt
+  crud:
+    new: Nieuw pictogram
+    no-data: Geen pictogram
+    edit: Pictogram bewerken
+    delete: Pictogram verwijderen
+    label-filter: Label
+    no-matches: Geen resultaten gevonden
+    use-in-codelist: Gebruik in codelijst
+  landing-page:
+    content: Overzichtscode bevat pictogrammen.
+    button: Ga naar de pictogram catalogus
+validation-status:
+  valid: Gevalideerd
+  draft: Ontwerp
+variable-signage-selector:
+  yes: Variabel
+  no: Niet variabel
+errors:
+  field:
+    required: Dit veld is verplicht
+  number: Geef een getal in

@@ -1,54 +1,57 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import TrafficLightConceptValidations from 'mow-registry/validations/traffic-light-concept';
 import ImageUploadHandlerComponent from './image-upload-handler';
-import { BufferedChangeset } from 'ember-changeset/types';
-import Router from '@ember/routing/router';
-import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
+import type RouterService from '@ember/routing/router-service';
+import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
+import Store from '@ember-data/store';
+import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {
-  trafficLightConcept: TrafficLightConceptModel;
+  trafficLightConcept: TrafficLightConcept;
 };
 
 export default class TrafficLightFormComponent extends ImageUploadHandlerComponent<Args> {
-  @service declare router: Router;
-
-  TrafficLightConceptValidations = TrafficLightConceptValidations;
+  @service declare router: RouterService;
+  @service declare store: Store;
 
   get isSaving() {
     return this.editTrafficLightConceptTask.isRunning;
   }
 
   @action
-  setTrafficLightConceptValue(
-    changeset: BufferedChangeset,
-    attributeName: string,
-    event: InputEvent,
-  ) {
-    changeset[attributeName] = (event.target as HTMLInputElement).value;
+  async setTrafficLightConceptValue(attributeName: string, event: InputEvent) {
+    this.args.trafficLightConcept.set(
+      attributeName,
+      (event.target as HTMLInputElement).value,
+    );
+    await this.args.trafficLightConcept.validateProperty(attributeName);
   }
 
-  editTrafficLightConceptTask = dropTask(
-    async (changeset: BufferedChangeset, event: InputEvent) => {
-      event.preventDefault();
+  editTrafficLightConceptTask = dropTask(async (event: InputEvent) => {
+    event.preventDefault();
+    await this.args.trafficLightConcept.validate();
 
-      await changeset.validate();
+    if (!this.args.trafficLightConcept.error) {
+      const imageRecord = await this.saveImage();
+      if (imageRecord) this.args.trafficLightConcept.set('image', imageRecord); // image gets uploaded but not replaced
+      await this.args.trafficLightConcept.save();
 
-      if (changeset.isValid) {
-        await this.saveImage(changeset);
-        await changeset.save();
+      this.router.transitionTo(
+        'traffic-light-concepts.traffic-light-concept',
+        this.args.trafficLightConcept.id,
+      );
+    }
+  });
 
-        await this.router.transitionTo(
-          'traffic-light-concepts.traffic-light-concept',
-          changeset.id,
-        );
-      }
-    },
-  );
+  @action
+  async setImage(model: TrafficSignConcept, image: File) {
+    super.setImage(model, image);
+    await this.args.trafficLightConcept.validateProperty('image');
+  }
 
   willDestroy() {
     super.willDestroy();
-    this.args.trafficLightConcept.rollbackAttributes();
+    this.args.trafficLightConcept.reset();
   }
 }

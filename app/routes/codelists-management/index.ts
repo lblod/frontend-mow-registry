@@ -1,6 +1,7 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type CodeList from 'mow-registry/models/code-list';
 import { hash } from 'rsvp';
 
 type Params = {
@@ -22,6 +23,7 @@ export default class CodelistsManagementIndexRoute extends Route {
 
   async model(params: Params) {
     const query: Record<string, unknown> = {
+      include: 'type',
       sort: params.sort,
       page: {
         number: params.page,
@@ -34,7 +36,9 @@ export default class CodelistsManagementIndexRoute extends Route {
     }
 
     return hash({
-      codelists: this.store.query('code-list', query),
+      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+      // TODO: fix the query types
+      codelists: this.store.query<CodeList>('code-list', query),
     });
   }
 }

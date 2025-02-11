@@ -1,54 +1,58 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import RoadMarkingConceptValidations from 'mow-registry/validations/road-marking-concept';
 import ImageUploadHandlerComponent from './image-upload-handler';
-import { BufferedChangeset } from 'ember-changeset/types';
-import Router from '@ember/routing/router';
-import RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
+import type RouterService from '@ember/routing/router-service';
+import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
+import Store from '@ember-data/store';
+import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 
 type Args = {
-  roadMarkingConcept: RoadMarkingConceptModel;
+  roadMarkingConcept: RoadMarkingConcept;
 };
 
 export default class RoadMarkingFormComponent extends ImageUploadHandlerComponent<Args> {
-  @service declare router: Router;
-
-  RoadMarkingConceptValidations = RoadMarkingConceptValidations;
+  @service declare router: RouterService;
+  @service declare store: Store;
 
   get isSaving() {
     return this.editRoadMarkingConceptTask.isRunning;
   }
 
   @action
-  setRoadMarkingConceptValue(
-    changeset: BufferedChangeset,
-    attributeName: string,
-    event: InputEvent,
-  ) {
-    changeset[attributeName] = (event.target as HTMLInputElement).value;
+  async setRoadMarkingConceptValue(attributeName: string, event: InputEvent) {
+    this.args.roadMarkingConcept.set(
+      attributeName,
+      (event.target as HTMLInputElement).value,
+    );
+    await this.args.roadMarkingConcept.validateProperty(attributeName);
   }
 
-  editRoadMarkingConceptTask = dropTask(
-    async (changeset: BufferedChangeset, event: InputEvent) => {
-      event.preventDefault();
+  editRoadMarkingConceptTask = dropTask(async (event: InputEvent) => {
+    event.preventDefault();
 
-      await changeset.validate();
+    await this.args.roadMarkingConcept.validate();
 
-      if (changeset.isValid) {
-        await this.saveImage(changeset);
-        await changeset.save();
+    if (!this.args.roadMarkingConcept.error) {
+      const imageRecord = await this.saveImage();
+      if (imageRecord) this.args.roadMarkingConcept.set('image', imageRecord);
+      await this.args.roadMarkingConcept.save();
 
-        await this.router.transitionTo(
-          'road-marking-concepts.road-marking-concept',
-          changeset.id,
-        );
-      }
-    },
-  );
+      this.router.transitionTo(
+        'road-marking-concepts.road-marking-concept',
+        this.args.roadMarkingConcept.id,
+      );
+    }
+  });
+
+  @action
+  async setImage(model: TrafficSignConcept, image: File) {
+    super.setImage(model, image);
+    await this.args.roadMarkingConcept.validateProperty('image');
+  }
 
   willDestroy() {
     super.willDestroy();
-    this.args.roadMarkingConcept.rollbackAttributes();
+    this.args.roadMarkingConcept.reset();
   }
 }

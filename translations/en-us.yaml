@@ -17,6 +17,9 @@ login-page:
     published-by: Published by
     abb: Agency for Home Affairs
 utility:
+  incomplete-measure-error: Please add at least one traffic sign.
+  variable: Variable
+  variables: Variables
   login: Login
   logout: Logout
   back-to-overview: Back to overview
@@ -31,6 +34,7 @@ utility:
   required: Required
   optional: Optional
   loading: Loading...
+  no-result: No results
   zonality: Zonality
   zonal: Zonal
   nonZonal: Non-Zonal
@@ -39,20 +43,26 @@ utility:
   or: Or
   field-required: This field is required
   app-name: MOW Registry
-  delete: delete
+  delete: Delete
   instructions: Instructions
+  instruction-details: Instruction details
+  main-signs: Main signs
+  sub-signs: Sub signs
+  related-traffic-signs: Related traffic signs
   description: Description
   order: Order
   sign: Sign
   add-instruction: Add instruction
+  edit-instruction: Edit instruction
   drag: Drag
   add: Add
   no-instruction: No instructions found
   username: Username
   password: Password
-  valid-content: content validated
+  valid-content: Validated
   yes: Yes
   no: No
+  validation-status: Validation status
   template-variables:
     text: text
     number: number
@@ -60,59 +70,92 @@ utility:
     location: location
     codelist: codelist
     instruction: instruction
+    no-variables: Use $'{variableName} to add a new variable
     invalid-character:
       title: Invalid character detected
       message: One of the mentioned variable names contains an invalid character. Variable names may only contains letters, numbers, '-', '_' and '.'
   search-placeholder: Type to search
+  shape: Shape
+  shapes: Shapes
+  dimensions: Dimensions
+  width: Width
+  height: Height
+  diameter: Diameter
+  add-shape: Add shape
+  filters: Filters
+  reset-filters: Reset all filters
+  value: Value
+  type: Type
+  add-variable: Add new variable
+  properties: Properties
 image-input:
-  helptext: Press the button to upload a new image or insert a URL of an existing image
-  preview-alt: A preview of the uploaded or linked image
-  url-placeholder: http(s)://...
-  invalid-url: Only image URLs starting with http(s) are allowed
-  image-url: Image URL
+  helptext: Press the button to upload a new image
+  preview-alt: A preview of the uploaded image
+  image-upload: Image
 road-sign-concept:
   name: Road Signs
-  details: Road Sign details
+  details: Road sign {label}
   attr:
     image-header: Image
     image-url: Image URL
     meaning: Meaning
-    code: Code
-    categories: Categories
+    label: Label
+    classifications: Classifications
     sub-sign: Possible subsigns
     main-sign: Possible main signs
     related-sign: Related road signs
     related-marking: Related road markings
     related-traffic-light: Related traffic light
-    valid: Is valid
+    shape: Shape
+    dimensions: Dimensions
+    height: Height
+    width: Width
+    radius: Radius
+    side: Length (side)
+    unit: Unit
+    atLeastOneShapeRequired: You must add at least one shape
+    new-shape: Add new Shape
+    add-dimension: Add new dimension
+    kind: Kind
+    value: Value
+    dimension: Dimension
+    properties: Road sign properties
+    shapes:
+      title: Shape {index}
+
   crud:
     create: Create road sign
-    new: New Road Sign
+    new: Add new road sign
     no-data: No Road Signs
     no-instruction: No instructions found
-    edit: Edit Road Sign
+    no-shape: No shapes found
+    edit: Edit properties
     delete: Delete Road Sign
-    code-filter: Code
-    meaning-filter: Search by meaning
-    category-filter: Filter by category
+    label-filter: Label
+    label-filter-placeholder: Search by label
+    meaning-filter: Meaning
+    meaning-filter-placeholder: Search by meaning
+    classification-filter: Classification
+    classification-filter-placeholder: Filter by classification
+    validation-filter: Validation
+    validation-filter-placeholder: Filter by validation status
   landing-page:
     content: Manage traffic signs, sub-signs and instructions.
     button: Go to Road Signs
 related-road-sign:
   attr:
-    category: Search road signs by category
+    classification: Search road signs by classification
   crud:
     add: Add related road signs
     add-one: Add related road sign
     delete: Remove related road sign
 traffic-light-concept:
   name: Traffic Lights
-  details: Traffic Light details
+  details: Traffic Light {label}
   attr:
     image-header: Image
     meaning: Meaning
-    definition: Definition
-    code: Code
+    label: Label
     related-traffic-light: Related traffic lights
     related-sign: Related sign
     related-marking: Related marking
@@ -123,8 +166,12 @@ traffic-light-concept:
     no-data: No traffic light
     edit: Edit traffic light
     delete: Delete traffic light
-    code-filter: Code
-    meaning-filter: Search by meaning
+    label-filter: Label
+    label-filter-placeholder: Search by label
+    meaning-filter: Meaning
+    meaning-filter-placeholder: Search by meaning
+    validation-filter: Validation
+    validation-filter-placeholder: Filter by validation status
   landing-page:
     content: Manage traffic lights and instructions.
     button: Go to Traffic Lights
@@ -134,16 +181,15 @@ related-traffic-light:
     add-one: Add related traffic light
     delete: Remove related traffic light
   filter:
-    code: Search
+    label: Search
 road-marking-concept:
   name: Road Markings
-  details: Road marking details
+  details: Road marking {label}
   attr:
     image-header: Image
     image-url: Image URL
     meaning: Meaning
-    definition: Definition
-    code: Code
+    label: Label
     related-sign: Related road signs
     related-marking: Related road markings
     related-traffic-light: Related traffic light
@@ -154,8 +200,12 @@ road-marking-concept:
     no-data: No Road markings
     edit: Edit Road marking
     delete: Delete Road marking
-    code-filter: Code
-    meaning-filter: Search by meaning
+    label-filter: Label
+    label-filter-placeholder: Search by label
+    meaning-filter: Meaning
+    meaning-filter-placeholder: Search by meaning
+    validation-filter: Validation
+    validation-filter-placeholder: Filter by validation status
   landing-page:
     content: Manage road markings and instructions.
     button: Go to Road Markings
@@ -165,15 +215,16 @@ related-road-marking:
     add-one: Add related road marking
     delete: Remove related road marking
   filter:
-    code: Search
+    label: Search
 traffic-measure-concept:
-  name: Traffic measure
+  name: Traffic measures
+  details: Measure {label}
   help: Add $'{variableName} to add a variable/instruction
   attr:
     name: Name
-    temporal: Temporal signage
+    variable-signage: Variable signage
     traffic-sign: Traffic sign
-    code: Code
+    label: Label
     sign: Sign
     add-sign: Add sign
     template: Template
@@ -184,9 +235,9 @@ traffic-measure-concept:
   crud:
     new: New traffic measure
     no-data: No traffic measures
-    edit: Edit traffic measure
-    delete: Delete traffic measure
-    save: Save traffic measure
+    edit: Edit measure {label}
+    label-filter-placeholder: Search by label
+    text-filter-placeholder: Search by text
     type-filter: Filter by type
     no-matches: No results found
     type-to-search: Type to search
@@ -195,21 +246,21 @@ traffic-measure-concept:
     button: Go to traffic measures
 sub-sign:
   filter:
-    code: Search sub signs by code
+    label: Search sub signs by label
   crud:
     add: Add subsigns
     add-one: Add subsign
     delete: Remove subsign
 main-sign:
   attr:
-    category: Search road signs by category
+    classification: Search road signs by classification
   crud:
     add: Add main signs
     add-one: Add main sign
     delete: Remove main sign
     edit: Edit main sign
 sparql:
-    name: 'MOW Registry: SPARQL'
+  name: "MOW Registry: SPARQL"
 codelist:
   name: Codelists management
   details: Codelist details
@@ -219,17 +270,48 @@ codelist:
     delete: Delete codelist
     no-data: No codelist
     no-value: No value
+    no-icon: No icon
     label-filter: Label
     add-value: Add value
+    add-icon: Add icon
     delete-value: Delete value
   attr:
     label: Label
     type: Type
     values: Values
+    icons: Icons
     id: Id
     types:
-      singleSelect: 'Single select'
-      multiSelect: 'Multi select'
+      singleSelect: "Single select"
+      multiSelect: "Multi select"
   landing-page:
     content: Overview and management of available code lists.
     button: Go to codelists management
+icon-catalog:
+  name: Icon Catalog
+  details: Icon {label}
+  attr:
+    image: Image
+    label: Label
+    used: Used
+  crud:
+    new: New icon
+    no-data: No icon
+    edit: Edit icon
+    delete: Delete icon
+    label-filter: Label
+    no-matches: No results found
+    use-in-codelist: Use in codelist
+  landing-page:
+    content: Manage codelist icons.
+    button: Go to Icon Catalog
+validation-status:
+  valid: Validated
+  draft: Draft
+variable-signage-selector:
+  yes: Variable
+  no: Not variable
+errors:
+  field:
+    required: This field is required
+  number: Enter a number

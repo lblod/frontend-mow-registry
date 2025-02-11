@@ -4,25 +4,23 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
-import includeMappings from '../../utils/include-mappings';
 import Store from '@ember-data/store';
-import Router from '@ember/routing/router';
+import type RouterService from '@ember/routing/router-service';
 import IntlService from 'ember-intl/services/intl';
 import CodelistsService from 'mow-registry/services/codelists';
-import TrafficMeasureConceptModel from 'mow-registry/models/traffic-measure-concept';
-import TemplateModel from 'mow-registry/models/template';
+import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
+import Template from 'mow-registry/models/template';
 import { unwrap } from 'mow-registry/utils/option';
-import MappingModel from 'mow-registry/models/mapping';
-import ConceptModel from 'mow-registry/models/concept';
-import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
-import RoadMarkingConceptModel from 'mow-registry/models/road-marking-concept';
-import TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
-import CodeListModel from 'mow-registry/models/code-list';
-import ArrayProxy from '@ember/array/proxy';
+import RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
+import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
+import CodeList from 'mow-registry/models/code-list';
 import ApplicationInstance from '@ember/application/instance';
-import { SignType } from 'mow-registry/components/traffic-measure/select-type';
-
-const TRAFFIC_MEASURE_RESOURCE_UUID = 'f51431b5-87f4-4c15-bb23-2ebaa8d65446';
+import type { SignType } from 'mow-registry/components/traffic-measure/select-type';
+import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import Variable from 'mow-registry/models/variable';
+import { removeItem } from 'mow-registry/utils/array';
+import { TrackedArray } from 'tracked-built-ins';
 
 export type InputType = {
   value: string;
@@ -30,32 +28,33 @@ export type InputType = {
 };
 
 type Args = {
-  trafficMeasureConcept: TrafficMeasureConceptModel;
+  trafficMeasureConcept: TrafficMeasureConcept;
 };
 
 export default class TrafficMeasureIndexComponent extends Component<Args> {
   @service declare store: Store;
-  @service declare router: Router;
+  @service declare router: RouterService;
   @service declare intl: IntlService;
   @service('codelists') declare codeListService: CodelistsService;
 
-  @tracked codeLists?: ArrayProxy<CodeListModel>;
-  @tracked declare trafficMeasureConcept: TrafficMeasureConceptModel;
-  @tracked signs: ConceptModel[] = [];
-  @tracked mappings: MappingModel[] = [];
-  @tracked template?: TemplateModel;
+  @tracked codeLists?: CodeList[];
+  @tracked declare trafficMeasureConcept: TrafficMeasureConcept;
+  @tracked signs: TrafficSignConcept[] = [];
+  @tracked variables: Variable[] = [];
+  @tracked template?: Template | null;
   @tracked searchString?: string;
   @tracked preview?: string;
   @tracked selectedType?: SignType | null;
-  @tracked instructions: TemplateModel[] = [];
-  @tracked inputTypes: InputType[] = [];
+  @tracked instructions: Template[] = [];
+  @tracked inputTypes: InputType[];
   @tracked instructionType: InputType;
+  @tracked signsError: boolean = false;
 
-  mappingsToBeDeleted: MappingModel[] = [];
+  variablesToBeDeleted: Variable[] = [];
 
   constructor(owner: ApplicationInstance, args: Args) {
     super(owner, args);
-    this.inputTypes = [
+    this.inputTypes = new TrackedArray([
       {
         value: 'text',
         label: this.intl.t('utility.template-variables.text'),
@@ -76,7 +75,8 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
         value: 'codelist',
         label: this.intl.t('utility.template-variables.codelist'),
       },
-    ];
+    ]);
+
     this.instructionType = {
       value: 'instruction',
       label: this.intl.t('utility.template-variables.instruction'),
@@ -101,19 +101,19 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     let result = '';
 
     this.signs.forEach((sign) => {
-      if (sign instanceof RoadSignConceptModel) {
-        result = `${result}${sign.roadSignConceptCode ?? ''}-`;
-      } else if (sign instanceof RoadMarkingConceptModel) {
-        result = `${result}${sign.roadMarkingConceptCode ?? ''}-`;
-      } else if (sign instanceof TrafficLightConceptModel) {
-        result = `${result}${sign.trafficLightConceptCode ?? ''}-`;
+      if (sign instanceof RoadSignConcept) {
+        result = `${result}${sign.label ?? ''}-`;
+      } else if (sign instanceof RoadMarkingConcept) {
+        result = `${result}${sign.label ?? ''}-`;
+      } else if (sign instanceof TrafficLightConcept) {
+        result = `${result}${sign.label ?? ''}-`;
       }
     });
 
     //get rid of the last dash
     result = result.slice(0, -1);
 
-    return `${result} Traffic Measure`;
+    return result;
   }
 
   get isSelectedTypeEmpty() {
@@ -122,21 +122,25 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   fetchData = task(async () => {
     // Wait for data loading
-    await this.trafficMeasureConcept.relations;
+    const relatedTrafficSigns =
+      await this.trafficMeasureConcept.relatedTrafficSignConcepts;
 
     this.codeLists = await this.codeListService.all.perform();
 
     // We assume that a measure has only one template
-    const templates = await this.trafficMeasureConcept.templates;
-    this.template = unwrap(templates.firstObject);
-    this.mappings = (await this.template.mappings)
-      .slice()
-      .sort((a, b) => (a.id < b.id ? -1 : 1));
-    const relations = await this.trafficMeasureConcept.getOrderedRelations();
+    this.template = await this.trafficMeasureConcept.template;
+    if (this.template) {
+      this.variables = (await this.template.variables).slice().sort((a, b) => {
+        if (a.id && b.id) {
+          return a.id < b.id ? -1 : 1;
+        } else {
+          return 0;
+        }
+      });
+      // const relations = await this.trafficMeasureConcept.getOrderedRelations();
+    }
 
-    this.signs = await Promise.all(
-      relations.map((relation) => relation.concept),
-    );
+    this.signs = new TrackedArray(relatedTrafficSigns);
 
     await this.fetchInstructions.perform();
 
@@ -145,57 +149,61 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   fetchInstructions = task(async () => {
     //refresh instruction list from available signs
-    this.instructions = [];
+    const instructions: Template[] = [];
     for (let i = 0; i < this.signs.length; i++) {
       const sign = this.signs[i];
-      const instructions = await sign.templates;
-      instructions.forEach((instr) => this.instructions.pushObject(instr));
+      if (sign) {
+        const signInstructions = await sign.hasInstructions;
+        signInstructions.forEach((instr) => instructions.push(instr));
+      }
     }
 
-    //remove input type instruction if there are none available and reset mappings with instructions
-    if (this.instructions.length != 0) {
+    this.instructions = instructions;
+
+    //remove input type instruction if there are none available and reset variables with instructions
+    if (instructions.length != 0) {
       if (this.inputTypes.indexOf(this.instructionType) == -1) {
-        this.inputTypes.pushObject(this.instructionType);
+        this.inputTypes.push(this.instructionType);
       }
-    } else if (this.instructions.length == 0) {
+    } else if (instructions.length == 0) {
       if (this.inputTypes.indexOf(this.instructionType) != -1) {
         this.inputTypes.splice(
           this.inputTypes.indexOf(this.instructionType),
           1,
         );
       }
-      for (const mapping of this.mappings) {
-        if (mapping.type == this.instructionType.value) {
-          await this.updateMappingType(mapping, 'text');
+      for (const variable of this.variables) {
+        if (variable.type == this.instructionType.value) {
+          await this.updateVariableType(variable, 'text');
         }
       }
     }
   });
 
   @action
-  async updateCodelist(mapping: MappingModel, codeList: CodeListModel) {
+  async updateCodelist(variable: Variable, codeList: CodeList) {
     //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-    mapping.codeList = codeList;
+    variable.codeList = codeList;
     await this.generatePreview.perform();
   }
 
   @action
-  async updateInstruction(mapping: MappingModel, instruction: TemplateModel) {
+  async updateInstruction(variable: Variable, template: Template) {
     //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-    mapping.instruction = instruction;
+    variable.template = template;
     await this.generatePreview.perform();
   }
 
   @action
-  async addSign(sign: ConceptModel) {
-    this.signs.pushObject(sign);
+  async addSign(sign: TrafficSignConcept) {
+    this.signs.push(sign);
     await this.fetchInstructions.perform();
     this.selectedType = null;
   }
 
   @action
-  async removeSign(sign: ConceptModel) {
-    this.signs.removeObject(sign);
+  async removeSign(sign: TrafficSignConcept) {
+    removeItem(this.signs, sign);
     await this.fetchInstructions.perform();
   }
 
@@ -216,7 +224,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  async addInstructionToTemplate(instruction: TemplateModel) {
+  async addInstructionToTemplate(instruction: Template) {
     if (this.template) {
       this.template.value += `${instruction.value ?? ''} `;
       await this.parseTemplate();
@@ -224,27 +232,28 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  async updateMappingType(
-    mapping: MappingModel,
+  async updateVariableType(
+    variable: Variable,
     selectedType: InputType | string,
   ) {
-    mapping.type =
+    variable.type =
       typeof selectedType === 'string' ? selectedType : selectedType.value;
-    if (mapping.type === 'codelist') {
+    if (variable.type === 'codelist') {
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      mapping.codeList = this.codeLists?.firstObject;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      variable.codeList = this.codeLists[0];
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      mapping.instruction = null;
-    } else if (mapping.type === 'instruction') {
+      variable.template = null;
+    } else if (variable.type === 'instruction') {
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      mapping.instruction = this.instructions[0];
+      variable.template = this.instructions[0];
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      mapping.codeList = null;
+      variable.codeList = null;
     } else {
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      mapping.instruction = null;
+      variable.template = null;
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      mapping.codeList = null;
+      variable.codeList = null;
     }
     await this.generatePreview.perform();
   }
@@ -267,13 +276,13 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       }
     });
 
-    //remove non-existing variable mappings from current array
-    //turns mappings into a non ember data thing
-    this.mappings = this.mappings.filter((mapping) => {
-      //search regex results if they contain this mapping
+    //remove non-existing variable variables from current array
+    //turns variables into a non ember data thing
+    this.variables = this.variables.filter((variable) => {
+      //search regex results if they contain this variable
       if (
         filteredRegexResult.find((fReg) => {
-          if (fReg[1] === mapping.variable) {
+          if (fReg[1] === variable.label) {
             return true;
           } else {
             return false;
@@ -282,63 +291,62 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       ) {
         return true;
       } else {
-        this.mappingsToBeDeleted.push(mapping);
+        this.variablesToBeDeleted.push(variable);
         return false;
       }
     });
 
-    //add new variable mappings
+    //add new variable variables
     filteredRegexResult.forEach((reg) => {
-      if (!this.mappings.find((mapping) => mapping.variable === reg[1])) {
-        this.mappings.pushObject(
-          this.store.createRecord('mapping', {
-            variable: reg[1],
+      if (!this.variables.find((variable) => variable.label === reg[1])) {
+        this.variables.push(
+          this.store.createRecord<Variable>('variable', {
+            label: reg[1],
             type: 'text',
-            //TODO: this.nodeShape does not seem to be defined
-            // expects: this.nodeShape,
           }),
         );
       }
     });
 
     //remove duplicates in case something went wrong
-    const filteredMappings: MappingModel[] = [];
-    this.mappings.forEach((mapping) => {
+    const filteredVariables: Variable[] = [];
+    this.variables.forEach((variable) => {
       if (
-        !filteredMappings.find(
-          (fMapping) => fMapping.variable === mapping.variable,
+        !filteredVariables.find(
+          (fVariable) => fVariable.label === variable.label,
         )
       ) {
-        filteredMappings.push(mapping);
+        filteredVariables.push(variable);
       } else {
-        this.mappingsToBeDeleted.push(mapping);
+        this.variablesToBeDeleted.push(variable);
       }
     });
 
-    //sort mappings in the same order as the regex result
-    const sortedMappings: MappingModel[] = [];
+    //sort variables in the same order as the regex result
+    const sortedVariables: Variable[] = [];
     filteredRegexResult.forEach((reg) => {
-      filteredMappings.forEach((mapping) => {
-        if (reg[1] == mapping.variable) {
-          sortedMappings.push(mapping);
+      filteredVariables.forEach((variable) => {
+        if (reg[1] == variable.label) {
+          sortedVariables.push(variable);
         }
       });
     });
 
-    //check existing default mappings with deleted non-default mappings and swap them
-    sortedMappings.forEach((sMapping, sI) => {
-      this.mappingsToBeDeleted.forEach((dMapping, dI) => {
-        if (sMapping.variable === dMapping.variable) {
-          if (dMapping.type !== 'text' && sMapping.type === 'text') {
-            sortedMappings.replace(sI, 1, [dMapping]);
-            this.mappingsToBeDeleted.replace(dI, 1, [sMapping]);
+    //check existing default variables with deleted non-default variables and swap them
+    sortedVariables.forEach((sVariable, sI) => {
+      this.variablesToBeDeleted.forEach((dVariable, dI) => {
+        if (sVariable.label === dVariable.label) {
+          if (dVariable.type !== 'text' && sVariable.type === 'text') {
+            // sortedVariables.replace(sI, 1, [dVariable]);
+            sortedVariables[sI] = dVariable;
+            // this.variablesToBeDeleted.replace(dI, 1, [sVariable]);
+            this.variablesToBeDeleted[dI] = sVariable;
           }
         }
       });
     });
 
-    this.mappings = sortedMappings;
-
+    this.variables = sortedVariables;
     await this.generatePreview.perform();
   }
 
@@ -348,65 +356,43 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     }
     this.preview = this.template.value ?? '';
 
-    for (const mapping of this.mappings) {
+    for (const variable of this.variables) {
       let replaceString;
-      if (mapping.type === 'instruction') {
-        const instruction = await mapping.instruction;
+      if (variable.type === 'instruction') {
+        const instruction = await variable.template;
         replaceString =
           "<span style='background-color: #ffffff'>" +
-          (instruction.value ?? '') +
+          (instruction?.value ?? '') +
           '</span>';
         this.preview = this.preview.replaceAll(
-          '${' + (mapping.variable ?? '') + '}',
+          '${' + (variable.label ?? '') + '}',
           replaceString,
         );
       }
     }
   });
 
-  delete = task(async () => {
-    const nodeShape = await this.store.query('node-shape', {
-      'filter[targetHasConcept][id]': this.trafficMeasureConcept.id,
-    });
-    if (nodeShape.firstObject) {
-      await nodeShape.firstObject?.destroyRecord();
-    }
-    // We assume a measure only has one template
-    const template = (await this.trafficMeasureConcept.templates).firstObject;
-    if (template) {
-      (await template.mappings).forEach(
-        (mapping) => void mapping.destroyRecord(),
-      );
-      await template.destroyRecord();
-    }
-
-    (await this.trafficMeasureConcept.relations).forEach(
-      (relation) => void relation.destroyRecord(),
-    );
-
-    await this.trafficMeasureConcept.destroyRecord();
-    await this.router.transitionTo('traffic-measure-concepts.index');
-  });
-
   save = task(async () => {
     // We assume a measure only has one template
-    const template = unwrap(
-      (await this.trafficMeasureConcept.templates).firstObject,
-    );
+    const template = unwrap(await this.trafficMeasureConcept.template);
+
+    // Show custom error if no signs selected
+    this.signsError = !this.signs.length;
+
+    // Validate measure fields
+    const isValid = await this.trafficMeasureConcept.validate();
+    const isTemplateValid = await template.validate();
+
+    if (!isValid || !isTemplateValid) {
+      return;
+    }
+
+    // If there’s an error with the signs, return early to prevent the save from occurring
+    if (this.signsError) return;
 
     //if new save relationships
     if (this.new) {
       await this.trafficMeasureConcept.save();
-      const trafficMeasureResource = await this.store.findRecord(
-        'resource',
-        TRAFFIC_MEASURE_RESOURCE_UUID,
-      );
-      const nodeShape = this.store.createRecord('node-shape');
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      nodeShape.targetClass = trafficMeasureResource;
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      nodeShape.targetHasConcept = this.trafficMeasureConcept;
-      await nodeShape.save();
       await template.save();
       await this.trafficMeasureConcept.save();
     }
@@ -421,72 +407,68 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //3-update roadsigns
     await this.saveRoadsigns.perform(this.trafficMeasureConcept);
 
-    //4-handle variable mappings
-    await this.saveMappings.perform(template);
+    //4-handle variable variables
+    await this.saveVariables.perform(template);
 
-    //5-annotate rdfa
-    await this.annotateRdfa.perform(template);
+    // //5-annotate rdfa
+    // await this.annotateRdfa.perform(template);
 
-    await this.router.transitionTo('traffic-measure-concepts.index');
+    this.router.transitionTo(
+      'traffic-measure-concepts.details',
+      this.trafficMeasureConcept.id,
+    );
   });
 
-  saveRoadsigns = task(
-    async (trafficMeasureConcept: TrafficMeasureConceptModel) => {
-      // delete existing ones
-      const relations = (await trafficMeasureConcept.relations).slice();
-      for (const relation of relations) {
-        await relation.destroyRecord();
-      }
-      // creating signs
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      trafficMeasureConcept.relations = [];
-      for (let i = 0; i < this.signs.length; i++) {
-        const mustUseRelation = this.store.createRecord('must-use-relation');
-        //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-        mustUseRelation.concept = this.signs[i];
-        mustUseRelation.order = i;
-        trafficMeasureConcept.relations.pushObject(mustUseRelation);
-        await mustUseRelation.save();
-      }
-      await trafficMeasureConcept.save();
-    },
-  );
+  saveRoadsigns = task(async (trafficMeasureConcept: TrafficMeasureConcept) => {
+    // delete existing ones
+    const existingRelatedSigns = (
+      await trafficMeasureConcept.relatedTrafficSignConcepts
+    ).slice();
 
-  saveMappings = task(async (template: TemplateModel) => {
+    const deletedSigns = existingRelatedSigns.filter(
+      (sign) => !this.signs.includes(sign),
+    );
+    const addedSigns = this.signs.filter(
+      (sign) => !existingRelatedSigns.includes(sign),
+    );
+
+    for (const sign of deletedSigns) {
+      removeItem(await sign.hasTrafficMeasureConcepts, trafficMeasureConcept);
+      await sign.save();
+    }
+
+    for (const sign of addedSigns) {
+      (await sign.hasTrafficMeasureConcepts).push(trafficMeasureConcept);
+      await sign.save();
+    }
+  });
+
+  saveVariables = task(async (template: Template) => {
     //destroy old ones
     await Promise.all(
-      this.mappingsToBeDeleted.map((mapping) => mapping.destroyRecord()),
+      this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
     );
 
     //create new ones
-    for (const mapping of this.mappings) {
-      template.mappings.pushObject(mapping);
-      await mapping.save();
+    for (const variable of this.variables) {
+      (await template.variables).push(variable);
+      await variable.save();
     }
 
-    await template.save();
-  });
-
-  annotateRdfa = task(async (template: TemplateModel) => {
-    const contentWithMappings = await includeMappings(
-      template.value ?? '',
-      this.mappings,
-    );
-    template.annotated = `
-      <div property="dct:description">
-        ${contentWithMappings}
-      </div>
-    `;
     await template.save();
   });
 
   async willDestroy() {
     super.willDestroy();
+
+    const wasNew = this.trafficMeasureConcept.isNew;
     this.template?.rollbackAttributes();
-    for (const mapping of this.mappings) {
-      mapping.rollbackAttributes();
+    for (const variable of this.variables) {
+      variable.rollbackAttributes();
     }
     this.trafficMeasureConcept.rollbackAttributes();
-    await this.trafficMeasureConcept.belongsTo('zonality').reload();
+    if (!wasNew) {
+      await this.trafficMeasureConcept.belongsTo('zonality').reload();
+    }
   }
 }

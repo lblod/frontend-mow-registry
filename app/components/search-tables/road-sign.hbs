@@ -11,10 +11,10 @@
     {{yield to="menu"}}
   </:menu>
   <:header as |header|>
-
     <header.Sortable
-      @field="roadSignConceptCode"
-      @label={{t "road-sign-concept.attr.code"}}
+      @field="label"
+      @label={{t "road-sign-concept.attr.label"}}
+      class="w-px"
     />
     <th>
       {{t "road-sign-concept.attr.image-header"}}
@@ -23,48 +23,43 @@
       {{t "road-sign-concept.attr.meaning"}}
     </th>
     <header.Sortable
-      @field="categories.label"
-      @label={{t "road-sign-concept.attr.categories"}}
+      @field="classifications"
+      @label={{t "road-sign-concept.attr.classifications"}}
     />
-    <th>
-      {{t "utility.zonality"}}
-    </th>
-    <th>
-      {{t "road-marking-concept.attr.valid"}}
-    </th>
-    <th></th>
+    <header.Sortable
+      @field="valid"
+      @label={{t "utility.validation-status"}}
+    />
   </:header>
   <:body as |roadSignConcept|>
-
     <td>
-      {{roadSignConcept.roadSignConceptCode}}
+      <AuLink
+        @route="road-sign-concepts.road-sign-concept"
+        @model={{roadSignConcept.id}}
+      >
+        {{roadSignConcept.label}}
+      </AuLink>
     </td>
-    <td>
-      <img class="au-c-thumbnail" src={{roadSignConcept.image}} alt="" />
+    <td class="au-u-text-center">
+      <img
+        class="au-c-thumbnail"
+        src={{roadSignConcept.image.file.downloadLink}}
+        alt=""
+      />
     </td>
     <td>
       {{roadSignConcept.meaning}}
     </td>
     <td>
-      {{#each roadSignConcept.categories as |category index|}}
+      {{#each roadSignConcept.classifications as |classification index|}}
         {{#if (gt index 0)}}
-          <br>
+          <br />
         {{/if}}
-        {{category.label}}
+        {{classification.label}}
       {{/each}}
     </td>
     <td>
-      {{zonality-label (await roadSignConcept.zonality)}}
-    </td>
-    <td>
-      {{#if roadSignConcept.valid}}
-        {{t "utility.yes"}}
-      {{else}}
-        {{t "utility.no"}}
-      {{/if}}
-    </td>
-    <td>
-      {{yield roadSignConcept to='rowAction'}}
+      <ValidationStatus @valid={{roadSignConcept.valid}} />
     </td>
   </:body>
 </ReactiveTable>

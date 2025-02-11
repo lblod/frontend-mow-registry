@@ -1,22 +1,25 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 
 type Params = {
-  code?: string;
+  label?: string;
   page: number;
   size: number;
   sort: string;
+  templateValue: string;
 };
 export default class TrafficMeasureConceptsIndexRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    code: { refreshModel: true },
+    label: { refreshModel: true },
     template: { refreshModel: true },
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
+    templateValue: { refreshModel: true },
   };
 
   async model(params: Params) {
@@ -26,14 +29,23 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
         number: params.page,
         size: params.size,
       },
-      include: 'templates',
+      include: 'template',
     };
 
-    if (params.code) {
-      query['filter[label]'] = params.code;
+    if (params.label) {
+      query['filter[label]'] = params.label;
     }
 
-    const result = await this.store.query('traffic-measure-concept', query);
+    if (params.templateValue) {
+      query['filter[template][preview]'] = params.templateValue;
+    }
+
+    const result = await this.store.query<TrafficMeasureConcept>(
+      'traffic-measure-concept',
+      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+      // TODO: fix the query types
+      query,
+    );
 
     return result;
   }

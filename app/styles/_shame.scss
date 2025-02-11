@@ -1,5 +1,5 @@
 .au-c-textarea--error {
-  border: .3rem solid $au-red-600;
+  border: 0.3rem solid $au-red-600;
 }
 
 // Loket seems to add this class so we mimic it here, but I'm sure there is a solution we can add to Appuniversum
@@ -31,19 +31,6 @@
 .au-c-close--large {
   top: $au-unit;
   right: $au-unit;
-}
-
-.road-sign-code-search {
-  width: 10rem;
-  min-width: unset;
-}
-
-.road-sign-meaning-search {
-  min-width: unset;
-}
-
-.category-select {
-  min-width: 24rem;
 }
 
 // Sign container
@@ -115,10 +102,16 @@
   }
 }
 
+.table-centered-content {
+  td {
+    vertical-align: middle;
+  }
+}
+
 // Drag button
 .au-c-button--drag {
   cursor: grab;
-  padding: $au-unit-small + .4rem 0;
+  padding: $au-unit-small + 0.4rem 0;
 
   .au-c-icon {
     width: 2rem;
@@ -135,7 +128,7 @@
   padding: $au-unit-tiny;
   background-color: $au-white;
   border: 1px solid $au-gray-400;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
 }
 
 .au-o-flex {
@@ -172,7 +165,7 @@
   padding: $au-unit-tiny;
   background-color: $au-gray-200;
   border-radius: $au-radius;
-  border: .1rem solid $au-gray-300;
+  border: 0.1rem solid $au-gray-300;
 }
 
 .au-c-list-help__item {
@@ -180,7 +173,7 @@
   padding-left: $au-unit-small;
 
   &:before {
-    content: "-";
+    content: '-';
     position: absolute;
     left: 0;
     top: 0;
@@ -207,16 +200,15 @@
   border-bottom: 0;
 }
 
-
 // No prefix
 .no-flex-shrink {
   flex-shrink: 0;
 }
 
 .flex-content-between {
-  display:flex;
+  display: flex;
   align-items: center;
-  justify-content: space-between
+  justify-content: space-between;
 }
 
 td {
@@ -227,12 +219,12 @@ td {
 
 table.dataTable tbody td,
 table.dataTable tbody th {
-	min-width: 2rem;
+  min-width: 2rem;
 }
 
 .yasgui .controlbar {
-	justify-content: flex-end;
-	margin-bottom: 1rem;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
 }
 
 .yasgui .autocompleteWrapper {
@@ -268,6 +260,22 @@ table.dataTable tbody th {
   width: 1px !important;
 }
 
+.u-rounded {
+  border-radius: var(--au-radius);
+}
+
+.u-border-solid {
+  border-style: solid;
+}
+
+.u-border-divider {
+  border-color: var(--au-divider-color);
+}
+
+.u-border-l {
+  border-left-width: 0.1rem;
+}
+
 // Fix app with environment banner @TODO: rework app component
 .au-c-app--environment {
   // Fix main container height
@@ -279,4 +287,9 @@ table.dataTable tbody th {
   .au-c-meeting-sidebar {
     top: 14.8rem;
   }
+}
+
+// road sign shapes select
+#shapes {
+  min-width: 24rem;
 }

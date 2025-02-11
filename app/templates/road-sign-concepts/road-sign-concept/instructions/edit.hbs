@@ -1,0 +1,16 @@
+{{page-title (t "utility.add-instruction")}}
+<BreadcrumbsItem as |linkClass|>
+  <LinkTo
+    @route="road-sign-concepts.road-sign-concept.instructions"
+    @model={{this.model.template.id}}
+    class={{linkClass}}
+  >
+    {{t "utility.instruction-details"}}
+  </LinkTo>
+</BreadcrumbsItem>
+
+<InstructionManager
+  @from="road-sign-concepts.road-sign-concept.instructions"
+  @editedTemplate={{this.model.template}}
+  @concept={{this.model.concept}}
+/>

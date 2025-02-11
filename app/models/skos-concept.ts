@@ -1,18 +1,32 @@
-import Model, { AsyncBelongsTo, attr, belongsTo } from '@ember-data/model';
+import { type AsyncBelongsTo, attr, hasMany } from '@ember-data/model';
+import Joi from 'joi';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
+import {
+  validateHasManyOptional,
+  validateStringOptional,
+  validateStringRequired,
+} from 'mow-registry/validators/schema';
+import AbstractValidationModel from './abstract-validation-model';
+import type { Type } from '@warp-drive/core-types/symbols';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'skos-concept': SkosConcept;
-  }
-}
-export default class SkosConcept extends Model {
+export default class SkosConcept extends AbstractValidationModel {
+  declare [Type]: 'skos-concept';
   @attr declare uri?: string;
   @attr declare label?: string;
-  @belongsTo('concept-scheme', {
+
+  @hasMany<ConceptScheme>('concept-scheme', {
     inverse: 'concepts',
     polymorphic: true,
+    as: 'skos-concept',
     async: true,
   })
   declare inScheme: AsyncBelongsTo<ConceptScheme>;
+
+  get validationSchema() {
+    return Joi.object({
+      uri: validateStringOptional(),
+      label: validateStringRequired(),
+      inScheme: validateHasManyOptional(),
+    });
+  }
 }

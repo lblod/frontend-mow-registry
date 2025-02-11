@@ -1,0 +1,32 @@
+<SearchTables::IconCatalog
+  @content={{this.model.icons}}
+  @pageSize={{this.size}}
+  @page={{this.page}}
+  @sort={{this.sort}}
+  @onPageChange={{this.onPageChange}}
+  @onSortChange={{this.onSortChange}}
+>
+  <:menu>
+    <AuToolbar class="au-o-box" as |Group|>
+      <Group>
+        <AuHeading @skin="2">
+          {{t "icon-catalog.name"}}
+        </AuHeading>
+      </Group>
+      <Group class="au-c-toolbar__group--center">
+        <div>
+          <AuInput
+            value={{this.label}}
+            placeholder={{t "icon-catalog.crud.label-filter"}}
+            @icon="search"
+            @iconAlignment="right"
+            {{on "input" (perform this.updateSearchFilterTask)}}
+          />
+        </div>
+        <AuLink @route="icon-catalog.new" @skin="button">
+          {{t "icon-catalog.crud.new"}}
+        </AuLink>
+      </Group>
+    </AuToolbar>
+  </:menu>
+</SearchTables::IconCatalog>

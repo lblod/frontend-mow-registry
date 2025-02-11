@@ -12,28 +12,35 @@
   </:menu>
   <:header as |header|>
     <header.Sortable
-      @field="trafficLightConceptCode"
-      @label={{t "traffic-light-concept.attr.code"}}
+      @field=":no-case:label"
+      @label={{t "traffic-light-concept.attr.label"}}
+      class="w-px"
     />
     <th>
       {{t "traffic-light-concept.attr.image-header"}}
     </th>
+
     <th>
       {{t "traffic-light-concept.attr.meaning"}}
     </th>
-    <th>
-      {{t "road-marking-concept.attr.valid"}}
-    </th>
-    <th></th>
+    <header.Sortable
+      @field="valid"
+      @label={{t "utility.validation-status"}}
+    />
   </:header>
   <:body as |trafficLightConcept|>
     <td>
-      {{trafficLightConcept.trafficLightConceptCode}}
+      <AuLink
+        @route="traffic-light-concepts.traffic-light-concept"
+        @model={{trafficLightConcept.id}}
+      >
+        {{trafficLightConcept.label}}
+      </AuLink>
     </td>
-    <td>
+    <td class="au-u-text-center">
       <img
         class="au-c-thumbnail"
-        src={{trafficLightConcept.image}}
+        src={{trafficLightConcept.image.file.downloadLink}}
         alt=""
       />
     </td>
@@ -41,14 +48,7 @@
       {{trafficLightConcept.meaning}}
     </td>
     <td>
-      {{#if trafficLightConcept.valid}}
-        {{t "utility.yes"}}
-      {{else}}
-        {{t "utility.no"}}
-      {{/if}}
-    </td>
-    <td>
-      {{yield trafficLightConcept to='rowAction'}}
+      <ValidationStatus @valid={{trafficLightConcept.valid}} />
     </td>
   </:body>
 </ReactiveTable>

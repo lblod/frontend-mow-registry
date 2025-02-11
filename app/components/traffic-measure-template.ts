@@ -1,14 +1,14 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
+import { type SafeString } from '@ember/template';
 import { task } from 'ember-concurrency';
 import { action } from '@ember/object';
-import ConceptModel from 'mow-registry/models/concept';
-import { SafeString } from '@ember/template/-private/handlebars';
 import { unwrap } from 'mow-registry/utils/option';
+import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 
 type Args = {
-  concept: ConceptModel;
+  concept: TrafficMeasureConcept;
 };
 
 export default class TrafficMeasureTemplateComponent extends Component<Args> {
@@ -19,20 +19,20 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
     await this.fetchTemplate.perform(this.args.concept);
   }
 
-  fetchTemplate = task(async (concept: ConceptModel) => {
-    const template = unwrap((await concept.templates).firstObject);
+  fetchTemplate = task(async (concept: TrafficMeasureConcept) => {
+    const template = unwrap(await concept.template);
     let preview = template?.value ?? '';
-    const mappings = (await template.mappings).slice();
-    for (const mapping of mappings) {
+    const variables = (await template.variables).slice();
+    for (const variable of variables) {
       let replaceString;
-      if (mapping.type === 'instruction') {
-        const instruction = await mapping.instruction;
+      if (variable.type === 'instruction') {
+        const instruction = await variable.template;
         replaceString =
           "<span style='background-color: #ffffff'>" +
-          (instruction.value ?? '') +
+          (instruction?.value ?? '') +
           '</span>';
         preview = preview.replaceAll(
-          '${' + (mapping.variable ?? '') + '}',
+          '${' + (variable.label ?? '') + '}',
           replaceString,
         );
       }

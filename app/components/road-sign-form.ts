@@ -1,53 +1,176 @@
-import Router from '@ember/routing/router';
+import type RouterService from '@ember/routing/router-service';
 import ImageUploadHandlerComponent from './image-upload-handler';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import RoadSignConceptValidations from 'mow-registry/validations/road-sign-concept';
-import { BufferedChangeset } from 'ember-changeset/types';
-import RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
-import RoadSignCategoryModel from 'mow-registry/models/road-sign-category';
+import type Dimension from 'mow-registry/models/dimension';
+import RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import RoadSignCategory from 'mow-registry/models/road-sign-category';
+import TribontShape from 'mow-registry/models/tribont-shape';
+import { tracked } from '@glimmer/tracking';
+import { removeItem } from 'mow-registry/utils/array';
+import Store from '@ember-data/store';
+import type Variable from 'mow-registry/models/variable';
 
 type Args = {
-  roadSignConcept: RoadSignConceptModel;
+  roadSignConcept: RoadSignConcept;
 };
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
-  @service declare router: Router;
+  @service declare router: RouterService;
+  @service declare store: Store;
 
-  RoadSignConceptValidations = RoadSignConceptValidations;
+  isArray = function isArray(maybeArray: unknown) {
+    return Array.isArray(maybeArray);
+  };
+
+  @tracked shapesToRemove: TribontShape[] = [];
+  @tracked variablesToRemove: Variable[] = [];
+  dimensionsToRemove: Dimension[] = [];
 
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
   }
 
   @action
-  setRoadSignConceptCategory(
-    changeset: BufferedChangeset,
-    selection: RoadSignCategoryModel[],
-  ) {
-    changeset.categories = selection;
+  async setRoadSignConceptValue(attributeName: string, event: InputEvent) {
+    this.args.roadSignConcept.set(
+      attributeName,
+      (event.target as HTMLInputElement).value,
+    );
+    await this.args.roadSignConcept.validateProperty(attributeName);
   }
 
-  editRoadSignConceptTask = dropTask(
-    async (changeset: BufferedChangeset, event: InputEvent) => {
-      event.preventDefault();
+  @action
+  async setRoadSignConceptClassification(selection: RoadSignCategory[]) {
+    this.args.roadSignConcept.set('classifications', selection);
+    await this.args.roadSignConcept.validateProperty('classifications');
+  }
 
-      await changeset.validate();
+  @action
+  async addShape() {
+    const shape = this.store.createRecord<TribontShape>('tribont-shape', {});
+    (await this.args.roadSignConcept.shapes).push(shape);
+  }
 
-      if (changeset.isValid) {
-        await this.saveImage(changeset);
-        await changeset.save();
+  @action
+  async removeShape(shape: TribontShape) {
+    const shapes = await this.args.roadSignConcept.shapes;
+    removeItem(shapes, shape);
+    this.shapesToRemove.push(shape);
+  }
 
-        await this.router.transitionTo(
-          'road-sign-concepts.road-sign-concept',
-          changeset.id,
-        );
-      }
-    },
-  );
+  @action
+  async addVariable() {
+    const newVariable = this.store.createRecord<Variable>('variable', {});
+    (await this.args.roadSignConcept.variables).push(newVariable);
+  }
+
+  @action
+  async removeVariable(variable: Variable) {
+    const variables = await this.args.roadSignConcept.variables;
+    removeItem(variables, variable);
+    this.variablesToRemove.push(variable);
+  }
+
+  removeDimension = async (shape: TribontShape, dimension: Dimension) => {
+    removeItem(await shape.dimensions, dimension);
+
+    this.dimensionsToRemove.push(dimension);
+  };
+
+  @action
+  async setImage(model: RoadSignConcept, image: File) {
+    super.setImage(model, image);
+    await this.args.roadSignConcept.validateProperty('image');
+  }
+
+  editRoadSignConceptTask = dropTask(async (event: InputEvent) => {
+    event.preventDefault();
+
+    const isValid = await this.args.roadSignConcept.validate();
+
+    // validate the shapes and dimensions
+    const shapes = await this.args.roadSignConcept.shapes;
+    const areShapesValid = !(
+      await Promise.all(
+        shapes.map(async (shape) => {
+          const isShapeValid = await shape.validate();
+
+          const dimensions = await shape.dimensions;
+          const areDimensionsValid = !(
+            await Promise.all(
+              dimensions.map((dimension) => {
+                return dimension.validate();
+              }),
+            )
+          ).includes(false);
+
+          return isShapeValid && areDimensionsValid;
+        }),
+      )
+    ).includes(false);
+
+    // validate variables
+    const variables = await this.args.roadSignConcept.variables;
+    const areVariablesValid = !(
+      await Promise.all(
+        variables.map(async (variable) => {
+          return await variable.validate();
+        }),
+      )
+    ).includes(false);
+
+    if (isValid && areShapesValid && areVariablesValid) {
+      const imageRecord = await this.saveImage();
+      if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
+
+      await Promise.all(
+        (await this.args.roadSignConcept.shapes).map(async (shape) => {
+          await Promise.all(
+            (await shape.dimensions).map(async (dimension) => {
+              await dimension.save();
+            }),
+          );
+          await shape.save();
+        }),
+      );
+
+      await Promise.all(
+        this.shapesToRemove.map(async (shape) => {
+          await Promise.all(
+            (await shape.dimensions).map(async (dimension) => {
+              await dimension.destroyRecord();
+            }),
+          );
+          await shape.destroyRecord();
+        }),
+      );
+      await Promise.all(
+        this.dimensionsToRemove.map((dimension) => dimension.destroyRecord()),
+      );
+
+      await Promise.all(
+        (await this.args.roadSignConcept.variables).map(async (variable) => {
+          await variable.save();
+        }),
+      );
+
+      await Promise.all(
+        this.variablesToRemove.map((variable) => {
+          variable.destroyRecord();
+        }),
+      );
+
+      await this.args.roadSignConcept.save();
+      void this.router.transitionTo(
+        'road-sign-concepts.road-sign-concept',
+        this.args.roadSignConcept.id,
+      );
+    }
+  });
 
   willDestroy() {
     super.willDestroy();
-    this.args.roadSignConcept.rollbackAttributes();
+    this.args.roadSignConcept.reset();
   }
 }

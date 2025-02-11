@@ -1,33 +1,48 @@
-<AuDropdown @alignment="left" @title="Menu modules" @dropdownButtonLabel="Show modules">
-  {{!-- template-lint-disable require-context-role --}}
+<AuDropdown
+  @alignment="left"
+  @title="Menu modules"
+  @dropdownButtonLabel="Show modules"
+>
+  {{! template-lint-disable require-context-role }}
   <AuLink
     role="menuitem"
     @route="road-sign-concepts"
-    @query={{hash page=0 search="" category=null}}>
+    @query={{hash page=0 search="" classification=null}}
+  >
     {{t "road-sign-concept.name"}}
   </AuLink>
   <AuLink
     role="menuitem"
     @route="road-marking-concepts"
-    @query={{hash page=0 search="" category=null}}>
+    @query={{hash page=0 search="" classification=null}}
+  >
     {{t "road-marking-concept.name"}}
   </AuLink>
   <AuLink
     role="menuitem"
     @route="traffic-light-concepts"
-    @query={{hash page=0 search="" category=null}}>
+    @query={{hash page=0 search="" classification=null}}
+  >
     {{t "traffic-light-concept.name"}}
   </AuLink>
   <AuLink
     role="menuitem"
     @route="traffic-measure-concepts"
-    @query={{hash page=0 search="" category=null}}>
+    @query={{hash page=0 search="" classification=null}}
+  >
     {{t "traffic-measure-concept.name"}}
   </AuLink>
   <AuLink
     role="menuitem"
     @route="codelists-management"
-    @query={{hash page=0 search=""}}>
+    @query={{hash page=0 search=""}}
+  >
     {{t "codelist.name"}}
+  </AuLink>
+  <AuLink
+    role="menuitem"
+    @route="icon-catalog"
+    @query={{hash page=0 search=""}}>
+    {{t "icon-catalog.name"}}
   </AuLink>
 </AuDropdown>

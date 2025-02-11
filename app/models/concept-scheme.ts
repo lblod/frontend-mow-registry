@@ -1,14 +1,28 @@
-import Model, { AsyncHasMany, attr, hasMany } from '@ember-data/model';
+import AbstractValidationModel from './abstract-validation-model';
+import { type AsyncHasMany, attr, hasMany } from '@ember-data/model';
+import Joi from 'joi';
 import type SkosConcept from 'mow-registry/models/skos-concept';
+import {
+  validateHasManyOptional,
+  validateStringOptional,
+} from 'mow-registry/validators/schema';
+import type { Type } from '@warp-drive/core-types/symbols';
 
-declare module 'ember-data/types/registries/model' {
-  export default interface ModelRegistry {
-    'concept-scheme': ConceptScheme;
-  }
-}
-
-export default class ConceptScheme extends Model {
+export default class ConceptScheme extends AbstractValidationModel {
+  declare [Type]: 'concept-scheme';
   @attr declare label?: string;
-  @hasMany('skos-concept', { inverse: 'inScheme', async: true })
+  @hasMany<SkosConcept>('skos-concept', {
+    inverse: 'inScheme',
+    async: true,
+    polymorphic: true,
+    as: 'concept-scheme',
+  })
   declare concepts: AsyncHasMany<SkosConcept>;
+
+  get validationSchema() {
+    return Joi.object({
+      label: validateStringOptional(),
+      concepts: validateHasManyOptional(),
+    });
+  }
 }
