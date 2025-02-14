@@ -232,6 +232,11 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
+  async updateVariableRequired(variable: Variable) {
+    variable.set('required', !variable.required);
+  }
+
+  @action
   async updateVariableType(
     variable: Variable,
     selectedType: InputType | string,

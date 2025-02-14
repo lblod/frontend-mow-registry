@@ -154,6 +154,7 @@
                 <thead class="au-c-data-table__header">
                   <tr>
                     <th>{{t "traffic-measure-concept.attr.variable"}}</th>
+                    <th>{{t "utility.required"}}</th>
                     <th>{{t "traffic-measure-concept.attr.type"}}</th>
                   </tr>
                 </thead>
@@ -162,7 +163,16 @@
                     <tr>
                       <td>{{variable.label}}</td>
                       {{! template-lint-disable no-inline-styles }}
-                      <td style="width: 50%;">
+                      <td style="width: 33%;">
+                        <AuCheckbox
+                          @value={{variable.required}}
+                          @checked={{variable.required}}
+                          @onChange={{fn this.updateVariableRequired variable}}
+                        >
+                          {{t "utility.required"}}
+                        </AuCheckbox>
+                      </td>
+                      <td style="width: 33%;">
                         <PowerSelect
                           @allowClear={{false}}
                           @searchEnabled={{false}}
