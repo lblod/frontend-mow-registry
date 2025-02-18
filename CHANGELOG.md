@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.1.0
+
+### Minor Changes
+
+- The user can now set the variables as required or not
+
 ## 2.0.0
 
 ### Major Changes
