@@ -80,12 +80,18 @@ export default class VariableManager extends Component<Signature> {
 
   @action
   async setVariableType(variable: Variable, selectedType: InputType) {
+    const actualType = this.variableTypes.find(
+      (type) => type.value === variable.type,
+    );
+    const labelMofied = actualType && actualType.label !== variable.label;
     if (variable.type === 'codelist') {
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
       variable.codeList = this.codeLists[0];
     }
     variable.set('type', selectedType.value);
-    variable.set('label', selectedType.label);
+    if (!labelMofied) {
+      variable.set('label', selectedType.label);
+    }
   }
 
   @action
