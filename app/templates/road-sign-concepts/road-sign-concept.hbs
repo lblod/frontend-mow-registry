@@ -30,7 +30,7 @@
             {{t "utility.validation-status"}}
           </dt>
           <dd class="au-u-muted">
-            <ValidationStatus @valid={{@model.roadSignConcept.valid}} @arRequired={{@model.roadSignConcept.arPlichtig}} />
+            <ValidationStatus @valid={{@model.roadSignConcept.valid}} />
             <div class="au-u-margin-top-small">
               <ContentCheck @concept={{@model.roadSignConcept}} />
               <ArCheck @concept={{@model.roadSignConcept}} />

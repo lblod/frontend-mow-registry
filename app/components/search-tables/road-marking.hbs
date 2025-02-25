@@ -22,10 +22,7 @@
     <th>
       {{t "road-marking-concept.attr.meaning"}}
     </th>
-    <header.Sortable
-      @field="valid"
-      @label={{t "utility.validation-status"}}
-    />
+    <header.Sortable @field="valid" @label={{t "utility.validation-status"}} />
   </:header>
   <:body as |roadMarkingConcept|>
     <td>
@@ -47,7 +44,7 @@
       {{roadMarkingConcept.meaning}}
     </td>
     <td>
-      <ValidationStatus @valid={{roadMarkingConcept.valid}} @arRequired={{roadMarkingConcept.arPlichtig}} />
+      <ValidationStatus @valid={{roadMarkingConcept.valid}} />
     </td>
   </:body>
 </ReactiveTable>
