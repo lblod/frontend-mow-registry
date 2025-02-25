@@ -11,6 +11,7 @@ import { tracked } from '@glimmer/tracking';
 import { removeItem } from 'mow-registry/utils/array';
 import Store from '@ember-data/store';
 import type Variable from 'mow-registry/models/variable';
+import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -32,11 +33,21 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  async setRoadSignConceptValue(attributeName: string, event: InputEvent) {
-    this.args.roadSignConcept.set(
-      attributeName,
-      (event.target as HTMLInputElement).value,
-    );
+  async setRoadSignConceptValue(
+    attributeName: ModifiableKeysOfType<RoadSignConcept, string>,
+    event: InputEvent,
+  ) {
+    this.args.roadSignConcept[attributeName] = (
+      event.target as HTMLInputElement
+    ).value;
+    await this.args.roadSignConcept.validateProperty(attributeName);
+  }
+  @action
+  async setBooleanValue(
+    attributeName: ModifiableKeysOfType<RoadSignConcept, boolean>,
+    value: boolean,
+  ) {
+    this.args.roadSignConcept[attributeName] = value;
     await this.args.roadSignConcept.validateProperty(attributeName);
   }
 

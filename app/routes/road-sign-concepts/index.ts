@@ -14,6 +14,7 @@ type Params = {
   sort: string;
   classification?: string;
   validation?: string;
+  arPlichtig?: string;
 };
 
 export default class RoadsignConceptsIndexRoute extends Route {
@@ -27,6 +28,7 @@ export default class RoadsignConceptsIndexRoute extends Route {
     sort: { refreshModel: true },
     classification: { refreshModel: true },
     validation: { refreshModel: true },
+    arPlichtig: { refreshModel: true },
   };
 
   async model(params: Params) {
@@ -56,6 +58,14 @@ export default class RoadsignConceptsIndexRoute extends Route {
       } else {
         query['filter[:or:][:has-no:valid]'] = 'yes';
         query['filter[:or:][valid]'] = false;
+      }
+    }
+    if (isSome(params.arPlichtig)) {
+      if (params.arPlichtig === 'true') {
+        query['filter[ar-plichtig]'] = true;
+      } else {
+        query['filter[:or:][:has-no:ar-plichtig]'] = 'yes';
+        query['filter[:or:][ar-plichtig]'] = false;
       }
     }
 

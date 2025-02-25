@@ -68,6 +68,21 @@
   <div class="au-o-box">
     <div class="au-u-max-width-small">
       <form class="au-c-form" id="edit-traffic-light-concept-form" novalidate>
+
+        <AuFormRow>
+          {{#let @trafficLightConcept.error.arPlichtig as |error|}}
+            <AuLabel @error={{error}} for="ar-plichtig">
+              {{t "utility.ar-plichtig"}}
+            </AuLabel>
+          {{/let}}
+          <AuToggleSwitch
+            @onChange={{fn this.setBooleanValue "arPlichtig"}}
+            @checked={{@trafficLightConcept.arPlichtig}}
+            id="ar-plichtig"
+          >
+            <ArPlichtigStatus @status={{@trafficLightConcept.arPlichtig}} />
+          </AuToggleSwitch>
+        </AuFormRow>
         {{#let @trafficLightConcept.error.image as |error|}}
           <AuFormRow>
             <ImageInput

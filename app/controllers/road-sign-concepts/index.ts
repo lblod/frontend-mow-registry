@@ -17,6 +17,7 @@ export default class RoadsignConceptsIndexController extends Controller {
     'sort',
     'classifications',
     'validation',
+    'arPlichtig',
   ];
 
   declare model: ModelFrom<RoadsignConceptsIndexRoute>;
@@ -31,6 +32,7 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked classification?: string | null;
   @tracked sort = 'label';
   @tracked validation?: string | null;
+  @tracked arPlichtig?: string | null;
 
   get validationStatusOptions() {
     return [
@@ -38,10 +40,23 @@ export default class RoadsignConceptsIndexController extends Controller {
       { value: 'false', label: this.intl.t('validation-status.draft') },
     ];
   }
+  get arPlichtigStatusOptions() {
+    return [
+      { value: 'true', label: this.intl.t('ar-plichtig-status.ar-required') },
+      {
+        value: 'false',
+        label: this.intl.t('ar-plichtig-status.ar-not-required'),
+      },
+    ];
+  }
 
   get hasActiveFilter() {
     return Boolean(
-      this.label || this.meaning || this.classification || this.validation,
+      this.label ||
+        this.meaning ||
+        this.classification ||
+        this.validation ||
+        this.arPlichtig,
     );
   }
 
@@ -81,15 +96,23 @@ export default class RoadsignConceptsIndexController extends Controller {
       (option) => option.value === this.validation,
     );
   }
+  get selectedArPlichtigStatus() {
+    return this.arPlichtigStatusOptions.find(
+      (option) => option.value === this.arPlichtig,
+    );
+  }
   @action
-  updateValidationFilter(
-    selectedValidationStatus: (typeof this.validationStatusOptions)[number],
+  updateBooleanFilter(
+    filterName: 'validation' | 'arPlichtig',
+    selectedOption: typeof filterName extends 'validation'
+      ? (typeof this.validationStatusOptions)[number]
+      : (typeof this.arPlichtigStatusOptions)[number],
   ) {
-    if (selectedValidationStatus) {
-      this.validation = selectedValidationStatus.value;
+    if (selectedOption) {
+      this[filterName] = selectedOption.value;
       this.resetPagination();
     } else {
-      this.validation = null;
+      this[filterName] = null;
     }
   }
 
@@ -106,6 +129,7 @@ export default class RoadsignConceptsIndexController extends Controller {
     this.meaning = '';
     this.classification = null;
     this.validation = null;
+    this.arPlichtig = null;
     this.resetPagination();
   };
 

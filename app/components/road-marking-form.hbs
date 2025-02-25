@@ -68,6 +68,21 @@
   <div class="au-o-box">
     <div class="au-u-max-width-small">
       <form class="au-c-form" id="edit-road-marking-concept-form" novalidate>
+
+        <AuFormRow>
+          {{#let @roadMarkingConcept.error.arPlichtig as |error|}}
+            <AuLabel @error={{error}} for="ar-plichtig">
+              {{t "utility.ar-plichtig"}}
+            </AuLabel>
+          {{/let}}
+          <AuToggleSwitch
+            @onChange={{fn this.setBooleanValue "arPlichtig"}}
+            @checked={{@roadMarkingConcept.arPlichtig}}
+            id="ar-plichtig"
+          >
+            <ArPlichtigStatus @status={{@roadMarkingConcept.arPlichtig}} />
+          </AuToggleSwitch>
+        </AuFormRow>
         {{#let @roadMarkingConcept.error.image as |error|}}
           <AuFormRow>
             <ImageInput

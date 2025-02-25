@@ -12,6 +12,7 @@ type Params = {
   size: number;
   sort: string;
   validation?: string;
+  arPlichtig?: string;
 };
 
 export default class RoadmarkingConceptsIndexRoute extends Route {
@@ -24,6 +25,7 @@ export default class RoadmarkingConceptsIndexRoute extends Route {
     size: { refreshModel: true },
     sort: { refreshModel: true },
     validation: { refreshModel: true },
+    arPlichtig: { refreshModel: true },
   };
 
   async model(params: Params) {
@@ -49,6 +51,14 @@ export default class RoadmarkingConceptsIndexRoute extends Route {
       } else {
         query['filter[:or:][:has-no:valid]'] = 'yes';
         query['filter[:or:][valid]'] = false;
+      }
+    }
+    if (isSome(params.arPlichtig)) {
+      if (params.arPlichtig === 'true') {
+        query['filter[ar-plichtig]'] = true;
+      } else {
+        query['filter[:or:][:has-no:ar-plichtig]'] = 'yes';
+        query['filter[:or:][ar-plichtig]'] = false;
       }
     }
     return hash({

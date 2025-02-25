@@ -6,7 +6,15 @@ import { service } from '@ember/service';
 import type IntlService from 'ember-intl/services/intl';
 
 export default class RoadmarkingConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'label', 'meaning', 'sort', 'validation'];
+  queryParams = [
+    'page',
+    'size',
+    'label',
+    'meaning',
+    'sort',
+    'validation',
+    'arPlichtig',
+  ];
 
   @service
   declare intl: IntlService;
@@ -17,6 +25,7 @@ export default class RoadmarkingConceptsIndexController extends Controller {
   @tracked meaning = '';
   @tracked sort = ':no-case:label';
   @tracked validation?: string | null;
+  @tracked arPlichtig?: string | null;
 
   get validationStatusOptions() {
     return [
@@ -24,8 +33,19 @@ export default class RoadmarkingConceptsIndexController extends Controller {
       { value: 'false', label: this.intl.t('validation-status.draft') },
     ];
   }
+  get arPlichtigStatusOptions() {
+    return [
+      { value: 'true', label: this.intl.t('ar-plichtig-status.ar-required') },
+      {
+        value: 'false',
+        label: this.intl.t('ar-plichtig-status.ar-not-required'),
+      },
+    ];
+  }
   get hasActiveFilter() {
-    return Boolean(this.label || this.meaning || this.validation);
+    return Boolean(
+      this.label || this.meaning || this.validation || this.arPlichtig,
+    );
   }
 
   updateSearchFilterTask = restartableTask(
@@ -42,15 +62,23 @@ export default class RoadmarkingConceptsIndexController extends Controller {
       (option) => option.value === this.validation,
     );
   }
+  get selectedArPlichtigStatus() {
+    return this.arPlichtigStatusOptions.find(
+      (option) => option.value === this.arPlichtig,
+    );
+  }
   @action
-  updateValidationFilter(
-    selectedValidationStatus: (typeof this.validationStatusOptions)[number],
+  updateBooleanFilter(
+    filterName: 'validation' | 'arPlichtig',
+    selectedOption: typeof filterName extends 'validation'
+      ? (typeof this.validationStatusOptions)[number]
+      : (typeof this.arPlichtigStatusOptions)[number],
   ) {
-    if (selectedValidationStatus) {
-      this.validation = selectedValidationStatus.value;
+    if (selectedOption) {
+      this[filterName] = selectedOption.value;
       this.resetPagination();
     } else {
-      this.validation = null;
+      this[filterName] = null;
     }
   }
   @action onPageChange(newPage: number) {
@@ -65,6 +93,7 @@ export default class RoadmarkingConceptsIndexController extends Controller {
     this.label = '';
     this.meaning = '';
     this.validation = null;
+    this.arPlichtig = null;
     this.resetPagination();
   };
 

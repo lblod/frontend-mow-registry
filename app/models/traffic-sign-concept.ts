@@ -23,6 +23,7 @@ export default class TrafficSignConcept extends SkosConcept {
   declare [Type]: 'traffic-sign-concept';
   @attr declare meaning?: string;
   @attr declare valid?: boolean;
+  @attr declare arPlichtig?: boolean;
 
   @belongsTo<Image>('image', { async: true, inverse: null, polymorphic: true })
   declare image: AsyncBelongsTo<Image>;
@@ -43,6 +44,7 @@ export default class TrafficSignConcept extends SkosConcept {
   get validationSchema() {
     return super.validationSchema.keys({
       valid: validateBooleanOptional(),
+      arPlichtig: validateBooleanOptional(),
       image: validateBelongsToRequired(),
       meaning: validateStringRequired(),
       status: validateBelongsToOptional(),

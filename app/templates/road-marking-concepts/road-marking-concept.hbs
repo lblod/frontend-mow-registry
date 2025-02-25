@@ -1,4 +1,6 @@
-{{page-title (t "road-marking-concept.details" label=@model.roadMarkingConcept.label)}}
+{{page-title
+  (t "road-marking-concept.details" label=@model.roadMarkingConcept.label)
+}}
 
 <BreadcrumbsItem as |linkClass|>
   <LinkTo
@@ -34,6 +36,16 @@
             <div class="au-u-margin-top-small">
               <ContentCheck @concept={{@model.roadMarkingConcept}} />
             </div>
+          </dd>
+        </div>
+        <div>
+          <dt class="au-u-h5 au-u-medium">
+            {{t "utility.ar-plichtig"}}
+          </dt>
+          <dd class="au-u-muted">
+            <ArPlichtigStatus
+              @status={{@model.roadMarkingConcept.arPlichtig}}
+            />
           </dd>
         </div>
         <div>

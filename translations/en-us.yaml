@@ -17,6 +17,7 @@ login-page:
     published-by: Published by
     abb: Agency for Home Affairs
 utility:
+  ar-plichtig: AR Required
   incomplete-measure-error: Please add at least one traffic sign.
   variable: Variable
   variables: Variables
@@ -139,6 +140,8 @@ road-sign-concept:
     classification-filter-placeholder: Filter by classification
     validation-filter: Validation
     validation-filter-placeholder: Filter by validation status
+    ar-plichtig-filter: Requires AR
+    ar-plichtig-filter-placeholder: Filter by AR requirement
   landing-page:
     content: Manage traffic signs, sub-signs and instructions.
     button: Go to Road Signs
@@ -308,6 +311,9 @@ icon-catalog:
 validation-status:
   valid: Validated
   draft: Draft
+ar-plichtig-status:
+  ar-required: AR Required
+  ar-not-required: AR Not Required
 variable-signage-selector:
   yes: Variable
   no: Not variable

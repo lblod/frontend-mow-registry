@@ -26,6 +26,7 @@
   </Group>
   <Group>
     <AuButtonGroup>
+
       <AuButton
         @disabled={{or @roadSignConcept.error this.isSaving}}
         @loading={{this.isSaving}}
@@ -58,6 +59,21 @@
   <div class="au-o-box">
     <div class="au-u-max-width-small">
       <form class="au-c-form" id="edit-road-sign-concept-form" novalidate>
+        <AuFormRow>
+
+          {{#let @roadSignConcept.error.arPlichtig as |error|}}
+            <AuLabel @error={{error}} for="ar-plichtig">
+              {{t "utility.ar-plichtig"}}
+            </AuLabel>
+          {{/let}}
+          <AuToggleSwitch
+            @onChange={{fn this.setBooleanValue "arPlichtig"}}
+            @checked={{@roadSignConcept.arPlichtig}}
+            id="ar-plichtig"
+          >
+            <ArPlichtigStatus @status={{@roadSignConcept.arPlichtig}} />
+          </AuToggleSwitch>
+        </AuFormRow>
         {{#let @roadSignConcept.error.image as |error|}}
           <AuFormRow>
             <ImageInput

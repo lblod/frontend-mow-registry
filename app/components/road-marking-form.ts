@@ -6,6 +6,7 @@ import type RouterService from '@ember/routing/router-service';
 import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import Store from '@ember-data/store';
 import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 
 type Args = {
   roadMarkingConcept: RoadMarkingConcept;
@@ -20,14 +21,24 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   }
 
   @action
-  async setRoadMarkingConceptValue(attributeName: string, event: InputEvent) {
-    this.args.roadMarkingConcept.set(
-      attributeName,
-      (event.target as HTMLInputElement).value,
-    );
+  async setRoadMarkingConceptValue(
+    attributeName: ModifiableKeysOfType<RoadMarkingConcept, string>,
+    event: InputEvent,
+  ) {
+    this.args.roadMarkingConcept[attributeName] = (
+      event.target as HTMLInputElement
+    ).value;
     await this.args.roadMarkingConcept.validateProperty(attributeName);
   }
 
+  @action
+  async setBooleanValue(
+    attributeName: ModifiableKeysOfType<RoadMarkingConcept, boolean>,
+    value: boolean,
+  ) {
+    this.args.roadMarkingConcept[attributeName] = value;
+    await this.args.roadMarkingConcept.validateProperty(attributeName);
+  }
   editRoadMarkingConceptTask = dropTask(async (event: InputEvent) => {
     event.preventDefault();
 
