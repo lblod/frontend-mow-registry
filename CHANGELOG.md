@@ -1,5 +1,15 @@
 # frontend-mow-registry
 
+## 2.2.0
+
+### Minor Changes
+
+- [#310](https://github.com/lblod/frontend-mow-registry/pull/310) [`5d40f64`](https://github.com/lblod/frontend-mow-registry/commit/5d40f64eb2f1d039a9b6f8274c2b3ad154c5eaa8) Thanks [@andreo141](https://github.com/andreo141)! - Add ar-plichtig property to signs, markings and lights, along with appropriate filtering and sorting features
+
+### Patch Changes
+
+- [#317](https://github.com/lblod/frontend-mow-registry/pull/317) [`b83f872`](https://github.com/lblod/frontend-mow-registry/commit/b83f872bf4098d64b6b895c40a2a2f9818b70082) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Fix: variable name no longer changes on selecting variable type if it was modified before
+
 ## 2.1.0
 
 ### Minor Changes
