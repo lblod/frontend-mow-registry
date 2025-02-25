@@ -1,5 +1,35 @@
 # frontend-mow-registry
 
+## 2.1.0
+
+### Minor Changes
+
+- The user can now set the variables as required or not
+
+## 2.0.0
+
+### Major Changes
+
+- [`63f51cc`](https://github.com/lblod/frontend-mow-registry/commit/63f51cc3cdc71fc28ee1faea756a313f9d2d4c80) Thanks [@abeforgit](https://github.com/abeforgit)! - Support new datamodel
+
+### Minor Changes
+
+- [#315](https://github.com/lblod/frontend-mow-registry/pull/315) [`51d70bf`](https://github.com/lblod/frontend-mow-registry/commit/51d70bf895d40dcc850be44356bd9584d0ffa80f) Thanks [@elpoelma](https://github.com/elpoelma)! - Remove no longer supported `annotated` property on `Template` model
+
+- [#261](https://github.com/lblod/frontend-mow-registry/pull/261) [`6bc475c`](https://github.com/lblod/frontend-mow-registry/commit/6bc475c01c2e9aac3accb6b84dc2986cbd3fa0cc) Thanks [@aliokan](https://github.com/aliokan)! - allow registry admins to add/delete icons to concepts within a codelist
+
+- [#254](https://github.com/lblod/frontend-mow-registry/pull/254) [`6636a0e`](https://github.com/lblod/frontend-mow-registry/commit/6636a0e895812eb9081306804b24b3b03b6857e5) Thanks [@aliokan](https://github.com/aliokan)! - Add Icon Catalog
+
+- [#315](https://github.com/lblod/frontend-mow-registry/pull/315) [`51d70bf`](https://github.com/lblod/frontend-mow-registry/commit/51d70bf895d40dcc850be44356bd9584d0ffa80f) Thanks [@elpoelma](https://github.com/elpoelma)! - Add `preview` property to `Template` model and adjust search-field
+
+### Patch Changes
+
+- [#313](https://github.com/lblod/frontend-mow-registry/pull/313) [`17b6c35`](https://github.com/lblod/frontend-mow-registry/commit/17b6c357ebdccd493f00c87061ebfbca2665a322) Thanks [@elpoelma](https://github.com/elpoelma)! - Cleanup unused code related to annotating templates
+
+- [#314](https://github.com/lblod/frontend-mow-registry/pull/314) [`7372299`](https://github.com/lblod/frontend-mow-registry/commit/7372299b9b5d9c3f3b77b35d572f7d63c42b79e7) Thanks [@elpoelma](https://github.com/elpoelma)! - Variables: replace instances of `value` attribute by `label`
+
+- [#264](https://github.com/lblod/frontend-mow-registry/pull/264) [`fb63256`](https://github.com/lblod/frontend-mow-registry/commit/fb63256b6c990eae35f87aa0d08af157ab97494e) Thanks [@andreo141](https://github.com/andreo141)! - Remove all instances of "definition"
+
 ## 1.4.5
 
 ### Patch Changes

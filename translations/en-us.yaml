@@ -138,6 +138,8 @@ road-sign-concept:
     meaning-filter-placeholder: Search by meaning
     classification-filter: Classification
     classification-filter-placeholder: Filter by classification
+    validation-filter: Validation
+    validation-filter-placeholder: Filter by validation status
   landing-page:
     content: Manage traffic signs, sub-signs and instructions.
     button: Go to Road Signs
@@ -169,6 +171,8 @@ traffic-light-concept:
     label-filter-placeholder: Search by label
     meaning-filter: Meaning
     meaning-filter-placeholder: Search by meaning
+    validation-filter: Validation
+    validation-filter-placeholder: Filter by validation status
   landing-page:
     content: Manage traffic lights and instructions.
     button: Go to Traffic Lights
@@ -201,6 +205,8 @@ road-marking-concept:
     label-filter-placeholder: Search by label
     meaning-filter: Meaning
     meaning-filter-placeholder: Search by meaning
+    validation-filter: Validation
+    validation-filter-placeholder: Filter by validation status
   landing-page:
     content: Manage road markings and instructions.
     button: Go to Road Markings
@@ -232,6 +238,7 @@ traffic-measure-concept:
     no-data: No traffic measures
     edit: Edit measure {label}
     label-filter-placeholder: Search by label
+    text-filter-placeholder: Search by text
     type-filter: Filter by type
     no-matches: No results found
     type-to-search: Type to search

@@ -9,6 +9,7 @@
           <:header>
             <tr>
               <th>{{t "utility.variable"}}</th>
+              <th>{{t "utility.required"}}</th>
               <th>{{t "utility.type"}}</th>
               <th></th>
             </tr>
@@ -18,14 +19,23 @@
               <tr>
                 <td>
                   <AuInput
-                    value={{variable.value}}
-                    @error={{variable.error.value}}
-                    {{on "input" (fn this.setVariableValue variable)}}
+                    value={{variable.label}}
+                    @error={{variable.error.label}}
+                    {{on "input" (fn this.setVariableLabel variable)}}
                   />
-                  <ErrorMessage @error={{variable.error.value}} />
+                  <ErrorMessage @error={{variable.error.label}} />
                 </td>
                 {{! template-lint-disable no-inline-styles }}
-                <td style="width: 50%;">
+                <td style="width: 33%;">
+                  <AuCheckbox
+                    @value={{variable.required}}
+                    @checked={{variable.required}}
+                    @onChange={{fn this.setVariableRequired variable}}
+                  >
+                    {{t "utility.required"}}
+                  </AuCheckbox>
+                </td>
+                <td style="width: 33%;">
                   <div
                     class={{if variable.error.type "ember-power-select--error"}}
                   >

@@ -8,6 +8,7 @@ type Params = {
   page: number;
   size: number;
   sort: string;
+  templateValue: string;
 };
 export default class TrafficMeasureConceptsIndexRoute extends Route {
   @service declare store: Store;
@@ -18,6 +19,7 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
+    templateValue: { refreshModel: true },
   };
 
   async model(params: Params) {
@@ -32,6 +34,10 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
 
     if (params.label) {
       query['filter[label]'] = params.label;
+    }
+
+    if (params.templateValue) {
+      query['filter[template][preview]'] = params.templateValue;
     }
 
     const result = await this.store.query<TrafficMeasureConcept>(

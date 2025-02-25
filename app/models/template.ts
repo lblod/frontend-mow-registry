@@ -13,12 +13,14 @@ import {
   validateBelongsToOptional,
   validateHasManyOptional,
   validateStringRequired,
+  validateStringOptional,
 } from 'mow-registry/validators/schema';
 
 export default class Template extends Document {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'template';
   @attr declare value?: string;
+  @attr declare preview?: string;
 
   @hasMany<Variable>('variable', { inverse: null, async: true })
   declare variables: AsyncHasMany<Variable>;
@@ -34,6 +36,7 @@ export default class Template extends Document {
       value: validateStringRequired(),
       variables: validateHasManyOptional(),
       parentConcept: validateBelongsToOptional(),
+      preview: validateStringOptional(),
     });
   }
 }

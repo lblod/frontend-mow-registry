@@ -137,6 +137,8 @@ road-sign-concept:
     meaning-filter-placeholder: Zoeken op betekenis
     classification-filter: Classificatie
     classification-filter-placeholder: Filteren op classificatie
+    validation-filter: Validatie
+    validation-filter-placeholder: Filteren op validatie-status
   landing-page:
     content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden
@@ -161,6 +163,8 @@ traffic-light-concept:
     label-filter-placeholder: Zoeken op label
     meaning-filter: Betekenis
     meaning-filter-placeholder: Zoeken op betekenis
+    validation-filter: Validatie
+    validation-filter-placeholder: Filteren op validatie-status
   landing-page:
     content: Beheer verkeerlichten en instructies.
     button: Ga naar Verkeerslichten
@@ -193,6 +197,8 @@ road-marking-concept:
     label-filter-placeholder: Zoeken op label
     meaning-filter: Betekenis
     meaning-filter-placeholder: Zoeken op betekenis
+    validation-filter: Validatie
+    validation-filter-placeholder: Filteren op validatie-status
   landing-page:
     content: Beheer wegmarkeringen en instructies.
     button: Ga naar Wegmarkeringen
@@ -224,6 +230,7 @@ traffic-measure-concept:
     no-data: Geen mobiliteitsmaatregelen
     edit: Maatregel {label} bewerken
     label-filter-placeholder: Zoeken op label
+    text-filter-placeholder: Zoeken op tekst
     type-filter: Filteren op type
     no-matches: Geen resultaten gevonden
     type-to-search: Typ om te zoeken

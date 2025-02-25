@@ -7,16 +7,17 @@ import {
   validateBelongsToOptional,
   validateStringOptional,
   validateStringRequired,
+  validateBooleanRequired,
 } from 'mow-registry/validators/schema';
 
 export default class Variable extends Resource {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'variable';
   @attr declare uri: string;
-  @attr declare label?: string;
   @attr declare type?: string;
-  @attr declare value?: string;
+  @attr declare label?: string;
   @attr declare defaultValue?: string;
+  @attr({ defaultValue: true }) declare required?: boolean;
 
   @belongsTo<CodeList>('code-list', { inverse: 'variables', async: true })
   declare codeList: AsyncBelongsTo<CodeList>;
@@ -29,8 +30,8 @@ export default class Variable extends Resource {
       uri: validateStringOptional(),
       label: validateStringRequired(),
       type: validateStringRequired(),
-      value: validateStringRequired(),
       defaultValue: validateStringOptional(),
+      required: validateBooleanRequired(),
       codeList: validateBelongsToOptional(),
       template: validateBelongsToOptional(),
     });

@@ -3,6 +3,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import { isSome } from 'mow-registry/utils/option';
 import { hash } from 'rsvp';
 
 type Params = {
@@ -12,6 +13,7 @@ type Params = {
   size: number;
   sort: string;
   classification?: string;
+  validation?: string;
 };
 
 export default class RoadsignConceptsIndexRoute extends Route {
@@ -24,6 +26,7 @@ export default class RoadsignConceptsIndexRoute extends Route {
     size: { refreshModel: true },
     sort: { refreshModel: true },
     classification: { refreshModel: true },
+    validation: { refreshModel: true },
   };
 
   async model(params: Params) {
@@ -46,6 +49,14 @@ export default class RoadsignConceptsIndexRoute extends Route {
 
     if (params.classification) {
       query['filter[classifications][:id:]'] = params.classification;
+    }
+    if (isSome(params.validation)) {
+      if (params.validation === 'true') {
+        query['filter[valid]'] = true;
+      } else {
+        query['filter[:or:][:has-no:valid]'] = 'yes';
+        query['filter[:or:][valid]'] = false;
+      }
     }
 
     return hash({
