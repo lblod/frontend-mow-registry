@@ -38,6 +38,14 @@
         </div>
         <div>
           <dt class="au-u-h5 au-u-medium">
+            {{t "utility.ar-plichtig"}}
+          </dt>
+          <dd class="au-u-muted">
+            <ArPlichtigStatus @status={{@model.roadSignConcept.arPlichtig}} />
+          </dd>
+        </div>
+        <div>
+          <dt class="au-u-h5 au-u-medium">
             {{t "road-sign-concept.attr.label"}}
           </dt>
           <dd class="au-u-muted">

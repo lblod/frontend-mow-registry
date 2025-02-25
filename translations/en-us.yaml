@@ -17,7 +17,7 @@ login-page:
     published-by: Published by
     abb: Agency for Home Affairs
 utility:
-  ar-plichtig: AR Required 
+  ar-plichtig: AR Required
   incomplete-measure-error: Please add at least one traffic sign.
   variable: Variable
   variables: Variables
@@ -309,6 +309,7 @@ icon-catalog:
 validation-status:
   valid: Validated
   draft: Draft
+ar-plichtig-status:
   ar-required: AR Required
   ar-not-required: AR Not Required
 variable-signage-selector:

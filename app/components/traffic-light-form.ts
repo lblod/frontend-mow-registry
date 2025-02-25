@@ -6,6 +6,7 @@ import type RouterService from '@ember/routing/router-service';
 import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import Store from '@ember-data/store';
 import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 
 type Args = {
   trafficLightConcept: TrafficLightConcept;
@@ -20,14 +21,24 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   }
 
   @action
-  async setTrafficLightConceptValue(attributeName: string, event: InputEvent) {
-    this.args.trafficLightConcept.set(
-      attributeName,
-      (event.target as HTMLInputElement).value,
-    );
+  async setTrafficLightConceptValue(
+    attributeName: ModifiableKeysOfType<TrafficLightConcept, string>,
+    event: InputEvent,
+  ) {
+    this.args.trafficLightConcept[attributeName] = (
+      event.target as HTMLInputElement
+    ).value;
     await this.args.trafficLightConcept.validateProperty(attributeName);
   }
 
+  @action
+  async setBooleanValue(
+    attributeName: ModifiableKeysOfType<TrafficLightConcept, boolean>,
+    value: boolean,
+  ) {
+    this.args.trafficLightConcept[attributeName] = value;
+    await this.args.trafficLightConcept.validateProperty(attributeName);
+  }
   editTrafficLightConceptTask = dropTask(async (event: InputEvent) => {
     event.preventDefault();
     await this.args.trafficLightConcept.validate();

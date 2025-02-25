@@ -17,7 +17,7 @@ login-page:
     published-by: Uitgegeven door
     abb: Agentschap Binnenlands Bestuur
 utility:
-  ar-plichtig: AR-Plichtig 
+  ar-plichtig: AR-Plichtig
   incomplete-measure-error: Voeg minstens één verkeersteken toe
   variable: Variabele
   variables: Variabelen
@@ -308,6 +308,7 @@ icon-catalog:
 validation-status:
   valid: Gevalideerd
   draft: Ontwerp
+ar-plichtig-status:
   ar-required: AR-Plichtig
   ar-not-required: Niet AR-Plichtig
 variable-signage-selector:
