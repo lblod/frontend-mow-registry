@@ -139,6 +139,8 @@ road-sign-concept:
     classification-filter-placeholder: Filteren op classificatie
     validation-filter: Validatie
     validation-filter-placeholder: Filteren op validatie-status
+    ar-plichtig-filter: AR-Plichtig
+    ar-plichtig-filter-placeholder: Filteren op AR-plicht
   landing-page:
     content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden

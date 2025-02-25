@@ -65,11 +65,31 @@
               "road-sign-concept.crud.validation-filter-placeholder"
             }}
             @loadingMessage={{t "utility.loading"}}
-            @onChange={{this.updateValidationFilter}}
+            @onChange={{fn this.updateBooleanFilter "validation"}}
             @triggerId="validation-filter"
             as |validation|
           >
             {{validation.label}}
+          </PowerSelect>
+        </div>
+
+        <div>
+          <AuLabel for="ar-plichtig-filter">
+            {{t "road-sign-concept.crud.ar-plichtig-filter"}}
+          </AuLabel>
+          <PowerSelect
+            @allowClear={{true}}
+            @options={{this.arPlichtigStatusOptions}}
+            @selected={{this.selectedArPlichtigStatus}}
+            @placeholder={{t
+              "road-sign-concept.crud.ar-plichtig-filter-placeholder"
+            }}
+            @loadingMessage={{t "utility.loading"}}
+            @onChange={{fn this.updateBooleanFilter "arPlichtig"}}
+            @triggerId="ar-plichtig-filter"
+            as |ar|
+          >
+            {{ar.label}}
           </PowerSelect>
         </div>
         <ResetFilters

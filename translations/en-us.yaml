@@ -140,6 +140,8 @@ road-sign-concept:
     classification-filter-placeholder: Filter by classification
     validation-filter: Validation
     validation-filter-placeholder: Filter by validation status
+    ar-plichtig-filter: Requires AR
+    ar-plichtig-filter-placeholder: Filter by AR requirement
   landing-page:
     content: Manage traffic signs, sub-signs and instructions.
     button: Go to Road Signs
