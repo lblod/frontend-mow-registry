@@ -82,6 +82,48 @@
           <VariableSignageSelector @concept={{@trafficMeasureConcept}} />
         </div>
       </div>
+      {{#let @trafficMeasureConcept.error.startDate as |error|}}
+          {{#let @trafficMeasureConcept.warning.startDate as |warning|}}
+            <AuFormRow>
+              <AuLabel
+                @error={{error}}
+                @warning={{warning}}
+                for="startDate"
+              >
+                {{t "utility.start-date"}}&nbsp;
+              </AuLabel>
+              <AuDatePicker
+                @error={{error}}
+                @warning={{warning}}
+                id="startDate"
+                @value={{@trafficMeasureConcept.startDate}}
+                @onChange={{fn this.setTrafficMeasureDate 'startDate'}}
+              />
+              <ErrorMessage @error={{error}} @warning={{warning}} />
+            </AuFormRow>
+          {{/let}}
+        {{/let}}
+        {{#let @trafficMeasureConcept.error.endDate as |error|}}
+          {{#let @trafficMeasureConcept.warning.endDate as |warning|}}
+            <AuFormRow>
+              <AuLabel
+                @error={{error}}
+                @warning={{warning}}
+                for="endDate"
+              >
+                {{t "utility.end-date"}}&nbsp;
+              </AuLabel>
+              <AuDatePicker
+                @error={{error}}
+                @warning={{warning}}
+                id="endDate"
+                @value={{@trafficMeasureConcept.endDate}}
+                @onChange={{fn this.setTrafficMeasureDate 'endDate'}}
+              />
+              <ErrorMessage @error={{error}} @warning={{warning}} />
+            </AuFormRow>
+          {{/let}}
+        {{/let}}
       <AuHeading
         @level="4"
         @skin="4"

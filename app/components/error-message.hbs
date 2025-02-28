@@ -3,3 +3,14 @@
     {{t @error.message}}
   </AuHelpText>
 {{/if}}
+{{#if @warning}}
+  <AuHelpText @warning={{true}}>
+    {{#if @warning.messageArray}}
+      {{#each @warning.messageArray as |message|}}
+        {{t message}}
+      {{/each}}
+    {{else}}
+      {{t @warning.message}}
+    {{/if}}
+  </AuHelpText>
+{{/if}}

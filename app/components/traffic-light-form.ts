@@ -39,6 +39,27 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
     this.args.trafficLightConcept[attributeName] = value;
     await this.args.trafficLightConcept.validateProperty(attributeName);
   }
+  @action
+  async setTrafficLightDate(attribute, isoDate, date: Date) {
+    if (attribute === 'endDate') {
+      date.setHours(23);
+      date.setMinutes(59);
+      date.setSeconds(59);
+    }
+    this.args.trafficLightConcept.set(attribute, date);
+    if (
+      this.args.trafficLightConcept.startDate &&
+      this.args.trafficLightConcept.endDate
+    ) {
+      await this.args.trafficLightConcept.validateProperty('startDate', {
+        warnings: true,
+      });
+      await this.args.trafficLightConcept.validateProperty('endDate', {
+        warnings: true,
+      });
+    }
+  }
+
   editTrafficLightConceptTask = dropTask(async (event: InputEvent) => {
     event.preventDefault();
     await this.args.trafficLightConcept.validate();

@@ -16,6 +16,8 @@ import {
   validateBooleanOptional,
   validateHasManyOptional,
   validateStringOptional,
+  validateDateOptional,
+  validateEndDate,
 } from 'mow-registry/validators/schema';
 import AbstractValidationModel from './abstract-validation-model';
 
@@ -24,6 +26,8 @@ export default class TrafficMeasureConcept extends AbstractValidationModel {
   @attr declare label?: string;
   @attr declare variableSignage?: boolean;
   @attr declare valid?: boolean;
+  @attr('date') declare startDate;
+  @attr('date') declare endDate;
 
   @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;
@@ -46,6 +50,8 @@ export default class TrafficMeasureConcept extends AbstractValidationModel {
       zonality: validateBelongsToRequired(),
       relatedTrafficSignConcepts: validateHasManyOptional(),
       template: validateBelongsToOptional(),
+      startDate: validateDateOptional(),
+      endDate: validateEndDate(),
     });
   }
 }

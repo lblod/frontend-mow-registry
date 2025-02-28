@@ -125,6 +125,46 @@
             <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
+        {{#let @roadSignConcept.error.startDate as |error|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              for="startDate"
+            >
+              {{t "utility.start-date"}}&nbsp;
+            </AuLabel>
+            <AuDatePicker
+              @error={{error}}
+              id="startDate"
+              @value={{@roadSignConcept.startDate}}
+              @onChange={{fn this.setRoadsignDate 'startDate'}}
+            />
+            <ErrorMessage @error={{error}} />
+          </AuFormRow>
+        {{/let}}
+        {{#let @roadSignConcept.error.endDate as |error|}}
+          {{#let @roadSignConcept.warning.endDate as |warning|}}
+            <AuFormRow>
+              <AuLabel
+                @error={{error}}
+                @warning={{warning}}
+                for="endDate"
+              >
+                {{t "utility.end-date"}}&nbsp;
+              </AuLabel>
+              <AuDatePicker
+                @error={{error}}
+                id="endDate"
+                @value={{@roadSignConcept.endDate}}
+                @onChange={{fn this.setRoadsignDate 'endDate'}}
+              />
+              <ErrorMessage @error={{error}} @warning={{warning}} />
+            </AuFormRow>
+          {{/let}}
+        {{/let}}
+        <AuHelpText>
+          {{t "utility.modifying-validity-dates-warning"}}
+        </AuHelpText>
         {{#let @roadSignConcept.error.classifications as |error|}}
           <AuFormRow>
             <AuLabel

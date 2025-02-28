@@ -17,6 +17,7 @@ interface ValidationErrorDetails {
  */
 export default class AbstractValidationModel extends Model {
   @tracked _validationError?: ValidationErrorDetails;
+  @tracked _validationWarning?: ValidationErrorDetails;
 
   /**
    * Get the validation schema for the model. Should be overridden in subclasses.
@@ -30,6 +31,13 @@ export default class AbstractValidationModel extends Model {
    */
   get error() {
     return this._validationError;
+  }
+
+  /**
+   * Get the validation warnings for the model.
+   */
+  get warning() {
+    return this._validationWarning;
   }
 
   /**
@@ -71,14 +79,21 @@ export default class AbstractValidationModel extends Model {
     try {
       const propertyRule = this.validationSchema.extract([propertyName]);
       const partialSchema = Joi.object({ [propertyName]: propertyRule });
-      await partialSchema.validateAsync(serializedModel, {
-        abortEarly: false,
-        allowUnknown: true,
-        context: {
-          changedAttributes: this.changedAttributes(),
-          ...options,
+      const validationResult = await partialSchema.validateAsync(
+        serializedModel,
+        {
+          abortEarly: false,
+          allowUnknown: true,
+          warnings: options.warnings,
+          context: {
+            changedAttributes: this.changedAttributes(),
+            ...options,
+          },
         },
-      });
+      );
+      this._validationWarning = this.#mapValidationError(
+        validationResult.warning,
+      );
     } catch (error: unknown) {
       if (error instanceof ValidationError) {
         this._validationError = {

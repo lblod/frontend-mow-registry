@@ -14,6 +14,8 @@ import {
   validateHasManyOptional,
   validateStringRequired,
   validateStringOptional,
+  validateDateOptional,
+  validateEndDate,
 } from 'mow-registry/validators/schema';
 
 export default class Template extends Document {
@@ -21,6 +23,8 @@ export default class Template extends Document {
   declare [Type]: 'template';
   @attr declare value?: string;
   @attr declare preview?: string;
+  @attr('date') declare startDate;
+  @attr('date') declare endDate;
 
   @hasMany<Variable>('variable', { inverse: null, async: true })
   declare variables: AsyncHasMany<Variable>;
@@ -37,6 +41,9 @@ export default class Template extends Document {
       variables: validateHasManyOptional(),
       parentConcept: validateBelongsToOptional(),
       preview: validateStringOptional(),
+      startDate: validateDateOptional(),
+      endDate: validateEndDate(),
+      parentSign: validateBelongsToOptional(),
     });
   }
 }
