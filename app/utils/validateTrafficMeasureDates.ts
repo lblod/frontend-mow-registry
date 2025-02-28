@@ -13,7 +13,6 @@ export default async function validateTrafficMeasureDates(
       minEndDate = sign.endDate;
     }
   }
-  console.log(minEndDate);
   if (trafficMeasure.startDate < maxStartDate) {
     if (!trafficMeasure._validationWarning) {
       trafficMeasure._validationWarning = {};

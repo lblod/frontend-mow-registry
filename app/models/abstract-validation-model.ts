@@ -91,9 +91,13 @@ export default class AbstractValidationModel extends Model {
           },
         },
       );
-      this._validationWarning = this.#mapValidationError(
-        validationResult.warning,
-      );
+      if (validationResult.warning) {
+        this._validationWarning = this.#mapValidationError(
+          validationResult.warning,
+        );
+      } else {
+        this._validationWarning = {};
+      }
     } catch (error: unknown) {
       if (error instanceof ValidationError) {
         this._validationError = {

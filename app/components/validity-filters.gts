@@ -6,7 +6,6 @@ import AuDatePicker from '@appuniversum/ember-appuniversum/components/au-date-pi
 import { action } from '@ember/object';
 
 function convertToDate(date) {
-    console.log(date)
     return new Date(date);
   }
 
