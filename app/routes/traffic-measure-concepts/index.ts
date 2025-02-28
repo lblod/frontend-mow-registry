@@ -2,6 +2,7 @@ import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
+import generateValidityFilter from 'mow-registry/utils/generateValidityFilter';
 
 type Params = {
   label?: string;
@@ -20,6 +21,9 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
     size: { refreshModel: true },
     sort: { refreshModel: true },
     templateValue: { refreshModel: true },
+    validityOption: { refreshModel: true },
+    validityStartDate: { refreshModel: true },
+    validityEndDate: { refreshModel: true },
   };
 
   async model(params: Params) {
@@ -30,14 +34,25 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
         size: params.size,
       },
       include: 'template',
+      filter: {},
     };
-
     if (params.label) {
-      query['filter[label]'] = params.label;
+      query.filter.label = params.label;
     }
 
     if (params.templateValue) {
-      query['filter[template][preview]'] = params.templateValue;
+      query.filter.template = { preview: params.templateValue };
+    }
+
+    if (params.validityOption) {
+      query.filter = {
+        ...query.filter,
+        ...generateValidityFilter({
+          validity: params.validityOption,
+          startDate: params.validityStartDate,
+          endDate: params.validityEndDate,
+        }),
+      };
     }
 
     const result = await this.store.query<TrafficMeasureConcept>(
