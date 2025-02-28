@@ -4,13 +4,15 @@
   </AuHelpText>
 {{/if}}
 {{#if @warning}}
-  <AuHelpText @warning={{true}}>
-    {{#if @warning.messageArray}}
-      {{#each @warning.messageArray as |message|}}
+ {{#if @warning.messageArray}}
+    {{#each @warning.messageArray as |message|}}
+      <AuHelpText @warning={{true}}>
         {{t message}}
-      {{/each}}
-    {{else}}
+      </AuHelpText>
+    {{/each}}
+  {{else}}
+    <AuHelpText @warning={{true}}>
       {{t @warning.message}}
-    {{/if}}
-  </AuHelpText>
+    </AuHelpText>
+  {{/if}}
 {{/if}}
