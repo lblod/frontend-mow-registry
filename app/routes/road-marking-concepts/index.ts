@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import { isSome } from 'mow-registry/utils/option';
 import { hash } from 'rsvp';
-import generateValidityFilter from 'mow-registry/utils/generateValidityFilter';
+import generateValidityFilter from 'mow-registry/utils/generate-validity-filter';
 
 type Params = {
   label?: string;

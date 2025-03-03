@@ -1,7 +1,7 @@
 import AddInstruction from './add-instruction';
 import { task } from 'ember-concurrency';
 import { removeItem } from 'mow-registry/utils/array';
-import validateTemplateDates from 'mow-registry/utils/validateTemplateDates';
+import validateTemplateDates from 'mow-registry/utils/validate-template-dates';
 import { action } from '@ember/object';
 
 // This is a copy of the `AddInstruction` component since that is used in multiple places, but we need to adjust the layout

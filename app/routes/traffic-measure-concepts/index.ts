@@ -2,7 +2,7 @@ import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
-import generateValidityFilter from 'mow-registry/utils/generateValidityFilter';
+import generateValidityFilter from 'mow-registry/utils/generate-validity-filter';
 
 type Params = {
   label?: string;

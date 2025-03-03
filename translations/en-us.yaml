@@ -333,3 +333,6 @@ errors:
 validity-filter:
   label: Validity
   placeholder: Filter by validity status
+  valid: Currently valid
+  expired: Expired
+  custom: Custom period

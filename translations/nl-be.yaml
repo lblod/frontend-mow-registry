@@ -328,6 +328,9 @@ errors:
   end-date-greater-than-start-date: De einddatum moet groter zijn dan de begindatum.
   start-date-less-than-parent-sign: De begindatum moet later zijn dan de begindatum van het ouderbord.
   end-date-more-than-parent-sign: De einddatum moet vroeger zijn dan de einddatum van het ouderbord.
-validity-filer:
+validity-filter:
   label: Geldigheid
   placeholder: Filter op geldigheidsstatus
+  valid: Momenteel geldig
+  expired: Verlopen
+  custom: Aangepaste periode

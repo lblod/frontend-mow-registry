@@ -163,6 +163,7 @@
               </AuLabel>
               <AuDatePicker
                 @error={{error}}
+                @warning={{warning}}
                 id="endDate"
                 @value={{@roadMarkingConcept.endDate}}
                 @onChange={{fn this.setRoadMarkingDate 'endDate'}}

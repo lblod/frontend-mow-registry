@@ -5,7 +5,7 @@ import type RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import { isSome } from 'mow-registry/utils/option';
 import { hash } from 'rsvp';
-import generateValidityFilter from 'mow-registry/utils/generateValidityFilter';
+import generateValidityFilter from 'mow-registry/utils/generate-validity-filter';
 
 type Params = {
   label?: string;

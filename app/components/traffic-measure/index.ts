@@ -21,7 +21,7 @@ import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 import Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
-import validateTrafficMeasureDates from 'mow-registry/utils/validateTrafficMeasureDates';
+import validateTrafficMeasureDates from 'mow-registry/utils/validate-traffic-measure-dates';
 
 export type InputType = {
   value: string;

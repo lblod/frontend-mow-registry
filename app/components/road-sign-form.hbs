@@ -154,6 +154,7 @@
               </AuLabel>
               <AuDatePicker
                 @error={{error}}
+                @warning={{warning}}
                 id="endDate"
                 @value={{@roadSignConcept.endDate}}
                 @onChange={{fn this.setRoadsignDate 'endDate'}}

@@ -163,6 +163,7 @@
               </AuLabel>
               <AuDatePicker
                 @error={{error}}
+                @warning={{warning}}
                 id="endDate"
                 @value={{@trafficLightConcept.endDate}}
                 @onChange={{fn this.setTrafficLightDate 'endDate'}}
