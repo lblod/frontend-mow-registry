@@ -58,6 +58,27 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
+  async setRoadsignDate(attribute, isoDate, date: Date) {
+    if (attribute === 'endDate') {
+      date.setHours(23);
+      date.setMinutes(59);
+      date.setSeconds(59);
+    }
+    this.args.roadSignConcept.set(attribute, date);
+    if (
+      this.args.roadSignConcept.startDate &&
+      this.args.roadSignConcept.endDate
+    ) {
+      await this.args.roadSignConcept.validateProperty('startDate', {
+        warnings: true,
+      });
+      await this.args.roadSignConcept.validateProperty('endDate', {
+        warnings: true,
+      });
+    }
+  }
+
+  @action
   async addShape() {
     const shape = this.store.createRecord<TribontShape>('tribont-shape', {});
     (await this.args.roadSignConcept.shapes).push(shape);

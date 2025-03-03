@@ -5,7 +5,17 @@ import { action } from '@ember/object';
 import type Template from 'mow-registry/models/template';
 
 export default class TrafficMeasureConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'label', 'template', 'sort', 'templateValue'];
+  queryParams = [
+    'page',
+    'size',
+    'label',
+    'template',
+    'sort',
+    'templateValue',
+    'validityOption',
+    'validityStartDate',
+    'validityEndDate',
+  ];
 
   @tracked page = 0;
   @tracked size = 30;
@@ -13,6 +23,13 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   @tracked template?: Template | null;
   @tracked templateValue = '';
   @tracked sort = ':no-case:label';
+  @tracked validityOption?: string | null;
+  @tracked validityStartDate?: string | null;
+  @tracked validityEndDate?: string | null;
+
+  get hasActiveFilter() {
+    return Boolean(this.label || this.templateValue || this.validityOption);
+  }
 
   updateSearchFilterTask = restartableTask(
     async (
@@ -34,6 +51,14 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
     },
   );
 
+  @action
+  updateValidityFilter({ validityOption, startDate, endDate }) {
+    this.validityOption = validityOption;
+    this.validityStartDate = startDate;
+    this.validityEndDate = endDate;
+    this.resetPagination();
+  }
+
   @action onPageChange(newPage: number) {
     this.page = newPage;
   }
@@ -45,4 +70,12 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   resetPagination() {
     this.page = 0;
   }
+  resetFilters = () => {
+    this.label = '';
+    this.templateValue = '';
+    this.validityOption = null;
+    this.validityStartDate = null;
+    this.validityEndDate = null;
+    this.resetPagination();
+  };
 }

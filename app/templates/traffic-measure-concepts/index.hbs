@@ -1,39 +1,76 @@
-<SearchTables::TrafficMeasure
-  @content={{this.model}}
-  @pageSize={{this.size}}
-  @page={{this.page}}
-  @sort={{this.sort}}
-  @onPageChange={{this.onPageChange}}
-  @onSortChange={{this.onSortChange}}
->
-  <:menu>
-    <AuToolbar class="au-o-box" as |Group|>
-      <Group>
-        <AuHeading @skin="2">
-          {{t "traffic-measure-concept.name"}}
-        </AuHeading>
-      </Group>
-      <Group class="au-c-toolbar__group--center">
-        <div>
+<SidebarContainer>
+  <:sidebar>
+    <div class="au-o-box">
+      <AuHeading @level="2" @skin="3" class="au-u-margin-bottom">
+        {{t "utility.filters"}}
+      </AuHeading>
+      <form class="au-c-form">
+        <AuFormRow>
+          <AuLabel for="label-filter">
+            {{t "traffic-measure-concept.crud.label-filter"}}
+          </AuLabel>
           <AuInput
+            id="label-filter"
             value={{this.label}}
-            placeholder={{t "traffic-measure-concept.crud.label-filter-placeholder"}}
+            placeholder={{t
+              "traffic-measure-concept.crud.label-filter-placeholder"
+            }}
             @icon="search"
             @iconAlignment="right"
             {{on "input" (perform this.updateSearchFilterTask "label")}}
           />
+        </AuFormRow>
+        <AuFormRow>
+          <AuLabel for="text-filter">
+            {{t "traffic-measure-concept.crud.text-filter"}}
+          </AuLabel>
           <AuInput
+            id="text-filter"
             value={{this.templateFilter}}
-            placeholder={{t "traffic-measure-concept.crud.text-filter-placeholder"}}
+            placeholder={{t
+              "traffic-measure-concept.crud.text-filter-placeholder"
+            }}
             @icon="search"
             @iconAlignment="right"
             {{on "input" (perform this.updateSearchFilterTask "templateFilter")}}
           />
-        </div>
-        <AuLink @route="traffic-measure-concepts.new" @skin="button">
-          {{t "traffic-measure-concept.crud.new"}}
-        </AuLink>
-      </Group>
-    </AuToolbar>
-  </:menu>
-</SearchTables::TrafficMeasure>
+        </AuFormRow>
+        <ValidityFilters
+          @onChange={{this.updateValidityFilter}}
+          @value={{this.validityOption}}
+          @startDate={{this.validityStartDate}}
+          @endDate={{this.validityEndDate}}
+        />
+        <ResetFilters
+          @canReset={{this.hasActiveFilter}}
+          @onReset={{this.resetFilters}}
+        />
+      </form>
+    </div>
+  </:sidebar>
+  <:content>
+    <SearchTables::TrafficMeasure
+      @content={{this.model}}
+      @pageSize={{this.size}}
+      @page={{this.page}}
+      @sort={{this.sort}}
+      @onPageChange={{this.onPageChange}}
+      @onSortChange={{this.onSortChange}}
+    >
+      <:menu>
+        <AuToolbar class="au-o-box" as |Group|>
+          <Group>
+            <AuHeading @skin="2">
+              {{t "traffic-measure-concept.name"}}
+            </AuHeading>
+          </Group>
+          <Group class="au-c-toolbar__group--center">
+            <AuLink @route="traffic-measure-concepts.new" @skin="button">
+              {{t "traffic-measure-concept.crud.new"}}
+            </AuLink>
+          </Group>
+        </AuToolbar>
+      </:menu>
+    </SearchTables::TrafficMeasure>
+  </:content>
+</SidebarContainer>

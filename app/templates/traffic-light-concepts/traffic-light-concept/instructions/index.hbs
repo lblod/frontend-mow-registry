@@ -33,6 +33,12 @@
       <th class="data-table__header-title">
         {{t "utility.description"}}
       </th>
+      <th class="data-table__header-title">
+        {{t "utility.start-date"}}
+      </th>
+      <th class="data-table__header-title">
+        {{t "utility.end-date"}}
+      </th>
       <th>
         <span class="au-u-hidden-visually">
           {{t "main-sign.crud.delete"}}
@@ -47,6 +53,12 @@
         >
           {{template.value}}
         </AuLink>
+      </td>
+      <td>
+        {{human-friendly-date template.startDate locale=this.intl.primaryLocale}}
+      </td>
+      <td>
+        {{human-friendly-date template.endDate locale=this.intl.primaryLocale}}
       </td>
       <td class="w-px au-u-padding-right-small">
         <AuButton

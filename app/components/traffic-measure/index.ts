@@ -21,12 +21,12 @@ import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 import Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
+import validateTrafficMeasureDates from 'mow-registry/utils/validate-traffic-measure-dates';
 
 export type InputType = {
   value: string;
   label: string;
 };
-
 type Args = {
   trafficMeasureConcept: TrafficMeasureConcept;
 };
@@ -387,7 +387,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     // Validate measure fields
     const isValid = await this.trafficMeasureConcept.validate();
     const isTemplateValid = await template.validate();
-
     if (!isValid || !isTemplateValid) {
       return;
     }
@@ -474,6 +473,27 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     this.trafficMeasureConcept.rollbackAttributes();
     if (!wasNew) {
       await this.trafficMeasureConcept.belongsTo('zonality').reload();
+    }
+  }
+  @action
+  async setTrafficMeasureDate(attribute, isoDate, date: Date) {
+    if (attribute === 'endDate') {
+      date.setHours(23);
+      date.setMinutes(59);
+      date.setSeconds(59);
+    }
+    this.trafficMeasureConcept.set(attribute, date);
+    if (
+      this.trafficMeasureConcept.startDate &&
+      this.trafficMeasureConcept.endDate
+    ) {
+      await this.trafficMeasureConcept.validateProperty('startDate', {
+        warnings: true,
+      });
+      await this.trafficMeasureConcept.validateProperty('endDate', {
+        warnings: true,
+      });
+      await validateTrafficMeasureDates(this.trafficMeasureConcept);
     }
   }
 }

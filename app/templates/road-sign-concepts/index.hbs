@@ -92,6 +92,12 @@
             {{ar.label}}
           </PowerSelect>
         </div>
+        <ValidityFilters
+          @onChange={{this.updateValidityFilter}}
+          @value={{this.validityOption}}
+          @startDate={{this.validityStartDate}}
+          @endDate={{this.validityEndDate}}
+        />
         <ResetFilters
           @canReset={{this.hasActiveFilter}}
           @onReset={{this.resetFilters}}
