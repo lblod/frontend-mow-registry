@@ -48,7 +48,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   @tracked instructions: Template[] = [];
   @tracked inputTypes: InputType[];
   @tracked instructionType: InputType;
-  @tracked signsError: boolean = false;
+  @tracked signsError = false;
 
   variablesToBeDeleted: Variable[] = [];
 

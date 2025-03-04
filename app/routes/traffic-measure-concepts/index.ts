@@ -11,6 +11,9 @@ type Params = {
   size: number;
   sort: string;
   templateValue: string;
+  validityOption?: string;
+  validityStartDate?: string;
+  validityEndDate?: string;
 };
 export default class TrafficMeasureConceptsIndexRoute extends Route {
   @service declare store: Store;

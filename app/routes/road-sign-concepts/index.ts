@@ -16,6 +16,9 @@ type Params = {
   classification?: string;
   validation?: string;
   arPlichtig?: string;
+  validityOption?: string;
+  validityStartDate?: string;
+  validityEndDate?: string;
 };
 
 export default class RoadsignConceptsIndexRoute extends Route {

@@ -14,6 +14,9 @@ type Params = {
   sort: string;
   validation?: string;
   arPlichtig?: string;
+  validityOption?: string;
+  validityStartDate?: string;
+  validityEndDate?: string;
 };
 
 export default class RoadmarkingConceptsIndexRoute extends Route {

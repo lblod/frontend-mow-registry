@@ -1,4 +1,11 @@
-export default function generateMeta(params, count) {
+type generateMetaParams = {
+  size: number;
+  page: number;
+};
+export default function generateMeta(
+  params: generateMetaParams,
+  count: number,
+) {
   const lastPage = count / params.size + 1;
   const meta = {
     count: count,

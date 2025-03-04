@@ -12,11 +12,11 @@ export const sparqlEscapeUri = (value: string) => {
   );
 };
 
-export function sparqlEscapeBool(value) {
+export function sparqlEscapeBool(value: boolean) {
   return value ? '"true"^^xsd:boolean' : '"false"^^xsd:boolean';
 }
 
-export function sparqlEscapeDateTime(value) {
+export function sparqlEscapeDateTime(value: Date | string | number) {
   return '"' + new Date(value).toISOString() + '"^^xsd:dateTime';
 }
 

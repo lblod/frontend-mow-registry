@@ -19,9 +19,29 @@ const PREFIXES = `
   PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
   PREFIX dct: <http://purl.org/dc/terms/>
   PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
-
 `;
-export default async function fetchManualData(type, params) {
+
+type dataType =
+  | 'road-sign-concept'
+  | 'road-marking-concept'
+  | 'traffic-light-concept'
+  | 'traffic-measure-concept';
+
+type Params = {
+  label?: string;
+  meaning?: string;
+  page: number;
+  size: number;
+  sort: string;
+  classification?: string;
+  validation?: string;
+  arPlichtig?: string;
+  validityOption?: string;
+  validityStartDate?: string;
+  validityEndDate?: string;
+};
+
+export default async function fetchManualData(type: dataType, params: Params) {
   const pageNumber = params.page ?? 0;
   const pageSize = params.size ?? 20;
   const resourceType = TYPES[type];
@@ -147,8 +167,7 @@ const SORTPARAMETERS = {
   ':no-case:label': 'lcase(?label)',
 };
 
-function generateSortFilter(sort) {
-  console.log(sort);
+function generateSortFilter(sort: string) {
   let direction;
   let parameter;
   if (sort.charAt(0) === '-') {
