@@ -1,5 +1,11 @@
 import { isSome } from 'mow-registry/utils/option';
-import generateValidityFilter from 'mow-registry/utils/generate-validity-filter';
+import {
+  sparqlEscapeString,
+  sparqlEscapeBool,
+  sparqlEscapeDateTime,
+  executeQuery,
+  executeCountQuery,
+} from 'mow-registry/utils/sparql-utils.ts';
 
 const TYPES = {
   'road-sign-concept': 'mobiliteit:Verkeersbordconcept',
@@ -20,7 +26,7 @@ export default async function fetchManualData(type, params) {
   const pageSize = params.size ?? 20;
   const resourceType = TYPES[type];
   if (!resourceType) return [];
-  let filters = [];
+  const filters = [];
   if (params.label) {
     filters.push(`
       FILTER(CONTAINS(?label, ${sparqlEscapeString(params.label)}))
@@ -108,13 +114,13 @@ export default async function fetchManualData(type, params) {
     }
     ${filters.join(' ')}
   `;
-  let queryCount = `
+  const queryCount = `
     ${PREFIXES}
     SELECT (count( ?id) as ?count)  WHERE {
       ${queryContent}
     }
 `;
-  let query = `
+  const query = `
     ${PREFIXES}
     SELECT DISTINCT ?id WHERE {
       ${queryContent}
@@ -131,58 +137,6 @@ export default async function fetchManualData(type, params) {
   });
   const uris = response.results.bindings.map((binding) => binding.id.value);
   return { uris, count: countQuery };
-}
-
-const sparqlEscapeString = (value: string) =>
-  '"""' + value.replace(/[\\"]/g, (match) => '\\' + match) + '"""';
-
-const sparqlEscapeUri = (value: string) => {
-  return (
-    '<' +
-    value.replace(/[\\"<>]/g, function (match) {
-      return '\\' + match;
-    }) +
-    '>'
-  );
-};
-
-function sparqlEscapeBool(value) {
-  return value ? '"true"^^xsd:boolean' : '"false"^^xsd:boolean';
-}
-
-async function executeQuery<Binding = Record<string, RDF.Term>>({
-  query,
-  endpoint,
-  abortSignal,
-}: QueryConfig) {
-  const encodedQuery = encodeURIComponent(query.trim());
-
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    mode: 'cors',
-    headers: {
-      Accept: 'application/sparql-results+json',
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    },
-    body: `query=${encodedQuery}`,
-    signal: abortSignal,
-  });
-
-  if (response.ok) {
-    return response.json() as Promise<QueryResult<Binding>>;
-  } else {
-    throw new Error(
-      `Request to ${endpoint} was unsuccessful: [${response.status}] ${response.statusText}`,
-    );
-  }
-}
-
-async function executeCountQuery(queryConfig: QueryConfig) {
-  const response = await executeQuery<{ count: { value: string } }>(
-    queryConfig,
-  );
-
-  return optionMapOr(0, parseInt, response.results.bindings[0]?.count.value);
 }
 
 const SORTPARAMETERS = {
@@ -207,13 +161,30 @@ function generateSortFilter(sort) {
   return `ORDER BY ${direction}(${SORTPARAMETERS[parameter]})`;
 }
 
-function optionMapOr<A, U>(
-  defaultValue: U,
-  func: (thing: A) => U,
-  thing: Option<A>,
-): U {
-  if (isSome(thing)) {
-    return func(thing);
+function generateValidityFilter({ validity, startDate, endDate }) {
+  if (validity === 'valid') {
+    return `
+      BIND(!bound(?endDate) AS ?noEndDate)
+      BIND(!bound(?startDate) AS ?noStartDate)
+      FILTER(?endDate > now() || ?noEndDate)
+      FILTER(?startDate < now() || ?noStartDate)
+    `;
+  } else if (validity === 'expired') {
+    return `
+      FILTER(?endDate < now())
+    `;
+  } else if (validity === 'custom') {
+    const filter = [];
+    if (startDate) {
+      filter.push(`
+        BIND(!bound(?startDate) AS ?noStartDate)
+        FILTER(?startDate > ${sparqlEscapeDateTime(startDate)} || ?noStartDate)`);
+    }
+    if (endDate) {
+      filter.push(`
+      BIND(!bound(?endDate) AS ?noEndDate)
+      FILTER(?endDate < ${sparqlEscapeDateTime(endDate)} || ?noEndDate)`);
+    }
+    return filter.join(' ');
   }
-  return defaultValue;
 }

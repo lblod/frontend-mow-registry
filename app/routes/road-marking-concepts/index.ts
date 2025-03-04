@@ -2,7 +2,6 @@ import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
-import { isSome } from 'mow-registry/utils/option';
 import { hash } from 'rsvp';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';

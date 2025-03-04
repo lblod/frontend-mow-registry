@@ -3,9 +3,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
-import { isSome } from 'mow-registry/utils/option';
 import { hash } from 'rsvp';
-import generateValidityFilter from 'mow-registry/utils/generate-validity-filter';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 

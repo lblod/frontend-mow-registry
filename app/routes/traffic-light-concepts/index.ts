@@ -2,7 +2,6 @@ import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
-import { isSome } from 'mow-registry/utils/option';
 import { hash } from 'rsvp';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
