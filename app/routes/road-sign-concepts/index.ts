@@ -7,6 +7,7 @@ import { isSome } from 'mow-registry/utils/option';
 import { hash } from 'rsvp';
 import generateValidityFilter from 'mow-registry/utils/generate-validity-filter';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
+import generateMeta from 'mow-registry/utils/generate-meta';
 
 type Params = {
   label?: string;
@@ -71,30 +72,4 @@ export default class RoadsignConceptsIndexRoute extends Route {
       ),
     });
   }
-}
-
-function generateMeta(params, count) {
-  const lastPage = count / params.size + 1;
-  const meta = {
-    count: count,
-    pagination: {
-      first: {
-        number: 0,
-      },
-      last: {
-        number: lastPage,
-      },
-    },
-  };
-  if (params.page > 0) {
-    meta.pagination.prev = {
-      number: params.page - 1,
-    };
-  }
-  if (params.page < lastPage) {
-    meta.pagination.next = {
-      number: params.page + 1,
-    };
-  }
-  return meta;
 }

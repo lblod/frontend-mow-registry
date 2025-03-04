@@ -3,6 +3,9 @@ import generateValidityFilter from 'mow-registry/utils/generate-validity-filter'
 
 const TYPES = {
   'road-sign-concept': 'mobiliteit:Verkeersbordconcept',
+  'road-marking-concept': 'mobiliteit:Wegmarkeringconcept',
+  'traffic-light-concept': 'mobiliteit:Verkeerslichtconcept',
+  'traffic-measure-concept': 'mobiliteit:Mobiliteitmaatregelconcept',
 };
 const PREFIXES = `
   PREFIX mobiliteit: <https://data.vlaanderen.be/ns/mobiliteit#>
@@ -68,6 +71,11 @@ export default async function fetchManualData(type, params) {
       }),
     );
   }
+  if (params.templateValue) {
+    filters.push(`
+      FILTER(CONTAINS(?templatePreview, ${sparqlEscapeString(params.templateValue)}))
+    `);
+  }
   const sortFilter = params.sort ? generateSortFilter(params.sort) : '';
   const queryContent = `
     ?uri a ${TYPES[type]}.
@@ -93,6 +101,10 @@ export default async function fetchManualData(type, params) {
     }
     OPTIONAL {
       ?uri mobiliteit:ARplichtig ?ARplichtig.
+    }
+    OPTIONAL {
+      ?uri mobiliteit:template ?template.
+      ?template ext:preview ?templatePreview.
     }
     ${filters.join(' ')}
   `;
@@ -178,9 +190,11 @@ const SORTPARAMETERS = {
   classifications: '?classification',
   valid: '?valid',
   'ar-plichtig': '?ARplichtig',
+  ':no-case:label': 'lcase(?label)',
 };
 
 function generateSortFilter(sort) {
+  console.log(sort);
   let direction;
   let parameter;
   if (sort.charAt(0) === '-') {

@@ -4,7 +4,8 @@ import { inject as service } from '@ember/service';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import { isSome } from 'mow-registry/utils/option';
 import { hash } from 'rsvp';
-import generateValidityFilter from 'mow-registry/utils/generate-validity-filter';
+import fetchManualData from 'mow-registry/utils/fetch-manual-data';
+import generateMeta from 'mow-registry/utils/generate-meta';
 
 type Params = {
   label?: string;
@@ -34,59 +35,27 @@ export default class TrafficlightConceptsIndexRoute extends Route {
   async model(params: Params) {
     const query: Record<string, unknown> = {
       sort: params.sort,
-      page: {
-        number: params.page,
-        size: params.size,
-      },
       filter: {},
     };
-
-    if (params.label) {
-      query.filter.label = params.label;
-    }
-
-    if (params.meaning) {
-      query.filter.meaning = params.meaning;
-    }
-
-    if (isSome(params.validation)) {
-      if (params.validation === 'true') {
-        query.filter.valid = true;
-      } else {
-        query.filter = {
-          ...query.filter,
-          ':or:': {
-            ':has-no:valid': 'yes',
-            valid: false,
-          },
-        };
-      }
-    }
-    if (isSome(params.arPlichtig)) {
-      if (params.arPlichtig === 'true') {
-        query['filter[ar-plichtig]'] = true;
-      } else {
-        query['filter[:or:][:has-no:ar-plichtig]'] = 'yes';
-        query['filter[:or:][ar-plichtig]'] = false;
-      }
-    }
-    if (params.validityOption) {
-      query.filter = {
-        ...query.filter,
-        ...generateValidityFilter({
-          validity: params.validityOption,
-          startDate: params.validityStartDate,
-          endDate: params.validityEndDate,
-        }),
-      };
-    }
+    const { uris: trafficLightUris, count } = await fetchManualData(
+      'traffic-light-concept',
+      params,
+    );
+    query.filter = {
+      id: trafficLightUris.join(','),
+    };
+    const trafficLights = trafficLightUris.length
+      ? await this.store.query<TrafficLightConcept>(
+          'traffic-light-concept',
+          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+          // TODO: fix the query types
+          query,
+        )
+      : [];
+    trafficLights.meta = generateMeta(params, count);
+    trafficLights.meta.count = count;
     return hash({
-      trafficLightConcepts: this.store.query<TrafficLightConcept>(
-        'traffic-light-concept',
-        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-        // TODO: fix the query types
-        query,
-      ),
+      trafficLightConcepts: trafficLights,
     });
   }
 }
