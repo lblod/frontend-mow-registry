@@ -5,8 +5,10 @@ export default function generateValidityFilter({
 }) {
   if (validity === 'valid') {
     return `
-      FILTER(?endDate > now())
-      FILTER(?startDate < now())
+      BIND(!bound(?endDate) AS ?noEndDate)
+      BIND(!bound(?startDate) AS ?noStartDate)
+      FILTER(?endDate > now() || ?noEndDate)
+      FILTER(?startDate < now() || ?noStartDate)
     `;
   } else if (validity === 'expired') {
     return `
@@ -15,10 +17,14 @@ export default function generateValidityFilter({
   } else if (validity === 'custom') {
     const filter = [];
     if (startDate) {
-      filter.push(`FILTER(?startDate > ${sparqlEscapeDateTime(startDate)})`);
+      filter.push(`
+        BIND(!bound(?startDate) AS ?noStartDate)
+        FILTER(?startDate > ${sparqlEscapeDateTime(startDate)} || ?noStartDate)`);
     }
     if (endDate) {
-      filter.push(` FILTER(?endDate < ${sparqlEscapeDateTime(endDate)})`);
+      filter.push(`
+      BIND(!bound(?endDate) AS ?noEndDate)
+      FILTER(?endDate < ${sparqlEscapeDateTime(endDate)} || ?noEndDate)`);
     }
     return filter.join(' ');
   }
