@@ -1,5 +1,5 @@
-import Template from 'app-mow-registry/app/models/template';
-import TrafficSignConcept from 'app-mow-registry/app/models/traffic-sign-concept';
+import Template from 'mow-registry/models/template';
+import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 export default function validateTemplateDates(
   template: Template,
   parentSign: TrafficSignConcept,
@@ -23,6 +23,8 @@ export default function validateTemplateDates(
     } else {
       template._validationWarning.startDate = {
         message: 'errors.start-date-less-than-parent-sign',
+        path: ['startDate'],
+        type: '',
       };
     }
   }
@@ -45,6 +47,8 @@ export default function validateTemplateDates(
     } else {
       template._validationWarning.endDate = {
         message: 'errors.end-date-more-than-parent-sign',
+        path: ['endDate'],
+        type: '',
       };
     }
   }

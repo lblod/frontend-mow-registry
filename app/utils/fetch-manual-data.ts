@@ -5,7 +5,7 @@ import {
   sparqlEscapeDateTime,
   executeQuery,
   executeCountQuery,
-} from 'mow-registry/utils/sparql-utils.ts';
+} from 'mow-registry/utils/sparql-utils';
 
 const TYPES = {
   'road-sign-concept': 'mobiliteit:Verkeersbordconcept',
@@ -39,10 +39,11 @@ type Params = {
   validityOption?: string;
   validityStartDate?: string;
   validityEndDate?: string;
+  templateValue?: string;
 };
 
 type FetchManualDataReturn = {
-  uris: [string];
+  uris: string[];
   count: number;
 };
 
@@ -53,7 +54,7 @@ export default async function fetchManualData(
   const pageNumber = params.page ?? 0;
   const pageSize = params.size ?? 20;
   const resourceType = TYPES[type];
-  if (!resourceType) return [];
+  if (!resourceType) return { uris: [], count: 0 };
   const filters = [];
   if (params.label) {
     filters.push(`
@@ -163,7 +164,9 @@ export default async function fetchManualData(
     query: queryCount,
     endpoint: 'http://localhost/sparql',
   });
-  const uris = response.results.bindings.map((binding) => binding.id.value);
+  const uris = response.results.bindings.map((binding) =>
+    binding.id ? binding.id.value : '',
+  );
   return { uris, count: countQuery };
 }
 
@@ -177,18 +180,26 @@ const SORTPARAMETERS = {
 
 function generateSortFilter(sort: string): string {
   let direction;
-  let parameter;
+  let parameter: keyof typeof SORTPARAMETERS;
   if (sort.charAt(0) === '-') {
     direction = 'ASC';
-    parameter = sort.slice(1, sort.length);
+    parameter = sort.slice(1, sort.length) as keyof typeof SORTPARAMETERS;
   } else {
     direction = 'DESC';
-    parameter = sort;
+    parameter = sort as keyof typeof SORTPARAMETERS;
   }
   return `ORDER BY ${direction}(${SORTPARAMETERS[parameter]})`;
 }
 
-function generateValidityFilter({ validity, startDate, endDate }): string {
+function generateValidityFilter({
+  validity,
+  startDate,
+  endDate,
+}: {
+  validity?: string;
+  startDate?: string;
+  endDate?: string;
+}): string {
   if (validity === 'valid') {
     return `
       BIND(!bound(?endDate) AS ?noEndDate)
@@ -214,4 +225,5 @@ function generateValidityFilter({ validity, startDate, endDate }): string {
     }
     return filter.join(' ');
   }
+  return '';
 }

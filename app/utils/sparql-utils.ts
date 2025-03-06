@@ -1,4 +1,22 @@
 import { optionMapOr } from 'mow-registry/utils/option';
+import * as RDF from '@rdfjs/types';
+
+export type BindingObject<Obj extends Record<string, string | string[]>> = {
+  [Prop in keyof Obj]: { value: string };
+};
+
+export interface QueryResult<Binding = Record<string, RDF.Term>> {
+  results: {
+    bindings: Binding[];
+  };
+}
+
+interface QueryConfig {
+  query: string;
+  endpoint: string;
+  abortSignal?: AbortSignal;
+}
+
 export const sparqlEscapeString = (value: string) =>
   '"""' + value.replace(/[\\"]/g, (match) => '\\' + match) + '"""';
 

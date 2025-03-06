@@ -5,9 +5,11 @@ import type Route from 'mow-registry/routes/road-marking-concepts/road-marking-c
 import { removeItem } from 'mow-registry/utils/array';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import { service } from '@ember/service';
+import IntlService from 'ember-intl/services/intl';
 
 export default class RoadMarkingConceptsRoadMarkingConceptInstructionsIndexController extends Controller {
-  @service intl;
+  @service
+  declare intl: IntlService;
   declare model: ModelFrom<Route>;
 
   removeTemplate = task(async (template: Template) => {

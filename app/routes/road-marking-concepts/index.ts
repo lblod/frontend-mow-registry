@@ -48,14 +48,12 @@ export default class RoadmarkingConceptsIndexRoute extends Route {
     query.filter = {
       id: roadMarkingUris.join(','),
     };
-    const roadMarkings = roadMarkingUris.length
-      ? await this.store.query<RoadMarkingConcept>(
-          'road-marking-concept',
-          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-          // TODO: fix the query types
-          query,
-        )
-      : [];
+    const roadMarkings = await this.store.query<RoadMarkingConcept>(
+      'road-marking-concept',
+      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+      // TODO: fix the query types
+      query,
+    );
     roadMarkings.meta = generateMeta(params, count);
     roadMarkings.meta.count = count;
 

@@ -43,14 +43,12 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
     query.filter = {
       id: trafficMeasureUris.join(','),
     };
-    const trafficMeasures = trafficMeasureUris.length
-      ? await this.store.query<TrafficMeasureConcept>(
-          'traffic-measure-concept',
-          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-          // TODO: fix the query types
-          query,
-        )
-      : [];
+    const trafficMeasures = await this.store.query<TrafficMeasureConcept>(
+      'traffic-measure-concept',
+      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+      // TODO: fix the query types
+      query,
+    );
     trafficMeasures.meta = generateMeta(params, count);
     trafficMeasures.meta.count = count;
 

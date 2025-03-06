@@ -91,7 +91,15 @@ export default class RoadmarkingConceptsIndexController extends Controller {
     }
   }
   @action
-  updateValidityFilter({ validityOption, startDate, endDate }) {
+  updateValidityFilter({
+    validityOption,
+    startDate,
+    endDate,
+  }: {
+    validityOption: string;
+    startDate: string;
+    endDate: string;
+  }) {
     this.validityOption = validityOption;
     this.validityStartDate = startDate;
     this.validityEndDate = endDate;

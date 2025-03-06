@@ -134,5 +134,8 @@
   },
   "volta": {
     "node": "18.20.4"
+  },
+  "dependencies": {
+    "@rdfjs/types": "^2.0.1"
   }
 }

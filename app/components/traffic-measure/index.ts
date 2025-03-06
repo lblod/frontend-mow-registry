@@ -462,7 +462,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     await template.save();
   });
 
-  async willDestroy() {
+  willDestroy() {
     super.willDestroy();
 
     const wasNew = this.trafficMeasureConcept.isNew;
@@ -472,11 +472,11 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     }
     this.trafficMeasureConcept.rollbackAttributes();
     if (!wasNew) {
-      await this.trafficMeasureConcept.belongsTo('zonality').reload();
+      void this.trafficMeasureConcept.belongsTo('zonality').reload();
     }
   }
   @action
-  async setTrafficMeasureDate(attribute, isoDate, date: Date) {
+  async setTrafficMeasureDate(attribute: string, isoDate: string, date: Date) {
     if (attribute === 'endDate') {
       date.setHours(23);
       date.setMinutes(59);
@@ -493,7 +493,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       await this.trafficMeasureConcept.validateProperty('endDate', {
         warnings: true,
       });
-      validateTrafficMeasureDates(this.trafficMeasureConcept);
+      void validateTrafficMeasureDates(this.trafficMeasureConcept);
     }
   }
 }

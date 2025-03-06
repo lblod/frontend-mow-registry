@@ -8,9 +8,20 @@ import Joi, {
 } from 'joi';
 
 type ModelSchema = typeof Model;
+type ValidationOptions = {
+  warnings?: boolean;
+};
+
+type ValidationResult = {
+  warning?: ValidationError;
+};
+
+interface CustomValidationErrorItem extends ValidationErrorItem {
+  messageArray?: string[];
+}
 
 interface ValidationErrorDetails {
-  [key: string]: ValidationErrorItem;
+  [key: string]: CustomValidationErrorItem;
 }
 /**
  * Ember Data Model with Joi-based Validation
@@ -71,7 +82,7 @@ export default class AbstractValidationModel extends Model {
    */
   async validateProperty(
     propertyName: string,
-    options: object = {},
+    options: ValidationOptions = {},
   ): Promise<boolean> {
     this.#removeValidationError(propertyName);
     const serializedModel = this.#serializeModel();
@@ -79,7 +90,7 @@ export default class AbstractValidationModel extends Model {
     try {
       const propertyRule = this.validationSchema.extract([propertyName]);
       const partialSchema = Joi.object({ [propertyName]: propertyRule });
-      const validationResult = await partialSchema.validateAsync(
+      const validationResult = (await partialSchema.validateAsync(
         serializedModel,
         {
           abortEarly: false,
@@ -90,7 +101,7 @@ export default class AbstractValidationModel extends Model {
             ...options,
           },
         },
-      );
+      )) as ValidationResult;
       if (validationResult.warning) {
         this._validationWarning = this.#mapValidationError(
           validationResult.warning,

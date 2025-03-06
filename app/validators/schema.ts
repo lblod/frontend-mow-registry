@@ -91,5 +91,5 @@ export const validateEndDate = () => {
       message: 'errors.end-date-should-be-in-the-future',
     })
     .greater(Joi.ref('startDate'))
-    .message({ 'date.greater': 'errors.end-date-greater-than-start-date' });
+    .message('errors.end-date-greater-than-start-date');
 };

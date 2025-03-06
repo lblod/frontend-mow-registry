@@ -40,7 +40,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
     await this.args.trafficLightConcept.validateProperty(attributeName);
   }
   @action
-  async setTrafficLightDate(attribute, isoDate, date: Date) {
+  async setTrafficLightDate(attribute: string, isoDate: string, date: Date) {
     if (attribute === 'endDate') {
       date.setHours(23);
       date.setMinutes(59);
@@ -77,9 +77,9 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   });
 
   @action
-  async setImage(model: TrafficSignConcept, image: File) {
+  setImage(model: TrafficSignConcept, image: File) {
     super.setImage(model, image);
-    await this.args.trafficLightConcept.validateProperty('image');
+    void this.args.trafficLightConcept.validateProperty('image');
   }
 
   willDestroy() {

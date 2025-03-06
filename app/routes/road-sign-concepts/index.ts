@@ -52,14 +52,12 @@ export default class RoadsignConceptsIndexRoute extends Route {
     query.filter = {
       id: roadsignConceptUris.join(','),
     };
-    const roadsigns = roadsignConceptUris.length
-      ? await this.store.query<RoadSignConcept>(
-          'road-sign-concept',
-          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-          // TODO: fix the query types
-          query,
-        )
-      : [];
+    const roadsigns = await this.store.query<RoadSignConcept>(
+      'road-sign-concept',
+      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+      // TODO: fix the query types
+      query,
+    );
     roadsigns.meta = generateMeta(params, count);
     roadsigns.meta.count = count;
     return hash({

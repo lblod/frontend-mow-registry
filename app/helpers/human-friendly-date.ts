@@ -4,11 +4,14 @@ import * as locales from 'date-fns/locale';
 import { helper } from '@ember/component/helper';
 
 function getDateFnsLocale(locale: string) {
-  return locales[locale] ?? locales[locale.substring(0, 2)];
+  return (
+    locales[locale as keyof typeof locales] ??
+    locales[locale.substring(0, 2) as keyof typeof locales]
+  );
 }
 
 function humanFriendlyDate(
-  [date],
+  [date]: Date[],
   { locale = 'nl-BE', alwaysShowTime = true } = {},
 ) {
   if (!(date instanceof Date)) return '';

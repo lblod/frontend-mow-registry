@@ -26,8 +26,8 @@ export default class TrafficMeasureConcept extends AbstractValidationModel {
   @attr declare label?: string;
   @attr declare variableSignage?: boolean;
   @attr declare valid?: boolean;
-  @attr('date') declare startDate;
-  @attr('date') declare endDate;
+  @attr('date') declare startDate?: Date;
+  @attr('date') declare endDate?: Date;
 
   @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;

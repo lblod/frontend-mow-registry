@@ -40,7 +40,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
     await this.args.roadMarkingConcept.validateProperty(attributeName);
   }
   @action
-  async setRoadMarkingDate(attribute, isoDate, date: Date) {
+  async setRoadMarkingDate(attribute: string, isoDate: string, date: Date) {
     if (attribute === 'endDate') {
       date.setHours(23);
       date.setMinutes(59);
@@ -78,9 +78,9 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   });
 
   @action
-  async setImage(model: TrafficSignConcept, image: File) {
+  setImage(model: TrafficSignConcept, image: File) {
     super.setImage(model, image);
-    await this.args.roadMarkingConcept.validateProperty('image');
+    void this.args.roadMarkingConcept.validateProperty('image');
   }
 
   willDestroy() {

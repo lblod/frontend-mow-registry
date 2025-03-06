@@ -25,7 +25,7 @@ export default function generateMeta(
   count: number,
 ): GenerateMetaReturn {
   const lastPage = count / params.size + 1;
-  const meta = {
+  const meta: GenerateMetaReturn = {
     count: count,
     pagination: {
       first: {

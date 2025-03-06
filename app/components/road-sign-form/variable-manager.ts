@@ -59,12 +59,11 @@ export default class VariableManager extends Component<Signature> {
   }
 
   @action
-  async fetchCodeLists() {
-    try {
-      this.codeLists = await this.codeListService.all.perform();
-    } catch (error) {
-      console.error('Error fetching code lists:', error);
-    }
+  fetchCodeLists() {
+    this.codeListService.all
+      .perform()
+      .then((codelists) => (this.codeLists = codelists))
+      .catch((error) => console.error('Error fetching code lists:', error));
   }
 
   @action

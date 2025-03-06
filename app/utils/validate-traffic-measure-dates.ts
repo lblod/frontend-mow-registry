@@ -1,10 +1,11 @@
-export default function validateTrafficMeasureDates(
+import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
+export default async function validateTrafficMeasureDates(
   trafficMeasure: TrafficMeasureConcept,
-): void {
+): Promise<void> {
   const signs = await trafficMeasure.relatedTrafficSignConcepts;
   let maxStartDate = new Date(0);
   let minEndDate = new Date();
-  minEndDate.setYear(9999);
+  minEndDate.setFullYear(9999);
   for (const sign of signs) {
     if (sign.startDate && sign.startDate > maxStartDate) {
       maxStartDate = sign.startDate;
@@ -13,7 +14,7 @@ export default function validateTrafficMeasureDates(
       minEndDate = sign.endDate;
     }
   }
-  if (trafficMeasure.startDate < maxStartDate) {
+  if (trafficMeasure.startDate && trafficMeasure.startDate < maxStartDate) {
     if (!trafficMeasure._validationWarning) {
       trafficMeasure._validationWarning = {};
     }
@@ -28,10 +29,12 @@ export default function validateTrafficMeasureDates(
     } else {
       trafficMeasure._validationWarning.startDate = {
         message: 'errors.start-date-less-than-min-start-date',
+        path: ['startDate'],
+        type: '',
       };
     }
   }
-  if (trafficMeasure.endDate > minEndDate) {
+  if (trafficMeasure.endDate && trafficMeasure.endDate > minEndDate) {
     if (!trafficMeasure._validationWarning) {
       trafficMeasure._validationWarning = {};
     }
@@ -46,6 +49,8 @@ export default function validateTrafficMeasureDates(
     } else {
       trafficMeasure._validationWarning.endDate = {
         message: 'errors.end-date-more-than-max-end-date',
+        path: ['endDate'],
+        type: '',
       };
     }
   }
