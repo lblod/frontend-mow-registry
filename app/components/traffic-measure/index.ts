@@ -232,7 +232,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  async updateVariableRequired(variable: Variable) {
+  updateVariableRequired(variable: Variable) {
     variable.set('required', !variable.required);
   }
 
@@ -493,7 +493,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       await this.trafficMeasureConcept.validateProperty('endDate', {
         warnings: true,
       });
-      await validateTrafficMeasureDates(this.trafficMeasureConcept);
+      validateTrafficMeasureDates(this.trafficMeasureConcept);
     }
   }
 }

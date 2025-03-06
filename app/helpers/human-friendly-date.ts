@@ -3,7 +3,7 @@ import format from 'date-fns/format';
 import * as locales from 'date-fns/locale';
 import { helper } from '@ember/component/helper';
 
-function getDateFnsLocale(locale) {
+function getDateFnsLocale(locale: string) {
   return locales[locale] ?? locales[locale.substring(0, 2)];
 }
 

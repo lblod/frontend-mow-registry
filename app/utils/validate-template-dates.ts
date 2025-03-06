@@ -1,8 +1,14 @@
-export default async function validateTemplateDates(
+import Template from 'app-mow-registry/app/models/template';
+import TrafficSignConcept from 'app-mow-registry/app/models/traffic-sign-concept';
+export default function validateTemplateDates(
   template: Template,
-  parentSign: RoadSignConcept,
-) {
-  if (template.startDate < parentSign.startDate) {
+  parentSign: TrafficSignConcept,
+): void {
+  if (
+    template.startDate &&
+    parentSign.startDate &&
+    template.startDate < parentSign.startDate
+  ) {
     if (!template._validationWarning) {
       template._validationWarning = {};
     }
@@ -20,7 +26,11 @@ export default async function validateTemplateDates(
       };
     }
   }
-  if (template.endDate > parentSign.endDate) {
+  if (
+    template.endDate &&
+    parentSign.endDate &&
+    template.endDate > parentSign.endDate
+  ) {
     if (!template._validationWarning) {
       template._validationWarning = {};
     }

@@ -23,8 +23,8 @@ export default class Template extends Document {
   declare [Type]: 'template';
   @attr declare value?: string;
   @attr declare preview?: string;
-  @attr('date') declare startDate;
-  @attr('date') declare endDate;
+  @attr('date') declare startDate?: Date;
+  @attr('date') declare endDate?: Date;
 
   @hasMany<Variable>('variable', { inverse: null, async: true })
   declare variables: AsyncHasMany<Variable>;

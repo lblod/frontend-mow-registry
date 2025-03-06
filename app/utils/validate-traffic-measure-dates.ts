@@ -1,6 +1,6 @@
-export default async function validateTrafficMeasureDates(
+export default function validateTrafficMeasureDates(
   trafficMeasure: TrafficMeasureConcept,
-) {
+): void {
   const signs = await trafficMeasure.relatedTrafficSignConcepts;
   let maxStartDate = new Date(0);
   let minEndDate = new Date();

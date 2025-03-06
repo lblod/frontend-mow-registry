@@ -144,7 +144,7 @@ export default class CodelistFormComponent extends Component<Args> {
   });
 
   @action
-  async cancelEditingTask() {
+  cancelEditingTask() {
     if (this.args.codelist.isNew) {
       this.router.transitionTo('codelists-management');
     } else {

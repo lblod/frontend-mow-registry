@@ -41,7 +41,15 @@ type Params = {
   validityEndDate?: string;
 };
 
-export default async function fetchManualData(type: dataType, params: Params) {
+type FetchManualDataReturn = {
+  uris: [string];
+  count: number;
+};
+
+export default async function fetchManualData(
+  type: dataType,
+  params: Params,
+): Promise<FetchManualDataReturn> {
   const pageNumber = params.page ?? 0;
   const pageSize = params.size ?? 20;
   const resourceType = TYPES[type];
@@ -167,7 +175,7 @@ const SORTPARAMETERS = {
   ':no-case:label': 'lcase(?label)',
 };
 
-function generateSortFilter(sort: string) {
+function generateSortFilter(sort: string): string {
   let direction;
   let parameter;
   if (sort.charAt(0) === '-') {
@@ -180,7 +188,7 @@ function generateSortFilter(sort: string) {
   return `ORDER BY ${direction}(${SORTPARAMETERS[parameter]})`;
 }
 
-function generateValidityFilter({ validity, startDate, endDate }) {
+function generateValidityFilter({ validity, startDate, endDate }): string {
   if (validity === 'valid') {
     return `
       BIND(!bound(?endDate) AS ?noEndDate)

@@ -26,8 +26,8 @@ export default class TrafficSignConcept extends SkosConcept {
   @attr declare meaning?: string;
   @attr declare valid?: boolean;
   @attr declare arPlichtig?: boolean;
-  @attr('date') declare startDate;
-  @attr('date') declare endDate;
+  @attr('date') declare startDate?: Date;
+  @attr('date') declare endDate?: Date;
 
   @belongsTo<Image>('image', { async: true, inverse: null, polymorphic: true })
   declare image: AsyncBelongsTo<Image>;

@@ -24,7 +24,7 @@ export async function executeQuery<Binding = Record<string, RDF.Term>>({
   query,
   endpoint,
   abortSignal,
-}: QueryConfig) {
+}: QueryConfig): Promise<QueryResult<Binding>> {
   const encodedQuery = encodeURIComponent(query.trim());
 
   const response = await fetch(endpoint, {
