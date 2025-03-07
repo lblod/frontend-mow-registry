@@ -21,12 +21,12 @@ import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 import Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
+import validateTrafficMeasureDates from 'mow-registry/utils/validate-traffic-measure-dates';
 
 export type InputType = {
   value: string;
   label: string;
 };
-
 type Args = {
   trafficMeasureConcept: TrafficMeasureConcept;
 };
@@ -48,7 +48,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   @tracked instructions: Template[] = [];
   @tracked inputTypes: InputType[];
   @tracked instructionType: InputType;
-  @tracked signsError: boolean = false;
+  @tracked signsError = false;
 
   variablesToBeDeleted: Variable[] = [];
 
@@ -232,7 +232,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  async updateVariableRequired(variable: Variable) {
+  updateVariableRequired(variable: Variable) {
     variable.set('required', !variable.required);
   }
 
@@ -387,7 +387,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     // Validate measure fields
     const isValid = await this.trafficMeasureConcept.validate();
     const isTemplateValid = await template.validate();
-
     if (!isValid || !isTemplateValid) {
       return;
     }
@@ -463,7 +462,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     await template.save();
   });
 
-  async willDestroy() {
+  willDestroy() {
     super.willDestroy();
 
     const wasNew = this.trafficMeasureConcept.isNew;
@@ -473,7 +472,28 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     }
     this.trafficMeasureConcept.rollbackAttributes();
     if (!wasNew) {
-      await this.trafficMeasureConcept.belongsTo('zonality').reload();
+      void this.trafficMeasureConcept.belongsTo('zonality').reload();
+    }
+  }
+  @action
+  async setTrafficMeasureDate(attribute: string, isoDate: string, date: Date) {
+    if (attribute === 'endDate') {
+      date.setHours(23);
+      date.setMinutes(59);
+      date.setSeconds(59);
+    }
+    this.trafficMeasureConcept.set(attribute, date);
+    if (
+      this.trafficMeasureConcept.startDate &&
+      this.trafficMeasureConcept.endDate
+    ) {
+      await this.trafficMeasureConcept.validateProperty('startDate', {
+        warnings: true,
+      });
+      await this.trafficMeasureConcept.validateProperty('endDate', {
+        warnings: true,
+      });
+      void validateTrafficMeasureDates(this.trafficMeasureConcept);
     }
   }
 }

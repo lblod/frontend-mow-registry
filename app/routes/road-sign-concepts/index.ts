@@ -3,8 +3,9 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
-import { isSome } from 'mow-registry/utils/option';
 import { hash } from 'rsvp';
+import fetchManualData from 'mow-registry/utils/fetch-manual-data';
+import generateMeta from 'mow-registry/utils/generate-meta';
 
 type Params = {
   label?: string;
@@ -15,6 +16,9 @@ type Params = {
   classification?: string;
   validation?: string;
   arPlichtig?: string;
+  validityOption?: string;
+  validityStartDate?: string;
+  validityEndDate?: string;
 };
 
 export default class RoadsignConceptsIndexRoute extends Route {
@@ -29,53 +33,36 @@ export default class RoadsignConceptsIndexRoute extends Route {
     classification: { refreshModel: true },
     validation: { refreshModel: true },
     arPlichtig: { refreshModel: true },
+    validityOption: { refreshModel: true },
+    validityStartDate: { refreshModel: true },
+    validityEndDate: { refreshModel: true },
   };
 
   async model(params: Params) {
     const query: Record<string, unknown> = {
       include: 'image.file,classifications',
       sort: params.sort,
-      page: {
-        number: params.page,
-        size: params.size,
-      },
+      filter: {},
     };
 
-    if (params.label) {
-      query['filter[label]'] = params.label;
-    }
-
-    if (params.meaning) {
-      query['filter[meaning]'] = params.meaning;
-    }
-
-    if (params.classification) {
-      query['filter[classifications][:id:]'] = params.classification;
-    }
-    if (isSome(params.validation)) {
-      if (params.validation === 'true') {
-        query['filter[valid]'] = true;
-      } else {
-        query['filter[:or:][:has-no:valid]'] = 'yes';
-        query['filter[:or:][valid]'] = false;
-      }
-    }
-    if (isSome(params.arPlichtig)) {
-      if (params.arPlichtig === 'true') {
-        query['filter[ar-plichtig]'] = true;
-      } else {
-        query['filter[:or:][:has-no:ar-plichtig]'] = 'yes';
-        query['filter[:or:][ar-plichtig]'] = false;
-      }
-    }
-
+    const { uris: roadsignConceptUris, count } = await fetchManualData(
+      'road-sign-concept',
+      params,
+    );
+    query.filter = {
+      id: roadsignConceptUris.join(','),
+    };
+    const roadsigns = await this.store.query<RoadSignConcept>(
+      'road-sign-concept',
+      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+      // TODO: fix the query types
+      query,
+    );
+    roadsigns.meta = generateMeta(params, count);
+    roadsigns.meta.count = count;
     return hash({
-      roadSignConcepts: this.store.query<RoadSignConcept>(
-        'road-sign-concept',
-        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-        // TODO: fix the query types
-        query,
-      ),
+      count,
+      roadSignConcepts: roadsigns,
       classifications: this.store.findAll<RoadSignCategory>(
         'road-sign-category',
         {

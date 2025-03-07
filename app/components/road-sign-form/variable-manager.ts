@@ -59,12 +59,11 @@ export default class VariableManager extends Component<Signature> {
   }
 
   @action
-  async fetchCodeLists() {
-    try {
-      this.codeLists = await this.codeListService.all.perform();
-    } catch (error) {
-      console.error('Error fetching code lists:', error);
-    }
+  fetchCodeLists() {
+    this.codeListService.all
+      .perform()
+      .then((codelists) => (this.codeLists = codelists))
+      .catch((error) => console.error('Error fetching code lists:', error));
   }
 
   @action
@@ -79,7 +78,7 @@ export default class VariableManager extends Component<Signature> {
   }
 
   @action
-  async setVariableType(variable: Variable, selectedType: InputType) {
+  setVariableType(variable: Variable, selectedType: InputType) {
     const actualType = this.variableTypes.find(
       (type) => type.value === variable.type,
     );
@@ -95,7 +94,7 @@ export default class VariableManager extends Component<Signature> {
   }
 
   @action
-  async updateCodelist(variable: Variable, codeList: CodeList) {
+  updateCodelist(variable: Variable, codeList: CodeList) {
     //@ts-expect-error currently the ts types don't allow direct assignment of relationships
     variable.codeList = codeList;
   }

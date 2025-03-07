@@ -8,15 +8,27 @@ import Joi, {
 } from 'joi';
 
 type ModelSchema = typeof Model;
+type ValidationOptions = {
+  warnings?: boolean;
+};
+
+type ValidationResult = {
+  warning?: ValidationError;
+};
+
+interface CustomValidationErrorItem extends ValidationErrorItem {
+  messageArray?: string[];
+}
 
 interface ValidationErrorDetails {
-  [key: string]: ValidationErrorItem;
+  [key: string]: CustomValidationErrorItem;
 }
 /**
  * Ember Data Model with Joi-based Validation
  */
 export default class AbstractValidationModel extends Model {
   @tracked _validationError?: ValidationErrorDetails;
+  @tracked _validationWarning?: ValidationErrorDetails;
 
   /**
    * Get the validation schema for the model. Should be overridden in subclasses.
@@ -30,6 +42,13 @@ export default class AbstractValidationModel extends Model {
    */
   get error() {
     return this._validationError;
+  }
+
+  /**
+   * Get the validation warnings for the model.
+   */
+  get warning() {
+    return this._validationWarning;
   }
 
   /**
@@ -63,7 +82,7 @@ export default class AbstractValidationModel extends Model {
    */
   async validateProperty(
     propertyName: string,
-    options: object = {},
+    options: ValidationOptions = {},
   ): Promise<boolean> {
     this.#removeValidationError(propertyName);
     const serializedModel = this.#serializeModel();
@@ -71,14 +90,25 @@ export default class AbstractValidationModel extends Model {
     try {
       const propertyRule = this.validationSchema.extract([propertyName]);
       const partialSchema = Joi.object({ [propertyName]: propertyRule });
-      await partialSchema.validateAsync(serializedModel, {
-        abortEarly: false,
-        allowUnknown: true,
-        context: {
-          changedAttributes: this.changedAttributes(),
-          ...options,
+      const validationResult = (await partialSchema.validateAsync(
+        serializedModel,
+        {
+          abortEarly: false,
+          allowUnknown: true,
+          warnings: options.warnings,
+          context: {
+            changedAttributes: this.changedAttributes(),
+            ...options,
+          },
         },
-      });
+      )) as ValidationResult;
+      if (validationResult.warning) {
+        this._validationWarning = this.#mapValidationError(
+          validationResult.warning,
+        );
+      } else {
+        this._validationWarning = {};
+      }
     } catch (error: unknown) {
       if (error instanceof ValidationError) {
         this._validationError = {

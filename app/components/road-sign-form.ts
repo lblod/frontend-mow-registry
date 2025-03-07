@@ -58,6 +58,27 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
+  async setRoadsignDate(attribute: string, isoDate: string, date: Date) {
+    if (attribute === 'endDate') {
+      date.setHours(23);
+      date.setMinutes(59);
+      date.setSeconds(59);
+    }
+    this.args.roadSignConcept.set(attribute, date);
+    if (
+      this.args.roadSignConcept.startDate &&
+      this.args.roadSignConcept.endDate
+    ) {
+      await this.args.roadSignConcept.validateProperty('startDate', {
+        warnings: true,
+      });
+      await this.args.roadSignConcept.validateProperty('endDate', {
+        warnings: true,
+      });
+    }
+  }
+
+  @action
   async addShape() {
     const shape = this.store.createRecord<TribontShape>('tribont-shape', {});
     (await this.args.roadSignConcept.shapes).push(shape);
@@ -90,9 +111,9 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   };
 
   @action
-  async setImage(model: RoadSignConcept, image: File) {
+  setImage(model: RoadSignConcept, image: File) {
     super.setImage(model, image);
-    await this.args.roadSignConcept.validateProperty('image');
+    void this.args.roadSignConcept.validateProperty('image');
   }
 
   editRoadSignConceptTask = dropTask(async (event: InputEvent) => {
@@ -167,9 +188,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       );
 
       await Promise.all(
-        this.variablesToRemove.map((variable) => {
-          variable.destroyRecord();
-        }),
+        this.variablesToRemove.map((variable) => variable.destroyRecord()),
       );
 
       await this.args.roadSignConcept.save();

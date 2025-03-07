@@ -27,9 +27,9 @@ export default class IconCatalogFormComponent extends ImageUploadHandlerComponen
   }
 
   @action
-  async setImage(model: Icon, image: File) {
+  setImage(model: Icon, image: File) {
     super.setImage(model, image);
-    await this.args.icon.validate();
+    void this.args.icon.validate();
   }
 
   editIconTask = dropTask(async (event: InputEvent) => {

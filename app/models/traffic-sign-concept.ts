@@ -16,6 +16,8 @@ import {
   validateBooleanOptional,
   validateHasManyOptional,
   validateStringRequired,
+  validateDateOptional,
+  validateEndDate,
 } from 'mow-registry/validators/schema';
 
 export default class TrafficSignConcept extends SkosConcept {
@@ -24,6 +26,8 @@ export default class TrafficSignConcept extends SkosConcept {
   @attr declare meaning?: string;
   @attr declare valid?: boolean;
   @attr declare arPlichtig?: boolean;
+  @attr('date') declare startDate?: Date;
+  @attr('date') declare endDate?: Date;
 
   @belongsTo<Image>('image', { async: true, inverse: null, polymorphic: true })
   declare image: AsyncBelongsTo<Image>;
@@ -31,7 +35,10 @@ export default class TrafficSignConcept extends SkosConcept {
   @belongsTo<SkosConcept>('skos-concept', { async: true, inverse: null })
   declare status: AsyncBelongsTo<SkosConcept>;
 
-  @hasMany<Template>('template', { async: true, inverse: null })
+  @hasMany<Template>('template', {
+    async: true,
+    inverse: null,
+  })
   declare hasInstructions: AsyncHasMany<Template>;
 
   @hasMany<TrafficMeasureConcept>('traffic-measure-concept', {
@@ -45,6 +52,8 @@ export default class TrafficSignConcept extends SkosConcept {
     return super.validationSchema.keys({
       valid: validateBooleanOptional(),
       arPlichtig: validateBooleanOptional(),
+      startDate: validateDateOptional(),
+      endDate: validateEndDate(),
       image: validateBelongsToRequired(),
       meaning: validateStringRequired(),
       status: validateBelongsToOptional(),

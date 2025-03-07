@@ -18,6 +18,9 @@ export default class RoadsignConceptsIndexController extends Controller {
     'classifications',
     'validation',
     'arPlichtig',
+    'validityOption',
+    'validityStartDate',
+    'validityEndDate',
   ];
 
   declare model: ModelFrom<RoadsignConceptsIndexRoute>;
@@ -33,6 +36,9 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked sort = 'label';
   @tracked validation?: string | null;
   @tracked arPlichtig?: string | null;
+  @tracked validityOption?: string | null;
+  @tracked validityStartDate?: string | null;
+  @tracked validityEndDate?: string | null;
 
   get validationStatusOptions() {
     return [
@@ -56,6 +62,7 @@ export default class RoadsignConceptsIndexController extends Controller {
         this.meaning ||
         this.classification ||
         this.validation ||
+        this.validityOption ||
         this.arPlichtig,
     );
   }
@@ -115,6 +122,21 @@ export default class RoadsignConceptsIndexController extends Controller {
       this[filterName] = null;
     }
   }
+  @action
+  updateValidityFilter({
+    validityOption,
+    startDate,
+    endDate,
+  }: {
+    validityOption: string;
+    startDate: string;
+    endDate: string;
+  }) {
+    this.validityOption = validityOption;
+    this.validityStartDate = startDate;
+    this.validityEndDate = endDate;
+    this.resetPagination();
+  }
 
   @action onPageChange(newPage: number) {
     this.page = newPage;
@@ -130,6 +152,9 @@ export default class RoadsignConceptsIndexController extends Controller {
     this.classification = null;
     this.validation = null;
     this.arPlichtig = null;
+    this.validityOption = null;
+    this.validityStartDate = null;
+    this.validityEndDate = null;
     this.resetPagination();
   };
 
