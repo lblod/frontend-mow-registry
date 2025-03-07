@@ -40,7 +40,6 @@ export default class RoadmarkingConceptsIndexRoute extends Route {
       sort: params.sort,
       filter: {},
     };
-    console.log(params.sort);
     const { uris: roadMarkingUris, count } = await fetchManualData(
       'road-marking-concept',
       params,
