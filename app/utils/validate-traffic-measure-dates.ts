@@ -18,16 +18,16 @@ export default async function validateTrafficMeasureDates(
     if (!trafficMeasure._validationWarning) {
       trafficMeasure._validationWarning = {};
     }
-    if (trafficMeasure._validationWarning.startDate) {
-      trafficMeasure._validationWarning.startDate = {
-        ...trafficMeasure._validationWarning.startDate,
+    if (trafficMeasure._validationWarning['startDate']) {
+      trafficMeasure._validationWarning['startDate'] = {
+        ...trafficMeasure._validationWarning['startDate'],
         messageArray: [
-          trafficMeasure._validationWarning.startDate.message,
+          trafficMeasure._validationWarning['startDate'].message,
           'errors.start-date-less-than-min-start-date',
         ],
       };
     } else {
-      trafficMeasure._validationWarning.startDate = {
+      trafficMeasure._validationWarning['startDate'] = {
         message: 'errors.start-date-less-than-min-start-date',
         path: ['startDate'],
         type: '',
@@ -38,16 +38,16 @@ export default async function validateTrafficMeasureDates(
     if (!trafficMeasure._validationWarning) {
       trafficMeasure._validationWarning = {};
     }
-    if (trafficMeasure._validationWarning.endDate) {
-      trafficMeasure._validationWarning.endDate = {
-        ...trafficMeasure._validationWarning.endDate,
+    if (trafficMeasure._validationWarning['endDate']) {
+      trafficMeasure._validationWarning['endDate'] = {
+        ...trafficMeasure._validationWarning['endDate'],
         messageArray: [
-          trafficMeasure._validationWarning.endDate.message,
+          trafficMeasure._validationWarning['endDate'].message,
           'errors.end-date-more-than-max-end-date',
         ],
       };
     } else {
-      trafficMeasure._validationWarning.endDate = {
+      trafficMeasure._validationWarning['endDate'] = {
         message: 'errors.end-date-more-than-max-end-date',
         path: ['endDate'],
         type: '',

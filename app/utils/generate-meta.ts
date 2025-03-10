@@ -1,31 +1,15 @@
+import type { MetaParams } from 'mow-registry/utils/type-utils';
 type GenerateMetaParams = {
   size: number;
   page: number;
-};
-type GenerateMetaReturn = {
-  count: number;
-  pagination: {
-    first: {
-      number: number;
-    };
-    last: {
-      number: number;
-    };
-    prev?: {
-      number: number;
-    };
-    next?: {
-      number: number;
-    };
-  };
 };
 
 export default function generateMeta(
   params: GenerateMetaParams,
   count: number,
-): GenerateMetaReturn {
+): MetaParams {
   const lastPage = count / params.size + 1;
-  const meta: GenerateMetaReturn = {
+  const meta: MetaParams = {
     count: count,
     pagination: {
       first: {

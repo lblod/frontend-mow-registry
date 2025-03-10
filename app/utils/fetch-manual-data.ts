@@ -6,6 +6,7 @@ import {
   executeQuery,
   executeCountQuery,
 } from 'mow-registry/utils/sparql-utils';
+import ENV from 'mow-registry/config/environment';
 
 const TYPES = {
   'road-sign-concept': 'mobiliteit:Verkeersbordconcept',
@@ -158,14 +159,14 @@ export default async function fetchManualData(
   `;
   const response = await executeQuery({
     query,
-    endpoint: 'http://localhost/sparql',
+    endpoint: ENV.sparqlEndpoint,
   });
   const countQuery = await executeCountQuery({
     query: queryCount,
-    endpoint: 'http://localhost/sparql',
+    endpoint: ENV.sparqlEndpoint,
   });
   const uris = response.results.bindings.map((binding) =>
-    binding.id ? binding.id.value : '',
+    binding['id'] ? binding['id'].value : '',
   );
   return { uris, count: countQuery };
 }

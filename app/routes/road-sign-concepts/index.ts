@@ -6,6 +6,7 @@ import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import { hash } from 'rsvp';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
+import type { Collection } from 'mow-registry/utils/type-utils';
 
 type Params = {
   label?: string;
@@ -49,17 +50,20 @@ export default class RoadsignConceptsIndexRoute extends Route {
       'road-sign-concept',
       params,
     );
-    query.filter = {
+    query['filter'] = {
       id: roadsignConceptUris.join(','),
     };
-    const roadsigns = await this.store.query<RoadSignConcept>(
-      'road-sign-concept',
-      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-      // TODO: fix the query types
-      query,
-    );
+    const roadsigns = roadsignConceptUris.length
+      ? await this.store.query<RoadSignConcept>(
+          'road-sign-concept',
+          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+          // TODO: fix the query types
+          query,
+        )
+      : ([] as Collection<RoadSignConcept>);
     roadsigns.meta = generateMeta(params, count);
     roadsigns.meta.count = count;
+    console.log(roadsigns);
     return hash({
       count,
       roadSignConcepts: roadsigns,

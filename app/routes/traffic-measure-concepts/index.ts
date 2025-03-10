@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
+import type { Collection } from 'mow-registry/utils/type-utils';
 
 type Params = {
   label?: string;
@@ -40,15 +41,17 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
       'traffic-measure-concept',
       params,
     );
-    query.filter = {
+    query['filter'] = {
       id: trafficMeasureUris.join(','),
     };
-    const trafficMeasures = await this.store.query<TrafficMeasureConcept>(
-      'traffic-measure-concept',
-      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-      // TODO: fix the query types
-      query,
-    );
+    const trafficMeasures = trafficMeasureUris.length
+      ? await this.store.query<TrafficMeasureConcept>(
+          'traffic-measure-concept',
+          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+          // TODO: fix the query types
+          query,
+        )
+      : ([] as Collection<TrafficMeasureConcept>);
     trafficMeasures.meta = generateMeta(params, count);
     trafficMeasures.meta.count = count;
 

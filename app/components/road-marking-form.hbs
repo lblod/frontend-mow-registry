@@ -151,26 +151,24 @@
             <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
-        {{#let @roadMarkingConcept.error.endDate as |error|}}
-          {{#let @roadMarkingConcept.warning.endDate as |warning|}}
-            <AuFormRow>
-              <AuLabel
-                @error={{error}}
-                @warning={{warning}}
-                for="endDate"
-              >
-                {{t "utility.end-date"}}&nbsp;
-              </AuLabel>
-              <AuDatePicker
-                @error={{error}}
-                @warning={{warning}}
-                id="endDate"
-                @value={{@roadMarkingConcept.endDate}}
-                @onChange={{fn this.setRoadMarkingDate 'endDate'}}
-              />
-              <ErrorMessage @error={{error}} @warning={{warning}} />
-            </AuFormRow>
-          {{/let}}
+        {{#let @roadMarkingConcept.error.endDate @roadMarkingConcept.warning.endDate as |error warning|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              @warning={{warning}}
+              for="endDate"
+            >
+              {{t "utility.end-date"}}&nbsp;
+            </AuLabel>
+            <AuDatePicker
+              @error={{error}}
+              @warning={{warning}}
+              id="endDate"
+              @value={{@roadMarkingConcept.endDate}}
+              @onChange={{fn this.setRoadMarkingDate 'endDate'}}
+            />
+            <ErrorMessage @error={{error}} @warning={{warning}} />
+          </AuFormRow>
         {{/let}}
         <AuHelpText>
           {{t "utility.modifying-validity-dates-warning"}}

@@ -7,7 +7,7 @@
     "baseUrl": ".",
     // TODO: this fixes the SessionService types, but ideally we would just follow the blueprint config
     "allowJs": true,
-    "noPropertyAccessFromIndexSignature": false,
+    "noPropertyAccessFromIndexSignature": true,
     "paths": {
       "mow-registry/tests/*": ["tests/*"],
       "mow-registry/*": ["app/*"],

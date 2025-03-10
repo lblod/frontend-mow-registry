@@ -54,6 +54,7 @@ module.exports = function (environment) {
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
     ENV.featureFlags.simpleLogin = true;
+    ENV.sparqlEndpoint = 'http://localhost/sparql';
   }
 
   if (environment === 'test') {

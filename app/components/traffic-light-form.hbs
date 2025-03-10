@@ -151,26 +151,24 @@
             <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
-        {{#let @trafficLightConcept.error.endDate as |error|}}
-          {{#let @trafficLightConcept.warning.endDate as |warning|}}
-            <AuFormRow>
-              <AuLabel
-                @error={{error}}
-                @warning={{warning}}
-                for="endDate"
-              >
-                {{t "utility.end-date"}}&nbsp;
-              </AuLabel>
-              <AuDatePicker
-                @error={{error}}
-                @warning={{warning}}
-                id="endDate"
-                @value={{@trafficLightConcept.endDate}}
-                @onChange={{fn this.setTrafficLightDate 'endDate'}}
-              />
-              <ErrorMessage @error={{error}} @warning={{warning}} />
-            </AuFormRow>
-          {{/let}}
+        {{#let @trafficLightConcept.error.endDate @trafficLightConcept.warning.endDate as |error warning|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              @warning={{warning}}
+              for="endDate"
+            >
+              {{t "utility.end-date"}}&nbsp;
+            </AuLabel>
+            <AuDatePicker
+              @error={{error}}
+              @warning={{warning}}
+              id="endDate"
+              @value={{@trafficLightConcept.endDate}}
+              @onChange={{fn this.setTrafficLightDate 'endDate'}}
+            />
+            <ErrorMessage @error={{error}} @warning={{warning}} />
+          </AuFormRow>
         {{/let}}
         <AuHelpText>
           {{t "utility.modifying-validity-dates-warning"}}
