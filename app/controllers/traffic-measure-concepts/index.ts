@@ -3,6 +3,8 @@ import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import type Template from 'mow-registry/models/template';
+import { service } from '@ember/service';
+import type IntlService from 'ember-intl/services/intl';
 
 export default class TrafficMeasureConceptsIndexController extends Controller {
   queryParams = [
@@ -11,11 +13,14 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
     'label',
     'template',
     'sort',
+    'validation',
     'templateValue',
     'validityOption',
     'validityStartDate',
     'validityEndDate',
   ];
+  @service
+  declare intl: IntlService;
 
   @tracked page = 0;
   @tracked size = 30;
@@ -23,12 +28,31 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   @tracked template?: Template | null;
   @tracked templateValue = '';
   @tracked sort = ':no-case:label';
+  @tracked validation?: string | null;
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
 
+  get validationStatusOptions() {
+    return [
+      { value: 'true', label: this.intl.t('validation-status.valid') },
+      { value: 'false', label: this.intl.t('validation-status.draft') },
+    ];
+  }
+
+  get selectedValidationStatus() {
+    return this.validationStatusOptions.find(
+      (option) => option.value === this.validation,
+    );
+  }
+
   get hasActiveFilter() {
-    return Boolean(this.label || this.templateValue || this.validityOption);
+    return Boolean(
+      this.label ||
+        this.templateValue ||
+        this.validityOption ||
+        this.validation,
+    );
   }
 
   updateSearchFilterTask = restartableTask(
@@ -50,6 +74,18 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
       this.resetPagination();
     },
   );
+
+  @action
+  updateValidationFilter(
+    selectedOption: (typeof this.validationStatusOptions)[number],
+  ) {
+    if (selectedOption) {
+      this.validation = selectedOption.value;
+      this.resetPagination();
+    } else {
+      this.validation = null;
+    }
+  }
 
   @action
   updateValidityFilter({
@@ -81,6 +117,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   resetFilters = () => {
     this.label = '';
     this.templateValue = '';
+    this.validation = null;
     this.validityOption = null;
     this.validityStartDate = null;
     this.validityEndDate = null;
