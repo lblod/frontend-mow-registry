@@ -240,6 +240,8 @@ traffic-measure-concept:
     type-filter: Filteren op type
     no-matches: Geen resultaten gevonden
     type-to-search: Typ om te zoeken
+    validation-filter: Validatie
+    validation-filter-placeholder: Filteren op validatie-status
   landing-page:
     content: Beheer mobiliteitsmaatregelen.
     button: Ga naar Mobiliteitsmaatregelen

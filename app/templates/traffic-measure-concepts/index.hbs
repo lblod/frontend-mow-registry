@@ -37,14 +37,14 @@
         </AuFormRow>
          <div>
           <AuLabel for="validation-filter">
-            {{t "traffic-light-concept.crud.validation-filter"}}
+            {{t "traffic-measure-concept.crud.validation-filter"}}
           </AuLabel>
           <PowerSelect
             @allowClear={{true}}
             @options={{this.validationStatusOptions}}
             @selected={{this.selectedValidationStatus}}
             @placeholder={{t
-              "traffic-light-concept.crud.validation-filter-placeholder"
+              "traffic-measure-concept.crud.validation-filter-placeholder"
             }}
             @loadingMessage={{t "utility.loading"}}
             @onChange={{this.updateValidationFilter}}
