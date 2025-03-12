@@ -217,12 +217,12 @@ function generateValidityFilter({
     if (startDate) {
       filter.push(`
         BIND(!bound(?startDate) AS ?noStartDate)
-        FILTER(?startDate > ${sparqlEscapeDateTime(startDate)} || ?noStartDate)`);
+        FILTER(?startDate <= ${sparqlEscapeDateTime(startDate)} || ?noStartDate)`);
     }
     if (endDate) {
       filter.push(`
       BIND(!bound(?endDate) AS ?noEndDate)
-      FILTER(?endDate < ${sparqlEscapeDateTime(endDate)} || ?noEndDate)`);
+      FILTER(?endDate >= ${sparqlEscapeDateTime(endDate)} || ?noEndDate)`);
     }
     return filter.join(' ');
   }
