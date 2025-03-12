@@ -90,6 +90,7 @@ utility:
   type: Type
   add-variable: Nieuwe variabele toevoegen
   properties: Eigenschappen
+  modifying-validity-dates-warning: "Opmerking: het wijzigen van geldigheidsdata kan de geldigheid van de instructie beïnvloeden."
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden
   preview-alt: Een voorbeeld van het geüploade bestand
