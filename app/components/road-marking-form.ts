@@ -41,23 +41,22 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   }
   @action
   async setRoadMarkingDate(attribute: string, isoDate: string, date: Date) {
-    if (attribute === 'endDate') {
+    if (date && attribute === 'endDate') {
       date.setHours(23);
       date.setMinutes(59);
       date.setSeconds(59);
     }
-    this.args.roadMarkingConcept.set(attribute, date);
-    if (
-      this.args.roadMarkingConcept.startDate &&
-      this.args.roadMarkingConcept.endDate
-    ) {
-      await this.args.roadMarkingConcept.validateProperty('startDate', {
-        warnings: true,
-      });
-      await this.args.roadMarkingConcept.validateProperty('endDate', {
-        warnings: true,
-      });
+    if (date) {
+      this.args.roadMarkingConcept.set(attribute, date);
+    } else {
+      this.args.roadMarkingConcept.set(attribute, undefined);
     }
+    await this.args.roadMarkingConcept.validateProperty('startDate', {
+      warnings: true,
+    });
+    await this.args.roadMarkingConcept.validateProperty('endDate', {
+      warnings: true,
+    });
   }
 
   editRoadMarkingConceptTask = dropTask(async (event: InputEvent) => {

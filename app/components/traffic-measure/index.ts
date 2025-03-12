@@ -477,23 +477,22 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
   @action
   async setTrafficMeasureDate(attribute: string, isoDate: string, date: Date) {
-    if (attribute === 'endDate') {
+    if (date && attribute === 'endDate') {
       date.setHours(23);
       date.setMinutes(59);
       date.setSeconds(59);
     }
-    this.trafficMeasureConcept.set(attribute, date);
-    if (
-      this.trafficMeasureConcept.startDate &&
-      this.trafficMeasureConcept.endDate
-    ) {
-      await this.trafficMeasureConcept.validateProperty('startDate', {
-        warnings: true,
-      });
-      await this.trafficMeasureConcept.validateProperty('endDate', {
-        warnings: true,
-      });
-      void validateTrafficMeasureDates(this.trafficMeasureConcept);
+    if (date) {
+      this.trafficMeasureConcept.set(attribute, date);
+    } else {
+      this.trafficMeasureConcept.set(attribute, undefined);
     }
+    await this.trafficMeasureConcept.validateProperty('startDate', {
+      warnings: true,
+    });
+    await this.trafficMeasureConcept.validateProperty('endDate', {
+      warnings: true,
+    });
+    void validateTrafficMeasureDates(this.trafficMeasureConcept);
   }
 }

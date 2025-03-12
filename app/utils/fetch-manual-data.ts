@@ -6,7 +6,6 @@ import {
   executeQuery,
   executeCountQuery,
 } from 'mow-registry/utils/sparql-utils';
-import ENV from 'mow-registry/config/environment';
 
 const TYPES = {
   'road-sign-concept': 'mobiliteit:Verkeersbordconcept',

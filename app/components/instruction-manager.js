@@ -23,20 +23,22 @@ export default class InstructionManager extends AddInstruction {
   });
   @action
   async setTemplateDate(attribute, isoDate, date) {
-    if (attribute === 'endDate') {
+    if (date && attribute === 'endDate') {
       date.setHours(23);
       date.setMinutes(59);
       date.setSeconds(59);
     }
-    this.template.set(attribute, date);
-    if (this.template.startDate && this.template.endDate) {
-      await this.template.validateProperty('startDate', {
-        warnings: true,
-      });
-      await this.template.validateProperty('endDate', {
-        warnings: true,
-      });
-      await validateTemplateDates(this.template, this.concept);
+    if (date) {
+      this.template.set(attribute, date);
+    } else {
+      this.template.set(attribute, undefined);
     }
+    await this.template.validateProperty('startDate', {
+      warnings: true,
+    });
+    await this.template.validateProperty('endDate', {
+      warnings: true,
+    });
+    await validateTemplateDates(this.template, this.concept);
   }
 }
