@@ -83,6 +83,7 @@ export const validateDateOptional = (message = 'errors.date') => {
 };
 
 export const validateEndDate = () => {
+  console.log(Joi.ref('startDate'));
   return Joi.date()
     .greater('now')
     .rule({
@@ -90,6 +91,12 @@ export const validateEndDate = () => {
       warn: true,
       message: 'errors.end-date-should-be-in-the-future',
     })
-    .greater(Joi.ref('startDate'))
+    .greater(
+      Joi.ref('startDate', {
+        adjust: (date) => {
+          return date ?? new Date(0);
+        },
+      }),
+    )
     .message('errors.end-date-greater-than-start-date');
 };

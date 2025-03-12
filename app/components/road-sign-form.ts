@@ -59,12 +59,16 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
   @action
   async setRoadsignDate(attribute: string, isoDate: string, date: Date) {
-    if (attribute === 'endDate') {
+    if (date && attribute === 'endDate') {
       date.setHours(23);
       date.setMinutes(59);
       date.setSeconds(59);
     }
-    this.args.roadSignConcept.set(attribute, date);
+    if (date) {
+      this.args.roadSignConcept.set(attribute, date);
+    } else {
+      this.args.roadSignConcept.set(attribute, undefined);
+    }
     if (
       this.args.roadSignConcept.startDate &&
       this.args.roadSignConcept.endDate
