@@ -159,11 +159,11 @@ export default async function fetchManualData(
   `;
   const response = await executeQuery({
     query,
-    endpoint: ENV.sparqlEndpoint,
+    endpoint: '/raw-sparql',
   });
   const countQuery = await executeCountQuery({
     query: queryCount,
-    endpoint: ENV.sparqlEndpoint,
+    endpoint: '/raw-sparql',
   });
   const uris = response.results.bindings.map((binding) =>
     binding['id'] ? binding['id'].value : '',

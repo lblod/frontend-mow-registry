@@ -63,7 +63,6 @@ export default class RoadsignConceptsIndexRoute extends Route {
       : ([] as Collection<RoadSignConcept>);
     roadsigns.meta = generateMeta(params, count);
     roadsigns.meta.count = count;
-    console.log(roadsigns);
     return hash({
       count,
       roadSignConcepts: roadsigns,

@@ -83,7 +83,6 @@ export const validateDateOptional = (message = 'errors.date') => {
 };
 
 export const validateEndDate = () => {
-  console.log(Joi.ref('startDate'));
   return Joi.date()
     .greater('now')
     .rule({
