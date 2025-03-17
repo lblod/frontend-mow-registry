@@ -3,6 +3,8 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type CodeList from 'mow-registry/models/code-list';
 import { hash } from 'rsvp';
+import { action } from '@ember/object';
+import type Transition from '@ember/routing/transition';
 
 type Params = {
   sort: string;
@@ -40,5 +42,15 @@ export default class CodelistsManagementIndexRoute extends Route {
       // TODO: fix the query types
       codelists: this.store.query<CodeList>('code-list', query),
     });
+  }
+  @action
+  loading(transition: Transition) {
+    // eslint-disable-next-line ember/no-controller-access-in-routes
+    const controller = this.controllerFor(this.routeName);
+    controller.set('isLoadingModel', true);
+    transition.promise?.finally(function () {
+      controller.set('isLoadingModel', false);
+    });
+    return true; // bubble the loading event
   }
 }

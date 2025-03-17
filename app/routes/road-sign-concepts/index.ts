@@ -7,6 +7,8 @@ import { hash } from 'rsvp';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import type { Collection } from 'mow-registry/utils/type-utils';
+import { action } from '@ember/object';
+import type Transition from '@ember/routing/transition';
 
 type Params = {
   label?: string;
@@ -73,5 +75,16 @@ export default class RoadsignConceptsIndexRoute extends Route {
         },
       ),
     });
+  }
+
+  @action
+  loading(transition: Transition) {
+    // eslint-disable-next-line ember/no-controller-access-in-routes
+    const controller = this.controllerFor(this.routeName);
+    controller.set('isLoadingModel', true);
+    transition.promise?.finally(function () {
+      controller.set('isLoadingModel', false);
+    });
+    return true; // bubble the loading event
   }
 }
