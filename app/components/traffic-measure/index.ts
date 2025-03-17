@@ -49,6 +49,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   @tracked inputTypes: InputType[];
   @tracked instructionType: InputType;
   @tracked signsError = false;
+  @tracked signValidation?: string | null;
 
   variablesToBeDeleted: Variable[] = [];
 
@@ -81,6 +82,30 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       value: 'instruction',
       label: this.intl.t('utility.template-variables.instruction'),
     };
+  }
+
+  get validationStatusOptions() {
+    return [
+      { value: 'true', label: this.intl.t('validation-status.valid') },
+      { value: 'false', label: this.intl.t('validation-status.draft') },
+    ];
+  }
+
+  get selectedValidationStatus() {
+    return this.validationStatusOptions.find(
+      (option) => option.value === this.signValidation,
+    );
+  }
+
+  @action
+  updateValidationFilter(
+    selectedOption: (typeof this.validationStatusOptions)[number],
+  ) {
+    if (selectedOption) {
+      this.signValidation = selectedOption.value;
+    } else {
+      this.signValidation = null;
+    }
   }
 
   @action

@@ -9,9 +9,11 @@ import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
+import { isSome } from 'mow-registry/utils/option';
 
 type Args = {
   selectedType: SignType;
+  selectedValidation?: string | null;
   addSign: (sign: TrafficSignConcept) => void;
 };
 export default class TrafficMeasureAddSignComponent extends Component<Args> {
@@ -26,6 +28,15 @@ export default class TrafficMeasureAddSignComponent extends Component<Args> {
     queryParams[this.args.selectedType.searchFilter] = searchData;
     queryParams['sort'] = this.args.selectedType.sortingField;
     queryParams['include'] = 'hasInstructions';
+
+    if (isSome(this.args.selectedValidation)) {
+      if (this.args.selectedValidation === 'true') {
+        queryParams['filter[valid]'] = true;
+      } else {
+        queryParams['filter[:or:][:has-no:valid]'] = 'yes';
+        queryParams['filter[:or:][valid]'] = false;
+      }
+    }
 
     const options = await this.store.query<
       RoadSignConcept | RoadMarkingConcept | TrafficLightConcept

@@ -14,6 +14,7 @@ type Params = {
   size: number;
   sort: string;
   templateValue: string;
+  validation?: string;
   validityOption?: string;
   validityStartDate?: string;
   validityEndDate?: string;
@@ -28,6 +29,7 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
     size: { refreshModel: true },
     sort: { refreshModel: true },
     templateValue: { refreshModel: true },
+    validation: { refreshModel: true },
     validityOption: { refreshModel: true },
     validityStartDate: { refreshModel: true },
     validityEndDate: { refreshModel: true },

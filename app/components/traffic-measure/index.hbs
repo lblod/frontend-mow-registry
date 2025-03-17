@@ -128,15 +128,28 @@
         {{t "traffic-measure-concept.attr.traffic-sign"}}
       </AuHeading>
       <div class="au-o-grid au-o-grid--tiny">
-        <div class="au-o-grid__item au-u-1-3@medium">
+        <div class="au-o-grid__item au-u-1-4@medium">
           <TrafficMeasure::SelectType
             @selectedType={{this.selectedType}}
             @updateTypeFilter={{this.updateTypeFilter}}
           />
         </div>
-        <div class="au-o-grid__item au-u-2-3@medium">
+        <div class="au-o-grid__item au-u-1-4@medium">
+          <PowerSelect
+            @allowClear={{true}}
+            @options={{this.validationStatusOptions}}
+            @selected={{this.selectedValidationStatus}}
+            @placeholder={{t "traffic-measure-concept.crud.validation-filter-placeholder"}}
+            @onChange={{this.updateValidationFilter}}
+            as |validationType|
+          >
+            {{validationType.label}}
+          </PowerSelect>
+        </div>
+        <div class="au-o-grid__item au-u-2-4@medium">
           <TrafficMeasure::AddSign
             @selectedType={{this.selectedType}}
+            @selectedValidation={{this.signValidation}}
             @addSign={{this.addSign}}
             @disabled={{this.isSelectedTypeEmpty}}
           />
