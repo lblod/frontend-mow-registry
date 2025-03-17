@@ -8,7 +8,7 @@ export default function generateMeta(
   params: GenerateMetaParams,
   count: number,
 ): MetaParams {
-  const lastPage = count / params.size + 1;
+  const lastPage = Math.floor(count / params.size);
   const meta: MetaParams = {
     count: count,
     pagination: {
