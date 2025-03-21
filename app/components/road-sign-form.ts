@@ -69,17 +69,12 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     } else {
       this.args.roadSignConcept.set(attribute, undefined);
     }
-    if (
-      this.args.roadSignConcept.startDate &&
-      this.args.roadSignConcept.endDate
-    ) {
-      await this.args.roadSignConcept.validateProperty('startDate', {
-        warnings: true,
-      });
-      await this.args.roadSignConcept.validateProperty('endDate', {
-        warnings: true,
-      });
-    }
+    await this.args.roadSignConcept.validateProperty('startDate', {
+      warnings: true,
+    });
+    await this.args.roadSignConcept.validateProperty('endDate', {
+      warnings: true,
+    });
   }
 
   @action
