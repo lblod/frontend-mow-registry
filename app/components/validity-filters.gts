@@ -50,19 +50,21 @@ export default class ValidityFilters extends Component {
   setStartDate(isoDate: string, date: Date) {
     this.args.onChange({
       validityOption: "custom",
-      startDate: date.toISOString(),
+      startDate: date ? date.toISOString() : undefined,
       endDate: this.args.endDate,
     });
   }
   @action
   setEndDate(isoDate: string, date: Date) {
-    date.setHours(23);
-    date.setMinutes(59);
-    date.setSeconds(59);
+    if (date) {
+      date.setHours(23);
+      date.setMinutes(59);
+      date.setSeconds(59);
+    }
     this.args.onChange({
       validityOption: "custom",
       startDate: this.args.startDate,
-      endDate: date.toISOString(),
+      endDate: date ? date.toISOString() : undefined,
     });
   }
 

@@ -14,7 +14,7 @@
         {{on "click" (perform this.save)}}
         @loading={{if this.save.isRunning true false}}
         @loadingMessage={{t "utility.save"}}
-        @disabled={{if this.save.isRunning true false}}
+        @disabled={{or @trafficMeasureConcept.error this.isSaving}}
       >
         {{t "utility.save"}}
       </AuButton>
