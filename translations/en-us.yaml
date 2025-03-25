@@ -64,6 +64,9 @@ utility:
   yes: Yes
   no: No
   validation-status: Validation status
+  start-date: Start date
+  end-date: End date
+  modifying-validity-dates-warning: "Note: modifying validity dates can affect the instruction validity"
   template-variables:
     text: text
     number: number
@@ -239,11 +242,15 @@ traffic-measure-concept:
     new: New traffic measure
     no-data: No traffic measures
     edit: Edit measure {label}
+    label-filter: Label
     label-filter-placeholder: Search by label
+    text-filter: Text
     text-filter-placeholder: Search by text
     type-filter: Filter by type
     no-matches: No results found
     type-to-search: Type to search
+    validation-filter: Validation
+    validation-filter-placeholder: Filter by validation status
   landing-page:
     content: Manage traffic measures.
     button: Go to traffic measures
@@ -321,3 +328,13 @@ errors:
   field:
     required: This field is required
   number: Enter a number
+  end-date-should-be-in-the-future: End date should be in the future.
+  end-date-greater-than-start-date: End date must be greater than the start date.
+  start-date-less-than-parent-sign: Start date should be later than the start date of the parent sign.
+  end-date-more-than-parent-sign: End date should be earlier than the end date of the parent sign.
+validity-filter:
+  label: Validity
+  placeholder: Filter by validity status
+  valid: Currently valid
+  expired: Expired
+  custom: Custom period

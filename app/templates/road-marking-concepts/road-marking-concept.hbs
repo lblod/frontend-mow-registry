@@ -64,6 +64,22 @@
             {{@model.roadMarkingConcept.meaning}}
           </dd>
         </div>
+        <div>
+          <dt class="au-u-h5 au-u-medium">
+            {{t "utility.start-date"}}
+          </dt>
+          <dd class="au-u-muted">
+            {{human-friendly-date @model.roadMarkingConcept.startDate locale=this.intl.primaryLocale}}
+          </dd>
+        </div>
+        <div>
+          <dt class="au-u-h5 au-u-medium">
+            {{t "utility.end-date"}}
+          </dt>
+          <dd class="au-u-muted">
+            {{human-friendly-date @model.roadMarkingConcept.endDate locale=this.intl.primaryLocale}}
+          </dd>
+        </div>
       </dl>
     </div>
   </:sidebar>

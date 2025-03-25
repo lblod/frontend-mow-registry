@@ -72,3 +72,30 @@ export const validateNumberRequired = (message = 'errors.number') => {
     'any.required': message,
   });
 };
+
+/**
+ * Rules for validating a date as a optional field.
+ */
+export const validateDateOptional = (message = 'errors.date') => {
+  return Joi.date().messages({
+    'any.optional': message,
+  });
+};
+
+export const validateEndDate = () => {
+  return Joi.date()
+    .greater('now')
+    .rule({
+      keep: true,
+      warn: true,
+      message: 'errors.end-date-should-be-in-the-future',
+    })
+    .greater(
+      Joi.ref('startDate', {
+        adjust: (date) => {
+          return date ?? new Date(0);
+        },
+      }),
+    )
+    .message('errors.end-date-greater-than-start-date');
+};

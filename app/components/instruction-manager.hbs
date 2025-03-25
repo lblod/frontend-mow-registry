@@ -68,6 +68,49 @@
             </AuAlert>
           {{/if}}
         </AuFormRow>
+        {{#let this.template.error.startDate as |error|}}
+          {{#let this.template.warning.startDate as |warning|}}
+            <AuFormRow>
+              <AuLabel
+                @error={{error}}
+                @warning={{warning}}
+                for="startDate"
+              >
+                {{t "utility.start-date"}}&nbsp;
+              </AuLabel>
+              <AuDatePicker
+                @error={{error}}
+                @warning={{warning}}
+                id="startDate"
+                @value={{this.template.startDate}}
+                @onChange={{fn this.setTemplateDate 'startDate'}}
+              />
+              <ErrorMessage @error={{error}} @warning={{warning}} />
+            </AuFormRow>
+          {{/let}}
+        {{/let}}
+        {{#let this.template.error.endDate as |error|}}
+          {{#let this.template.warning.endDate as |warning|}}
+            <AuFormRow>
+              <AuLabel
+                @error={{error}}
+                @warning={{warning}}
+                for="endDate"
+              >
+                {{t "utility.end-date"}}&nbsp;
+              </AuLabel>
+              <AuDatePicker
+                @error={{error}}
+                @warning={{warning}}
+                id="endDate"
+                @min={{this.template.startDate}}
+                @value={{this.template.endDate}}
+                @onChange={{fn this.setTemplateDate 'endDate'}}
+              />
+              <ErrorMessage @error={{error}} @warning={{warning}} />
+            </AuFormRow>
+          {{/let}}
+        {{/let}}
       </div>
 
       <div

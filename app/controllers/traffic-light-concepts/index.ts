@@ -8,7 +8,18 @@ import { service } from '@ember/service';
 import type IntlService from 'ember-intl/services/intl';
 
 export default class TrafficlightConceptsIndexController extends Controller {
-  queryParams = ['page', 'size', 'label', 'meaning', 'sort', 'validation'];
+  queryParams = [
+    'page',
+    'size',
+    'label',
+    'meaning',
+    'sort',
+    'validation',
+    'validityOption',
+    'validityStartDate',
+    'validityEndDate',
+    'arPlichtig',
+  ];
   declare model: ModelFrom<TrafficlightConceptsIndexRoute>;
 
   @service
@@ -21,6 +32,9 @@ export default class TrafficlightConceptsIndexController extends Controller {
   @tracked sort = ':no-case:label';
   @tracked validation?: string | null;
   @tracked arPlichtig?: string | null;
+  @tracked validityOption?: string | null;
+  @tracked validityStartDate?: string | null;
+  @tracked validityEndDate?: string | null;
 
   get validationStatusOptions() {
     return [
@@ -41,7 +55,11 @@ export default class TrafficlightConceptsIndexController extends Controller {
 
   get hasActiveFilter() {
     return Boolean(
-      this.label || this.meaning || this.validation || this.arPlichtig,
+      this.label ||
+        this.meaning ||
+        this.validation ||
+        this.validityOption ||
+        this.arPlichtig,
     );
   }
 
@@ -79,6 +97,21 @@ export default class TrafficlightConceptsIndexController extends Controller {
       this[filterName] = null;
     }
   }
+  @action
+  updateValidityFilter({
+    validityOption,
+    startDate,
+    endDate,
+  }: {
+    validityOption: string;
+    startDate: string;
+    endDate: string;
+  }) {
+    this.validityOption = validityOption;
+    this.validityStartDate = startDate;
+    this.validityEndDate = endDate;
+    this.resetPagination();
+  }
 
   @action onPageChange(newPage: number) {
     this.page = newPage;
@@ -93,6 +126,9 @@ export default class TrafficlightConceptsIndexController extends Controller {
     this.meaning = '';
     this.validation = null;
     this.arPlichtig = null;
+    this.validityOption = null;
+    this.validityStartDate = null;
+    this.validityEndDate = null;
     this.resetPagination();
   };
 

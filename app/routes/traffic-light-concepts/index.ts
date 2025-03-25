@@ -2,8 +2,12 @@ import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
-import { isSome } from 'mow-registry/utils/option';
 import { hash } from 'rsvp';
+import fetchManualData from 'mow-registry/utils/fetch-manual-data';
+import generateMeta from 'mow-registry/utils/generate-meta';
+import type { Collection } from 'mow-registry/utils/type-utils';
+import { action } from '@ember/object';
+import type Transition from '@ember/routing/transition';
 
 type Params = {
   label?: string;
@@ -13,6 +17,9 @@ type Params = {
   sort: string;
   validation?: string;
   arPlichtig?: string;
+  validityOption?: string;
+  validityStartDate?: string;
+  validityEndDate?: string;
 };
 export default class TrafficlightConceptsIndexRoute extends Route {
   @service declare store: Store;
@@ -25,48 +32,45 @@ export default class TrafficlightConceptsIndexRoute extends Route {
     sort: { refreshModel: true },
     validation: { refreshModel: true },
     arPlichtig: { refreshModel: true },
+    validityOption: { refreshModel: true },
+    validityStartDate: { refreshModel: true },
+    validityEndDate: { refreshModel: true },
   };
 
   async model(params: Params) {
     const query: Record<string, unknown> = {
       sort: params.sort,
-      page: {
-        number: params.page,
-        size: params.size,
-      },
+      filter: {},
     };
-
-    if (params.label) {
-      query['filter[label]'] = params.label;
-    }
-
-    if (params.meaning) {
-      query['filter[meaning]'] = params.meaning;
-    }
-
-    if (isSome(params.validation)) {
-      if (params.validation === 'true') {
-        query['filter[valid]'] = true;
-      } else {
-        query['filter[:or:][:has-no:valid]'] = 'yes';
-        query['filter[:or:][valid]'] = false;
-      }
-    }
-    if (isSome(params.arPlichtig)) {
-      if (params.arPlichtig === 'true') {
-        query['filter[ar-plichtig]'] = true;
-      } else {
-        query['filter[:or:][:has-no:ar-plichtig]'] = 'yes';
-        query['filter[:or:][ar-plichtig]'] = false;
-      }
-    }
+    const { uris: trafficLightUris, count } = await fetchManualData(
+      'traffic-light-concept',
+      params,
+    );
+    query['filter'] = {
+      id: trafficLightUris.join(','),
+    };
+    const trafficLights = trafficLightUris.length
+      ? await this.store.query<TrafficLightConcept>(
+          'traffic-light-concept',
+          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+          // TODO: fix the query types
+          query,
+        )
+      : ([] as Collection<TrafficLightConcept>);
+    trafficLights.meta = generateMeta(params, count);
+    trafficLights.meta.count = count;
     return hash({
-      trafficLightConcepts: this.store.query<TrafficLightConcept>(
-        'traffic-light-concept',
-        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-        // TODO: fix the query types
-        query,
-      ),
+      trafficLightConcepts: trafficLights,
     });
+  }
+  @action
+  loading(transition: Transition) {
+    // eslint-disable-next-line ember/no-controller-access-in-routes
+    const controller = this.controllerFor(this.routeName);
+    controller.set('isLoadingModel', true);
+    transition.promise?.finally(function () {
+      controller.set('isLoadingModel', false);
+    });
+    return true; // bubble the loading event
   }
 }

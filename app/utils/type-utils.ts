@@ -58,3 +58,25 @@ export type KeysOfType<T, P> = keyof ExtractPropsOfType<T, P>;
 export type ModifiableKeysOfType<T, P> = keyof ExtractModifiable<
   ExtractPropsOfType<T, P>
 >;
+
+export interface Collection<K> extends Array<K> {
+  meta?: MetaParams;
+}
+
+export type MetaParams = {
+  count: number;
+  pagination: {
+    first: {
+      number: number;
+    };
+    last: {
+      number: number;
+    };
+    prev?: {
+      number: number;
+    };
+    next?: {
+      number: number;
+    };
+  };
+};

@@ -14,7 +14,7 @@
         {{on "click" (perform this.save)}}
         @loading={{if this.save.isRunning true false}}
         @loadingMessage={{t "utility.save"}}
-        @disabled={{if this.save.isRunning true false}}
+        @disabled={{or @trafficMeasureConcept.error this.isSaving}}
       >
         {{t "utility.save"}}
       </AuButton>
@@ -82,6 +82,45 @@
           <VariableSignageSelector @concept={{@trafficMeasureConcept}} />
         </div>
       </div>
+      {{#let @trafficMeasureConcept.error.startDate @trafficMeasureConcept.warning.startDate as |error warning|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              @warning={{warning}}
+              for="startDate"
+            >
+              {{t "utility.start-date"}}&nbsp;
+            </AuLabel>
+            <AuDatePicker
+              @error={{error}}
+              @warning={{warning}}
+              id="startDate"
+              @value={{@trafficMeasureConcept.startDate}}
+              @onChange={{fn this.setTrafficMeasureDate 'startDate'}}
+            />
+            <ErrorMessage @error={{error}} @warning={{warning}} />
+          </AuFormRow>
+        {{/let}}
+        {{#let @trafficMeasureConcept.error.endDate @trafficMeasureConcept.warning.endDate as |error warning|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              @warning={{warning}}
+              for="endDate"
+            >
+              {{t "utility.end-date"}}&nbsp;
+            </AuLabel>
+            <AuDatePicker
+              @error={{error}}
+              @warning={{warning}}
+              id="endDate"
+              @min={{@trafficMeasureConcept.startDate}}
+              @value={{@trafficMeasureConcept.endDate}}
+              @onChange={{fn this.setTrafficMeasureDate 'endDate'}}
+            />
+            <ErrorMessage @error={{error}} @warning={{warning}} />
+          </AuFormRow>
+        {{/let}}
       <AuHeading
         @level="4"
         @skin="4"
@@ -90,15 +129,28 @@
         {{t "traffic-measure-concept.attr.traffic-sign"}}
       </AuHeading>
       <div class="au-o-grid au-o-grid--tiny">
-        <div class="au-o-grid__item au-u-1-3@medium">
+        <div class="au-o-grid__item au-u-1-4@medium">
           <TrafficMeasure::SelectType
             @selectedType={{this.selectedType}}
             @updateTypeFilter={{this.updateTypeFilter}}
           />
         </div>
-        <div class="au-o-grid__item au-u-2-3@medium">
+        <div class="au-o-grid__item au-u-1-4@medium">
+          <PowerSelect
+            @allowClear={{true}}
+            @options={{this.validationStatusOptions}}
+            @selected={{this.selectedValidationStatus}}
+            @placeholder={{t "traffic-measure-concept.crud.validation-filter-placeholder"}}
+            @onChange={{this.updateValidationFilter}}
+            as |validationType|
+          >
+            {{validationType.label}}
+          </PowerSelect>
+        </div>
+        <div class="au-o-grid__item au-u-2-4@medium">
           <TrafficMeasure::AddSign
             @selectedType={{this.selectedType}}
+            @selectedValidation={{this.signValidation}}
             @addSign={{this.addSign}}
             @disabled={{this.isSelectedTypeEmpty}}
           />

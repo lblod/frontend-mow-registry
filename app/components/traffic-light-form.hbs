@@ -134,6 +134,46 @@
             <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
+        {{#let @trafficLightConcept.error.startDate as |error|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              for="startDate"
+            >
+              {{t "utility.start-date"}}&nbsp;
+            </AuLabel>
+            <AuDatePicker
+              @error={{error}}
+              id="startDate"
+              @value={{@trafficLightConcept.startDate}}
+              @onChange={{fn this.setTrafficLightDate 'startDate'}}
+            />
+            <ErrorMessage @error={{error}} />
+          </AuFormRow>
+        {{/let}}
+        {{#let @trafficLightConcept.error.endDate @trafficLightConcept.warning.endDate as |error warning|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              @warning={{warning}}
+              for="endDate"
+            >
+              {{t "utility.end-date"}}&nbsp;
+            </AuLabel>
+            <AuDatePicker
+              @error={{error}}
+              @warning={{warning}}
+              id="endDate"
+              @min={{@trafficLightConcept.startDate}}
+              @value={{@trafficLightConcept.endDate}}
+              @onChange={{fn this.setTrafficLightDate 'endDate'}}
+            />
+            <ErrorMessage @error={{error}} @warning={{warning}} />
+          </AuFormRow>
+        {{/let}}
+        <AuHelpText>
+          {{t "utility.modifying-validity-dates-warning"}}
+        </AuHelpText>
       </form>
     </div>
   </div>

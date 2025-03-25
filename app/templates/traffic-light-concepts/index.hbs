@@ -75,6 +75,12 @@
             {{ar.label}}
           </PowerSelect>
         </div>
+        <ValidityFilters
+          @onChange={{this.updateValidityFilter}}
+          @value={{this.validityOption}}
+          @startDate={{this.validityStartDate}}
+          @endDate={{this.validityEndDate}}
+        />
         <ResetFilters
           @canReset={{this.hasActiveFilter}}
           @onReset={{this.resetFilters}}
@@ -85,6 +91,7 @@
   <:content>
     <SearchTables::TrafficLight
       @content={{this.model.trafficLightConcepts}}
+      @isLoading={{this.isLoadingModel}}
       @pageSize={{this.size}}
       @page={{this.page}}
       @sort={{this.sort}}

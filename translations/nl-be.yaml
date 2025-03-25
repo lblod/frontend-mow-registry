@@ -65,6 +65,8 @@ utility:
   validation-status: Validatiestatus
   yes: Ja
   no: Nee
+  start-date: Startdatum
+  end-date: Einddatum
   template-variables:
     text: tekst
     number: nummer
@@ -88,6 +90,7 @@ utility:
   type: Type
   add-variable: Nieuwe variabele toevoegen
   properties: Eigenschappen
+  modifying-validity-dates-warning: "Opmerking: het wijzigen van geldigheidsdata kan de geldigheid van de instructie beïnvloeden."
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden
   preview-alt: Een voorbeeld van het geüploade bestand
@@ -231,11 +234,15 @@ traffic-measure-concept:
     new: Nieuwe mobiliteitsmaatregel
     no-data: Geen mobiliteitsmaatregelen
     edit: Maatregel {label} bewerken
+    label-filter: Label
     label-filter-placeholder: Zoeken op label
+    text-filter: Tekst
     text-filter-placeholder: Zoeken op tekst
     type-filter: Filteren op type
     no-matches: Geen resultaten gevonden
     type-to-search: Typ om te zoeken
+    validation-filter: Validatie
+    validation-filter-placeholder: Filteren op validatie-status
   landing-page:
     content: Beheer mobiliteitsmaatregelen.
     button: Ga naar Mobiliteitsmaatregelen
@@ -320,3 +327,13 @@ errors:
   field:
     required: Dit veld is verplicht
   number: Geef een getal in
+  end-date-should-be-in-the-future: Einddatum moet in de toekomst liggen.
+  end-date-greater-than-start-date: De einddatum moet groter zijn dan de begindatum.
+  start-date-less-than-parent-sign: De begindatum moet later zijn dan de begindatum van het ouderbord.
+  end-date-more-than-parent-sign: De einddatum moet vroeger zijn dan de einddatum van het ouderbord.
+validity-filter:
+  label: Geldigheid
+  placeholder: Filter op geldigheidsstatus
+  valid: Momenteel geldig
+  expired: Verlopen
+  custom: Aangepaste periode

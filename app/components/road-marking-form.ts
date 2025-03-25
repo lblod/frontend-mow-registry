@@ -39,6 +39,26 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
     this.args.roadMarkingConcept[attributeName] = value;
     await this.args.roadMarkingConcept.validateProperty(attributeName);
   }
+  @action
+  async setRoadMarkingDate(attribute: string, isoDate: string, date: Date) {
+    if (date && attribute === 'endDate') {
+      date.setHours(23);
+      date.setMinutes(59);
+      date.setSeconds(59);
+    }
+    if (date) {
+      this.args.roadMarkingConcept.set(attribute, date);
+    } else {
+      this.args.roadMarkingConcept.set(attribute, undefined);
+    }
+    await this.args.roadMarkingConcept.validateProperty('startDate', {
+      warnings: true,
+    });
+    await this.args.roadMarkingConcept.validateProperty('endDate', {
+      warnings: true,
+    });
+  }
+
   editRoadMarkingConceptTask = dropTask(async (event: InputEvent) => {
     event.preventDefault();
 
@@ -57,9 +77,9 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   });
 
   @action
-  async setImage(model: TrafficSignConcept, image: File) {
+  setImage(model: TrafficSignConcept, image: File) {
     super.setImage(model, image);
-    await this.args.roadMarkingConcept.validateProperty('image');
+    void this.args.roadMarkingConcept.validateProperty('image');
   }
 
   willDestroy() {
