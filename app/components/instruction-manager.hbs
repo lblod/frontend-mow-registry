@@ -103,6 +103,7 @@
                 @error={{error}}
                 @warning={{warning}}
                 id="endDate"
+                @min={{this.template.startDate}}
                 @value={{this.template.endDate}}
                 @onChange={{fn this.setTemplateDate 'endDate'}}
               />

@@ -155,6 +155,7 @@
               @error={{error}}
               @warning={{warning}}
               id="endDate"
+              @min={{@roadSignConcept.startDate}}
               @value={{@roadSignConcept.endDate}}
               @onChange={{fn this.setRoadsignDate 'endDate'}}
             />

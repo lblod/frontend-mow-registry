@@ -164,6 +164,7 @@
               @error={{error}}
               @warning={{warning}}
               id="endDate"
+              @min={{@trafficLightConcept.startDate}}
               @value={{@trafficLightConcept.endDate}}
               @onChange={{fn this.setTrafficLightDate 'endDate'}}
             />
