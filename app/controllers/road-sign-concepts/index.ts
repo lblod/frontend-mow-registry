@@ -72,7 +72,7 @@ export default class RoadsignConceptsIndexController extends Controller {
       queryParamProperty: 'classification' | 'meaning',
       event: InputEvent,
     ) => {
-      await timeout(300);
+      await timeout(1000);
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();

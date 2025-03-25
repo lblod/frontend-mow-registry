@@ -65,7 +65,7 @@ export default class TrafficlightConceptsIndexController extends Controller {
 
   updateSearchFilterTask = restartableTask(
     async (queryParamProperty: 'meaning' | 'label', event: InputEvent) => {
-      await timeout(300);
+      await timeout(1000);
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();

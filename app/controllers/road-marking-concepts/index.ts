@@ -59,7 +59,7 @@ export default class RoadmarkingConceptsIndexController extends Controller {
 
   updateSearchFilterTask = restartableTask(
     async (queryParamProperty: 'label' | 'meaning', event: InputEvent) => {
-      await timeout(300);
+      await timeout(1000);
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();
