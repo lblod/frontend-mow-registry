@@ -217,17 +217,27 @@ function generateValidityFilter({
       filter.push(`
         BIND(!bound(?startDate) AS ?noStartDate)
         FILTER(?startDate <= ${sparqlEscapeDateTime(startDate)} || ?noStartDate)
-        BIND(!bound(?endDate) AS ?noEndDate)
-        FILTER(?endDate >= ${sparqlEscapeDateTime(startDate)} || ?noEndDate)
+
       `);
+      if (!endDate) {
+        filter.push(`
+          BIND(!bound(?endDate) AS ?noEndDate)
+          FILTER(?endDate >= ${sparqlEscapeDateTime(startDate)} || ?noEndDate)
+        `);
+      }
     }
     if (endDate) {
       filter.push(`
         BIND(!bound(?endDate) AS ?noEndDate)
-        FILTER(?endDate >= ${sparqlEscapeDateTime(endDate)} || ?noEndDate
-        BIND(!bound(?startDate) AS ?noStartDate)
-        FILTER(?startDate <= ${sparqlEscapeDateTime(endDate)} || ?noStartDate)
+        FILTER(?endDate >= ${sparqlEscapeDateTime(endDate)} || ?noEndDate)
+
       `);
+      if (!startDate) {
+        filter.push(`
+          BIND(!bound(?startDate) AS ?noStartDate)
+          FILTER(?startDate <= ${sparqlEscapeDateTime(endDate)} || ?noStartDate)
+        `);
+      }
     }
     return filter.join(' ');
   }
