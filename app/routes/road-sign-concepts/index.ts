@@ -28,8 +28,8 @@ export default class RoadsignConceptsIndexRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    label: { refreshModel: true },
-    meaning: { refreshModel: true },
+    label: { refreshModel: false },
+    meaning: { refreshModel: false },
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },

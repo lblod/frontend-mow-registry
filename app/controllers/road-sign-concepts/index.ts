@@ -7,6 +7,10 @@ import RoadsignConceptsIndexRoute from 'mow-registry/routes/road-sign-concepts/i
 import RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type IntlService from 'ember-intl/services/intl';
 import { service } from '@ember/service';
+import fetchManualData from 'mow-registry/utils/fetch-manual-data';
+import generateMeta from 'mow-registry/utils/generate-meta';
+import Store from '@ember-data/store';
+import type { Collection } from 'mow-registry/utils/type-utils';
 
 export default class RoadsignConceptsIndexController extends Controller {
   queryParams = [
@@ -27,6 +31,8 @@ export default class RoadsignConceptsIndexController extends Controller {
 
   @service
   declare intl: IntlService;
+  @service
+  declare store: Store;
 
   @tracked page = 0;
   @tracked size = 30;
@@ -39,6 +45,12 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
+  @tracked _roadsigns?: Collection<RoadSignConcept>;
+  @tracked isLoadingModel?: boolean;
+
+  get roadsigns() {
+    return this._roadsigns ? this._roadsigns : this.model.roadSignConcepts;
+  }
 
   get validationStatusOptions() {
     return [
@@ -76,8 +88,49 @@ export default class RoadsignConceptsIndexController extends Controller {
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();
+      await this.fetchData.perform();
     },
   );
+
+  fetchData = restartableTask(async () => {
+    this.isLoadingModel = true;
+    const query: Record<string, unknown> = {
+      include: 'image.file,classifications',
+      sort: this.sort,
+      filter: {},
+    };
+    const { uris: roadsignConceptUris, count } = await fetchManualData(
+      'road-sign-concept',
+      {
+        page: this.page,
+        size: this.size,
+        label: this.label,
+        meaning: this.meaning,
+        classification: this.classification,
+        sort: this.sort,
+        validation: this.validation,
+        arPlichtig: this.arPlichtig,
+        validityOption: this.validityOption,
+        validityStartDate: this.validityStartDate,
+        validityEndDate: this.validityEndDate,
+      },
+    );
+    query['filter'] = {
+      id: roadsignConceptUris.join(','),
+    };
+    const roadsigns = roadsignConceptUris.length
+      ? await this.store.query<RoadSignConcept>(
+          'road-sign-concept',
+          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+          // TODO: fix the query types
+          query,
+        )
+      : ([] as Collection<RoadSignConcept>);
+    roadsigns.meta = generateMeta({ page: this.page, size: this.size }, count);
+    roadsigns.meta.count = count;
+    this._roadsigns = roadsigns;
+    this.isLoadingModel = false;
+  });
 
   get selectedClassification() {
     if (!this.classification) {
