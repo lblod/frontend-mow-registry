@@ -98,6 +98,7 @@ export default class ValidityFilters extends Component {
       </AuLabel>
       <AuDatePicker
         id="endDate"
+        @min={{convertToDate @startDate}}
         @value={{convertToDate @endDate}}
         @onChange={{this.setEndDate}}
       />

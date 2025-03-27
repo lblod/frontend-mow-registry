@@ -114,6 +114,7 @@
               @error={{error}}
               @warning={{warning}}
               id="endDate"
+              @min={{@trafficMeasureConcept.startDate}}
               @value={{@trafficMeasureConcept.endDate}}
               @onChange={{fn this.setTrafficMeasureDate 'endDate'}}
             />

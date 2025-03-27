@@ -1,5 +1,17 @@
 # frontend-mow-registry
 
+## 2.3.0
+
+### Minor Changes
+
+- [#319](https://github.com/lblod/frontend-mow-registry/pull/319) [`6eecbbf`](https://github.com/lblod/frontend-mow-registry/commit/6eecbbfad24664aff80b90b2ec465e2a2a696809) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Add validation to traffic measures
+
+- [#320](https://github.com/lblod/frontend-mow-registry/pull/320) [`eee6153`](https://github.com/lblod/frontend-mow-registry/commit/eee6153785c88a51af28dd934cdac71073caa990) Thanks [@elpoelma](https://github.com/elpoelma)! - Validity dates: set start-date as minimum for end-date date-picker.
+  This ensures users are not able to select a date lower than the start-date.
+  Additionally, they do not need to navigate back to the same month/year, which should slightly improve UX.
+
+- [#318](https://github.com/lblod/frontend-mow-registry/pull/318) [`e9fd486`](https://github.com/lblod/frontend-mow-registry/commit/e9fd48628a27b3831709a7516e43c8f075c212e4) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Added validity dates to traffic signs, measures and templates
+
 ## 2.2.0
 
 ### Minor Changes

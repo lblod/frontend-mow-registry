@@ -164,6 +164,7 @@
               @error={{error}}
               @warning={{warning}}
               id="endDate"
+              @min={{@roadMarkingConcept.startDate}}
               @value={{@roadMarkingConcept.endDate}}
               @onChange={{fn this.setRoadMarkingDate 'endDate'}}
             />
