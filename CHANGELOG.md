@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.3.1
+
+### Patch Changes
+
+- [#321](https://github.com/lblod/frontend-mow-registry/pull/321) [`8d35ec8`](https://github.com/lblod/frontend-mow-registry/commit/8d35ec87d67260200b7f900c4ddf623f218f9b05) Thanks [@nbittich](https://github.com/nbittich)! - Fix codelist creation
+
 ## 2.3.0
 
 ### Minor Changes
