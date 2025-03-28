@@ -134,8 +134,8 @@ export default class CodelistFormComponent extends Component<Args> {
 
     if (!codelist.error) {
       await Promise.all(this.toDelete.map((option) => option.destroyRecord()));
-      await codelist.save();
       await Promise.all(this.options.map((option) => option.save()));
+      await codelist.save();
       await this.router.transitionTo(
         'codelists-management.codelist',
         codelist.id,
