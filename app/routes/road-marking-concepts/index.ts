@@ -26,8 +26,8 @@ export default class RoadmarkingConceptsIndexRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    label: { refreshModel: true },
-    meaning: { refreshModel: true },
+    label: { refreshModel: false },
+    meaning: { refreshModel: false },
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
@@ -57,9 +57,9 @@ export default class RoadmarkingConceptsIndexRoute extends Route {
           // TODO: fix the query types
           query,
         )
-      : ([] as Collection<RoadMarkingConcept>);
+      : ([] as unknown as Collection<RoadMarkingConcept>);
     roadMarkings.meta = generateMeta(params, count);
-    roadMarkings.meta.count = count;
+    roadMarkings.meta['count'] = count;
 
     return hash({
       roadMarkingConcepts: roadMarkings,
@@ -72,6 +72,7 @@ export default class RoadmarkingConceptsIndexRoute extends Route {
     controller.set('isLoadingModel', true);
     transition.promise?.finally(function () {
       controller.set('isLoadingModel', false);
+      controller.set('_roadMarkings', undefined);
     });
     return true; // bubble the loading event
   }

@@ -33,13 +33,13 @@ type Params = {
   page: number;
   size: number;
   sort: string;
-  classification?: string;
-  validation?: string;
-  arPlichtig?: string;
-  validityOption?: string;
-  validityStartDate?: string;
-  validityEndDate?: string;
-  templateValue?: string;
+  classification?: string | null;
+  validation?: string | null;
+  arPlichtig?: string | null;
+  validityOption?: string | null;
+  validityStartDate?: string | null;
+  validityEndDate?: string | null;
+  templateValue?: string | null;
 };
 
 type FetchManualDataReturn = {
@@ -58,12 +58,12 @@ export default async function fetchManualData(
   const filters = [];
   if (params.label) {
     filters.push(`
-      FILTER(CONTAINS(?label, ${sparqlEscapeString(params.label)}))
+      FILTER(CONTAINS(lcase(?label), ${sparqlEscapeString(params.label.toLowerCase())}))
     `);
   }
   if (params.meaning) {
     filters.push(`
-      FILTER(CONTAINS(?meaning, ${sparqlEscapeString(params.meaning)}))
+      FILTER(CONTAINS(lcase(?meaning), ${sparqlEscapeString(params.meaning.toLowerCase())}))
     `);
   }
   if (params.classification) {
@@ -196,9 +196,9 @@ function generateValidityFilter({
   startDate,
   endDate,
 }: {
-  validity?: string;
-  startDate?: string;
-  endDate?: string;
+  validity?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
 }): string {
   if (validity === 'valid') {
     return `

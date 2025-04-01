@@ -11,6 +11,7 @@ import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
 import type { Collection } from 'mow-registry/utils/type-utils';
+import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 
 export default class RoadsignConceptsIndexController extends Controller {
   queryParams = [
@@ -45,11 +46,11 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
-  @tracked _roadsigns?: Collection<RoadSignConcept>;
+  @tracked _roadSigns?: Collection<RoadSignConcept>;
   @tracked isLoadingModel?: boolean;
 
-  get roadsigns() {
-    return this._roadsigns ? this._roadsigns : this.model.roadSignConcepts;
+  get roadSigns() {
+    return this._roadSigns ? this._roadSigns : this.model.roadSignConcepts;
   }
 
   get validationStatusOptions() {
@@ -84,7 +85,7 @@ export default class RoadsignConceptsIndexController extends Controller {
       queryParamProperty: 'classification' | 'meaning',
       event: InputEvent,
     ) => {
-      await timeout(1000);
+      await timeout(300);
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();
@@ -118,17 +119,19 @@ export default class RoadsignConceptsIndexController extends Controller {
     query['filter'] = {
       id: roadsignConceptUris.join(','),
     };
-    const roadsigns = roadsignConceptUris.length
+    const roadSigns = roadsignConceptUris.length
       ? await this.store.query<RoadSignConcept>(
           'road-sign-concept',
           // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
           // TODO: fix the query types
           query,
         )
-      : ([] as Collection<RoadSignConcept>);
-    roadsigns.meta = generateMeta({ page: this.page, size: this.size }, count);
-    roadsigns.meta.count = count;
-    this._roadsigns = roadsigns;
+      : ([] as unknown as Awaited<
+          ReturnType<typeof this.store.query<RoadSignConcept>>
+        >);
+    roadSigns.meta = generateMeta({ page: this.page, size: this.size }, count);
+    roadSigns.meta[count] = count;
+    this._roadSigns = roadSigns;
     this.isLoadingModel = false;
   });
 

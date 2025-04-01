@@ -1,3 +1,4 @@
+import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 
 export type ModelFrom<R extends Route> = Awaited<ReturnType<R['model']>>;
@@ -59,9 +60,9 @@ export type ModifiableKeysOfType<T, P> = keyof ExtractModifiable<
   ExtractPropsOfType<T, P>
 >;
 
-export interface Collection<K> extends Array<K> {
-  meta?: MetaParams;
-}
+declare const _Query: Store['query'];
+
+export type Collection<K> = Awaited<ReturnType<typeof _Query<K>>>;
 
 export type MetaParams = {
   count: number;

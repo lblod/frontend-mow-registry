@@ -23,8 +23,8 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    label: { refreshModel: true },
-    template: { refreshModel: true },
+    label: { refreshModel: false },
+    template: { refreshModel: false },
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
@@ -55,9 +55,9 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
           // TODO: fix the query types
           query,
         )
-      : ([] as Collection<TrafficMeasureConcept>);
+      : ([] as unknown as Collection<TrafficMeasureConcept>);
     trafficMeasures.meta = generateMeta(params, count);
-    trafficMeasures.meta.count = count;
+    trafficMeasures.meta['count'] = count;
 
     return trafficMeasures;
   }
@@ -68,6 +68,7 @@ export default class TrafficMeasureConceptsIndexRoute extends Route {
     controller.set('isLoadingModel', true);
     transition.promise?.finally(function () {
       controller.set('isLoadingModel', false);
+      controller.set('_trafficMeasures', undefined);
     });
     return true; // bubble the loading event
   }

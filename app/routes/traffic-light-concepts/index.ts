@@ -25,8 +25,8 @@ export default class TrafficlightConceptsIndexRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    label: { refreshModel: true },
-    meaning: { refreshModel: true },
+    label: { refreshModel: false },
+    meaning: { refreshModel: false },
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
@@ -56,9 +56,9 @@ export default class TrafficlightConceptsIndexRoute extends Route {
           // TODO: fix the query types
           query,
         )
-      : ([] as Collection<TrafficLightConcept>);
+      : ([] as unknown as Collection<TrafficLightConcept>);
     trafficLights.meta = generateMeta(params, count);
-    trafficLights.meta.count = count;
+    trafficLights.meta['count'] = count;
     return hash({
       trafficLightConcepts: trafficLights,
     });
@@ -70,6 +70,7 @@ export default class TrafficlightConceptsIndexRoute extends Route {
     controller.set('isLoadingModel', true);
     transition.promise?.finally(function () {
       controller.set('isLoadingModel', false);
+      controller.set('_trafficLights', undefined);
     });
     return true; // bubble the loading event
   }

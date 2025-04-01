@@ -1,11 +1,19 @@
+import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { service } from '@ember/service';
 import type IntlService from 'ember-intl/services/intl';
+import fetchManualData from 'mow-registry/utils/fetch-manual-data';
+import generateMeta from 'mow-registry/utils/generate-meta';
+import Store from '@ember-data/store';
+import type { Collection } from 'mow-registry/utils/type-utils';
+import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
+import type RoadmarkingConceptsIndexRoute from 'mow-registry/routes/road-marking-concepts/index';
 
 export default class RoadmarkingConceptsIndexController extends Controller {
+  @service declare store: Store;
   queryParams = [
     'page',
     'size',
@@ -18,6 +26,8 @@ export default class RoadmarkingConceptsIndexController extends Controller {
     'validityStartDate',
     'validityEndDate',
   ];
+  declare model: ModelFrom<RoadmarkingConceptsIndexRoute>;
+
   @service
   declare intl: IntlService;
 
@@ -31,6 +41,14 @@ export default class RoadmarkingConceptsIndexController extends Controller {
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
+  @tracked _roadMarkings?: Collection<RoadMarkingConcept>;
+  @tracked isLoadingModel?: boolean;
+
+  get roadMarkings() {
+    return this._roadMarkings
+      ? this._roadMarkings
+      : this.model.roadMarkingConcepts;
+  }
 
   get validationStatusOptions() {
     return [
@@ -59,12 +77,56 @@ export default class RoadmarkingConceptsIndexController extends Controller {
 
   updateSearchFilterTask = restartableTask(
     async (queryParamProperty: 'label' | 'meaning', event: InputEvent) => {
-      await timeout(1000);
+      await timeout(300);
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();
+      await this.fetchData.perform();
     },
   );
+
+  fetchData = restartableTask(async () => {
+    this.isLoadingModel = true;
+    const query: Record<string, unknown> = {
+      sort: this.sort,
+      filter: {},
+    };
+    const { uris: roadMarkingConceptUris, count } = await fetchManualData(
+      'road-marking-concept',
+      {
+        page: this.page,
+        size: this.size,
+        label: this.label,
+        meaning: this.meaning,
+        sort: this.sort,
+        validation: this.validation,
+        arPlichtig: this.arPlichtig,
+        validityOption: this.validityOption,
+        validityStartDate: this.validityStartDate,
+        validityEndDate: this.validityEndDate,
+      },
+    );
+    query['filter'] = {
+      id: roadMarkingConceptUris.join(','),
+    };
+    const roadMarkings = roadMarkingConceptUris.length
+      ? await this.store.query<RoadMarkingConcept>(
+          'road-marking-concept',
+          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
+          // TODO: fix the query types
+          query,
+        )
+      : ([] as unknown as Awaited<
+          ReturnType<typeof this.store.query<RoadMarkingConcept>>
+        >);
+    roadMarkings.meta = generateMeta(
+      { page: this.page, size: this.size },
+      count,
+    );
+    roadMarkings.meta[count] = count;
+    this._roadMarkings = roadMarkings;
+    this.isLoadingModel = false;
+  });
 
   get selectedValidationStatus() {
     return this.validationStatusOptions.find(

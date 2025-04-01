@@ -62,9 +62,9 @@ export default class RoadsignConceptsIndexRoute extends Route {
           // TODO: fix the query types
           query,
         )
-      : ([] as Collection<RoadSignConcept>);
+      : ([] as unknown as Collection<RoadSignConcept>);
     roadsigns.meta = generateMeta(params, count);
-    roadsigns.meta.count = count;
+    roadsigns.meta['count'] = count;
     return hash({
       count,
       roadSignConcepts: roadsigns,
@@ -84,6 +84,7 @@ export default class RoadsignConceptsIndexRoute extends Route {
     controller.set('isLoadingModel', true);
     transition.promise?.finally(function () {
       controller.set('isLoadingModel', false);
+      controller.set('_roadSigns', undefined);
     });
     return true; // bubble the loading event
   }
