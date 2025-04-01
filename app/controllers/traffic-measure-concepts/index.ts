@@ -78,7 +78,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
       queryParamProperty: 'label' | 'templateFilter',
       event: InputEvent,
     ) => {
-      await timeout(1000);
+      await timeout(300);
 
       const target = event.target as HTMLInputElement | undefined;
       const searchValue = target?.value || '';
