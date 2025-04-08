@@ -9,8 +9,8 @@ import type IntlService from 'ember-intl/services/intl';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
-import type { Collection } from 'mow-registry/utils/type-utils';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
+import { trackedFunction } from 'ember-resources/util/function';
 
 export default class TrafficlightConceptsIndexController extends Controller {
   queryParams = [
@@ -42,14 +42,6 @@ export default class TrafficlightConceptsIndexController extends Controller {
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
-  @tracked _trafficLights?: Collection<TrafficLightConcept>;
-  @tracked isLoadingModel?: boolean;
-
-  get trafficLights() {
-    return this._trafficLights
-      ? this._trafficLights
-      : this.model.trafficLightConcepts;
-  }
 
   get validationStatusOptions() {
     return [
@@ -84,12 +76,10 @@ export default class TrafficlightConceptsIndexController extends Controller {
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();
-      await this.fetchData.perform();
     },
   );
 
-  fetchData = restartableTask(async () => {
-    this.isLoadingModel = true;
+  trafficLights = trackedFunction(this, async () => {
     const query: Record<string, unknown> = {
       sort: this.sort,
       filter: {},
@@ -127,8 +117,7 @@ export default class TrafficlightConceptsIndexController extends Controller {
       count,
     );
     trafficLights.meta[count] = count;
-    this._trafficLights = trafficLights;
-    this.isLoadingModel = false;
+    return trafficLights;
   });
 
   get selectedValidationStatus() {

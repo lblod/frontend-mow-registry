@@ -7,10 +7,10 @@ import type IntlService from 'ember-intl/services/intl';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
-import type { Collection } from 'mow-registry/utils/type-utils';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import type RoadmarkingConceptsIndexRoute from 'mow-registry/routes/road-marking-concepts/index';
+import { trackedFunction } from 'ember-resources/util/function';
 
 export default class RoadmarkingConceptsIndexController extends Controller {
   @service declare store: Store;
@@ -41,14 +41,6 @@ export default class RoadmarkingConceptsIndexController extends Controller {
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
-  @tracked _roadMarkings?: Collection<RoadMarkingConcept>;
-  @tracked isLoadingModel?: boolean;
-
-  get roadMarkings() {
-    return this._roadMarkings
-      ? this._roadMarkings
-      : this.model.roadMarkingConcepts;
-  }
 
   get validationStatusOptions() {
     return [
@@ -81,12 +73,10 @@ export default class RoadmarkingConceptsIndexController extends Controller {
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();
-      await this.fetchData.perform();
     },
   );
 
-  fetchData = restartableTask(async () => {
-    this.isLoadingModel = true;
+  roadMarkings = trackedFunction(this, async () => {
     const query: Record<string, unknown> = {
       sort: this.sort,
       filter: {},
@@ -124,8 +114,7 @@ export default class RoadmarkingConceptsIndexController extends Controller {
       count,
     );
     roadMarkings.meta[count] = count;
-    this._roadMarkings = roadMarkings;
-    this.isLoadingModel = false;
+    return roadMarkings;
   });
 
   get selectedValidationStatus() {

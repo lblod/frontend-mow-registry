@@ -10,8 +10,8 @@ import { service } from '@ember/service';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
-import type { Collection } from 'mow-registry/utils/type-utils';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import { trackedFunction } from 'ember-resources/util/function';
 
 export default class RoadsignConceptsIndexController extends Controller {
   queryParams = [
@@ -46,12 +46,6 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
-  @tracked _roadSigns?: Collection<RoadSignConcept>;
-  @tracked isLoadingModel?: boolean;
-
-  get roadSigns() {
-    return this._roadSigns ? this._roadSigns : this.model.roadSignConcepts;
-  }
 
   get validationStatusOptions() {
     return [
@@ -89,12 +83,10 @@ export default class RoadsignConceptsIndexController extends Controller {
 
       this[queryParamProperty] = (event.target as HTMLInputElement).value;
       this.resetPagination();
-      await this.fetchData.perform();
     },
   );
 
-  fetchData = restartableTask(async () => {
-    this.isLoadingModel = true;
+  roadSigns = trackedFunction(this, async () => {
     const query: Record<string, unknown> = {
       include: 'image.file,classifications',
       sort: this.sort,
@@ -131,8 +123,7 @@ export default class RoadsignConceptsIndexController extends Controller {
         >);
     roadSigns.meta = generateMeta({ page: this.page, size: this.size }, count);
     roadSigns.meta[count] = count;
-    this._roadSigns = roadSigns;
-    this.isLoadingModel = false;
+    return roadSigns;
   });
 
   get selectedClassification() {

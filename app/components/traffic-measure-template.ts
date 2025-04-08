@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
 import { type SafeString } from '@ember/template';
 import { task } from 'ember-concurrency';
-import { action } from '@ember/object';
+import { modifier } from 'ember-modifier';
 import { unwrap } from 'mow-registry/utils/option';
 import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 
@@ -14,10 +14,10 @@ type Args = {
 export default class TrafficMeasureTemplateComponent extends Component<Args> {
   @tracked template?: SafeString;
 
-  @action
-  async didInsert() {
-    await this.fetchTemplate.perform(this.args.concept);
-  }
+  runFetch = modifier(() => {
+    const fetchTask = this.fetchTemplate.perform(this.args.concept);
+    return () => fetchTask.cancel();
+  });
 
   fetchTemplate = task(async (concept: TrafficMeasureConcept) => {
     const template = unwrap(await concept.template);

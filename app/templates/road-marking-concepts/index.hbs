@@ -90,8 +90,8 @@
   </:sidebar>
   <:content>
     <SearchTables::RoadMarking
-      @content={{this.roadMarkings}}
-      @isLoading={{this.isLoadingModel}}
+      @content={{this.roadMarkings.value}}
+      @isLoading={{this.roadMarkings.isLoading}}
       @pageSize={{this.size}}
       @page={{this.page}}
       @sort={{this.sort}}

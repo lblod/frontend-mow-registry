@@ -107,8 +107,8 @@
   </:sidebar>
   <:content>
     <SearchTables::RoadSign
-      @content={{this.roadsigns}}
-      @isLoading={{this.isLoadingModel}}
+      @content={{this.roadSigns.value}}
+      @isLoading={{this.roadSigns.isLoading}}
       @pageSize={{this.size}}
       @page={{this.page}}
       @sort={{this.sort}}
