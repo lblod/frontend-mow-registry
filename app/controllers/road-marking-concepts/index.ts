@@ -8,9 +8,8 @@ import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
-import type { ModelFrom } from 'mow-registry/utils/type-utils';
-import type RoadmarkingConceptsIndexRoute from 'mow-registry/routes/road-marking-concepts/index';
 import { trackedFunction } from 'ember-resources/util/function';
+import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class RoadmarkingConceptsIndexController extends Controller {
   @service declare store: Store;
@@ -26,7 +25,6 @@ export default class RoadmarkingConceptsIndexController extends Controller {
     'validityStartDate',
     'validityEndDate',
   ];
-  declare model: ModelFrom<RoadmarkingConceptsIndexRoute>;
 
   @service
   declare intl: IntlService;
@@ -77,7 +75,7 @@ export default class RoadmarkingConceptsIndexController extends Controller {
   );
 
   roadMarkings = trackedFunction(this, async () => {
-    const query: Record<string, unknown> = {
+    const query: LegacyResourceQuery<RoadMarkingConcept> = {
       sort: this.sort,
       filter: {},
     };
@@ -102,11 +100,9 @@ export default class RoadmarkingConceptsIndexController extends Controller {
     const roadMarkings = roadMarkingConceptUris.length
       ? await this.store.query<RoadMarkingConcept>(
           'road-marking-concept',
-          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-          // TODO: fix the query types
           query,
         )
-      : ([] as unknown as Awaited<
+      : ([] as RoadMarkingConcept[] as Awaited<
           ReturnType<typeof this.store.query<RoadMarkingConcept>>
         >);
     roadMarkings.meta = generateMeta(

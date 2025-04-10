@@ -8,10 +8,9 @@ import type IntlService from 'ember-intl/services/intl';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
-import type { ModelFrom } from 'mow-registry/utils/type-utils';
-import type TrafficMeasureConceptsIndexRoute from 'mow-registry/routes/traffic-measure-concepts/index';
 import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 import { trackedFunction } from 'ember-resources/util/function';
+import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class TrafficMeasureConceptsIndexController extends Controller {
   queryParams = [
@@ -27,8 +26,6 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
     'validityEndDate',
   ];
 
-  declare model: ModelFrom<TrafficMeasureConceptsIndexRoute>;
-
   @service
   declare intl: IntlService;
   @service
@@ -43,6 +40,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   @tracked validation?: string | null;
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
+  @tracked validityEndDate?: string | null;
 
   get validationStatusOptions() {
     return [
@@ -87,7 +85,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   );
 
   trafficMeasures = trackedFunction(this, async () => {
-    const query: Record<string, unknown> = {
+    const query: LegacyResourceQuery<TrafficMeasureConcept> = {
       sort: this.sort,
       filter: {},
     };
@@ -110,11 +108,9 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
     const trafficMeasures = trafficMeasureConceptUris.length
       ? await this.store.query<TrafficMeasureConcept>(
           'traffic-measure-concept',
-          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-          // TODO: fix the query types
           query,
         )
-      : ([] as unknown as Awaited<
+      : ([] as TrafficMeasureConcept[] as Awaited<
           ReturnType<typeof this.store.query<TrafficMeasureConcept>>
         >);
     trafficMeasures.meta = generateMeta(

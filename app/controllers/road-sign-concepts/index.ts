@@ -12,6 +12,7 @@ import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import { trackedFunction } from 'ember-resources/util/function';
+import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class RoadsignConceptsIndexController extends Controller {
   queryParams = [
@@ -87,8 +88,8 @@ export default class RoadsignConceptsIndexController extends Controller {
   );
 
   roadSigns = trackedFunction(this, async () => {
-    const query: Record<string, unknown> = {
-      include: 'image.file,classifications',
+    const query: LegacyResourceQuery<RoadSignConcept> = {
+      include: ['image.file', 'classifications'],
       sort: this.sort,
       filter: {},
     };
@@ -112,13 +113,8 @@ export default class RoadsignConceptsIndexController extends Controller {
       id: roadsignConceptUris.join(','),
     };
     const roadSigns = roadsignConceptUris.length
-      ? await this.store.query<RoadSignConcept>(
-          'road-sign-concept',
-          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-          // TODO: fix the query types
-          query,
-        )
-      : ([] as unknown as Awaited<
+      ? await this.store.query<RoadSignConcept>('road-sign-concept', query)
+      : ([] as RoadSignConcept[] as Awaited<
           ReturnType<typeof this.store.query<RoadSignConcept>>
         >);
     roadSigns.meta = generateMeta({ page: this.page, size: this.size }, count);

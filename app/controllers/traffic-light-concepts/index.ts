@@ -3,14 +3,13 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import type { ModelFrom } from 'mow-registry/utils/type-utils';
-import TrafficlightConceptsIndexRoute from 'mow-registry/routes/traffic-light-concepts/index';
 import type IntlService from 'ember-intl/services/intl';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import { trackedFunction } from 'ember-resources/util/function';
+import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class TrafficlightConceptsIndexController extends Controller {
   queryParams = [
@@ -25,7 +24,6 @@ export default class TrafficlightConceptsIndexController extends Controller {
     'validityEndDate',
     'arPlichtig',
   ];
-  declare model: ModelFrom<TrafficlightConceptsIndexRoute>;
 
   @service
   declare intl: IntlService;
@@ -80,7 +78,7 @@ export default class TrafficlightConceptsIndexController extends Controller {
   );
 
   trafficLights = trackedFunction(this, async () => {
-    const query: Record<string, unknown> = {
+    const query: LegacyResourceQuery<TrafficLightConcept> = {
       sort: this.sort,
       filter: {},
     };
@@ -105,11 +103,9 @@ export default class TrafficlightConceptsIndexController extends Controller {
     const trafficLights = trafficLightConceptUris.length
       ? await this.store.query<TrafficLightConcept>(
           'traffic-light-concept',
-          // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-          // TODO: fix the query types
           query,
         )
-      : ([] as unknown as Awaited<
+      : ([] as TrafficLightConcept[] as Awaited<
           ReturnType<typeof this.store.query<TrafficLightConcept>>
         >);
     trafficLights.meta = generateMeta(
