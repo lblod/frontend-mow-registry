@@ -1,10 +1,16 @@
+import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import type Template from 'mow-registry/models/template';
-import { service } from '@ember/service';
 import type IntlService from 'ember-intl/services/intl';
+import fetchManualData from 'mow-registry/utils/fetch-manual-data';
+import generateMeta from 'mow-registry/utils/generate-meta';
+import Store from '@ember-data/store';
+import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
+import { trackedFunction } from 'ember-resources/util/function';
+import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class TrafficMeasureConceptsIndexController extends Controller {
   queryParams = [
@@ -19,8 +25,11 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
     'validityStartDate',
     'validityEndDate',
   ];
+
   @service
   declare intl: IntlService;
+  @service
+  declare store: Store;
 
   @tracked page = 0;
   @tracked size = 30;
@@ -74,6 +83,43 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
       this.resetPagination();
     },
   );
+
+  trafficMeasures = trackedFunction(this, async () => {
+    const query: LegacyResourceQuery<TrafficMeasureConcept> = {
+      sort: this.sort,
+      filter: {},
+    };
+    const { uris: trafficMeasureConceptUris, count } = await fetchManualData(
+      'traffic-measure-concept',
+      {
+        page: this.page,
+        size: this.size,
+        label: this.label,
+        sort: this.sort,
+        validation: this.validation,
+        validityOption: this.validityOption,
+        validityStartDate: this.validityStartDate,
+        validityEndDate: this.validityEndDate,
+      },
+    );
+    query['filter'] = {
+      id: trafficMeasureConceptUris.join(','),
+    };
+    const trafficMeasures = trafficMeasureConceptUris.length
+      ? await this.store.query<TrafficMeasureConcept>(
+          'traffic-measure-concept',
+          query,
+        )
+      : ([] as TrafficMeasureConcept[] as Awaited<
+          ReturnType<typeof this.store.query<TrafficMeasureConcept>>
+        >);
+    trafficMeasures.meta = generateMeta(
+      { page: this.page, size: this.size },
+      count,
+    );
+    trafficMeasures.meta[count] = count;
+    return trafficMeasures;
+  });
 
   @action
   updateValidationFilter(

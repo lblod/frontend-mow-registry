@@ -69,8 +69,8 @@
   </:sidebar>
   <:content>
     <SearchTables::TrafficMeasure
-      @content={{this.model}}
-      @isLoading={{this.isLoadingModel}}
+      @content={{this.trafficMeasures.value}}
+      @isLoading={{this.trafficMeasures.isLoading}}
       @pageSize={{this.size}}
       @page={{this.page}}
       @sort={{this.sort}}

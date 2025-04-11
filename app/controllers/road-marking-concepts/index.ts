@@ -1,11 +1,18 @@
+import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { service } from '@ember/service';
 import type IntlService from 'ember-intl/services/intl';
+import fetchManualData from 'mow-registry/utils/fetch-manual-data';
+import generateMeta from 'mow-registry/utils/generate-meta';
+import Store from '@ember-data/store';
+import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
+import { trackedFunction } from 'ember-resources/util/function';
+import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class RoadmarkingConceptsIndexController extends Controller {
+  @service declare store: Store;
   queryParams = [
     'page',
     'size',
@@ -18,6 +25,7 @@ export default class RoadmarkingConceptsIndexController extends Controller {
     'validityStartDate',
     'validityEndDate',
   ];
+
   @service
   declare intl: IntlService;
 
@@ -65,6 +73,45 @@ export default class RoadmarkingConceptsIndexController extends Controller {
       this.resetPagination();
     },
   );
+
+  roadMarkings = trackedFunction(this, async () => {
+    const query: LegacyResourceQuery<RoadMarkingConcept> = {
+      sort: this.sort,
+      filter: {},
+    };
+    const { uris: roadMarkingConceptUris, count } = await fetchManualData(
+      'road-marking-concept',
+      {
+        page: this.page,
+        size: this.size,
+        label: this.label,
+        meaning: this.meaning,
+        sort: this.sort,
+        validation: this.validation,
+        arPlichtig: this.arPlichtig,
+        validityOption: this.validityOption,
+        validityStartDate: this.validityStartDate,
+        validityEndDate: this.validityEndDate,
+      },
+    );
+    query['filter'] = {
+      id: roadMarkingConceptUris.join(','),
+    };
+    const roadMarkings = roadMarkingConceptUris.length
+      ? await this.store.query<RoadMarkingConcept>(
+          'road-marking-concept',
+          query,
+        )
+      : ([] as RoadMarkingConcept[] as Awaited<
+          ReturnType<typeof this.store.query<RoadMarkingConcept>>
+        >);
+    roadMarkings.meta = generateMeta(
+      { page: this.page, size: this.size },
+      count,
+    );
+    roadMarkings.meta[count] = count;
+    return roadMarkings;
+  });
 
   get selectedValidationStatus() {
     return this.validationStatusOptions.find(

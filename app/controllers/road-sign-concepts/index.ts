@@ -7,6 +7,12 @@ import RoadsignConceptsIndexRoute from 'mow-registry/routes/road-sign-concepts/i
 import RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type IntlService from 'ember-intl/services/intl';
 import { service } from '@ember/service';
+import fetchManualData from 'mow-registry/utils/fetch-manual-data';
+import generateMeta from 'mow-registry/utils/generate-meta';
+import Store from '@ember-data/store';
+import RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import { trackedFunction } from 'ember-resources/util/function';
+import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class RoadsignConceptsIndexController extends Controller {
   queryParams = [
@@ -27,6 +33,8 @@ export default class RoadsignConceptsIndexController extends Controller {
 
   @service
   declare intl: IntlService;
+  @service
+  declare store: Store;
 
   @tracked page = 0;
   @tracked size = 30;
@@ -78,6 +86,41 @@ export default class RoadsignConceptsIndexController extends Controller {
       this.resetPagination();
     },
   );
+
+  roadSigns = trackedFunction(this, async () => {
+    const query: LegacyResourceQuery<RoadSignConcept> = {
+      include: ['image.file', 'classifications'],
+      sort: this.sort,
+      filter: {},
+    };
+    const { uris: roadsignConceptUris, count } = await fetchManualData(
+      'road-sign-concept',
+      {
+        page: this.page,
+        size: this.size,
+        label: this.label,
+        meaning: this.meaning,
+        classification: this.classification,
+        sort: this.sort,
+        validation: this.validation,
+        arPlichtig: this.arPlichtig,
+        validityOption: this.validityOption,
+        validityStartDate: this.validityStartDate,
+        validityEndDate: this.validityEndDate,
+      },
+    );
+    query['filter'] = {
+      id: roadsignConceptUris.join(','),
+    };
+    const roadSigns = roadsignConceptUris.length
+      ? await this.store.query<RoadSignConcept>('road-sign-concept', query)
+      : ([] as RoadSignConcept[] as Awaited<
+          ReturnType<typeof this.store.query<RoadSignConcept>>
+        >);
+    roadSigns.meta = generateMeta({ page: this.page, size: this.size }, count);
+    roadSigns.meta[count] = count;
+    return roadSigns;
+  });
 
   get selectedClassification() {
     if (!this.classification) {

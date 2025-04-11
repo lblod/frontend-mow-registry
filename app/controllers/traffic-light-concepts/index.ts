@@ -1,11 +1,15 @@
+import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import type { ModelFrom } from 'mow-registry/utils/type-utils';
-import TrafficlightConceptsIndexRoute from 'mow-registry/routes/traffic-light-concepts/index';
-import { service } from '@ember/service';
 import type IntlService from 'ember-intl/services/intl';
+import fetchManualData from 'mow-registry/utils/fetch-manual-data';
+import generateMeta from 'mow-registry/utils/generate-meta';
+import Store from '@ember-data/store';
+import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
+import { trackedFunction } from 'ember-resources/util/function';
+import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class TrafficlightConceptsIndexController extends Controller {
   queryParams = [
@@ -20,10 +24,11 @@ export default class TrafficlightConceptsIndexController extends Controller {
     'validityEndDate',
     'arPlichtig',
   ];
-  declare model: ModelFrom<TrafficlightConceptsIndexRoute>;
 
   @service
   declare intl: IntlService;
+  @service
+  declare store: Store;
 
   @tracked page = 0;
   @tracked size = 30;
@@ -71,6 +76,45 @@ export default class TrafficlightConceptsIndexController extends Controller {
       this.resetPagination();
     },
   );
+
+  trafficLights = trackedFunction(this, async () => {
+    const query: LegacyResourceQuery<TrafficLightConcept> = {
+      sort: this.sort,
+      filter: {},
+    };
+    const { uris: trafficLightConceptUris, count } = await fetchManualData(
+      'traffic-light-concept',
+      {
+        page: this.page,
+        size: this.size,
+        label: this.label,
+        meaning: this.meaning,
+        sort: this.sort,
+        validation: this.validation,
+        arPlichtig: this.arPlichtig,
+        validityOption: this.validityOption,
+        validityStartDate: this.validityStartDate,
+        validityEndDate: this.validityEndDate,
+      },
+    );
+    query['filter'] = {
+      id: trafficLightConceptUris.join(','),
+    };
+    const trafficLights = trafficLightConceptUris.length
+      ? await this.store.query<TrafficLightConcept>(
+          'traffic-light-concept',
+          query,
+        )
+      : ([] as TrafficLightConcept[] as Awaited<
+          ReturnType<typeof this.store.query<TrafficLightConcept>>
+        >);
+    trafficLights.meta = generateMeta(
+      { page: this.page, size: this.size },
+      count,
+    );
+    trafficLights.meta[count] = count;
+    return trafficLights;
+  });
 
   get selectedValidationStatus() {
     return this.validationStatusOptions.find(
