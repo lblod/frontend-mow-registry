@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.3.2
+
+### Patch Changes
+
+- [#322](https://github.com/lblod/frontend-mow-registry/pull/322) [`47c906a`](https://github.com/lblod/frontend-mow-registry/commit/47c906ad114fba9240ffea2ff2f3450d8ce44d08) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Fix search debounce for label and meaning
+
 ## 2.3.1
 
 ### Patch Changes
