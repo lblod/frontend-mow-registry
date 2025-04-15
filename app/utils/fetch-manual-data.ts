@@ -145,7 +145,7 @@ export default async function fetchManualData(
   `;
   const queryCount = `
     ${PREFIXES}
-    SELECT (count( ?id) as ?count)  WHERE {
+    SELECT (count( DISTINCT ?id) as ?count)  WHERE {
       ${queryContent}
     }
 `;
