@@ -95,6 +95,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
         page: this.page,
         size: this.size,
         label: this.label,
+        templateValue: this.templateValue,
         sort: this.sort,
         validation: this.validation,
         validityOption: this.validityOption,
