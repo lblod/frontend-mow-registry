@@ -69,7 +69,7 @@
             {{#if zonality.isResolved}}
               <ZonalitySelector
                 @zonality={{zonality.value}}
-                @onChange={{fn (mut @trafficMeasureConcept.zonality)}}
+                @onChange={{this.updateZonality}}
                 @trafficMeasureConcept={{@trafficMeasureConcept}}
               />
             {{/if}}

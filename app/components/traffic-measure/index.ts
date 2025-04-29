@@ -22,6 +22,7 @@ import Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
 import validateTrafficMeasureDates from 'mow-registry/utils/validate-traffic-measure-dates';
+import type SkosConcept from 'mow-registry/models/skos-concept';
 
 export type InputType = {
   value: string;
@@ -95,6 +96,12 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     return this.validationStatusOptions.find(
       (option) => option.value === this.signValidation,
     );
+  }
+
+  @action
+  async updateZonality(zonality: SkosConcept) {
+    this.trafficMeasureConcept.set('zonality', zonality);
+    await this.trafficMeasureConcept.validateProperty('zonality');
   }
 
   @action
@@ -233,9 +240,10 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  updateTemplate(event: InputEvent) {
+  async updateTemplate(event: InputEvent) {
     if (this.template) {
       this.template.value = (event.target as HTMLInputElement).value;
+      await this.template.validate();
     }
   }
 
