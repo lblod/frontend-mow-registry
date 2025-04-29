@@ -1,5 +1,15 @@
 # frontend-mow-registry
 
+## 2.3.3
+
+### Patch Changes
+
+- [#325](https://github.com/lblod/frontend-mow-registry/pull/325) [`5f804f4`](https://github.com/lblod/frontend-mow-registry/commit/5f804f47ddd0979fd113c4bc6054e19c81bb8133) Thanks [@elpoelma](https://github.com/elpoelma)! - Traffic-measure form: ensure error state is correctly updated after fixing form errors
+
+- [#324](https://github.com/lblod/frontend-mow-registry/pull/324) [`4c59447`](https://github.com/lblod/frontend-mow-registry/commit/4c59447121eefea0eac7f143cd9bee422cd532a1) Thanks [@elpoelma](https://github.com/elpoelma)! - Traffic measure concepts: correctly wire `templateValue` filter
+
+- [#323](https://github.com/lblod/frontend-mow-registry/pull/323) [`d2ed3f3`](https://github.com/lblod/frontend-mow-registry/commit/d2ed3f36d184bd11d348332ecee042a0b8e96fe0) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Fix: the table total number of items was wrong sometimes
+
 ## 2.3.2
 
 ### Patch Changes
