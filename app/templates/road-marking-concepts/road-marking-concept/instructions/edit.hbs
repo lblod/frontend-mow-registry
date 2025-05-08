@@ -1,6 +1,5 @@
 {{#let (if this.model.template false true) as |isNew|}}
   {{page-title (if isNew (t "utility.add-instruction") (t "utility.edit-instruction"))}}
-
   <BreadcrumbsItem as |linkClass|>
     <LinkTo
       @route="road-marking-concepts.road-marking-concept.instructions.edit"

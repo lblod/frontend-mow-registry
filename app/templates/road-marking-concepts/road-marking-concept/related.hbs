@@ -1,12 +1,4 @@
 {{page-title (t "utility.related-traffic-signs")}}
-<BreadcrumbsItem as |linkClass|>
-  <LinkTo
-    @route="road-marking-concepts.road-marking-concept.related"
-    class={{linkClass}}
-  >
-    {{t "utility.related-traffic-signs"}}
-  </LinkTo>
-</BreadcrumbsItem>
 
 <RoadMarkingConcept::Header @roadMarkingConcept={{@model.roadMarkingConcept}} />
 

@@ -1,13 +1,4 @@
 {{page-title (t "utility.sub-signs")}}
-<BreadcrumbsItem as |linkClass|>
-  <LinkTo
-    @route="road-sign-concepts.road-sign-concept.sub-signs"
-    class={{linkClass}}
-  >
-    {{t "utility.sub-signs"}}
-  </LinkTo>
-</BreadcrumbsItem>
-
 <RoadSignConcept::Header @roadSignConcept={{@model.roadSignConcept}} />
 
 <SidebarOverlayContainer @isOpen={{this.isAddingSubSigns}}>
