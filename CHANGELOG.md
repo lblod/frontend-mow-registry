@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.3.4
+
+### Patch Changes
+
+- [#326](https://github.com/lblod/frontend-mow-registry/pull/326) [`0954c3a`](https://github.com/lblod/frontend-mow-registry/commit/0954c3a5b046a82026a61ce4035364b00b8bb249) Thanks [@elpoelma](https://github.com/elpoelma)! - Remove some unnecessary/redundant breadcrumb entries
+
 ## 2.3.3
 
 ### Patch Changes
