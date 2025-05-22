@@ -4,6 +4,9 @@ import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import IconCatalogIndexRoute from 'mow-registry/routes/icon-catalog/index';
+import { service } from '@ember/service';
+import { trackedFunction } from 'ember-resources/util/function';
+import Store from '@ember-data/store';
 
 export default class IconCatalogIndexController extends Controller {
   queryParams = ['page', 'size', 'label', 'sort'];
@@ -14,6 +17,8 @@ export default class IconCatalogIndexController extends Controller {
   @tracked size = 30;
   @tracked label = '';
   @tracked sort = ':no-case:label';
+  @service
+  declare store: Store;
 
   updateSearchFilterTask = restartableTask(async (event: InputEvent) => {
     await timeout(300);
@@ -33,4 +38,22 @@ export default class IconCatalogIndexController extends Controller {
   resetPagination() {
     this.page = 0;
   }
+  icons = trackedFunction(this, async () => {
+    const query: Record<string, unknown> = {
+      // TODO: The types expect an array, but the adapter doesn't convert that to the expected json:api include format
+      // More info: https://github.com/emberjs/data/pull/9507#issuecomment-2219588690
+      include: ['image.file', 'inScheme'].join(),
+      sort: this.sort,
+      page: {
+        number: this.page,
+        size: this.size,
+      },
+    };
+
+    if (this.label) {
+      query['filter[label]'] = this.label;
+    }
+
+    return await this.store.query<Icon>('icon', query);
+  });
 }
