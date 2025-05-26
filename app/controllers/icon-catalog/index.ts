@@ -7,6 +7,8 @@ import IconCatalogIndexRoute from 'mow-registry/routes/icon-catalog/index';
 import { service } from '@ember/service';
 import { trackedFunction } from 'ember-resources/util/function';
 import Store from '@ember-data/store';
+import type Icon from 'mow-registry/models/icon';
+import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class IconCatalogIndexController extends Controller {
   queryParams = ['page', 'size', 'label', 'sort'];
@@ -39,10 +41,10 @@ export default class IconCatalogIndexController extends Controller {
     this.page = 0;
   }
   icons = trackedFunction(this, async () => {
-    const query: Record<string, unknown> = {
+    const query: LegacyResourceQuery<Icon> = {
       // TODO: The types expect an array, but the adapter doesn't convert that to the expected json:api include format
       // More info: https://github.com/emberjs/data/pull/9507#issuecomment-2219588690
-      include: ['image.file', 'inScheme'].join(),
+      include: ['image.file', 'inScheme'],
       sort: this.sort,
       page: {
         number: this.page,
@@ -51,7 +53,9 @@ export default class IconCatalogIndexController extends Controller {
     };
 
     if (this.label) {
-      query['filter[label]'] = this.label;
+      query['filter'] = {
+        label: this.label,
+      };
     }
 
     return await this.store.query<Icon>('icon', query);

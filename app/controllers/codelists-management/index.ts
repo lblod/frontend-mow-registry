@@ -5,6 +5,8 @@ import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { trackedFunction } from 'ember-resources/util/function';
 import Store from '@ember-data/store';
+import type CodeList from 'mow-registry/models/code-list';
+import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class CodelistsManagementIndexController extends Controller {
   queryParams = ['page', 'size', 'label', 'sort'];
@@ -38,8 +40,8 @@ export default class CodelistsManagementIndexController extends Controller {
   }
 
   codelists = trackedFunction(this, async () => {
-    const query: Record<string, unknown> = {
-      include: 'type',
+    const query: LegacyResourceQuery<CodeList> = {
+      include: ['type'],
       sort: this.sort,
       page: {
         number: this.page,
@@ -48,7 +50,9 @@ export default class CodelistsManagementIndexController extends Controller {
     };
 
     if (this.label) {
-      query['filter[label]'] = this.label;
+      query['filter'] = {
+        label: this.label,
+      };
     }
 
     return await this.store.query<CodeList>('code-list', query);
