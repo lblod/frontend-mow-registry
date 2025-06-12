@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.3.5
+
+### Patch Changes
+
+- [#327](https://github.com/lblod/frontend-mow-registry/pull/327) [`1cfd5ff`](https://github.com/lblod/frontend-mow-registry/commit/1cfd5ffa0564ab62c1bc2dbeac22b8b7392b83ac) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Fix search in codelists and icons
+
 ## 2.3.4
 
 ### Patch Changes
