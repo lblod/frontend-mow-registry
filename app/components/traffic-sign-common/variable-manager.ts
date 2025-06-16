@@ -2,7 +2,6 @@ import type Store from '@ember-data/store';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
-import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import Variable from 'mow-registry/models/variable';
 import IntlService from 'ember-intl/services/intl';
 import { tracked } from '@glimmer/tracking';
@@ -11,7 +10,7 @@ import type CodeList from 'mow-registry/models/code-list';
 
 interface Signature {
   Args: {
-    roadSignConcept: RoadSignConcept;
+    variables: Variable[];
     addVariable: () => void;
     removeVariable: (variableToRemove: Variable) => void;
   };
