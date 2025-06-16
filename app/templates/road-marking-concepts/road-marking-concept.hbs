@@ -80,6 +80,25 @@
             {{human-friendly-date @model.roadMarkingConcept.endDate locale=this.intl.primaryLocale}}
           </dd>
         </div>
+
+        <div>
+          <dt class="au-u-h5 au-u-medium">
+            {{t "utility.variables"}}
+          </dt>
+          <dd class="au-u-muted">
+            {{#if @model.roadMarkingConcept.variables}}
+              <ul>
+                {{#each @model.roadMarkingConcept.variables as |variable|}}
+                  <li>
+                    {{variable.label}}
+                  </li>
+                {{/each}}
+              </ul>
+            {{else}}
+              -
+            {{/if}}
+          </dd>
+        </div>
       </dl>
     </div>
   </:sidebar>
