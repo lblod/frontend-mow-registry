@@ -70,4 +70,15 @@ export default class TrafficSignConcept extends SkosConcept {
       variables: validateHasManyOptional(),
     });
   }
+
+  async destroyWithRelations() {
+    const variables = await this.variables;
+
+    await Promise.all([
+      this.destroyRecord(),
+      variables.map((variable) => variable.destroyRecord()),
+    ]);
+
+    return this;
+  }
 }

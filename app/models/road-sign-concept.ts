@@ -83,4 +83,15 @@ export default class RoadSignConcept extends TrafficSignConcept {
       zonality: validateBelongsToOptional(),
     });
   }
+
+  async destroyWithRelations() {
+    const shapes = await this.shapes;
+
+    await Promise.all([
+      super.destroyWithRelations(),
+      ...shapes.map((shape) => shape.destroyWithRelations()),
+    ]);
+
+    return this;
+  }
 }

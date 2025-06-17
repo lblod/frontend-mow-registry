@@ -12,17 +12,8 @@ export default class RoadSignConceptHeader extends Component {
   removeRoadSignConcept = task(
     async (roadSignConcept: RoadSignConcept, event: InputEvent) => {
       event.preventDefault();
-      await Promise.all(
-        (await roadSignConcept.shapes).map(async (shape) => {
-          await Promise.all(
-            (await shape.dimensions).map(async (dimension) => {
-              await dimension.destroyRecord();
-            }),
-          );
-          await shape.destroyRecord();
-        }),
-      );
-      await roadSignConcept.destroyRecord();
+
+      await roadSignConcept.destroyWithRelations();
       await this.router.transitionTo('road-sign-concepts');
     },
   );
