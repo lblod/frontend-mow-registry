@@ -72,11 +72,19 @@ export default class TrafficSignConcept extends SkosConcept {
   }
 
   async destroyWithRelations() {
-    const variables = await this.variables;
+    // This doesn't delete the status or hasTrafficMeasureConcepts relations as it wasn't clear what
+    // the expectation would be for these since they don't appear to be used
+    const [variables, image, instructions] = await Promise.all([
+      this.variables,
+      this.image,
+      this.hasInstructions,
+    ]);
 
     await Promise.all([
       this.destroyRecord(),
-      variables.map((variable) => variable.destroyRecord()),
+      ...variables.map((variable) => variable.destroyRecord()),
+      image?.destroyWithRelations(),
+      ...instructions.map((instruction) => instruction.destroyWithRelations()),
     ]);
 
     return this;

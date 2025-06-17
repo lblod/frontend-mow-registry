@@ -16,4 +16,13 @@ export default class Document extends AbstractValidationModel {
       file: validateBelongsToOptional(),
     });
   }
+
+  async destroyWithRelations() {
+    await Promise.all([
+      this.destroyRecord(),
+      (await this.file)?.destroyRecord(),
+    ]);
+
+    return this;
+  }
 }
