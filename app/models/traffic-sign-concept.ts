@@ -19,6 +19,7 @@ import {
   validateDateOptional,
   validateEndDate,
 } from 'mow-registry/validators/schema';
+import type TribontShape from './tribont-shape';
 
 export default class TrafficSignConcept extends SkosConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
@@ -40,6 +41,9 @@ export default class TrafficSignConcept extends SkosConcept {
     inverse: null,
   })
   declare hasInstructions: AsyncHasMany<Template>;
+
+  @hasMany('tribont-shape', { inverse: null, async: true })
+  declare shapes: AsyncHasMany<TribontShape>;
 
   @hasMany<TrafficMeasureConcept>('traffic-measure-concept', {
     async: true,

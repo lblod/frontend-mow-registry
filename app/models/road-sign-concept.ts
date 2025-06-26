@@ -13,7 +13,6 @@ import {
 } from 'mow-registry/validators/schema';
 import TrafficSignConcept from './traffic-sign-concept';
 import RoadSignCategory from './road-sign-category';
-import TribontShape from './tribont-shape';
 import type SkosConcept from './skos-concept';
 import type { Type } from '@warp-drive/core-types/symbols';
 import type Variable from './variable';
@@ -33,9 +32,6 @@ export default class RoadSignConcept extends TrafficSignConcept {
     async: true,
   })
   declare classifications: AsyncHasMany<RoadSignCategory>;
-
-  @hasMany('tribont-shape', { inverse: null, async: true })
-  declare shapes: AsyncHasMany<TribontShape>;
 
   @hasMany('road-sign-concept', { inverse: 'mainSigns', async: true })
   declare subSigns: AsyncHasMany<RoadSignConcept>;

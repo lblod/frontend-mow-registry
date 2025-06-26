@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import type Store from 'ember-data/store';
 import Dimension from 'mow-registry/models/dimension';
 import type QuantityKind from 'mow-registry/models/quantity-kind';
-import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import type TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
 import type Shape from 'mow-registry/models/tribont-shape';
 import TribontShape from 'mow-registry/models/tribont-shape';
 import type ShapeClassification from 'mow-registry/models/tribont-shape-classification-code';
@@ -12,7 +12,7 @@ import type Unit from 'mow-registry/models/unit';
 
 interface Signature {
   Args: {
-    roadSignConcept: RoadSignConcept;
+    roadSignConcept: TrafficSignConcept;
     shapes: Shape[];
     addShape: () => void;
     removeShape: (shapeToRemove: Shape) => void;
