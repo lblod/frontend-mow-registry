@@ -54,6 +54,7 @@ export default class TrafficSignConcept extends SkosConcept {
 
   get validationSchema() {
     return super.validationSchema.keys({
+      shapes: validateHasManyOptional(),
       valid: validateBooleanOptional(),
       arPlichtig: validateBooleanOptional(),
       startDate: validateDateOptional(),
