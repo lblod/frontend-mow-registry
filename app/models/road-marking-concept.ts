@@ -54,9 +54,9 @@ export default class RoadMarkingConcept extends TrafficSignConcept {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      // shapes: validateHasManyRequired(
-      //   'road-sign-concept.atLeastOneShapeRequired',
-      // ),
+      shapes: validateHasManyRequired(
+        'road-sign-concept.atLeastOneShapeRequired',
+      ),
       meaning: validateStringRequired(),
       zonality: validateBelongsToOptional(),
       relatedToRoadMarkingConcepts: validateHasManyOptional(),
