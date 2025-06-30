@@ -1,5 +1,19 @@
 # frontend-mow-registry
 
+## 2.4.0
+
+### Minor Changes
+
+- [#328](https://github.com/lblod/frontend-mow-registry/pull/328) [`b7f82b9`](https://github.com/lblod/frontend-mow-registry/commit/b7f82b937cbc5e8ba994ff2ea87fa826bb62c78b) Thanks [@piemonkey](https://github.com/piemonkey)! - Delete related variables when deleting road signs, road markings and traffic lights
+
+- [#329](https://github.com/lblod/frontend-mow-registry/pull/329) [`8d69765`](https://github.com/lblod/frontend-mow-registry/commit/8d697659645a54817065399ef490337f31d1ad55) Thanks [@elpoelma](https://github.com/elpoelma)! - Add support for adding shapes to road-marking-concepts
+
+- [#328](https://github.com/lblod/frontend-mow-registry/pull/328) [`e6aac44`](https://github.com/lblod/frontend-mow-registry/commit/e6aac44914edebd4c6dbab51c39a8ddd8a418563) Thanks [@piemonkey](https://github.com/piemonkey)! - Add support for variables to road markings and traffic lights
+
+### Patch Changes
+
+- [#330](https://github.com/lblod/frontend-mow-registry/pull/330) [`ef0b998`](https://github.com/lblod/frontend-mow-registry/commit/ef0b998eb75611d9afb95d0756cd34a6abb27076) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Fix bug where text filter didn't work on mobility measure
+
 ## 2.3.5
 
 ### Patch Changes
