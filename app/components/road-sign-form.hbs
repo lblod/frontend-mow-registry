@@ -198,8 +198,7 @@
         {{/let}}
 
         {{#let (await @roadSignConcept.variables) as |variables|}}
-          <RoadSignForm::VariableManager
-            @roadSignConcept={{@roadSignConcept}}
+          <TrafficSignCommon::VariableManager
             @variables={{variables}}
             @removeVariable={{this.removeVariable}}
             @addVariable={{this.addVariable}}

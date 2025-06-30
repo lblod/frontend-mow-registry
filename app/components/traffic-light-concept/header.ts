@@ -19,7 +19,7 @@ export default class TrafficLightConceptHeader extends Component<Signature> {
   removeRoadMarkingConcept = task(async (event: InputEvent) => {
     event.preventDefault();
 
-    await this.args.trafficLightConcept.destroyRecord();
+    await this.args.trafficLightConcept.destroyWithRelations();
     this.router.transitionTo('traffic-light-concepts');
   });
 }

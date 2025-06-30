@@ -171,6 +171,14 @@
           {{t "utility.modifying-validity-dates-warning"}}
         </AuHelpText>
 
+        {{#let (await @roadMarkingConcept.variables) as |variables|}}
+          <TrafficSignCommon::VariableManager
+            @variables={{variables}}
+            @removeVariable={{this.removeVariable}}
+            @addVariable={{this.addVariable}}
+          />
+        {{/let}}
+
         {{! Shapes and dimensions }}
         {{#let (await @roadMarkingConcept.shapes) as |shapes|}}
           {{#if (this.isArray shapes)}}
