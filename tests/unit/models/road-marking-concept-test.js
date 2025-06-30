@@ -15,16 +15,21 @@ module('Unit | Model | road marking concept', function (hooks) {
     const isValid = await model.validate();
 
     assert.false(isValid);
-    assert.strictEqual(Object.keys(model.error).length, 3);
+    assert.strictEqual(Object.keys(model.error).length, 4);
     assert.strictEqual(model.error.image.message, 'errors.field.required');
     assert.strictEqual(model.error.meaning.message, 'errors.field.required');
     assert.strictEqual(model.error.label.message, 'errors.field.required');
+    assert.strictEqual(
+      model.error.shapes.message,
+      'road-sign-concept.atLeastOneShapeRequired',
+    );
   });
 
   test('it does not have error when all mandatory fields are filled in', async function (assert) {
     const model = this.store().createRecord('road-marking-concept', {
       label: 'label',
       image: this.store().createRecord('image'),
+      shapes: [this.store().createRecord('tribont-shape')],
       meaning: 'meaning',
     });
 

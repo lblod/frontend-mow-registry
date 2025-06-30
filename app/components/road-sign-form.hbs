@@ -208,8 +208,8 @@
         {{! Shapes and dimensions }}
         {{#let (await @roadSignConcept.shapes) as |shapes|}}
           {{#if (this.isArray shapes)}}
-            <RoadSignForm::ShapeManager
-              @roadSignConcept={{@roadSignConcept}}
+            <Common::ShapeManager
+              @trafficSignConcept={{@roadSignConcept}}
               @shapes={{shapes}}
               @addShape={{this.addShape}}
               @removeShape={{this.removeShape}}

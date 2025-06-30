@@ -19,6 +19,7 @@ import {
   validateDateOptional,
   validateEndDate,
 } from 'mow-registry/validators/schema';
+import type TribontShape from './tribont-shape';
 import type Variable from './variable';
 
 export default class TrafficSignConcept extends SkosConcept {
@@ -49,6 +50,9 @@ export default class TrafficSignConcept extends SkosConcept {
   })
   declare hasInstructions: AsyncHasMany<Template>;
 
+  @hasMany('tribont-shape', { inverse: null, async: true })
+  declare shapes: AsyncHasMany<TribontShape>;
+
   @hasMany<TrafficMeasureConcept>('traffic-measure-concept', {
     async: true,
     inverse: 'relatedTrafficSignConcepts',
@@ -58,6 +62,7 @@ export default class TrafficSignConcept extends SkosConcept {
 
   get validationSchema() {
     return super.validationSchema.keys({
+      shapes: validateHasManyOptional(),
       valid: validateBooleanOptional(),
       arPlichtig: validateBooleanOptional(),
       startDate: validateDateOptional(),
@@ -74,10 +79,11 @@ export default class TrafficSignConcept extends SkosConcept {
   async destroyWithRelations() {
     // This doesn't delete the status or hasTrafficMeasureConcepts relations as it wasn't clear what
     // the expectation would be for these since they don't appear to be used
-    const [variables, image, instructions] = await Promise.all([
+    const [variables, image, instructions, shapes] = await Promise.all([
       this.variables,
       this.image,
       this.hasInstructions,
+      this.shapes,
     ]);
 
     await Promise.all([
@@ -85,6 +91,7 @@ export default class TrafficSignConcept extends SkosConcept {
       ...variables.map((variable) => variable.destroyRecord()),
       image?.destroyWithRelations(),
       ...instructions.map((instruction) => instruction.destroyWithRelations()),
+      ...shapes.map((shape) => shape.destroyWithRelations()),
     ]);
 
     return this;

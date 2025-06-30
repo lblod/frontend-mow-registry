@@ -136,28 +136,24 @@
         {{/let}}
         {{#let @roadMarkingConcept.error.startDate as |error|}}
           <AuFormRow>
-            <AuLabel
-              @error={{error}}
-              for="startDate"
-            >
+            <AuLabel @error={{error}} for="startDate">
               {{t "utility.start-date"}}&nbsp;
             </AuLabel>
             <AuDatePicker
               @error={{error}}
               id="startDate"
               @value={{@roadMarkingConcept.startDate}}
-              @onChange={{fn this.setRoadMarkingDate 'startDate'}}
+              @onChange={{fn this.setRoadMarkingDate "startDate"}}
             />
             <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
-        {{#let @roadMarkingConcept.error.endDate @roadMarkingConcept.warning.endDate as |error warning|}}
+        {{#let
+          @roadMarkingConcept.error.endDate @roadMarkingConcept.warning.endDate
+          as |error warning|
+        }}
           <AuFormRow>
-            <AuLabel
-              @error={{error}}
-              @warning={{warning}}
-              for="endDate"
-            >
+            <AuLabel @error={{error}} @warning={{warning}} for="endDate">
               {{t "utility.end-date"}}&nbsp;
             </AuLabel>
             <AuDatePicker
@@ -166,7 +162,7 @@
               id="endDate"
               @min={{@roadMarkingConcept.startDate}}
               @value={{@roadMarkingConcept.endDate}}
-              @onChange={{fn this.setRoadMarkingDate 'endDate'}}
+              @onChange={{fn this.setRoadMarkingDate "endDate"}}
             />
             <ErrorMessage @error={{error}} @warning={{warning}} />
           </AuFormRow>
@@ -183,6 +179,18 @@
           />
         {{/let}}
 
+        {{! Shapes and dimensions }}
+        {{#let (await @roadMarkingConcept.shapes) as |shapes|}}
+          {{#if (this.isArray shapes)}}
+            <Common::ShapeManager
+              @trafficSignConcept={{@roadMarkingConcept}}
+              @shapes={{shapes}}
+              @addShape={{this.addShape}}
+              @removeShape={{this.removeShape}}
+              @removeDimension={{this.removeDimension}}
+            />
+          {{/if}}
+        {{/let}}
       </form>
     </div>
   </div>
