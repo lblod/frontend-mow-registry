@@ -138,7 +138,7 @@ export default async function fetchManualData(
       ?uri mobiliteit:ARplichtig ?ARplichtig.
     }
     OPTIONAL {
-      ?uri mobiliteit:template ?template.
+      ?uri mobiliteit:Mobiliteitsmaatregelconcept.template ?template.
       ?template ext:preview ?templatePreview.
     }
     ${filters.join(' ')}
