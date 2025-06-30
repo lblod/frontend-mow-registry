@@ -35,4 +35,15 @@ export default class TribontShape extends AbstractValidationModel {
       classification: validateBelongsToRequired(),
     });
   }
+
+  async destroyWithRelations() {
+    const dimensions = await this.dimensions;
+
+    await Promise.all([
+      this.destroyRecord(),
+      ...dimensions.map((dimension) => dimension.destroyRecord()),
+    ]);
+
+    return this;
+  }
 }

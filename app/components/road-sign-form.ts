@@ -15,6 +15,7 @@ import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
+  classifications: RoadSignCategory[];
 };
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: RouterService;

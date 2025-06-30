@@ -46,4 +46,15 @@ export default class Template extends Document {
       parentSign: validateBelongsToOptional(),
     });
   }
+
+  async destroyWithRelations() {
+    const variables = await this.variables;
+
+    await Promise.all([
+      this.destroyRecord(),
+      ...variables.map((variable) => variable.destroyRecord()),
+    ]);
+
+    return this;
+  }
 }

@@ -19,7 +19,7 @@ export default class RoadMarkingConceptHeader extends Component<Signature> {
   removeRoadMarkingConcept = task(async (event: InputEvent) => {
     event.preventDefault();
 
-    await this.args.roadMarkingConcept.destroyRecord();
+    await this.args.roadMarkingConcept.destroyWithRelations();
     void this.router.transitionTo('road-marking-concepts');
   });
 }

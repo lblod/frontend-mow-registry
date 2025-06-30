@@ -19,15 +19,23 @@ import {
   validateDateOptional,
   validateEndDate,
 } from 'mow-registry/validators/schema';
+import type Variable from './variable';
 
 export default class TrafficSignConcept extends SkosConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'traffic-sign-concept';
+
   @attr declare meaning?: string;
   @attr declare valid?: boolean;
   @attr declare arPlichtig?: boolean;
   @attr('date') declare startDate?: Date;
   @attr('date') declare endDate?: Date;
+
+  @hasMany('variable', {
+    inverse: null,
+    async: true,
+  })
+  declare variables: AsyncHasMany<Variable>;
 
   @belongsTo<Image>('image', { async: true, inverse: null, polymorphic: true })
   declare image: AsyncBelongsTo<Image>;
@@ -59,6 +67,26 @@ export default class TrafficSignConcept extends SkosConcept {
       status: validateBelongsToOptional(),
       hasInstructions: validateHasManyOptional(),
       hasTrafficMeasureConcepts: validateHasManyOptional(),
+      variables: validateHasManyOptional(),
     });
+  }
+
+  async destroyWithRelations() {
+    // This doesn't delete the status or hasTrafficMeasureConcepts relations as it wasn't clear what
+    // the expectation would be for these since they don't appear to be used
+    const [variables, image, instructions] = await Promise.all([
+      this.variables,
+      this.image,
+      this.hasInstructions,
+    ]);
+
+    await Promise.all([
+      this.destroyRecord(),
+      ...variables.map((variable) => variable.destroyRecord()),
+      image?.destroyWithRelations(),
+      ...instructions.map((instruction) => instruction.destroyWithRelations()),
+    ]);
+
+    return this;
   }
 }

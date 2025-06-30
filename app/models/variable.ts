@@ -13,6 +13,7 @@ import {
 export default class Variable extends Resource {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'variable';
+
   @attr declare uri: string;
   @attr declare type?: string;
   @attr declare label?: string;
