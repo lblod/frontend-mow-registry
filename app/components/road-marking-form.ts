@@ -12,6 +12,7 @@ import type TribontShape from 'mow-registry/models/tribont-shape';
 import Variable from 'mow-registry/models/variable';
 import type Dimension from 'mow-registry/models/dimension';
 import { removeItem } from 'mow-registry/utils/array';
+import type Shape from 'mow-registry/models/shape';
 
 type Args = {
   roadMarkingConcept: RoadMarkingConcept;
@@ -129,8 +130,9 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadMarkingConcept.set('image', imageRecord);
 
-      await Promise.all(
-        (await this.args.roadMarkingConcept.shapes).map(async (shape) => {
+      const savePromises: Promise<unknown>[] = [];
+      savePromises.push(
+        ...(await this.args.roadMarkingConcept.shapes).map(async (shape) => {
           await Promise.all(
             (await shape.dimensions).map(async (dimension) => {
               await dimension.save();
@@ -140,8 +142,8 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
         }),
       );
 
-      await Promise.all(
-        this.shapesToRemove.map(async (shape) => {
+      savePromises.push(
+        ...this.shapesToRemove.map(async (shape) => {
           await Promise.all(
             (await shape.dimensions).map(async (dimension) => {
               await dimension.destroyRecord();
@@ -150,20 +152,25 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
           await shape.destroyRecord();
         }),
       );
-      await Promise.all(
-        this.dimensionsToRemove.map((dimension) => dimension.destroyRecord()),
+      savePromises.push(
+        ...this.dimensionsToRemove.map((dimension) =>
+          dimension.destroyRecord(),
+        ),
       );
 
-      await Promise.all(
-        (await this.args.roadMarkingConcept.variables).map(async (variable) => {
-          await variable.save();
-        }),
+      savePromises.push(
+        ...(await this.args.roadMarkingConcept.variables).map(
+          async (variable) => {
+            await variable.save();
+          },
+        ),
       );
 
-      await Promise.all(
-        this.variablesToRemove.map((variable) => variable.destroyRecord()),
+      savePromises.push(
+        ...this.variablesToRemove.map((variable) => variable.destroyRecord()),
       );
 
+      await Promise.all(savePromises);
       await this.args.roadMarkingConcept.save();
       this.router.transitionTo(
         'road-marking-concepts.road-marking-concept',
@@ -189,6 +196,16 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
     const variables = await this.args.roadMarkingConcept.variables;
     removeItem(variables, variable);
     this.variablesToRemove.push(variable);
+  }
+
+  @action
+  async toggleDefaultShape(shape: Shape) {
+    const currentDefault = await this.args.roadMarkingConcept.defaultShape;
+    if (currentDefault && currentDefault.id === shape.id) {
+      this.args.roadMarkingConcept.set('defaultShape', null);
+    } else {
+      this.args.roadMarkingConcept.set('defaultShape', shape);
+    }
   }
 
   willDestroy() {

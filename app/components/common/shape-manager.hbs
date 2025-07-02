@@ -35,7 +35,7 @@
             </AuToolbar>
           </c.header>
           <c.content>
-            <AuFormRow>
+            <AuFormRow @alignment="inline">
               <div
                 class="au-u-1-2
                   {{if shape.error.classification 'ember-power-select--error'}}"
@@ -53,6 +53,14 @@
                 >
                   {{shapeClassification.label}}
                 </PowerSelect>
+              </div>
+              <div class="au-u-1-2">
+                <AuCheckbox
+                  @checked={{eq shape.id @defaultShape.id}}
+                  @onChange={{fn @toggleDefaultShape shape}}
+                >
+                  {{t "road-sign-concept.attr.default-shape"}}
+                </AuCheckbox>
               </div>
               <ErrorMessage @error={{shape.error.classification}} />
             </AuFormRow>

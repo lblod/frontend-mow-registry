@@ -14,8 +14,11 @@ interface Signature {
   Args: {
     trafficSignConcept: TrafficSignConcept;
     shapes: Shape[];
+    defaultShape?: Shape;
     addShape: () => void;
+    toggleDefaultShape: (shape: Shape) => Promise<void>;
     removeShape: (shapeToRemove: Shape) => void;
+    removeDimension: (shape: Shape, dimensionToRemove: Dimension) => void;
   };
 }
 
