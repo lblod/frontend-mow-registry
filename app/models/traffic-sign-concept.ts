@@ -32,7 +32,7 @@ export default class TrafficSignConcept extends SkosConcept {
   @attr('date') declare startDate?: Date;
   @attr('date') declare endDate?: Date;
 
-  @hasMany('variable', {
+  @hasMany<Variable>('variable', {
     inverse: null,
     async: true,
   })
@@ -50,7 +50,7 @@ export default class TrafficSignConcept extends SkosConcept {
   })
   declare hasInstructions: AsyncHasMany<Template>;
 
-  @hasMany('tribont-shape', { inverse: null, async: true })
+  @hasMany<TribontShape>('tribont-shape', { inverse: null, async: true })
   declare shapes: AsyncHasMany<TribontShape>;
 
   @hasMany<TrafficMeasureConcept>('traffic-measure-concept', {
