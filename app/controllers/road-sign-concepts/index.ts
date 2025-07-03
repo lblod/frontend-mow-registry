@@ -11,7 +11,7 @@ import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
-import { trackedFunction } from 'ember-resources/util/function';
+import { trackedFunction } from 'reactiveweb/function';
 import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class RoadsignConceptsIndexController extends Controller {
@@ -112,6 +112,7 @@ export default class RoadsignConceptsIndexController extends Controller {
     query['filter'] = {
       id: roadsignConceptUris.join(','),
     };
+    await Promise.resolve();
     const roadSigns = roadsignConceptUris.length
       ? await this.store.query<RoadSignConcept>('road-sign-concept', query)
       : ([] as RoadSignConcept[] as Awaited<

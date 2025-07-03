@@ -8,7 +8,7 @@ import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
-import { trackedFunction } from 'ember-resources/util/function';
+import { trackedFunction } from 'reactiveweb/function';
 import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class RoadmarkingConceptsIndexController extends Controller {
@@ -97,6 +97,7 @@ export default class RoadmarkingConceptsIndexController extends Controller {
     query['filter'] = {
       id: roadMarkingConceptUris.join(','),
     };
+    await Promise.resolve();
     const roadMarkings = roadMarkingConceptUris.length
       ? await this.store.query<RoadMarkingConcept>(
           'road-marking-concept',
