@@ -12,6 +12,7 @@ import { removeItem } from 'mow-registry/utils/array';
 import Store from '@ember-data/store';
 import type Variable from 'mow-registry/models/variable';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
+import type Shape from 'mow-registry/models/shape';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -156,8 +157,9 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
 
-      await Promise.all(
-        (await this.args.roadSignConcept.shapes).map(async (shape) => {
+      const savePromises: Promise<unknown>[] = [];
+      savePromises.push(
+        ...(await this.args.roadSignConcept.shapes).map(async (shape) => {
           await Promise.all(
             (await shape.dimensions).map(async (dimension) => {
               await dimension.save();
@@ -167,8 +169,8 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
         }),
       );
 
-      await Promise.all(
-        this.shapesToRemove.map(async (shape) => {
+      savePromises.push(
+        ...this.shapesToRemove.map(async (shape) => {
           await Promise.all(
             (await shape.dimensions).map(async (dimension) => {
               await dimension.destroyRecord();
@@ -177,20 +179,23 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
           await shape.destroyRecord();
         }),
       );
-      await Promise.all(
-        this.dimensionsToRemove.map((dimension) => dimension.destroyRecord()),
+      savePromises.push(
+        ...this.dimensionsToRemove.map((dimension) =>
+          dimension.destroyRecord(),
+        ),
       );
 
-      await Promise.all(
-        (await this.args.roadSignConcept.variables).map(async (variable) => {
+      savePromises.push(
+        ...(await this.args.roadSignConcept.variables).map(async (variable) => {
           await variable.save();
         }),
       );
 
-      await Promise.all(
-        this.variablesToRemove.map((variable) => variable.destroyRecord()),
+      savePromises.push(
+        ...this.variablesToRemove.map((variable) => variable.destroyRecord()),
       );
 
+      await Promise.all(savePromises);
       await this.args.roadSignConcept.save();
       void this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
@@ -198,6 +203,16 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       );
     }
   });
+
+  @action
+  async toggleDefaultShape(shape: Shape) {
+    const currentDefault = await this.args.roadSignConcept.defaultShape;
+    if (currentDefault && currentDefault.id === shape.id) {
+      this.args.roadSignConcept.set('defaultShape', null);
+    } else {
+      this.args.roadSignConcept.set('defaultShape', shape);
+    }
+  }
 
   willDestroy() {
     super.willDestroy();

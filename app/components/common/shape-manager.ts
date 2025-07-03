@@ -12,10 +12,13 @@ import type Unit from 'mow-registry/models/unit';
 
 interface Signature {
   Args: {
-    roadSignConcept: TrafficSignConcept;
+    trafficSignConcept: TrafficSignConcept;
     shapes: Shape[];
+    defaultShape?: Shape;
     addShape: () => void;
+    toggleDefaultShape: (shape: Shape) => Promise<void>;
     removeShape: (shapeToRemove: Shape) => void;
+    removeDimension: (shape: Shape, dimensionToRemove: Dimension) => void;
   };
 }
 

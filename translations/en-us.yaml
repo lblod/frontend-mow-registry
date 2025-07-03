@@ -112,6 +112,7 @@ road-sign-concept:
     related-traffic-light: Related traffic light
     shape: Shape
     dimensions: Dimensions
+    default-shape: Default shape
     height: Height
     width: Width
     radius: Radius
