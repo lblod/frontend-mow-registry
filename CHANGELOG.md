@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.5.0
+
+### Minor Changes
+
+- [#331](https://github.com/lblod/frontend-mow-registry/pull/331) [`4b047d8`](https://github.com/lblod/frontend-mow-registry/commit/4b047d825589deac14a1b593dcb9800b62042c93) Thanks [@piemonkey](https://github.com/piemonkey)! - Add control to set default shape to road signs and road markings
+
 ## 2.4.0
 
 ### Minor Changes
