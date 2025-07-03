@@ -5,7 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import IconCatalogIndexRoute from 'mow-registry/routes/icon-catalog/index';
 import { service } from '@ember/service';
-import { trackedFunction } from 'ember-resources/util/function';
+import { trackedFunction } from 'reactiveweb/function';
 import Store from '@ember-data/store';
 import type Icon from 'mow-registry/models/icon';
 import type { LegacyResourceQuery } from '@ember-data/store/types';
@@ -57,6 +57,7 @@ export default class IconCatalogIndexController extends Controller {
         label: this.label,
       };
     }
+    await Promise.resolve();
 
     return await this.store.query<Icon>('icon', query);
   });

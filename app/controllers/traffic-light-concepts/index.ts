@@ -8,7 +8,7 @@ import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
-import { trackedFunction } from 'ember-resources/util/function';
+import { trackedFunction } from 'reactiveweb/function';
 import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class TrafficlightConceptsIndexController extends Controller {
@@ -100,6 +100,7 @@ export default class TrafficlightConceptsIndexController extends Controller {
     query['filter'] = {
       id: trafficLightConceptUris.join(','),
     };
+    await Promise.resolve();
     const trafficLights = trafficLightConceptUris.length
       ? await this.store.query<TrafficLightConcept>(
           'traffic-light-concept',
