@@ -4,9 +4,9 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import Variable from 'mow-registry/models/variable';
 import IntlService from 'ember-intl/services/intl';
-import { tracked } from '@glimmer/tracking';
 import type CodelistsService from 'mow-registry/services/codelists';
 import type CodeList from 'mow-registry/models/code-list';
+import { trackedFunction } from 'reactiveweb/function';
 
 interface Signature {
   Args: {
@@ -16,85 +16,74 @@ interface Signature {
   };
 }
 
-export type InputType = {
-  value: string;
-  label: string;
-};
+const VARIABLE_TYPES = [
+  'text',
+  'number',
+  'date',
+  'location',
+  'codelist',
+] as const;
+
+type VariableType = (typeof VARIABLE_TYPES)[number];
 
 export default class VariableManager extends Component<Signature> {
   @service declare store: Store;
   @service declare intl: IntlService;
   @service('codelists') declare codeListService: CodelistsService;
-  @tracked codeLists?: CodeList[];
 
-  variableTypes: Array<InputType>;
-
-  constructor(owner: unknown, args: Signature['Args']) {
-    super(owner, args);
-
-    this.variableTypes = [
-      {
-        value: 'text',
-        label: this.intl.t('utility.template-variables.text'),
-      },
-      {
-        value: 'number',
-        label: this.intl.t('utility.template-variables.number'),
-      },
-      {
-        value: 'date',
-        label: this.intl.t('utility.template-variables.date'),
-      },
-      {
-        value: 'location',
-        label: this.intl.t('utility.template-variables.location'),
-      },
-      {
-        value: 'codelist',
-        label: this.intl.t('utility.template-variables.codelist'),
-      },
-    ];
-    this.fetchCodeLists();
+  get variableTypes() {
+    return VARIABLE_TYPES;
   }
 
-  @action
-  fetchCodeLists() {
-    this.codeListService.all
-      .perform()
-      .then((codelists) => (this.codeLists = codelists))
-      .catch((error) => console.error('Error fetching code lists:', error));
-  }
+  labelForType = (variableType: VariableType) => {
+    switch (variableType) {
+      case 'text':
+        return this.intl.t('utility.template-variables.text');
+      case 'number':
+        return this.intl.t('utility.template-variables.number');
+      case 'date':
+        return this.intl.t('utility.template-variables.date');
+      case 'location':
+        return this.intl.t('utility.template-variables.location');
+      case 'codelist':
+        return this.intl.t('utility.template-variables.codelist');
+    }
+  };
+
+  codelists = trackedFunction(this, async () => {
+    return await this.codeListService.all.perform();
+  });
 
   @action
   setVariableLabel(variable: Variable, event: InputEvent) {
     const newLabel = (event.target as HTMLInputElement).value;
-    variable.set('label', newLabel);
+    variable.label = newLabel;
   }
 
   @action
-  setVariableRequired(variable: Variable) {
-    variable.set('required', !variable.required);
+  toggleVariableRequired(variable: Variable) {
+    variable.required = !variable.required;
   }
 
   @action
-  setVariableType(variable: Variable, selectedType: InputType) {
-    const actualType = this.variableTypes.find(
-      (type) => type.value === variable.type,
-    );
-    const labelMofied = actualType && actualType.label !== variable.label;
-    if (variable.type === 'codelist') {
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      variable.codeList = this.codeLists[0];
+  setVariableType(variable: Variable, selectedType: VariableType) {
+    const oldType = variable.type as VariableType | undefined;
+    const labelModified =
+      oldType && variable.label !== this.labelForType(oldType);
+    variable.type = selectedType;
+
+    if (!labelModified) {
+      variable.label = this.labelForType(selectedType);
     }
-    variable.set('type', selectedType.value);
-    if (!labelMofied) {
-      variable.set('label', selectedType.label);
+
+    if (variable.type === 'codelist' && this.codelists.value?.length) {
+      const codelistDefaultValue = this.codelists.value?.[0];
+      this.updateCodelist(variable, codelistDefaultValue);
     }
   }
 
   @action
-  updateCodelist(variable: Variable, codeList: CodeList) {
-    //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-    variable.codeList = codeList;
+  updateCodelist(variable: Variable, codeList?: CodeList) {
+    variable.set('codeList', codeList);
   }
 }
