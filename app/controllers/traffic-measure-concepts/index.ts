@@ -106,6 +106,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
     query['filter'] = {
       id: trafficMeasureConceptUris.join(','),
     };
+    // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     const trafficMeasures = trafficMeasureConceptUris.length
       ? await this.store.query<TrafficMeasureConcept>(

@@ -15,6 +15,7 @@ export default class ZonalitySelectorComponent extends Component<Args> {
   @service declare store: Store;
 
   zonalities = trackedFunction(this, async () => {
+    // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     const conceptScheme = await this.store.findRecord<ConceptScheme>(
       'concept-scheme',

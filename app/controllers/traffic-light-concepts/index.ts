@@ -100,6 +100,7 @@ export default class TrafficlightConceptsIndexController extends Controller {
     query['filter'] = {
       id: trafficLightConceptUris.join(','),
     };
+    // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     const trafficLights = trafficLightConceptUris.length
       ? await this.store.query<TrafficLightConcept>(

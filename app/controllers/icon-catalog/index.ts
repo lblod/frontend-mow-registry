@@ -57,6 +57,7 @@ export default class IconCatalogIndexController extends Controller {
         label: this.label,
       };
     }
+    // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
 
     return await this.store.query<Icon>('icon', query);

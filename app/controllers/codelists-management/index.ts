@@ -54,6 +54,7 @@ export default class CodelistsManagementIndexController extends Controller {
         label: this.label,
       };
     }
+    // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
 
     return await this.store.query<CodeList>('code-list', query);
