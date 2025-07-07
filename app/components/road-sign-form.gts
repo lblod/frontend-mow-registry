@@ -34,13 +34,14 @@ import ShapeManager from "mow-registry/components/common/shape-manager";
 import ArPlichtigStatus from "mow-registry/components/ar-plichtig-status";
 import ImageInput from "mow-registry/components/image-input";
 import { on } from "@ember/modifier";
-import { fn } from "@ember/helper";
+import { fn, get } from "@ember/helper";
 import perform from "ember-concurrency/helpers/perform";
 import or from "ember-truth-helpers/helpers/or";
 import { LinkTo } from "@ember/routing";
 import awaitHelper from "ember-promise-helpers/helpers/await";
 import { load } from "ember-async-data";
 import type Shape from "mow-registry/models/shape";
+import { isSome } from "mow-registry/utils/option";
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -65,7 +66,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   @action
   async setRoadSignConceptValue(
     attributeName: ModifiableKeysOfType<RoadSignConcept, string>,
-    event: InputEvent,
+    event: Event,
   ) {
     this.args.roadSignConcept[attributeName] = (
       event.target as HTMLInputElement
@@ -88,7 +89,11 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  async setRoadsignDate(attribute: string, isoDate: string, date: Date) {
+  async setRoadsignDate(
+    attribute: string,
+    isoDate: string | null,
+    date: Date | null,
+  ) {
     if (date && attribute === "endDate") {
       date.setHours(23);
       date.setMinutes(59);
@@ -316,8 +321,8 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
           <form class="au-c-form" id="edit-road-sign-concept-form" novalidate>
             <AuFormRow>
 
-              {{#let @roadSignConcept.error.arPlichtig as |error|}}
-                <AuLabel @error={{error}} for="ar-plichtig">
+              {{#let (get @roadSignConcept.error "arPlichtig") as |error|}}
+                <AuLabel @error={{isSome error}} for="ar-plichtig">
                   {{t "utility.ar-plichtig"}}
                 </AuLabel>
               {{/let}}
@@ -329,19 +334,21 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 <ArPlichtigStatus @status={{@roadSignConcept.arPlichtig}} />
               </AuToggleSwitch>
             </AuFormRow>
-            {{#let @roadSignConcept.error.image as |error|}}
+            {{#let (get @roadSignConcept.error "image") as |error|}}
               <AuFormRow>
                 <ImageInput
+                  {{! @glint-expect-error maybe need to move this to a getter? }}
                   @oldImage={{@roadSignConcept.image.file.downloadLink}}
-                  @error={{error}}
+                  @error={{isSome error}}
+                  {{! @glint-expect-error setImage should also accept a string }}
                   @setImage={{fn this.setImage @roadSignConcept}}
                 />
               </AuFormRow>
             {{/let}}
-            {{#let @roadSignConcept.error.label as |error|}}
+            {{#let (get @roadSignConcept.error "label") as |error|}}
               <AuFormRow>
                 <AuLabel
-                  @error={{error}}
+                  @error={{isSome error}}
                   for="label"
                   @required={{true}}
                   @requiredLabel={{t "utility.required"}}
@@ -349,7 +356,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   {{t "road-sign-concept.attr.label"}}&nbsp;
                 </AuLabel>
                 <AuInput
-                  @error={{error}}
+                  @error={{isSome error}}
                   id="label"
                   required="required"
                   value={{@roadSignConcept.label}}
@@ -358,10 +365,10 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
             {{/let}}
-            {{#let @roadSignConcept.error.meaning as |error|}}
+            {{#let (get @roadSignConcept.error "meaning") as |error|}}
               <AuFormRow>
                 <AuLabel
-                  @error={{error}}
+                  @error={{isSome error}}
                   for="meaning"
                   @required={{true}}
                   @requiredLabel={{t "utility.required"}}
@@ -369,7 +376,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   {{t "road-sign-concept.attr.meaning"}}&nbsp;
                 </AuLabel>
                 <AuTextarea
-                  @error={{error}}
+                  @error={{isSome error}}
                   @width="block"
                   class="u-min-h-20"
                   id="meaning"
@@ -380,13 +387,13 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
             {{/let}}
-            {{#let @roadSignConcept.error.startDate as |error|}}
+            {{#let (get @roadSignConcept.error "startDate") as |error|}}
               <AuFormRow>
-                <AuLabel @error={{error}} for="startDate">
+                <AuLabel @error={{isSome error}} for="startDate">
                   {{t "utility.start-date"}}&nbsp;
                 </AuLabel>
                 <AuDatePicker
-                  @error={{error}}
+                  @error={{isSome error}}
                   id="startDate"
                   @value={{@roadSignConcept.startDate}}
                   @onChange={{fn this.setRoadsignDate "startDate"}}
@@ -395,16 +402,21 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
               </AuFormRow>
             {{/let}}
             {{#let
-              @roadSignConcept.error.endDate @roadSignConcept.warning.endDate
+              (get @roadSignConcept.error "endDate")
+              (get @roadSignConcept.warning "endDate")
               as |error warning|
             }}
               <AuFormRow>
-                <AuLabel @error={{error}} @warning={{warning}} for="endDate">
+                <AuLabel
+                  @error={{isSome error}}
+                  @warning={{isSome warning}}
+                  for="endDate"
+                >
                   {{t "utility.end-date"}}&nbsp;
                 </AuLabel>
                 <AuDatePicker
-                  @error={{error}}
-                  @warning={{warning}}
+                  @error={{isSome error}}
+                  @warning={{isSome warning}}
                   id="endDate"
                   @min={{@roadSignConcept.startDate}}
                   @value={{@roadSignConcept.endDate}}
@@ -416,10 +428,10 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
             <AuHelpText>
               {{t "utility.modifying-validity-dates-warning"}}
             </AuHelpText>
-            {{#let @roadSignConcept.error.classifications as |error|}}
+            {{#let (get @roadSignConcept.error "classifications") as |error|}}
               <AuFormRow>
                 <AuLabel
-                  @error={{error}}
+                  @error={{isSome error}}
                   for="classifications"
                   @required={{true}}
                   @requiredLabel={{t "utility.required"}}
@@ -427,7 +439,9 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   {{t "road-sign-concept.attr.classifications"}}&nbsp;
                 </AuLabel>
                 <div class={{if error "ember-power-select--error"}}>
+                  {{! @glint-expect-error need to move to PS 8 }}
                   <PowerSelectMultiple
+                    {{! @glint-expect-error need to move to PS 8 }}
                     @allowClear={{true}}
                     @placeholder={{t "utility.search-placeholder"}}
                     @searchEnabled={{true}}
@@ -447,10 +461,10 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
             {{/let}}
-            {{#let @roadSignConcept.error.zonality as |error|}}
+            {{#let (get @roadSignConcept.error "zonality") as |error|}}
               <AuFormRow>
                 <AuLabel
-                  @error={{error}}
+                  @error={{isSome error}}
                   for="classifications"
                   @required={{true}}
                   @requiredLabel={{t "utility.required"}}
@@ -460,6 +474,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 {{#let (load @roadSignConcept.zonality) as |zonality|}}
                   {{#if zonality.isResolved}}
                     <ZonalitySelector
+                      {{! @glint-expect-error not sure how we should handle this }}
                       @zonality={{zonality.value}}
                       @onChange={{this.updateZonality}}
                       @model={{@roadSignConcept}}
@@ -480,12 +495,15 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
             {{#let (awaitHelper @roadSignConcept.shapes) as |shapes|}}
               {{#if (this.isArray shapes)}}
                 <ShapeManager
+                  {{! @glint-expect-error shape-manager types need to be checked }}
                   @trafficSignConcept={{@roadSignConcept}}
                   @shapes={{shapes}}
                   @addShape={{this.addShape}}
                   @removeShape={{this.removeShape}}
                   @removeDimension={{this.removeDimension}}
+                  {{! @glint-expect-error shape-manager types need to be checked }}
                   @defaultShape={{@roadSignConcept.defaultShape}}
+                  {{! @glint-expect-error shape-manager types need to be checked }}
                   @toggleDefaultShape={{this.toggleDefaultShape}}
                 />
               {{/if}}
