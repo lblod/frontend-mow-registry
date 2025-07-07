@@ -35,9 +35,12 @@ import ArPlichtigStatus from "mow-registry/components/ar-plichtig-status";
 import ImageInput from "mow-registry/components/image-input";
 import { on } from "@ember/modifier";
 import { fn, get } from "@ember/helper";
+// @ts-expect-error need EC v4 to get helper types...
 import perform from "ember-concurrency/helpers/perform";
+// @ts-expect-error need to move to truth-helpers v4
 import or from "ember-truth-helpers/helpers/or";
 import { LinkTo } from "@ember/routing";
+// @ts-expect-error no types
 import awaitHelper from "ember-promise-helpers/helpers/await";
 import { load } from "ember-async-data";
 import type Shape from "mow-registry/models/shape";
@@ -477,6 +480,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                       {{! @glint-expect-error not sure how we should handle this }}
                       @zonality={{zonality.value}}
                       @onChange={{this.updateZonality}}
+                      {{! @glint-expect-error not sure why this doesnt accept subtypes }}
                       @model={{@roadSignConcept}}
                     />
                   {{/if}}

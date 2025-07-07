@@ -9,8 +9,11 @@ import PowerSelect from "ember-power-select/components/power-select";
 import ErrorMessage from "mow-registry/components/error-message";
 import zonalityLabel from "mow-registry/helpers/zonality-label";
 import t from "ember-intl/helpers/t";
+import type TrafficSignConcept from "mow-registry/models/traffic-sign-concept";
+import { get } from "@ember/helper";
 
 type Args = {
+  model: TrafficSignConcept;
   zonality: SkosConcept;
   onChange: (zonality: SkosConcept) => void;
 };
@@ -30,19 +33,24 @@ export default class ZonalitySelectorComponent extends Component<Args> {
     return this.args.zonality;
   }
   <template>
-    {{#let @model.error.zonality as |error|}}
+    {{#let (get @model.error "zonality") as |error|}}
       <div class={{if error "ember-power-select--error"}}>
-        <PowerSelect
-          @allowClear={{false}}
-          @searchEnabled={{false}}
-          @loadingMessage={{t "utility.loading"}}
-          @options={{this.zonalities.value}}
-          @selected={{@zonality}}
-          @onChange={{@onChange}}
-          as |zonality|
-        >
-          {{zonalityLabel zonality}}
-        </PowerSelect>
+        {{#if this.zonalities.value}}
+          {{! @glint-expect-error need to move to PS 8 }}
+          <PowerSelect
+            {{! @glint-expect-error need to move to PS 8 }}
+            @allowClear={{false}}
+            @searchEnabled={{false}}
+            @loadingMessage={{t "utility.loading"}}
+            @options={{this.zonalities.value}}
+            @selected={{@zonality}}
+            @onChange={{@onChange}}
+            as |zonality|
+          >
+            {{! @glint-expect-error should convert this to a function }}
+            {{zonalityLabel zonality}}
+          </PowerSelect>
+        {{/if}}
         <ErrorMessage @error={{error}} />
       </div>
     {{/let}}
