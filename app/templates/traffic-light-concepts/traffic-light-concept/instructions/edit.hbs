@@ -1,3 +1,4 @@
+{{! @glint-nocheck: not typesafe yet }}
 {{#let (if this.model.template false true) as |isNew|}}
   {{page-title
     (if isNew (t "utility.add-instruction") (t "utility.edit-instruction"))
