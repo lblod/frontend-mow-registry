@@ -1,9 +1,11 @@
 import type { TOC } from "@ember/component/template-only";
+import { get } from "@ember/helper";
 import t from "ember-intl/helpers/t";
+// @ts-expect-error no types
+import and from "ember-truth-helpers/helpers/and";
 import AuHelpText from "@appuniversum/ember-appuniversum/components/au-help-text";
 import type { CustomValidationErrorItem } from "mow-registry/models/abstract-validation-model";
 import { isSome } from "mow-registry/utils/option";
-import { get } from "@ember/helper";
 
 interface Sig {
   Args: {
@@ -13,8 +15,9 @@ interface Sig {
 }
 
 const ErrorMessage: TOC<Sig> = <template>
-  {{#if (isSome @error)}}
+  {{#if (and (isSome @error) (isSome @error.message))}}
     <AuHelpText @error={{true}}>
+      {{! @glint-expect-error this must exist but we dont have types to prove it }}
       {{t @error.message}}
     </AuHelpText>
   {{/if}}

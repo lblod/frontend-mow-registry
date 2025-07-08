@@ -43,7 +43,6 @@ import { LinkTo } from "@ember/routing";
 // @ts-expect-error no types
 import awaitHelper from "ember-promise-helpers/helpers/await";
 import { load } from "ember-async-data";
-import type Shape from "mow-registry/models/shape";
 import { isSome } from "mow-registry/utils/option";
 
 type Args = {
@@ -241,7 +240,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   });
 
   @action
-  async toggleDefaultShape(shape: Shape) {
+  async toggleDefaultShape(shape: TribontShape) {
     const currentDefault = await this.args.roadSignConcept.defaultShape;
     if (currentDefault && currentDefault.id === shape.id) {
       this.args.roadSignConcept.set("defaultShape", null);
@@ -499,15 +498,13 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
             {{#let (awaitHelper @roadSignConcept.shapes) as |shapes|}}
               {{#if (this.isArray shapes)}}
                 <ShapeManager
-                  {{! @glint-expect-error shape-manager types need to be checked }}
+                  {{! @glint-expect-error inheritence isnt working for us here for some reason }}
                   @trafficSignConcept={{@roadSignConcept}}
                   @shapes={{shapes}}
                   @addShape={{this.addShape}}
                   @removeShape={{this.removeShape}}
                   @removeDimension={{this.removeDimension}}
-                  {{! @glint-expect-error shape-manager types need to be checked }}
                   @defaultShape={{@roadSignConcept.defaultShape}}
-                  {{! @glint-expect-error shape-manager types need to be checked }}
                   @toggleDefaultShape={{this.toggleDefaultShape}}
                 />
               {{/if}}
