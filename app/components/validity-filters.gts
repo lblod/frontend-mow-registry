@@ -4,13 +4,34 @@ import t from "ember-intl/helpers/t";
 import AuLabel from "@appuniversum/ember-appuniversum/components/au-label";
 import AuDatePicker from "@appuniversum/ember-appuniversum/components/au-date-picker";
 import { action } from "@ember/object";
+import type { Option } from "mow-registry/utils/option";
 
-function convertToDate(date) {
-  return new Date(date);
+function convertToDate(date: Option<string>) {
+  // Defaulting to now was how this was when types were added, so it seems to work.
+  // It may be better to explicitly set the behaviour for this case though.
+  return new Date(date ?? "");
 }
 
-export default class ValidityFilters extends Component {
-  validityStatusOptions = [
+export type ValidityFilter = {
+  validityOption: Option<string>;
+  startDate?: Option<string>;
+  endDate?: Option<string>;
+};
+export type ValidityStatusOption = {
+  value: "valid" | "expired" | "custom";
+  label: string;
+};
+export interface ValidityFiltersSig {
+  Args: {
+    value: Option<string>;
+    startDate: Option<string>;
+    endDate: Option<string>;
+    onChange: (validity: ValidityFilter) => void;
+  };
+}
+
+export default class ValidityFilters extends Component<ValidityFiltersSig> {
+  validityStatusOptions: ValidityStatusOption[] = [
     {
       value: "valid",
       label: "validity-filter.valid",
@@ -34,7 +55,7 @@ export default class ValidityFilters extends Component {
   }
 
   @action
-  onChangeValidity(option) {
+  onChangeValidity(option: Option<ValidityStatusOption>) {
     if (!option) {
       this.args.onChange({
         validityOption: null,
@@ -47,7 +68,7 @@ export default class ValidityFilters extends Component {
     });
   }
   @action
-  setStartDate(isoDate: string, date: Date) {
+  setStartDate(_isoDate: string | null, date: Date | null) {
     this.args.onChange({
       validityOption: "custom",
       startDate: date ? date.toISOString() : undefined,
@@ -55,7 +76,7 @@ export default class ValidityFilters extends Component {
     });
   }
   @action
-  setEndDate(isoDate: string, date: Date) {
+  setEndDate(_isoDate: string | null, date: Date | null) {
     if (date) {
       date.setHours(23);
       date.setMinutes(59);
@@ -72,7 +93,9 @@ export default class ValidityFilters extends Component {
     <AuLabel for="validity-filter">
       {{t "validity-filter.label"}}
     </AuLabel>
+    {{! @glint-expect-error need to move to PS 8 }}
     <PowerSelect
+      {{! @glint-expect-error need to move to PS 8 }}
       @allowClear={{true}}
       @options={{this.validityStatusOptions}}
       @selected={{this.selected}}
