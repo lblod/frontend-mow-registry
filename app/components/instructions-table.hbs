@@ -1,3 +1,4 @@
+{{! @glint-nocheck: not typesafe yet }}
 <AuDataTable
   @content={{@templates}}
   @fields="Description"
@@ -13,7 +14,7 @@
           </AuHeading>
         </Group>
         <Group>
-          <AuButton 
+          <AuButton
             @disabled={{@isAddingInstructions}}
             {{on "click" @addInstruction}}
           >
@@ -38,7 +39,7 @@
           {{t "main-sign.crud.edit"}}
         </span>
       </th>
-      
+
     </c.header>
     <c.body as |template|>
       <td>

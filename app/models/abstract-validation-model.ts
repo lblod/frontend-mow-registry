@@ -16,11 +16,11 @@ type ValidationResult = {
   warning?: ValidationError;
 };
 
-interface CustomValidationErrorItem extends ValidationErrorItem {
+export interface CustomValidationErrorItem extends ValidationErrorItem {
   messageArray?: string[];
 }
 
-interface ValidationErrorDetails {
+export interface ValidationErrorDetails {
   [key: string]: CustomValidationErrorItem;
 }
 /**
