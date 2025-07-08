@@ -1,15 +1,15 @@
 steps:
   install:
-    image: danlynn/ember-cli:4.12.1
+    image: node:20-slim
     commands:
       - npm ci
   lint:
-    image: danlynn/ember-cli:4.12.1
+    image: node:20-slim
     group: lint
     commands:
       - npm run lint
   test:
-    image: danlynn/ember-cli:4.12.1
+    image: node:20-slim
     commands:
       - npm run test:ember
 when:
