@@ -1,16 +1,16 @@
-import Component from "@glimmer/component";
-import { inject as service } from "@ember/service";
-import { ZON_CONCEPT_SCHEME_ID } from "../utils/constants";
-import type Store from "@ember-data/store";
-import SkosConcept from "mow-registry/models/skos-concept";
-import { trackedFunction } from "reactiveweb/function";
-import type ConceptScheme from "mow-registry/models/concept-scheme";
-import PowerSelect from "ember-power-select/components/power-select";
-import ErrorMessage from "mow-registry/components/error-message";
-import zonalityLabel from "mow-registry/helpers/zonality-label";
-import t from "ember-intl/helpers/t";
-import type TrafficSignConcept from "mow-registry/models/traffic-sign-concept";
-import { get } from "@ember/helper";
+import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
+import { ZON_CONCEPT_SCHEME_ID } from '../utils/constants';
+import type Store from '@ember-data/store';
+import SkosConcept from 'mow-registry/models/skos-concept';
+import { trackedFunction } from 'reactiveweb/function';
+import type ConceptScheme from 'mow-registry/models/concept-scheme';
+import PowerSelect from 'ember-power-select/components/power-select';
+import ErrorMessage from 'mow-registry/components/error-message';
+import zonalityLabel from 'mow-registry/helpers/zonality-label';
+import t from 'ember-intl/helpers/t';
+import type TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import { get } from '@ember/helper';
 
 type Args = {
   model: TrafficSignConcept;
@@ -25,7 +25,7 @@ export default class ZonalitySelectorComponent extends Component<Args> {
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     const conceptScheme = await this.store.findRecord<ConceptScheme>(
-      "concept-scheme",
+      'concept-scheme',
       ZON_CONCEPT_SCHEME_ID,
     );
     return conceptScheme.concepts;
@@ -35,15 +35,15 @@ export default class ZonalitySelectorComponent extends Component<Args> {
     return this.args.zonality;
   }
   <template>
-    {{#let (get @model.error "zonality") as |error|}}
-      <div class={{if error "ember-power-select--error"}}>
+    {{#let (get @model.error 'zonality') as |error|}}
+      <div class={{if error 'ember-power-select--error'}}>
         {{#if this.zonalities.value}}
           {{! @glint-expect-error need to move to PS 8 }}
           <PowerSelect
             {{! @glint-expect-error need to move to PS 8 }}
             @allowClear={{false}}
             @searchEnabled={{false}}
-            @loadingMessage={{t "utility.loading"}}
+            @loadingMessage={{t 'utility.loading'}}
             @options={{this.zonalities.value}}
             @selected={{@zonality}}
             @onChange={{@onChange}}

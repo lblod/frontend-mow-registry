@@ -1,49 +1,49 @@
-import type RouterService from "@ember/routing/router-service";
-import ImageUploadHandlerComponent from "./image-upload-handler";
-import { action } from "@ember/object";
-import { inject as service } from "@ember/service";
-import { dropTask } from "ember-concurrency";
-import type Dimension from "mow-registry/models/dimension";
-import RoadSignConcept from "mow-registry/models/road-sign-concept";
-import SkosConcept from "mow-registry/models/skos-concept";
-import RoadSignCategory from "mow-registry/models/road-sign-category";
-import TribontShape from "mow-registry/models/tribont-shape";
-import { tracked } from "@glimmer/tracking";
-import { removeItem } from "mow-registry/utils/array";
-import Store from "@ember-data/store";
-import type Variable from "mow-registry/models/variable";
-import type { ModifiableKeysOfType } from "mow-registry/utils/type-utils";
-import BreadcrumbsItem from "@bagaar/ember-breadcrumbs/components/breadcrumbs-item";
-import t from "ember-intl/helpers/t";
-import AuToolbar from "@appuniversum/ember-appuniversum/components/au-toolbar";
-import AuHeading from "@appuniversum/ember-appuniversum/components/au-heading";
-import AuButtonGroup from "@appuniversum/ember-appuniversum/components/au-button-group";
-import AuButton from "@appuniversum/ember-appuniversum/components/au-button";
-import AuFormRow from "@appuniversum/ember-appuniversum/components/au-form-row";
-import AuLabel from "@appuniversum/ember-appuniversum/components/au-label";
-import AuInput from "@appuniversum/ember-appuniversum/components/au-input";
-import AuToggleSwitch from "@appuniversum/ember-appuniversum/components/au-toggle-switch";
-import AuDatePicker from "@appuniversum/ember-appuniversum/components/au-date-picker";
-import AuTextarea from "@appuniversum/ember-appuniversum/components/au-textarea";
-import AuHelpText from "@appuniversum/ember-appuniversum/components/au-help-text";
-import ErrorMessage from "mow-registry/components/error-message";
-import PowerSelectMultiple from "ember-power-select/components/power-select-multiple";
-import ZonalitySelector from "mow-registry/components/zonality-selector";
-import VariableManager from "mow-registry/components/traffic-sign-common/variable-manager";
-import ShapeManager from "mow-registry/components/common/shape-manager";
-import ArPlichtigStatus from "mow-registry/components/ar-plichtig-status";
-import ImageInput from "mow-registry/components/image-input";
-import { on } from "@ember/modifier";
-import { fn, get } from "@ember/helper";
+import type RouterService from '@ember/routing/router-service';
+import ImageUploadHandlerComponent from './image-upload-handler';
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { dropTask } from 'ember-concurrency';
+import type Dimension from 'mow-registry/models/dimension';
+import RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import SkosConcept from 'mow-registry/models/skos-concept';
+import RoadSignCategory from 'mow-registry/models/road-sign-category';
+import TribontShape from 'mow-registry/models/tribont-shape';
+import { tracked } from '@glimmer/tracking';
+import { removeItem } from 'mow-registry/utils/array';
+import Store from '@ember-data/store';
+import type Variable from 'mow-registry/models/variable';
+import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
+import BreadcrumbsItem from '@bagaar/ember-breadcrumbs/components/breadcrumbs-item';
+import t from 'ember-intl/helpers/t';
+import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
+import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
+import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
+import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import AuFormRow from '@appuniversum/ember-appuniversum/components/au-form-row';
+import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
+import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
+import AuToggleSwitch from '@appuniversum/ember-appuniversum/components/au-toggle-switch';
+import AuDatePicker from '@appuniversum/ember-appuniversum/components/au-date-picker';
+import AuTextarea from '@appuniversum/ember-appuniversum/components/au-textarea';
+import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
+import ErrorMessage from 'mow-registry/components/error-message';
+import PowerSelectMultiple from 'ember-power-select/components/power-select-multiple';
+import ZonalitySelector from 'mow-registry/components/zonality-selector';
+import VariableManager from 'mow-registry/components/traffic-sign-common/variable-manager';
+import ShapeManager from 'mow-registry/components/common/shape-manager';
+import ArPlichtigStatus from 'mow-registry/components/ar-plichtig-status';
+import ImageInput from 'mow-registry/components/image-input';
+import { on } from '@ember/modifier';
+import { fn, get } from '@ember/helper';
 // @ts-expect-error need EC v4 to get helper types...
-import perform from "ember-concurrency/helpers/perform";
+import perform from 'ember-concurrency/helpers/perform';
 // @ts-expect-error need to move to truth-helpers v4
-import or from "ember-truth-helpers/helpers/or";
-import { LinkTo } from "@ember/routing";
+import or from 'ember-truth-helpers/helpers/or';
+import { LinkTo } from '@ember/routing';
 // @ts-expect-error no types
-import awaitHelper from "ember-promise-helpers/helpers/await";
-import { load } from "ember-async-data";
-import { isSome } from "mow-registry/utils/option";
+import awaitHelper from 'ember-promise-helpers/helpers/await';
+import { load } from 'ember-async-data';
+import { isSome } from 'mow-registry/utils/option';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -86,8 +86,8 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
   @action
   async setRoadSignConceptClassification(selection: RoadSignCategory[]) {
-    this.args.roadSignConcept.set("classifications", selection);
-    await this.args.roadSignConcept.validateProperty("classifications");
+    this.args.roadSignConcept.set('classifications', selection);
+    await this.args.roadSignConcept.validateProperty('classifications');
   }
 
   @action
@@ -96,7 +96,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     isoDate: string | null,
     date: Date | null,
   ) {
-    if (date && attribute === "endDate") {
+    if (date && attribute === 'endDate') {
       date.setHours(23);
       date.setMinutes(59);
       date.setSeconds(59);
@@ -106,17 +106,17 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     } else {
       this.args.roadSignConcept.set(attribute, undefined);
     }
-    await this.args.roadSignConcept.validateProperty("startDate", {
+    await this.args.roadSignConcept.validateProperty('startDate', {
       warnings: true,
     });
-    await this.args.roadSignConcept.validateProperty("endDate", {
+    await this.args.roadSignConcept.validateProperty('endDate', {
       warnings: true,
     });
   }
 
   @action
   async addShape() {
-    const shape = this.store.createRecord<TribontShape>("tribont-shape", {});
+    const shape = this.store.createRecord<TribontShape>('tribont-shape', {});
     (await this.args.roadSignConcept.shapes).push(shape);
   }
 
@@ -129,7 +129,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
   @action
   async addVariable() {
-    const newVariable = this.store.createRecord<Variable>("variable", {});
+    const newVariable = this.store.createRecord<Variable>('variable', {});
     (await this.args.roadSignConcept.variables).push(newVariable);
   }
 
@@ -149,7 +149,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   @action
   setImage(model: RoadSignConcept, image: File) {
     super.setImage(model, image);
-    void this.args.roadSignConcept.validateProperty("image");
+    void this.args.roadSignConcept.validateProperty('image');
   }
 
   editRoadSignConceptTask = dropTask(async (event: InputEvent) => {
@@ -190,7 +190,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
     if (isValid && areShapesValid && areVariablesValid) {
       const imageRecord = await this.saveImage();
-      if (imageRecord) this.args.roadSignConcept.set("image", imageRecord); // image gets updated, but not overwritten
+      if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
 
       const savePromises: Promise<unknown>[] = [];
       savePromises.push(
@@ -233,7 +233,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       await Promise.all(savePromises);
       await this.args.roadSignConcept.save();
       void this.router.transitionTo(
-        "road-sign-concepts.road-sign-concept",
+        'road-sign-concepts.road-sign-concept',
         this.args.roadSignConcept.id,
       );
     }
@@ -243,9 +243,9 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   async toggleDefaultShape(shape: TribontShape) {
     const currentDefault = await this.args.roadSignConcept.defaultShape;
     if (currentDefault && currentDefault.id === shape.id) {
-      this.args.roadSignConcept.set("defaultShape", null);
+      this.args.roadSignConcept.set('defaultShape', null);
     } else {
-      this.args.roadSignConcept.set("defaultShape", shape);
+      this.args.roadSignConcept.set('defaultShape', shape);
     }
   }
 
@@ -256,18 +256,18 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
   @action
   async updateZonality(zonality: SkosConcept) {
-    this.args.roadSignConcept.set("zonality", zonality);
-    await this.args.roadSignConcept.validateProperty("zonality");
+    this.args.roadSignConcept.set('zonality', zonality);
+    await this.args.roadSignConcept.validateProperty('zonality');
   }
   <template>
     <BreadcrumbsItem as |linkClass|>
       {{#if @roadSignConcept.isNew}}
-        <LinkTo @route="road-sign-concepts.new" class={{linkClass}}>
-          {{t "road-sign-concept.crud.new"}}
+        <LinkTo @route='road-sign-concepts.new' class={{linkClass}}>
+          {{t 'road-sign-concept.crud.new'}}
         </LinkTo>
       {{else}}
         <LinkTo
-          @route="road-sign-concepts.edit"
+          @route='road-sign-concepts.edit'
           @model={{@roadSignConcept.id}}
           class={{linkClass}}
         >
@@ -276,13 +276,13 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       {{/if}}
     </BreadcrumbsItem>
 
-    <AuToolbar @border="bottom" @size="large" as |Group|>
+    <AuToolbar @border='bottom' @size='large' as |Group|>
       <Group>
-        <AuHeading @skin="2">
+        <AuHeading @skin='2'>
           {{#if @roadSignConcept.isNew}}
-            {{t "road-sign-concept.crud.new"}}
+            {{t 'road-sign-concept.crud.new'}}
           {{else}}
-            {{t "road-sign-concept.crud.edit"}}
+            {{t 'road-sign-concept.crud.edit'}}
           {{/if}}
         </AuHeading>
       </Group>
@@ -292,51 +292,51 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
           <AuButton
             @disabled={{or @roadSignConcept.error this.isSaving}}
             @loading={{this.isSaving}}
-            @loadingMessage={{t "utility.save"}}
-            {{on "click" (perform this.editRoadSignConceptTask)}}
+            @loadingMessage={{t 'utility.save'}}
+            {{on 'click' (perform this.editRoadSignConceptTask)}}
           >
-            {{t "utility.save"}}
+            {{t 'utility.save'}}
           </AuButton>
           {{#if @roadSignConcept.isNew}}
             <LinkTo
-              @route="road-sign-concepts"
-              class="au-c-button au-c-button--secondary"
+              @route='road-sign-concepts'
+              class='au-c-button au-c-button--secondary'
             >
-              {{t "utility.cancel"}}
+              {{t 'utility.cancel'}}
             </LinkTo>
           {{else}}
             <LinkTo
-              @route="road-sign-concepts.road-sign-concept"
+              @route='road-sign-concepts.road-sign-concept'
               @model={{@roadSignConcept.id}}
-              class="au-c-button au-c-button--secondary"
+              class='au-c-button au-c-button--secondary'
             >
-              {{t "utility.cancel"}}
+              {{t 'utility.cancel'}}
             </LinkTo>
           {{/if}}
         </AuButtonGroup>
       </Group>
     </AuToolbar>
 
-    <div class="au-c-body-container au-c-body-container--scroll">
-      <div class="au-o-box">
-        <div class="au-u-max-width-small">
-          <form class="au-c-form" id="edit-road-sign-concept-form" novalidate>
+    <div class='au-c-body-container au-c-body-container--scroll'>
+      <div class='au-o-box'>
+        <div class='au-u-max-width-small'>
+          <form class='au-c-form' id='edit-road-sign-concept-form' novalidate>
             <AuFormRow>
 
-              {{#let (get @roadSignConcept.error "arPlichtig") as |error|}}
-                <AuLabel @error={{isSome error}} for="ar-plichtig">
-                  {{t "utility.ar-plichtig"}}
+              {{#let (get @roadSignConcept.error 'arPlichtig') as |error|}}
+                <AuLabel @error={{isSome error}} for='ar-plichtig'>
+                  {{t 'utility.ar-plichtig'}}
                 </AuLabel>
               {{/let}}
               <AuToggleSwitch
-                @onChange={{fn this.setBooleanValue "arPlichtig"}}
+                @onChange={{fn this.setBooleanValue 'arPlichtig'}}
                 @checked={{@roadSignConcept.arPlichtig}}
-                id="ar-plichtig"
+                id='ar-plichtig'
               >
                 <ArPlichtigStatus @status={{@roadSignConcept.arPlichtig}} />
               </AuToggleSwitch>
             </AuFormRow>
-            {{#let (get @roadSignConcept.error "image") as |error|}}
+            {{#let (get @roadSignConcept.error 'image') as |error|}}
               <AuFormRow>
                 <ImageInput
                   {{! @glint-expect-error maybe need to move this to a getter? }}
@@ -347,114 +347,114 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 />
               </AuFormRow>
             {{/let}}
-            {{#let (get @roadSignConcept.error "label") as |error|}}
+            {{#let (get @roadSignConcept.error 'label') as |error|}}
               <AuFormRow>
                 <AuLabel
                   @error={{isSome error}}
-                  for="label"
+                  for='label'
                   @required={{true}}
-                  @requiredLabel={{t "utility.required"}}
+                  @requiredLabel={{t 'utility.required'}}
                 >
-                  {{t "road-sign-concept.attr.label"}}&nbsp;
+                  {{t 'road-sign-concept.attr.label'}}&nbsp;
                 </AuLabel>
                 <AuInput
                   @error={{isSome error}}
-                  id="label"
-                  required="required"
+                  id='label'
+                  required='required'
                   value={{@roadSignConcept.label}}
-                  {{on "input" (fn this.setRoadSignConceptValue "label")}}
+                  {{on 'input' (fn this.setRoadSignConceptValue 'label')}}
                 />
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
             {{/let}}
-            {{#let (get @roadSignConcept.error "meaning") as |error|}}
+            {{#let (get @roadSignConcept.error 'meaning') as |error|}}
               <AuFormRow>
                 <AuLabel
                   @error={{isSome error}}
-                  for="meaning"
+                  for='meaning'
                   @required={{true}}
-                  @requiredLabel={{t "utility.required"}}
+                  @requiredLabel={{t 'utility.required'}}
                 >
-                  {{t "road-sign-concept.attr.meaning"}}&nbsp;
+                  {{t 'road-sign-concept.attr.meaning'}}&nbsp;
                 </AuLabel>
                 <AuTextarea
                   @error={{isSome error}}
-                  @width="block"
-                  class="u-min-h-20"
-                  id="meaning"
-                  required="required"
+                  @width='block'
+                  class='u-min-h-20'
+                  id='meaning'
+                  required='required'
                   value={{@roadSignConcept.meaning}}
-                  {{on "input" (fn this.setRoadSignConceptValue "meaning")}}
+                  {{on 'input' (fn this.setRoadSignConceptValue 'meaning')}}
                 />
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
             {{/let}}
-            {{#let (get @roadSignConcept.error "startDate") as |error|}}
+            {{#let (get @roadSignConcept.error 'startDate') as |error|}}
               <AuFormRow>
-                <AuLabel @error={{isSome error}} for="startDate">
-                  {{t "utility.start-date"}}&nbsp;
+                <AuLabel @error={{isSome error}} for='startDate'>
+                  {{t 'utility.start-date'}}&nbsp;
                 </AuLabel>
                 <AuDatePicker
                   @error={{isSome error}}
-                  id="startDate"
+                  id='startDate'
                   @value={{@roadSignConcept.startDate}}
-                  @onChange={{fn this.setRoadsignDate "startDate"}}
+                  @onChange={{fn this.setRoadsignDate 'startDate'}}
                 />
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
             {{/let}}
             {{#let
-              (get @roadSignConcept.error "endDate")
-              (get @roadSignConcept.warning "endDate")
+              (get @roadSignConcept.error 'endDate')
+              (get @roadSignConcept.warning 'endDate')
               as |error warning|
             }}
               <AuFormRow>
                 <AuLabel
                   @error={{isSome error}}
                   @warning={{isSome warning}}
-                  for="endDate"
+                  for='endDate'
                 >
-                  {{t "utility.end-date"}}&nbsp;
+                  {{t 'utility.end-date'}}&nbsp;
                 </AuLabel>
                 <AuDatePicker
                   @error={{isSome error}}
                   @warning={{isSome warning}}
-                  id="endDate"
+                  id='endDate'
                   @min={{@roadSignConcept.startDate}}
                   @value={{@roadSignConcept.endDate}}
-                  @onChange={{fn this.setRoadsignDate "endDate"}}
+                  @onChange={{fn this.setRoadsignDate 'endDate'}}
                 />
                 <ErrorMessage @error={{error}} @warning={{warning}} />
               </AuFormRow>
             {{/let}}
             <AuHelpText>
-              {{t "utility.modifying-validity-dates-warning"}}
+              {{t 'utility.modifying-validity-dates-warning'}}
             </AuHelpText>
-            {{#let (get @roadSignConcept.error "classifications") as |error|}}
+            {{#let (get @roadSignConcept.error 'classifications') as |error|}}
               <AuFormRow>
                 <AuLabel
                   @error={{isSome error}}
-                  for="classifications"
+                  for='classifications'
                   @required={{true}}
-                  @requiredLabel={{t "utility.required"}}
+                  @requiredLabel={{t 'utility.required'}}
                 >
-                  {{t "road-sign-concept.attr.classifications"}}&nbsp;
+                  {{t 'road-sign-concept.attr.classifications'}}&nbsp;
                 </AuLabel>
-                <div class={{if error "ember-power-select--error"}}>
+                <div class={{if error 'ember-power-select--error'}}>
                   {{! @glint-expect-error need to move to PS 8 }}
                   <PowerSelectMultiple
                     {{! @glint-expect-error need to move to PS 8 }}
                     @allowClear={{true}}
-                    @placeholder={{t "utility.search-placeholder"}}
+                    @placeholder={{t 'utility.search-placeholder'}}
                     @searchEnabled={{true}}
-                    @searchMessage={{t "utility.search-placeholder"}}
-                    @noMatchesMessage={{t "road-sign-concept.crud.no-data"}}
-                    @searchField="label"
+                    @searchMessage={{t 'utility.search-placeholder'}}
+                    @noMatchesMessage={{t 'road-sign-concept.crud.no-data'}}
+                    @searchField='label'
                     @options={{@classifications}}
-                    @loadingMessage={{t "utility.loading"}}
+                    @loadingMessage={{t 'utility.loading'}}
                     @selected={{@roadSignConcept.classifications}}
                     @onChange={{this.setRoadSignConceptClassification}}
-                    @triggerId="classifications"
+                    @triggerId='classifications'
                     as |classification|
                   >
                     {{classification.label}}
@@ -463,15 +463,15 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
             {{/let}}
-            {{#let (get @roadSignConcept.error "zonality") as |error|}}
+            {{#let (get @roadSignConcept.error 'zonality') as |error|}}
               <AuFormRow>
                 <AuLabel
                   @error={{isSome error}}
-                  for="classifications"
+                  for='classifications'
                   @required={{true}}
-                  @requiredLabel={{t "utility.required"}}
+                  @requiredLabel={{t 'utility.required'}}
                 >
-                  {{t "utility.zonality"}}&nbsp;
+                  {{t 'utility.zonality'}}&nbsp;
                 </AuLabel>
                 {{#let (load @roadSignConcept.zonality) as |zonality|}}
                   {{#if zonality.isResolved}}

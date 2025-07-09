@@ -1,11 +1,11 @@
-import type { TOC } from "@ember/component/template-only";
-import { get } from "@ember/helper";
-import t from "ember-intl/helpers/t";
+import type { TOC } from '@ember/component/template-only';
+import { get } from '@ember/helper';
+import t from 'ember-intl/helpers/t';
 // @ts-expect-error no types
-import and from "ember-truth-helpers/helpers/and";
-import AuHelpText from "@appuniversum/ember-appuniversum/components/au-help-text";
-import type { CustomValidationErrorItem } from "mow-registry/models/abstract-validation-model";
-import { isSome } from "mow-registry/utils/option";
+import and from 'ember-truth-helpers/helpers/and';
+import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
+import type { CustomValidationErrorItem } from 'mow-registry/models/abstract-validation-model';
+import { isSome } from 'mow-registry/utils/option';
 
 interface Sig {
   Args: {
@@ -22,8 +22,8 @@ const ErrorMessage: TOC<Sig> = <template>
     </AuHelpText>
   {{/if}}
   {{#if (isSome @warning)}}
-    {{#if (get @warning "messageArray")}}
-      {{#each (get @warning "messageArray") as |message|}}
+    {{#if (get @warning 'messageArray')}}
+      {{#each (get @warning 'messageArray') as |message|}}
         <AuHelpText @warning={{true}}>
           {{t message}}
         </AuHelpText>
