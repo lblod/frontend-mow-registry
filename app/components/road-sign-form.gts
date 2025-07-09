@@ -29,7 +29,7 @@ import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text
 import ErrorMessage from 'mow-registry/components/error-message';
 import PowerSelectMultiple from 'ember-power-select/components/power-select-multiple';
 import ZonalitySelector from 'mow-registry/components/zonality-selector';
-import VariableManager from 'mow-registry/components/traffic-sign-common/variable-manager';
+import VariableManager from 'mow-registry/components/traffic-signal-common/variable-manager';
 import ShapeManager from 'mow-registry/components/common/shape-manager';
 import ArPlichtigStatus from 'mow-registry/components/ar-plichtig-status';
 import ImageInput from 'mow-registry/components/image-input';
@@ -499,7 +499,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
               {{#if (this.isArray shapes)}}
                 <ShapeManager
                   {{! @glint-expect-error inheritence isnt working for us here for some reason }}
-                  @trafficSignConcept={{@roadSignConcept}}
+                  @trafficSignalConcept={{@roadSignConcept}}
                   @shapes={{shapes}}
                   @addShape={{this.addShape}}
                   @removeShape={{this.removeShape}}

@@ -27,7 +27,7 @@ import AuTable from '@appuniversum/ember-appuniversum/components/au-table';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
 import Dimension from 'mow-registry/models/dimension';
 import type QuantityKind from 'mow-registry/models/quantity-kind';
-import type TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type TribontShape from 'mow-registry/models/tribont-shape';
 import type ShapeClassification from 'mow-registry/models/tribont-shape-classification-code';
 import type Unit from 'mow-registry/models/unit';
@@ -38,7 +38,7 @@ import type { PromiseBelongsTo } from '@ember-data/model/-private/promise-belong
 
 interface Signature {
   Args: {
-    trafficSignConcept: TrafficSignConcept;
+    trafficSignalConcept: TrafficSignalConcept;
     shapes: TribontShape[];
     defaultShape?: TribontShape | PromiseBelongsTo<TribontShape>;
     addShape: () => void;
@@ -144,7 +144,7 @@ export default class ShapeManager extends Component<Signature> {
         @skin='6'
         @required={{true}}
         @requiredLabel={{t 'utility.required'}}
-        @error={{isSome (get @trafficSignConcept.error 'shapes')}}
+        @error={{isSome (get @trafficSignalConcept.error 'shapes')}}
       >
         {{t 'utility.shapes'}}
       </f.legend>
@@ -345,7 +345,7 @@ export default class ShapeManager extends Component<Signature> {
             {{t 'road-sign-concept.add-shape'}}
           </AuButton>
 
-          <ErrorMessage @error={{get @trafficSignConcept.error 'shapes'}} />
+          <ErrorMessage @error={{get @trafficSignalConcept.error 'shapes'}} />
         </div>
       </f.content>
     </AuFieldset>

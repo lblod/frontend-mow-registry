@@ -6,7 +6,7 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import type RouterService from '@ember/routing/router-service';
 import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import Store from '@ember-data/store';
-import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import type TribontShape from 'mow-registry/models/tribont-shape';
 import Variable from 'mow-registry/models/variable';
@@ -180,7 +180,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   });
 
   @action
-  setImage(model: TrafficSignConcept, image: File) {
+  setImage(model: TrafficSignalConcept, image: File) {
     super.setImage(model, image);
     void this.args.roadMarkingConcept.validateProperty('image');
   }

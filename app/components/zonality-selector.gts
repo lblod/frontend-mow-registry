@@ -9,11 +9,11 @@ import PowerSelect from 'ember-power-select/components/power-select';
 import ErrorMessage from 'mow-registry/components/error-message';
 import zonalityLabel from 'mow-registry/helpers/zonality-label';
 import t from 'ember-intl/helpers/t';
-import type TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import { get } from '@ember/helper';
 
 type Args = {
-  model: TrafficSignConcept;
+  model: TrafficSignalConcept;
   zonality: SkosConcept;
   onChange: (zonality: SkosConcept) => void;
 };

@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import FileService from 'mow-registry/services/file-service';
 import Store from '@ember-data/store';
 import Image from 'mow-registry/models/image';
-import type TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type Icon from 'mow-registry/models/icon';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 
@@ -45,4 +45,4 @@ export default class ImageUploadHandlerComponent<
 }
 
 // RoadSignConcept is redundant, but inheritance doesn't work as expected because of the brands.
-type ModelWithImage = TrafficSignConcept | RoadSignConcept | Icon;
+type ModelWithImage = TrafficSignalConcept | RoadSignConcept | Icon;
