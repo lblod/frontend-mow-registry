@@ -9,7 +9,7 @@ import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import Store from '@ember-data/store';
 import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
-import { trackedFunction } from 'ember-resources/util/function';
+import { trackedFunction } from 'reactiveweb/function';
 import type { LegacyResourceQuery } from '@ember-data/store/types';
 
 export default class TrafficMeasureConceptsIndexController extends Controller {
@@ -106,6 +106,8 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
     query['filter'] = {
       id: trafficMeasureConceptUris.join(','),
     };
+    // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
+    await Promise.resolve();
     const trafficMeasures = trafficMeasureConceptUris.length
       ? await this.store.query<TrafficMeasureConcept>(
           'traffic-measure-concept',

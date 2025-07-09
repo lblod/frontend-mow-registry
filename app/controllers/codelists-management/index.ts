@@ -3,7 +3,7 @@ import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
-import { trackedFunction } from 'ember-resources/util/function';
+import { trackedFunction } from 'reactiveweb/function';
 import Store from '@ember-data/store';
 import type CodeList from 'mow-registry/models/code-list';
 import type { LegacyResourceQuery } from '@ember-data/store/types';
@@ -54,6 +54,8 @@ export default class CodelistsManagementIndexController extends Controller {
         label: this.label,
       };
     }
+    // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
+    await Promise.resolve();
 
     return await this.store.query<CodeList>('code-list', query);
   });
