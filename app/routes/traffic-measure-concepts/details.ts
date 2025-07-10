@@ -19,7 +19,7 @@ export default class TrafficMeasureConceptsDetailsRoute extends Route {
 
     return {
       trafficMeasureConcept,
-      signs: await trafficMeasureConcept.relatedTrafficSignConcepts,
+      signs: await trafficMeasureConcept.relatedTrafficSignalConcepts,
     };
   }
 }

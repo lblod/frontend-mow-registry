@@ -22,9 +22,9 @@ import {
 import type TribontShape from './tribont-shape';
 import type Variable from './variable';
 
-export default class TrafficSignConcept extends SkosConcept {
+export default class TrafficSignalConcept extends SkosConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
-  declare [Type]: 'traffic-sign-concept';
+  declare [Type]: 'traffic-signal-concept';
 
   @attr declare meaning?: string;
   @attr declare valid?: boolean;
@@ -58,8 +58,8 @@ export default class TrafficSignConcept extends SkosConcept {
 
   @hasMany<TrafficMeasureConcept>('traffic-measure-concept', {
     async: true,
-    inverse: 'relatedTrafficSignConcepts',
-    as: 'traffic-sign-concept',
+    inverse: 'relatedTrafficSignalConcepts',
+    as: 'traffic-signal-concept',
   })
   declare hasTrafficMeasureConcepts: AsyncHasMany<TrafficMeasureConcept>;
 

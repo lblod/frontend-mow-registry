@@ -1,15 +1,15 @@
-import Component from "@glimmer/component";
-import PowerSelect from "ember-power-select/components/power-select";
-import t from "ember-intl/helpers/t";
-import AuLabel from "@appuniversum/ember-appuniversum/components/au-label";
-import AuDatePicker from "@appuniversum/ember-appuniversum/components/au-date-picker";
-import { action } from "@ember/object";
-import type { Option } from "mow-registry/utils/option";
+import Component from '@glimmer/component';
+import PowerSelect from 'ember-power-select/components/power-select';
+import t from 'ember-intl/helpers/t';
+import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
+import AuDatePicker from '@appuniversum/ember-appuniversum/components/au-date-picker';
+import { action } from '@ember/object';
+import type { Option } from 'mow-registry/utils/option';
 
 function convertToDate(date: Option<string>) {
   // Defaulting to now was how this was when types were added, so it seems to work.
   // It may be better to explicitly set the behaviour for this case though.
-  return new Date(date ?? "");
+  return new Date(date ?? '');
 }
 
 export type ValidityFilter = {
@@ -18,7 +18,7 @@ export type ValidityFilter = {
   endDate?: Option<string>;
 };
 export type ValidityStatusOption = {
-  value: "valid" | "expired" | "custom";
+  value: 'valid' | 'expired' | 'custom';
   label: string;
 };
 export interface ValidityFiltersSig {
@@ -33,16 +33,16 @@ export interface ValidityFiltersSig {
 export default class ValidityFilters extends Component<ValidityFiltersSig> {
   validityStatusOptions: ValidityStatusOption[] = [
     {
-      value: "valid",
-      label: "validity-filter.valid",
+      value: 'valid',
+      label: 'validity-filter.valid',
     },
     {
-      value: "expired",
-      label: "validity-filter.expired",
+      value: 'expired',
+      label: 'validity-filter.expired',
     },
     {
-      value: "custom",
-      label: "validity-filter.custom",
+      value: 'custom',
+      label: 'validity-filter.custom',
     },
   ];
   get selected() {
@@ -51,7 +51,7 @@ export default class ValidityFilters extends Component<ValidityFiltersSig> {
     );
   }
   get isCustom() {
-    return this.args.value === "custom";
+    return this.args.value === 'custom';
   }
 
   @action
@@ -70,7 +70,7 @@ export default class ValidityFilters extends Component<ValidityFiltersSig> {
   @action
   setStartDate(_isoDate: string | null, date: Date | null) {
     this.args.onChange({
-      validityOption: "custom",
+      validityOption: 'custom',
       startDate: date ? date.toISOString() : undefined,
       endDate: this.args.endDate,
     });
@@ -83,15 +83,15 @@ export default class ValidityFilters extends Component<ValidityFiltersSig> {
       date.setSeconds(59);
     }
     this.args.onChange({
-      validityOption: "custom",
+      validityOption: 'custom',
       startDate: this.args.startDate,
       endDate: date ? date.toISOString() : undefined,
     });
   }
 
   <template>
-    <AuLabel for="validity-filter">
-      {{t "validity-filter.label"}}
+    <AuLabel for='validity-filter'>
+      {{t 'validity-filter.label'}}
     </AuLabel>
     {{! @glint-expect-error need to move to PS 8 }}
     <PowerSelect
@@ -99,28 +99,28 @@ export default class ValidityFilters extends Component<ValidityFiltersSig> {
       @allowClear={{true}}
       @options={{this.validityStatusOptions}}
       @selected={{this.selected}}
-      @placeholder={{t "validity-filter.placeholder"}}
-      @loadingMessage={{t "utility.loading"}}
+      @placeholder={{t 'validity-filter.placeholder'}}
+      @loadingMessage={{t 'utility.loading'}}
       @onChange={{this.onChangeValidity}}
-      @triggerId="validity-filter"
+      @triggerId='validity-filter'
       as |validation|
     >
       {{t validation.label}}
     </PowerSelect>
     {{#if this.isCustom}}
-      <AuLabel for="startDate">
-        {{t "utility.start-date"}}&nbsp;
+      <AuLabel for='startDate'>
+        {{t 'utility.start-date'}}&nbsp;
       </AuLabel>
       <AuDatePicker
-        id="startDate"
+        id='startDate'
         @value={{convertToDate @startDate}}
         @onChange={{this.setStartDate}}
       />
-      <AuLabel for="endDate">
-        {{t "utility.end-date"}}&nbsp;
+      <AuLabel for='endDate'>
+        {{t 'utility.end-date'}}&nbsp;
       </AuLabel>
       <AuDatePicker
-        id="endDate"
+        id='endDate'
         @min={{convertToDate @startDate}}
         @value={{convertToDate @endDate}}
         @onChange={{this.setEndDate}}

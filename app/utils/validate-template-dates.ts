@@ -1,8 +1,8 @@
 import Template from 'mow-registry/models/template';
-import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 export default function validateTemplateDates(
   template: Template,
-  parentSign: TrafficSignConcept,
+  parentSign: TrafficSignalConcept,
 ): void {
   if (
     template.startDate &&

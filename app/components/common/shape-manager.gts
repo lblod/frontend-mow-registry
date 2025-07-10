@@ -1,44 +1,44 @@
-import { service } from "@ember/service";
-import Component from "@glimmer/component";
-import { tracked } from "@glimmer/tracking";
-import { on } from "@ember/modifier";
-import { fn, get } from "@ember/helper";
-import type Store from "ember-data/store";
-import t from "ember-intl/helpers/t";
+import { service } from '@ember/service';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { on } from '@ember/modifier';
+import { fn, get } from '@ember/helper';
+import type Store from 'ember-data/store';
+import t from 'ember-intl/helpers/t';
 // @ts-expect-error need to move to truth-helpers v4
-import eq from "ember-truth-helpers/helpers/eq";
+import eq from 'ember-truth-helpers/helpers/eq';
 // @ts-expect-error need to move to truth-helpers v4
-import lte from "ember-truth-helpers/helpers/lte";
+import lte from 'ember-truth-helpers/helpers/lte';
 // @ts-expect-error need to move to truth-helpers v4
-import not from "ember-truth-helpers/helpers/not";
+import not from 'ember-truth-helpers/helpers/not';
 // @ts-expect-error need to move to truth-helpers v4
-import or from "ember-truth-helpers/helpers/or";
+import or from 'ember-truth-helpers/helpers/or';
 // @ts-expect-error no types
-import promiseAwait from "ember-promise-helpers/helpers/await";
-import PowerSelect from "ember-power-select/components/power-select";
-import AuFieldset from "@appuniversum/ember-appuniversum/components/au-fieldset";
-import AuCard from "@appuniversum/ember-appuniversum/components/au-card";
-import AuToolbar from "@appuniversum/ember-appuniversum/components/au-toolbar";
-import AuHeading from "@appuniversum/ember-appuniversum/components/au-heading";
-import AuButton from "@appuniversum/ember-appuniversum/components/au-button";
-import AuFormRow from "@appuniversum/ember-appuniversum/components/au-form-row";
-import AuCheckbox from "@appuniversum/ember-appuniversum/components/au-checkbox";
-import AuTable from "@appuniversum/ember-appuniversum/components/au-table";
-import AuInput from "@appuniversum/ember-appuniversum/components/au-input";
-import Dimension from "mow-registry/models/dimension";
-import type QuantityKind from "mow-registry/models/quantity-kind";
-import type TrafficSignConcept from "mow-registry/models/traffic-sign-concept";
-import type TribontShape from "mow-registry/models/tribont-shape";
-import type ShapeClassification from "mow-registry/models/tribont-shape-classification-code";
-import type Unit from "mow-registry/models/unit";
-import { isSome } from "mow-registry/utils/option";
-import ErrorMessage from "mow-registry/components/error-message";
-import sortByOrder from "mow-registry/helpers/sort-by-order";
-import type { PromiseBelongsTo } from "@ember-data/model/-private/promise-belongs-to";
+import promiseAwait from 'ember-promise-helpers/helpers/await';
+import PowerSelect from 'ember-power-select/components/power-select';
+import AuFieldset from '@appuniversum/ember-appuniversum/components/au-fieldset';
+import AuCard from '@appuniversum/ember-appuniversum/components/au-card';
+import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
+import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
+import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import AuFormRow from '@appuniversum/ember-appuniversum/components/au-form-row';
+import AuCheckbox from '@appuniversum/ember-appuniversum/components/au-checkbox';
+import AuTable from '@appuniversum/ember-appuniversum/components/au-table';
+import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
+import Dimension from 'mow-registry/models/dimension';
+import type QuantityKind from 'mow-registry/models/quantity-kind';
+import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
+import type TribontShape from 'mow-registry/models/tribont-shape';
+import type ShapeClassification from 'mow-registry/models/tribont-shape-classification-code';
+import type Unit from 'mow-registry/models/unit';
+import { isSome } from 'mow-registry/utils/option';
+import ErrorMessage from 'mow-registry/components/error-message';
+import sortByOrder from 'mow-registry/helpers/sort-by-order';
+import type { PromiseBelongsTo } from '@ember-data/model/-private/promise-belongs-to';
 
 interface Signature {
   Args: {
-    trafficSignConcept: TrafficSignConcept;
+    trafficSignalConcept: TrafficSignalConcept;
     shapes: TribontShape[];
     defaultShape?: TribontShape | PromiseBelongsTo<TribontShape>;
     addShape: () => void;
@@ -58,7 +58,7 @@ export default class ShapeManager extends Component<Signature> {
   shapeClassificationsPromise: Promise<ShapeClassification[]>;
   quantityKindsPromise: Promise<QuantityKind[]>;
 
-  constructor(owner: unknown, args: Signature["Args"]) {
+  constructor(owner: unknown, args: Signature['Args']) {
     super(owner, args);
     this.unitsPromise = this.fetchUnits();
     this.shapeClassificationsPromise = this.fetchShapeClassifications();
@@ -82,8 +82,8 @@ export default class ShapeManager extends Component<Signature> {
     const shapes = this.args.shapes;
 
     if (shapes.length === 0) {
-      const shape = this.store.createRecord<TribontShape>("tribont-shape", {
-        dimensions: [this.store.createRecord<Dimension>("dimension", {})],
+      const shape = this.store.createRecord<TribontShape>('tribont-shape', {
+        dimensions: [this.store.createRecord<Dimension>('dimension', {})],
       });
 
       shapes.push(shape);
@@ -91,30 +91,30 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   async fetchUnits() {
-    this.units = await this.store.findAll<Unit>("unit");
+    this.units = await this.store.findAll<Unit>('unit');
 
     return this.units;
   }
 
   async fetchShapeClassifications() {
     const classifications = await this.store.findAll<ShapeClassification>(
-      "tribont-shape-classification-code",
+      'tribont-shape-classification-code',
     );
 
     return classifications;
   }
 
   fetchQuantityKinds() {
-    return this.store.query<QuantityKind>("quantity-kind", {
+    return this.store.query<QuantityKind>('quantity-kind', {
       // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
       // TODO: fix the query types
-      include: "units",
+      include: 'units',
     });
   }
 
   addDimension = async (shape: TribontShape) => {
     (await shape.dimensions).push(
-      this.store.createRecord<Dimension>("dimension", {}),
+      this.store.createRecord<Dimension>('dimension', {}),
     );
   };
 
@@ -125,12 +125,12 @@ export default class ShapeManager extends Component<Signature> {
 
     if (!currentUnit || !newUnits.includes(currentUnit)) {
       const defaultUnit = newUnits.find((unit) => unit.isDefaultUnit);
-      dimension.set("unit", defaultUnit);
+      dimension.set('unit', defaultUnit);
     }
   };
 
   setUnitType = (dimension: Dimension, unit: Unit) => {
-    dimension.set("unit", unit);
+    dimension.set('unit', unit);
   };
 
   setDimensionValue = (dimension: Dimension, event: Event) => {
@@ -141,88 +141,88 @@ export default class ShapeManager extends Component<Signature> {
   <template>
     <AuFieldset as |f|>
       <f.legend
-        @skin="6"
+        @skin='6'
         @required={{true}}
-        @requiredLabel={{t "utility.required"}}
-        @error={{isSome (get @trafficSignConcept.error "shapes")}}
+        @requiredLabel={{t 'utility.required'}}
+        @error={{isSome (get @trafficSignalConcept.error 'shapes')}}
       >
-        {{t "utility.shapes"}}
+        {{t 'utility.shapes'}}
       </f.legend>
-      <f.content class="au-u-1-1">
-        <div class="au-o-flow">
+      <f.content class='au-u-1-1'>
+        <div class='au-o-flow'>
           {{#each @shapes as |shape index|}}
             <AuCard as |c|>
               <c.header>
                 <AuToolbar as |Group|>
                   <Group>
-                    <AuHeading @level="1" @skin="5">
+                    <AuHeading @level='1' @skin='5'>
                       {{t
-                        "road-sign-concept.shapes.title"
+                        'road-sign-concept.shapes.title'
                         index=(this.plusOne index)
                       }}
                     </AuHeading>
                   </Group>
                   <Group>
                     <AuButton
-                      @skin="naked"
+                      @skin='naked'
                       @disabled={{this.shouldPreventDeletion}}
-                      @icon="bin"
+                      @icon='bin'
                       @alert={{true}}
-                      {{on "click" (fn @removeShape shape)}}
+                      {{on 'click' (fn @removeShape shape)}}
                     >
-                      {{t "utility.delete"}}
+                      {{t 'utility.delete'}}
                     </AuButton>
                   </Group>
                 </AuToolbar>
               </c.header>
               <c.content>
-                <AuFormRow @alignment="inline">
+                <AuFormRow @alignment='inline'>
                   <div
-                    class="au-u-1-2
+                    class='au-u-1-2
                       {{if
-                        (get shape.error 'classification')
-                        'ember-power-select--error'
-                      }}"
+                        (get shape.error "classification")
+                        "ember-power-select--error"
+                      }}'
                   >
                     {{! @glint-expect-error need to move to PS 8 }}
                     <PowerSelect
                       @allowClear={{false}}
                       @searchEnabled={{false}}
-                      @searchField="label"
-                      @loadingMessage={{t "utility.loading"}}
+                      @searchField='label'
+                      @loadingMessage={{t 'utility.loading'}}
                       {{! @glint-expect-error need to move to PS 8 }}
                       @options={{this.shapeClassificationsPromise}}
                       @selected={{shape.classification}}
                       @onChange={{fn (mut shape.classification)}}
-                      @triggerId="shapeConcepts"
+                      @triggerId='shapeConcepts'
                       as |shapeClassification|
                     >
                       {{shapeClassification.label}}
                     </PowerSelect>
                   </div>
-                  <div class="au-u-1-2">
+                  <div class='au-u-1-2'>
                     <AuCheckbox
                       @checked={{eq shape.id @defaultShape.id}}
                       @onChange={{fn @toggleDefaultShape shape}}
                     >
-                      {{t "road-sign-concept.attr.default-shape"}}
+                      {{t 'road-sign-concept.attr.default-shape'}}
                     </AuCheckbox>
                   </div>
-                  <ErrorMessage @error={{get shape.error "classification"}} />
+                  <ErrorMessage @error={{get shape.error 'classification'}} />
                 </AuFormRow>
 
                 <AuTable>
-                  <:title>{{t "utility.dimensions"}}</:title>
+                  <:title>{{t 'utility.dimensions'}}</:title>
                   <:header>
                     <tr>
-                      <th id="dimension-kind-{{index}}">
-                        {{t "road-sign-concept.dimension"}}
+                      <th id='dimension-kind-{{index}}'>
+                        {{t 'road-sign-concept.dimension'}}
                       </th>
-                      <th id="dimension-unit-{{index}}">
-                        {{t "road-sign-concept.attr.unit"}}
+                      <th id='dimension-unit-{{index}}'>
+                        {{t 'road-sign-concept.attr.unit'}}
                       </th>
-                      <th id="dimension-value-{{index}}">
-                        {{t "road-sign-concept.value"}}
+                      <th id='dimension-value-{{index}}'>
+                        {{t 'road-sign-concept.value'}}
                       </th>
                       <th>{{! delete }}</th>
                     </tr>
@@ -235,21 +235,21 @@ export default class ShapeManager extends Component<Signature> {
                             <div
                               class={{if
                                 dimension.error.kind
-                                "ember-power-select--error"
+                                'ember-power-select--error'
                               }}
                             >
                               {{! @glint-expect-error need to move to PS 8 }}
                               <PowerSelect
                                 @allowClear={{false}}
                                 @searchEnabled={{false}}
-                                @searchField="label"
-                                @loadingMessage={{t "utility.loading"}}
+                                @searchField='label'
+                                @loadingMessage={{t 'utility.loading'}}
                                 {{! @glint-expect-error need to move to PS 8 }}
                                 @options={{this.quantityKindsPromise}}
                                 @selected={{dimension.kind}}
                                 @onChange={{fn this.setQuantityKind dimension}}
-                                @triggerId="quantityKinds"
-                                @ariaLabelledBy="dimension-kind-{{index}}"
+                                @triggerId='quantityKinds'
+                                @ariaLabelledBy='dimension-kind-{{index}}'
                                 as |qt|
                               >
                                 {{qt.label}}
@@ -261,7 +261,7 @@ export default class ShapeManager extends Component<Signature> {
                             <div
                               class={{if
                                 dimension.error.unit
-                                "ember-power-select--error"
+                                'ember-power-select--error'
                               }}
                             >
                               {{! @glint-expect-error need to move to PS 8 }}
@@ -269,8 +269,8 @@ export default class ShapeManager extends Component<Signature> {
                                 @disabled={{not dimension.kind}}
                                 @allowClear={{false}}
                                 @searchEnabled={{false}}
-                                @searchField="symbol"
-                                @loadingMessage={{t "utility.loading"}}
+                                @searchField='symbol'
+                                @loadingMessage={{t 'utility.loading'}}
                                 {{! @glint-expect-error need to move to PS 8 }}
                                 @options={{if
                                   dimension.kind.units
@@ -278,8 +278,8 @@ export default class ShapeManager extends Component<Signature> {
                                 }}
                                 @selected={{dimension.unit}}
                                 @onChange={{fn this.setUnitType dimension}}
-                                @triggerId="unitType"
-                                @ariaLabelledBy="dimension-unit-{{index}}"
+                                @triggerId='unitType'
+                                @ariaLabelledBy='dimension-unit-{{index}}'
                                 as |u|
                               >
                                 {{u.symbol}}
@@ -294,13 +294,13 @@ export default class ShapeManager extends Component<Signature> {
                                 (not dimension.unit)
                                 (not dimension.kind)
                               }}
-                              @width="block"
-                              type="number"
-                              required="required"
+                              @width='block'
+                              type='number'
+                              required='required'
                               value={{dimension.value}}
-                              aria-labelledby="dimension-value-{{index}}"
+                              aria-labelledby='dimension-value-{{index}}'
                               {{on
-                                "input"
+                                'input'
                                 (fn this.setDimensionValue dimension)
                               }}
                             />
@@ -309,14 +309,14 @@ export default class ShapeManager extends Component<Signature> {
                           <td>
                             <AuButton
                               @disabled={{lte dimensions.length 1}}
-                              @skin="naked"
+                              @skin='naked'
                               @alert={{true}}
                               {{on
-                                "click"
+                                'click'
                                 (fn @removeDimension shape dimension)
                               }}
                             >
-                              {{t "utility.delete"}}
+                              {{t 'utility.delete'}}
                             </AuButton>
                           </td>
                         </tr>
@@ -326,26 +326,26 @@ export default class ShapeManager extends Component<Signature> {
                 </AuTable>
 
                 <AuButton
-                  @skin="secondary"
-                  @icon="add"
-                  @width="block"
-                  {{on "click" (fn this.addDimension shape)}}
+                  @skin='secondary'
+                  @icon='add'
+                  @width='block'
+                  {{on 'click' (fn this.addDimension shape)}}
                 >
-                  {{t "road-sign-concept.add-dimension"}}
+                  {{t 'road-sign-concept.add-dimension'}}
                 </AuButton>
               </c.content>
             </AuCard>
           {{/each}}
           <AuButton
-            @skin="secondary"
-            @icon="add"
-            @width="block"
-            {{on "click" @addShape}}
+            @skin='secondary'
+            @icon='add'
+            @width='block'
+            {{on 'click' @addShape}}
           >
-            {{t "road-sign-concept.add-shape"}}
+            {{t 'road-sign-concept.add-shape'}}
           </AuButton>
 
-          <ErrorMessage @error={{get @trafficSignConcept.error "shapes"}} />
+          <ErrorMessage @error={{get @trafficSignalConcept.error 'shapes'}} />
         </div>
       </f.content>
     </AuFieldset>

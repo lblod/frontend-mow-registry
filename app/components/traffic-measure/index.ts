@@ -17,7 +17,7 @@ import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import CodeList from 'mow-registry/models/code-list';
 import ApplicationInstance from '@ember/application/instance';
 import type { SignType } from 'mow-registry/components/traffic-measure/select-type';
-import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
@@ -40,7 +40,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @tracked codeLists?: CodeList[];
   @tracked declare trafficMeasureConcept: TrafficMeasureConcept;
-  @tracked signs: TrafficSignConcept[] = [];
+  @tracked signs: TrafficSignalConcept[] = [];
   @tracked variables: Variable[] = [];
   @tracked template?: Template | null;
   @tracked searchString?: string;
@@ -154,8 +154,8 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   fetchData = task(async () => {
     // Wait for data loading
-    const relatedTrafficSigns =
-      await this.trafficMeasureConcept.relatedTrafficSignConcepts;
+    const relatedTrafficSignals =
+      await this.trafficMeasureConcept.relatedTrafficSignalConcepts;
 
     this.codeLists = await this.codeListService.all.perform();
 
@@ -172,7 +172,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
       // const relations = await this.trafficMeasureConcept.getOrderedRelations();
     }
 
-    this.signs = new TrackedArray(relatedTrafficSigns);
+    this.signs = new TrackedArray(relatedTrafficSignals);
 
     await this.fetchInstructions.perform();
 
@@ -227,14 +227,14 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  async addSign(sign: TrafficSignConcept) {
+  async addSign(sign: TrafficSignalConcept) {
     this.signs.push(sign);
     await this.fetchInstructions.perform();
     this.selectedType = null;
   }
 
   @action
-  async removeSign(sign: TrafficSignConcept) {
+  async removeSign(sign: TrafficSignalConcept) {
     removeItem(this.signs, sign);
     await this.fetchInstructions.perform();
   }
@@ -459,7 +459,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   saveRoadsigns = task(async (trafficMeasureConcept: TrafficMeasureConcept) => {
     // delete existing ones
     const existingRelatedSigns = (
-      await trafficMeasureConcept.relatedTrafficSignConcepts
+      await trafficMeasureConcept.relatedTrafficSignalConcepts
     ).slice();
 
     const deletedSigns = existingRelatedSigns.filter(
