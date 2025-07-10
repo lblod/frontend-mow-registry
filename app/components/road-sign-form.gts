@@ -44,7 +44,7 @@ import { LinkTo } from '@ember/routing';
 import awaitHelper from 'ember-promise-helpers/helpers/await';
 import { load } from 'ember-async-data';
 import { isSome } from 'mow-registry/utils/option';
-import { validateVariables } from 'mow-registry/utils/validate-relations';
+import { validateShapes, validateVariables } from 'mow-registry/utils/validate-relations';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -157,38 +157,12 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     event.preventDefault();
 
     const isValid = await this.args.roadSignConcept.validate();
-
-    // validate the shapes and dimensions
-    const shapes = await this.args.roadSignConcept.shapes;
-    const areShapesValid = !(
-      await Promise.all(
-        shapes.map(async (shape) => {
-          const isShapeValid = await shape.validate();
-
-          const dimensions = await shape.dimensions;
-          const areDimensionsValid = !(
-            await Promise.all(
-              dimensions.map((dimension) => {
-                return dimension.validate();
-              }),
-            )
-          ).includes(false);
-
-          return isShapeValid && areDimensionsValid;
-        }),
-      )
-    ).includes(false);
-
-    // validate variables
-    const variables = await this.args.roadSignConcept.variables;
-    const areVariablesValid = !(
-      await Promise.all(
-        variables.map(async (variable) => {
-          return await variable.validate();
-        }),
-      )
-    ).includes(false);
-
+    const areShapesValid = await validateShapes(
+      this.args.roadSignConcept.shapes,
+    );
+    const areVariablesValid = await validateVariables(
+      this.args.roadSignConcept.variables,
+    );
     if (isValid && areShapesValid && areVariablesValid) {
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
