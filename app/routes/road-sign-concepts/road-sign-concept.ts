@@ -17,6 +17,25 @@ export default class RoadsignConcept extends Route {
       roadSignConcept: this.store.findRecord<RoadSignConceptModel>(
         'road-sign-concept',
         params.id,
+        {
+          include: [
+            'shapes.dimensions.kind',
+            'shapes.dimensions.unit',
+            'shapes.classification',
+            'defaultShape.dimensions',
+            'defaultShape.classification',
+            'image.file',
+            'variables',
+            'classifications',
+            'zonality.inScheme.concepts',
+            'inScheme.concepts',
+            'relatedToRoadSignConcepts',
+            'relatedFromRoadSignConcepts',
+            'relatedRoadMarkingConcepts',
+            'relatedTrafficLightConcepts',
+            'hasInstructions',
+          ],
+        },
       ),
     });
 

@@ -15,6 +15,24 @@ export default class RoadmarkingConcept extends Route {
       roadMarkingConcept: await this.store.findRecord<RoadMarkingConcept>(
         'road-marking-concept',
         params.id,
+        {
+          include: [
+            'shapes.dimensions.kind',
+            'shapes.dimensions.unit',
+            'shapes.classification',
+            'defaultShape.dimensions',
+            'defaultShape.classification',
+            'image.file',
+            'variables',
+            'zonality.inScheme.concepts',
+            'inScheme.concepts',
+            'relatedRoadSignConcepts',
+            'relatedToRoadMarkingConcepts',
+            'relatedFromRoadMarkingConcepts',
+            'relatedTrafficLightConcepts',
+            'hasInstructions',
+          ],
+        },
       ),
     };
   }

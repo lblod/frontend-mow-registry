@@ -44,7 +44,10 @@ import { LinkTo } from '@ember/routing';
 import awaitHelper from 'ember-promise-helpers/helpers/await';
 import { load } from 'ember-async-data';
 import { isSome } from 'mow-registry/utils/option';
-import { validateShapes, validateVariables } from 'mow-registry/utils/validate-relations';
+import {
+  validateShapes,
+  validateVariables,
+} from 'mow-registry/utils/validate-relations';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
