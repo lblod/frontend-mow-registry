@@ -173,7 +173,7 @@
         </AuHelpText>
 
         {{#let (await @roadMarkingConcept.variables) as |variables|}}
-          <TrafficSignCommon::VariableManager
+          <TrafficSignalCommon::VariableManager
             @variables={{variables}}
             @removeVariable={{this.removeVariable}}
             @addVariable={{this.addVariable}}
@@ -184,7 +184,7 @@
         {{#let (await @roadMarkingConcept.shapes) as |shapes|}}
           {{#if (this.isArray shapes)}}
             <Common::ShapeManager
-              @trafficSignConcept={{@roadMarkingConcept}}
+              @trafficSignalConcept={{@roadMarkingConcept}}
               @shapes={{shapes}}
               @addShape={{this.addShape}}
               @removeShape={{this.removeShape}}

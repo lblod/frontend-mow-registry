@@ -177,7 +177,7 @@
         </AuHelpText>
 
         {{#let (await @trafficLightConcept.variables) as |variables|}}
-          <TrafficSignCommon::VariableManager
+          <TrafficSignalCommon::VariableManager
             @variables={{variables}}
             @removeVariable={{this.removeVariable}}
             @addVariable={{this.addVariable}}

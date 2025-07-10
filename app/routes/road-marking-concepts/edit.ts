@@ -17,6 +17,19 @@ export default class RoadmarkingConceptsEditRoute extends Route {
       roadMarkingConcept: this.store.findRecord<RoadMarkingConcept>(
         'road-marking-concept',
         params.id,
+        {
+          include: [
+            'shapes.dimensions.kind',
+            'shapes.dimensions.unit',
+            'shapes.classification',
+            'defaultShape.dimensions',
+            'defaultShape.classification',
+            'image.file',
+            'variables',
+            'zonality.inScheme.concepts',
+            'inScheme.concepts',
+          ],
+        },
       ),
     });
   }

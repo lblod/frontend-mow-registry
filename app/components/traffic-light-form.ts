@@ -6,7 +6,7 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import type RouterService from '@ember/routing/router-service';
 import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import Store from '@ember-data/store';
-import TrafficSignConcept from 'mow-registry/models/traffic-sign-concept';
+import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import type Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
@@ -104,7 +104,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   });
 
   @action
-  setImage(model: TrafficSignConcept, image: File) {
+  setImage(model: TrafficSignalConcept, image: File) {
     super.setImage(model, image);
     void this.args.trafficLightConcept.validateProperty('image');
   }
