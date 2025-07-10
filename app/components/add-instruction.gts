@@ -24,19 +24,25 @@ import type IntlService from 'ember-intl/services/intl';
 import PowerSelect from 'ember-power-select/components/power-select';
 import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
-import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import AuFormRow from '@appuniversum/ember-appuniversum/components/au-form-row';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import AuTextarea from '@appuniversum/ember-appuniversum/components/au-textarea';
 import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
-import autoFocus from 'mow-registry/modifiers/auto-focus';
+import AuDatePicker from '@appuniversum/ember-appuniversum/components/au-date-picker';
+import AuTable from '@appuniversum/ember-appuniversum/components/au-table';
+import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
 import type CodelistsService from 'mow-registry/services/codelists';
 import type Template from 'mow-registry/models/template';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type Variable from 'mow-registry/models/variable';
 import type CodeList from 'mow-registry/models/code-list';
+import { validateVariables } from 'mow-registry/utils/validate-relations';
+import { isSome } from 'mow-registry/utils/option';
+import { removeItem } from 'mow-registry/utils/array';
+import validateTemplateDates from 'mow-registry/utils/validate-template-dates';
+import ErrorMessage from 'mow-registry/components/error-message';
 
 export interface AddInstructionSig {
   Args: {
@@ -106,6 +112,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   updateTemplate(event: Event) {
     if (this.template && event.target && 'value' in event.target) {
       this.template.value = event.target?.value as string;
+      this.template.validateProperty('value');
       this.parseTemplate();
     }
   }
@@ -130,6 +137,49 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
       };
     }
     return null;
+  }
+
+  get canDelete() {
+    return !this.new;
+  }
+
+  removeTemplate = task(async () => {
+    const templates = await this.args.concept.hasInstructions;
+    const template = this.args.editedTemplate;
+
+    removeItem(templates, template);
+
+    await template.destroyRecord();
+    await this.args.concept.save();
+
+    this.router.replaceWith(this.args.from);
+  });
+
+  @action
+  async setTemplateDate(
+    attribute: 'startDate' | 'endDate',
+    _isoDate: string | null,
+    date: Date | null,
+  ) {
+    if (this.template && this.concept) {
+      if (date && attribute === 'endDate') {
+        date.setHours(23);
+        date.setMinutes(59);
+        date.setSeconds(59);
+      }
+      if (date) {
+        this.template.set(attribute, date);
+      } else {
+        this.template.set(attribute, undefined);
+      }
+      await this.template.validateProperty('startDate', {
+        warnings: true,
+      });
+      await this.template.validateProperty('endDate', {
+        warnings: true,
+      });
+      validateTemplateDates(this.template, this.concept);
+    }
   }
 
   //only resetting things we got from parent component
@@ -230,73 +280,105 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   }
 
   get canSave() {
-    return !this.save.isRunning && !this.templateSyntaxError;
+    return (
+      !this.save.isRunning && !this.templateSyntaxError && !this.template?.error
+    );
   }
 
   save = task(async () => {
     if (this.template && this.concept && this.variables) {
-      await this.template.save();
-      (await this.concept.hasInstructions).push(this.template);
-      await this.concept.save();
-      for (let i = 0; i < this.variables.length; i++) {
-        const variable = this.variables[i];
-        if (variable) {
-          (await this.template.variables).push(variable);
-          await variable.save();
-        }
-      }
-      await this.template.save();
-      await Promise.all(
-        this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
-      );
+      const isValid = await this.template.validate();
+      const areVariablesValid = await validateVariables(this.variables);
 
-      this.reset();
+      if (isValid && areVariablesValid && !this.templateSyntaxError) {
+        await this.template.save();
+        (await this.concept.hasInstructions).push(this.template);
+        await this.concept.save();
+        for (let i = 0; i < this.variables.length; i++) {
+          const variable = this.variables[i];
+          if (variable) {
+            (await this.template.variables).push(variable);
+            await variable.save();
+          }
+        }
+        await this.template.save();
+        await Promise.all(
+          this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
+        );
+
+        this.reset();
+      }
     }
   });
 
   <template>
-    <div
-      class='au-o-grid__item au-u-2-5@medium'
-      {{didInsert this.didInsert}}
-      {{! TODO: refactor did-insert}}
-      {{!template-lint-disable no-at-ember-render-modifiers}}
-    >
-      <div
-        class='au-c-body-container au-c-action-sidebar'
-        {{autoFocus '.au-c-action-sidebar__header'}}
-      >
-        <div class='au-o-box au-c-action-sidebar__header' tabindex='0'>
-          <AuToolbar class='au-u-margin-bottom-small' as |Group|>
-            <Group>
-              <AuHeading @level='2' @skin='3'>
-                {{t 'utility.add-instruction'}}
-              </AuHeading>
-            </Group>
-            <button
-              type='button'
-              class='au-c-close au-c-close--large'
-              {{on 'click' this.reset}}
-            >
-              <AuIcon @icon='cross' @size='large' />
-              <span class='au-u-hidden-visually'>
-                {{t 'utility.close'}}
-              </span>
-            </button>
-          </AuToolbar>
+    <div>
+      <AuToolbar @size='large' as |Group|>
+        <Group>
+          <AuHeading @level='2' @skin='3'>
+            {{#if this.new}}
+              {{t 'utility.add-instruction'}}
+            {{else}}
+              {{t 'utility.edit-instruction'}}
+            {{/if}}
+          </AuHeading>
+        </Group>
 
-        </div>
-        <div class='au-c-body-container au-c-body-container--scroll'>
-          <div class='au-o-box au-c-form'>
+        <Group>
+          <AuButtonGroup>
+            <AuButton
+              {{on 'click' (perform this.save)}}
+              @disabled={{not this.canSave}}
+              @loading={{this.save.isRunning}}
+              @loadingMessage={{t 'utility.save'}}
+            >
+              {{t 'utility.save'}}
+            </AuButton>
+            <AuButton @skin='secondary' {{on 'click' this.reset}}>
+              {{t 'utility.cancel'}}
+            </AuButton>
+            {{#if this.canDelete}}
+              <AuButton
+                @skin='secondary'
+                @alert={{true}}
+                @loading={{this.removeTemplate.isRunning}}
+                @loadingMessage={{t 'utility.delete'}}
+                {{on 'click' this.removeTemplate.perform}}
+              >
+                {{t 'utility.delete'}}
+              </AuButton>
+            {{/if}}
+          </AuButtonGroup>
+        </Group>
+      </AuToolbar>
+
+      <div class='au-o-box'>
+        <div class='au-o-grid'>
+          <div
+            class='au-o-grid__item au-u-1-2@medium'
+            {{! TODO: refactor did-insert}}
+            {{didInsert this.didInsert}}
+          >
             <AuFormRow>
-              <AuLabel for='textarea-description'>{{t
-                  'utility.description'
-                }}</AuLabel>
-              <AuTextarea
-                {{on 'input' this.updateTemplate}}
-                id='textarea-description'
-                @width='block'
-                value={{this.template.value}}
-              />
+              {{#let (get this.template.error 'value') as |error|}}
+                <AuLabel
+                  for='textarea-description'
+                  @error={{isSome error}}
+                  @required={{true}}
+                  @requiredLabel={{t 'utility.required'}}
+                >{{t 'utility.description'}}
+                </AuLabel>
+                <AuTextarea
+                  {{on 'input' this.updateTemplate}}
+                  id='textarea-description'
+                  required
+                  @error={{isSome error}}
+                  @width='block'
+                  value={{this.template.value}}
+                  class='u-min-h-20'
+                />
+                <ErrorMessage @error={{error}} />
+              {{/let}}
               {{#if this.templateSyntaxError}}
                 <AuAlert
                   @title={{this.templateSyntaxError.title}}
@@ -308,33 +390,73 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                 </AuAlert>
               {{/if}}
             </AuFormRow>
-            <AuButtonGroup>
-              <AuButton
-                {{on 'click' (perform this.save)}}
-                @disabled={{not this.canSave}}
-                @loading={{this.save.isRunning}}
-                @loadingMessage={{t 'utility.save'}}
-              >
-                {{t 'utility.save'}}
-              </AuButton>
-              <AuButton @skin='secondary' {{on 'click' this.reset}}>
-                {{t 'utility.cancel'}}
-              </AuButton>
-            </AuButtonGroup>
+            {{#let (get this.template.error 'startDate') as |error|}}
+              {{#let (get this.template.warning 'startDate') as |warning|}}
+                <AuFormRow>
+                  <AuLabel
+                    @error={{isSome error}}
+                    @warning={{isSome warning}}
+                    for='startDate'
+                  >
+                    {{t 'utility.start-date'}}&nbsp;
+                  </AuLabel>
+                  <AuDatePicker
+                    @error={{isSome error}}
+                    @warning={{isSome warning}}
+                    id='startDate'
+                    @value={{this.template.startDate}}
+                    @onChange={{fn this.setTemplateDate 'startDate'}}
+                  />
+                  <ErrorMessage @error={{error}} @warning={{warning}} />
+                </AuFormRow>
+              {{/let}}
+            {{/let}}
+            {{#let (get this.template.error 'endDate') as |error|}}
+              {{#let (get this.template.warning 'endDate') as |warning|}}
+                <AuFormRow>
+                  <AuLabel
+                    @error={{isSome error}}
+                    @warning={{isSome warning}}
+                    for='endDate'
+                  >
+                    {{t 'utility.end-date'}}&nbsp;
+                  </AuLabel>
+                  <AuDatePicker
+                    @error={{isSome error}}
+                    @warning={{isSome warning}}
+                    id='endDate'
+                    @min={{this.template.startDate}}
+                    @value={{this.template.endDate}}
+                    @onChange={{fn this.setTemplateDate 'endDate'}}
+                  />
+                  <ErrorMessage @error={{error}} @warning={{warning}} />
+                </AuFormRow>
+              {{/let}}
+            {{/let}}
+          </div>
 
-            <table class='au-c-data-table__table'>
-              <thead class='au-c-data-table__header'>
+          <div
+            class='au-o-grid__item au-u-1-2@medium'
+            style='margin-top: 30px;'
+            {{! template-lint-disable no-inline-styles }}
+          >
+            <AuTable
+              style='min-width: unset;'
+              {{! template-lint-disable no-inline-styles }}
+            >
+              <:header>
                 <tr>
-                  <th>{{t 'traffic-measure-concept.attr.variable'}}</th>
+                  <th class='w-px'>{{t
+                      'traffic-measure-concept.attr.variable'
+                    }}</th>
                   <th>{{t 'traffic-measure-concept.attr.type'}}</th>
                 </tr>
-              </thead>
-              <tbody>
+              </:header>
+              <:body>
                 {{#each this.variables as |variable|}}
                   <tr>
                     <td>{{variable.label}}</td>
-                    {{! template-lint-disable no-inline-styles }}
-                    <td style='width: 50%;'>
+                    <td>
                       {{! @glint-expect-error need to move to PS 8 }}
                       <PowerSelect
                         {{! @glint-expect-error need to move to PS 8 }}
@@ -371,10 +493,17 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                       {{/if}}
                     </td>
                   </tr>
+                {{else}}
+                  <tr>
+                    <td colspan='2'>
+                      <AuHelpText @skin='secondary'>
+                        {{t 'utility.template-variables.no-variables'}}
+                      </AuHelpText>
+                    </td>
+                  </tr>
                 {{/each}}
-              </tbody>
-            </table>
-
+              </:body>
+            </AuTable>
           </div>
         </div>
       </div>
