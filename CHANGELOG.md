@@ -1,5 +1,31 @@
 # frontend-mow-registry
 
+## 2.6.0
+
+### Minor Changes
+
+- [#337](https://github.com/lblod/frontend-mow-registry/pull/337) [`d632a5b589b285298177f438abe4d69572836878`](https://github.com/lblod/frontend-mow-registry/commit/d632a5b589b285298177f438abe4d69572836878) Thanks [@piemonkey](https://github.com/piemonkey)! - Rename super-class of road signs, road markings and traffic lights to 'traffic signal' to more closely match the original Dutch 'verkeersteken'
+
+- [#332](https://github.com/lblod/frontend-mow-registry/pull/332) [`357bafe7462755a71cf77e351a736f68ddda53c1`](https://github.com/lblod/frontend-mow-registry/commit/357bafe7462755a71cf77e351a736f68ddda53c1) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Add zonality selector to roadsign form
+
+- [#338](https://github.com/lblod/frontend-mow-registry/pull/338) [`36a5c6f02c96373a3bde9241a77932145c95633d`](https://github.com/lblod/frontend-mow-registry/commit/36a5c6f02c96373a3bde9241a77932145c95633d) Thanks [@piemonkey](https://github.com/piemonkey)! - Add validation to instruction creation/edit page
+
+### Patch Changes
+
+- [#334](https://github.com/lblod/frontend-mow-registry/pull/334) [`2b00641181a756db7141a95300670cb189a6497d`](https://github.com/lblod/frontend-mow-registry/commit/2b00641181a756db7141a95300670cb189a6497d) Thanks [@elpoelma](https://github.com/elpoelma)! - Move to pnpm
+
+- [#333](https://github.com/lblod/frontend-mow-registry/pull/333) [`53723221482db0b1563fc4e06b67c34db7193fd6`](https://github.com/lblod/frontend-mow-registry/commit/53723221482db0b1563fc4e06b67c34db7193fd6) Thanks [@elpoelma](https://github.com/elpoelma)! - Update `ember-data` and related packages to version 5.5.0
+
+- [#336](https://github.com/lblod/frontend-mow-registry/pull/336) [`28e1d4e379e5f010e7c08163a7b67f93b878bda8`](https://github.com/lblod/frontend-mow-registry/commit/28e1d4e379e5f010e7c08163a7b67f93b878bda8) Thanks [@piemonkey](https://github.com/piemonkey)! - Add adapter to handle type-checked 'includes' when querying resources
+
+- [#335](https://github.com/lblod/frontend-mow-registry/pull/335) [`7d1aa0e9b99e09efa0f6b36e4c225478e80f2c80`](https://github.com/lblod/frontend-mow-registry/commit/7d1aa0e9b99e09efa0f6b36e4c225478e80f2c80) Thanks [@piemonkey](https://github.com/piemonkey)! - Move to glint for typechecking
+
+- [#333](https://github.com/lblod/frontend-mow-registry/pull/333) [`53723221482db0b1563fc4e06b67c34db7193fd6`](https://github.com/lblod/frontend-mow-registry/commit/53723221482db0b1563fc4e06b67c34db7193fd6) Thanks [@elpoelma](https://github.com/elpoelma)! - Update to `ember-resources` 7.0.6 and add `reactiveweb` dependency
+
+- [#333](https://github.com/lblod/frontend-mow-registry/pull/333) [`53723221482db0b1563fc4e06b67c34db7193fd6`](https://github.com/lblod/frontend-mow-registry/commit/53723221482db0b1563fc4e06b67c34db7193fd6) Thanks [@elpoelma](https://github.com/elpoelma)! - Add `ember-data-table` dependency
+
+- [#333](https://github.com/lblod/frontend-mow-registry/pull/333) [`53723221482db0b1563fc4e06b67c34db7193fd6`](https://github.com/lblod/frontend-mow-registry/commit/53723221482db0b1563fc4e06b67c34db7193fd6) Thanks [@elpoelma](https://github.com/elpoelma)! - Set minimum node version to 20
+
 ## 2.5.0
 
 ### Minor Changes
