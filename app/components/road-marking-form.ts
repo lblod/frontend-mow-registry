@@ -13,6 +13,10 @@ import Variable from 'mow-registry/models/variable';
 import type Dimension from 'mow-registry/models/dimension';
 import { removeItem } from 'mow-registry/utils/array';
 import type Shape from 'mow-registry/models/shape';
+import {
+  validateShapes,
+  validateVariables,
+} from 'mow-registry/utils/validate-relations';
 
 type Args = {
   roadMarkingConcept: RoadMarkingConcept;
@@ -96,36 +100,12 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
     event.preventDefault();
 
     const isValid = await this.args.roadMarkingConcept.validate();
-
-    // validate the shapes and dimensions
-    const shapes = await this.args.roadMarkingConcept.shapes;
-    const areShapesValid = !(
-      await Promise.all(
-        shapes.map(async (shape) => {
-          const isShapeValid = await shape.validate();
-
-          const dimensions = await shape.dimensions;
-          const areDimensionsValid = !(
-            await Promise.all(
-              dimensions.map((dimension) => {
-                return dimension.validate();
-              }),
-            )
-          ).includes(false);
-
-          return isShapeValid && areDimensionsValid;
-        }),
-      )
-    ).includes(false);
-    // validate variables
-    const variables = await this.args.roadMarkingConcept.variables;
-    const areVariablesValid = !(
-      await Promise.all(
-        variables.map(async (variable) => {
-          return await variable.validate();
-        }),
-      )
-    ).includes(false);
+    const areShapesValid = await validateShapes(
+      this.args.roadMarkingConcept.shapes,
+    );
+    const areVariablesValid = await validateVariables(
+      this.args.roadMarkingConcept.variables,
+    );
     if (isValid && areShapesValid && areVariablesValid) {
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadMarkingConcept.set('image', imageRecord);

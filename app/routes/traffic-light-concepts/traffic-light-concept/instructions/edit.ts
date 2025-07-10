@@ -28,9 +28,7 @@ export default class TrafficLightConceptsTrafficLightConceptInstructionsEditRout
           'template',
           params.instructionId,
           {
-            // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-            // TODO: fix the query types
-            include: 'variables',
+            include: ['variables'],
           },
         ),
         trafficLightConcept,
