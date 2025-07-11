@@ -36,9 +36,6 @@ importers:
       '@changesets/cli':
         specifier: ^2.26.2
         version: 2.29.5
-      '@ember-data/adapter':
-        specifier: 5.6.0
-        version: 5.6.0(@glint/template@1.5.2)
       '@ember-data/debug':
         specifier: 5.6.0
         version: 5.6.0(@ember-data/model@5.6.0(@glint/template@1.5.2))(@ember-data/request-utils@5.6.0(@glint/template@1.5.2))(@ember-data/store@5.6.0(@ember-data/tracking@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@glint/template@1.5.2)(@warp-drive/core-types@5.6.0(@glint/template@1.5.2))
@@ -1029,9 +1026,6 @@ packages:
   '@duetds/date-picker@1.4.0':
     resolution: {integrity: sha512-jx4oSIrZAVsXYLyQGXbEmuo0gEXAqrNIGp3rG8L03XSxFFFca/bTpCj5v6yd48vVWOtAXD8y04S/+flOimra0A==}
     engines: {node: '>= 12.17.0', npm: '>= 6.14.0'}
-
-  '@ember-data/adapter@5.6.0':
-    resolution: {integrity: sha512-fHl02J/kAMdIlhFdNuUfXr+cwktMaezJR/iKJMazzRNnsm1r67TwKz5fY5qgBjYkgJMCW4efyh3pMBJByJHBDA==}
 
   '@ember-data/debug@5.6.0':
     resolution: {integrity: sha512-acx3jUQaNuSToWPiGHAGHlEYGXY2YgaRjrTnz0SSyCrBdLa8/KjLkvoL1ht9SFlFb+NpiOTw7QDqTr4HSYsGqw==}
@@ -9871,20 +9865,6 @@ snapshots:
   '@duetds/date-picker@1.4.0':
     dependencies:
       '@stencil/core': 2.22.3
-
-  '@ember-data/adapter@5.6.0(@glint/template@1.5.2)':
-    dependencies:
-      '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.18.0(@glint/template@1.5.2)
-      '@warp-drive/core': 5.6.0(@glint/template@1.5.2)
-      '@warp-drive/legacy': 5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2))(@warp-drive/utilities@5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2)))
-      '@warp-drive/utilities': 5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2))
-      ember-cli-path-utils: 1.0.0
-      ember-cli-string-utils: 1.1.0
-      ember-cli-test-info: 1.0.0
-    transitivePeerDependencies:
-      - '@glint/template'
-      - supports-color
 
   '@ember-data/debug@5.6.0(@ember-data/model@5.6.0(@glint/template@1.5.2))(@ember-data/request-utils@5.6.0(@glint/template@1.5.2))(@ember-data/store@5.6.0(@ember-data/tracking@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@glint/template@1.5.2)(@warp-drive/core-types@5.6.0(@glint/template@1.5.2))':
     dependencies:

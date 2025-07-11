@@ -1,4 +1,4 @@
-import JSONAPIAdapter from '@ember-data/adapter/json-api';
+import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';
 import type { AdapterPayload } from '@ember-data/legacy-compat';
 import type Store from 'mow-registry/services/store';
 import type { ModelSchema } from '@warp-drive/core/types';
