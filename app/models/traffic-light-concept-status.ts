@@ -1,4 +1,4 @@
-import Model, { type AsyncBelongsTo, belongsTo } from '@ember-data/model';
+import Model, { type AsyncBelongsTo, belongsTo } from '@warp-drive/legacy/model';
 import type { Type } from '@warp-drive/core-types/symbols';
 import type TrafficLightConceptStatusCode from 'mow-registry/models/traffic-light-concept-status-code';
 

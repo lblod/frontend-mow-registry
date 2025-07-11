@@ -4,7 +4,7 @@ import {
   belongsTo,
   type AsyncHasMany,
   type AsyncBelongsTo,
-} from '@ember-data/model';
+} from '@warp-drive/legacy/model';
 import type { Type } from '@warp-drive/core-types/symbols';
 import type TrafficMeasureConcept from './traffic-measure-concept';
 import Document from './document';

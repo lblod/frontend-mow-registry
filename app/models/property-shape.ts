@@ -1,4 +1,4 @@
-import { type AsyncBelongsTo, belongsTo } from '@ember-data/model';
+import { type AsyncBelongsTo, belongsTo } from '@warp-drive/legacy/model';
 import type Resource from 'mow-registry/models/resource';
 import Shape from 'mow-registry/models/shape';
 import type { Type } from '@warp-drive/core-types/symbols';

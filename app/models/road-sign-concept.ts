@@ -3,7 +3,7 @@ import {
   hasMany,
   type AsyncBelongsTo,
   type AsyncHasMany,
-} from '@ember-data/model';
+} from '@warp-drive/legacy/model';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import {

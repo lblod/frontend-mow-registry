@@ -3,7 +3,7 @@ import {
   belongsTo,
   type AsyncBelongsTo,
   type AsyncHasMany,
-} from '@ember-data/model';
+} from '@warp-drive/legacy/model';
 import type { Type } from '@warp-drive/core-types/symbols';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';

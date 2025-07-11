@@ -4,7 +4,7 @@ import {
   attr,
   belongsTo,
   hasMany,
-} from '@ember-data/model';
+} from '@warp-drive/legacy/model';
 import type { Type } from '@warp-drive/core-types/symbols';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 import type TrafficSignalConcept from './traffic-signal-concept';

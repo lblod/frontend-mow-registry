@@ -1,4 +1,4 @@
-import { type AsyncBelongsTo, belongsTo } from '@ember-data/model';
+import { type AsyncBelongsTo, belongsTo } from '@warp-drive/legacy/model';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import type Image from 'mow-registry/models/image';
 import { validateBelongsToRequired } from 'mow-registry/validators/schema';

@@ -34,7 +34,7 @@ import type Unit from 'mow-registry/models/unit';
 import { isSome } from 'mow-registry/utils/option';
 import ErrorMessage from 'mow-registry/components/error-message';
 import sortByOrder from 'mow-registry/helpers/sort-by-order';
-import type { AsyncBelongsTo } from '@ember-data/model';
+import type { AsyncBelongsTo } from '@warp-drive/legacy/model';
 
 interface Signature {
   Args: {

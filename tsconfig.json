@@ -27,7 +27,6 @@
       "@ember-data/graph/unstable-preview-types",
       "@ember-data/json-api/unstable-preview-types",
       "@ember-data/legacy-compat/unstable-preview-types",
-      "@ember-data/model/unstable-preview-types",
       "@ember-data/request/unstable-preview-types",
       "@ember-data/request-utils/unstable-preview-types",
       "@ember-data/serializer/unstable-preview-types",

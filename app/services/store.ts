@@ -14,13 +14,13 @@ import JSONAPICache from '@ember-data/json-api';
 import type { ResourceKey } from '@warp-drive/core-types';
 import type { TypeFromInstance } from '@warp-drive/core-types/record';
 
-import type Model from '@ember-data/model';
+import type Model from '@warp-drive/legacy/model';
 import {
   buildSchema,
   instantiateRecord,
   modelFor,
   teardownRecord,
-} from '@ember-data/model';
+} from '@warp-drive/legacy/model';
 import {
   adapterFor,
   cleanup,

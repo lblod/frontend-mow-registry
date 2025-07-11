@@ -1,6 +1,6 @@
 import { tracked } from '@glimmer/tracking';
 import { assert } from '@ember/debug';
-import Model from '@ember-data/model';
+import Model from '@warp-drive/legacy/model';
 import Joi, {
   type ObjectSchema,
   ValidationError,

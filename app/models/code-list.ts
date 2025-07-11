@@ -4,7 +4,7 @@ import {
   attr,
   type AsyncHasMany,
   type AsyncBelongsTo,
-} from '@ember-data/model';
+} from '@warp-drive/legacy/model';
 import ConceptScheme from 'mow-registry/models/concept-scheme';
 import type Variable from 'mow-registry/models/variable';
 import type SkosConcept from 'mow-registry/models/skos-concept';

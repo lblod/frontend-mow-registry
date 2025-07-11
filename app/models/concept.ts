@@ -1,4 +1,4 @@
-import { hasMany, type AsyncHasMany } from '@ember-data/model';
+import { hasMany, type AsyncHasMany } from '@warp-drive/legacy/model';
 import Resource from 'mow-registry/models/resource';
 import type Template from 'mow-registry/models/template';
 import { validateHasManyOptional } from 'mow-registry/validators/schema';
