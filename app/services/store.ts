@@ -5,8 +5,7 @@ import type {
   ModelSchema,
 } from '@warp-drive/core/types';
 
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
+import { RequestManager, Fetch } from '@warp-drive/core';
 import { CachePolicy } from '@ember-data/request-utils';
 
 import JSONAPICache from '@ember-data/json-api';

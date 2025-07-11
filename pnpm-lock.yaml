@@ -45,9 +45,6 @@ importers:
       '@ember-data/json-api':
         specifier: 5.6.0
         version: 5.6.0(@glint/template@1.5.2)
-      '@ember-data/request':
-        specifier: 5.6.0
-        version: 5.6.0(@glint/template@1.5.2)
       '@ember-data/request-utils':
         specifier: 5.6.0
         version: 5.6.0(@glint/template@1.5.2)
@@ -1045,9 +1042,6 @@ packages:
     peerDependenciesMeta:
       ember-inflector:
         optional: true
-
-  '@ember-data/request@5.6.0':
-    resolution: {integrity: sha512-NxYTxvogEvpJbsDz/k2Ibl6WdNEFA1IyCryzKIVWY3DuoVeoUbXfc0r34RQyep6XP64lxkYf7/reECK5tu37tA==}
 
   '@ember-data/rfc395-data@0.0.4':
     resolution: {integrity: sha512-tGRdvgC9/QMQSuSuJV45xoyhI0Pzjm7A9o/MVVA3HakXIImJbbzx/k/6dO9CUEQXIyS2y0fW6C1XaYOG7rY0FQ==}
@@ -9904,14 +9898,6 @@ snapshots:
       '@embroider/macros': 1.18.0(@glint/template@1.5.2)
       '@warp-drive/core': 5.6.0(@glint/template@1.5.2)
       '@warp-drive/utilities': 5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2))
-    transitivePeerDependencies:
-      - '@glint/template'
-      - supports-color
-
-  '@ember-data/request@5.6.0(@glint/template@1.5.2)':
-    dependencies:
-      '@embroider/macros': 1.18.0(@glint/template@1.5.2)
-      '@warp-drive/core': 5.6.0(@glint/template@1.5.2)
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
