@@ -6,7 +6,7 @@ import type {
 } from '@warp-drive/core/types';
 
 import { RequestManager, Fetch } from '@warp-drive/core';
-import { CachePolicy } from '@ember-data/request-utils';
+import { DefaultCachePolicy as CachePolicy } from '@warp-drive/core/store';
 
 import JSONAPICache from '@ember-data/json-api';
 
