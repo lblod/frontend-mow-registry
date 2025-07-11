@@ -39,9 +39,6 @@ importers:
       '@ember-data/debug':
         specifier: 5.6.0
         version: 5.6.0(@ember-data/model@5.6.0(@glint/template@1.5.2))(@ember-data/request-utils@5.6.0(@glint/template@1.5.2))(@ember-data/store@5.6.0(@ember-data/tracking@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@glint/template@1.5.2)(@warp-drive/core-types@5.6.0(@glint/template@1.5.2))
-      '@ember-data/graph':
-        specifier: 5.6.0
-        version: 5.6.0(@glint/template@1.5.2)
       '@ember/optional-features':
         specifier: ^2.1.0
         version: 2.2.0
@@ -1022,9 +1019,6 @@ packages:
       '@ember-data/request-utils': 5.6.0
       '@ember-data/store': 5.6.0
       '@warp-drive/core-types': 5.6.0
-
-  '@ember-data/graph@5.6.0':
-    resolution: {integrity: sha512-hPaaFthx3NwrBXOOUHZCHS+YG7zxnYTU9ao7LXWLEKPKKRLl1sF9LWLFqNy0vTeucjmCeKyIAqP20pQKqk+uMA==}
 
   '@ember-data/model@5.6.0':
     resolution: {integrity: sha512-Zn4mAGUSKEKFw23SE63VgdP9w+UBw1lUTTp2AId4cblR/+ZJlxAodZKy0zI9dk4QHSn4zsT9BHMyK7V6U+ZmhA==}
@@ -9851,14 +9845,6 @@ snapshots:
       '@embroider/macros': 1.18.0(@glint/template@1.5.2)
       '@warp-drive/core': 5.6.0(@glint/template@1.5.2)
       '@warp-drive/core-types': 5.6.0(@glint/template@1.5.2)
-    transitivePeerDependencies:
-      - '@glint/template'
-      - supports-color
-
-  '@ember-data/graph@5.6.0(@glint/template@1.5.2)':
-    dependencies:
-      '@embroider/macros': 1.18.0(@glint/template@1.5.2)
-      '@warp-drive/core': 5.6.0(@glint/template@1.5.2)
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
