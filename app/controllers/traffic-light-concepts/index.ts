@@ -6,10 +6,10 @@ import { tracked } from '@glimmer/tracking';
 import type IntlService from 'ember-intl/services/intl';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import { trackedFunction } from 'reactiveweb/function';
-import type { LegacyResourceQuery } from '@ember-data/store/types';
+import type { LegacyResourceQuery } from '@warp-drive/core/types';
 
 export default class TrafficlightConceptsIndexController extends Controller {
   queryParams = [

@@ -1,4 +1,4 @@
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import type Template from 'mow-registry/models/template';

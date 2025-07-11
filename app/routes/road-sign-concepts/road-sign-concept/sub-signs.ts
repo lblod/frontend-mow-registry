@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import type RoadSignConceptRoute from '../road-sign-concept';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import { service } from '@ember/service';
 import { TrackedArray } from 'tracked-built-ins';
 import type Transition from '@ember/routing/transition';

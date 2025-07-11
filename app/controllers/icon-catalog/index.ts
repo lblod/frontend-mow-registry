@@ -6,9 +6,9 @@ import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import IconCatalogIndexRoute from 'mow-registry/routes/icon-catalog/index';
 import { service } from '@ember/service';
 import { trackedFunction } from 'reactiveweb/function';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type Icon from 'mow-registry/models/icon';
-import type { LegacyResourceQuery } from '@ember-data/store/types';
+import type { LegacyResourceQuery } from '@warp-drive/core/types';
 
 export default class IconCatalogIndexController extends Controller {
   queryParams = ['page', 'size', 'label', 'sort'];

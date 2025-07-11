@@ -5,7 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import ImageUploadHandlerComponent from './image-upload-handler';
 import type RouterService from '@ember/routing/router-service';
 import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import type Variable from 'mow-registry/models/variable';

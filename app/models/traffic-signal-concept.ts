@@ -4,8 +4,8 @@ import {
   belongsTo,
   type AsyncBelongsTo,
   type AsyncHasMany,
-} from '@ember-data/model';
-import type { Type } from '@warp-drive/core-types/symbols';
+} from '@warp-drive/legacy/model';
+import type { Type } from '@warp-drive/core/types/symbols';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import type Image from 'mow-registry/models/image';
 import type Template from './template';

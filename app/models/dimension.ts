@@ -1,5 +1,5 @@
-import { type AsyncBelongsTo, belongsTo } from '@ember-data/model';
-import { attr } from '@ember-data/model';
+import { type AsyncBelongsTo, belongsTo } from '@warp-drive/legacy/model';
+import { attr } from '@warp-drive/legacy/model';
 import Unit from './unit';
 import QuantityKind from './quantity-kind';
 import AbstractValidationModel from './abstract-validation-model';
@@ -8,7 +8,7 @@ import {
   validateNumberRequired,
 } from 'mow-registry/validators/schema';
 import Joi from 'joi';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class Dimension extends AbstractValidationModel {
   declare [Type]: 'dimension';

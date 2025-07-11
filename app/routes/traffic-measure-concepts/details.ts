@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 
 type Params = {
