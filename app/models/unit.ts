@@ -1,6 +1,6 @@
 import Model from '@warp-drive/legacy/model';
 import { attr } from '@warp-drive/legacy/model';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 // TODO: Ideally this would come from the backend, but we'll hardcode the order for now.
 const UNIT_ORDER = new Map([

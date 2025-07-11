@@ -3,7 +3,7 @@ import Joi from 'joi';
 import AbstractValidationModel from './abstract-validation-model';
 import { validateHasManyOptional } from 'mow-registry/validators/schema';
 import type Concept from 'mow-registry/models/concept';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class Resource extends AbstractValidationModel {
   declare [Type]: 'resource';

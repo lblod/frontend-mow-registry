@@ -4,7 +4,7 @@ import {
   belongsTo,
   hasMany,
 } from '@warp-drive/legacy/model';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type Dimension from './dimension';
 import type TribontShapeClassificationCode from './tribont-shape-classification-code';
 import AbstractValidationModel from './abstract-validation-model';

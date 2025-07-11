@@ -7,7 +7,7 @@ import {
   validateStringRequired,
 } from 'mow-registry/validators/schema';
 import AbstractValidationModel from './abstract-validation-model';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class SkosConcept extends AbstractValidationModel {
   declare [Type]: 'skos-concept';

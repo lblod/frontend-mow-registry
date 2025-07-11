@@ -5,7 +5,7 @@ import {
   type AsyncBelongsTo,
   type AsyncHasMany,
 } from '@warp-drive/legacy/model';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import type Image from 'mow-registry/models/image';
 import type Template from './template';

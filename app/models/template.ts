@@ -5,7 +5,7 @@ import {
   type AsyncHasMany,
   type AsyncBelongsTo,
 } from '@warp-drive/legacy/model';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type TrafficMeasureConcept from './traffic-measure-concept';
 import Document from './document';
 import type Variable from './variable';

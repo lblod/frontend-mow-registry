@@ -6,7 +6,7 @@ import {
   validateHasManyOptional,
   validateStringOptional,
 } from 'mow-registry/validators/schema';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class ConceptScheme extends AbstractValidationModel {
   declare [Type]: 'concept-scheme';

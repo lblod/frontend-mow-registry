@@ -24,7 +24,6 @@
     "types": [
       "@ember-data/debug/unstable-preview-types",
       "@warp-drive/build-config/declarations",
-      "@warp-drive/core-types/unstable-preview-types",
       "@warp-drive/schema-record/unstable-preview-types",
       "ember-source/types"
     ]

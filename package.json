@@ -65,7 +65,6 @@
     "@typescript-eslint/parser": "^8.7.0",
     "@warp-drive/build-config": "5.6.0",
     "@warp-drive/core": "5.6.0",
-    "@warp-drive/core-types": "5.6.0",
     "@warp-drive/ember": "5.6.0",
     "@warp-drive/json-api": "5.6.0",
     "@warp-drive/legacy": "5.6.0",

@@ -4,7 +4,7 @@ import {
   type AsyncBelongsTo,
   type AsyncHasMany,
 } from '@warp-drive/legacy/model';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import TrafficSignalConcept from './traffic-signal-concept';

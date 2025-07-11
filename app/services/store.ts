@@ -10,8 +10,8 @@ import { DefaultCachePolicy as CachePolicy } from '@warp-drive/core/store';
 
 import { JSONAPICache } from '@warp-drive/json-api';
 
-import type { ResourceKey } from '@warp-drive/core-types';
-import type { TypeFromInstance } from '@warp-drive/core-types/record';
+import type { ResourceKey } from '@warp-drive/core/types';
+import type { TypeFromInstance } from '@warp-drive/core/types/record';
 
 import type Model from '@warp-drive/legacy/model';
 import {

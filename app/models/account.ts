@@ -1,6 +1,10 @@
-import Model, { type AsyncBelongsTo, attr, belongsTo } from '@warp-drive/legacy/model';
+import Model, {
+  type AsyncBelongsTo,
+  attr,
+  belongsTo,
+} from '@warp-drive/legacy/model';
 import type User from 'mow-registry/models/user';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class Account extends Model {
   declare [Type]: 'account';

@@ -117,9 +117,6 @@ importers:
       '@warp-drive/core':
         specifier: 5.6.0
         version: 5.6.0(@glint/template@1.5.2)
-      '@warp-drive/core-types':
-        specifier: 5.6.0
-        version: 5.6.0(@glint/template@1.5.2)
       '@warp-drive/ember':
         specifier: 5.6.0
         version: 5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2)
