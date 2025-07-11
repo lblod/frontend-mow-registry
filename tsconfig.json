@@ -22,9 +22,6 @@
       "fetch": ["node_modules/ember-fetch"]
     },
     "types": [
-      "@ember-data/debug/unstable-preview-types",
-      "@warp-drive/build-config/declarations",
-      "@warp-drive/schema-record/unstable-preview-types",
       "ember-source/types"
     ]
   },
