@@ -1,5 +1,9 @@
 import { get } from '@ember/object';
-import Model, { type AsyncHasMany, attr, hasMany } from '@warp-drive/legacy/model';
+import Model, {
+  type AsyncHasMany,
+  attr,
+  hasMany,
+} from '@warp-drive/legacy/model';
 import type { Type } from '@warp-drive/core/types/symbols';
 import type Account from 'mow-registry/models/account';
 import type Group from 'mow-registry/models/group';

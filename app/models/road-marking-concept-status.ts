@@ -1,4 +1,7 @@
-import Model, { type AsyncBelongsTo, belongsTo } from '@warp-drive/legacy/model';
+import Model, {
+  type AsyncBelongsTo,
+  belongsTo,
+} from '@warp-drive/legacy/model';
 import type { Type } from '@warp-drive/core/types/symbols';
 import type RoadMarkingConceptStatusCode from './road-marking-concept-status-code';
 
