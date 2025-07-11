@@ -1,9 +1,9 @@
-import Store, { CacheHandler } from '@ember-data/store';
+import { Store, CacheHandler } from '@warp-drive/core';
 import type {
   CacheCapabilitiesManager,
-  ModelSchema,
   SchemaService,
-} from '@ember-data/store/types';
+  ModelSchema,
+} from '@warp-drive/core/types';
 
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';

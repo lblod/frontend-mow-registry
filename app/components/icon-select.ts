@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import { tracked } from '@glimmer/tracking';
 import type Icon from 'mow-registry/models/icon';
 import { action } from '@ember/object';

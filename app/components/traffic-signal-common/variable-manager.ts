@@ -1,4 +1,4 @@
-import type Store from '@ember-data/store';
+import type Store from 'mow-registry/services/store';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';

@@ -2,7 +2,7 @@ import Service from '@ember/service';
 import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import CodeList from 'mow-registry/models/code-list';
 
 export default class CodelistsService extends Service {

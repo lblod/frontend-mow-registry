@@ -30,7 +30,6 @@
       "@ember-data/request/unstable-preview-types",
       "@ember-data/request-utils/unstable-preview-types",
       "@ember-data/serializer/unstable-preview-types",
-      "@ember-data/store/unstable-preview-types",
       "@warp-drive/build-config/declarations",
       "@warp-drive/core-types/unstable-preview-types",
       "@warp-drive/schema-record/unstable-preview-types",

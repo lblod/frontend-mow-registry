@@ -1,4 +1,4 @@
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import Route from '@ember/routing/route';
 
 export type ModelFrom<R extends Route> = Awaited<ReturnType<R['model']>>;

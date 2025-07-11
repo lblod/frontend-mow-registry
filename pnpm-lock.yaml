@@ -60,9 +60,6 @@ importers:
       '@ember-data/serializer':
         specifier: 5.6.0
         version: 5.6.0(@glint/template@1.5.2)
-      '@ember-data/store':
-        specifier: 5.6.0
-        version: 5.6.0(@ember-data/tracking@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2)
       '@ember/optional-features':
         specifier: ^2.1.0
         version: 2.2.0
