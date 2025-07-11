@@ -8,7 +8,7 @@ import type {
 import { RequestManager, Fetch } from '@warp-drive/core';
 import { DefaultCachePolicy as CachePolicy } from '@warp-drive/core/store';
 
-import JSONAPICache from '@ember-data/json-api';
+import { JSONAPICache } from '@warp-drive/json-api';
 
 import type { ResourceKey } from '@warp-drive/core-types';
 import type { TypeFromInstance } from '@warp-drive/core-types/record';

@@ -42,9 +42,6 @@ importers:
       '@ember-data/graph':
         specifier: 5.6.0
         version: 5.6.0(@glint/template@1.5.2)
-      '@ember-data/json-api':
-        specifier: 5.6.0
-        version: 5.6.0(@glint/template@1.5.2)
       '@ember/optional-features':
         specifier: ^2.1.0
         version: 2.2.0
@@ -129,6 +126,9 @@ importers:
       '@warp-drive/ember':
         specifier: 5.6.0
         version: 5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2)
+      '@warp-drive/json-api':
+        specifier: 5.6.0
+        version: 5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2))
       '@warp-drive/legacy':
         specifier: 5.6.0
         version: 5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2))(@warp-drive/utilities@5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2)))
@@ -1025,9 +1025,6 @@ packages:
 
   '@ember-data/graph@5.6.0':
     resolution: {integrity: sha512-hPaaFthx3NwrBXOOUHZCHS+YG7zxnYTU9ao7LXWLEKPKKRLl1sF9LWLFqNy0vTeucjmCeKyIAqP20pQKqk+uMA==}
-
-  '@ember-data/json-api@5.6.0':
-    resolution: {integrity: sha512-puSIFW1X6siqE8/Az4mtUWRz9IX3GgfSHjJwfTeFzZ+QQyYQBavPogFNKHsG+SCgiUVxus1MiLqLVUs8pXJ96Q==}
 
   '@ember-data/model@5.6.0':
     resolution: {integrity: sha512-Zn4mAGUSKEKFw23SE63VgdP9w+UBw1lUTTp2AId4cblR/+ZJlxAodZKy0zI9dk4QHSn4zsT9BHMyK7V6U+ZmhA==}
@@ -9862,16 +9859,6 @@ snapshots:
     dependencies:
       '@embroider/macros': 1.18.0(@glint/template@1.5.2)
       '@warp-drive/core': 5.6.0(@glint/template@1.5.2)
-    transitivePeerDependencies:
-      - '@glint/template'
-      - supports-color
-
-  '@ember-data/json-api@5.6.0(@glint/template@1.5.2)':
-    dependencies:
-      '@embroider/macros': 1.18.0(@glint/template@1.5.2)
-      '@warp-drive/core': 5.6.0(@glint/template@1.5.2)
-      '@warp-drive/json-api': 5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2))
-      '@warp-drive/utilities': 5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2))
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
