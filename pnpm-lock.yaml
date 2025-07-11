@@ -38,7 +38,7 @@ importers:
         version: 2.29.5
       '@ember-data/debug':
         specifier: 5.6.0
-        version: 5.6.0(@ember-data/model@5.6.0(@glint/template@1.5.2))(@ember-data/request-utils@5.6.0(@glint/template@1.5.2))(@ember-data/store@5.6.0(@ember-data/tracking@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@glint/template@1.5.2)(@warp-drive/core-types@5.6.0(@glint/template@1.5.2))
+        version: 5.6.0(@ember-data/model@5.6.0(@glint/template@1.5.2))(@ember-data/request-utils@5.6.0(@glint/template@1.5.2))(@ember-data/store@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@glint/template@1.5.2)(@warp-drive/core-types@5.6.0(@glint/template@1.5.2))
       '@ember/optional-features':
         specifier: ^2.1.0
         version: 2.2.0
@@ -1044,12 +1044,6 @@ packages:
         optional: true
       '@ember/test-waiters':
         optional: true
-
-  '@ember-data/tracking@5.6.0':
-    resolution: {integrity: sha512-FtX8YBX5pQVN78on8z8IvMAS4xYbEa4f3RpmGuSKOC3qkZ74bWdZEbv8fe2/fgQ50AIx1IF9ZlBQkwpBDvt+Eg==}
-    deprecated: Use @warp-drive/ember
-    peerDependencies:
-      '@ember/test-waiters': ^3.1.0 || ^4.0.0
 
   '@ember/edition-utils@1.2.0':
     resolution: {integrity: sha512-VmVq/8saCaPdesQmftPqbFtxJWrzxNGSQ+e8x8LLe3Hjm36pJ04Q8LeORGZkAeOhldoUX9seLGmSaHeXkIqoog==}
@@ -9836,11 +9830,11 @@ snapshots:
     dependencies:
       '@stencil/core': 2.22.3
 
-  '@ember-data/debug@5.6.0(@ember-data/model@5.6.0(@glint/template@1.5.2))(@ember-data/request-utils@5.6.0(@glint/template@1.5.2))(@ember-data/store@5.6.0(@ember-data/tracking@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@glint/template@1.5.2)(@warp-drive/core-types@5.6.0(@glint/template@1.5.2))':
+  '@ember-data/debug@5.6.0(@ember-data/model@5.6.0(@glint/template@1.5.2))(@ember-data/request-utils@5.6.0(@glint/template@1.5.2))(@ember-data/store@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@glint/template@1.5.2)(@warp-drive/core-types@5.6.0(@glint/template@1.5.2))':
     dependencies:
       '@ember-data/model': 5.6.0(@glint/template@1.5.2)
       '@ember-data/request-utils': 5.6.0(@glint/template@1.5.2)
-      '@ember-data/store': 5.6.0(@ember-data/tracking@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2)
+      '@ember-data/store': 5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2)
       '@ember/edition-utils': 1.2.0
       '@embroider/macros': 1.18.0(@glint/template@1.5.2)
       '@warp-drive/core': 5.6.0(@glint/template@1.5.2)
@@ -9874,26 +9868,15 @@ snapshots:
 
   '@ember-data/rfc395-data@0.0.4': {}
 
-  '@ember-data/store@5.6.0(@ember-data/tracking@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2)':
+  '@ember-data/store@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2)':
     dependencies:
       '@embroider/macros': 1.18.0(@glint/template@1.5.2)
       '@warp-drive/core': 5.6.0(@glint/template@1.5.2)
     optionalDependencies:
-      '@ember-data/tracking': 5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2)
       '@ember/test-waiters': 4.1.0(@glint/template@1.5.2)
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
-
-  '@ember-data/tracking@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2)':
-    dependencies:
-      '@ember/test-waiters': 4.1.0(@glint/template@1.5.2)
-      '@embroider/macros': 1.18.0(@glint/template@1.5.2)
-      '@warp-drive/core': 5.6.0(@glint/template@1.5.2)
-    transitivePeerDependencies:
-      - '@glint/template'
-      - supports-color
-    optional: true
 
   '@ember/edition-utils@1.2.0': {}
 
