@@ -25,7 +25,6 @@
       "@ember-data/debug/unstable-preview-types",
       "@ember-data/graph/unstable-preview-types",
       "@ember-data/json-api/unstable-preview-types",
-      "@ember-data/legacy-compat/unstable-preview-types",
       "@ember-data/request/unstable-preview-types",
       "@ember-data/request-utils/unstable-preview-types",
       "@warp-drive/build-config/declarations",

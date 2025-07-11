@@ -29,7 +29,7 @@ import {
   pushPayload,
   serializeRecord,
   serializerFor,
-} from '@ember-data/legacy-compat';
+} from '@warp-drive/legacy/compat';
 
 export default class extends Store {
   requestManager = new RequestManager()
