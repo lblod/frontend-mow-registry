@@ -10,6 +10,7 @@ import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import type Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
+import { validateVariables } from 'mow-registry/utils/validate-relations';
 
 type Args = {
   trafficLightConcept: TrafficLightConcept;
@@ -68,17 +69,9 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
     event.preventDefault();
 
     const isValid = await this.args.trafficLightConcept.validate();
-
-    // validate variables
-    const variables = await this.args.trafficLightConcept.variables;
-    const areVariablesValid = !(
-      await Promise.all(
-        variables.map(async (variable) => {
-          return await variable.validate();
-        }),
-      )
-    ).includes(false);
-
+    const areVariablesValid = await validateVariables(
+      this.args.trafficLightConcept.variables,
+    );
     if (isValid && areVariablesValid) {
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.trafficLightConcept.set('image', imageRecord); // image gets uploaded but not replaced

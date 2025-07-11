@@ -1,6 +1,6 @@
 {
   "name": "mow-registry",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "private": true,
   "description": "Small description for mow-registry goes here",
   "repository": "https://github.com/lblod/frontend-mow-registry",
@@ -40,6 +40,7 @@
     "@changesets/cli": "^2.26.2",
     "@ember-data/debug": "5.6.0",
     "@ember/optional-features": "^2.1.0",
+    "@ember/render-modifiers": "^3.0.0",
     "@ember/string": "^3.1.1",
     "@ember/test-helpers": "^3.3.0",
     "@embroider/compat": "^3.6.1",
@@ -124,7 +125,6 @@
     "typescript": "^5.4.5",
     "webpack": "^5.91.0"
   },
-  "packageManager": "pnpm@10.12.4+sha512.5ea8b0deed94ed68691c9bad4c955492705c5eeb8a87ef86bc62c74a26b037b08ff9570f108b2e4dbd1dd1a9186fea925e527f141c648e85af45631074680184",
   "engines": {
     "node": ">= 20"
   },
@@ -137,6 +137,13 @@
   "pnpm": {
     "overrides": {
       "ember-source": "$ember-source"
-    }
-  }
+    },
+    "onlyBuiltDependencies": [
+      "@fortawesome/fontawesome-common-types",
+      "@fortawesome/free-solid-svg-icons",
+      "@parcel/watcher",
+      "core-js"
+    ]
+  },
+  "packageManager": "pnpm@10.12.4+sha512.5ea8b0deed94ed68691c9bad4c955492705c5eeb8a87ef86bc62c74a26b037b08ff9570f108b2e4dbd1dd1a9186fea925e527f141c648e85af45631074680184"
 }

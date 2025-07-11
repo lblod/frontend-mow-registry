@@ -16,6 +16,19 @@ export default class TrafficlightConcept extends Route {
         await this.store.findRecord<TrafficLightConceptModel>(
           'traffic-light-concept',
           params.id,
+          {
+            include: [
+              'image.file',
+              'variables',
+              'zonality.inScheme.concepts',
+              'inScheme.concepts',
+              'relatedRoadSignConcepts',
+              'relatedRoadMarkingConcepts',
+              'relatedToTrafficLightConcepts',
+              'relatedFromTrafficLightConcepts',
+              'hasInstructions',
+            ],
+          },
         ),
     };
   }
