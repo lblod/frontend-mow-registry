@@ -54,9 +54,6 @@ importers:
       '@ember-data/request-utils':
         specifier: 5.6.0
         version: 5.6.0(@glint/template@1.5.2)
-      '@ember-data/serializer':
-        specifier: 5.6.0
-        version: 5.6.0(@glint/template@1.5.2)
       '@ember/optional-features':
         specifier: ^2.1.0
         version: 2.2.0
@@ -1060,9 +1057,6 @@ packages:
 
   '@ember-data/rfc395-data@0.0.4':
     resolution: {integrity: sha512-tGRdvgC9/QMQSuSuJV45xoyhI0Pzjm7A9o/MVVA3HakXIImJbbzx/k/6dO9CUEQXIyS2y0fW6C1XaYOG7rY0FQ==}
-
-  '@ember-data/serializer@5.6.0':
-    resolution: {integrity: sha512-/QcNzZeZ+9Hg5QwKyHfDBEgkokjsIpa8rcXg1Ft4NIF/XvQH/ggMnfIJtLVIwjE2m0JpsbZURJf0lafzxdjDpg==}
 
   '@ember-data/store@5.6.0':
     resolution: {integrity: sha512-lobHpRNIONefVjDpZrtCs9vBUB+oZTcDXpfh1Kx+pvoTk0IkZKFUnEKuSwmWSh3R13+20yrdW0Gl7lbWxQMtAQ==}
@@ -9939,20 +9933,6 @@ snapshots:
       - supports-color
 
   '@ember-data/rfc395-data@0.0.4': {}
-
-  '@ember-data/serializer@5.6.0(@glint/template@1.5.2)':
-    dependencies:
-      '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.18.0(@glint/template@1.5.2)
-      '@warp-drive/core': 5.6.0(@glint/template@1.5.2)
-      '@warp-drive/legacy': 5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2))(@warp-drive/utilities@5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2)))
-      '@warp-drive/utilities': 5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2))
-      ember-cli-path-utils: 1.0.0
-      ember-cli-string-utils: 1.1.0
-      ember-cli-test-info: 1.0.0
-    transitivePeerDependencies:
-      - '@glint/template'
-      - supports-color
 
   '@ember-data/store@5.6.0(@ember-data/tracking@5.6.0(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2))(@ember/test-waiters@4.1.0(@glint/template@1.5.2))(@glint/template@1.5.2)':
     dependencies:

@@ -1,2 +1,2 @@
-import { StringTransform } from '@ember-data/serializer/transform';
+import { StringTransform } from '@warp-drive/legacy/serializer/transform';
 export default StringTransform;

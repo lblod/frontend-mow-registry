@@ -1,2 +1,2 @@
-import { NumberTransform } from '@ember-data/serializer/transform';
+import { NumberTransform } from '@warp-drive/legacy/serializer/transform';
 export default NumberTransform;

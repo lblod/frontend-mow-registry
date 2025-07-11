@@ -1,2 +1,2 @@
-import { BooleanTransform } from '@ember-data/serializer/transform';
+import { BooleanTransform } from '@warp-drive/legacy/serializer/transform';
 export default BooleanTransform;
