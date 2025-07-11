@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import type RoadSignConcept from '../road-sign-concept';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';

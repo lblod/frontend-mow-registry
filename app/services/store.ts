@@ -1,0 +1,87 @@
+import Store, { CacheHandler } from '@ember-data/store';
+import type {
+  CacheCapabilitiesManager,
+  ModelSchema,
+  SchemaService,
+} from '@ember-data/store/types';
+
+import RequestManager from '@ember-data/request';
+import Fetch from '@ember-data/request/fetch';
+import { CachePolicy } from '@ember-data/request-utils';
+
+import JSONAPICache from '@ember-data/json-api';
+
+import type { ResourceKey } from '@warp-drive/core-types';
+import type { TypeFromInstance } from '@warp-drive/core-types/record';
+
+import type Model from '@ember-data/model';
+import {
+  buildSchema,
+  instantiateRecord,
+  modelFor,
+  teardownRecord,
+} from '@ember-data/model';
+import {
+  adapterFor,
+  cleanup,
+  LegacyNetworkHandler,
+  normalize,
+  pushPayload,
+  serializeRecord,
+  serializerFor,
+} from '@ember-data/legacy-compat';
+
+export default class extends Store {
+  requestManager = new RequestManager()
+    .use([LegacyNetworkHandler, Fetch])
+    .useCache(CacheHandler);
+
+  lifetimes = new CachePolicy({
+    apiCacheHardExpires: 15 * 60 * 1000, // 15 minutes
+    apiCacheSoftExpires: 1 * 30 * 1000, // 30 seconds
+    constraints: {
+      headers: {
+        'X-WarpDrive-Expires': true,
+        'Cache-Control': true,
+        Expires: true,
+      },
+    },
+  });
+
+  createSchemaService(): SchemaService {
+    return buildSchema(this);
+  }
+
+  createCache(capabilities: CacheCapabilitiesManager) {
+    return new JSONAPICache(capabilities);
+  }
+
+  instantiateRecord(
+    identifier: ResourceKey,
+    createRecordArgs: Record<string, unknown>,
+  ) {
+    return instantiateRecord.call(this, identifier, createRecordArgs);
+  }
+
+  teardownRecord(record: unknown): void {
+    return teardownRecord.call(this, record as Model);
+  }
+
+  modelFor<T>(type: TypeFromInstance<T>): ModelSchema<T>;
+  modelFor(type: string): ModelSchema;
+  modelFor(type: string): ModelSchema {
+    return (modelFor.call(this, type) as ModelSchema) || super.modelFor(type);
+  }
+
+  adapterFor = adapterFor;
+  serializerFor = serializerFor;
+  pushPayload = pushPayload;
+  normalize = normalize;
+  serializeRecord = serializeRecord;
+
+  // eslint-disable-next-line ember/classic-decorator-hooks
+  destroy() {
+    cleanup.call(this);
+    super.destroy();
+  }
+}

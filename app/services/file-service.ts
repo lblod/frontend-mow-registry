@@ -1,9 +1,8 @@
-import Store from 'ember-data/store';
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import fetch from 'fetch';
 import type FileModel from 'mow-registry/models/file';
-
+import Store from 'mow-registry/services/store';
 type Response = {
   data: {
     id: string;

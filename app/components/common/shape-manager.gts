@@ -3,7 +3,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { on } from '@ember/modifier';
 import { fn, get } from '@ember/helper';
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import t from 'ember-intl/helpers/t';
 // @ts-expect-error need to move to truth-helpers v4
 import eq from 'ember-truth-helpers/helpers/eq';
@@ -34,13 +34,13 @@ import type Unit from 'mow-registry/models/unit';
 import { isSome } from 'mow-registry/utils/option';
 import ErrorMessage from 'mow-registry/components/error-message';
 import sortByOrder from 'mow-registry/helpers/sort-by-order';
-import type { PromiseBelongsTo } from '@ember-data/model/-private/promise-belongs-to';
+import type { AsyncBelongsTo } from '@ember-data/model';
 
 interface Signature {
   Args: {
     trafficSignalConcept: TrafficSignalConcept;
     shapes: TribontShape[];
-    defaultShape?: TribontShape | PromiseBelongsTo<TribontShape>;
+    defaultShape?: TribontShape | AsyncBelongsTo<TribontShape>;
     addShape: () => void;
     toggleDefaultShape: (shape: TribontShape) => Promise<void>;
     removeShape: (shapeToRemove: TribontShape) => void;

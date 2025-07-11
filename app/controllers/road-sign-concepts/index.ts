@@ -88,6 +88,7 @@ export default class RoadsignConceptsIndexController extends Controller {
   );
 
   roadSigns = trackedFunction(this, async () => {
+    console.log('Fetch the road signs!');
     const query: LegacyResourceQuery<RoadSignConcept> = {
       include: ['image.file', 'classifications'],
       sort: this.sort,
@@ -109,19 +110,28 @@ export default class RoadsignConceptsIndexController extends Controller {
         validityEndDate: this.validityEndDate,
       },
     );
+
     query['filter'] = {
       id: roadsignConceptUris.join(','),
     };
+
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
-    const roadSigns = roadsignConceptUris.length
-      ? await this.store.query<RoadSignConcept>('road-sign-concept', query)
-      : ([] as RoadSignConcept[] as Awaited<
-          ReturnType<typeof this.store.query<RoadSignConcept>>
-        >);
-    roadSigns.meta = generateMeta({ page: this.page, size: this.size }, count);
-    roadSigns.meta[count] = count;
-    return roadSigns;
+    try {
+      const roadSigns = roadsignConceptUris.length
+        ? await this.store.query<RoadSignConcept>('road-sign-concept', query)
+        : ([] as RoadSignConcept[] as Awaited<
+            ReturnType<typeof this.store.query<RoadSignConcept>>
+          >);
+      roadSigns.meta = generateMeta(
+        { page: this.page, size: this.size },
+        count,
+      );
+      roadSigns.meta[count] = count;
+      return roadSigns;
+    } catch (e) {
+      console.error(e);
+    }
   });
 
   get selectedClassification() {
