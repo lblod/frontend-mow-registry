@@ -9,5 +9,5 @@ steps:
       password:
         from_secret: docker_password
 when:
-  event: tag
-  tag: v*
+  - event: tag
+    ref: refs/tags/v*
