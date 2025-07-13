@@ -1,7 +1,7 @@
-import JSONAPIAdapter from '@ember-data/adapter/json-api';
-import type { AdapterPayload } from '@ember-data/legacy-compat';
-import type Store from '@ember-data/store';
-import type { ModelSchema } from '@ember-data/store/types';
+import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';
+import type Store from 'mow-registry/services/store';
+import type { ModelSchema } from '@warp-drive/core/types';
+import type { AdapterPayload } from '@warp-drive/legacy/compat';
 
 export default class ApplicationAdapter extends JSONAPIAdapter {
   // Copy fix for includes in queries from here: https://github.com/emberjs/data/issues/9588

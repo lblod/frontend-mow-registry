@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { ZON_CONCEPT_SCHEME_ID } from '../utils/constants';
-import type Store from '@ember-data/store';
+import type Store from 'mow-registry/services/store';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import { trackedFunction } from 'reactiveweb/function';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';

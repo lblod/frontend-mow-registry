@@ -1,4 +1,4 @@
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import TrafficlightConceptsEditController from 'mow-registry/controllers/traffic-light-concepts/edit';

@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import type RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import type NodeShape from 'mow-registry/models/node-shape';
 import type TrafficMeasureConceptsDetailsRoute from 'mow-registry/routes/traffic-measure-concepts/details';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';

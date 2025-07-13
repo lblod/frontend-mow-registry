@@ -1,12 +1,9 @@
-import type { PromiseManyArray } from '@ember-data/model/-private';
+import type { AsyncHasMany } from '@warp-drive/legacy/model';
 import type TribontShape from 'mow-registry/models/tribont-shape';
 import type Variable from 'mow-registry/models/variable';
 
 export async function validateVariables(
-  variablesProm:
-    | Variable[]
-    | PromiseLike<Variable[]>
-    | PromiseManyArray<Variable>,
+  variablesProm: Variable[] | PromiseLike<Variable[]> | AsyncHasMany<Variable>,
 ) {
   const variables = await variablesProm;
   return !(
@@ -18,7 +15,7 @@ export async function validateShapes(
   shapesProm:
     | TribontShape[]
     | PromiseLike<TribontShape[]>
-    | PromiseManyArray<TribontShape>,
+    | AsyncHasMany<TribontShape>,
 ) {
   const shapes = await shapesProm;
   return !(

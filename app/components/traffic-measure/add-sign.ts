@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type { SignType } from 'mow-registry/components/traffic-measure/select-type';
 import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';

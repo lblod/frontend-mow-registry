@@ -1,8 +1,8 @@
-import { hasMany, type AsyncHasMany } from '@ember-data/model';
+import { hasMany, type AsyncHasMany } from '@warp-drive/legacy/model';
 import Resource from 'mow-registry/models/resource';
 import type Template from 'mow-registry/models/template';
 import { validateHasManyOptional } from 'mow-registry/validators/schema';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class Concept extends Resource {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.

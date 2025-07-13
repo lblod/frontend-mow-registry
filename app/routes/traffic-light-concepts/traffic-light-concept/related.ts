@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import type TrafficLightConceptRelatedController from 'mow-registry/controllers/traffic-light-concepts/traffic-light-concept/related';
 import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';

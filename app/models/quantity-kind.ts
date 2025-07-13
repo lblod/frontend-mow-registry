@@ -1,7 +1,7 @@
-import Model, { hasMany } from '@ember-data/model';
-import { attr } from '@ember-data/model';
+import Model, { hasMany } from '@warp-drive/legacy/model';
+import { attr } from '@warp-drive/legacy/model';
 import type Unit from './unit';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class QuantityKind extends Model {
   declare [Type]: 'quantity-kind';
