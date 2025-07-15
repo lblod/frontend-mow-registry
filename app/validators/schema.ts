@@ -74,6 +74,15 @@ export const validateNumberRequired = (message = 'errors.number') => {
 };
 
 /**
+ * Rules for validating a number as an optional field.
+ */
+export const validateNumberOptional = (message = 'errors.number') => {
+  return Joi.number().required().messages({
+    'any.optional': message,
+  });
+};
+
+/**
  * Rules for validating a date as a optional field.
  */
 export const validateDateOptional = (message = 'errors.date') => {

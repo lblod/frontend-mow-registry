@@ -2,11 +2,12 @@ import type Store from '@ember-data/store';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
-import Variable from 'mow-registry/models/variable';
+import Variable, { type VariableType } from 'mow-registry/models/variable';
 import IntlService from 'ember-intl/services/intl';
 import type CodelistsService from 'mow-registry/services/codelists';
 import type CodeList from 'mow-registry/models/code-list';
 import { trackedFunction } from 'reactiveweb/function';
+import { labelForVariableType } from 'mow-registry/utils/variable';
 
 interface Signature {
   Args: {
@@ -16,7 +17,9 @@ interface Signature {
   };
 }
 
-const VARIABLE_TYPES = [
+type SignVariableType = Exclude<VariableType, 'instruction'>;
+
+const SIGN_VARIABLE_TYPES: SignVariableType[] = [
   'text',
   'number',
   'date',
@@ -24,30 +27,17 @@ const VARIABLE_TYPES = [
   'codelist',
 ] as const;
 
-type VariableType = (typeof VARIABLE_TYPES)[number];
-
 export default class VariableManager extends Component<Signature> {
   @service declare store: Store;
   @service declare intl: IntlService;
   @service('codelists') declare codeListService: CodelistsService;
 
   get variableTypes() {
-    return VARIABLE_TYPES;
+    return SIGN_VARIABLE_TYPES;
   }
 
-  labelForType = (variableType: VariableType) => {
-    switch (variableType) {
-      case 'text':
-        return this.intl.t('utility.template-variables.text');
-      case 'number':
-        return this.intl.t('utility.template-variables.number');
-      case 'date':
-        return this.intl.t('utility.template-variables.date');
-      case 'location':
-        return this.intl.t('utility.template-variables.location');
-      case 'codelist':
-        return this.intl.t('utility.template-variables.codelist');
-    }
+  labelForType = (variableType: SignVariableType) => {
+    return labelForVariableType(this.intl, variableType);
   };
 
   codelists = trackedFunction(this, async () => {
@@ -66,11 +56,11 @@ export default class VariableManager extends Component<Signature> {
   }
 
   @action
-  setVariableType(variable: Variable, selectedType: VariableType) {
-    const oldType = variable.type as VariableType | undefined;
+  setVariableType(variable: Variable, selectedType: SignVariableType) {
+    const oldType = variable.type as SignVariableType | undefined;
     const labelModified =
       oldType && variable.label !== this.labelForType(oldType);
-    variable.type = selectedType;
+    variable.type = selectedType satisfies VariableType;
 
     if (!labelModified) {
       variable.label = this.labelForType(selectedType);

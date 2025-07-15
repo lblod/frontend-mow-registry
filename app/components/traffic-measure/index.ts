@@ -18,16 +18,13 @@ import CodeList from 'mow-registry/models/code-list';
 import ApplicationInstance from '@ember/application/instance';
 import type { SignType } from 'mow-registry/components/traffic-measure/select-type';
 import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
-import Variable from 'mow-registry/models/variable';
+import Variable, { type VariableType } from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
 import validateTrafficMeasureDates from 'mow-registry/utils/validate-traffic-measure-dates';
 import type SkosConcept from 'mow-registry/models/skos-concept';
+import CodelistVariable from 'mow-registry/models/codelist-variable';
 
-export type InputType = {
-  value: string;
-  label: string;
-};
 type Args = {
   trafficMeasureConcept: TrafficMeasureConcept;
 };
@@ -47,42 +44,20 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   @tracked preview?: string;
   @tracked selectedType?: SignType | null;
   @tracked instructions: Template[] = [];
-  @tracked inputTypes: InputType[];
-  @tracked instructionType: InputType;
   @tracked signsError = false;
   @tracked signValidation?: string | null;
 
   variablesToBeDeleted: Variable[] = [];
 
-  constructor(owner: ApplicationInstance, args: Args) {
-    super(owner, args);
-    this.inputTypes = new TrackedArray([
-      {
-        value: 'text',
-        label: this.intl.t('utility.template-variables.text'),
-      },
-      {
-        value: 'number',
-        label: this.intl.t('utility.template-variables.number'),
-      },
-      {
-        value: 'date',
-        label: this.intl.t('utility.template-variables.date'),
-      },
-      {
-        value: 'location',
-        label: this.intl.t('utility.template-variables.location'),
-      },
-      {
-        value: 'codelist',
-        label: this.intl.t('utility.template-variables.codelist'),
-      },
-    ]);
-
-    this.instructionType = {
-      value: 'instruction',
-      label: this.intl.t('utility.template-variables.instruction'),
-    };
+  get variableTypes(): VariableType[] {
+    const types: VariableType[] = [
+      'text',
+      'number',
+      'date',
+      'location',
+      'codelist',
+    ];
+    return this.instructions.length > 0 ? [...types, 'instruction'] : types;
   }
 
   get validationStatusOptions() {
@@ -193,19 +168,9 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     this.instructions = instructions;
 
     //remove input type instruction if there are none available and reset variables with instructions
-    if (instructions.length != 0) {
-      if (this.inputTypes.indexOf(this.instructionType) == -1) {
-        this.inputTypes.push(this.instructionType);
-      }
-    } else if (instructions.length == 0) {
-      if (this.inputTypes.indexOf(this.instructionType) != -1) {
-        this.inputTypes.splice(
-          this.inputTypes.indexOf(this.instructionType),
-          1,
-        );
-      }
+    if (instructions.length == 0) {
       for (const variable of this.variables) {
-        if (variable.type == this.instructionType.value) {
+        if (variable.type == 'instruction') {
           await this.updateVariableType(variable, 'text');
         }
       }
@@ -270,16 +235,10 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  async updateVariableType(
-    variable: Variable,
-    selectedType: InputType | string,
-  ) {
-    variable.type =
-      typeof selectedType === 'string' ? selectedType : selectedType.value;
-    if (variable.type === 'codelist') {
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      variable.codeList = this.codeLists[0];
+  async updateVariableType(variable: Variable, selectedType: VariableType) {
+    variable.type = selectedType;
+    if (variable instanceof CodelistVariable) {
+      variable.set('codeList', this.codeLists[0]);
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
       variable.template = null;
     } else if (variable.type === 'instruction') {
