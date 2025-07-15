@@ -14,6 +14,7 @@ import type RouterService from '@ember/routing/router-service';
 import Icon from 'mow-registry/models/icon';
 import { removeItem } from 'mow-registry/utils/array';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 
 type Args = {
   codelist: CodeList;
@@ -52,10 +53,11 @@ export default class CodelistFormComponent extends Component<Args> {
   }
 
   fetchCodelistTypes = task(async () => {
-    const typesScheme = await this.store.findRecord<ConceptScheme>(
-      'concept-scheme',
-      COD_CONCEPT_SCHEME_ID,
-    );
+    const typesScheme = await this.store
+      .request(
+        findRecord<ConceptScheme>('concept-scheme', COD_CONCEPT_SCHEME_ID),
+      )
+      .then((res) => res.content);
     const types = await typesScheme.concepts;
     this.codelistTypes = types;
     if (await this.args.codelist.type) {

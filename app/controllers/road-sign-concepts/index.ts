@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import type { ModelFrom } from 'mow-registry/utils/type-utils';
+import type { Collection, ModelFrom } from 'mow-registry/utils/type-utils';
 import RoadsignConceptsIndexRoute from 'mow-registry/routes/road-sign-concepts/index';
 import RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type IntlService from 'ember-intl/services/intl';
@@ -13,6 +13,7 @@ import Store from 'mow-registry/services/store';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import { trackedFunction } from 'reactiveweb/function';
 import type { LegacyResourceQuery } from '@warp-drive/core/types';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class RoadsignConceptsIndexController extends Controller {
   queryParams = [
@@ -88,8 +89,7 @@ export default class RoadsignConceptsIndexController extends Controller {
   );
 
   roadSigns = trackedFunction(this, async () => {
-    console.log('Fetch the road signs!');
-    const query: LegacyResourceQuery<RoadSignConcept> = {
+    const queryParams: LegacyResourceQuery<RoadSignConcept> = {
       include: ['image.file', 'classifications'],
       sort: this.sort,
       filter: {},
@@ -111,18 +111,22 @@ export default class RoadsignConceptsIndexController extends Controller {
       },
     );
 
-    query['filter'] = {
+    queryParams['filter'] = {
       id: roadsignConceptUris.join(','),
     };
 
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     try {
-      const roadSigns = roadsignConceptUris.length
-        ? await this.store.query<RoadSignConcept>('road-sign-concept', query)
-        : ([] as RoadSignConcept[] as Awaited<
-            ReturnType<typeof this.store.query<RoadSignConcept>>
-          >);
+      const roadSigns = (
+        roadsignConceptUris.length
+          ? (
+              await this.store.request(
+                query<RoadSignConcept>('road-sign-concept', queryParams),
+              )
+            ).content
+          : []
+      ) as Collection<RoadSignConcept>;
       roadSigns.meta = generateMeta(
         { page: this.page, size: this.size },
         count,

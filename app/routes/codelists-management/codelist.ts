@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import CodelistController from 'mow-registry/controllers/codelists-management/codelist';
 import type CodeList from 'mow-registry/models/code-list';
 import { hash } from 'rsvp';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 
 type Params = {
   id: string;
@@ -13,11 +14,13 @@ export default class CodelistsManagementCodelistRoute extends Route {
 
   async model(params: Params) {
     const model = await hash({
-      codelist: this.store.findRecord<CodeList>('code-list', params.id, {
-        // @ts-expect-error: The types expect an array, but the adapter doesn't convert that to the expected json:api include format
-        // More info: https://github.com/emberjs/data/pull/9507#issuecomment-2219588690
-        include: ['type', 'concepts'].join(),
-      }),
+      codelist: this.store
+        .request(
+          findRecord<CodeList>('code-list', params.id, {
+            include: ['type', 'concepts'].join(),
+          }),
+        )
+        .then((res) => res.content),
     });
 
     return model;
