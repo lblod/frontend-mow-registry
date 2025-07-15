@@ -7,7 +7,7 @@ import {
 } from '@ember-data/model';
 import type { Type } from '@warp-drive/core-types/symbols';
 import type SkosConcept from 'mow-registry/models/skos-concept';
-import type TrafficSignalConcept from './traffic-signal-concept';
+import type TrafficSignListItem from './traffic-sign-list-item';
 import type Template from './template';
 import Joi from 'joi';
 import {
@@ -32,12 +32,11 @@ export default class TrafficMeasureConcept extends AbstractValidationModel {
   @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;
 
-  @hasMany<TrafficSignalConcept>('traffic-signal-concept', {
-    inverse: 'hasTrafficMeasureConcepts',
+  @hasMany<TrafficSignListItem>('traffic-sign-list-item', {
     async: true,
     polymorphic: true,
   })
-  declare relatedTrafficSignalConcepts: AsyncHasMany<TrafficSignalConcept>;
+  declare relatedTrafficSignConceptsOrdered: AsyncHasMany<TrafficSignListItem>;
 
   @belongsTo<Template>('template', { async: true, inverse: 'parentConcept' })
   declare template: AsyncBelongsTo<Template>;

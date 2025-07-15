@@ -154,8 +154,8 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   fetchData = task(async () => {
     // Wait for data loading
-    const relatedTrafficSignals =
-      await this.trafficMeasureConcept.relatedTrafficSignalConcepts;
+    const relatedTrafficSigns =
+      await this.trafficMeasureConcept.relatedTrafficSignConceptsOrdered;
 
     this.codeLists = await this.codeListService.all.perform();
 
