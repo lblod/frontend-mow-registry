@@ -11,7 +11,6 @@ import type SkosConcept from './skos-concept';
 import {
   validateBelongsToOptional,
   validateHasManyOptional,
-  validateHasManyRequired,
   validateStringRequired,
 } from 'mow-registry/validators/schema';
 import type { Type } from '@warp-drive/core-types/symbols';

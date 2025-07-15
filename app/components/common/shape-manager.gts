@@ -13,6 +13,8 @@ import lte from 'ember-truth-helpers/helpers/lte';
 import not from 'ember-truth-helpers/helpers/not';
 // @ts-expect-error need to move to truth-helpers v4
 import or from 'ember-truth-helpers/helpers/or';
+// @ts-expect-error need to move to truth-helpers v4
+import and from 'ember-truth-helpers/helpers/and';
 // @ts-expect-error no types
 import promiseAwait from 'ember-promise-helpers/helpers/await';
 import PowerSelect from 'ember-power-select/components/power-select';
@@ -35,7 +37,7 @@ import { isSome } from 'mow-registry/utils/option';
 import ErrorMessage from 'mow-registry/components/error-message';
 import sortByOrder from 'mow-registry/helpers/sort-by-order';
 import type { PromiseBelongsTo } from '@ember-data/model/-private/promise-belongs-to';
-import and from 'ember-truth-helpers/helpers/and';
+
 import { action } from '@ember/object';
 
 interface Signature {
@@ -43,7 +45,7 @@ interface Signature {
     trafficSignalConcept: TrafficSignalConcept;
     shapes: TribontShape[];
     defaultShape?: TribontShape | PromiseBelongsTo<TribontShape>;
-    addShape: () => TribontShape;
+    addShape: () => Promise<TribontShape>;
     toggleDefaultShape: (shape: TribontShape) => Promise<void>;
     removeShape: (shapeToRemove: TribontShape) => void;
     removeDimension: (
