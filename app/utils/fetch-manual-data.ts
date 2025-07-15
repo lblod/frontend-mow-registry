@@ -35,6 +35,7 @@ type Params = {
   sort: string;
   classification?: string | null;
   validation?: string | null;
+  variableSignage?: string | null;
   arPlichtig?: string | null;
   validityOption?: string | null;
   validityStartDate?: string | null;
@@ -80,6 +81,19 @@ export default async function fetchManualData(
       filters.push(`
         FILTER NOT EXISTS {
           ?uri ext:valid ${sparqlEscapeBool(true)}
+        }
+      `);
+    }
+  }
+  if (isSome(params.variableSignage)) {
+    if (params.variableSignage === 'true') {
+      filters.push(`
+        FILTER(?variableSignage = ${sparqlEscapeBool(true)})
+      `);
+    } else {
+      filters.push(`
+        FILTER NOT EXISTS {
+          ?uri mobiliteit:variabeleSignalisatie ${sparqlEscapeBool(true)}
         }
       `);
     }
@@ -141,6 +155,9 @@ export default async function fetchManualData(
       ?uri mobiliteit:Mobiliteitsmaatregelconcept.template ?template.
       ?template ext:preview ?templatePreview.
     }
+    OPTIONAL {
+      ?uri mobiliteit:variabeleSignalisatie ?variableSignage.
+    }
     ${filters.join(' ')}
   `;
   const queryCount = `
@@ -176,16 +193,18 @@ const SORTPARAMETERS = {
   valid: '?valid',
   'ar-plichtig': '?ARplichtig',
   ':no-case:label': 'lcase(?label)',
+  'variable-signage': '?variableSignage',
 };
 
 function generateSortFilter(sort: string): string {
+  console.log(sort);
   let direction;
   let parameter: keyof typeof SORTPARAMETERS;
   if (sort.charAt(0) === '-') {
-    direction = 'ASC';
+    direction = 'DESC';
     parameter = sort.slice(1, sort.length) as keyof typeof SORTPARAMETERS;
   } else {
-    direction = 'DESC';
+    direction = 'ASC';
     parameter = sort as keyof typeof SORTPARAMETERS;
   }
   return `ORDER BY ${direction}(${SORTPARAMETERS[parameter]})`;

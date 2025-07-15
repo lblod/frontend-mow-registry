@@ -244,6 +244,7 @@ traffic-measure-concept:
     type-to-search: Typ om te zoeken
     validation-filter: Validatie
     validation-filter-placeholder: Filteren op validatie-status
+    variable-signage-filter-placeholder: Filteren op variabele signalisatie
   landing-page:
     content: Beheer mobiliteitsmaatregelen.
     button: Ga naar Mobiliteitsmaatregelen

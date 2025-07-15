@@ -55,6 +55,25 @@
             {{validation.label}}
           </PowerSelect>
         </div>
+        <div>
+          <AuLabel for="variable-signage-filter">
+            {{t "traffic-measure-concept.attr.variable-signage"}}
+          </AuLabel>
+          <PowerSelect
+            @allowClear={{true}}
+            @options={{this.variableSignageOptions}}
+            @selected={{this.selectedVariableSignage}}
+            @placeholder={{t
+              "traffic-measure-concept.crud.variable-signage-filter-placeholder"
+            }}
+            @loadingMessage={{t "utility.loading"}}
+            @onChange={{this.updateSignageFilter}}
+            @triggerId="variable-signage-filter"
+            as |signage|
+          >
+            {{signage.label}}
+          </PowerSelect>
+        </div>
         <ValidityFilters
           @onChange={{this.updateValidityFilter}}
           @value={{this.validityOption}}
