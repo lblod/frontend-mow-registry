@@ -9,6 +9,7 @@ import { trackedFunction } from 'reactiveweb/function';
 import Store from 'mow-registry/services/store';
 import type Icon from 'mow-registry/models/icon';
 import type { LegacyResourceQuery } from '@warp-drive/core/types';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class IconCatalogIndexController extends Controller {
   queryParams = ['page', 'size', 'label', 'sort'];
@@ -41,7 +42,7 @@ export default class IconCatalogIndexController extends Controller {
     this.page = 0;
   }
   icons = trackedFunction(this, async () => {
-    const query: LegacyResourceQuery<Icon> = {
+    const queryParams: LegacyResourceQuery<Icon> = {
       // TODO: The types expect an array, but the adapter doesn't convert that to the expected json:api include format
       // More info: https://github.com/emberjs/data/pull/9507#issuecomment-2219588690
       include: ['image.file', 'inScheme'],
@@ -53,13 +54,13 @@ export default class IconCatalogIndexController extends Controller {
     };
 
     if (this.label) {
-      query['filter'] = {
+      queryParams['filter'] = {
         label: this.label,
       };
     }
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
 
-    return await this.store.query<Icon>('icon', query);
+    return (await this.store.request(query<Icon>('icon', queryParams))).content;
   });
 }

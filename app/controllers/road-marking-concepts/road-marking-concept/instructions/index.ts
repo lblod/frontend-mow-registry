@@ -6,8 +6,11 @@ import { removeItem } from 'mow-registry/utils/array';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import { service } from '@ember/service';
 import IntlService from 'ember-intl/services/intl';
+import type Store from 'mow-registry/services/store';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 export default class RoadMarkingConceptsRoadMarkingConceptInstructionsIndexController extends Controller {
+  @service declare store: Store;
   @service
   declare intl: IntlService;
   declare model: ModelFrom<Route>;
@@ -18,6 +21,6 @@ export default class RoadMarkingConceptsRoadMarkingConceptInstructionsIndexContr
     removeItem(templates, template);
 
     await template.destroyRecord();
-    await this.model.roadMarkingConcept.save();
+    await this.store.request(saveRecord(this.model.roadMarkingConcept));
   });
 }

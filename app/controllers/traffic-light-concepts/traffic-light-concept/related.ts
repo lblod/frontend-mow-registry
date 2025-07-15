@@ -9,9 +9,12 @@ import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept'
 import type RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type TrafficlightConceptRelatedRoute from 'mow-registry/routes/traffic-light-concepts/traffic-light-concept/related';
 import { removeItem } from 'mow-registry/utils/array';
+import type Store from 'mow-registry/services/store';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 export default class TrafficLightConceptsTrafficLightConceptRelatedController extends Controller {
   @service declare router: RouterService;
+  @service declare store: Store;
   declare model: ModelFrom<TrafficlightConceptRelatedRoute>;
 
   @tracked isAddingRelatedRoadSigns = false;
@@ -74,7 +77,7 @@ export default class TrafficLightConceptsTrafficLightConceptRelatedController ex
     relatedToTrafficLightConcepts.push(relatedTrafficLight);
     relatedTrafficLightConcepts.push(relatedTrafficLight);
 
-    await this.model.trafficLightConcept.save();
+    await this.store.request(saveRecord(this.model.trafficLightConcept));
   });
 
   addRelatedRoadSign = task(async (relatedRoadSign: RoadSignConcept) => {
@@ -85,7 +88,7 @@ export default class TrafficLightConceptsTrafficLightConceptRelatedController ex
     if (this.classificationRoadSigns) {
       removeItem(this.classificationRoadSigns, relatedRoadSign);
     }
-    await this.model.trafficLightConcept.save();
+    await this.store.request(saveRecord(this.model.trafficLightConcept));
   });
 
   removeRelatedRoadSign = task(async (relatedRoadSign) => {
@@ -98,7 +101,7 @@ export default class TrafficLightConceptsTrafficLightConceptRelatedController ex
       this.classificationRoadSigns.push(relatedRoadSign);
     }
 
-    await this.model.trafficLightConcept.save();
+    await this.store.request(saveRecord(this.model.trafficLightConcept));
   });
 
   addRelatedRoadMarking = task(async (relatedRoadMarking) => {
@@ -106,7 +109,7 @@ export default class TrafficLightConceptsTrafficLightConceptRelatedController ex
       await this.model.trafficLightConcept.relatedRoadMarkingConcepts;
 
     relatedRoadMarkings.push(relatedRoadMarking);
-    await this.model.trafficLightConcept.save();
+    await this.store.request(saveRecord(this.model.trafficLightConcept));
   });
 
   removeRelatedRoadMarking = task(async (relatedRoadMarking) => {
@@ -115,7 +118,7 @@ export default class TrafficLightConceptsTrafficLightConceptRelatedController ex
 
     removeItem(relatedRoadMarkings, relatedRoadMarking);
 
-    await this.model.trafficLightConcept.save();
+    await this.store.request(saveRecord(this.model.trafficLightConcept));
   });
 
   handleCategorySelection = task(async (classification: RoadSignCategory) => {
@@ -143,8 +146,8 @@ export default class TrafficLightConceptsTrafficLightConceptRelatedController ex
       removeItem(relatedFromTrafficLightConcepts, relatedTrafficLight);
       removeItem(relatedTrafficLightConcepts, relatedTrafficLight);
 
-      await relatedTrafficLight.save();
-      await this.model.trafficLightConcept.save();
+      await this.store.request(saveRecord(relatedTrafficLight));
+      await this.store.request(saveRecord(this.model.trafficLightConcept));
     },
   );
 

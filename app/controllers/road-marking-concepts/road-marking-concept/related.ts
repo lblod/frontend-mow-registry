@@ -2,16 +2,19 @@ import Controller from '@ember/controller';
 import type RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { task } from 'ember-concurrency';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import type Route from 'mow-registry/routes/road-marking-concepts/road-marking-concept/related';
+import type Store from 'mow-registry/services/store';
 import { removeItem } from 'mow-registry/utils/array';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 
 export default class RoadMarkingConceptsRoadMarkingConceptRelatedController extends Controller {
+  @service declare store: Store;
   @service declare router: RouterService;
   declare model: ModelFrom<Route>;
 
@@ -68,7 +71,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
     relatedToRoadMarkingConcepts.push(relatedRoadMarking);
     relatedRoadMarkingConcepts.push(relatedRoadMarking);
 
-    await this.model.roadMarkingConcept.save();
+    await this.store.request(saveRecord(this.model.roadMarkingConcept));
   });
 
   removeRelatedRoadMarking = task(
@@ -84,8 +87,8 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
       removeItem(relatedFromRoadMarkingConcepts, relatedRoadMarking);
       removeItem(relatedRoadMarkingConcepts, relatedRoadMarking);
 
-      await relatedRoadMarking.save();
-      await this.model.roadMarkingConcept.save();
+      await this.store.request(saveRecord(relatedRoadMarking));
+      await this.store.request(saveRecord(this.model.roadMarkingConcept));
     },
   );
 
@@ -97,7 +100,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
     if (this.classificationRoadSigns) {
       removeItem(this.classificationRoadSigns, relatedRoadSign);
     }
-    await this.model.roadMarkingConcept.save();
+    await this.store.request(saveRecord(this.model.roadMarkingConcept));
   });
 
   removeRelatedRoadSign = task(async (relatedRoadSign: RoadSignConcept) => {
@@ -110,7 +113,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
       this.classificationRoadSigns.push(relatedRoadSign);
     }
 
-    await this.model.roadMarkingConcept.save();
+    await this.store.request(saveRecord(this.model.roadMarkingConcept));
   });
 
   handleCategorySelection = task(
@@ -133,7 +136,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
         await this.model.roadMarkingConcept.relatedTrafficLightConcepts;
 
       relatedTrafficLights.push(relatedTrafficLight);
-      await this.model.roadMarkingConcept.save();
+      await this.store.request(saveRecord(this.model.roadMarkingConcept));
     },
   );
 
@@ -143,8 +146,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
         await this.model.roadMarkingConcept.relatedTrafficLightConcepts;
 
       removeItem(relatedTrafficLights, relatedTrafficLight);
-
-      await this.model.roadMarkingConcept.save();
+      await this.store.request(saveRecord(this.model.roadMarkingConcept));
     },
   );
 

@@ -132,6 +132,9 @@ importers:
       '@warp-drive/schema-record':
         specifier: 5.6.0
         version: 5.6.0(@glint/template@1.5.2)
+      '@warp-drive/utilities':
+        specifier: 5.6.0
+        version: 5.6.0(@glint/template@1.5.2)(@warp-drive/core@5.6.0(@glint/template@1.5.2))
       broccoli-asset-rev:
         specifier: ^3.0.0
         version: 3.0.0

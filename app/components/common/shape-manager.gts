@@ -35,6 +35,7 @@ import { isSome } from 'mow-registry/utils/option';
 import ErrorMessage from 'mow-registry/components/error-message';
 import sortByOrder from 'mow-registry/helpers/sort-by-order';
 import type { AsyncBelongsTo } from '@warp-drive/legacy/model';
+import { findAll, query } from '@warp-drive/legacy/compat/builders';
 
 interface Signature {
   Args: {
@@ -91,25 +92,31 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   async fetchUnits() {
-    this.units = await this.store.findAll<Unit>('unit');
+    this.units = await this.store
+      .request(findAll<Unit>('unit'))
+      .then((res) => res.content);
 
     return this.units;
   }
 
   async fetchShapeClassifications() {
-    const classifications = await this.store.findAll<ShapeClassification>(
-      'tribont-shape-classification-code',
-    );
+    const classifications = await this.store
+      .request(
+        findAll<ShapeClassification>('tribont-shape-classification-code'),
+      )
+      .then((res) => res.content);
 
     return classifications;
   }
 
   fetchQuantityKinds() {
-    return this.store.query<QuantityKind>('quantity-kind', {
-      // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-      // TODO: fix the query types
-      include: 'units',
-    });
+    return this.store
+      .request(
+        query<QuantityKind>('quantity-kind', {
+          include: ['units'],
+        }),
+      )
+      .then((res) => res.content);
   }
 
   addDimension = async (shape: TribontShape) => {

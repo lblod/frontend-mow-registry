@@ -70,6 +70,7 @@
     "@warp-drive/json-api": "5.6.0",
     "@warp-drive/legacy": "5.6.0",
     "@warp-drive/schema-record": "5.6.0",
+    "@warp-drive/utilities": "5.6.0",
     "broccoli-asset-rev": "^3.0.0",
     "changesets-release-it-plugin": "^0.1.2",
     "concurrently": "^8.2.2",

@@ -5,6 +5,8 @@ import Store from 'mow-registry/services/store';
 import { tracked } from '@glimmer/tracking';
 import type Icon from 'mow-registry/models/icon';
 import { action } from '@ember/object';
+import { query } from '@warp-drive/legacy/compat/builders';
+import type { LegacyResourceQuery } from '@warp-drive/core/types';
 
 interface Signature {
   Args: {
@@ -25,17 +27,16 @@ export default class IconSelectComponent extends Component<Signature> {
   loadIconCatalogTask = task({ restartable: true }, async (search?: string) => {
     await timeout(300); // debounce
 
-    const query: Record<string, unknown> = {
+    const queryParams: LegacyResourceQuery<Icon> = {
       sort: 'label',
     };
 
     if (search?.length) {
-      query['filter[label]'] = search;
+      queryParams['filter[label]'] = search;
     }
 
-    // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-    // TODO: fix the query types
-    const result = await this.store.query<Icon>('icon', query);
+    const result = (await this.store.request(query<Icon>('icon', queryParams)))
+      .content;
 
     return result.slice();
   });

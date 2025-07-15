@@ -10,6 +10,8 @@ import Store from 'mow-registry/services/store';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import { trackedFunction } from 'reactiveweb/function';
 import type { LegacyResourceQuery } from '@warp-drive/core/types';
+import { query } from '@warp-drive/legacy/compat/builders';
+import type { Collection } from 'mow-registry/utils/type-utils';
 
 export default class RoadmarkingConceptsIndexController extends Controller {
   @service declare store: Store;
@@ -75,7 +77,7 @@ export default class RoadmarkingConceptsIndexController extends Controller {
   );
 
   roadMarkings = trackedFunction(this, async () => {
-    const query: LegacyResourceQuery<RoadMarkingConcept> = {
+    const queryParams: LegacyResourceQuery<RoadMarkingConcept> = {
       sort: this.sort,
       filter: {},
     };
@@ -94,19 +96,20 @@ export default class RoadmarkingConceptsIndexController extends Controller {
         validityEndDate: this.validityEndDate,
       },
     );
-    query['filter'] = {
+    queryParams['filter'] = {
       id: roadMarkingConceptUris.join(','),
     };
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
-    const roadMarkings = roadMarkingConceptUris.length
-      ? await this.store.query<RoadMarkingConcept>(
-          'road-marking-concept',
-          query,
-        )
-      : ([] as RoadMarkingConcept[] as Awaited<
-          ReturnType<typeof this.store.query<RoadMarkingConcept>>
-        >);
+    const roadMarkings = (
+      roadMarkingConceptUris.length
+        ? (
+            await this.store.request(
+              query<RoadMarkingConcept>('road-marking-concept', queryParams),
+            )
+          ).content
+        : []
+    ) as Collection<RoadMarkingConcept>;
     roadMarkings.meta = generateMeta(
       { page: this.page, size: this.size },
       count,

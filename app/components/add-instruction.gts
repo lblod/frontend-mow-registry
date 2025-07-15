@@ -43,6 +43,7 @@ import { isSome } from 'mow-registry/utils/option';
 import { removeItem } from 'mow-registry/utils/array';
 import validateTemplateDates from 'mow-registry/utils/validate-template-dates';
 import ErrorMessage from 'mow-registry/components/error-message';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 export interface AddInstructionSig {
   Args: {
@@ -150,7 +151,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     removeItem(templates, template);
 
     await template.destroyRecord();
-    await this.args.concept.save();
+    await this.store.request(saveRecord(this.args.concept));
 
     this.router.replaceWith(this.args.from);
   });
@@ -291,17 +292,17 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
       const areVariablesValid = await validateVariables(this.variables);
 
       if (isValid && areVariablesValid && !this.templateSyntaxError) {
-        await this.template.save();
+        await this.store.request(saveRecord(this.template));
         (await this.concept.hasInstructions).push(this.template);
-        await this.concept.save();
+        await this.store.request(saveRecord(this.concept));
         for (let i = 0; i < this.variables.length; i++) {
           const variable = this.variables[i];
           if (variable) {
             (await this.template.variables).push(variable);
-            await variable.save();
+            await this.store.request(saveRecord(variable));
           }
         }
-        await this.template.save();
+        await this.store.request(saveRecord(this.template));
         await Promise.all(
           this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
         );

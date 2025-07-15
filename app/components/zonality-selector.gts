@@ -11,6 +11,7 @@ import zonalityLabel from 'mow-registry/helpers/zonality-label';
 import t from 'ember-intl/helpers/t';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import { get } from '@ember/helper';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 
 type Args = {
   model: TrafficSignalConcept;
@@ -24,10 +25,11 @@ export default class ZonalitySelectorComponent extends Component<Args> {
   zonalities = trackedFunction(this, async () => {
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
-    const conceptScheme = await this.store.findRecord<ConceptScheme>(
-      'concept-scheme',
-      ZON_CONCEPT_SCHEME_ID,
-    );
+    const conceptScheme = await this.store
+      .request(
+        findRecord<ConceptScheme>('concept-scheme', ZON_CONCEPT_SCHEME_ID),
+      )
+      .then((res) => res.content);
     return conceptScheme.concepts;
   });
 

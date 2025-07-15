@@ -4,12 +4,15 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import Icon from 'mow-registry/models/icon';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
+import type Store from 'mow-registry/services/store';
 
 type Args = {
   icon: Icon;
 };
 export default class IconCatalogFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: RouterService;
+  @service declare store: Store;
 
   get isSaving() {
     return this.editIconTask.isRunning;
@@ -39,8 +42,8 @@ export default class IconCatalogFormComponent extends ImageUploadHandlerComponen
 
     if (!this.args.icon.error) {
       const imageRecord = await this.saveImage();
-      if (imageRecord) this.args.icon.set('image', imageRecord); // image gets updated, but not overwritten
-      await this.args.icon.save();
+      if (imageRecord) this.args.icon.set('image', imageRecord); // image gets updated, but not overwritten\
+      await this.store.request(saveRecord(this.args.icon));
 
       await this.router.transitionTo('icon-catalog.icon', this.args.icon.id);
     }

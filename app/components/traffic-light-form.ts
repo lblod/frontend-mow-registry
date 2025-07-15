@@ -11,6 +11,7 @@ import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import type Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
 import { validateVariables } from 'mow-registry/utils/validate-relations';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Args = {
   trafficLightConcept: TrafficLightConcept;
@@ -79,7 +80,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
       await Promise.all(
         (await this.args.trafficLightConcept.variables).map(
           async (variable) => {
-            await variable.save();
+            await this.store.request(saveRecord(variable));
           },
         ),
       );
@@ -87,8 +88,7 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
       await Promise.all(
         this.variablesToRemove.map((variable) => variable.destroyRecord()),
       );
-
-      await this.args.trafficLightConcept.save();
+      await this.store.request(saveRecord(this.args.trafficLightConcept));
       this.router.transitionTo(
         'traffic-light-concepts.traffic-light-concept',
         this.args.trafficLightConcept.id,

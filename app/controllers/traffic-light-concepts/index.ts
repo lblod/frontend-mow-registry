@@ -10,6 +10,8 @@ import Store from 'mow-registry/services/store';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import { trackedFunction } from 'reactiveweb/function';
 import type { LegacyResourceQuery } from '@warp-drive/core/types';
+import type { Collection } from 'mow-registry/utils/type-utils';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class TrafficlightConceptsIndexController extends Controller {
   queryParams = [
@@ -78,7 +80,7 @@ export default class TrafficlightConceptsIndexController extends Controller {
   );
 
   trafficLights = trackedFunction(this, async () => {
-    const query: LegacyResourceQuery<TrafficLightConcept> = {
+    const queryParams: LegacyResourceQuery<TrafficLightConcept> = {
       sort: this.sort,
       filter: {},
     };
@@ -97,19 +99,20 @@ export default class TrafficlightConceptsIndexController extends Controller {
         validityEndDate: this.validityEndDate,
       },
     );
-    query['filter'] = {
+    queryParams['filter'] = {
       id: trafficLightConceptUris.join(','),
     };
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
-    const trafficLights = trafficLightConceptUris.length
-      ? await this.store.query<TrafficLightConcept>(
-          'traffic-light-concept',
-          query,
-        )
-      : ([] as TrafficLightConcept[] as Awaited<
-          ReturnType<typeof this.store.query<TrafficLightConcept>>
-        >);
+    const trafficLights = (
+      trafficLightConceptUris.length
+        ? (
+            await this.store.request(
+              query<TrafficLightConcept>('traffic-light-concept', queryParams),
+            )
+          ).content
+        : []
+    ) as Collection<TrafficLightConcept>;
     trafficLights.meta = generateMeta(
       { page: this.page, size: this.size },
       count,
