@@ -48,6 +48,7 @@ import {
   validateShapes,
   validateVariables,
 } from 'mow-registry/utils/validate-relations';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -175,10 +176,10 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
         ...(await this.args.roadSignConcept.shapes).map(async (shape) => {
           await Promise.all(
             (await shape.dimensions).map(async (dimension) => {
-              await dimension.save();
+              await this.store.request(saveRecord(dimension));
             }),
           );
-          await shape.save();
+          await this.store.request(saveRecord(shape));
         }),
       );
 
@@ -200,7 +201,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
       savePromises.push(
         ...(await this.args.roadSignConcept.variables).map(async (variable) => {
-          await variable.save();
+          await this.store.request(saveRecord(variable));
         }),
       );
 
@@ -209,7 +210,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       );
 
       await Promise.all(savePromises);
-      await this.args.roadSignConcept.save();
+      await this.store.request(saveRecord(this.args.roadSignConcept));
       void this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
         this.args.roadSignConcept.id,

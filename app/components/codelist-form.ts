@@ -14,7 +14,7 @@ import type RouterService from '@ember/routing/router-service';
 import Icon from 'mow-registry/models/icon';
 import { removeItem } from 'mow-registry/utils/array';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
-import { findRecord } from '@warp-drive/legacy/compat/builders';
+import { findRecord, saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Args = {
   codelist: CodeList;
@@ -136,8 +136,10 @@ export default class CodelistFormComponent extends Component<Args> {
 
     if (!codelist.error) {
       await Promise.all(this.toDelete.map((option) => option.destroyRecord()));
-      await Promise.all(this.options.map((option) => option.save()));
-      await codelist.save();
+      await Promise.all(
+        this.options.map((option) => this.store.request(saveRecord(option))),
+      );
+      await this.store.request(saveRecord(codelist));
       await this.router.transitionTo(
         'codelists-management.codelist',
         codelist.id,

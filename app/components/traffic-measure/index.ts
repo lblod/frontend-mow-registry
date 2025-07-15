@@ -23,6 +23,7 @@ import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
 import validateTrafficMeasureDates from 'mow-registry/utils/validate-traffic-measure-dates';
 import type SkosConcept from 'mow-registry/models/skos-concept';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 export type InputType = {
   value: string;
@@ -429,9 +430,9 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     //if new save relationships
     if (this.new) {
-      await this.trafficMeasureConcept.save();
-      await template.save();
-      await this.trafficMeasureConcept.save();
+      await this.store.request(saveRecord(this.trafficMeasureConcept));
+      await this.store.request(saveRecord(template));
+      await this.store.request(saveRecord(this.trafficMeasureConcept));
     }
 
     //1-parse everything again
@@ -439,7 +440,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     //2-update node shape
     this.trafficMeasureConcept.label = this.label;
-    await this.trafficMeasureConcept.save();
+    await this.store.request(saveRecord(this.trafficMeasureConcept));
 
     //3-update roadsigns
     await this.saveRoadsigns.perform(this.trafficMeasureConcept);
@@ -471,12 +472,12 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     for (const sign of deletedSigns) {
       removeItem(await sign.hasTrafficMeasureConcepts, trafficMeasureConcept);
-      await sign.save();
+      await this.store.request(saveRecord(sign));
     }
 
     for (const sign of addedSigns) {
       (await sign.hasTrafficMeasureConcepts).push(trafficMeasureConcept);
-      await sign.save();
+      await this.store.request(saveRecord(sign));
     }
   });
 
@@ -489,10 +490,10 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //create new ones
     for (const variable of this.variables) {
       (await template.variables).push(variable);
-      await variable.save();
+      await this.store.request(saveRecord(variable));
     }
 
-    await template.save();
+    await this.store.request(saveRecord(template));
   });
 
   willDestroy() {
