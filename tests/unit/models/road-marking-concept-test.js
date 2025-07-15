@@ -19,10 +19,6 @@ module('Unit | Model | road marking concept', function (hooks) {
     assert.strictEqual(model.error.image.message, 'errors.field.required');
     assert.strictEqual(model.error.meaning.message, 'errors.field.required');
     assert.strictEqual(model.error.label.message, 'errors.field.required');
-    assert.strictEqual(
-      model.error.shapes.message,
-      'road-sign-concept.atLeastOneShapeRequired',
-    );
   });
 
   test('it does not have error when all mandatory fields are filled in', async function (assert) {

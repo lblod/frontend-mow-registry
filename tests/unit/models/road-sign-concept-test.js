@@ -23,10 +23,6 @@ module('Unit | Model | road sign concept', function (hooks) {
       model.error.classifications.message,
       'errors.field.required',
     );
-    assert.strictEqual(
-      model.error.shapes.message,
-      'road-sign-concept.atLeastOneShapeRequired',
-    );
   });
 
   test('it does not have error when all required fields are filled in', async function (assert) {
