@@ -197,7 +197,6 @@ const SORTPARAMETERS = {
 };
 
 function generateSortFilter(sort: string): string {
-  console.log(sort);
   let direction;
   let parameter: keyof typeof SORTPARAMETERS;
   if (sort.charAt(0) === '-') {
