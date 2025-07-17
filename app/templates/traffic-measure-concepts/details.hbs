@@ -40,6 +40,27 @@
   </Group>
 </AuToolbar>
 <AuBodyContainer @scroll={{true}} class="au-o-box">
+  <div class="au-u-margin-bottom">
+    <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
+      {{t "utility.properties"}}
+    </AuHeading>
+    <AuHeading @level="5" @skin="5" >
+      {{t "utility.zonality"}}
+    </AuHeading>
+    <p class="au-u-muted">
+       {{zonality-label (await @model.trafficMeasureConcept.zonality)}}
+    </p>
+    <AuHeading @level="5" @skin="5" >
+      {{t "traffic-measure-concept.attr.variable-signage"}}
+    </AuHeading>
+    <p class="au-u-muted">
+      {{#if (await @model.trafficMeasureConcept.variableSignage)}}
+        {{t "variable-signage-selector.yes"}}
+      {{else}}
+        {{t "variable-signage-selector.no"}}
+      {{/if}}
+    </p>
+</div>
   <TrafficMeasure::Preview @signs={{@model.signs}}>
     <:template>
       <TrafficMeasureTemplate @concept={{@model.trafficMeasureConcept}} />
