@@ -1,5 +1,15 @@
 # frontend-mow-registry
 
+## 2.7.0
+
+### Minor Changes
+
+- [#340](https://github.com/lblod/frontend-mow-registry/pull/340) [`9ec48a3a6f14cf51aacba06f34b4051ae0e5de0c`](https://github.com/lblod/frontend-mow-registry/commit/9ec48a3a6f14cf51aacba06f34b4051ae0e5de0c) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Make shapes not required anymore on signs
+
+### Patch Changes
+
+- [#343](https://github.com/lblod/frontend-mow-registry/pull/343) [`600aabacd645961f1e2724db689522847615dc19`](https://github.com/lblod/frontend-mow-registry/commit/600aabacd645961f1e2724db689522847615dc19) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Add variable signage to filters and details in measures
+
 ## 2.6.0
 
 ### Minor Changes
