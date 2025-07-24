@@ -99,6 +99,7 @@
     "ember-resolver": "^11.0.1",
     "ember-resources": "^7.0.6",
     "ember-simple-auth": "^6.1.0",
+    "ember-sortable": "^5.3.1",
     "ember-source": "~5.8.0",
     "ember-template-imports": "^4.3.0",
     "ember-template-lint": "^6.0.0",

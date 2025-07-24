@@ -56,12 +56,12 @@ export default class TrafficSignalConcept extends SkosConcept {
   @belongsTo<TribontShape>('tribont-shape', { inverse: null, async: true })
   declare defaultShape: AsyncBelongsTo<TribontShape>;
 
-  // @hasMany<TrafficMeasureConcept>('traffic-measure-concept', {
-  //   async: true,
-  //   inverse: 'relatedTrafficSignalConcepts',
-  //   as: 'traffic-signal-concept',
-  // })
-  // declare hasTrafficMeasureConcepts: AsyncHasMany<TrafficMeasureConcept>;
+  @hasMany<TrafficMeasureConcept>('traffic-measure-concept', {
+    async: true,
+    inverse: 'relatedTrafficSignalConcepts',
+    as: 'traffic-signal-concept',
+  })
+  declare hasTrafficMeasureConcepts: AsyncHasMany<TrafficMeasureConcept>;
 
   get validationSchema() {
     return super.validationSchema.keys({
@@ -75,7 +75,7 @@ export default class TrafficSignalConcept extends SkosConcept {
       meaning: validateStringRequired(),
       status: validateBelongsToOptional(),
       hasInstructions: validateHasManyOptional(),
-      //hasTrafficMeasureConcepts: validateHasManyOptional(),
+      hasTrafficMeasureConcepts: validateHasManyOptional(),
       variables: validateHasManyOptional(),
     });
   }
