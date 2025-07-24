@@ -48,7 +48,7 @@ export default class TrafficMeasureConcept extends AbstractValidationModel {
       variableSignage: validateBooleanOptional(),
       valid: validateBooleanOptional(),
       zonality: validateBelongsToRequired(),
-      relatedTrafficSignConcepts: validateHasManyOptional(),
+      relatedTrafficSignalConcepts: validateHasManyOptional(),
       template: validateBelongsToOptional(),
       startDate: validateDateOptional(),
       endDate: validateEndDate(),
