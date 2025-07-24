@@ -128,11 +128,10 @@ export default class ShapeManager extends Component<Signature> {
     this.args.removeShape(shape);
   };
 
-  @action
-  async addShapeAndDimension() {
+  addShapeAndDimension = async () => {
     const shape = await this.args.addShape();
     this.addDimension(shape);
-  }
+  };
 
   <template>
     <AuFieldset as |f|>
