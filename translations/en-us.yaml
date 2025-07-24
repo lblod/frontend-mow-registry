@@ -118,7 +118,6 @@ road-sign-concept:
     radius: Radius
     side: Length (side)
     unit: Unit
-    atLeastOneShapeRequired: You must add at least one shape
     new-shape: Add new Shape
     add-dimension: Add new dimension
     kind: Kind

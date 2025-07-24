@@ -15,17 +15,13 @@ module('Unit | Model | road sign concept', function (hooks) {
     const isValid = await model.validate();
 
     assert.false(isValid);
-    assert.strictEqual(Object.keys(model.error).length, 5);
+    assert.strictEqual(Object.keys(model.error).length, 4);
     assert.strictEqual(model.error.image.message, 'errors.field.required');
     assert.strictEqual(model.error.meaning.message, 'errors.field.required');
     assert.strictEqual(model.error.label.message, 'errors.field.required');
     assert.strictEqual(
       model.error.classifications.message,
       'errors.field.required',
-    );
-    assert.strictEqual(
-      model.error.shapes.message,
-      'road-sign-concept.atLeastOneShapeRequired',
     );
   });
 
