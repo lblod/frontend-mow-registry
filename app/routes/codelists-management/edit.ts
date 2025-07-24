@@ -13,12 +13,13 @@ export default class CodelistsManagementEditRoute extends Route {
     const codelist = await this.store.findRecord<CodeList>(
       'code-list',
       params.id,
+      {
+        include: ['type', 'concepts'],
+      },
     );
-    const concepts = await codelist.concepts;
 
     return {
       codelist,
-      concepts,
     };
   }
 }

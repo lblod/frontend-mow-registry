@@ -5,16 +5,7 @@ import { on } from '@ember/modifier';
 import { fn, get } from '@ember/helper';
 import type Store from 'ember-data/store';
 import t from 'ember-intl/helpers/t';
-// @ts-expect-error need to move to truth-helpers v4
-import eq from 'ember-truth-helpers/helpers/eq';
-// @ts-expect-error need to move to truth-helpers v4
-import lte from 'ember-truth-helpers/helpers/lte';
-// @ts-expect-error need to move to truth-helpers v4
-import not from 'ember-truth-helpers/helpers/not';
-// @ts-expect-error need to move to truth-helpers v4
-import or from 'ember-truth-helpers/helpers/or';
-// @ts-expect-error need to move to truth-helpers v4
-import and from 'ember-truth-helpers/helpers/and';
+import { and, eq, lte, not, or } from 'ember-truth-helpers';
 // @ts-expect-error no types
 import promiseAwait from 'ember-promise-helpers/helpers/await';
 import PowerSelect from 'ember-power-select/components/power-select';
@@ -192,9 +183,8 @@ export default class ShapeManager extends Component<Signature> {
                   </div>
                   <div class='au-u-1-2'>
                     <AuCheckbox
-                      @checked={{and
-                        @defaultShape.id
-                        (eq shape.id @defaultShape.id)
+                      @checked={{isSome
+                        (and @defaultShape.id (eq shape.id @defaultShape.id))
                       }}
                       @onChange={{fn @toggleDefaultShape shape}}
                     >
