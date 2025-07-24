@@ -252,6 +252,7 @@ traffic-measure-concept:
     type-to-search: Type to search
     validation-filter: Validation
     validation-filter-placeholder: Filter by validation status
+    variable-signage-filter-placeholder: Filter by variable signage
   landing-page:
     content: Manage traffic measures.
     button: Go to traffic measures

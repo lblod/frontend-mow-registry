@@ -28,6 +28,10 @@
       {{t "utility.zonality"}}
     </th>
     <header.Sortable
+      @field="variableSignage"
+      @label={{t "traffic-measure-concept.attr.variable-signage"}}
+    />
+    <header.Sortable
       @field="valid"
       @label={{t "utility.validation-status"}}
     />
@@ -53,7 +57,15 @@
       {{zonality-label (await trafficMeasureConcept.zonality)}}
     </td>
     <td>
+      {{#if (await trafficMeasureConcept.variableSignage)}}
+        {{t "variable-signage-selector.yes"}}
+      {{else}}
+        {{t "variable-signage-selector.no"}}
+      {{/if}}
+    </td>
+    <td>
       <ValidationStatus @valid={{trafficMeasureConcept.valid}} />
     </td>
+
   </:body>
 </ReactiveTable>
