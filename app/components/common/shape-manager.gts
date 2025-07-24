@@ -38,8 +38,6 @@ import ErrorMessage from 'mow-registry/components/error-message';
 import sortByOrder from 'mow-registry/helpers/sort-by-order';
 import type { PromiseBelongsTo } from '@ember-data/model/-private/promise-belongs-to';
 
-import { action } from '@ember/object';
-
 interface Signature {
   Args: {
     trafficSignalConcept: TrafficSignalConcept;
