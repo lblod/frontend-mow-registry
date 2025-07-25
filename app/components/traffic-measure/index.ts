@@ -11,9 +11,6 @@ import CodelistsService from 'mow-registry/services/codelists';
 import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 import Template from 'mow-registry/models/template';
 import { unwrap } from 'mow-registry/utils/option';
-import RoadSignConcept from 'mow-registry/models/road-sign-concept';
-import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
-import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import CodeList from 'mow-registry/models/code-list';
 import ApplicationInstance from '@ember/application/instance';
 import type { SignType } from 'mow-registry/components/traffic-measure/select-type';
@@ -127,25 +124,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   get previewHtml() {
     return this.preview ? htmlSafe(this.preview) : null;
-  }
-
-  get label() {
-    let result = '';
-
-    this.signs.forEach((sign) => {
-      if (sign instanceof RoadSignConcept) {
-        result = `${result}${sign.label ?? ''}-`;
-      } else if (sign instanceof RoadMarkingConcept) {
-        result = `${result}${sign.label ?? ''}-`;
-      } else if (sign instanceof TrafficLightConcept) {
-        result = `${result}${sign.label ?? ''}-`;
-      }
-    });
-
-    //get rid of the last dash
-    result = result.slice(0, -1);
-
-    return result;
   }
 
   get isSelectedTypeEmpty() {
@@ -459,7 +437,15 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //3-update roadsigns
     await this.saveRoadsigns.perform(this.trafficMeasureConcept);
     //2-update node shape
-    this.trafficMeasureConcept.label = this.label;
+
+    let label = '';
+    for (const signOrdered of this.signs) {
+      const sign = await signOrdered.item;
+      label = `${label}${sign?.label ?? ''}-`;
+    }
+    //get rid of the last dash
+    label = label.slice(0, -1);
+    this.trafficMeasureConcept.label = label;
     await this.trafficMeasureConcept.save();
 
     //4-handle variable variables
