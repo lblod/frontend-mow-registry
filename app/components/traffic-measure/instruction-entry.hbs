@@ -1,9 +1,7 @@
 {{! @glint-nocheck: not typesafe yet }}
-<DraggableObject
-  @tagName="tr"
-  @content={{@sign}}
-  @isSortable={{true}}
+<tr
   class="au-c-table__row--centered"
+  {{sortable-item groupName='signs' model=@sign}}
 >
   <td class="w-px au-u-padding-right-small">
     <AuButton
@@ -18,12 +16,12 @@
   <td>
     <div class="au-o-flex au-o-flex--center">
       <img
-        src={{@sign.image.file.downloadLink}}
+        src={{@sign.item.image.file.downloadLink}}
         alt=""
         class="au-c-thumbnail au-c-thumbnail--table"
       />
       <span>
-        {{@sign.label}}
+        {{@sign.item.label}}
       </span>
     </div>
   </td>
@@ -38,4 +36,4 @@
       {{t "utility.delete"}}
     </AuButton>
   </td>
-</DraggableObject>
+</tr>

@@ -9,14 +9,8 @@
         <th></th>
       </tr>
     </thead>
-    <SortableObjects
-      @tagName="tbody"
-      @sortEndAction={{@onSort}}
-      @sortableObjectList={{@signs}}
-      @enableSort={{true}}
-      @useSwap={{true}}
-      @inPlace={{true}}
-      class="au-c-table__body">
+    <tbody
+      class="au-c-table__body" {{sortable-group groupName='signs' onChange=@onSort}}>
       {{#each @signs as |sign|}}
         <TrafficMeasure::InstructionEntry
           @sign={{sign}}
@@ -32,6 +26,6 @@
           </td>
         </tr>
       {{/each}}
-    </SortableObjects>
+    </tbody>
   </table>
 </div>
