@@ -6,7 +6,7 @@ export default class TextVariable extends Variable {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'text-variable';
 
-  @attr declare readonly type = 'text';
+  @attr readonly type = 'text';
 
   @attr declare defaultValue?: string;
 

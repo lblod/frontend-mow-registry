@@ -6,7 +6,7 @@ export default class DateVariable extends Variable {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'date-variable';
 
-  @attr declare readonly type = 'date';
+  @attr readonly type = 'date';
 
   @attr declare defaultValue?: Date;
 

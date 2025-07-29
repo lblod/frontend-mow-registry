@@ -3,9 +3,10 @@ import type { Type } from '@warp-drive/core-types/symbols';
 import type Template from './template';
 import Resource from './resource';
 import {
+  validateBelongsToOptional,
+  validateBooleanRequired,
   validateStringOptional,
   validateStringRequired,
-  validateBooleanRequired,
 } from 'mow-registry/validators/schema';
 
 export type VariableType =
@@ -33,6 +34,7 @@ export default class Variable extends Resource {
       label: validateStringRequired(),
       type: validateStringRequired(),
       required: validateBooleanRequired(),
+      template: validateBelongsToOptional(),
     });
   }
 }

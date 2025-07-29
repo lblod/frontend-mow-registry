@@ -21,8 +21,11 @@ export default class CodeList extends ConceptScheme {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'code-list';
   @attr declare uri?: string;
-  @hasMany<CodelistVariable>('variable', { inverse: 'codeList', async: true })
-  declare variables: AsyncHasMany<Variable>;
+  @hasMany<CodelistVariable>('codelist-variable', {
+    inverse: 'codeList',
+    async: true,
+  })
+  declare variables: AsyncHasMany<CodelistVariable>;
   @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
   declare type: AsyncBelongsTo<SkosConcept>;
 

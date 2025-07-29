@@ -6,7 +6,7 @@ export default class NumberVariable extends Variable {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'number-variable';
 
-  @attr declare readonly type = 'number';
+  @attr readonly type = 'number';
 
   @attr declare defaultValue?: number;
 

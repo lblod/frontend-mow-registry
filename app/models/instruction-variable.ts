@@ -7,7 +7,7 @@ export default class InstructionVariable extends Variable {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'instruction-variable';
 
-  @attr declare readonly type = 'instruction';
+  @attr readonly type = 'instruction';
 
   @belongsTo<Template>('template', { inverse: null, async: true })
   declare template: AsyncBelongsTo<Template>;
