@@ -20,7 +20,6 @@ import {
   validateEndDate,
 } from 'mow-registry/validators/schema';
 import AbstractValidationModel from './abstract-validation-model';
-import type TrafficSignalConcept from './traffic-signal-concept';
 
 export default class TrafficMeasureConcept extends AbstractValidationModel {
   declare [Type]: 'traffic-measure-concept';
@@ -50,7 +49,6 @@ export default class TrafficMeasureConcept extends AbstractValidationModel {
       valid: validateBooleanOptional(),
       zonality: validateBelongsToRequired(),
       relatedTrafficSignalConceptsOrdered: validateHasManyOptional(),
-      relatedTrafficSignalConcepts: validateHasManyOptional(),
       template: validateBelongsToOptional(),
       startDate: validateDateOptional(),
       endDate: validateEndDate(),

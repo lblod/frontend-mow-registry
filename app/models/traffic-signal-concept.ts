@@ -9,7 +9,6 @@ import type { Type } from '@warp-drive/core-types/symbols';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import type Image from 'mow-registry/models/image';
 import type Template from './template';
-import type TrafficMeasureConcept from './traffic-measure-concept';
 import {
   validateBelongsToOptional,
   validateBelongsToRequired,
