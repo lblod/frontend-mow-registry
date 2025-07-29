@@ -40,13 +40,6 @@ export default class TrafficMeasureConcept extends AbstractValidationModel {
   })
   declare relatedTrafficSignalConceptsOrdered: AsyncHasMany<TrafficSignalListItem>;
 
-  @hasMany<TrafficSignalConcept>('traffic-signal-concept', {
-    async: true,
-    polymorphic: true,
-    inverse: 'hasTrafficMeasureConcepts',
-  })
-  declare relatedTrafficSignalConcepts: AsyncHasMany<TrafficSignalConcept>;
-
   @belongsTo<Template>('template', { async: true, inverse: 'parentConcept' })
   declare template: AsyncBelongsTo<Template>;
 
