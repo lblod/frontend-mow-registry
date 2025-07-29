@@ -434,9 +434,9 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //1-parse everything again
     await this.parseTemplate();
 
-    //3-update roadsigns
+    //2-update roadsigns
     await this.saveRoadsigns.perform(this.trafficMeasureConcept);
-    //2-update node shape
+    //3-update node shape
 
     let label = '';
     for (const signOrdered of this.signs) {
