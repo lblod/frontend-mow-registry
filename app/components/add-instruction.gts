@@ -38,6 +38,10 @@ import { isSome } from 'mow-registry/utils/option';
 import { removeItem } from 'mow-registry/utils/array';
 import validateTemplateDates from 'mow-registry/utils/validate-template-dates';
 import ErrorMessage from 'mow-registry/components/error-message';
+import {
+  signVariableTypes,
+  type SignVariableType,
+} from 'mow-registry/models/variable';
 
 export interface AddInstructionSig {
   Args: {
@@ -58,7 +62,6 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   @tracked variables?: Variable[];
   @tracked codeLists?: CodeList[];
   @tracked new?: boolean;
-  @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
   variablesToBeDeleted: Variable[] = [];
 
@@ -89,9 +92,14 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   });
 
   @action
-  async updateVariableType(variable: Variable, type: string) {
+  async updateVariableType(variable: Variable, type: SignVariableType) {
+    // TODO use Variable subclasses
     variable.type = type;
-    if (type === 'codelist' && !(await variable.codeList)) {
+    if (
+      type === 'codelist' &&
+      'codeList' in variable &&
+      !(await variable.codeList)
+    ) {
       variable.set('codeList', this.codeLists?.[0]);
     } else {
       variable.set('codeList', null);
@@ -462,7 +470,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                         {{! @glint-expect-error need to move to PS 8 }}
                         @allowClear={{false}}
                         @searchEnabled={{false}}
-                        @options={{this.inputTypes}}
+                        @options={{signVariableTypes}}
                         @selected={{variable.type}}
                         @onChange={{fn this.updateVariableType variable}}
                         as |type|

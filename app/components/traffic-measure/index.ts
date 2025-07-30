@@ -15,7 +15,6 @@ import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import CodeList from 'mow-registry/models/code-list';
-import ApplicationInstance from '@ember/application/instance';
 import type { SignType } from 'mow-registry/components/traffic-measure/select-type';
 import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import Variable, { type VariableType } from 'mow-registry/models/variable';
@@ -35,7 +34,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   @service declare intl: IntlService;
   @service('codelists') declare codeListService: CodelistsService;
 
-  @tracked codeLists?: CodeList[];
+  @tracked codeLists: CodeList[] = [];
   @tracked declare trafficMeasureConcept: TrafficMeasureConcept;
   @tracked signs: TrafficSignalConcept[] = [];
   @tracked variables: Variable[] = [];
@@ -186,8 +185,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @action
   async updateInstruction(variable: Variable, template: Template) {
-    //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-    variable.template = template;
+    variable.set('template', template);
     await this.generatePreview.perform();
   }
 
@@ -239,18 +237,13 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     variable.type = selectedType;
     if (variable instanceof CodelistVariable) {
       variable.set('codeList', this.codeLists[0]);
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      variable.template = null;
+      variable.set('template', null);
     } else if (variable.type === 'instruction') {
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      variable.template = this.instructions[0];
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      variable.codeList = null;
+      variable.set('template', this.instructions[0]);
+      variable.set('codeList', null);
     } else {
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      variable.template = null;
-      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-      variable.codeList = null;
+      variable.set('template', null);
+      variable.set('codeList', null);
     }
     await this.generatePreview.perform();
   }

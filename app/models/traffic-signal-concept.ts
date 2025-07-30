@@ -35,6 +35,7 @@ export default class TrafficSignalConcept extends SkosConcept {
   @hasMany<Variable>('variable', {
     inverse: null,
     async: true,
+    polymorphic: true,
   })
   declare variables: AsyncHasMany<Variable>;
 

@@ -10,7 +10,7 @@ export default class CodelistVariable extends Variable {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'codelist-variable';
 
-  readonly type = 'codelist';
+  @attr declare readonly type: 'codelist';
 
   @attr declare defaultValue?: string;
 

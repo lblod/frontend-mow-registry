@@ -4,7 +4,6 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { get, fn } from '@ember/helper';
 import { on } from '@ember/modifier';
-import IntlService from 'ember-intl/services/intl';
 import { trackedFunction } from 'reactiveweb/function';
 import { eq } from 'ember-truth-helpers';
 import t from 'ember-intl/helpers/t';
@@ -15,12 +14,15 @@ import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
 import AuCheckbox from '@appuniversum/ember-appuniversum/components/au-checkbox';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuLoader from '@appuniversum/ember-appuniversum/components/au-loader';
-import Variable, { type VariableType } from 'mow-registry/models/variable';
+import Variable, {
+  signVariableTypes,
+  type SignVariableType,
+} from 'mow-registry/models/variable';
 import type CodelistsService from 'mow-registry/services/codelists';
 import type CodeList from 'mow-registry/models/code-list';
-import { labelForVariableType } from 'mow-registry/utils/variable';
 import ErrorMessage from 'mow-registry/components/error-message';
 import { isSome } from 'mow-registry/utils/option';
+import type VariablesService from 'mow-registry/services/variables-service';
 
 interface Signature {
   Args: {
@@ -30,27 +32,17 @@ interface Signature {
   };
 }
 
-type SignVariableType = Exclude<VariableType, 'instruction'>;
-
-const SIGN_VARIABLE_TYPES: SignVariableType[] = [
-  'text',
-  'number',
-  'date',
-  'location',
-  'codelist',
-] as const;
-
 export default class VariableManager extends Component<Signature> {
   @service declare store: Store;
-  @service declare intl: IntlService;
   @service('codelists') declare codeListService: CodelistsService;
+  @service declare variablesService: VariablesService;
 
   get variableTypes() {
-    return SIGN_VARIABLE_TYPES;
+    return signVariableTypes;
   }
 
   labelForType = (variableType: SignVariableType) => {
-    return labelForVariableType(this.intl, variableType);
+    return this.variablesService.labelForVariableType(variableType);
   };
 
   codelists = trackedFunction(this, async () => {
@@ -69,20 +61,16 @@ export default class VariableManager extends Component<Signature> {
   }
 
   @action
-  setVariableType(variable: Variable, selectedType: SignVariableType) {
-    const oldType = variable.type as SignVariableType | undefined;
-    const labelModified =
-      oldType && variable.label !== this.labelForType(oldType);
-    variable.type = selectedType satisfies VariableType;
-
-    if (!labelModified) {
-      variable.label = this.labelForType(selectedType);
-    }
-
-    if (variable.type === 'codelist' && this.codelists.value?.length) {
-      const codelistDefaultValue = this.codelists.value?.[0];
-      this.updateCodelist(variable, codelistDefaultValue);
-    }
+  setVariableType(
+    varIndex: number,
+    existing: Variable,
+    selectedType: SignVariableType,
+  ) {
+    const newVar = this.variablesService.convertVariableType(
+      existing,
+      selectedType,
+    );
+    this.args.variables.splice(varIndex, 1, newVar as Variable);
   }
 
   @action
@@ -109,7 +97,7 @@ export default class VariableManager extends Component<Signature> {
                   </tr>
                 </:header>
                 <:body>
-                  {{#each @variables as |variable|}}
+                  {{#each @variables as |variable varIndex|}}
                     <tr>
                       {{! template-lint-disable no-inline-styles }}
                       <td style='width: 33%;'>
@@ -127,14 +115,16 @@ export default class VariableManager extends Component<Signature> {
                             @options={{this.variableTypes}}
                             @loadingMessage={{t 'utility.loading'}}
                             @selected={{variable.type}}
-                            @onChange={{fn this.setVariableType variable}}
+                            @onChange={{fn
+                              this.setVariableType
+                              varIndex
+                              variable
+                            }}
                             as |type|
                           >
                             {{this.labelForType type}}
                           </PowerSelect>
-                          <ErrorMessage
-                            @error={{get variable.error 'type'}}
-                          />
+                          <ErrorMessage @error={{get variable.error 'type'}} />
                         </div>
                         {{#if (eq variable.type 'codelist')}}
                           {{! @glint-expect-error need to move to PS 8 }}

@@ -81,3 +81,13 @@ export type MetaParams = {
     };
   };
 };
+
+export function assertNever(toTest: never) {
+  if (toTest) {
+    console.warn(
+      'Typescript expects us never to get a value here but we got:',
+      toTest,
+      new Error().stack,
+    );
+  }
+}

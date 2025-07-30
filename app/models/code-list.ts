@@ -21,7 +21,8 @@ export default class CodeList extends ConceptScheme {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'code-list';
   @attr declare uri?: string;
-  @hasMany<CodelistVariable>('codelist-variable', {
+  // @ts-expect-error It's not clear why TS thinks it should be 'variable'
+  @hasMany<Variable>('codelist-variable', {
     inverse: 'codeList',
     async: true,
   })

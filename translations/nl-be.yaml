@@ -327,6 +327,7 @@ variable-signage-selector:
 errors:
   field:
     required: Dit veld is verplicht
+    not-in-enum: Dit veld is geen geldige waarde
   number: Geef een getal in
   end-date-should-be-in-the-future: Einddatum moet in de toekomst liggen.
   end-date-greater-than-start-date: De einddatum moet groter zijn dan de begindatum.
