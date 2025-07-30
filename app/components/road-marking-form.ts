@@ -81,6 +81,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   async addShape() {
     const shape = this.store.createRecord<TribontShape>('tribont-shape', {});
     (await this.args.roadMarkingConcept.shapes).push(shape);
+    return shape;
   }
 
   @action

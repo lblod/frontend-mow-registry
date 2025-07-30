@@ -11,7 +11,6 @@ import type SkosConcept from './skos-concept';
 import {
   validateBelongsToOptional,
   validateHasManyOptional,
-  validateHasManyRequired,
   validateStringRequired,
 } from 'mow-registry/validators/schema';
 import type { Type } from '@warp-drive/core-types/symbols';
@@ -54,9 +53,7 @@ export default class RoadMarkingConcept extends TrafficSignalConcept {
 
   get validationSchema() {
     return super.validationSchema.keys({
-      shapes: validateHasManyRequired(
-        'road-sign-concept.atLeastOneShapeRequired',
-      ),
+      shapes: validateHasManyOptional(),
       meaning: validateStringRequired(),
       zonality: validateBelongsToOptional(),
       relatedToRoadMarkingConcepts: validateHasManyOptional(),
