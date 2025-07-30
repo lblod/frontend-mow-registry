@@ -476,6 +476,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                           @searchEnabled={{false}}
                           {{! @glint-expect-error need to move to PS 8 }}
                           @options={{this.codeLists}}
+                          {{! @glint-expect-error no type guard for codelistVariable }}
                           @selected={{variable.codeList}}
                           @onChange={{fn this.updateCodeList variable}}
                           as |codeList|
