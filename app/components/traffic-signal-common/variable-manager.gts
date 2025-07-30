@@ -33,7 +33,6 @@ interface Signature {
 }
 
 export default class VariableManager extends Component<Signature> {
-  @service declare store: Store;
   @service('codelists') declare codeListService: CodelistsService;
   @service declare variablesService: VariablesService;
 
@@ -152,7 +151,7 @@ export default class VariableManager extends Component<Signature> {
                             {{/each}}
                           </ul>
                           {{! @glint-expect-error we dont type guard on variable type }}
-                          <ErrorMessage @error={{variable.error.codelist}} />
+                          <ErrorMessage @error={{variable.error.codeList}} />
                         {{/if}}
                       </td>
                       <td>

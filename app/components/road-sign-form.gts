@@ -9,7 +9,7 @@ import SkosConcept from 'mow-registry/models/skos-concept';
 import RoadSignCategory from 'mow-registry/models/road-sign-category';
 import TribontShape from 'mow-registry/models/tribont-shape';
 import { tracked } from '@glimmer/tracking';
-import { removeItem } from 'mow-registry/utils/array';
+import { removeItem, removeItemBy } from 'mow-registry/utils/array';
 import Store from '@ember-data/store';
 import type Variable from 'mow-registry/models/variable';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
@@ -140,7 +140,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   @action
   async removeVariable(variable: Variable) {
     const variables = await this.args.roadSignConcept.variables;
-    removeItem(variables, variable);
+    removeItemBy(variables, variable, (a, b) => a.uri === b.uri);
     this.variablesToRemove.push(variable);
   }
 
