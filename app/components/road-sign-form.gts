@@ -37,8 +37,7 @@ import { on } from '@ember/modifier';
 import { fn, get } from '@ember/helper';
 // @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
-// @ts-expect-error need to move to truth-helpers v4
-import or from 'ember-truth-helpers/helpers/or';
+import { or } from 'ember-truth-helpers';
 import { LinkTo } from '@ember/routing';
 // @ts-expect-error no types
 import awaitHelper from 'ember-promise-helpers/helpers/await';
@@ -269,7 +268,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
         <AuButtonGroup>
 
           <AuButton
-            @disabled={{or @roadSignConcept.error this.isSaving}}
+            @disabled={{or (isSome @roadSignConcept.error) this.isSaving}}
             @loading={{this.isSaving}}
             @loadingMessage={{t 'utility.save'}}
             {{on 'click' (perform this.editRoadSignConceptTask)}}
