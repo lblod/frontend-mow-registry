@@ -1,4 +1,3 @@
-import type Store from '@ember-data/store';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';

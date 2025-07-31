@@ -7,6 +7,12 @@ import {
   validateStringOptional,
   validateStringRequired,
 } from 'mow-registry/validators/schema';
+import type TextVariable from './text-variable';
+import type NumberVariable from './number-variable';
+import type DateVariable from './date-variable';
+import type LocationVariable from './location-variable';
+import type CodelistVariable from './codelist-variable';
+import type InstructionVariable from './instruction-variable';
 
 export const signVariableTypesConst = [
   'text',
@@ -23,6 +29,15 @@ export const allVariableTypes = [
 ] as const;
 export type SignVariableType = (typeof signVariableTypesConst)[number];
 export type VariableType = (typeof allVariableTypes)[number];
+
+/** All types of variables. Exists to workaround issues with subclassing in ED */
+export type VariableSubtype =
+  | TextVariable
+  | NumberVariable
+  | DateVariable
+  | LocationVariable
+  | CodelistVariable
+  | InstructionVariable;
 
 export default class Variable extends Resource {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
