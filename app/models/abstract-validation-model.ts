@@ -67,7 +67,6 @@ export default class AbstractValidationModel extends Model {
         },
       });
     } catch (error: unknown) {
-      console.log(error);
       if (error instanceof ValidationError) {
         this._validationError = this.#mapValidationError(error);
       }
