@@ -21,7 +21,7 @@ export default class TrafficMeasureConceptsDetailsRoute extends Route {
     );
     return {
       trafficMeasureConcept,
-      signs: signs.sort((a, b) => a.position - b.position),
+      signs: signs.sort((a, b) => (a.position ?? -1) - (b.position ?? -1)),
     };
   }
 }

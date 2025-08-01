@@ -1,5 +1,5 @@
 import { attr } from '@ember-data/model';
-import Variable from './variable';
+import Variable, { type VariableSubtype } from './variable';
 import { validateNumberOptional } from 'mow-registry/validators/schema';
 
 export default class NumberVariable extends Variable {
@@ -15,4 +15,10 @@ export default class NumberVariable extends Variable {
       defaultValue: validateNumberOptional(),
     });
   }
+}
+
+export function isNumberVariable(
+  variable: Variable | VariableSubtype | undefined,
+): variable is NumberVariable {
+  return variable?.type === 'number';
 }

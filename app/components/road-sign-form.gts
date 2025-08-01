@@ -96,7 +96,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   @action
   async setRoadsignDate(
     attribute: string,
-    isoDate: string | null,
+    _isoDate: string | null,
     date: Date | null,
   ) {
     if (date && attribute === 'endDate') {
@@ -454,7 +454,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 {{#let (load @roadSignConcept.zonality) as |zonality|}}
                   {{#if zonality.isResolved}}
                     <ZonalitySelector
-                      {{! @glint-expect-error not sure how we should handle this }}
                       @zonality={{zonality.value}}
                       @onChange={{this.updateZonality}}
                       {{! @glint-expect-error not sure why this doesnt accept subtypes }}

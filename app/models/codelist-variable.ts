@@ -1,5 +1,5 @@
 import { attr, belongsTo, type AsyncBelongsTo } from '@ember-data/model';
-import Variable from './variable';
+import Variable, { type VariableSubtype } from './variable';
 import {
   validateBelongsToRequired,
   validateStringOptional,
@@ -23,4 +23,10 @@ export default class CodelistVariable extends Variable {
       codeList: validateBelongsToRequired(),
     });
   }
+}
+
+export function isCodelistVariable(
+  variable: Variable | VariableSubtype | undefined,
+): variable is CodelistVariable {
+  return variable?.type === 'codelist';
 }

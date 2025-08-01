@@ -1,5 +1,5 @@
 import { attr, belongsTo, type AsyncBelongsTo } from '@ember-data/model';
-import Variable from './variable';
+import Variable, { type VariableSubtype } from './variable';
 import { validateBelongsToRequired } from 'mow-registry/validators/schema';
 import type Template from './template';
 
@@ -17,4 +17,10 @@ export default class InstructionVariable extends Variable {
       template: validateBelongsToRequired(),
     });
   }
+}
+
+export function isInstructionVariable(
+  variable: Variable | VariableSubtype | undefined,
+): variable is InstructionVariable {
+  return variable?.type === 'instruction';
 }

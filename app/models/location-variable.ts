@@ -1,5 +1,5 @@
 import { attr } from '@ember-data/model';
-import Variable from './variable';
+import Variable, { type VariableSubtype } from './variable';
 import { validateStringOptional } from 'mow-registry/validators/schema';
 
 export default class LocationVariable extends Variable {
@@ -15,4 +15,10 @@ export default class LocationVariable extends Variable {
       defaultValue: validateStringOptional(),
     });
   }
+}
+
+export function isLocationVariable(
+  variable: Variable | VariableSubtype | undefined,
+): variable is LocationVariable {
+  return variable?.type === 'location';
 }

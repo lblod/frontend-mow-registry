@@ -1,5 +1,5 @@
 import { attr } from '@ember-data/model';
-import Variable from './variable';
+import Variable, { type VariableSubtype } from './variable';
 import { validateDateOptional } from 'mow-registry/validators/schema';
 
 export default class DateVariable extends Variable {
@@ -15,4 +15,10 @@ export default class DateVariable extends Variable {
       defaultValue: validateDateOptional(),
     });
   }
+}
+
+export function isDateVariable(
+  variable: Variable | VariableSubtype | undefined,
+): variable is DateVariable {
+  return variable?.type === 'date';
 }

@@ -21,12 +21,13 @@ export const signVariableTypesConst = [
   'location',
   'codelist',
 ] as const;
-// non-read-only version as this is needed for some interfaces
-export const signVariableTypes = [...signVariableTypesConst];
-export const allVariableTypes = [
+export const allVariableTypesConst = [
   ...signVariableTypesConst,
   'instruction',
 ] as const;
+// non-read-only version as this is needed for some interfaces
+export const signVariableTypes = [...signVariableTypesConst];
+export const allVariableTypes = [...allVariableTypesConst];
 export type SignVariableType = (typeof signVariableTypesConst)[number];
 export type VariableType = (typeof allVariableTypes)[number];
 
@@ -52,7 +53,7 @@ export default class Variable extends Resource {
     return super.validationSchema.keys({
       uri: validateStringOptional(),
       label: validateStringRequired(),
-      type: validateEnumRequired(allVariableTypes),
+      type: validateEnumRequired(allVariableTypesConst),
       required: validateBooleanRequired(),
     });
   }

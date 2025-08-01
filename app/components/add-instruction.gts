@@ -45,6 +45,7 @@ import {
 import type VariablesService from 'mow-registry/services/variables-service';
 import type TextVariable from 'mow-registry/models/text-variable';
 import { TrackedArray } from 'tracked-built-ins';
+import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
 
 export interface AddInstructionSig {
   Args: {
@@ -487,14 +488,13 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                       >
                         {{type}}
                       </PowerSelect>
-                      {{#if (eq variable.type 'codelist')}}
+                      {{#if (isCodelistVariable variable)}}
                         {{! @glint-expect-error need to move to PS 8 }}
                         <PowerSelect
                           @allowClear={{false}}
                           @searchEnabled={{false}}
                           {{! @glint-expect-error need to move to PS 8 }}
                           @options={{this.codeLists}}
-                          {{! @glint-expect-error no type guard for codelistVariable }}
                           @selected={{variable.codeList}}
                           @onChange={{fn this.updateCodeList variable}}
                           as |codeList|
@@ -507,8 +507,9 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                             <li> - {{option.label}}</li>
                           {{/each}}
                         </ul>
-                        {{! @glint-expect-error we dont type guard on variable type }}
-                        <ErrorMessage @error={{variable.error.codeList}} />
+                        <ErrorMessage
+                          @error={{get variable.error 'codeList'}}
+                        />
                       {{/if}}
                     </td>
                   </tr>
