@@ -16,6 +16,8 @@ Router.map(function () {
       this.route('instructions', function () {
         this.route('edit', { path: '/:instructionId' });
       });
+      this.route('variables');
+      this.route('shapes');
       this.route('main-signs');
       this.route('sub-signs');
       this.route('related');

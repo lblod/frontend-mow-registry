@@ -1,0 +1,131 @@
+<RoadSignConcept::Header @roadSignConcept={{@model.roadSignConcept}} />
+<ReactiveTable
+  @content={{@model.variables}}
+  @isLoading={{this.isLoading}}
+  @noDataMessage={{t "road-sign-concept.crud.no-data"}}
+  @page={{this.page}}
+  @sort={{this.sort}}
+  @pageSize={{this.pageSize}}
+  @onPageChange={{this.onPageChange}}
+  @onSortChange={{this.onSortChange}}
+>
+  <:menu>
+  <div class="au-u-flex au-u-flex--end">
+    <AuButton {{on 'click' this.toggleEditing}}>
+      {{#if this.editMode}}
+        {{t "utility.save"}}
+      {{else}}
+        {{t "utility.edit"}}
+      {{/if}}
+    </AuButton>
+
+  </div>
+  {{#if this.editMode}}
+      <AuButton
+        @skin="secondary"
+        @width="block"
+        @icon="plus"
+        {{on "click" this.addVariable}}
+      >
+        {{t "utility.add-variable"}}
+      </AuButton>
+    {{/if}}
+  </:menu>
+  <:header as |header|>
+    <header.Sortable
+      @field="label"
+      @label={{t "utility.variable"}}
+    />
+    <header.Sortable
+      @field="type"
+      @label={{t "utility.type"}}
+    />
+    <header.Sortable
+      @field="required"
+      @label={{t "utility.required"}}
+    />
+  </:header>
+  <:body as |variable|>
+    <td>
+      {{#if this.editMode}}
+       <AuInput
+          value={{variable.label}}
+          @error={{variable.error.label}}
+          {{on "input" (fn this.setVariableLabel variable)}}
+        />
+        <ErrorMessage @error={{variable.error.label}} />
+      {{else}}
+        {{variable.label}}
+      {{/if}}
+    </td>
+    <td>
+      {{#if this.editMode}}
+      <div class={{if variable.error.type "ember-power-select--error"}} >
+       <PowerSelect
+          @allowClear={{false}}
+          @searchEnabled={{false}}
+          @options={{this.variableTypes}}
+          @loadingMessage={{t "utility.loading"}}
+          @selected={{find-by-value
+            this.variableTypes
+            variable.type
+          }}
+          @onChange={{fn this.setVariableType variable}}
+          as |type|
+        >
+          {{type.label}}
+        </PowerSelect>
+        <ErrorMessage @error={{variable.error.type}} />
+      </div>
+      {{#if (eq variable.type "codelist")}}
+        <PowerSelect
+          @triggerClass="au-u-margin-top-tiny"
+          @allowClear={{false}}
+          @searchEnabled={{true}}
+          @options={{this.codeLists}}
+          @selected={{variable.codeList}}
+          @onChange={{fn this.updateCodelist variable}}
+          as |codeList|
+        >
+          {{codeList.label}}
+        </PowerSelect>
+        <ul
+          class="au-c-list-help au-c-help-text au-c-help-text--secondary"
+        >
+          {{#each variable.codeList.concepts as |option|}}
+            <li class="au-c-list-help__item">{{option.label}}</li>
+          {{/each}}
+        </ul>
+        <ErrorMessage @error={{variable.error.codelist}} />
+      {{/if}}
+      {{else}}
+        {{variable.type}}
+      {{/if}}
+    </td>
+    <td>
+      {{#if this.editMode}}
+         <AuCheckbox
+            @value={{variable.required}}
+            @checked={{variable.required}}
+            @onChange={{fn this.setVariableRequired variable}}
+          >
+            {{t "utility.required"}}
+          </AuCheckbox>
+      {{else}}
+        {{variable.required}}
+      {{/if}}
+
+    </td>
+  </:body>
+</ReactiveTable>
+
+{{#if this.editMode}}
+  <AuButton
+    @skin="secondary"
+    @width="block"
+    @icon="plus"
+    {{on "click" this.addVariable}}
+  >
+    {{t "utility.add-variable"}}
+  </AuButton>
+{{/if}}
