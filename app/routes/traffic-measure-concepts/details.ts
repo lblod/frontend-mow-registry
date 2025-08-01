@@ -16,10 +16,12 @@ export default class TrafficMeasureConceptsDetailsRoute extends Route {
         'traffic-measure-concept',
         params.id,
       );
-
+    const signs = Array.from(
+      await trafficMeasureConcept.relatedTrafficSignalConceptsOrdered,
+    );
     return {
       trafficMeasureConcept,
-      signs: await trafficMeasureConcept.relatedTrafficSignalConcepts,
+      signs: signs.sort((a, b) => a.position - b.position),
     };
   }
 }

@@ -2,11 +2,13 @@ import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 export default async function validateTrafficMeasureDates(
   trafficMeasure: TrafficMeasureConcept,
 ): Promise<void> {
-  const signals = await trafficMeasure.relatedTrafficSignalConcepts;
+  const signals = await trafficMeasure.relatedTrafficSignalConceptsOrdered;
   let maxStartDate = new Date(0);
   let minEndDate = new Date();
   minEndDate.setFullYear(9999);
-  for (const sign of signals) {
+  for (const signList of signals) {
+    const sign = await signList.item;
+    if (!sign) continue;
     if (sign.startDate && sign.startDate > maxStartDate) {
       maxStartDate = sign.startDate;
     }
