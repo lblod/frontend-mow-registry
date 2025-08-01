@@ -7,6 +7,7 @@ import { modifier } from 'ember-modifier';
 import { unwrapOr } from 'mow-registry/utils/option';
 import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 import type Variable from 'mow-registry/models/variable';
+import { isInstructionVariable } from 'mow-registry/models/instruction-variable';
 
 type Args = {
   concept: TrafficMeasureConcept;
@@ -29,7 +30,7 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
     ).slice();
     for (const variable of variables) {
       let replaceString;
-      if (variable.type === 'instruction') {
+      if (isInstructionVariable(variable)) {
         const instruction = await variable.template;
         replaceString =
           "<span style='background-color: #ffffff'>" +

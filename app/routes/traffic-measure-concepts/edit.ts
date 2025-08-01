@@ -12,6 +12,9 @@ export default class TrafficMeasureConceptsEditRoute extends Route {
     const trafficMeasureConcept = this.store.findRecord<TrafficMeasureConcept>(
       'traffic-measure-concept',
       params.id,
+      {
+        include: ['relatedTrafficSignalConceptsOrdered', 'template'],
+      },
     );
     return trafficMeasureConcept;
   }

@@ -13,7 +13,7 @@ import didInsert from '@ember/render-modifiers/modifiers/did-insert';
 import { task } from 'ember-concurrency';
 // @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
-import { eq, not } from 'ember-truth-helpers';
+import { not } from 'ember-truth-helpers';
 import t from 'ember-intl/helpers/t';
 import type IntlService from 'ember-intl/services/intl';
 import PowerSelect from 'ember-power-select/components/power-select';
