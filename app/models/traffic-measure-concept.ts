@@ -7,7 +7,7 @@ import {
 } from '@ember-data/model';
 import type { Type } from '@warp-drive/core-types/symbols';
 import type SkosConcept from 'mow-registry/models/skos-concept';
-import type TrafficSignalConcept from './traffic-signal-concept';
+import type TrafficSignalListItem from './traffic-signal-list-item';
 import type Template from './template';
 import Joi from 'joi';
 import {
@@ -32,12 +32,12 @@ export default class TrafficMeasureConcept extends AbstractValidationModel {
   @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
   declare zonality: AsyncBelongsTo<SkosConcept>;
 
-  @hasMany<TrafficSignalConcept>('traffic-signal-concept', {
-    inverse: 'hasTrafficMeasureConcepts',
+  @hasMany<TrafficSignalListItem>('traffic-signal-list-item', {
     async: true,
     polymorphic: true,
+    inverse: null,
   })
-  declare relatedTrafficSignalConcepts: AsyncHasMany<TrafficSignalConcept>;
+  declare relatedTrafficSignalConceptsOrdered: AsyncHasMany<TrafficSignalListItem>;
 
   @belongsTo<Template>('template', { async: true, inverse: 'parentConcept' })
   declare template: AsyncBelongsTo<Template>;
@@ -48,7 +48,7 @@ export default class TrafficMeasureConcept extends AbstractValidationModel {
       variableSignage: validateBooleanOptional(),
       valid: validateBooleanOptional(),
       zonality: validateBelongsToRequired(),
-      relatedTrafficSignalConcepts: validateHasManyOptional(),
+      relatedTrafficSignalConceptsOrdered: validateHasManyOptional(),
       template: validateBelongsToOptional(),
       startDate: validateDateOptional(),
       endDate: validateEndDate(),
