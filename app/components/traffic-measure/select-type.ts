@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import IntlService from 'ember-intl/services/intl';
+import { type Option } from 'mow-registry/utils/option';
 
 export type SignType = {
   label: string;
@@ -11,7 +12,15 @@ export type SignType = {
   searchFilter: string;
   sortingField: string;
 };
-export default class TrafficMeasureSelectTypeComponent extends Component {
+
+type Sig = {
+  Args: {
+    selectedType: Option<SignType>;
+    updateTypeFilter: (signType: SignType) => void;
+  };
+};
+
+export default class TrafficMeasureSelectTypeComponent extends Component<Sig> {
   @service declare intl: IntlService;
 
   get types() {

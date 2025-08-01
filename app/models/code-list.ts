@@ -15,13 +15,18 @@ import {
   validateStringRequired,
 } from 'mow-registry/validators/schema';
 import type { Type } from '@warp-drive/core-types/symbols';
+import type CodelistVariable from './codelist-variable';
 
 export default class CodeList extends ConceptScheme {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'code-list';
   @attr declare uri?: string;
-  @hasMany<Variable>('variable', { inverse: 'codeList', async: true })
-  declare variables: AsyncHasMany<Variable>;
+  // @ts-expect-error It's not clear why TS thinks it should be 'variable'
+  @hasMany<Variable>('codelist-variable', {
+    inverse: 'codeList',
+    async: true,
+  })
+  declare variables: AsyncHasMany<CodelistVariable>;
   @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
   declare type: AsyncBelongsTo<SkosConcept>;
 

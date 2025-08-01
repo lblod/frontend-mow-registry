@@ -46,9 +46,9 @@
       </AuLink>
     </td>
     <td>
-      {{#each trafficMeasureConcept.relatedTrafficSignalConcepts as |sign|}}
-        <img src={{sign.image.file.downloadLink}} alt="" height="50" />
-      {{/each}}
+        {{#each (sort-by-position (await trafficMeasureConcept.relatedTrafficSignalConceptsOrdered)) as |sign|}}
+          <img src={{sign.item.image.file.downloadLink}} alt="" height="50" />
+        {{/each}}
     </td>
     <td>
       <TrafficMeasureTemplate @concept={{trafficMeasureConcept}} />

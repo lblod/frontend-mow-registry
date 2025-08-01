@@ -328,6 +328,7 @@ variable-signage-selector:
 errors:
   field:
     required: This field is required
+    not-in-enum: This field is not a valid value
   number: Enter a number
   end-date-should-be-in-the-future: End date should be in the future.
   end-date-greater-than-start-date: End date must be greater than the start date.
