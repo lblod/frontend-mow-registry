@@ -44,6 +44,7 @@
       @field="required"
       @label={{t "utility.required"}}
     />
+     {{#if this.editMode}}<th></th> {{/if}}
   </:header>
   <:body as |variable|>
     <td>
@@ -112,20 +113,16 @@
             {{t "utility.required"}}
           </AuCheckbox>
       {{else}}
-        {{variable.required}}
+        {{#if variable.required}}
+          {{t "utility.yes"}}
+        {{else}}
+          {{t "utility.no"}}
+        {{/if}}
       {{/if}}
 
     </td>
+    {{#if this.editMode}}
+      <td> <AuButton @skin="naked" @alert="true" @icon="trash" {{on "click" this.removeVariable}}/></td>
+    {{/if}}
   </:body>
 </ReactiveTable>
-
-{{#if this.editMode}}
-  <AuButton
-    @skin="secondary"
-    @width="block"
-    @icon="plus"
-    {{on "click" this.addVariable}}
-  >
-    {{t "utility.add-variable"}}
-  </AuButton>
-{{/if}}

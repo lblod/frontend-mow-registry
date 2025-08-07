@@ -103,4 +103,7 @@ export default class RoadSignConceptsRoadSignConceptSubSignsController extends C
     const newVariable = this.store.createRecord<Variable>('variable', {});
     (await this.model.roadSignConcept.variables).push(newVariable);
   };
+  reset() {
+    this
+  }
 }

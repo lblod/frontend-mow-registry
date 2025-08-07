@@ -1,1 +1,102 @@
-Shapes
+<RoadSignConcept::Header @roadSignConcept={{@model.roadSignConcept}} />
+Vorm
+{{#if this.cardEditing}}
+  <AuButton {{on 'click' this.saveCard}}>Save</AuButton>
+  <AuButton {{on 'click' this.cancelCard}}>Cancel</AuButton>
+{{else}}
+  <AuButton @icon="pencil" {{on 'click' this.editCard}} />
+{{/if}}
+<dl>
+  <dt>Vorm</dt>
+  <dd>
+    {{#if this.cardEditing}}
+      <PowerSelect
+        @allowClear={{false}}
+        @searchEnabled={{false}}
+        @searchField='label'
+        @loadingMessage={{t 'utility.loading'}}
+        {{! @glint-expect-error need to move to PS 8 }}
+        @options={{this.shapeClassificationsPromise}}
+        @selected={{this.selectedShape}}
+        @onChange={{this.setShapeClassifications}}
+        @triggerId='shapeConcepts'
+        as |shapeClassification|
+      >
+        {{shapeClassification.label}}
+      </PowerSelect>
+    {{else}}
+      {{@model.defaultShape.classification.label}}
+    {{/if}}
+  </dd>
+  <dt>Afmeting eenheid</dt>
+  <dd>
+    {{#if this.cardEditing}}
+      <PowerSelect
+        @allowClear={{false}}
+        @searchEnabled={{false}}
+        @searchField='label'
+        @loadingMessage={{t 'utility.loading'}}
+        {{! @glint-expect-error need to move to PS 8 }}
+        @options={{this.unitsPromise}}
+        @selected={{this.selectedUnit}}
+        @onChange={{this.setUnit}}
+        @triggerId='shapeConcepts'
+        as |unit|
+      >
+        {{unit.symbol}}
+      </PowerSelect>
+    {{else}}
+       {{this.defaultMeasureUnit.symbol}}
+    {{/if}}
+  </dd>
+  <dt>Standaardvorm</dt>
+  <dd>
+    {{#if this.cardEditing}}
+    {{else}}
+      {{this.defaultShapeString}}
+    {{/if}}
+  </dd>
+</dl>
+<ReactiveTable
+  @content={{this.shapesConverted.value}}
+  @isLoading={{this.isLoading}}
+  @noDataMessage={{t "road-sign-concept.crud.no-data"}}
+  @page={{this.page}}
+  @sort={{this.sort}}
+  @pageSize={{this.pageSize}}
+  @onPageChange={{this.onPageChange}}
+  @onSortChange={{this.onSortChange}}
+>
+  <:menu>
+  <div class="au-u-flex au-u-flex--end">
+    <AuButton {{on 'click' this.toggleEditing}}>
+      {{#if this.editMode}}
+        {{t "utility.save"}}
+      {{else}}
+        {{t "utility.edit"}}
+      {{/if}}
+    </AuButton>
+
+  </div>
+  {{#if this.editMode}}
+      <AuButton
+        @skin="secondary"
+        @width="block"
+        @icon="plus"
+        {{on "click" this.addVariable}}
+      >
+        {{t "utility.add-variable"}}
+      </AuButton>
+    {{/if}}
+  </:menu>
+  <:header as |header|>
+    {{#each this.dimensionsToShow as |dimension|}}
+      <th>{{dimension.label}}</th>
+    {{/each}}
+  </:header>
+  <:body as |shape|>
+    {{#each this.dimensionsToShow as |dimension|}}
+      <th>{{this.getValue shape dimension.value}}</th>
+    {{/each}}
+  </:body>
+</ReactiveTable>
