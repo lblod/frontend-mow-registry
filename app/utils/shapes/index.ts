@@ -9,6 +9,8 @@ import InvertedTriangle from './invertedTriangle';
 import Triangle from './triangle';
 import Circular from './circular';
 import Diamond from './diamond';
+import type QuantityKind from 'mow-registry/models/quantity-kind';
+import type TribontShapeClassificationCode from 'mow-registry/models/tribont-shape-classification-code';
 
 export const DIMENSIONS = {
   length: '3ab17bee-f370-447c-849f-436ad2a98fb1',
@@ -97,4 +99,39 @@ export function staticImplements<T>() {
   return <U extends T>(constructor: U) => {
     constructor;
   };
+}
+
+export async function createDimension(
+  store: Store,
+  unit: Unit,
+  dimensionId: string,
+) {
+  const kind = await store.findRecord<QuantityKind>(
+    'quantity-kind',
+    dimensionId,
+  );
+  const dimension = store.createRecord<Dimension>('dimension', {
+    value: 0,
+    kind: kind,
+    unit,
+  });
+  await dimension.save();
+  return dimension;
+}
+
+export async function createStoreShape(
+  store: Store,
+  dimensions: Dimension[],
+  shapeId: string,
+) {
+  const classification = await store.findRecord<TribontShapeClassificationCode>(
+    'tribont-shape-classification-code',
+    shapeId,
+  );
+  const shape = store.createRecord<TribontShape>('tribont-shape', {
+    dimensions,
+    classification,
+  });
+  await shape.save();
+  return shape;
 }

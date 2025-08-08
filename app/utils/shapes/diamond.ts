@@ -1,5 +1,7 @@
 import type TribontShape from 'mow-registry/models/tribont-shape';
 import {
+  createDimension,
+  createStoreShape,
   DIMENSIONS,
   dimensionToShapeDimension,
   SHAPE_IDS,
@@ -49,28 +51,10 @@ export default class Diamond implements Shape {
     return new this(shape, width);
   }
   static async createDefaultShape(unit: Unit, store: Store) {
-    const widthKind = await store.findRecord<QuantityKind>(
-      'quantity-kind',
-      DIMENSIONS.width,
-    );
-    const widthDimension = store.createRecord<Dimension>('dimension', {
-      value: 0,
-      kind: widthKind,
-      unit,
-    });
-    await widthDimension.save();
+    const widthDimension = await createDimension(store, unit, DIMENSIONS.width);
     const dimensions = [widthDimension];
 
-    const classification =
-      await store.findRecord<TribontShapeClassificationCode>(
-        'tribont-shape-classification-code',
-        SHAPE_IDS.diamond,
-      );
-    const shape = store.createRecord<TribontShape>('tribont-shape', {
-      dimensions,
-      classification,
-    });
-    await shape.save();
+    const shape = await createStoreShape(store, dimensions, SHAPE_IDS.diamond);
     const width = await dimensionToShapeDimension(widthDimension, 'width');
     return new this(shape, width);
   }

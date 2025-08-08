@@ -7,6 +7,8 @@ import {
   type Shape,
   SHAPE_IDS,
   staticImplements,
+  createStoreShape,
+  createDimension,
 } from '.';
 import type Store from '@ember-data/store';
 import QuantityKind from 'mow-registry/models/quantity-kind';
@@ -63,38 +65,19 @@ export default class Triangle implements Shape {
     return new this(shape, height, width);
   }
   static async createDefaultShape(unit: Unit, store: Store) {
-    const heightKind = await store.findRecord<QuantityKind>(
-      'quantity-kind',
+    const heightDimension = await createDimension(
+      store,
+      unit,
       DIMENSIONS.height,
     );
-    const heightDimension = store.createRecord<Dimension>('dimension', {
-      value: 0,
-      kind: heightKind,
+    const widthDimension = await createDimension(
+      store,
       unit,
-    });
-    await heightDimension.save();
-    const widthKind = await store.findRecord<QuantityKind>(
-      'quantity-kind',
-      DIMENSIONS.width,
+      DIMENSIONS.height,
     );
-    const widthDimension = store.createRecord<Dimension>('dimension', {
-      value: 0,
-      kind: widthKind,
-      unit,
-    });
-    await widthDimension.save();
     const dimensions = [heightDimension, widthDimension];
 
-    const classification =
-      await store.findRecord<TribontShapeClassificationCode>(
-        'tribont-shape-classification-code',
-        SHAPE_IDS.triangle,
-      );
-    const shape = store.createRecord<TribontShape>('tribont-shape', {
-      dimensions,
-      classification,
-    });
-    await shape.save();
+    const shape = await createStoreShape(store, dimensions, SHAPE_IDS.triangle);
     const height = await dimensionToShapeDimension(heightDimension, 'height');
     const width = await dimensionToShapeDimension(widthDimension, 'width');
     return new this(shape, height, width);

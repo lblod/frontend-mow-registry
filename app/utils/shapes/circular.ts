@@ -1,5 +1,7 @@
 import type TribontShape from 'mow-registry/models/tribont-shape';
 import {
+  createDimension,
+  createStoreShape,
   DIMENSIONS,
   dimensionToShapeDimension,
   SHAPE_IDS,
@@ -8,11 +10,8 @@ import {
   type shapeDimension,
   type ShapeStatic,
 } from '.';
-import type TribontShapeClassificationCode from 'mow-registry/models/tribont-shape-classification-code';
 import type Unit from 'mow-registry/models/unit';
 import type Store from '@ember-data/store';
-import type Dimension from 'mow-registry/models/dimension';
-import type QuantityKind from 'mow-registry/models/quantity-kind';
 
 @staticImplements<ShapeStatic>()
 export default class Circular implements Shape {
@@ -49,28 +48,14 @@ export default class Circular implements Shape {
     return new this(shape, radius);
   }
   static async createDefaultShape(unit: Unit, store: Store) {
-    const radiusKind = await store.findRecord<QuantityKind>(
-      'quantity-kind',
+    const radiusDimension = await createDimension(
+      store,
+      unit,
       DIMENSIONS.radius,
     );
-    const radiusDimension = store.createRecord<Dimension>('dimension', {
-      value: 0,
-      kind: radiusKind,
-      unit,
-    });
-    await radiusDimension.save();
     const dimensions = [radiusDimension];
 
-    const classification =
-      await store.findRecord<TribontShapeClassificationCode>(
-        'tribont-shape-classification-code',
-        SHAPE_IDS.circular,
-      );
-    const shape = store.createRecord<TribontShape>('tribont-shape', {
-      dimensions,
-      classification,
-    });
-    await shape.save();
+    const shape = await createStoreShape(store, dimensions, SHAPE_IDS.circular);
     const radius = await dimensionToShapeDimension(radiusDimension, 'radius');
     return new this(shape, radius);
   }
