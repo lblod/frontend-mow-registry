@@ -31,6 +31,10 @@ export default class Octagon implements Shape {
     return this.width.unit;
   }
 
+  get id() {
+    return this.shape.id as string;
+  }
+
   static headers() {
     return [
       {
@@ -62,5 +66,16 @@ export default class Octagon implements Shape {
     this.width.unit = unit;
     this.width.dimension.set('unit', unit);
     await this.width.dimension.save();
+  }
+
+  async save() {
+    await this.width.dimension.save();
+    await this.shape.save();
+  }
+
+  async reset() {
+    this.width.dimension.rollbackAttributes();
+    this.width = await dimensionToShapeDimension(this.width.dimension, 'width');
+    this.shape.rollbackAttributes();
   }
 }

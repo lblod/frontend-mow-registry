@@ -37,6 +37,10 @@ export default class Triangle implements Shape {
     return this.height.unit;
   }
 
+  get id() {
+    return this.shape.id as string;
+  }
+
   static headers() {
     return [
       {
@@ -89,5 +93,22 @@ export default class Triangle implements Shape {
     await this.height.dimension.save();
     this.width.dimension.set('unit', unit);
     await this.width.dimension.save();
+  }
+
+  async save() {
+    await this.height.dimension.save();
+    await this.width.dimension.save();
+    await this.shape.save();
+  }
+
+  async reset() {
+    this.height.dimension.rollbackAttributes();
+    this.width.dimension.rollbackAttributes();
+    this.height = await dimensionToShapeDimension(
+      this.height.dimension,
+      'height',
+    );
+    this.width = await dimensionToShapeDimension(this.width.dimension, 'width');
+    this.shape.rollbackAttributes();
   }
 }

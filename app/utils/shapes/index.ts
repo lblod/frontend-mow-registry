@@ -79,6 +79,9 @@ export interface Shape {
   toString(): string;
   unitMeasure: Unit;
   convertToNewUnit(unit: Unit): Promise<void>;
+  id: string;
+  save(): Promise<void>;
+  reset(): Promise<void>;
 }
 
 export async function convertToShape(shape: TribontShape) {

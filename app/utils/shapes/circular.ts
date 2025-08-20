@@ -28,6 +28,10 @@ export default class Circular implements Shape {
     return this.radius.unit;
   }
 
+  get id() {
+    return this.shape.id as string;
+  }
+
   static headers() {
     return [
       {
@@ -63,5 +67,19 @@ export default class Circular implements Shape {
     this.radius.unit = unit;
     this.radius.dimension.set('unit', unit);
     await this.radius.dimension.save();
+  }
+
+  async save() {
+    await this.radius.dimension.save();
+    await this.shape.save();
+  }
+
+  async reset() {
+    this.radius.dimension.rollbackAttributes();
+    this.radius = await dimensionToShapeDimension(
+      this.radius.dimension,
+      'radius',
+    );
+    this.shape.rollbackAttributes();
   }
 }

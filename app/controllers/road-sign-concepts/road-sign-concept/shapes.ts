@@ -8,19 +8,21 @@ import type ShapeClassification from 'mow-registry/models/tribont-shape-classifi
 import type Unit from 'mow-registry/models/unit';
 import ShapesRoute from 'mow-registry/routes/road-sign-concepts/road-sign-concept/shapes';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
-import type Shape from 'mow-registry/models/shape';
+import { type Shape } from 'mow-registry/utils/shapes';
 import type QuantityKind from 'mow-registry/models/quantity-kind';
 import {
   convertToShape,
   shapeDimensionToText,
   SHAPES,
 } from 'mow-registry/utils/shapes';
+import type Dimension from 'mow-registry/models/dimension';
 export default class RoadSignConceptsRoadSignConceptShapesController extends Controller {
   declare model: ModelFrom<ShapesRoute>;
   @service declare store: Store;
   @tracked cardEditing = false;
   @tracked shapeChange?: ShapeClassification = undefined;
   @tracked unitChange?: Unit = undefined;
+  @tracked editShapeId?: string = undefined;
   shapeClassificationsPromise: Promise<ShapeClassification[]>;
   unitsPromise: Promise<Unit[]>;
   constructor(owner: Owner | undefined) {
@@ -137,9 +139,14 @@ export default class RoadSignConceptsRoadSignConceptShapesController extends Con
     this.shapeChange = undefined;
   };
 
-  getValue(shape: Shape, dimension: string) {
+  getStringValue(shape: Shape, dimension: string) {
     if (!shape[dimension]) return '';
     return shapeDimensionToText(shape[dimension]);
+  }
+
+  getRawValue(shape: Shape, dimension: string) {
+    if (!shape[dimension]) return '';
+    return shape[dimension].value;
   }
 
   setShapeClassifications = (classification) => {
@@ -150,4 +157,50 @@ export default class RoadSignConceptsRoadSignConceptShapesController extends Con
   };
 
   async removeShape(shape) {}
+
+  editShape = (shape: Shape) => {
+    console.log(shape);
+    if (!shape.id) return;
+    this.editShapeId = shape.id;
+    console.log(this.editShapeId);
+  };
+  saveShape = async (shape: Shape) => {
+    console.log(shape);
+    await shape.save();
+    await this.model.roadSignConcept.save();
+    this.editShapeId = undefined;
+  };
+  resetShape = async (shape: Shape) => {
+    await shape.reset();
+    this.editShapeId = undefined;
+  };
+
+  setShapeValue = (shape: Shape, dimension: string, event: Event) => {
+    const numberValue = Number((event.target as HTMLInputElement).value);
+    const shapeDimension = shape[dimension];
+    if (shapeDimension) {
+      shapeDimension.dimension.set('value', numberValue);
+      shapeDimension.value = numberValue;
+    }
+    console.log(shape);
+  };
+  toggleDefaultShape = async (shape: Shape) => {
+    console.log(shape);
+    const currentDefault = await this.model.roadSignConcept.defaultShape;
+    console.log(currentDefault.id === shape.id);
+    if (currentDefault && currentDefault.id === shape.id) {
+      this.model.roadSignConcept.set('defaultShape', null);
+    } else {
+      this.model.roadSignConcept.set('defaultShape', shape.shape);
+    }
+  };
+  addNewShape = async () => {
+    const shape = await this.shapeClass?.createDefaultShape(
+      this.selectedUnit as Unit,
+      this.store,
+    );
+    const oldShapes = await this.model.roadSignConcept.shapes;
+    this.model.roadSignConcept.set('shapes', [...oldShapes, shape?.shape]);
+    await this.model.roadSignConcept.save();
+  };
 }
