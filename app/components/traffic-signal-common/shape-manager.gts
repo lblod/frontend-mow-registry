@@ -9,6 +9,7 @@ import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
 import AuCheckbox from '@appuniversum/ember-appuniversum/components/au-checkbox';
 import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
+import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
@@ -41,6 +42,9 @@ export default class ShapeManager extends Component<Signature> {
   @tracked editShapeId?: string = undefined;
   shapeClassificationsPromise: Promise<ShapeClassification[]>;
   unitsPromise: Promise<Unit[]>;
+  shapeToDelete?: Shape;
+  @tracked isDeleteConfirmationOpen = false;
+  @tracked isShapeChangeConfirmationOpen = false;
   constructor(
     owner: Owner | undefined,
     args: {
@@ -147,18 +151,7 @@ export default class ShapeManager extends Component<Signature> {
       this.shapeChange.id !== defaultShape?.classification.id
     ) {
       //Show alert
-      const shapes = await this.args.trafficSignal.shapes;
-      for (const shape of shapes) {
-        await this.removeTribontShape(shape);
-      }
-      const shapeClass = SHAPES[this.shapeChange.id as keyof typeof SHAPES];
-      const shape = await shapeClass.createShape(
-        this.selectedUnit as Unit,
-        this.store,
-      );
-      this.args.trafficSignal.set('defaultShape', undefined);
-      this.args.trafficSignal.set('shapes', [shape.shape]);
-      await this.args.trafficSignal.save();
+      this.isShapeChangeConfirmationOpen = true;
     } else if (
       this.unitChange &&
       this.unitChange.id !== this.defaultMeasureUnit?.id &&
@@ -171,6 +164,28 @@ export default class ShapeManager extends Component<Signature> {
     await this.shapesConverted.retry();
     await this.defaultShape.retry();
     this.cardEditing = false;
+  };
+
+  closeShapeChangeConfirmation = () => {
+    this.isShapeChangeConfirmationOpen = false;
+  };
+
+  changeShape = async () => {
+    const shapes = await this.args.trafficSignal.shapes;
+    for (const shape of shapes) {
+      await this.removeTribontShape(shape);
+    }
+    const shapeClass = SHAPES[this.shapeChange?.id as keyof typeof SHAPES];
+    const shape = await shapeClass.createShape(
+      this.selectedUnit as Unit,
+      this.store,
+    );
+    this.args.trafficSignal.set('defaultShape', undefined);
+    this.args.trafficSignal.set('shapes', [shape.shape]);
+    await this.args.trafficSignal.save();
+    await this.shapesConverted.retry();
+    await this.defaultShape.retry();
+    this.closeShapeChangeConfirmation();
   };
 
   cancelCard = () => {
@@ -198,13 +213,26 @@ export default class ShapeManager extends Component<Signature> {
 
   async removeTribontShape(shape: TribontShape) {}
 
-  removeShape = async (shape: Shape) => {
+  startDeleteShapeFlow = (shape: Shape) => {
+    this.shapeToDelete = shape;
+    this.isDeleteConfirmationOpen = true;
+  };
+
+  closeDeleteConfirmation = () => {
+    this.shapeToDelete = undefined;
+    this.isDeleteConfirmationOpen = false;
+  };
+
+  removeShape = async () => {
+    const shape = this.shapeToDelete;
+    if (!shape) return;
     const variables = await this.args.trafficSignal.shapes;
     removeItem(variables, shape.shape);
     await this.args.trafficSignal.save();
     await shape.remove();
     await this.shapesConverted.retry();
     await this.defaultShape.retry();
+    this.closeDeleteConfirmation();
   };
 
   editShape = (shape: Shape) => {
@@ -410,10 +438,55 @@ export default class ShapeManager extends Component<Signature> {
             <AuButton
               @skin='naked'
               @icon='trash'
-              {{on 'click' (fn this.removeShape shape)}}
+              {{on 'click' (fn this.startDeleteShapeFlow shape)}}
             /></td>
         {{/if}}
       </:body>
     </ReactiveTable>
+    <AuModal
+      @modalOpen={{this.isDeleteConfirmationOpen}}
+      @closeModal={{this.closeDeleteConfirmation}}
+    >
+      <:title>
+        {{t 'utility.confirmation.title'}}
+      </:title>
+      <:body>
+        <p>
+          {{t 'utility.confirmation.body'}}
+        </p>
+      </:body>
+      <:footer>
+        <AuButton @alert={{true}} {{on 'click' this.removeShape}}>
+          {{t 'shapes-manager.crud.delete'}}
+        </AuButton>
+        <AuButton @skin='secondary' {{on 'click' this.closeDeleteConfirmation}}>
+          {{t 'utility.cancel'}}
+        </AuButton>
+      </:footer>
+    </AuModal>
+    <AuModal
+      @modalOpen={{this.isShapeChangeConfirmationOpen}}
+      @closeModal={{this.closeShapeChangeConfirmation}}
+    >
+      <:title>
+        {{t 'utility.confirmation.title'}}
+      </:title>
+      <:body>
+        <p>
+          {{t 'shapes-manager.shape-change.body'}}
+        </p>
+      </:body>
+      <:footer>
+        <AuButton @alert={{true}} {{on 'click' this.changeShape}}>
+          {{t 'shapes-manager.shape-change.button'}}
+        </AuButton>
+        <AuButton
+          @skin='secondary'
+          {{on 'click' this.closeShapeChangeConfirmation}}
+        >
+          {{t 'utility.cancel'}}
+        </AuButton>
+      </:footer>
+    </AuModal>
   </template>
 }

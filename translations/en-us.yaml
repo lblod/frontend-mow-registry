@@ -339,3 +339,9 @@ validity-filter:
   valid: Currently valid
   expired: Expired
   custom: Custom period
+
+shapes-manager:
+  delete: Remove shape
+  shape-change:
+    body: Changing the shape type of a sign will delete all previous shapes you had
+    button: Reset my shapes
