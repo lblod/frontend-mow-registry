@@ -7,7 +7,11 @@ import type { InputType } from 'mow-registry/components/traffic-measure';
 import type CodeList from 'mow-registry/models/code-list';
 import Variable from 'mow-registry/models/variable';
 import type CodelistsService from 'mow-registry/services/codelists';
+import type Store from '@ember-data/store';
+import VariablesRoute from 'mow-registry/routes/road-sign-concepts/road-sign-concept/variables';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
 export default class RoadSignConceptsRoadSignConceptSubSignsController extends Controller {
+  declare model: ModelFrom<VariablesRoute>;
   @service declare intl: IntlService;
   variableTypes: Array<InputType>;
   @service('codelists') declare codeListService: CodelistsService;
@@ -52,7 +56,6 @@ export default class RoadSignConceptsRoadSignConceptSubSignsController extends C
 
   toggleEditing = async () => {
     if (this.editMode) {
-      console.log(this.model.variables);
       let isValid = true;
       for (let variable of this.model.variables) {
         if (variable.hasDirtyAttributes) {
@@ -104,6 +107,6 @@ export default class RoadSignConceptsRoadSignConceptSubSignsController extends C
     (await this.model.roadSignConcept.variables).push(newVariable);
   };
   reset() {
-    this
+    this;
   }
 }

@@ -71,10 +71,12 @@ export async function dimensionToShapeDimension(
 export interface ShapeStatic {
   headers(): { label: string; value: string }[];
   fromShape(shape: TribontShape): Promise<Shape | undefined>;
-  createDefaultShape(unit: Unit, store: Store): Promise<Shape>;
+  createShape(unit: Unit, store: Store): Promise<Shape>;
 }
 
-export interface Shape {
+export type Shape = {
+  [dimension in keyof typeof DIMENSIONS]?: shapeDimension;
+} & {
   shape: TribontShape;
   toString(): string;
   unitMeasure: Unit;
@@ -82,14 +84,16 @@ export interface Shape {
   id: string;
   save(): Promise<void>;
   reset(): Promise<void>;
-}
+  remove(): Promise<void>;
+};
 
 export async function convertToShape(shape: TribontShape) {
   const classificationId = (await shape.classification)?.get('id');
   if (!classificationId) return;
   const shapeClass: ShapeStatic =
     SHAPES[classificationId as keyof typeof SHAPES];
-  const shapeConverted = shapeClass.fromShape(shape);
+
+  const shapeConverted = await shapeClass.fromShape(shape);
   return shapeConverted;
 }
 

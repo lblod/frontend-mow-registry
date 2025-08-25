@@ -14,8 +14,6 @@ export default class RoadSignConceptsRoadSignConceptMainSignsRoute extends Route
     ) as ModelFrom<RoadSignConcept>;
     const shapes = await roadSignConcept.shapes;
     let defaultShape = await roadSignConcept.defaultShape;
-    console.log(shapes);
-    console.log(defaultShape);
     if (!defaultShape) {
       defaultShape = this.store.createRecord<TribontShape>('tribont-shape', {});
     }

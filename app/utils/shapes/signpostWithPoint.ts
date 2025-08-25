@@ -68,17 +68,13 @@ export default class SignpostWithPoint implements Shape {
     const width = await dimensionToShapeDimension(widthDimension, 'width');
     return new this(shape, height, width);
   }
-  static async createDefaultShape(unit: Unit, store: Store) {
+  static async createShape(unit: Unit, store: Store) {
     const heightDimension = await createDimension(
       store,
       unit,
       DIMENSIONS.height,
     );
-    const widthDimension = await createDimension(
-      store,
-      unit,
-      DIMENSIONS.height,
-    );
+    const widthDimension = await createDimension(store, unit, DIMENSIONS.width);
     const dimensions = [heightDimension, widthDimension];
 
     const shape = await createStoreShape(
@@ -114,5 +110,13 @@ export default class SignpostWithPoint implements Shape {
     );
     this.width = await dimensionToShapeDimension(this.width.dimension, 'width');
     this.shape.rollbackAttributes();
+  }
+  async remove() {
+    this.height.dimension.deleteRecord();
+    this.width.dimension.deleteRecord();
+    await this.height.dimension.save();
+    await this.width.dimension.save();
+    this.shape.deleteRecord();
+    await this.shape.save();
   }
 }

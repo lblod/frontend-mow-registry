@@ -54,7 +54,7 @@ export default class Diamond implements Shape {
     const width = await dimensionToShapeDimension(widthDimension, 'width');
     return new this(shape, width);
   }
-  static async createDefaultShape(unit: Unit, store: Store) {
+  static async createShape(unit: Unit, store: Store) {
     const widthDimension = await createDimension(store, unit, DIMENSIONS.width);
     const dimensions = [widthDimension];
 
@@ -77,5 +77,11 @@ export default class Diamond implements Shape {
     this.width.dimension.rollbackAttributes();
     this.width = await dimensionToShapeDimension(this.width.dimension, 'width');
     this.shape.rollbackAttributes();
+  }
+  async remove() {
+    this.width.dimension.deleteRecord();
+    await this.width.dimension.save();
+    this.shape.deleteRecord();
+    await this.shape.save();
   }
 }

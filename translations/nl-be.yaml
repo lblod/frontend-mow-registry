@@ -111,6 +111,7 @@ road-sign-concept:
     related-traffic-light: Gerelateerde verkeerslichten
     shape: Vorm
     dimensions: Afmetingen
+    dimension-unit: Afmeting eenheid
     default-shape: Standaardvorm
     height: Hoogte
     width: Breedte

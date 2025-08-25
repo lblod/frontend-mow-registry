@@ -51,7 +51,7 @@ export default class Circular implements Shape {
     const radius = await dimensionToShapeDimension(radiusDimension, 'radius');
     return new this(shape, radius);
   }
-  static async createDefaultShape(unit: Unit, store: Store) {
+  static async createShape(unit: Unit, store: Store) {
     const radiusDimension = await createDimension(
       store,
       unit,
@@ -81,5 +81,11 @@ export default class Circular implements Shape {
       'radius',
     );
     this.shape.rollbackAttributes();
+  }
+  async remove() {
+    this.radius.dimension.deleteRecord();
+    await this.radius.dimension.save();
+    this.shape.deleteRecord();
+    await this.shape.save();
   }
 }
