@@ -1,14 +1,9 @@
 import type TribontShape from 'mow-registry/models/tribont-shape';
 import {
-  createDimension,
-  createStoreShape,
   DIMENSIONS,
   dimensionToShapeDimension,
-  SHAPE_IDS,
-  staticImplements,
   type Shape,
   type shapeDimension,
-  type ShapeStatic,
 } from '.';
 import type Unit from 'mow-registry/models/unit';
 

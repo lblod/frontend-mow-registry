@@ -8,7 +8,7 @@ import type TribontShape from 'mow-registry/models/tribont-shape';
 export default class RoadSignConceptsRoadSignConceptMainSignsRoute extends Route {
   @service declare store: Store;
 
-  async model() {
+  model() {
     const { roadSignConcept } = this.modelFor(
       'road-sign-concepts.road-sign-concept',
     ) as ModelFrom<RoadSignConcept>;

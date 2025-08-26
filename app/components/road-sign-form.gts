@@ -29,8 +29,6 @@ import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text
 import ErrorMessage from 'mow-registry/components/error-message';
 import PowerSelectMultiple from 'ember-power-select/components/power-select-multiple';
 import ZonalitySelector from 'mow-registry/components/zonality-selector';
-import VariableManager from 'mow-registry/components/traffic-signal-common/variable-manager';
-import ShapeManager from 'mow-registry/components/common/shape-manager';
 import ArPlichtigStatus from 'mow-registry/components/ar-plichtig-status';
 import ImageInput from 'mow-registry/components/image-input';
 import { on } from '@ember/modifier';
@@ -39,8 +37,6 @@ import { fn, get } from '@ember/helper';
 import perform from 'ember-concurrency/helpers/perform';
 import { or } from 'ember-truth-helpers';
 import { LinkTo } from '@ember/routing';
-// @ts-expect-error no types
-import awaitHelper from 'ember-promise-helpers/helpers/await';
 import { load } from 'ember-async-data';
 import { isSome } from 'mow-registry/utils/option';
 import {
@@ -463,29 +459,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   {{/if}}
                 {{/let}}
               </AuFormRow>
-            {{/let}}
-            {{#let (awaitHelper @roadSignConcept.variables) as |variables|}}
-              <VariableManager
-                @variables={{variables}}
-                @removeVariable={{this.removeVariable}}
-                @addVariable={{this.addVariable}}
-              />
-            {{/let}}
-
-            {{! Shapes and dimensions }}
-            {{#let (awaitHelper @roadSignConcept.shapes) as |shapes|}}
-              {{#if (this.isArray shapes)}}
-                <ShapeManager
-                  {{! @glint-expect-error inheritence isnt working for us here for some reason }}
-                  @trafficSignalConcept={{@roadSignConcept}}
-                  @shapes={{shapes}}
-                  @addShape={{this.addShape}}
-                  @removeShape={{this.removeShape}}
-                  @removeDimension={{this.removeDimension}}
-                  @defaultShape={{@roadSignConcept.defaultShape}}
-                  @toggleDefaultShape={{this.toggleDefaultShape}}
-                />
-              {{/if}}
             {{/let}}
           </form>
         </div>

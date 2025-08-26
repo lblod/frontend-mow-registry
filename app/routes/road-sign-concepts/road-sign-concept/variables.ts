@@ -7,7 +7,7 @@ import { service } from '@ember/service';
 export default class RoadSignConceptsRoadSignConceptMainSignsRoute extends Route {
   @service declare store: Store;
 
-  async model() {
+  model() {
     const { roadSignConcept } = this.modelFor(
       'road-sign-concepts.road-sign-concept',
     ) as ModelFrom<RoadSignConcept>;
