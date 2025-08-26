@@ -12,11 +12,6 @@ export default class RoadSignConceptsRoadSignConceptMainSignsRoute extends Route
     const { roadSignConcept } = this.modelFor(
       'road-sign-concepts.road-sign-concept',
     ) as ModelFrom<RoadSignConcept>;
-    const shapes = await roadSignConcept.shapes;
-    let defaultShape = await roadSignConcept.defaultShape;
-    if (!defaultShape) {
-      defaultShape = this.store.createRecord<TribontShape>('tribont-shape', {});
-    }
-    return { roadSignConcept, defaultShape, shapes };
+    return { roadSignConcept };
   }
 }

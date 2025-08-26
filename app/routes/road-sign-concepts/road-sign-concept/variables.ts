@@ -11,7 +11,6 @@ export default class RoadSignConceptsRoadSignConceptMainSignsRoute extends Route
     const { roadSignConcept } = this.modelFor(
       'road-sign-concepts.road-sign-concept',
     ) as ModelFrom<RoadSignConcept>;
-    const variables = await roadSignConcept.variables;
-    return { roadSignConcept, variables };
+    return { roadSignConcept };
   }
 }

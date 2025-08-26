@@ -30,6 +30,8 @@ Router.map(function () {
       this.route('instructions', function () {
         this.route('edit', { path: '/:instructionId' });
       });
+      this.route('variables');
+      this.route('shapes');
       this.route('related');
     });
     this.route('new');
@@ -40,6 +42,8 @@ Router.map(function () {
       this.route('instructions', function () {
         this.route('edit', { path: '/:instructionId' });
       });
+      this.route('variables');
+      this.route('shapes');
       this.route('related');
     });
     this.route('new');
