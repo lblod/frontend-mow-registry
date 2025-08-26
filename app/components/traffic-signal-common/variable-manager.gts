@@ -77,24 +77,41 @@ export default class VariableManager extends Component<Signature> {
       .catch((error) => console.error('Error fetching code lists:', error));
   };
 
-  toggleEditing = async () => {
-    if (this.editMode) {
-      let isValid = true;
-      const variables = await this.args.trafficSignal.variables;
-      for (let variable of variables) {
-        if (variable.hasDirtyAttributes) {
-          const variableValid = await variable.validate();
-          if (!variableValid) isValid = false;
-        }
-      }
-      if (!isValid) return;
-      for (let variable of variables) {
-        if (variable.hasDirtyAttributes) {
-          await variable.save();
-        }
+  startEditMode = () => {
+    this.editMode = true;
+  };
+
+  endEditMode = () => {
+    this.editMode = false;
+  };
+
+  cancelEdit = async () => {
+    const variables = [...(await this.args.trafficSignal.variables)];
+    for (let variable of variables) {
+      await variable.rollbackAttributes();
+    }
+    await this.args.trafficSignal.rollbackAttributes();
+    await this.variables.retry();
+    this.endEditMode();
+  };
+
+  saveVariables = async () => {
+    let isValid = true;
+    const variables = await this.args.trafficSignal.variables;
+    for (let variable of variables) {
+      if (variable.hasDirtyAttributes) {
+        const variableValid = await variable.validate();
+        if (!variableValid) isValid = false;
       }
     }
-    this.editMode = !this.editMode;
+    if (!isValid) return;
+    for (let variable of variables) {
+      if (variable.hasDirtyAttributes) {
+        await variable.save();
+      }
+    }
+    await this.args.trafficSignal.save();
+    this.endEditMode();
   };
 
   setVariableLabel = (variable: Variable, event: InputEvent) => {
@@ -129,7 +146,6 @@ export default class VariableManager extends Component<Signature> {
   addVariable = async () => {
     const newVariable = this.store.createRecord<Variable>('variable', {});
     (await this.args.trafficSignal.variables).push(newVariable);
-    await this.args.trafficSignal.save();
   };
   variables = trackedFunction(this, async () => {
     return await this.args.trafficSignal.variables;
@@ -146,21 +162,31 @@ export default class VariableManager extends Component<Signature> {
       @content={{this.variables.value}}
       @isLoading={{this.variables.isLoading}}
       @noDataMessage={{t 'road-sign-concept.crud.no-data'}}
-      @page={{this.page}}
-      @sort={{this.sort}}
-      @pageSize={{this.pageSize}}
-      @onPageChange={{this.onPageChange}}
-      @onSortChange={{this.onSortChange}}
     >
       <:menu>
         <div class='au-u-flex au-u-flex--end'>
-          <AuButton {{on 'click' this.toggleEditing}}>
-            {{#if this.editMode}}
+          {{#if this.editMode}}
+            <AuButton
+              {{on 'click' this.saveVariables}}
+              class='au-u-margin-small'
+            >
               {{t 'utility.save'}}
-            {{else}}
+            </AuButton>
+            <AuButton
+              @skin='secondary'
+              {{on 'click' this.cancelEdit}}
+              class='au-u-margin-small'
+            >
+              {{t 'utility.cancel'}}
+            </AuButton>
+          {{else}}
+            <AuButton
+              {{on 'click' this.startEditMode}}
+              class='au-u-margin-small'
+            >
               {{t 'utility.edit'}}
-            {{/if}}
-          </AuButton>
+            </AuButton>
+          {{/if}}
 
         </div>
         {{#if this.editMode}}

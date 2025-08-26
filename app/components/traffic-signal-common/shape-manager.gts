@@ -368,11 +368,6 @@ export default class ShapeManager extends Component<Signature> {
       @content={{this.shapesConverted.value}}
       @isLoading={{this.isLoading}}
       @noDataMessage={{t 'road-sign-concept.crud.no-data'}}
-      @page={{this.page}}
-      @sort={{this.sort}}
-      @pageSize={{this.pageSize}}
-      @onPageChange={{this.onPageChange}}
-      @onSortChange={{this.onSortChange}}
     >
       <:menu>
         <div class='au-u-flex au-u-flex--end'>
