@@ -3,7 +3,6 @@ import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import type RoadSignConcept from '../road-sign-concept';
 import type Store from 'ember-data/store';
 import { service } from '@ember/service';
-import type TribontShape from 'mow-registry/models/tribont-shape';
 
 export default class RoadSignConceptsRoadSignConceptMainSignsRoute extends Route {
   @service declare store: Store;
