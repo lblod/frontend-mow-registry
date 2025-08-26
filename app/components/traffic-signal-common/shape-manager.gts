@@ -97,7 +97,6 @@ export default class ShapeManager extends Component<Signature> {
     return this.firstShape.value?.get('classification').get('label');
   }
   defaultShape = trackedFunction(this, async () => {
-    console.log('default shape rerun');
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     const shapeConverted = await convertToShape(
@@ -134,8 +133,6 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   get dimensionsToShow() {
-    console.log(this.shapeClass);
-    console.log(this.shapeClass?.headers());
     return this.shapeClass?.headers();
   }
   toggleEditing() {}
