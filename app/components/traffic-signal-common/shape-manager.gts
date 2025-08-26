@@ -211,7 +211,15 @@ export default class ShapeManager extends Component<Signature> {
     this.unitChange = unit;
   };
 
-  async removeTribontShape(shape: TribontShape) {}
+  async removeTribontShape(shape: TribontShape) {
+    const dimensions = await shape.dimensions;
+    for (let dimension of dimensions) {
+      dimension.deleteRecord();
+      await dimension.save();
+    }
+    shape.deleteRecord();
+    await shape.save();
+  }
 
   startDeleteShapeFlow = (shape: Shape) => {
     this.shapeToDelete = shape;
@@ -226,8 +234,8 @@ export default class ShapeManager extends Component<Signature> {
   removeShape = async () => {
     const shape = this.shapeToDelete;
     if (!shape) return;
-    const variables = await this.args.trafficSignal.shapes;
-    removeItem(variables, shape.shape);
+    const shapes = await this.args.trafficSignal.shapes;
+    removeItem(shapes, shape.shape);
     await this.args.trafficSignal.save();
     await shape.remove();
     await this.shapesConverted.retry();

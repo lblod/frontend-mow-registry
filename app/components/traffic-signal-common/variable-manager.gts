@@ -21,6 +21,7 @@ import ErrorMessage from 'mow-registry/components/error-message';
 import { eq } from 'ember-truth-helpers';
 import findByValue from 'mow-registry/helpers/find-by-value';
 import { trackedFunction } from 'reactiveweb/function';
+import { removeItem } from 'mow-registry/utils/array';
 
 interface Signature {
   Args: {
@@ -134,6 +135,12 @@ export default class VariableManager extends Component<Signature> {
   variables = trackedFunction(this, async () => {
     return await this.args.trafficSignal.variables;
   });
+  removeVariable = async (variable: Variable) => {
+    const variables = await this.args.trafficSignal.variables;
+    removeItem(variables, variable);
+    variable.deleteRecord();
+    await variable.save();
+  };
   <template>
     {{! @glint-nocheck: not typesafe yet }}
     <ReactiveTable
@@ -252,7 +259,7 @@ export default class VariableManager extends Component<Signature> {
               @skin='naked'
               @alert='true'
               @icon='trash'
-              {{on 'click' this.removeVariable}}
+              {{on 'click' (fn this.removeVariable variable)}}
             /></td>
         {{/if}}
       </:body>
