@@ -11,7 +11,6 @@ import type DateVariable from 'mow-registry/models/date-variable';
 import type LocationVariable from 'mow-registry/models/location-variable';
 import type CodelistVariable from 'mow-registry/models/codelist-variable';
 import type InstructionVariable from 'mow-registry/models/instruction-variable';
-import type { CreateRecordProperties } from '@ember-data/store/-private';
 
 export default class VariablesService extends Service {
   @service declare store: Store;
@@ -42,44 +41,38 @@ export default class VariablesService extends Service {
       existing.label !== this.labelForVariableType(existing.type)
         ? existing.label
         : this.labelForVariableType(newType);
-    const properties: CreateRecordProperties<Variable> = {
+    const properties = {
       label,
       required: existing.required,
     };
     switch (newType) {
       case 'text':
         return this.store.createRecord<TextVariable>(
-          // @ts-expect-error Why does TS not agree with these types matching?
           'text-variable',
           properties,
         );
       case 'number':
         return this.store.createRecord<NumberVariable>(
-          // @ts-expect-error Why does TS not agree with these types matching?
           'number-variable',
           properties,
         );
       case 'date':
         return this.store.createRecord<DateVariable>(
-          // @ts-expect-error Why does TS not agree with these types matching?
           'date-variable',
           properties,
         );
       case 'location':
         return this.store.createRecord<LocationVariable>(
-          // @ts-expect-error Why does TS not agree with these types matching?
           'location-variable',
           properties,
         );
       case 'codelist':
         return this.store.createRecord<CodelistVariable>(
-          // @ts-expect-error Why does TS not agree with these types matching?
           'codelist-variable',
           properties,
         );
       case 'instruction':
         return this.store.createRecord<InstructionVariable>(
-          // @ts-expect-error Why does TS not agree with these types matching?
           'instruction-variable',
           properties,
         );

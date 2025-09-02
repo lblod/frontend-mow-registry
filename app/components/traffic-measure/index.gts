@@ -45,7 +45,9 @@ import Variable, {
 import { removeItem } from 'mow-registry/utils/array';
 import validateTrafficMeasureDates from 'mow-registry/utils/validate-traffic-measure-dates';
 import type SkosConcept from 'mow-registry/models/skos-concept';
-import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
+import CodelistVariable, {
+  isCodelistVariable,
+} from 'mow-registry/models/codelist-variable';
 import ValidationStatus from 'mow-registry/components/validation-status';
 import ErrorMessage from 'mow-registry/components/error-message';
 import ContentCheck from 'mow-registry/components/content-check';
@@ -58,7 +60,9 @@ import TrafficMeasureSignList from 'mow-registry/components/traffic-measure/sign
 import TrafficMeasurePreview from 'mow-registry/components/traffic-measure/preview';
 import type VariablesService from 'mow-registry/services/variables-service';
 import type TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
-import { isInstructionVariable } from 'mow-registry/models/instruction-variable';
+import InstructionVariable, {
+  isInstructionVariable,
+} from 'mow-registry/models/instruction-variable';
 import type TextVariable from 'mow-registry/models/text-variable';
 import { validateVariables } from 'mow-registry/utils/validate-relations';
 
@@ -196,7 +200,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   @action
   async updateCodelist(variable: Variable, codeList: CodeList) {
     if (isCodelistVariable(variable)) {
-      variable.set('codeList', codeList);
+      (variable as CodelistVariable).set('codeList', codeList);
       await this.generatePreview.perform();
     }
   }
@@ -204,7 +208,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   @action
   async updateInstruction(variable: Variable, template: Template) {
     if (isInstructionVariable(variable)) {
-      variable.set('template', template);
+      (variable as InstructionVariable).set('template', template);
       await this.generatePreview.perform();
     }
   }
@@ -274,6 +278,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     );
     const newVars = [...this.variables];
     this.variablesToBeDeleted.push(
+      // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
       ...newVars.splice(varIndex, 1, newVar as Variable),
     );
     this.variables = newVars;
@@ -321,11 +326,14 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     //add new variable variables
     filteredRegexResult.forEach((reg) => {
       if (!this.variables.find((variable) => variable.label === reg[1])) {
-        this.variables.push(
-          this.store.createRecord<TextVariable>('text-variable' as 'variable', {
+        const variable = this.store.createRecord<TextVariable>(
+          'text-variable',
+          {
             label: reg[1],
-          }) as Variable,
+          },
         );
+        // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
+        this.variables.push(variable);
       }
     });
 
@@ -380,13 +388,14 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     for (const variable of this.variables) {
       let replaceString;
       if (isInstructionVariable(variable)) {
-        const instruction = await variable.template;
+        const instruction = await (variable as InstructionVariable).template;
+        const label = (variable as InstructionVariable).label;
         replaceString =
           "<span style='background-color: #ffffff'>" +
           (instruction?.value ?? '') +
           '</span>';
-        this.preview = this.preview.replaceAll(
-          '${' + (variable.label ?? '') + '}',
+        this.preview = this.preview!.replaceAll(
+          '${' + (label ?? '') + '}',
           replaceString,
         );
       }
@@ -807,6 +816,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                                 @allowClear={{false}}
                                 @searchEnabled={{false}}
                                 @options={{this.codeLists}}
+                                {{! @glint-expect-error typescript gives an error due to the Type brand discrepancies }}
                                 @selected={{variable.codeList}}
                                 @onChange={{fn this.updateCodelist variable}}
                                 as |codeList|
@@ -824,6 +834,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                                 {{/each}}
                               </ul>
                               <ErrorMessage
+                                {{! @glint-expect-error typescript gives an error due to the Type brand discrepancies }}
                                 @error={{get variable.error 'codeList'}}
                               />
                             {{/if}}
@@ -835,6 +846,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                                 @allowClear={{false}}
                                 @searchEnabled={{false}}
                                 @options={{this.instructions}}
+                                {{! @glint-expect-error typescript gives an error due to the Type brand discrepancies }}
                                 @selected={{variable.template}}
                                 @onChange={{fn this.updateInstruction variable}}
                                 as |instruction|

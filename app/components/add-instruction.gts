@@ -106,6 +106,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     );
     if (this.variables) {
       this.variablesToBeDeleted.push(
+        // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
         ...this.variables.splice(varIndex, 1, newVar as Variable),
       );
     }
@@ -241,12 +242,13 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     filteredRegexResult.forEach((reg) => {
       if (!this.variables?.find((variable) => variable.label === reg[1])) {
         const variable = this.store.createRecord<TextVariable>(
-          'text-variable' as 'variable',
+          'text-variable',
           {
             label: reg[1],
           },
         );
-        this.variables?.push(variable as Variable);
+        // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
+        this.variables?.push(variable);
       }
     });
 
@@ -495,6 +497,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                           @searchEnabled={{false}}
                           {{! @glint-expect-error need to move to PS 8 }}
                           @options={{this.codeLists}}
+                          {{! @glint-expect-error typescript gives an error due to the Type brand discrepancies }}
                           @selected={{variable.codeList}}
                           @onChange={{fn this.updateCodeList variable}}
                           as |codeList|
@@ -508,6 +511,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                           {{/each}}
                         </ul>
                         <ErrorMessage
+                          {{! @glint-expect-error typescript gives an error due to the Type brand discrepancies }}
                           @error={{get variable.error 'codeList'}}
                         />
                       {{/if}}

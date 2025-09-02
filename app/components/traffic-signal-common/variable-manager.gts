@@ -68,6 +68,7 @@ export default class VariableManager extends Component<Signature> {
       existing,
       selectedType,
     );
+    // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
     this.args.variables.splice(varIndex, 1, newVar as Variable);
   }
 
