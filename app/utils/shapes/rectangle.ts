@@ -3,18 +3,23 @@ import {
   dimensionToShapeDimension,
   type ShapeStatic,
   type Shape,
-  SHAPE_IDS,
+  SHAPE_URIS,
   staticImplements,
   createDimension,
   createStoreShape,
 } from '.';
 import type Store from '@ember-data/store';
 import type Unit from 'mow-registry/models/unit';
-import HeightAndWidhtShape from './heightAndWidthShape';
+import HeightAndWidhtShape from './height-and-width-shape';
+import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 
 @staticImplements<ShapeStatic>()
 export default class Rectangle extends HeightAndWidhtShape implements Shape {
-  static async createShape(unit: Unit, store: Store) {
+  static async createShape(
+    unit: Unit,
+    store: Store,
+    trafficSignalConcept: TrafficSignalConcept,
+  ) {
     const heightDimension = await createDimension(
       store,
       unit,
@@ -26,7 +31,8 @@ export default class Rectangle extends HeightAndWidhtShape implements Shape {
     const shape = await createStoreShape(
       store,
       dimensions,
-      SHAPE_IDS.rectangle,
+      SHAPE_URIS.rectangle,
+      trafficSignalConcept,
     );
     const height = await dimensionToShapeDimension(heightDimension, 'height');
     const width = await dimensionToShapeDimension(widthDimension, 'width');

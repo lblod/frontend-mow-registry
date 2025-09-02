@@ -9,6 +9,7 @@ import {
   validateStringRequired,
   validateBooleanRequired,
 } from 'mow-registry/validators/schema';
+import type TrafficSignalConcept from './traffic-signal-concept';
 
 export default class Variable extends Resource {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
@@ -26,6 +27,13 @@ export default class Variable extends Resource {
   @belongsTo<Template>('template', { inverse: null, async: true })
   declare template: AsyncBelongsTo<Template>;
 
+  @belongsTo<TrafficSignalConcept>('traffic-signal-concept', {
+    inverse: 'variables',
+    async: true,
+    polymorphic: true,
+  })
+  declare trafficSignalConcept: AsyncBelongsTo<TrafficSignalConcept>;
+
   get validationSchema() {
     return super.validationSchema.keys({
       uri: validateStringOptional(),
@@ -35,6 +43,7 @@ export default class Variable extends Resource {
       required: validateBooleanRequired(),
       codeList: validateBelongsToOptional(),
       template: validateBelongsToOptional(),
+      trafficSignalConcept: validateBelongsToOptional(),
     });
   }
 }

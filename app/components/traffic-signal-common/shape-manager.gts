@@ -27,6 +27,7 @@ import {
 } from 'mow-registry/utils/shapes';
 import type TribontShape from 'mow-registry/models/tribont-shape';
 import { removeItem } from 'mow-registry/utils/array';
+import type IntlService from 'ember-intl/services/intl';
 
 interface Signature {
   Args: {
@@ -36,6 +37,7 @@ interface Signature {
 
 export default class ShapeManager extends Component<Signature> {
   @service declare store: Store;
+  @service declare intl: IntlService;
   @tracked cardEditing = false;
   @tracked shapeChange?: ShapeClassification = undefined;
   @tracked unitChange?: Unit = undefined;
@@ -45,6 +47,8 @@ export default class ShapeManager extends Component<Signature> {
   shapeToDelete?: Shape;
   @tracked isDeleteConfirmationOpen = false;
   @tracked isShapeChangeConfirmationOpen = false;
+  @tracked pageNumber = 0;
+  pageSize = 2;
   constructor(
     owner: Owner | undefined,
     args: {
@@ -65,11 +69,11 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   get shapeClass() {
-    const classificationId = this.firstShape.value
+    const classificationUri = this.firstShape.value
       ?.get('classification')
-      ?.get('id');
-    if (!classificationId) return undefined;
-    return SHAPES[classificationId as keyof typeof SHAPES];
+      ?.get('uri');
+    if (!classificationUri) return undefined;
+    return SHAPES[classificationUri as keyof typeof SHAPES];
   }
 
   async fetchShapeClassifications() {
@@ -112,18 +116,25 @@ export default class ShapeManager extends Component<Signature> {
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     const shapesConverted = [];
-    const shapes = await this.args.trafficSignal.shapes;
+    const shapes = await this.store.query<TribontShape>('tribont-shape', {
+      'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+      page: {
+        number: this.pageNumber,
+        size: this.pageSize,
+      },
+    });
     for (const shape of shapes) {
       const shapeConverted = await convertToShape(shape);
       if (shapeConverted) {
         shapesConverted.push(shapeConverted);
       }
     }
+    shapesConverted.meta = shapes.meta;
     return shapesConverted;
   });
 
   get defaultShapeString() {
-    return this.defaultShape.value?.toString();
+    return this.defaultShape.value?.toString(this.intl);
   }
 
   get defaultMeasureUnit() {
@@ -133,7 +144,7 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   get dimensionsToShow() {
-    return this.shapeClass?.headers();
+    return this.shapeClass?.headers(this.intl);
   }
   toggleEditing() {}
 
@@ -172,10 +183,11 @@ export default class ShapeManager extends Component<Signature> {
     for (const shape of shapes) {
       await this.removeTribontShape(shape);
     }
-    const shapeClass = SHAPES[this.shapeChange?.id as keyof typeof SHAPES];
+    const shapeClass = SHAPES[this.shapeChange?.uri as keyof typeof SHAPES];
     const shape = await shapeClass.createShape(
       this.selectedUnit as Unit,
       this.store,
+      this.args.trafficSignal,
     );
     this.args.trafficSignal.set('defaultShape', undefined);
     this.args.trafficSignal.set('shapes', [shape.shape]);
@@ -280,10 +292,12 @@ export default class ShapeManager extends Component<Signature> {
     const shape = await this.shapeClass?.createShape(
       this.selectedUnit as Unit,
       this.store,
+      this.args.trafficSignal,
     );
-    const oldShapes = await this.args.trafficSignal.shapes;
-    this.args.trafficSignal.set('shapes', [...oldShapes, shape?.shape]);
-    await this.args.trafficSignal.save();
+    this.shapesConverted.retry();
+  };
+  onPageChange = (newPage: number) => {
+    this.pageNumber = newPage;
     this.shapesConverted.retry();
   };
   <template>
@@ -367,7 +381,10 @@ export default class ShapeManager extends Component<Signature> {
     <ReactiveTable
       @content={{this.shapesConverted.value}}
       @isLoading={{this.isLoading}}
-      @noDataMessage={{t 'road-sign-concept.crud.no-data'}}
+      @noDataMessage={{t 'shape-manager.no-data'}}
+      @page={{this.pageNumber}}
+      @pageSize={{this.pageSize}}
+      @onPageChange={{this.onPageChange}}
     >
       <:menu>
         <div class='au-u-flex au-u-flex--end'>
@@ -457,7 +474,7 @@ export default class ShapeManager extends Component<Signature> {
       </:body>
       <:footer>
         <AuButton @alert={{true}} {{on 'click' this.removeShape}}>
-          {{t 'shapes-manager.crud.delete'}}
+          {{t 'shape-manager.delete'}}
         </AuButton>
         <AuButton @skin='secondary' {{on 'click' this.closeDeleteConfirmation}}>
           {{t 'utility.cancel'}}
@@ -473,12 +490,12 @@ export default class ShapeManager extends Component<Signature> {
       </:title>
       <:body>
         <p>
-          {{t 'shapes-manager.shape-change.body'}}
+          {{t 'shape-manager.shape-change.body'}}
         </p>
       </:body>
       <:footer>
         <AuButton @alert={{true}} {{on 'click' this.changeShape}}>
-          {{t 'shapes-manager.shape-change.button'}}
+          {{t 'shape-manager.shape-change.button'}}
         </AuButton>
         <AuButton
           @skin='secondary'

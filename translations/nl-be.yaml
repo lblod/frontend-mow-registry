@@ -339,8 +339,14 @@ validity-filter:
   valid: Momenteel geldig
   expired: Verlopen
   custom: Aangepaste periode
-shapes-manager:
+shape-manager:
   delete: Vorm verwijderen
   shape-change:
     body: Als je het vormtype van een bord verandert, worden alle vorige vormen die je had verwijderd.
     button: Mijn vormen resetten
+  no-data: Geen vormen
+  height: Hoogte
+  width: Breedte
+  radius: Straal
+variable-manager:
+  no-data: Geen variabelen

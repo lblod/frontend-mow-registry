@@ -36,6 +36,9 @@ export default class VariableManager extends Component<Signature> {
   @service declare store: Store;
   @tracked codeLists?: CodeList[];
   @tracked editMode = false;
+  @tracked newVariable?: Variable;
+  @tracked pageNumber = 0;
+  pageSize = 2;
 
   constructor(
     owner: Owner | undefined,
@@ -97,7 +100,11 @@ export default class VariableManager extends Component<Signature> {
 
   saveVariables = async () => {
     let isValid = true;
-    const variables = await this.args.trafficSignal.variables;
+    const variables = await this.variables.value;
+    if (!variables) {
+      this.endEditMode();
+      return;
+    }
     for (let variable of variables) {
       if (variable.hasDirtyAttributes) {
         const variableValid = await variable.validate();
@@ -144,24 +151,45 @@ export default class VariableManager extends Component<Signature> {
   };
 
   addVariable = async () => {
-    const newVariable = this.store.createRecord<Variable>('variable', {});
-    (await this.args.trafficSignal.variables).push(newVariable);
+    this.newVariable = this.store.createRecord<Variable>('variable', {
+      trafficSignalConcept: this.args.trafficSignal,
+    });
+    this.variables.retry();
   };
   variables = trackedFunction(this, async () => {
-    return await this.args.trafficSignal.variables;
+    await Promise.resolve();
+    const variables = await this.store.query<Variable>('variable', {
+      'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+      page: {
+        number: this.pageNumber,
+        size: this.pageSize,
+      },
+    });
+    if (this.newVariable) variables.push(this.newVariable);
+    return variables;
   });
   removeVariable = async (variable: Variable) => {
-    const variables = await this.args.trafficSignal.variables;
-    removeItem(variables, variable);
     variable.deleteRecord();
     await variable.save();
+    if (this.newVariable === variable) {
+      this.newVariable = undefined;
+    }
+    this.variables.retry();
+  };
+
+  onPageChange = (newPage: number) => {
+    this.pageNumber = newPage;
+    this.variables.retry();
   };
   <template>
     {{! @glint-nocheck: not typesafe yet }}
     <ReactiveTable
       @content={{this.variables.value}}
       @isLoading={{this.variables.isLoading}}
-      @noDataMessage={{t 'road-sign-concept.crud.no-data'}}
+      @noDataMessage={{t 'variable-manager.no-data'}}
+      @page={{this.pageNumber}}
+      @pageSize={{this.pageSize}}
+      @onPageChange={{this.onPageChange}}
     >
       <:menu>
         <div class='au-u-flex au-u-flex--end'>

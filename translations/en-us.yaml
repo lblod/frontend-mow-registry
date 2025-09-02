@@ -340,8 +340,14 @@ validity-filter:
   expired: Expired
   custom: Custom period
 
-shapes-manager:
+shape-manager:
   delete: Remove shape
   shape-change:
     body: Changing the shape type of a sign will delete all previous shapes you had
     button: Reset my shapes
+  no-data: No shapes
+  height: Height
+  width: Width
+  radius: Radius
+variable-manager:
+  no-data: No variables

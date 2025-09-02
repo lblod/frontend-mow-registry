@@ -6,6 +6,7 @@ import {
   type Shape,
 } from '.';
 import type Unit from 'mow-registry/models/unit';
+import type IntlService from 'ember-intl/services/intl';
 
 export default class HeightAndWidhtShape implements Shape {
   height: shapeDimension;
@@ -20,8 +21,8 @@ export default class HeightAndWidhtShape implements Shape {
     this.width = width;
     this.shape = shape;
   }
-  toString() {
-    return `Hoogte: ${this.height.value} ${this.height.unit.symbol} Breedte: ${this.width.value} ${this.width.unit.symbol}`;
+  toString(intl: IntlService) {
+    return `${intl.t('shape-manager.height')}: ${this.height.value} ${this.height.unit.symbol} ${intl.t('shape-manager.width')}: ${this.width.value} ${this.width.unit.symbol}`;
   }
   get unitMeasure() {
     return this.height.unit;
@@ -31,14 +32,14 @@ export default class HeightAndWidhtShape implements Shape {
     return this.shape.id as string;
   }
 
-  static headers() {
+  static headers(intl: IntlService) {
     return [
       {
-        label: 'Hoogte',
+        label: intl.t('shape-manager.height'),
         value: 'height',
       },
       {
-        label: 'Breedte',
+        label: intl.t('shape-manager.width'),
         value: 'width',
       },
     ];
@@ -48,10 +49,10 @@ export default class HeightAndWidhtShape implements Shape {
     if (!shape.id) return;
     const dimensions = await shape.dimensions;
     const heightDimension = dimensions.find(
-      (dimension) => dimension.kind.id === DIMENSIONS.height,
+      (dimension) => dimension.kind.uri === DIMENSIONS.height,
     );
     const widthDimension = dimensions.find(
-      (dimension) => dimension.kind.id === DIMENSIONS.width,
+      (dimension) => dimension.kind.uri === DIMENSIONS.width,
     );
     if (!heightDimension || !widthDimension) return;
     const height = await dimensionToShapeDimension(heightDimension, 'height');

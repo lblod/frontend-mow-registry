@@ -6,6 +6,7 @@ import {
   type shapeDimension,
 } from '.';
 import type Unit from 'mow-registry/models/unit';
+import type IntlService from 'ember-intl/services/intl';
 
 export default class WidthShape implements Shape {
   width: shapeDimension;
@@ -14,8 +15,8 @@ export default class WidthShape implements Shape {
     this.width = width;
     this.shape = shape;
   }
-  toString() {
-    return `Breedte: ${this.width.value} ${this.width.unit.symbol}`;
+  toString(intl: IntlService) {
+    return `${intl.t('shape-manager.width')}: ${this.width.value} ${this.width.unit.symbol}`;
   }
   get unitMeasure() {
     return this.width.unit;
@@ -25,10 +26,10 @@ export default class WidthShape implements Shape {
     return this.shape.id as string;
   }
 
-  static headers() {
+  static headers(intl: IntlService) {
     return [
       {
-        label: 'Breedte',
+        label: intl.t('shape-manager.width'),
         value: 'width',
       },
     ];
@@ -38,7 +39,7 @@ export default class WidthShape implements Shape {
     if (!shape.id) return;
     const dimensions = await shape.dimensions;
     const widthDimension = dimensions.find(
-      (dimension) => dimension.kind.id === DIMENSIONS.width,
+      (dimension) => dimension.kind.uri === DIMENSIONS.width,
     );
     if (!widthDimension) return;
     const width = await dimensionToShapeDimension(widthDimension, 'width');

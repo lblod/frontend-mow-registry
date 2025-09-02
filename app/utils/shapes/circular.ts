@@ -4,7 +4,7 @@ import {
   createStoreShape,
   DIMENSIONS,
   dimensionToShapeDimension,
-  SHAPE_IDS,
+  SHAPE_URIS,
   staticImplements,
   type Shape,
   type shapeDimension,
@@ -12,6 +12,8 @@ import {
 } from '.';
 import type Unit from 'mow-registry/models/unit';
 import type Store from '@ember-data/store';
+import type IntlService from 'ember-intl/services/intl';
+import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 
 @staticImplements<ShapeStatic>()
 export default class Circular implements Shape {
@@ -21,8 +23,8 @@ export default class Circular implements Shape {
     this.radius = radius;
     this.shape = shape;
   }
-  toString() {
-    return `Breedte: ${this.radius.value} ${this.radius.unit.symbol}`;
+  toString(intl: IntlService) {
+    return `${intl.t('shape-manager.radius')}: ${this.radius.value} ${this.radius.unit.symbol}`;
   }
   get unitMeasure() {
     return this.radius.unit;
@@ -32,10 +34,10 @@ export default class Circular implements Shape {
     return this.shape.id as string;
   }
 
-  static headers() {
+  static headers(intl: IntlService) {
     return [
       {
-        label: 'radius',
+        label: intl.t('shape-manager.radius'),
         value: 'radius',
       },
     ];
@@ -45,13 +47,17 @@ export default class Circular implements Shape {
     if (!shape.id) return;
     const dimensions = await shape.dimensions;
     const radiusDimension = dimensions.find(
-      (dimension) => dimension.kind.id === DIMENSIONS.radius,
+      (dimension) => dimension.kind.uri === DIMENSIONS.radius,
     );
     if (!radiusDimension) return;
     const radius = await dimensionToShapeDimension(radiusDimension, 'radius');
     return new this(shape, radius);
   }
-  static async createShape(unit: Unit, store: Store) {
+  static async createShape(
+    unit: Unit,
+    store: Store,
+    trafficSignalConcept: TrafficSignalConcept,
+  ) {
     const radiusDimension = await createDimension(
       store,
       unit,
@@ -59,7 +65,12 @@ export default class Circular implements Shape {
     );
     const dimensions = [radiusDimension];
 
-    const shape = await createStoreShape(store, dimensions, SHAPE_IDS.circular);
+    const shape = await createStoreShape(
+      store,
+      dimensions,
+      SHAPE_URIS.circular,
+      trafficSignalConcept,
+    );
     const radius = await dimensionToShapeDimension(radiusDimension, 'radius');
     return new this(shape, radius);
   }

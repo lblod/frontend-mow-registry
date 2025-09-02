@@ -1,51 +1,67 @@
-import type TribontShape from 'mow-registry/models/tribont-shape';
+import TribontShape from 'mow-registry/models/tribont-shape';
 import Octagon from './octagon';
 import Dimension from 'mow-registry/models/dimension';
 import Rectangle from './rectangle';
 import type Unit from 'mow-registry/models/unit';
 import type Store from '@ember-data/store';
-import SignpostWithPoint from './signpostWithPoint';
-import InvertedTriangle from './invertedTriangle';
+import SignpostWithPoint from './signpost-with-point';
+import InvertedTriangle from './inverted-triangle';
 import Triangle from './triangle';
 import Circular from './circular';
 import Diamond from './diamond';
 import type QuantityKind from 'mow-registry/models/quantity-kind';
 import type TribontShapeClassificationCode from 'mow-registry/models/tribont-shape-classification-code';
+import type IntlService from 'ember-intl/services/intl';
+import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 
 export const DIMENSIONS = {
-  length: '3ab17bee-f370-447c-849f-436ad2a98fb1',
-  angle: '8cf226fc-34cd-4120-a872-087e5af29f78',
-  height: 'c6fad555-39d4-4c75-bd96-bb7c006bdc2c',
-  width: '6f2325ca-d4ea-4686-a70f-548b152bfbed',
-  radius: '84239754-a25a-482e-9035-e602a998e6e9',
+  length: 'http://qudt.org/vocab/quantitykind/Length',
+  angle: 'http://qudt.org/vocab/quantitykind/Angle',
+  height: 'http://qudt.org/vocab/quantitykind/Height',
+  width: 'http://qudt.org/vocab/quantitykind/Width',
+  radius: 'http://qudt.org/vocab/quantitykind/Radius',
 };
 
 export const DIMENSION_LABELS = {
-  '3ab17bee-f370-447c-849f-436ad2a98fb1': 'Lengte',
-  '8cf226fc-34cd-4120-a872-087e5af29f78': 'Hoek',
-  'c6fad555-39d4-4c75-bd96-bb7c006bdc2c': 'Hoogte',
-  '6f2325ca-d4ea-4686-a70f-548b152bfbed': 'Breedte',
-  '84239754-a25a-482e-9035-e602a998e6e9': 'Straal',
+  'http://qudt.org/vocab/quantitykind/Length': 'Lengte',
+  'http://qudt.org/vocab/quantitykind/Angle': 'Hoek',
+  'http://qudt.org/vocab/quantitykind/Height': 'Hoogte',
+  'http://qudt.org/vocab/quantitykind/Width': 'Breedte',
+  'http://qudt.org/vocab/quantitykind/Radius': 'Straal',
 };
 
 export const SHAPES = {
-  'a5a1b947-1c34-40df-8842-707de418adb8': Rectangle,
-  '4f445b8f-98ce-4621-b671-009a1acb13a6': SignpostWithPoint,
-  '10b19729-8b4a-4ea5-8470-bc34fc204791': InvertedTriangle,
-  '1cddd186-6018-4d12-84d6-f1a5d01affde': Triangle,
-  '0e0897d1-5c74-47ae-9868-adecbde6f2f3': Octagon,
-  '2481e377-1a89-4e25-9c58-1b509e0f7d74': Circular,
-  '322852b4-ec7b-4ca2-b267-4fcc263fa0d7': Diamond,
+  'http://data.lblod.info/concept-schemes/a5a1b947-1c34-40df-8842-707de418adb8':
+    Rectangle,
+  'http://data.lblod.info/concept-schemes/4f445b8f-98ce-4621-b671-009a1acb13a6':
+    SignpostWithPoint,
+  'http://data.lblod.info/concept-schemes/10b19729-8b4a-4ea5-8470-bc34fc204791':
+    InvertedTriangle,
+  'http://lblod.data.gift/concept-schemes/1cddd186-6018-4d12-84d6-f1a5d01affde':
+    Triangle,
+  'http://data.lblod.info/concept-schemes/0e0897d1-5c74-47ae-9868-adecbde6f2f3':
+    Octagon,
+  'http://data.lblod.info/concept-schemes/2481e377-1a89-4e25-9c58-1b509e0f7d74':
+    Circular,
+  'http://data.lblod.info/concept-schemes/322852b4-ec7b-4ca2-b267-4fcc263fa0d7':
+    Diamond,
 };
 
-export const SHAPE_IDS = {
-  rectangle: 'a5a1b947-1c34-40df-8842-707de418adb8',
-  signpostWithPoint: '4f445b8f-98ce-4621-b671-009a1acb13a6',
-  invertedTriangle: '10b19729-8b4a-4ea5-8470-bc34fc204791',
-  triangle: '1cddd186-6018-4d12-84d6-f1a5d01affde',
-  octagon: '0e0897d1-5c74-47ae-9868-adecbde6f2f3',
-  circular: '2481e377-1a89-4e25-9c58-1b509e0f7d74',
-  diamond: '322852b4-ec7b-4ca2-b267-4fcc263fa0d7',
+export const SHAPE_URIS = {
+  rectangle:
+    'http://data.lblod.info/concept-schemes/a5a1b947-1c34-40df-8842-707de418adb8',
+  signpostWithPoint:
+    'http://data.lblod.info/concept-schemes/4f445b8f-98ce-4621-b671-009a1acb13a6',
+  invertedTriangle:
+    'http://data.lblod.info/concept-schemes/10b19729-8b4a-4ea5-8470-bc34fc204791',
+  triangle:
+    'http://lblod.data.gift/concept-schemes/1cddd186-6018-4d12-84d6-f1a5d01affde',
+  octagon:
+    'http://data.lblod.info/concept-schemes/0e0897d1-5c74-47ae-9868-adecbde6f2f3',
+  circular:
+    'http://data.lblod.info/concept-schemes/2481e377-1a89-4e25-9c58-1b509e0f7d74',
+  diamond:
+    'http://data.lblod.info/concept-schemes/322852b4-ec7b-4ca2-b267-4fcc263fa0d7',
 };
 
 export type shapeDimension = {
@@ -69,16 +85,20 @@ export async function dimensionToShapeDimension(
 }
 
 export interface ShapeStatic {
-  headers(): { label: string; value: string }[];
+  headers(intln: IntlService): { label: string; value: string }[];
   fromShape(shape: TribontShape): Promise<Shape | undefined>;
-  createShape(unit: Unit, store: Store): Promise<Shape>;
+  createShape(
+    unit: Unit,
+    store: Store,
+    trafficSignalConcept: TrafficSignalConcept,
+  ): Promise<Shape>;
 }
 
 export type Shape = {
   [dimension in keyof typeof DIMENSIONS]?: shapeDimension;
 } & {
   shape: TribontShape;
-  toString(): string;
+  toString(intln: IntlService): string;
   unitMeasure: Unit;
   convertToNewUnit(unit: Unit): Promise<void>;
   id: string;
@@ -88,11 +108,10 @@ export type Shape = {
 };
 
 export async function convertToShape(shape: TribontShape) {
-  const classificationId = (await shape.classification)?.get('id');
-  if (!classificationId) return;
+  const classificationUri = (await shape.classification)?.get('uri');
+  if (!classificationUri) return;
   const shapeClass: ShapeStatic =
-    SHAPES[classificationId as keyof typeof SHAPES];
-
+    SHAPES[classificationUri as keyof typeof SHAPES];
   const shapeConverted = await shapeClass.fromShape(shape);
   return shapeConverted;
 }
@@ -111,12 +130,15 @@ export function staticImplements<T>() {
 export async function createDimension(
   store: Store,
   unit: Unit,
-  dimensionId: string,
+  dimensionUri: string,
 ) {
-  const kind = await store.findRecord<QuantityKind>(
-    'quantity-kind',
-    dimensionId,
-  );
+  const kind = (
+    await store.query<QuantityKind>('quantity-kind', {
+      filter: {
+        ':uri:': dimensionUri,
+      },
+    })
+  )[0];
   const dimension = store.createRecord<Dimension>('dimension', {
     value: 0,
     kind: kind,
@@ -129,15 +151,23 @@ export async function createDimension(
 export async function createStoreShape(
   store: Store,
   dimensions: Dimension[],
-  shapeId: string,
+  shapeUri: string,
+  trafficSignalConcept: TrafficSignalConcept,
 ) {
-  const classification = await store.findRecord<TribontShapeClassificationCode>(
-    'tribont-shape-classification-code',
-    shapeId,
-  );
+  const classification = (
+    await store.query<TribontShapeClassificationCode>(
+      'tribont-shape-classification-code',
+      {
+        filter: {
+          ':uri:': shapeUri,
+        },
+      },
+    )
+  )[0];
   const shape = store.createRecord<TribontShape>('tribont-shape', {
     dimensions,
     classification,
+    trafficSignalConcept,
   });
   await shape.save();
   return shape;
