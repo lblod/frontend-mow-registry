@@ -129,7 +129,7 @@ export default class ShapeManager extends Component<Signature> {
         shapesConverted.push(shapeConverted);
       }
     }
-    // @ts-ignore We know that an array don't have a meta property but we need it for the table to work
+    // @ts-expect-error We know that an array don't have a meta property but we need it for the table to work
     shapesConverted.meta = shapes.meta;
     return shapesConverted;
   });
@@ -279,7 +279,7 @@ export default class ShapeManager extends Component<Signature> {
     }
   };
   addNewShape = async () => {
-    const shape = await this.shapeClass?.createShape(
+    await this.shapeClass?.createShape(
       this.selectedUnit as Unit,
       this.store,
       this.args.trafficSignal,

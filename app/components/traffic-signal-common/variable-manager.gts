@@ -21,7 +21,6 @@ import ErrorMessage from 'mow-registry/components/error-message';
 import { eq } from 'ember-truth-helpers';
 import findByValue from 'mow-registry/helpers/find-by-value';
 import { trackedFunction } from 'reactiveweb/function';
-import { removeItem } from 'mow-registry/utils/array';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 
