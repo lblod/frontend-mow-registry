@@ -120,7 +120,7 @@ export function shapeDimensionToText(dimension: shapeDimension) {
   return `${dimension.value} ${dimension.unit.symbol}`;
 }
 
-/* class decorator */
+/* class decorator to allow define a type to include all the static methods of the class */
 export function staticImplements<T>() {
   return <U extends T>(constructor: U) => {
     constructor;
