@@ -348,5 +348,6 @@ shape-manager:
   height: Hoogte
   width: Breedte
   radius: Straal
+  delete-last-shape: Als u uw laatste vorm verwijdert, gaat informatie over het vormtype en de eenheid verloren.
 variable-manager:
   no-data: Geen variabelen

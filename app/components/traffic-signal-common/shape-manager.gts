@@ -48,7 +48,7 @@ export default class ShapeManager extends Component<Signature> {
   @tracked isDeleteConfirmationOpen = false;
   @tracked isShapeChangeConfirmationOpen = false;
   @tracked pageNumber = 0;
-  pageSize = 2;
+  pageSize = 20;
   constructor(
     owner: Owner | undefined,
     args: {
@@ -129,6 +129,7 @@ export default class ShapeManager extends Component<Signature> {
         shapesConverted.push(shapeConverted);
       }
     }
+    // @ts-ignore We know that an array don't have a meta property but we need it for the table to work
     shapesConverted.meta = shapes.meta;
     return shapesConverted;
   });
@@ -146,7 +147,6 @@ export default class ShapeManager extends Component<Signature> {
   get dimensionsToShow() {
     return this.shapeClass?.headers(this.intl);
   }
-  toggleEditing() {}
 
   editCard = () => {
     this.cardEditing = true;
@@ -179,9 +179,9 @@ export default class ShapeManager extends Component<Signature> {
   };
 
   changeShape = async () => {
-    const shapes = await this.args.trafficSignal.shapes;
+    let shapes = [...(await this.args.trafficSignal.shapes)];
     for (const shape of shapes) {
-      await this.removeTribontShape(shape);
+      await shape.destroyWithRelations();
     }
     const shapeClass = SHAPES[this.shapeChange?.uri as keyof typeof SHAPES];
     const shape = await shapeClass.createShape(
@@ -219,16 +219,6 @@ export default class ShapeManager extends Component<Signature> {
   setUnit = (unit: Unit) => {
     this.unitChange = unit;
   };
-
-  async removeTribontShape(shape: TribontShape) {
-    const dimensions = await shape.dimensions;
-    for (let dimension of dimensions) {
-      dimension.deleteRecord();
-      await dimension.save();
-    }
-    shape.deleteRecord();
-    await shape.save();
-  }
 
   startDeleteShapeFlow = (shape: Shape) => {
     this.shapeToDelete = shape;
@@ -470,6 +460,9 @@ export default class ShapeManager extends Component<Signature> {
       <:body>
         <p>
           {{t 'utility.confirmation.body'}}
+          {{#if (eq this.shapesConverted.value.length 1)}}
+            {{t 'shape-manager.delete-last-shape'}}
+          {{/if}}
         </p>
       </:body>
       <:footer>

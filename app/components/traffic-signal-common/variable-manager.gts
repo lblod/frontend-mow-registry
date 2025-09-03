@@ -22,6 +22,8 @@ import { eq } from 'ember-truth-helpers';
 import findByValue from 'mow-registry/helpers/find-by-value';
 import { trackedFunction } from 'reactiveweb/function';
 import { removeItem } from 'mow-registry/utils/array';
+import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
+import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 
 interface Signature {
   Args: {
@@ -36,9 +38,10 @@ export default class VariableManager extends Component<Signature> {
   @service declare store: Store;
   @tracked codeLists?: CodeList[];
   @tracked editMode = false;
-  @tracked newVariable?: Variable;
+  @tracked variableToAdd?: Variable;
   @tracked pageNumber = 0;
-  pageSize = 2;
+  pageSize = 20;
+  @tracked isAddVariableModalOpen = false;
 
   constructor(
     owner: Owner | undefined,
@@ -111,7 +114,9 @@ export default class VariableManager extends Component<Signature> {
         if (!variableValid) isValid = false;
       }
     }
-    if (!isValid) return;
+    if (!isValid) {
+      return;
+    }
     for (let variable of variables) {
       if (variable.hasDirtyAttributes) {
         await variable.save();
@@ -150,12 +155,6 @@ export default class VariableManager extends Component<Signature> {
     variable.codeList = codeList;
   };
 
-  addVariable = async () => {
-    this.newVariable = this.store.createRecord<Variable>('variable', {
-      trafficSignalConcept: this.args.trafficSignal,
-    });
-    this.variables.retry();
-  };
   variables = trackedFunction(this, async () => {
     await Promise.resolve();
     const variables = await this.store.query<Variable>('variable', {
@@ -165,21 +164,34 @@ export default class VariableManager extends Component<Signature> {
         size: this.pageSize,
       },
     });
-    if (this.newVariable) variables.push(this.newVariable);
     return variables;
   });
   removeVariable = async (variable: Variable) => {
     variable.deleteRecord();
     await variable.save();
-    if (this.newVariable === variable) {
-      this.newVariable = undefined;
-    }
     this.variables.retry();
   };
 
   onPageChange = (newPage: number) => {
     this.pageNumber = newPage;
     this.variables.retry();
+  };
+  closeAddVariableModal = () => {
+    this.isAddVariableModalOpen = false;
+    this.variableToAdd = undefined;
+  };
+  startAddVariable = () => {
+    this.isAddVariableModalOpen = true;
+    this.variableToAdd = this.store.createRecord<Variable>('variable', {
+      trafficSignalConcept: this.args.trafficSignal,
+    });
+  };
+  addVariable = async () => {
+    const valid = await this.variableToAdd?.validate();
+    if (!valid) return;
+    await this.variableToAdd?.save();
+    this.variables.retry();
+    this.closeAddVariableModal();
   };
   <template>
     {{! @glint-nocheck: not typesafe yet }}
@@ -190,6 +202,7 @@ export default class VariableManager extends Component<Signature> {
       @page={{this.pageNumber}}
       @pageSize={{this.pageSize}}
       @onPageChange={{this.onPageChange}}
+      @hidePagination={{this.editMode}}
     >
       <:menu>
         <div class='au-u-flex au-u-flex--end'>
@@ -217,16 +230,15 @@ export default class VariableManager extends Component<Signature> {
           {{/if}}
 
         </div>
-        {{#if this.editMode}}
-          <AuButton
-            @skin='secondary'
-            @width='block'
-            @icon='plus'
-            {{on 'click' this.addVariable}}
-          >
-            {{t 'utility.add-variable'}}
-          </AuButton>
-        {{/if}}
+        <AuButton
+          @skin='secondary'
+          @width='block'
+          @icon='plus'
+          {{on 'click' this.startAddVariable}}
+        >
+          {{t 'utility.add-variable'}}
+        </AuButton>
+
       </:menu>
       <:header as |header|>
         <header.Sortable @field='label' @label={{t 'utility.variable'}} />
@@ -317,5 +329,85 @@ export default class VariableManager extends Component<Signature> {
         {{/if}}
       </:body>
     </ReactiveTable>
+    <AuModal
+      @modalOpen={{this.isAddVariableModalOpen}}
+      @closeModal={{this.closeAddVariableModal}}
+    >
+      <:title>
+        {{t 'utility.confirmation.title'}}
+      </:title>
+      <:body>
+        <div>
+          <AuLabel
+            @error={{this.variableToAdd.error.label}}
+            @required={{true}}
+            @requiredLabel={{t 'utility.required'}}
+          >{{t 'utility.variable'}}
+          </AuLabel>
+
+          <AuInput
+            value={{this.variableToAdd.label}}
+            @error={{this.variableToAdd.error.label}}
+            {{on 'input' (fn this.setVariableLabel this.variableToAdd)}}
+          />
+          <ErrorMessage @error={{this.variableToAdd.error.label}} />
+          <AuLabel
+            @error={{this.variableToAdd.error.type}}
+            @required={{true}}
+            @requiredLabel={{t 'utility.required'}}
+          >{{t 'utility.type'}}
+          </AuLabel>
+          <div
+            class={{if
+              this.variableToAdd.error.type
+              'ember-power-select--error'
+            }}
+          >
+            <PowerSelect
+              @allowClear={{false}}
+              @searchEnabled={{false}}
+              @options={{this.variableTypes}}
+              @loadingMessage={{t 'utility.loading'}}
+              @selected={{findByValue
+                this.variableTypes
+                this.variableToAdd.type
+              }}
+              @onChange={{fn this.setVariableType this.variableToAdd}}
+              as |type|
+            >
+              {{type.label}}
+            </PowerSelect>
+            <ErrorMessage @error={{this.variableToAdd.error.type}} />
+          </div>
+          {{#if (eq this.variableToAdd.type 'codelist')}}
+            <PowerSelect
+              @triggerClass='au-u-margin-top-tiny'
+              @allowClear={{false}}
+              @searchEnabled={{true}}
+              @options={{this.codeLists}}
+              @selected={{this.variableToAdd.codeList}}
+              @onChange={{fn this.updateCodelist this.variableToAdd}}
+              as |codeList|
+            >
+              {{codeList.label}}
+            </PowerSelect>
+            <ul class='au-c-list-help au-c-help-text au-c-help-text--secondary'>
+              {{#each this.variableToAdd.codeList.concepts as |option|}}
+                <li class='au-c-list-help__item'>{{option.label}}</li>
+              {{/each}}
+            </ul>
+            <ErrorMessage @error={{this.variableToAdd.error.codelist}} />
+          {{/if}}
+        </div>
+      </:body>
+      <:footer>
+        <AuButton {{on 'click' this.addVariable}}>
+          {{t 'utility.save'}}
+        </AuButton>
+        <AuButton @skin='secondary' {{on 'click' this.closeAddVariableModal}}>
+          {{t 'utility.cancel'}}
+        </AuButton>
+      </:footer>
+    </AuModal>
   </template>
 }

@@ -112,6 +112,7 @@ road-sign-concept:
     related-traffic-light: Related traffic light
     shape: Shape
     dimensions: Dimensions
+    dimension-unit: Dimension unit
     default-shape: Default shape
     height: Height
     width: Width
@@ -349,5 +350,6 @@ shape-manager:
   height: Height
   width: Width
   radius: Radius
+  delete-last-shape: Deleting your last shape will lose you information about shape type and unit
 variable-manager:
   no-data: No variables

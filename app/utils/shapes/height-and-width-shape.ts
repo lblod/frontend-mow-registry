@@ -51,6 +51,7 @@ export default class HeightAndWidhtShape implements Shape {
     const heightDimension = dimensions.find(
       (dimension) => dimension.kind.uri === DIMENSIONS.height,
     );
+
     const widthDimension = dimensions.find(
       (dimension) => dimension.kind.uri === DIMENSIONS.width,
     );

@@ -27,7 +27,6 @@ export default class Rectangle extends HeightAndWidhtShape implements Shape {
     );
     const widthDimension = await createDimension(store, unit, DIMENSIONS.width);
     const dimensions = [heightDimension, widthDimension];
-
     const shape = await createStoreShape(
       store,
       dimensions,
