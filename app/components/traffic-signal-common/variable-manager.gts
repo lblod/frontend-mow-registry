@@ -227,16 +227,15 @@ export default class VariableManager extends Component<Signature> {
               {{t 'utility.edit'}}
             </AuButton>
           {{/if}}
-
+          <AuButton
+            @skin='secondary'
+            @icon='plus'
+            {{on 'click' this.startAddVariable}}
+            class='au-u-margin-small'
+          >
+            {{t 'utility.add-variable'}}
+          </AuButton>
         </div>
-        <AuButton
-          @skin='secondary'
-          @width='block'
-          @icon='plus'
-          {{on 'click' this.startAddVariable}}
-        >
-          {{t 'utility.add-variable'}}
-        </AuButton>
 
       </:menu>
       <:header as |header|>

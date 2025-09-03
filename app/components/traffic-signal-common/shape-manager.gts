@@ -380,10 +380,15 @@ export default class ShapeManager extends Component<Signature> {
         <div class='au-u-flex au-u-flex--end'>
           <AuButton
             @skin='secondary'
-            @width='block'
             @icon='plus'
             @disabled={{not this.defaultShapeClassification}}
+            title={{if
+              this.defaultShapeClassification
+              ''
+              (t 'shape-manager.disabled-add-new-button-title')
+            }}
             {{on 'click' this.addNewShape}}
+            class='au-u-margin-small'
           >
             {{t 'utility.add-shape'}}
           </AuButton>
