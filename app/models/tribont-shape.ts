@@ -9,10 +9,12 @@ import type Dimension from './dimension';
 import type TribontShapeClassificationCode from './tribont-shape-classification-code';
 import AbstractValidationModel from './abstract-validation-model';
 import {
+  validateBelongsToOptional,
   validateBelongsToRequired,
   validateHasManyRequired,
 } from 'mow-registry/validators/schema';
 import Joi from 'joi';
+import type TrafficSignalConcept from './traffic-signal-concept';
 
 export default class TribontShape extends AbstractValidationModel {
   declare [Type]: 'tribont-shape';
@@ -29,10 +31,18 @@ export default class TribontShape extends AbstractValidationModel {
   )
   declare classification: AsyncBelongsTo<TribontShapeClassificationCode>;
 
+  @belongsTo<TrafficSignalConcept>('traffic-signal-concept', {
+    inverse: 'shapes',
+    async: true,
+    polymorphic: true,
+  })
+  declare trafficSignalConcept: AsyncBelongsTo<TrafficSignalConcept>;
+
   get validationSchema() {
     return Joi.object({
       dimensions: validateHasManyRequired(),
       classification: validateBelongsToRequired(),
+      trafficSignalConcept: validateBelongsToOptional(),
     });
   }
 
