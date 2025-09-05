@@ -10,5 +10,7 @@ export default helper(function sortByPosition([trafficSignalListItems]: [
   if (!trafficSignalListItems || !trafficSignalListItems.length) {
     return [];
   }
-  return [...trafficSignalListItems].sort((a, b) => a.position - b.position);
+  return [...trafficSignalListItems].sort(
+    (a, b) => (a.position ?? -1) - (b.position ?? -1),
+  );
 });

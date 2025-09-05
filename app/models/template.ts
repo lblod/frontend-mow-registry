@@ -26,7 +26,11 @@ export default class Template extends Document {
   @attr('date') declare startDate?: Date;
   @attr('date') declare endDate?: Date;
 
-  @hasMany<Variable>('variable', { inverse: null, async: true })
+  @hasMany<Variable>('variable', {
+    inverse: null,
+    async: true,
+    polymorphic: true,
+  })
   declare variables: AsyncHasMany<Variable>;
 
   @belongsTo<TrafficMeasureConcept>('traffic-measure-concept', {

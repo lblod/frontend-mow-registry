@@ -4,8 +4,12 @@ import { htmlSafe } from '@ember/template';
 import { type SafeString } from '@ember/template';
 import { task } from 'ember-concurrency';
 import { modifier } from 'ember-modifier';
-import { unwrap } from 'mow-registry/utils/option';
+import { unwrapOr } from 'mow-registry/utils/option';
 import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
+import type Variable from 'mow-registry/models/variable';
+import InstructionVariable, {
+  isInstructionVariable,
+} from 'mow-registry/models/instruction-variable';
 
 type Args = {
   concept: TrafficMeasureConcept;
@@ -20,21 +24,22 @@ export default class TrafficMeasureTemplateComponent extends Component<Args> {
   });
 
   fetchTemplate = task(async (concept: TrafficMeasureConcept) => {
-    const template = unwrap(await concept.template);
+    const template = await concept.template;
     let preview = template?.value ?? '';
-    const variables = (await template.variables).slice();
+    const variables = unwrapOr(
+      [] as Variable[],
+      await template?.variables,
+    ).slice();
     for (const variable of variables) {
       let replaceString;
-      if (variable.type === 'instruction') {
-        const instruction = await variable.template;
+      if (isInstructionVariable(variable)) {
+        const instruction = await (variable as InstructionVariable).template;
+        const label = (variable as InstructionVariable).label;
         replaceString =
           "<span style='background-color: #ffffff'>" +
           (instruction?.value ?? '') +
           '</span>';
-        preview = preview.replaceAll(
-          '${' + (variable.label ?? '') + '}',
-          replaceString,
-        );
+        preview = preview.replaceAll('${' + (label ?? '') + '}', replaceString);
       }
     }
 
