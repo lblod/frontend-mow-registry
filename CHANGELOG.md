@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.8.0
+
+### Minor Changes
+
+- [#345](https://github.com/lblod/frontend-mow-registry/pull/345) [`79671dba548e1b58ab18971d15ab32c4c8ee869d`](https://github.com/lblod/frontend-mow-registry/commit/79671dba548e1b58ab18971d15ab32c4c8ee869d) Thanks [@piemonkey](https://github.com/piemonkey)! - Move codelist values to new model with support for recording the position of the value in the codelist and sort values by this position in the UI
+
 ## 2.7.0
 
 ### Minor Changes
