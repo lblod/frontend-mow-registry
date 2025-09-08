@@ -294,17 +294,15 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
         await this.template.save();
         (await this.args.concept.hasInstructions).push(this.template);
         await this.args.concept.save();
-        for (let i = 0; i < this.variables.length; i++) {
-          const variable = this.variables[i];
-          if (variable) {
-            (await this.template.variables).push(variable);
-            await variable.save();
-          }
-        }
-        await this.template.save();
+        //destroy old ones
         await Promise.all(
           this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
         );
+        //create new ones
+        await Promise.all(this.variables.map((variable) => variable.save()));
+        this.template.set('variables', this.variables);
+
+        await this.template.save();
 
         this.reset();
       }

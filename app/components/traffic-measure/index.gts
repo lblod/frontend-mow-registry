@@ -470,10 +470,8 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     );
 
     //create new ones
-    for (const variable of this.variables) {
-      (await template.variables).push(variable);
-      await variable.save();
-    }
+    await Promise.all(this.variables.map((variable) => variable.save()));
+    template.set('variables', this.variables);
 
     await template.save();
   });
