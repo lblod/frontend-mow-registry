@@ -272,17 +272,15 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     existing: Variable,
     selectedType: VariableType,
   ) {
+    // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
     const newVar = this.variablesService.convertVariableType(
       existing,
       selectedType,
-    );
+    ) as Variable;
     const newVars = [...this.variables];
-    this.variablesToBeDeleted.push(
-      // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
-      ...newVars.splice(varIndex, 1, newVar as Variable),
-    );
+    newVars[varIndex] = newVar;
     this.variables = newVars;
-    await this.generatePreview.perform();
+    this.variablesToBeDeleted.push(existing);
   }
 
   //parsing algo that keeps ui changes in tact
