@@ -276,18 +276,6 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
       });
     });
 
-    //check existing default variables with deleted non-default variables and swap them
-    sortedVariables.forEach((sVariable, sI) => {
-      this.variablesToBeDeleted.forEach((dVariable, dI) => {
-        if (sVariable.label === dVariable.label) {
-          if (dVariable.type !== 'text' && sVariable.type === 'text') {
-            sortedVariables.splice(sI, 1, dVariable);
-            this.variablesToBeDeleted.splice(dI, 1, sVariable);
-          }
-        }
-      });
-    });
-
     this.variables = sortedVariables;
   }
 

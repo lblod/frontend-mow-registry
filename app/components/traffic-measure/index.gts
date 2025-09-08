@@ -361,20 +361,6 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
       });
     });
 
-    //check existing default variables with deleted non-default variables and swap them
-    sortedVariables.forEach((sVariable, sI) => {
-      this.variablesToBeDeleted.forEach((dVariable, dI) => {
-        if (sVariable.label === dVariable.label) {
-          if (dVariable.type !== 'text' && sVariable.type === 'text') {
-            // sortedVariables.replace(sI, 1, [dVariable]);
-            sortedVariables[sI] = dVariable;
-            // this.variablesToBeDeleted.replace(dI, 1, [sVariable]);
-            this.variablesToBeDeleted[dI] = sVariable;
-          }
-        }
-      });
-    });
-
     this.variables = sortedVariables;
     await this.generatePreview.perform();
   }
@@ -804,7 +790,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                               }}
                               as |type|
                             >
-                              {{this.variablesService.labelForVariableType
+                              {{this.variablesService.defaultLabelForVariableType
                                 type
                               }}
                             </PowerSelect>
