@@ -9,7 +9,6 @@ import type { Type } from '@warp-drive/core-types/symbols';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import type Image from 'mow-registry/models/image';
 import type Template from './template';
-import type TrafficMeasureConcept from './traffic-measure-concept';
 import {
   validateBelongsToOptional,
   validateBelongsToRequired,
@@ -61,13 +60,6 @@ export default class TrafficSignalConcept extends SkosConcept {
   @belongsTo<TribontShape>('tribont-shape', { inverse: null, async: true })
   declare defaultShape: AsyncBelongsTo<TribontShape>;
 
-  @hasMany<TrafficMeasureConcept>('traffic-measure-concept', {
-    async: true,
-    inverse: 'relatedTrafficSignalConcepts',
-    as: 'traffic-signal-concept',
-  })
-  declare hasTrafficMeasureConcepts: AsyncHasMany<TrafficMeasureConcept>;
-
   get validationSchema() {
     return super.validationSchema.keys({
       shapes: validateHasManyOptional(),
@@ -80,7 +72,6 @@ export default class TrafficSignalConcept extends SkosConcept {
       meaning: validateStringRequired(),
       status: validateBelongsToOptional(),
       hasInstructions: validateHasManyOptional(),
-      hasTrafficMeasureConcepts: validateHasManyOptional(),
       variables: validateHasManyOptional(),
     });
   }
