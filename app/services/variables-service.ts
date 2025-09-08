@@ -16,7 +16,7 @@ export default class VariablesService extends Service {
   @service declare store: Store;
   @service declare intl: IntlService;
 
-  labelForVariableType = (variableType: VariableType) => {
+  defaultLabelForVariableType = (variableType: VariableType) => {
     switch (variableType) {
       case 'text':
         return this.intl.t('utility.template-variables.text');
@@ -36,13 +36,8 @@ export default class VariablesService extends Service {
   };
 
   convertVariableType(existing: Variable, newType: VariableType) {
-    const label =
-      existing.type &&
-      existing.label !== this.labelForVariableType(existing.type)
-        ? existing.label
-        : this.labelForVariableType(newType);
     const properties = {
-      label,
+      label: existing.label,
       required: existing.required,
     };
     switch (newType) {

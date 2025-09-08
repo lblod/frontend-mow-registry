@@ -28,6 +28,11 @@ interface Signature {
     variables: Variable[];
     addVariable: () => void;
     removeVariable: (variableToRemove: Variable) => void;
+    setVariableType: (
+      varIndex: number,
+      existing: Variable,
+      selectedType: SignVariableType,
+    ) => void;
   };
 }
 
@@ -40,7 +45,7 @@ export default class VariableManager extends Component<Signature> {
   }
 
   labelForType = (variableType: SignVariableType) => {
-    return this.variablesService.labelForVariableType(variableType);
+    return this.variablesService.defaultLabelForVariableType(variableType);
   };
 
   codelists = trackedFunction(this, async () => {
@@ -56,20 +61,6 @@ export default class VariableManager extends Component<Signature> {
   @action
   toggleVariableRequired(variable: Variable) {
     variable.required = !variable.required;
-  }
-
-  @action
-  setVariableType(
-    varIndex: number,
-    existing: Variable,
-    selectedType: SignVariableType,
-  ) {
-    const newVar = this.variablesService.convertVariableType(
-      existing,
-      selectedType,
-    );
-    // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
-    this.args.variables.splice(varIndex, 1, newVar as Variable);
   }
 
   @action
@@ -114,11 +105,7 @@ export default class VariableManager extends Component<Signature> {
                             @options={{this.variableTypes}}
                             @loadingMessage={{t 'utility.loading'}}
                             @selected={{variable.type}}
-                            @onChange={{fn
-                              this.setVariableType
-                              varIndex
-                              variable
-                            }}
+                            @onChange={{fn @setVariableType varIndex variable}}
                             as |type|
                           >
                             {{this.labelForType type}}

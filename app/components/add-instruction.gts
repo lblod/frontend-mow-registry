@@ -100,14 +100,14 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     existing: Variable,
     selectedType: SignVariableType,
   ) {
+    // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
     const newVar = this.variablesService.convertVariableType(
       existing,
       selectedType,
-    );
+    ) as Variable;
     if (this.variables) {
       this.variablesToBeDeleted.push(
-        // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
-        ...this.variables.splice(varIndex, 1, newVar as Variable),
+        ...this.variables.splice(varIndex, 1, newVar),
       );
     }
   }

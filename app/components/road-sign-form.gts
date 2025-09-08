@@ -47,6 +47,8 @@ import {
   validateShapes,
   validateVariables,
 } from 'mow-registry/utils/validate-relations';
+import type { SignVariableType } from 'mow-registry/models/variable';
+import type VariablesService from 'mow-registry/services/variables-service';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -55,6 +57,7 @@ type Args = {
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: RouterService;
   @service declare store: Store;
+  @service declare variablesService: VariablesService;
 
   isArray = function isArray(maybeArray: unknown) {
     return Array.isArray(maybeArray);
@@ -142,6 +145,30 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     const variables = await this.args.roadSignConcept.variables;
     removeItemBy(variables, variable, (a, b) => a.uri === b.uri);
     this.variablesToRemove.push(variable);
+  }
+
+  @action
+  async setVariableType(
+    varIndex: number,
+    existing: Variable,
+    selectedType: SignVariableType,
+  ) {
+    this.variablesToRemove.push(existing);
+    const labelModified =
+      existing.type &&
+      existing.label !==
+        this.variablesService.defaultLabelForVariableType(existing.type);
+    // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
+    const newVar = this.variablesService.convertVariableType(
+      existing,
+      selectedType,
+    ) as Variable;
+    if (!labelModified) {
+      newVar.label =
+        this.variablesService.defaultLabelForVariableType(selectedType);
+    }
+    const variables = await this.args.roadSignConcept.variables;
+    variables.splice(varIndex, 1, newVar);
   }
 
   removeDimension = async (shape: TribontShape, dimension: Dimension) => {
@@ -468,6 +495,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 @variables={{variables}}
                 @removeVariable={{this.removeVariable}}
                 @addVariable={{this.addVariable}}
+                @setVariableType={{this.setVariableType}}
               />
             {{/let}}
 
