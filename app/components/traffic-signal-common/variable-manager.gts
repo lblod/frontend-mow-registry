@@ -163,12 +163,15 @@ export default class VariableManager extends Component<Signature> {
         size: this.pageSize,
       },
     });
+
     return variables;
   });
+
+  get variablesNotDeleted() {
+    return this.variables.value?.filter((variable) => !variable.isDeleted);
+  }
   removeVariable = async (variable: Variable) => {
     variable.deleteRecord();
-    await variable.save();
-    this.variables.retry();
   };
 
   onPageChange = (newPage: number) => {
@@ -195,7 +198,7 @@ export default class VariableManager extends Component<Signature> {
   <template>
     {{! @glint-nocheck: not typesafe yet }}
     <ReactiveTable
-      @content={{this.variables.value}}
+      @content={{this.variablesNotDeleted}}
       @isLoading={{this.variables.isLoading}}
       @noDataMessage={{t 'variable-manager.no-data'}}
       @page={{this.pageNumber}}
