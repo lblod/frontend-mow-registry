@@ -23,6 +23,7 @@ import findByValue from 'mow-registry/helpers/find-by-value';
 import { trackedFunction } from 'reactiveweb/function';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
+import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 
 interface Signature {
   Args: {
@@ -36,12 +37,13 @@ export default class VariableManager extends Component<Signature> {
   @service('codelists') declare codeListService: CodelistsService;
   @service declare store: Store;
   @tracked codeLists?: CodeList[];
-  @tracked editMode = false;
-  @tracked variableToAdd?: Variable;
+  @tracked variableToEdit?: Variable;
   @tracked pageNumber = 0;
   pageSize = 20;
-  @tracked isAddVariableModalOpen = false;
+  @tracked isEditVariableModalOpen = false;
   @tracked sort?: string = 'created-on';
+  variableToDelete?: Variable;
+  @tracked isDeleteConfirmationOpen = false;
 
   constructor(
     owner: Owner | undefined,
@@ -81,49 +83,6 @@ export default class VariableManager extends Component<Signature> {
       .perform()
       .then((codelists) => (this.codeLists = codelists))
       .catch((error) => console.error('Error fetching code lists:', error));
-  };
-
-  startEditMode = () => {
-    this.editMode = true;
-  };
-
-  endEditMode = () => {
-    this.editMode = false;
-  };
-
-  cancelEdit = async () => {
-    const variables = [...(await this.args.trafficSignal.variables)];
-    for (let variable of variables) {
-      await variable.rollbackAttributes();
-    }
-    await this.args.trafficSignal.rollbackAttributes();
-    await this.variables.retry();
-    this.endEditMode();
-  };
-
-  saveVariables = async () => {
-    let isValid = true;
-    const variables = await this.variables.value;
-    if (!variables) {
-      this.endEditMode();
-      return;
-    }
-    for (let variable of variables) {
-      if (variable.hasDirtyAttributes) {
-        const variableValid = await variable.validate();
-        if (!variableValid) isValid = false;
-      }
-    }
-    if (!isValid) {
-      return;
-    }
-    for (let variable of variables) {
-      if (variable.hasDirtyAttributes) {
-        await variable.save();
-      }
-    }
-    await this.args.trafficSignal.save();
-    this.endEditMode();
   };
 
   setVariableLabel = (variable: Variable, event: InputEvent) => {
@@ -173,35 +132,50 @@ export default class VariableManager extends Component<Signature> {
   get variablesNotDeleted() {
     return this.variables.value?.filter((variable) => !variable.isDeleted);
   }
-  removeVariable = async (variable: Variable) => {
-    variable.deleteRecord();
+  removeVariable = async () => {
+    this.variableToDelete?.destroyRecord();
+    this.closeDeleteConfirmation();
   };
 
   onPageChange = (newPage: number) => {
     this.pageNumber = newPage;
     this.variables.retry();
   };
-  closeAddVariableModal = () => {
-    this.isAddVariableModalOpen = false;
-    this.variableToAdd = undefined;
+  closeEditVariableModal = () => {
+    this.isEditVariableModalOpen = false;
+    this.variableToEdit?.rollbackAttributes();
+    this.variableToEdit = undefined;
   };
   startAddVariable = () => {
-    this.isAddVariableModalOpen = true;
-    this.variableToAdd = this.store.createRecord<Variable>('variable', {
+    this.isEditVariableModalOpen = true;
+    this.variableToEdit = this.store.createRecord<Variable>('variable', {
       trafficSignalConcept: this.args.trafficSignal,
       createdOn: new Date(),
     });
   };
-  addVariable = async () => {
-    const valid = await this.variableToAdd?.validate();
+  startEditVariable = (variable: Variable) => {
+    this.isEditVariableModalOpen = true;
+    this.variableToEdit = variable;
+  };
+  saveVariable = async () => {
+    const valid = await this.variableToEdit?.validate();
     if (!valid) return;
-    await this.variableToAdd?.save();
+    await this.variableToEdit?.save();
     this.variables.retry();
-    this.closeAddVariableModal();
+    this.closeEditVariableModal();
   };
   onSortChange = (newSort: string) => {
     this.sort = newSort;
     this.variables.retry();
+  };
+  startDeleteVariableFlow = (variable: Variable) => {
+    this.variableToDelete = variable;
+    this.isDeleteConfirmationOpen = true;
+  };
+
+  closeDeleteConfirmation = () => {
+    this.variableToDelete = undefined;
+    this.isDeleteConfirmationOpen = false;
   };
   <template>
     {{! @glint-nocheck: not typesafe yet }}
@@ -218,28 +192,6 @@ export default class VariableManager extends Component<Signature> {
     >
       <:menu>
         <div class='au-u-flex au-u-flex--end'>
-          {{#if this.editMode}}
-            <AuButton
-              {{on 'click' this.saveVariables}}
-              class='au-u-margin-small'
-            >
-              {{t 'utility.save'}}
-            </AuButton>
-            <AuButton
-              @skin='secondary'
-              {{on 'click' this.cancelEdit}}
-              class='au-u-margin-small'
-            >
-              {{t 'utility.cancel'}}
-            </AuButton>
-          {{else}}
-            <AuButton
-              {{on 'click' this.startEditMode}}
-              class='au-u-margin-small'
-            >
-              {{t 'utility.edit'}}
-            </AuButton>
-          {{/if}}
           <AuButton
             @skin='secondary'
             @icon='plus'
@@ -256,126 +208,76 @@ export default class VariableManager extends Component<Signature> {
         <header.Sortable @field='type' @label={{t 'utility.type'}} />
         <header.Sortable @field='required' @label={{t 'utility.required'}} />
         <header.Sortable @field='createdOn' @label={{t 'utility.created-on'}} />
-        {{#if this.editMode}}<th></th> {{/if}}
+        <th></th>
       </:header>
       <:body as |variable|>
         <td>
-          {{#if this.editMode}}
-            <AuInput
-              value={{variable.label}}
-              @error={{variable.error.label}}
-              {{on 'input' (fn this.setVariableLabel variable)}}
-            />
-            <ErrorMessage @error={{variable.error.label}} />
+          {{variable.label}}
+        </td>
+        <td>
+          {{variable.type}}
+        </td>
+        <td>
+          {{#if variable.required}}
+            {{t 'utility.yes'}}
           {{else}}
-            {{variable.label}}
+            {{t 'utility.no'}}
           {{/if}}
         </td>
         <td>
-          {{#if this.editMode}}
-            <div class={{if variable.error.type 'ember-power-select--error'}}>
-              <PowerSelect
-                @allowClear={{false}}
-                @searchEnabled={{false}}
-                @options={{this.variableTypes}}
-                @loadingMessage={{t 'utility.loading'}}
-                @selected={{findByValue this.variableTypes variable.type}}
-                @onChange={{fn this.setVariableType variable}}
-                as |type|
-              >
-                {{type.label}}
-              </PowerSelect>
-              <ErrorMessage @error={{variable.error.type}} />
-            </div>
-            {{#if (eq variable.type 'codelist')}}
-              <PowerSelect
-                @triggerClass='au-u-margin-top-tiny'
-                @allowClear={{false}}
-                @searchEnabled={{true}}
-                @options={{this.codeLists}}
-                @selected={{variable.codeList}}
-                @onChange={{fn this.updateCodelist variable}}
-                as |codeList|
-              >
-                {{codeList.label}}
-              </PowerSelect>
-              <ul
-                class='au-c-list-help au-c-help-text au-c-help-text--secondary'
-              >
-                {{#each variable.codeList.concepts as |option|}}
-                  <li class='au-c-list-help__item'>{{option.label}}</li>
-                {{/each}}
-              </ul>
-              <ErrorMessage @error={{variable.error.codelist}} />
-            {{/if}}
-          {{else}}
-            {{variable.type}}
-          {{/if}}
+          {{humanFriendlyDate variable.createdOn}}
         </td>
         <td>
-          {{#if this.editMode}}
-            <AuCheckbox
-              @value={{variable.required}}
-              @checked={{variable.required}}
-              @onChange={{fn this.setVariableRequired variable}}
-            >
-              {{t 'utility.required'}}
-            </AuCheckbox>
-          {{else}}
-            {{#if variable.required}}
-              {{t 'utility.yes'}}
-            {{else}}
-              {{t 'utility.no'}}
-            {{/if}}
-          {{/if}}
+          <AuButton
+            @skin='naked'
+            @icon='pencil'
+            {{on 'click' (fn this.startEditVariable variable)}}
+          />
+          <AuButton
+            @skin='naked'
+            @alert='true'
+            @icon='trash'
+            {{on 'click' (fn this.startDeleteVariableFlow variable)}}
+          />
+        </td>
 
-        </td>
-        <td>
-          {{variable.createdOn}}
-
-        </td>
-        {{#if this.editMode}}
-          <td>
-            <AuButton
-              @skin='naked'
-              @alert='true'
-              @icon='trash'
-              {{on 'click' (fn this.removeVariable variable)}}
-            /></td>
-        {{/if}}
       </:body>
     </ReactiveTable>
     <AuModal
-      @modalOpen={{this.isAddVariableModalOpen}}
-      @closeModal={{this.closeAddVariableModal}}
+      @modalOpen={{this.isEditVariableModalOpen}}
+      @closeModal={{this.closeEditVariableModal}}
     >
       <:title>
-        {{t 'utility.confirmation.title'}}
+        {{#if this.variableToEdit.isNew}}
+          {{t 'utility.add-variable'}}
+        {{else}}
+          {{t 'variable-manager.edit-modal-title'}}
+        {{/if}}
       </:title>
       <:body>
         <div>
           <AuLabel
-            @error={{this.variableToAdd.error.label}}
+            @error={{this.variableToEdit.error.label}}
             @required={{true}}
             @requiredLabel={{t 'utility.required'}}
           >{{t 'utility.variable'}}
           </AuLabel>
 
           <AuInput
-            value={{this.variableToAdd.label}}
-            @error={{this.variableToAdd.error.label}}
-            {{on 'input' (fn this.setVariableLabel this.variableToAdd)}}
+            value={{this.variableToEdit.label}}
+            @error={{this.variableToEdit.error.label}}
+            {{on 'input' (fn this.setVariableLabel this.variableToEdit)}}
           />
-          <ErrorMessage @error={{this.variableToAdd.error.label}} />
+          <ErrorMessage @error={{this.variableToEdit.error.label}} />
           <AuLabel
-            @error={{this.variableToAdd.error.type}}
+            @error={{this.variableToEdit.error.type}}
             @required={{true}}
             @requiredLabel={{t 'utility.required'}}
           >{{t 'utility.type'}}
           </AuLabel>
           <div
             class={{if
-              this.variableToAdd.error.type
+              this.variableToEdit.error.type
               'ember-power-select--error'
             }}
           >
@@ -386,41 +288,74 @@ export default class VariableManager extends Component<Signature> {
               @loadingMessage={{t 'utility.loading'}}
               @selected={{findByValue
                 this.variableTypes
-                this.variableToAdd.type
+                this.variableToEdit.type
               }}
-              @onChange={{fn this.setVariableType this.variableToAdd}}
+              @onChange={{fn this.setVariableType this.variableToEdit}}
               as |type|
             >
               {{type.label}}
             </PowerSelect>
-            <ErrorMessage @error={{this.variableToAdd.error.type}} />
+            <ErrorMessage @error={{this.variableToEdit.error.type}} />
           </div>
-          {{#if (eq this.variableToAdd.type 'codelist')}}
+          {{#if (eq this.variableToEdit.type 'codelist')}}
             <PowerSelect
               @triggerClass='au-u-margin-top-tiny'
               @allowClear={{false}}
               @searchEnabled={{true}}
               @options={{this.codeLists}}
-              @selected={{this.variableToAdd.codeList}}
-              @onChange={{fn this.updateCodelist this.variableToAdd}}
+              @selected={{this.variableToEdit.codeList}}
+              @onChange={{fn this.updateCodelist this.variableToEdit}}
               as |codeList|
             >
               {{codeList.label}}
             </PowerSelect>
             <ul class='au-c-list-help au-c-help-text au-c-help-text--secondary'>
-              {{#each this.variableToAdd.codeList.concepts as |option|}}
+              {{#each this.variableToEdit.codeList.concepts as |option|}}
                 <li class='au-c-list-help__item'>{{option.label}}</li>
               {{/each}}
             </ul>
-            <ErrorMessage @error={{this.variableToAdd.error.codelist}} />
+            <ErrorMessage @error={{this.variableToEdit.error.codelist}} />
           {{/if}}
         </div>
+        <AuLabel
+          @error={{this.variableToEdit.error.required}}
+          @requiredLabel={{t 'utility.required'}}
+        >{{t 'utility.required'}}
+        </AuLabel>
+        <AuCheckbox
+          @value={{this.variableToEdit.required}}
+          @checked={{this.variableToEdit.required}}
+          @onChange={{fn this.setVariableRequired this.variableToEdit}}
+        >
+          {{t 'utility.required'}}
+        </AuCheckbox>
       </:body>
       <:footer>
-        <AuButton {{on 'click' this.addVariable}}>
+        <AuButton {{on 'click' this.saveVariable}}>
           {{t 'utility.save'}}
         </AuButton>
-        <AuButton @skin='secondary' {{on 'click' this.closeAddVariableModal}}>
+        <AuButton @skin='secondary' {{on 'click' this.closeEditVariableModal}}>
+          {{t 'utility.cancel'}}
+        </AuButton>
+      </:footer>
+    </AuModal>
+    <AuModal
+      @modalOpen={{this.isDeleteConfirmationOpen}}
+      @closeModal={{this.closeDeleteConfirmation}}
+    >
+      <:title>
+        {{t 'utility.confirmation.title'}}
+      </:title>
+      <:body>
+        <p>
+          {{t 'utility.confirmation.body'}}
+        </p>
+      </:body>
+      <:footer>
+        <AuButton @alert={{true}} {{on 'click' this.removeVariable}}>
+          {{t 'variable-manager.delete'}}
+        </AuButton>
+        <AuButton @skin='secondary' {{on 'click' this.closeDeleteConfirmation}}>
           {{t 'utility.cancel'}}
         </AuButton>
       </:footer>

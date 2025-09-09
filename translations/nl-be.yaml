@@ -353,3 +353,5 @@ shape-manager:
   disabled-add-new-button-title: Om een vorm in te voegen, selecteer je het type en de maateenheid.
 variable-manager:
   no-data: Geen variabelen
+  edit-modal-title: Variabele bewerken
+  delete: Remove variabele
