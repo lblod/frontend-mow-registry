@@ -66,6 +66,7 @@ utility:
   validation-status: Validation status
   start-date: Start date
   end-date: End date
+  created-on: Created on
   modifying-validity-dates-warning: "Note: modifying validity dates can affect the instruction validity"
   template-variables:
     text: text

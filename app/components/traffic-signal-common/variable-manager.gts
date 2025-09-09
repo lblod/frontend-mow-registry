@@ -41,6 +41,7 @@ export default class VariableManager extends Component<Signature> {
   @tracked pageNumber = 0;
   pageSize = 20;
   @tracked isAddVariableModalOpen = false;
+  @tracked sort?: string = 'created-on';
 
   constructor(
     owner: Owner | undefined,
@@ -155,6 +156,7 @@ export default class VariableManager extends Component<Signature> {
   };
 
   variables = trackedFunction(this, async () => {
+    console.log('running');
     await Promise.resolve();
     const variables = await this.store.query<Variable>('variable', {
       'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
@@ -162,6 +164,7 @@ export default class VariableManager extends Component<Signature> {
         number: this.pageNumber,
         size: this.pageSize,
       },
+      sort: this.sort,
     });
 
     return variables;
@@ -186,6 +189,7 @@ export default class VariableManager extends Component<Signature> {
     this.isAddVariableModalOpen = true;
     this.variableToAdd = this.store.createRecord<Variable>('variable', {
       trafficSignalConcept: this.args.trafficSignal,
+      createdOn: new Date(),
     });
   };
   addVariable = async () => {
@@ -194,6 +198,10 @@ export default class VariableManager extends Component<Signature> {
     await this.variableToAdd?.save();
     this.variables.retry();
     this.closeAddVariableModal();
+  };
+  onSortChange = (newSort: string) => {
+    this.sort = newSort;
+    this.variables.retry();
   };
   <template>
     {{! @glint-nocheck: not typesafe yet }}
@@ -205,6 +213,8 @@ export default class VariableManager extends Component<Signature> {
       @pageSize={{this.pageSize}}
       @onPageChange={{this.onPageChange}}
       @hidePagination={{this.editMode}}
+      @onSortChange={{this.onSortChange}}
+      @sort={{this.sort}}
     >
       <:menu>
         <div class='au-u-flex au-u-flex--end'>
@@ -245,6 +255,7 @@ export default class VariableManager extends Component<Signature> {
         <header.Sortable @field='label' @label={{t 'utility.variable'}} />
         <header.Sortable @field='type' @label={{t 'utility.type'}} />
         <header.Sortable @field='required' @label={{t 'utility.required'}} />
+        <header.Sortable @field='createdOn' @label={{t 'utility.created-on'}} />
         {{#if this.editMode}}<th></th> {{/if}}
       </:header>
       <:body as |variable|>
@@ -317,6 +328,10 @@ export default class VariableManager extends Component<Signature> {
               {{t 'utility.no'}}
             {{/if}}
           {{/if}}
+
+        </td>
+        <td>
+          {{variable.createdOn}}
 
         </td>
         {{#if this.editMode}}

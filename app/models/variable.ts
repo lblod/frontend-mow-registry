@@ -8,6 +8,7 @@ import {
   validateStringOptional,
   validateStringRequired,
   validateBooleanRequired,
+  validateDateOptional,
 } from 'mow-registry/validators/schema';
 import type TrafficSignalConcept from './traffic-signal-concept';
 
@@ -20,6 +21,7 @@ export default class Variable extends Resource {
   @attr declare label?: string;
   @attr declare defaultValue?: string;
   @attr({ defaultValue: true }) declare required?: boolean;
+  @attr('date') declare createdOn?: Date;
 
   @belongsTo<CodeList>('code-list', { inverse: 'variables', async: true })
   declare codeList: AsyncBelongsTo<CodeList>;
@@ -40,6 +42,7 @@ export default class Variable extends Resource {
       label: validateStringRequired(),
       type: validateStringRequired(),
       defaultValue: validateStringOptional(),
+      createdOn: validateDateOptional(),
       required: validateBooleanRequired(),
       codeList: validateBelongsToOptional(),
       template: validateBelongsToOptional(),

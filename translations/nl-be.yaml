@@ -67,6 +67,7 @@ utility:
   no: Nee
   start-date: Startdatum
   end-date: Einddatum
+  created-on: Gemaakt op
   template-variables:
     text: tekst
     number: nummer
