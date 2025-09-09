@@ -321,17 +321,35 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
       }
     });
 
-    //add new variable variables
+    //add new variables
     filteredRegexResult.forEach((reg) => {
-      if (!this.variables.find((variable) => variable.label === reg[1])) {
-        const variable = this.store.createRecord<TextVariable>(
-          'text-variable',
-          {
-            label: reg[1],
-          },
+      if (!this.variables?.find((variable) => variable.label === reg[1])) {
+        let variableToAdd: Variable;
+
+        // Check if there is a variable to restore (copy-pasting/moving around)
+        // We search from end to start, as this array may contain multiple variables with the same label.
+        // We want to select the one who has been last removed.
+        const variableToRestoreIndex = this.variablesToBeDeleted.findLastIndex(
+          (variable) => variable.label === reg[1],
         );
-        // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
-        this.variables.push(variable);
+
+        if (variableToRestoreIndex > -1) {
+          // In case a variable is copy-pasted/moved around:
+          // Remove variable from `variablesToBeDeleted`, and add it to the `variables` array
+          variableToAdd = unwrap(
+            this.variablesToBeDeleted[variableToRestoreIndex],
+          );
+          this.variablesToBeDeleted.splice(variableToRestoreIndex, 1);
+        } else {
+          // Variable did not exist before, just create a new one
+          variableToAdd = this.store.createRecord<TextVariable>(
+            'text-variable',
+            {
+              label: reg[1],
+            },
+          ) as unknown as Variable;
+        }
+        this.variables?.push(variableToAdd);
       }
     });
 

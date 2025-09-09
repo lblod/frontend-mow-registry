@@ -34,7 +34,7 @@ import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concep
 import type Variable from 'mow-registry/models/variable';
 import type CodeList from 'mow-registry/models/code-list';
 import { validateVariables } from 'mow-registry/utils/validate-relations';
-import { isSome } from 'mow-registry/utils/option';
+import { isSome, unwrap } from 'mow-registry/utils/option';
 import { removeItem } from 'mow-registry/utils/array';
 import validateTemplateDates from 'mow-registry/utils/validate-template-dates';
 import ErrorMessage from 'mow-registry/components/error-message';
@@ -241,14 +241,32 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     //add new variables
     filteredRegexResult.forEach((reg) => {
       if (!this.variables?.find((variable) => variable.label === reg[1])) {
-        const variable = this.store.createRecord<TextVariable>(
-          'text-variable',
-          {
-            label: reg[1],
-          },
+        let variableToAdd: Variable;
+
+        // Check if there is a variable to restore (copy-pasting/moving around)
+        // We search from end to start, as this array may contain multiple variables with the same label.
+        // We want to select the one who has been last removed.
+        const variableToRestoreIndex = this.variablesToBeDeleted.findLastIndex(
+          (variable) => variable.label === reg[1],
         );
-        // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
-        this.variables?.push(variable);
+
+        if (variableToRestoreIndex > -1) {
+          // In case a variable is copy-pasted/moved around:
+          // Remove variable from `variablesToBeDeleted`, and add it to the `variables` array
+          variableToAdd = unwrap(
+            this.variablesToBeDeleted[variableToRestoreIndex],
+          );
+          this.variablesToBeDeleted.splice(variableToRestoreIndex, 1);
+        } else {
+          // Variable did not exist before, just create a new one
+          variableToAdd = this.store.createRecord<TextVariable>(
+            'text-variable',
+            {
+              label: reg[1],
+            },
+          ) as unknown as Variable;
+        }
+        this.variables?.push(variableToAdd);
       }
     });
 
