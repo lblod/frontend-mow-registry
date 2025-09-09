@@ -82,7 +82,7 @@
     "ember-cli-htmlbars": "^6.3.0",
     "ember-cli-inject-live-reload": "^2.1.0",
     "ember-cli-sass": "^11.0.1",
-    "ember-concurrency": "^3.1.1",
+    "ember-concurrency": "^4.0.6",
     "ember-config-helper": "^0.1.4",
     "ember-data": "~5.5.0",
     "ember-drag-drop": "^1.0.0",

@@ -5,6 +5,11 @@ const isProductionBuild = process.env.EMBER_ENV === 'production';
 
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
+    babel: {
+      plugins: [
+        require.resolve('ember-concurrency/async-arrow-task-transform'),
+      ],
+    },
     // Add options here
     'ember-cli-babel': {
       enableTypeScriptTransform: true,

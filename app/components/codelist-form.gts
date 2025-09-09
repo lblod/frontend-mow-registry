@@ -4,7 +4,6 @@ import { inject as service } from '@ember/service';
 import { dropTask, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { not, or } from 'ember-truth-helpers';
-// @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';

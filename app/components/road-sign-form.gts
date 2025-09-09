@@ -35,7 +35,6 @@ import ArPlichtigStatus from 'mow-registry/components/ar-plichtig-status';
 import ImageInput from 'mow-registry/components/image-input';
 import { on } from '@ember/modifier';
 import { fn, get } from '@ember/helper';
-// @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
 import { or } from 'ember-truth-helpers';
 import { LinkTo } from '@ember/routing';

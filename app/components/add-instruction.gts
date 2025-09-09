@@ -11,7 +11,6 @@ import { get } from '@ember/helper';
 // eslint-disable-next-line ember/no-at-ember-render-modifiers
 import didInsert from '@ember/render-modifiers/modifiers/did-insert';
 import { task } from 'ember-concurrency';
-// @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
 import { eq, not } from 'ember-truth-helpers';
 import t from 'ember-intl/helpers/t';
