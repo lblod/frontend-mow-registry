@@ -513,7 +513,7 @@ export default class ShapeManager extends Component<Signature> {
         </AuCheckbox>
       </:body>
       <:footer>
-        <AuButton @alert={{true}} {{on 'click' this.saveShape}}>
+        <AuButton {{on 'click' this.saveShape}}>
           {{t 'utility.save'}}
         </AuButton>
         <AuButton @skin='secondary' {{on 'click' this.closeDeleteConfirmation}}>
