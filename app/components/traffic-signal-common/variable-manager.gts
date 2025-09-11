@@ -309,11 +309,15 @@ export default class VariableManager extends Component<Signature> {
             >
               {{codeList.label}}
             </PowerSelect>
-            <ul class='au-c-list-help au-c-help-text au-c-help-text--secondary'>
-              {{#each this.variableToEdit.codeList.concepts as |option|}}
-                <li class='au-c-list-help__item'>{{option.label}}</li>
-              {{/each}}
-            </ul>
+            {{#if this.variableToEdit.codeList}}
+              <ul
+                class='au-c-list-help au-c-help-text au-c-help-text--secondary'
+              >
+                {{#each this.variableToEdit.codeList.concepts as |option|}}
+                  <li class='au-c-list-help__item'>{{option.label}}</li>
+                {{/each}}
+              </ul>
+            {{/if}}
             <ErrorMessage @error={{this.variableToEdit.error.codelist}} />
           {{/if}}
         </div>
