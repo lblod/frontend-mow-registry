@@ -67,6 +67,7 @@ utility:
   no: Nee
   start-date: Startdatum
   end-date: Einddatum
+  created-on: Gemaakt op
   template-variables:
     text: tekst
     number: nummer
@@ -111,6 +112,7 @@ road-sign-concept:
     related-traffic-light: Gerelateerde verkeerslichten
     shape: Vorm
     dimensions: Afmetingen
+    dimension-unit: Afmeting eenheid
     default-shape: Standaardvorm
     height: Hoogte
     width: Breedte
@@ -338,3 +340,19 @@ validity-filter:
   valid: Momenteel geldig
   expired: Verlopen
   custom: Aangepaste periode
+shape-manager:
+  delete: Vorm verwijderen
+  shape-change:
+    body: Als je het vormtype van een bord verandert, worden alle vorige vormen die je had verwijderd.
+    button: Mijn vormen resetten
+  no-data: Geen vormen
+  height: Hoogte
+  width: Breedte
+  radius: Straal
+  delete-last-shape: Als u uw laatste vorm verwijdert, gaat informatie over het vormtype en de eenheid verloren.
+  disabled-add-new-button-title: Om een vorm in te voegen, selecteer je het type en de maateenheid.
+  edit-modal-title: Vormen bewerken
+variable-manager:
+  no-data: Geen variabelen
+  edit-modal-title: Variabele bewerken
+  delete: Remove variabele

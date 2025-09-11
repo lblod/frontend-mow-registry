@@ -8,7 +8,9 @@ import {
   validateStringOptional,
   validateStringRequired,
   validateBooleanRequired,
+  validateDateOptional,
 } from 'mow-registry/validators/schema';
+import type TrafficSignalConcept from './traffic-signal-concept';
 
 export default class Variable extends Resource {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
@@ -19,6 +21,7 @@ export default class Variable extends Resource {
   @attr declare label?: string;
   @attr declare defaultValue?: string;
   @attr({ defaultValue: true }) declare required?: boolean;
+  @attr('date') declare createdOn?: Date;
 
   @belongsTo<CodeList>('code-list', { inverse: 'variables', async: true })
   declare codeList: AsyncBelongsTo<CodeList>;
@@ -26,15 +29,24 @@ export default class Variable extends Resource {
   @belongsTo<Template>('template', { inverse: null, async: true })
   declare template: AsyncBelongsTo<Template>;
 
+  @belongsTo<TrafficSignalConcept>('traffic-signal-concept', {
+    inverse: 'variables',
+    async: true,
+    polymorphic: true,
+  })
+  declare trafficSignalConcept: AsyncBelongsTo<TrafficSignalConcept>;
+
   get validationSchema() {
     return super.validationSchema.keys({
       uri: validateStringOptional(),
       label: validateStringRequired(),
       type: validateStringRequired(),
       defaultValue: validateStringOptional(),
+      createdOn: validateDateOptional(),
       required: validateBooleanRequired(),
       codeList: validateBelongsToOptional(),
       template: validateBelongsToOptional(),
+      trafficSignalConcept: validateBelongsToOptional(),
     });
   }
 }
