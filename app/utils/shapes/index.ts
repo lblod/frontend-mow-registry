@@ -167,6 +167,7 @@ export async function createStoreShape(
     dimensions,
     classification,
     trafficSignalConcept,
+    createdOn: new Date(),
   });
   return shape;
 }

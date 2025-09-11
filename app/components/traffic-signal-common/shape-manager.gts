@@ -31,6 +31,7 @@ import type IntlService from 'ember-intl/services/intl';
 import { sortOnDimension } from 'mow-registry/utils/shapes/sorting';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
+import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 
 interface Signature {
   Args: {
@@ -55,7 +56,7 @@ export default class ShapeManager extends Component<Signature> {
   @tracked isEditShapeModalOpen = false;
   @tracked pageNumber = 0;
   pageSize = 20;
-  @tracked sort?: string;
+  @tracked sort?: string = 'created-on';
   constructor(
     owner: Owner | undefined,
     args: {
@@ -122,33 +123,49 @@ export default class ShapeManager extends Component<Signature> {
   shapesConverted = trackedFunction(this, async () => {
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
-    const shapesConverted = [];
-    const shapesSorted = await sortOnDimension(
-      this.sort,
-      this.pageNumber,
-      this.pageSize,
-      this.args.trafficSignal.id as string,
-    );
-    const shapes = await this.store.query<TribontShape>('tribont-shape', {
-      'filter[:id:]': shapesSorted.ids.join(','),
-    });
-    const copyShapes = [...shapes];
-    copyShapes.sort(
-      (a, b) =>
-        shapesSorted.ids.findIndex((id) => id === b.id) -
-        shapesSorted.ids.findIndex((id) => id === a.id),
-    );
-    for (const shape of copyShapes) {
+    const shapesConverted: Shape[] = [];
+    let shapes: TribontShape[] = [];
+    if (this.sort === 'created-on' || this.sort === '-created-on') {
+      shapes = await this.store.query<TribontShape>('tribont-shape', {
+        'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+        page: {
+          number: this.pageNumber,
+          size: this.pageSize,
+        },
+        sort: this.sort,
+      });
+    } else {
+      const shapesSorted = await sortOnDimension(
+        this.sort,
+        this.pageNumber,
+        this.pageSize,
+        this.args.trafficSignal.id as string,
+      );
+      const shapesQuery = await this.store.query<TribontShape>(
+        'tribont-shape',
+        {
+          'filter[:id:]': shapesSorted.ids.join(','),
+        },
+      );
+      shapes = [...shapesQuery];
+      shapes.sort(
+        (a, b) =>
+          shapesSorted.ids.findIndex((id) => id === b.id) -
+          shapesSorted.ids.findIndex((id) => id === a.id),
+      );
+      // @ts-expect-error We know that an array don't have a meta property but we need it for the table to work
+      shapesConverted.meta = generateMeta(
+        { page: this.pageNumber, size: this.pageSize },
+        shapesSorted.count,
+      );
+    }
+    for (const shape of shapes) {
       const shapeConverted = await convertToShape(shape);
       if (shapeConverted) {
         shapesConverted.push(shapeConverted);
       }
     }
-    // @ts-expect-error We know that an array don't have a meta property but we need it for the table to work
-    shapesConverted.meta = generateMeta(
-      { page: this.pageNumber, size: this.pageSize },
-      shapesSorted.count,
-    );
+
     return shapesConverted;
   });
 
@@ -431,6 +448,7 @@ export default class ShapeManager extends Component<Signature> {
           />
         {{/each}}
         <th>{{t 'road-sign-concept.attr.default-shape'}}</th>
+        <header.Sortable @field='createdOn' @label={{t 'utility.created-on'}} />
         <th></th>
       </:header>
       <:body as |shape|>
@@ -441,6 +459,9 @@ export default class ShapeManager extends Component<Signature> {
           {{#if (eq this.defaultShape.value.id shape.shape.id)}}
             <AuIcon @icon='check' @size='large' />
           {{/if}}
+        </td>
+        <td>
+          {{humanFriendlyDate shape.shape.createdOn}}
         </td>
         <td>
           <AuButton
