@@ -98,7 +98,8 @@ export default class VariableManager extends Component<Signature> {
     const actualType = this.variableTypes.find(
       (type) => type.value === variable.type,
     );
-    const labelModified = actualType && actualType.label !== variable.label;
+    const labelModified =
+      actualType?.label !== variable.label && variable.label?.length;
     if (variable.type === 'codelist') {
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
       variable.codeList = this.codeLists[0];
