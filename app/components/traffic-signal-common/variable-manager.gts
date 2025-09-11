@@ -178,6 +178,9 @@ export default class VariableManager extends Component<Signature> {
     this.variableToDelete = undefined;
     this.isDeleteConfirmationOpen = false;
   };
+  getTypeLabel = (type: InputType) => {
+    return type.label;
+  };
   <template>
     {{! @glint-nocheck: not typesafe yet }}
     <ReactiveTable
@@ -216,7 +219,7 @@ export default class VariableManager extends Component<Signature> {
           {{variable.label}}
         </td>
         <td>
-          {{variable.type}}
+          {{this.getTypeLabel (findByValue this.variableTypes variable.type)}}
         </td>
         <td>
           {{#if variable.required}}
