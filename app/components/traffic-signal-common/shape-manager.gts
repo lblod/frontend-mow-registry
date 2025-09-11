@@ -28,6 +28,9 @@ import {
 import type TribontShape from 'mow-registry/models/tribont-shape';
 import { removeItem } from 'mow-registry/utils/array';
 import type IntlService from 'ember-intl/services/intl';
+import { sortOnDimension } from 'mow-registry/utils/shapes/sorting';
+import generateMeta from 'mow-registry/utils/generate-meta';
+import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 
 interface Signature {
   Args: {
@@ -41,14 +44,18 @@ export default class ShapeManager extends Component<Signature> {
   @tracked cardEditing = false;
   @tracked shapeChange?: ShapeClassification = undefined;
   @tracked unitChange?: Unit = undefined;
-  @tracked editShapeId?: string = undefined;
+
   shapeClassificationsPromise: Promise<ShapeClassification[]>;
   unitsPromise: Promise<Unit[]>;
   shapeToDelete?: Shape;
   @tracked isDeleteConfirmationOpen = false;
   @tracked isShapeChangeConfirmationOpen = false;
+
+  shapeToEdit?: Shape;
+  @tracked isEditShapeModalOpen = false;
   @tracked pageNumber = 0;
   pageSize = 20;
+  @tracked sort?: string;
   constructor(
     owner: Owner | undefined,
     args: {
@@ -116,21 +123,32 @@ export default class ShapeManager extends Component<Signature> {
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     const shapesConverted = [];
+    const shapesSorted = await sortOnDimension(
+      this.sort,
+      this.pageNumber,
+      this.pageSize,
+      this.args.trafficSignal.id as string,
+    );
     const shapes = await this.store.query<TribontShape>('tribont-shape', {
-      'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
-      page: {
-        number: this.pageNumber,
-        size: this.pageSize,
-      },
+      'filter[:id:]': shapesSorted.ids.join(','),
     });
-    for (const shape of shapes) {
+    const copyShapes = [...shapes];
+    copyShapes.sort(
+      (a, b) =>
+        shapesSorted.ids.findIndex((id) => id === b.id) -
+        shapesSorted.ids.findIndex((id) => id === a.id),
+    );
+    for (const shape of copyShapes) {
       const shapeConverted = await convertToShape(shape);
       if (shapeConverted) {
         shapesConverted.push(shapeConverted);
       }
     }
     // @ts-expect-error We know that an array don't have a meta property but we need it for the table to work
-    shapesConverted.meta = shapes.meta;
+    shapesConverted.meta = generateMeta(
+      { page: this.pageNumber, size: this.pageSize },
+      shapesSorted.count,
+    );
     return shapesConverted;
   });
 
@@ -242,20 +260,23 @@ export default class ShapeManager extends Component<Signature> {
     this.closeDeleteConfirmation();
   };
 
-  editShape = (shape: Shape) => {
+  startEditShapeFlow = (shape: Shape) => {
     if (!shape.id) return;
-    this.editShapeId = shape.id;
+    this.shapeToEdit = shape;
+    this.isEditShapeModalOpen = true;
   };
-  saveShape = async (shape: Shape) => {
-    await shape.save();
+
+  closeEditShapeModal = async () => {
+    await this.shapeToEdit?.reset();
+    this.shapeToEdit = undefined;
+    this.isEditShapeModalOpen = false;
+  };
+  saveShape = async () => {
+    await this.shapeToEdit?.save();
     await this.args.trafficSignal.save();
-    this.editShapeId = undefined;
+    await this.closeEditShapeModal();
     await this.shapesConverted.retry();
     await this.defaultShape.retry();
-  };
-  resetShape = async (shape: Shape) => {
-    await shape.reset();
-    this.editShapeId = undefined;
   };
 
   setShapeValue = (
@@ -288,6 +309,10 @@ export default class ShapeManager extends Component<Signature> {
   };
   onPageChange = (newPage: number) => {
     this.pageNumber = newPage;
+    this.shapesConverted.retry();
+  };
+  onSortChange = (newSort: string) => {
+    this.sort = newSort;
     this.shapesConverted.retry();
   };
   <template>
@@ -375,6 +400,8 @@ export default class ShapeManager extends Component<Signature> {
       @page={{this.pageNumber}}
       @pageSize={{this.pageSize}}
       @onPageChange={{this.onPageChange}}
+      @onSortChange={{this.onSortChange}}
+      @sort={{this.sort}}
     >
       <:menu>
         <div class='au-u-flex au-u-flex--end'>
@@ -394,9 +421,12 @@ export default class ShapeManager extends Component<Signature> {
           </AuButton>
         </div>
       </:menu>
-      <:header>
+      <:header as |header|>
         {{#each this.dimensionsToShow as |dimension|}}
-          <th>{{dimension.label}}</th>
+          <header.Sortable
+            @field={{dimension.value}}
+            @label={{dimension.label}}
+          />
         {{/each}}
         <th>{{t 'road-sign-concept.attr.default-shape'}}</th>
         <th></th>
@@ -407,7 +437,6 @@ export default class ShapeManager extends Component<Signature> {
             <td>
               <AuInput
                 @width='block'
-                id='label'
                 value={{this.getRawValue shape dimension.value}}
                 {{on 'input' (fn this.setShapeValue shape dimension.value)}}
               />
@@ -431,30 +460,64 @@ export default class ShapeManager extends Component<Signature> {
             {{/if}}</td>
         {{/if}}
 
-        {{#if (eq shape.shape.id this.editShapeId)}}
-          <td>
-            <AuButton @skin='link' {{on 'click' (fn this.saveShape shape)}}>{{t
-                'utility.save'
-              }}</AuButton>
-            <AuButton
-              @skin='link-secondary'
-              {{on 'click' (fn this.resetShape shape)}}
-            >{{t 'utility.cancel'}}</AuButton></td>
-        {{else}}
-          <td>
-            <AuButton
-              @skin='naked'
-              @icon='pencil'
-              {{on 'click' (fn this.editShape shape)}}
-            />
-            <AuButton
-              @skin='naked'
-              @icon='trash'
-              {{on 'click' (fn this.startDeleteShapeFlow shape)}}
-            /></td>
-        {{/if}}
+        <td>
+          <AuButton
+            @skin='naked'
+            @icon='pencil'
+            {{on 'click' (fn this.startEditShapeFlow shape)}}
+          />
+          <AuButton
+            @skin='naked'
+            @icon='trash'
+            {{on 'click' (fn this.startDeleteShapeFlow shape)}}
+          /></td>
       </:body>
     </ReactiveTable>
+    <AuModal
+      @modalOpen={{this.isEditShapeModalOpen}}
+      @closeModal={{this.closeEditShapeModal}}
+    >
+      <:title>
+        {{#if this.shapeToEdit.isNew}}
+          {{t 'utility.add-variable'}}
+        {{else}}
+          {{t 'variable-manager.edit-modal-title'}}
+        {{/if}}
+      </:title>
+      <:body>
+        {{#each this.dimensionsToShow as |dimension|}}
+          <AuLabel
+            @required={{true}}
+            @requiredLabel={{t 'utility.required'}}
+          >{{dimension.label}}
+          </AuLabel>
+          <AuInput
+            @width='block'
+            value={{this.getRawValue this.shapeToEdit dimension.value}}
+            {{on
+              'input'
+              (fn this.setShapeValue this.shapeToEdit dimension.value)
+            }}
+          />
+        {{/each}}
+        <AuLabel>{{t 'road-sign-concept.attr.default-shape'}}
+        </AuLabel>
+        <AuCheckbox
+          @checked={{eq this.defaultShape.value.id this.shapeToEdit.shape.id}}
+          @onChange={{fn this.toggleDefaultShape this.shapeToEdit}}
+        >
+          {{t 'road-sign-concept.attr.default-shape'}}
+        </AuCheckbox>
+      </:body>
+      <:footer>
+        <AuButton @alert={{true}} {{on 'click' this.saveShape}}>
+          {{t 'shape-manager.delete'}}
+        </AuButton>
+        <AuButton @skin='secondary' {{on 'click' this.closeDeleteConfirmation}}>
+          {{t 'utility.cancel'}}
+        </AuButton>
+      </:footer>
+    </AuModal>
     <AuModal
       @modalOpen={{this.isDeleteConfirmationOpen}}
       @closeModal={{this.closeDeleteConfirmation}}

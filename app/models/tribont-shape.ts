@@ -1,6 +1,7 @@
 import {
   type AsyncBelongsTo,
   type AsyncHasMany,
+  attr,
   belongsTo,
   hasMany,
 } from '@ember-data/model';
@@ -21,6 +22,7 @@ export default class TribontShape extends AbstractValidationModel {
 
   @hasMany<Dimension>('dimension', { inverse: null, async: true })
   declare dimensions: AsyncHasMany<Dimension>;
+  @attr('date') declare createdOn?: Date;
 
   @belongsTo<TribontShapeClassificationCode>(
     'tribont-shape-classification-code',
