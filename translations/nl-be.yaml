@@ -351,6 +351,7 @@ shape-manager:
   radius: Straal
   delete-last-shape: Als u uw laatste vorm verwijdert, gaat informatie over het vormtype en de eenheid verloren.
   disabled-add-new-button-title: Om een vorm in te voegen, selecteer je het type en de maateenheid.
+  edit-modal-title: Vormen bewerken
 variable-manager:
   no-data: Geen variabelen
   edit-modal-title: Variabele bewerken

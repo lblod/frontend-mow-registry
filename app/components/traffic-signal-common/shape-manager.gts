@@ -51,7 +51,7 @@ export default class ShapeManager extends Component<Signature> {
   @tracked isDeleteConfirmationOpen = false;
   @tracked isShapeChangeConfirmationOpen = false;
 
-  shapeToEdit?: Shape;
+  @tracked shapeToEdit?: Shape;
   @tracked isEditShapeModalOpen = false;
   @tracked pageNumber = 0;
   pageSize = 20;
@@ -261,7 +261,6 @@ export default class ShapeManager extends Component<Signature> {
   };
 
   startEditShapeFlow = (shape: Shape) => {
-    if (!shape.id) return;
     this.shapeToEdit = shape;
     this.isEditShapeModalOpen = true;
   };
@@ -300,12 +299,15 @@ export default class ShapeManager extends Component<Signature> {
     }
   };
   addNewShape = async () => {
-    await this.shapeClass?.createShape(
+    const shape = await this.shapeClass?.createShape(
       this.selectedUnit as Unit,
       this.store,
       this.args.trafficSignal,
     );
-    this.shapesConverted.retry();
+    console.log(shape);
+    if (shape) {
+      this.startEditShapeFlow(shape);
+    }
   };
   onPageChange = (newPage: number) => {
     this.pageNumber = newPage;
@@ -433,33 +435,13 @@ export default class ShapeManager extends Component<Signature> {
       </:header>
       <:body as |shape|>
         {{#each this.dimensionsToShow as |dimension|}}
-          {{#if (eq shape.shape.id this.editShapeId)}}
-            <td>
-              <AuInput
-                @width='block'
-                value={{this.getRawValue shape dimension.value}}
-                {{on 'input' (fn this.setShapeValue shape dimension.value)}}
-              />
-            </td>
-          {{else}}
-            <td>{{this.getStringValue shape dimension.value}}</td>
-          {{/if}}
+          <td>{{this.getStringValue shape dimension.value}}</td>
         {{/each}}
-        {{#if (eq shape.shape.id this.editShapeId)}}
-          <td>
-            <AuCheckbox
-              @checked={{eq this.defaultShape.value.id shape.shape.id}}
-              @onChange={{fn this.toggleDefaultShape shape}}
-            >
-              {{t 'road-sign-concept.attr.default-shape'}}
-            </AuCheckbox>
-          </td>
-        {{else}}
-          <td>{{#if (eq this.defaultShape.value.id shape.shape.id)}}
-              <AuIcon @icon='check' @size='large' />
-            {{/if}}</td>
-        {{/if}}
-
+        <td>
+          {{#if (eq this.defaultShape.value.id shape.shape.id)}}
+            <AuIcon @icon='check' @size='large' />
+          {{/if}}
+        </td>
         <td>
           <AuButton
             @skin='naked'
@@ -478,10 +460,10 @@ export default class ShapeManager extends Component<Signature> {
       @closeModal={{this.closeEditShapeModal}}
     >
       <:title>
-        {{#if this.shapeToEdit.isNew}}
-          {{t 'utility.add-variable'}}
+        {{#if this.shapeToEdit.shape.isNew}}
+          {{t 'utility.add-shape'}}
         {{else}}
-          {{t 'variable-manager.edit-modal-title'}}
+          {{t 'shape-manager.edit-modal-title'}}
         {{/if}}
       </:title>
       <:body>
@@ -511,7 +493,7 @@ export default class ShapeManager extends Component<Signature> {
       </:body>
       <:footer>
         <AuButton @alert={{true}} {{on 'click' this.saveShape}}>
-          {{t 'shape-manager.delete'}}
+          {{t 'utility.save'}}
         </AuButton>
         <AuButton @skin='secondary' {{on 'click' this.closeDeleteConfirmation}}>
           {{t 'utility.cancel'}}

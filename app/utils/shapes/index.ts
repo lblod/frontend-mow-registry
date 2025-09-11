@@ -144,7 +144,6 @@ export async function createDimension(
     kind: kind,
     unit,
   });
-  await dimension.save();
   return dimension;
 }
 
@@ -169,6 +168,5 @@ export async function createStoreShape(
     classification,
     trafficSignalConcept,
   });
-  await shape.save();
   return shape;
 }
