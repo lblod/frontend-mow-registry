@@ -516,7 +516,7 @@ export default class ShapeManager extends Component<Signature> {
         <AuButton {{on 'click' this.saveShape}}>
           {{t 'utility.save'}}
         </AuButton>
-        <AuButton @skin='secondary' {{on 'click' this.closeDeleteConfirmation}}>
+        <AuButton @skin='secondary' {{on 'click' this.closeEditShapeModal}}>
           {{t 'utility.cancel'}}
         </AuButton>
       </:footer>
