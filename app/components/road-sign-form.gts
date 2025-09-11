@@ -46,6 +46,7 @@ import {
   validateShapes,
   validateVariables,
 } from 'mow-registry/utils/validate-relations';
+import { getPromiseState } from '@warp-drive/ember';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -418,24 +419,29 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   {{t 'road-sign-concept.attr.classifications'}}&nbsp;
                 </AuLabel>
                 <div class={{if error 'ember-power-select--error'}}>
-                  {{! @glint-expect-error need to move to PS 8 }}
-                  <PowerSelectMultiple
-                    {{! @glint-expect-error need to move to PS 8 }}
-                    @allowClear={{true}}
-                    @placeholder={{t 'utility.search-placeholder'}}
-                    @searchEnabled={{true}}
-                    @searchMessage={{t 'utility.search-placeholder'}}
-                    @noMatchesMessage={{t 'road-sign-concept.crud.no-data'}}
-                    @searchField='label'
-                    @options={{@classifications}}
-                    @loadingMessage={{t 'utility.loading'}}
-                    @selected={{@roadSignConcept.classifications}}
-                    @onChange={{this.setRoadSignConceptClassification}}
-                    @triggerId='classifications'
-                    as |classification|
-                  >
-                    {{classification.label}}
-                  </PowerSelectMultiple>
+                  {{#let
+                    (getPromiseState @roadSignConcept.classifications)
+                    as |classificationsPromise|
+                  }}
+                    {{#if classificationsPromise.isSuccess}}
+                      <PowerSelectMultiple
+                        @allowClear={{true}}
+                        @placeholder={{t 'utility.search-placeholder'}}
+                        @searchEnabled={{true}}
+                        @searchMessage={{t 'utility.search-placeholder'}}
+                        @noMatchesMessage={{t 'road-sign-concept.crud.no-data'}}
+                        @searchField='label'
+                        @options={{@classifications}}
+                        @loadingMessage={{t 'utility.loading'}}
+                        @selected={{classificationsPromise.value}}
+                        @onChange={{this.setRoadSignConceptClassification}}
+                        @triggerId='classifications'
+                        as |classification|
+                      >
+                        {{classification.label}}
+                      </PowerSelectMultiple>
+                    {{/if}}
+                  {{/let}}
                 </div>
                 <ErrorMessage @error={{error}} />
               </AuFormRow>

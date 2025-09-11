@@ -312,9 +312,7 @@ export default class CodelistFormComponent extends Component<Sig> {
                 {{t 'codelist.attr.type'}}&nbsp;
               </AuLabel>
               {{#if this.codelistTypes}}
-                {{! @glint-expect-error need to move to PS 8 }}
                 <PowerSelect
-                  {{! @glint-expect-error need to move to PS 8 }}
                   @allowClear={{false}}
                   @searchEnabled={{false}}
                   @options={{this.codelistTypes}}

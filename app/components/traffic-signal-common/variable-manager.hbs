@@ -40,25 +40,43 @@
                     <ErrorMessage @error={{variable.error.type}} />
                   </div>
                   {{#if (eq variable.type "codelist")}}
-                    <PowerSelect
-                      @triggerClass="au-u-margin-top-tiny"
-                      @allowClear={{false}}
-                      @searchEnabled={{true}}
-                      @options={{this.codeLists}}
-                      @selected={{variable.codeList}}
-                      @onChange={{fn this.updateCodelist variable}}
-                      as |codeList|
-                    >
-                      {{codeList.label}}
-                    </PowerSelect>
-                    <ul
-                      class="au-c-list-help au-c-help-text au-c-help-text--secondary"
-                    >
-                      {{#each variable.codeList.concepts as |option|}}
-                        <li class="au-c-list-help__item">{{option.label}}</li>
-                      {{/each}}
-                    </ul>
-                    <ErrorMessage @error={{variable.error.codelist}} />
+                    {{#let
+                      (get-promise-state variable.codeList)
+                      as |codelistPromise|
+                    }}
+                      {{#if codelistPromise.isSuccess}}
+                        <PowerSelect
+                          @triggerClass="au-u-margin-top-tiny"
+                          @allowClear={{false}}
+                          @searchEnabled={{true}}
+                          @options={{this.codeLists}}
+                          @selected={{codelistPromise.value}}
+                          @onChange={{fn this.updateCodelist variable}}
+                          as |codeList|
+                        >
+                          {{codeList.label}}
+                        </PowerSelect>
+                        {{#if codelistPromise.value}}
+                          {{#let
+                            (get-promise-state codelistPromise.value.concepts)
+                            as |conceptsPromise|
+                          }}
+                            {{#if conceptsPromise.isSuccess}}
+                              <ul
+                                class="au-c-list-help au-c-help-text au-c-help-text--secondary"
+                              >
+                                {{#each conceptsPromise.value as |option|}}
+                                  <li
+                                    class="au-c-list-help__item"
+                                  >{{option.label}}</li>
+                                {{/each}}
+                              </ul>
+                            {{/if}}
+                          {{/let}}
+                        {{/if}}
+                      {{/if}}
+                      <ErrorMessage @error={{variable.error.codelist}} />
+                    {{/let}}
                   {{/if}}
                 </td>
                 <td>

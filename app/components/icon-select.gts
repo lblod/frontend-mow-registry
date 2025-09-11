@@ -50,9 +50,7 @@ export default class IconSelectComponent extends Component<Signature> {
   });
 
   <template>
-    {{! @glint-expect-error need to move to PS 8 }}
     <PowerSelect
-      {{! @glint-expect-error need to move to PS 8 }}
       @allowClear={{true}}
       @searchEnabled={{true}}
       @loadingMessage={{t 'utility.loading'}}

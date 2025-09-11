@@ -165,13 +165,11 @@ export default class ShapeManager extends Component<Signature> {
                         "ember-power-select--error"
                       }}'
                   >
-                    {{! @glint-expect-error need to move to PS 8 }}
                     <PowerSelect
                       @allowClear={{false}}
                       @searchEnabled={{false}}
                       @searchField='label'
                       @loadingMessage={{t 'utility.loading'}}
-                      {{! @glint-expect-error need to move to PS 8 }}
                       @options={{this.shapeClassificationsPromise}}
                       @selected={{shape.classification}}
                       @onChange={{fn (mut shape.classification)}}
@@ -221,13 +219,11 @@ export default class ShapeManager extends Component<Signature> {
                                 'ember-power-select--error'
                               }}
                             >
-                              {{! @glint-expect-error need to move to PS 8 }}
                               <PowerSelect
                                 @allowClear={{false}}
                                 @searchEnabled={{false}}
                                 @searchField='label'
                                 @loadingMessage={{t 'utility.loading'}}
-                                {{! @glint-expect-error need to move to PS 8 }}
                                 @options={{this.quantityKindsPromise}}
                                 @selected={{dimension.kind}}
                                 @onChange={{fn this.setQuantityKind dimension}}
@@ -247,14 +243,12 @@ export default class ShapeManager extends Component<Signature> {
                                 'ember-power-select--error'
                               }}
                             >
-                              {{! @glint-expect-error need to move to PS 8 }}
                               <PowerSelect
                                 @disabled={{not dimension.kind}}
                                 @allowClear={{false}}
                                 @searchEnabled={{false}}
                                 @searchField='symbol'
                                 @loadingMessage={{t 'utility.loading'}}
-                                {{! @glint-expect-error need to move to PS 8 }}
                                 @options={{if
                                   dimension.kind.units
                                   (sortByOrder dimension.kind.units)
