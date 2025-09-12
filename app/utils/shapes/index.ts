@@ -102,7 +102,7 @@ export type Shape = {
   unitMeasure: Unit;
   convertToNewUnit(unit: Unit): Promise<void>;
   id: string;
-  save(): Promise<void>;
+  validateAndsave(): Promise<boolean>;
   reset(): Promise<void>;
   remove(): Promise<void>;
 };

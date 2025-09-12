@@ -18,7 +18,7 @@ import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
 import PowerSelect from 'ember-power-select/components/power-select';
 import ErrorMessage from 'mow-registry/components/error-message';
-import { eq } from 'ember-truth-helpers';
+import { eq, or } from 'ember-truth-helpers';
 import findByValue from 'mow-registry/helpers/find-by-value';
 import { trackedFunction } from 'reactiveweb/function';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
@@ -45,6 +45,7 @@ export default class VariableManager extends Component<Signature> {
   @tracked sort?: string = 'created-on';
   variableToDelete?: Variable;
   @tracked isDeleteConfirmationOpen = false;
+  @tracked editedCodelist?: CodeList;
 
   constructor(
     owner: Owner | undefined,
@@ -99,7 +100,8 @@ export default class VariableManager extends Component<Signature> {
     const actualType = this.variableTypes.find(
       (type) => type.value === variable.type,
     );
-    const labelModified = actualType && actualType.label !== variable.label;
+    const labelModified =
+      actualType?.label !== variable.label && variable.label?.length;
     if (variable.type === 'codelist') {
       //@ts-expect-error currently the ts types don't allow direct assignment of relationships
       variable.codeList = this.codeLists[0];
@@ -110,13 +112,11 @@ export default class VariableManager extends Component<Signature> {
     }
   };
 
-  updateCodelist = (variable: Variable, codeList: CodeList) => {
-    //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-    variable.codeList = codeList;
+  updateCodelist = (codeList: CodeList) => {
+    this.editedCodelist = codeList;
   };
 
   variables = trackedFunction(this, async () => {
-    console.log('running');
     await Promise.resolve();
     const variables = await this.store.query<Variable>('variable', {
       'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
@@ -145,6 +145,7 @@ export default class VariableManager extends Component<Signature> {
   closeEditVariableModal = () => {
     this.isEditVariableModalOpen = false;
     this.variableToEdit?.rollbackAttributes();
+    this.editedCodelist = undefined;
     this.variableToEdit = undefined;
   };
   startAddVariable = () => {
@@ -159,6 +160,9 @@ export default class VariableManager extends Component<Signature> {
     this.variableToEdit = variable;
   };
   saveVariable = async () => {
+    if (this.variableToEdit && this.editedCodelist) {
+      this.variableToEdit.set('codeList', this.editedCodelist);
+    }
     const valid = await this.variableToEdit?.validate();
     if (!valid) return;
     await this.variableToEdit?.save();
@@ -177,6 +181,9 @@ export default class VariableManager extends Component<Signature> {
   closeDeleteConfirmation = () => {
     this.variableToDelete = undefined;
     this.isDeleteConfirmationOpen = false;
+  };
+  getTypeLabel = (type: InputType) => {
+    return type.label;
   };
   <template>
     {{! @glint-nocheck: not typesafe yet }}
@@ -216,7 +223,7 @@ export default class VariableManager extends Component<Signature> {
           {{variable.label}}
         </td>
         <td>
-          {{variable.type}}
+          {{this.getTypeLabel (findByValue this.variableTypes variable.type)}}
         </td>
         <td>
           {{#if variable.required}}
@@ -309,15 +316,15 @@ export default class VariableManager extends Component<Signature> {
                   @allowClear={{false}}
                   @searchEnabled={{true}}
                   @options={{this.codeLists}}
-                  @selected={{codelistPromise.value}}
-                  @onChange={{fn this.updateCodelist this.variableToEdit}}
+                  @selected={{or this.editedCodelist codelistPromise.value}}
+                  @onChange={{this.updateCodelist}}
                   as |codeList|
                 >
                   {{codeList.label}}
                 </PowerSelect>
-                {{#if codelistPromise.value}}
+                {{#if (or this.editedCodelist codelistPromise.value)}}
                   {{#let
-                    (getPromiseState codelistPromise.value.concepts)
+                    (getPromiseState (or this.editedCodelist.concepts codelistPromise.value.concepts))
                     as |conceptsPromise|
                   }}
                     {{#if conceptsPromise.isSuccess}}

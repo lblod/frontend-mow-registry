@@ -224,6 +224,7 @@ export default class ShapeManager extends Component<Signature> {
       this.store,
       this.args.trafficSignal,
     );
+    await shape.validateAndsave();
     this.args.trafficSignal.set('defaultShape', undefined);
     this.args.trafficSignal.set('shapes', [shape.shape]);
     await this.args.trafficSignal.save();
@@ -246,6 +247,11 @@ export default class ShapeManager extends Component<Signature> {
   getRawValue(shape: Shape, dimension: keyof typeof DIMENSIONS) {
     if (!shape[dimension]) return '';
     return shape[dimension].value;
+  }
+
+  getError(shape: Shape, dimension: keyof typeof DIMENSIONS) {
+    if (!shape[dimension]) return undefined;
+    return shape[dimension].dimension.error;
   }
 
   setShapeClassifications = (classification: ShapeClassification) => {
@@ -288,11 +294,13 @@ export default class ShapeManager extends Component<Signature> {
     this.isEditShapeModalOpen = false;
   };
   saveShape = async () => {
-    await this.shapeToEdit?.save();
-    await this.args.trafficSignal.save();
-    await this.closeEditShapeModal();
-    await this.shapesConverted.retry();
-    await this.defaultShape.retry();
+    const saved = await this.shapeToEdit?.validateAndsave();
+    if (saved) {
+      await this.args.trafficSignal.save();
+      await this.closeEditShapeModal();
+      await this.shapesConverted.retry();
+      await this.defaultShape.retry();
+    }
   };
 
   setShapeValue = (
@@ -321,7 +329,6 @@ export default class ShapeManager extends Component<Signature> {
       this.store,
       this.args.trafficSignal,
     );
-    console.log(shape);
     if (shape) {
       this.startEditShapeFlow(shape);
     }
@@ -492,11 +499,13 @@ export default class ShapeManager extends Component<Signature> {
           <AuLabel
             @required={{true}}
             @requiredLabel={{t 'utility.required'}}
+            @error={{this.getError this.shapeToEdit dimension.value}}
           >{{dimension.label}}
           </AuLabel>
           <AuInput
             @width='block'
             value={{this.getRawValue this.shapeToEdit dimension.value}}
+            @error={{this.getError this.shapeToEdit dimension.value}}
             {{on
               'input'
               (fn this.setShapeValue this.shapeToEdit dimension.value)
@@ -516,7 +525,7 @@ export default class ShapeManager extends Component<Signature> {
         <AuButton {{on 'click' this.saveShape}}>
           {{t 'utility.save'}}
         </AuButton>
-        <AuButton @skin='secondary' {{on 'click' this.closeDeleteConfirmation}}>
+        <AuButton @skin='secondary' {{on 'click' this.closeEditShapeModal}}>
           {{t 'utility.cancel'}}
         </AuButton>
       </:footer>
