@@ -24,7 +24,7 @@ export default class Variable extends Resource {
   @attr('date') declare createdOn?: Date;
 
   @belongsTo<CodeList>('code-list', { inverse: 'variables', async: true })
-  declare codeList: AsyncBelongsTo<CodeList>;
+  declare codeList?: AsyncBelongsTo<CodeList>;
 
   @belongsTo<Template>('template', { inverse: null, async: true })
   declare template: AsyncBelongsTo<Template>;

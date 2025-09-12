@@ -18,7 +18,7 @@ import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
 import PowerSelect from 'ember-power-select/components/power-select';
 import ErrorMessage from 'mow-registry/components/error-message';
-import { eq } from 'ember-truth-helpers';
+import { eq, or } from 'ember-truth-helpers';
 import findByValue from 'mow-registry/helpers/find-by-value';
 import { trackedFunction } from 'reactiveweb/function';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
@@ -44,6 +44,7 @@ export default class VariableManager extends Component<Signature> {
   @tracked sort?: string = 'created-on';
   variableToDelete?: Variable;
   @tracked isDeleteConfirmationOpen = false;
+  @tracked editedCodelist?: CodeList;
 
   constructor(
     owner: Owner | undefined,
@@ -110,9 +111,8 @@ export default class VariableManager extends Component<Signature> {
     }
   };
 
-  updateCodelist = (variable: Variable, codeList: CodeList) => {
-    //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-    variable.codeList = codeList;
+  updateCodelist = (codeList: CodeList) => {
+    this.editedCodelist = codeList;
   };
 
   variables = trackedFunction(this, async () => {
@@ -145,6 +145,7 @@ export default class VariableManager extends Component<Signature> {
   closeEditVariableModal = () => {
     this.isEditVariableModalOpen = false;
     this.variableToEdit?.rollbackAttributes();
+    this.editedCodelist = undefined;
     this.variableToEdit = undefined;
   };
   startAddVariable = () => {
@@ -159,6 +160,9 @@ export default class VariableManager extends Component<Signature> {
     this.variableToEdit = variable;
   };
   saveVariable = async () => {
+    if (this.variableToEdit && this.editedCodelist) {
+      this.variableToEdit.set('codeList', this.editedCodelist);
+    }
     const valid = await this.variableToEdit?.validate();
     if (!valid) return;
     await this.variableToEdit?.save();
@@ -307,8 +311,8 @@ export default class VariableManager extends Component<Signature> {
               @allowClear={{false}}
               @searchEnabled={{true}}
               @options={{this.codeLists}}
-              @selected={{this.variableToEdit.codeList}}
-              @onChange={{fn this.updateCodelist this.variableToEdit}}
+              @selected={{or this.editedCodelist this.variableToEdit.codeList}}
+              @onChange={{this.updateCodelist}}
               as |codeList|
             >
               {{codeList.label}}
