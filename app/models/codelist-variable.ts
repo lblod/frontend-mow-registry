@@ -4,7 +4,6 @@ import ReferenceVariable from './reference-variable';
 import type { Type } from '@warp-drive/core-types/symbols';
 
 export default class CodelistVariable extends ReferenceVariable {
-  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'codelist-variable';
 
   @attr declare readonly type: 'codelist';
@@ -12,7 +11,7 @@ export default class CodelistVariable extends ReferenceVariable {
 
 export function isCodelistVariable(
   variable: Variable | undefined,
-): // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
+): // @ts-expect-error typescript gives an error due to the `defaultValue` attribute discrepancies
 variable is CodelistVariable {
   return variable?.type === 'codelist';
 }

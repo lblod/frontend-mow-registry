@@ -66,6 +66,7 @@ utility:
   validation-status: Validation status
   start-date: Start date
   end-date: End date
+  created-on: Created on
   modifying-validity-dates-warning: "Note: modifying validity dates can affect the instruction validity"
   template-variables:
     text: text
@@ -112,6 +113,7 @@ road-sign-concept:
     related-traffic-light: Related traffic light
     shape: Shape
     dimensions: Dimensions
+    dimension-unit: Dimension unit
     default-shape: Default shape
     height: Height
     width: Width
@@ -340,3 +342,20 @@ validity-filter:
   valid: Currently valid
   expired: Expired
   custom: Custom period
+
+shape-manager:
+  delete: Remove shape
+  shape-change:
+    body: Changing the shape type of a sign will delete all previous shapes you had
+    button: Reset my shapes
+  no-data: No shapes
+  height: Height
+  width: Width
+  radius: Radius
+  delete-last-shape: Deleting your last shape will lose you information about shape type and unit
+  disabled-add-new-button-title: In order to insert a shape please select the type and measure unit
+  edit-modal-title: Edit shape
+variable-manager:
+  no-data: No variables
+  edit-modal-title: Edit variable
+  delete: Remove variable

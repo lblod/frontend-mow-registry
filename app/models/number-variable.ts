@@ -5,7 +5,6 @@ import LiteralVariable from './literal-variable';
 import type { Type } from '@warp-drive/core-types/symbols';
 
 export default class NumberVariable extends LiteralVariable {
-  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'number-variable';
 
   @attr declare readonly type: 'number';
@@ -21,7 +20,7 @@ export default class NumberVariable extends LiteralVariable {
 
 export function isNumberVariable(
   variable: Variable | undefined,
-): // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
+): // @ts-expect-error typescript gives an error due to the `defaultValue` attribute discrepancies
 variable is NumberVariable {
   return variable?.type === 'number';
 }

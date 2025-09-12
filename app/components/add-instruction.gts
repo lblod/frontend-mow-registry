@@ -11,7 +11,6 @@ import { get } from '@ember/helper';
 // eslint-disable-next-line ember/no-at-ember-render-modifiers
 import didInsert from '@ember/render-modifiers/modifiers/did-insert';
 import { task } from 'ember-concurrency';
-// @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
 import { not } from 'ember-truth-helpers';
 import t from 'ember-intl/helpers/t';
@@ -46,6 +45,7 @@ import type VariablesService from 'mow-registry/services/variables-service';
 import type TextVariable from 'mow-registry/models/text-variable';
 import { TrackedArray } from 'tracked-built-ins';
 import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
+import { getPromiseState } from '@warp-drive/ember';
 
 export interface AddInstructionSig {
   Args: {
@@ -95,16 +95,15 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   });
 
   @action
-  updateVariableType(
+  async updateVariableType(
     varIndex: number,
     existing: Variable,
     selectedType: SignVariableType,
   ) {
-    // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
-    const newVar = this.variablesService.convertVariableType(
+    const newVar = (await this.variablesService.convertVariableType(
       existing,
       selectedType,
-    ) as Variable;
+    )) as Variable;
     if (this.variables) {
       this.variablesToBeDeleted.push(
         ...this.variables.splice(varIndex, 1, newVar),
@@ -478,9 +477,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                   <tr>
                     <td>{{variable.label}}</td>
                     <td>
-                      {{! @glint-expect-error need to move to PS 8 }}
                       <PowerSelect
-                        {{! @glint-expect-error need to move to PS 8 }}
                         @allowClear={{false}}
                         @searchEnabled={{false}}
                         @options={{signVariableTypes}}
@@ -495,27 +492,38 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                         {{type}}
                       </PowerSelect>
                       {{#if (isCodelistVariable variable)}}
-                        {{! @glint-expect-error need to move to PS 8 }}
-                        <PowerSelect
-                          @allowClear={{false}}
-                          @searchEnabled={{false}}
-                          {{! @glint-expect-error need to move to PS 8 }}
-                          @options={{this.codeLists}}
-                          {{! @glint-expect-error typescript gives an error due to the Type brand discrepancies }}
-                          @selected={{variable.codeList}}
-                          @onChange={{fn this.updateCodeList variable}}
-                          as |codeList|
-                        >
-                          {{codeList.label}}
-                        </PowerSelect>
-                        <ul>
-                          {{! @glint-expect-error #each should probably take promises too }}
-                          {{#each (this.getCon variable.codeList) as |option|}}
-                            <li> - {{option.label}}</li>
-                          {{/each}}
-                        </ul>
+                        {{#let
+                          (getPromiseState variable.codeList)
+                          as |codelistPromise|
+                        }}
+                          {{#if codelistPromise.isSuccess}}
+                            <PowerSelect
+                              @allowClear={{false}}
+                              @searchEnabled={{false}}
+                              @options={{this.codeLists}}
+                              @selected={{codelistPromise.value}}
+                              @onChange={{fn this.updateCodeList variable}}
+                              as |codeList|
+                            >
+                              {{codeList.label}}
+                            </PowerSelect>
+                            {{#if codelistPromise.value}}
+                              {{#let
+                                (getPromiseState codelistPromise.value.concepts)
+                                as |conceptsPromise|
+                              }}
+                                {{#if conceptsPromise.isSuccess}}
+                                  <ul>
+                                    {{#each conceptsPromise.value as |option|}}
+                                      <li> - {{option.label}}</li>
+                                    {{/each}}
+                                  </ul>
+                                {{/if}}
+                              {{/let}}
+                            {{/if}}
+                          {{/if}}
+                        {{/let}}
                         <ErrorMessage
-                          {{! @glint-expect-error typescript gives an error due to the Type brand discrepancies }}
                           @error={{get variable.error 'codeList'}}
                         />
                       {{/if}}

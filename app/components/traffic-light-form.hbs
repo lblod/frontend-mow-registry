@@ -176,13 +176,6 @@
           {{t "utility.modifying-validity-dates-warning"}}
         </AuHelpText>
 
-        {{#let (await @trafficLightConcept.variables) as |variables|}}
-          <TrafficSignalCommon::VariableManager
-            @variables={{variables}}
-            @removeVariable={{this.removeVariable}}
-            @addVariable={{this.addVariable}}
-          />
-        {{/let}}
 
       </form>
     </div>

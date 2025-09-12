@@ -10,7 +10,6 @@ import { on } from '@ember/modifier';
 import { fn, get } from '@ember/helper';
 // eslint-disable-next-line ember/no-at-ember-render-modifiers
 import didInsert from '@ember/render-modifiers/modifiers/did-insert';
-// @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
 import { or } from 'ember-truth-helpers';
 import t from 'ember-intl/helpers/t';
@@ -65,6 +64,7 @@ import InstructionVariable, {
 } from 'mow-registry/models/instruction-variable';
 import type TextVariable from 'mow-registry/models/text-variable';
 import { validateVariables } from 'mow-registry/utils/validate-relations';
+import { getPromiseState } from '@warp-drive/ember';
 
 type Sig = {
   Args: {
@@ -272,11 +272,10 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     existing: Variable,
     selectedType: VariableType,
   ) {
-    // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
-    const newVar = this.variablesService.convertVariableType(
+    const newVar = (await this.variablesService.convertVariableType(
       existing,
       selectedType,
-    ) as Variable;
+    )) as Variable;
     const newVars = [...this.variables];
     newVars[varIndex] = newVar;
     this.variables = newVars;
@@ -694,9 +693,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
               />
             </div>
             <div class='au-o-grid__item au-u-1-4@medium'>
-              {{! @glint-expect-error need to move to PS 8 }}
               <PowerSelect
-                {{! @glint-expect-error need to move to PS 8 }}
                 @allowClear={{true}}
                 @options={{this.validationStatusOptions}}
                 @selected={{this.selectedValidationStatus}}
@@ -790,9 +787,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                             </AuCheckbox>
                           </td>
                           <td style='width: 33%;'>
-                            {{! @glint-expect-error need to move to PS 8 }}
                             <PowerSelect
-                              {{! @glint-expect-error need to move to PS 8 }}
                               @allowClear={{false}}
                               @searchEnabled={{false}}
                               @options={{this.variableTypes}}
@@ -809,59 +804,85 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                               }}
                             </PowerSelect>
                             {{#if (isCodelistVariable variable)}}
-                              {{! @glint-expect-error need to move to PS 8 }}
-                              <PowerSelect
-                                {{! @glint-expect-error need to move to PS 8 }}
-                                @triggerClass='au-u-margin-top-tiny'
-                                @allowClear={{false}}
-                                @searchEnabled={{false}}
-                                @options={{this.codeLists}}
-                                {{! @glint-expect-error typescript gives an error due to the Type brand discrepancies }}
-                                @selected={{variable.codeList}}
-                                @onChange={{fn this.updateCodelist variable}}
-                                as |codeList|
-                              >
-                                {{codeList.label}}
-                              </PowerSelect>
-                              <ul
-                                class='au-c-list-help au-c-help-text au-c-help-text--secondary'
-                              >
-                                {{! @glint-expect-error promises, promises, promises... }}
-                                {{#each variable.codeList.concepts as |option|}}
-                                  <li
-                                    class='au-c-list-help__item'
-                                  >{{option.label}}</li>
-                                {{/each}}
-                              </ul>
+                              {{#let
+                                (getPromiseState variable.codeList)
+                                as |codelistPromise|
+                              }}
+                                {{#if codelistPromise.isSuccess}}
+                                  <PowerSelect
+                                    @triggerClass='au-u-margin-top-tiny'
+                                    @allowClear={{false}}
+                                    @searchEnabled={{false}}
+                                    @options={{this.codeLists}}
+                                    @selected={{codelistPromise.value}}
+                                    @onChange={{fn
+                                      this.updateCodelist
+                                      variable
+                                    }}
+                                    as |codeList|
+                                  >
+                                    {{codeList.label}}
+                                  </PowerSelect>
+                                  {{#if codelistPromise.value}}
+                                    {{#let
+                                      (getPromiseState
+                                        codelistPromise.value.concepts
+                                      )
+                                      as |conceptsPromise|
+                                    }}
+                                      {{#if conceptsPromise.isSuccess}}
+                                        <ul
+                                          class='au-c-list-help au-c-help-text au-c-help-text--secondary'
+                                        >
+                                          {{#each
+                                            conceptsPromise.value
+                                            as |option|
+                                          }}
+                                            <li
+                                              class='au-c-list-help__item'
+                                            >{{option.label}}</li>
+                                          {{/each}}
+                                        </ul>
+                                      {{/if}}
+                                    {{/let}}
+                                  {{/if}}
+                                {{/if}}
+                              {{/let}}
                               <ErrorMessage
-                                {{! @glint-expect-error typescript gives an error due to the Type brand discrepancies }}
                                 @error={{get variable.error 'codeList'}}
                               />
                             {{/if}}
                             {{#if (isInstructionVariable variable)}}
-                              {{! @glint-expect-error need to move to PS 8 }}
-                              <PowerSelect
-                                {{! @glint-expect-error need to move to PS 8 }}
-                                @triggerClass='au-u-margin-top-tiny'
-                                @allowClear={{false}}
-                                @searchEnabled={{false}}
-                                @options={{this.instructions}}
-                                {{! @glint-expect-error typescript gives an error due to the Type brand discrepancies }}
-                                @selected={{variable.template}}
-                                @onChange={{fn this.updateInstruction variable}}
-                                as |instruction|
-                              >
-                                <div class='au-c-thumbnail-holder'>
-                                  <img
-                                    class='au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny'
-                                    src={{instruction.parentConcept.image.file.downloadLink}}
-                                    alt=''
-                                  />
-                                  <span title={{instruction.value}}>{{truncate
-                                      instruction.value
-                                    }}</span>
-                                </div>
-                              </PowerSelect>
+                              {{#let
+                                (getPromiseState variable.template)
+                                as |templatePromise|
+                              }}
+                                {{#if templatePromise.isSuccess}}
+                                  <PowerSelect
+                                    @triggerClass='au-u-margin-top-tiny'
+                                    @allowClear={{false}}
+                                    @searchEnabled={{false}}
+                                    @options={{this.instructions}}
+                                    @selected={{templatePromise.value}}
+                                    @onChange={{fn
+                                      this.updateInstruction
+                                      variable
+                                    }}
+                                    as |instruction|
+                                  >
+                                    <div class='au-c-thumbnail-holder'>
+                                      <img
+                                        class='au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny'
+                                        src={{instruction.parentConcept.image.file.downloadLink}}
+                                        alt=''
+                                      />
+                                      <span
+                                        title={{instruction.value}}
+                                      >{{truncate instruction.value}}</span>
+                                    </div>
+                                  </PowerSelect>
+                                {{/if}}
+                              {{/let}}
                             {{/if}}
                           </td>
                         </tr>

@@ -293,3 +293,29 @@ table.dataTable tbody th {
 #shapes {
   min-width: 24rem;
 }
+
+.shapes-card {
+  position: relative;
+  background-color: var(--au-gray-100);
+
+  .shapes-buttons {
+    position: absolute;
+    right: 10px;
+    top:10px;
+  }
+
+  .shape-datapoint {
+    width: 40%;
+    margin-right: 5%;
+  }
+
+  dt {
+    font-weight: bold;
+  }
+}
+
+.shapes-title {
+  font-weight: bold;
+}
+
+

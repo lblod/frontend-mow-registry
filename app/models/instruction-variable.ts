@@ -5,7 +5,6 @@ import type Template from './template';
 import type { Type } from '@warp-drive/core-types/symbols';
 
 export default class InstructionVariable extends Variable {
-  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'instruction-variable';
 
   @attr declare readonly type: 'instruction';

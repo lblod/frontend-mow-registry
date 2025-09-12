@@ -1,11 +1,14 @@
-import { attr } from '@ember-data/model';
+import { attr, belongsTo, type AsyncBelongsTo } from '@ember-data/model';
 import type { Type } from '@warp-drive/core-types/symbols';
 import Resource from './resource';
+import type TrafficSignalConcept from './traffic-signal-concept';
 import {
   validateBooleanRequired,
   validateEnumRequired,
   validateStringOptional,
   validateStringRequired,
+  validateDateOptional,
+  validateBelongsToOptional,
 } from 'mow-registry/validators/schema';
 import type TextVariable from './text-variable';
 import type NumberVariable from './number-variable';
@@ -41,13 +44,21 @@ export type VariableSubtype =
   | InstructionVariable;
 
 export default class Variable extends Resource {
-  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
-  declare [Type]: 'variable';
+  declare [Type]: 'variable' | string;
 
   @attr declare uri: string;
   @attr declare type?: VariableType;
   @attr declare label?: string;
   @attr({ defaultValue: true }) declare required?: boolean;
+  @attr('date') declare createdOn?: Date;
+
+  @belongsTo<TrafficSignalConcept>('traffic-signal-concept', {
+    inverse: 'variables',
+    as: 'variable',
+    async: true,
+    polymorphic: true,
+  })
+  declare trafficSignalConcept: AsyncBelongsTo<TrafficSignalConcept>;
 
   get validationSchema() {
     return super.validationSchema.keys({
@@ -55,6 +66,8 @@ export default class Variable extends Resource {
       label: validateStringRequired(),
       type: validateEnumRequired(allVariableTypesConst),
       required: validateBooleanRequired(),
+      createdOn: validateDateOptional(),
+      trafficSignalConcept: validateBelongsToOptional(),
     });
   }
 }

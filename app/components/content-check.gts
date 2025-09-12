@@ -1,6 +1,5 @@
 import Component from '@glimmer/component';
 import { task } from 'ember-concurrency';
-// @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
 import t from 'ember-intl/helpers/t';
 import AuToggleSwitch from '@appuniversum/ember-appuniversum/components/au-toggle-switch';

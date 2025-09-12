@@ -3,15 +3,10 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import type Dimension from 'mow-registry/models/dimension';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import RoadSignCategory from 'mow-registry/models/road-sign-category';
-import TribontShape from 'mow-registry/models/tribont-shape';
-import { tracked } from '@glimmer/tracking';
-import { removeItem, removeItemBy } from 'mow-registry/utils/array';
 import Store from '@ember-data/store';
-import type Variable from 'mow-registry/models/variable';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import BreadcrumbsItem from '@bagaar/ember-breadcrumbs/components/breadcrumbs-item';
 import t from 'ember-intl/helpers/t';
@@ -29,26 +24,16 @@ import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text
 import ErrorMessage from 'mow-registry/components/error-message';
 import PowerSelectMultiple from 'ember-power-select/components/power-select-multiple';
 import ZonalitySelector from 'mow-registry/components/zonality-selector';
-import VariableManager from 'mow-registry/components/traffic-signal-common/variable-manager';
-import ShapeManager from 'mow-registry/components/common/shape-manager';
 import ArPlichtigStatus from 'mow-registry/components/ar-plichtig-status';
 import ImageInput from 'mow-registry/components/image-input';
 import { on } from '@ember/modifier';
 import { fn, get } from '@ember/helper';
-// @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
 import { or } from 'ember-truth-helpers';
 import { LinkTo } from '@ember/routing';
-// @ts-expect-error no types
-import awaitHelper from 'ember-promise-helpers/helpers/await';
 import { load } from 'ember-async-data';
 import { isSome } from 'mow-registry/utils/option';
-import {
-  validateShapes,
-  validateVariables,
-} from 'mow-registry/utils/validate-relations';
-import type { SignVariableType } from 'mow-registry/models/variable';
-import type VariablesService from 'mow-registry/services/variables-service';
+import { getPromiseState } from '@warp-drive/ember';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -57,15 +42,6 @@ type Args = {
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: RouterService;
   @service declare store: Store;
-  @service declare variablesService: VariablesService;
-
-  isArray = function isArray(maybeArray: unknown) {
-    return Array.isArray(maybeArray);
-  };
-
-  @tracked shapesToRemove: TribontShape[] = [];
-  @tracked variablesToRemove: Variable[] = [];
-  dimensionsToRemove: Dimension[] = [];
 
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
@@ -121,63 +97,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  async addShape() {
-    const shape = this.store.createRecord<TribontShape>('tribont-shape', {});
-    (await this.args.roadSignConcept.shapes).push(shape);
-    return shape;
-  }
-
-  @action
-  async removeShape(shape: TribontShape) {
-    const shapes = await this.args.roadSignConcept.shapes;
-    removeItem(shapes, shape);
-    this.shapesToRemove.push(shape);
-  }
-
-  @action
-  async addVariable() {
-    const newVariable = this.store.createRecord<Variable>('variable', {});
-    (await this.args.roadSignConcept.variables).push(newVariable);
-  }
-
-  @action
-  async removeVariable(variable: Variable) {
-    const variables = await this.args.roadSignConcept.variables;
-    removeItemBy(variables, variable, (a, b) => a.uri === b.uri);
-    this.variablesToRemove.push(variable);
-  }
-
-  @action
-  async setVariableType(
-    varIndex: number,
-    existing: Variable,
-    selectedType: SignVariableType,
-  ) {
-    this.variablesToRemove.push(existing);
-    const labelModified =
-      existing.type &&
-      existing.label !==
-        this.variablesService.defaultLabelForVariableType(existing.type);
-    // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
-    const newVar = this.variablesService.convertVariableType(
-      existing,
-      selectedType,
-    ) as Variable;
-    if (!labelModified) {
-      newVar.label =
-        this.variablesService.defaultLabelForVariableType(selectedType);
-    }
-    const variables = await this.args.roadSignConcept.variables;
-    variables.splice(varIndex, 1, newVar);
-  }
-
-  removeDimension = async (shape: TribontShape, dimension: Dimension) => {
-    removeItem(await shape.dimensions, dimension);
-
-    this.dimensionsToRemove.push(dimension);
-  };
-
-  @action
   setImage(model: RoadSignConcept, image: File) {
     super.setImage(model, image);
     void this.args.roadSignConcept.validateProperty('image');
@@ -187,55 +106,10 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     event.preventDefault();
 
     const isValid = await this.args.roadSignConcept.validate();
-    const areShapesValid = await validateShapes(
-      this.args.roadSignConcept.shapes,
-    );
-    const areVariablesValid = await validateVariables(
-      this.args.roadSignConcept.variables,
-    );
-    if (isValid && areShapesValid && areVariablesValid) {
+    if (isValid) {
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
 
-      const savePromises: Promise<unknown>[] = [];
-      savePromises.push(
-        ...(await this.args.roadSignConcept.shapes).map(async (shape) => {
-          await Promise.all(
-            (await shape.dimensions).map(async (dimension) => {
-              await dimension.save();
-            }),
-          );
-          await shape.save();
-        }),
-      );
-
-      savePromises.push(
-        ...this.shapesToRemove.map(async (shape) => {
-          await Promise.all(
-            (await shape.dimensions).map(async (dimension) => {
-              await dimension.destroyRecord();
-            }),
-          );
-          await shape.destroyRecord();
-        }),
-      );
-      savePromises.push(
-        ...this.dimensionsToRemove.map((dimension) =>
-          dimension.destroyRecord(),
-        ),
-      );
-
-      savePromises.push(
-        ...(await this.args.roadSignConcept.variables).map(async (variable) => {
-          await variable.save();
-        }),
-      );
-
-      savePromises.push(
-        ...this.variablesToRemove.map((variable) => variable.destroyRecord()),
-      );
-
-      await Promise.all(savePromises);
       await this.args.roadSignConcept.save();
       void this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
@@ -243,16 +117,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       );
     }
   });
-
-  @action
-  async toggleDefaultShape(shape: TribontShape) {
-    const currentDefault = await this.args.roadSignConcept.defaultShape;
-    if (currentDefault && currentDefault.id === shape.id) {
-      this.args.roadSignConcept.set('defaultShape', null);
-    } else {
-      this.args.roadSignConcept.set('defaultShape', shape);
-    }
-  }
 
   willDestroy() {
     super.willDestroy();
@@ -446,24 +310,29 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   {{t 'road-sign-concept.attr.classifications'}}&nbsp;
                 </AuLabel>
                 <div class={{if error 'ember-power-select--error'}}>
-                  {{! @glint-expect-error need to move to PS 8 }}
-                  <PowerSelectMultiple
-                    {{! @glint-expect-error need to move to PS 8 }}
-                    @allowClear={{true}}
-                    @placeholder={{t 'utility.search-placeholder'}}
-                    @searchEnabled={{true}}
-                    @searchMessage={{t 'utility.search-placeholder'}}
-                    @noMatchesMessage={{t 'road-sign-concept.crud.no-data'}}
-                    @searchField='label'
-                    @options={{@classifications}}
-                    @loadingMessage={{t 'utility.loading'}}
-                    @selected={{@roadSignConcept.classifications}}
-                    @onChange={{this.setRoadSignConceptClassification}}
-                    @triggerId='classifications'
-                    as |classification|
-                  >
-                    {{classification.label}}
-                  </PowerSelectMultiple>
+                  {{#let
+                    (getPromiseState @roadSignConcept.classifications)
+                    as |classificationsPromise|
+                  }}
+                    {{#if classificationsPromise.isSuccess}}
+                      <PowerSelectMultiple
+                        @allowClear={{true}}
+                        @placeholder={{t 'utility.search-placeholder'}}
+                        @searchEnabled={{true}}
+                        @searchMessage={{t 'utility.search-placeholder'}}
+                        @noMatchesMessage={{t 'road-sign-concept.crud.no-data'}}
+                        @searchField='label'
+                        @options={{@classifications}}
+                        @loadingMessage={{t 'utility.loading'}}
+                        @selected={{classificationsPromise.value}}
+                        @onChange={{this.setRoadSignConceptClassification}}
+                        @triggerId='classifications'
+                        as |classification|
+                      >
+                        {{classification.label}}
+                      </PowerSelectMultiple>
+                    {{/if}}
+                  {{/let}}
                 </div>
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
@@ -489,30 +358,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   {{/if}}
                 {{/let}}
               </AuFormRow>
-            {{/let}}
-            {{#let (awaitHelper @roadSignConcept.variables) as |variables|}}
-              <VariableManager
-                @variables={{variables}}
-                @removeVariable={{this.removeVariable}}
-                @addVariable={{this.addVariable}}
-                @setVariableType={{this.setVariableType}}
-              />
-            {{/let}}
-
-            {{! Shapes and dimensions }}
-            {{#let (awaitHelper @roadSignConcept.shapes) as |shapes|}}
-              {{#if (this.isArray shapes)}}
-                <ShapeManager
-                  {{! @glint-expect-error inheritence isnt working for us here for some reason }}
-                  @trafficSignalConcept={{@roadSignConcept}}
-                  @shapes={{shapes}}
-                  @addShape={{this.addShape}}
-                  @removeShape={{this.removeShape}}
-                  @removeDimension={{this.removeDimension}}
-                  @defaultShape={{@roadSignConcept.defaultShape}}
-                  @toggleDefaultShape={{this.toggleDefaultShape}}
-                />
-              {{/if}}
             {{/let}}
           </form>
         </div>

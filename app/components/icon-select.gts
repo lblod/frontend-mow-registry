@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
-// @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
 import Store from '@ember-data/store';
 import { tracked } from '@glimmer/tracking';
@@ -51,9 +50,7 @@ export default class IconSelectComponent extends Component<Signature> {
   });
 
   <template>
-    {{! @glint-expect-error need to move to PS 8 }}
     <PowerSelect
-      {{! @glint-expect-error need to move to PS 8 }}
       @allowClear={{true}}
       @searchEnabled={{true}}
       @loadingMessage={{t 'utility.loading'}}

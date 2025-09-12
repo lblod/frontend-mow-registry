@@ -35,10 +35,12 @@ export default class VariablesService extends Service {
     }
   };
 
-  convertVariableType(existing: Variable, newType: VariableType) {
+  async convertVariableType(existing: Variable, newType: VariableType) {
+    const trafficSignalConcept = await existing.trafficSignalConcept;
     const properties = {
       label: existing.label,
       required: existing.required,
+      trafficSignalConcept,
     };
     switch (newType) {
       case 'text':

@@ -6,7 +6,6 @@ import {
   type AsyncBelongsTo,
 } from '@ember-data/model';
 import ConceptScheme from 'mow-registry/models/concept-scheme';
-import type Variable from 'mow-registry/models/variable';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 import {
   validateBelongsToOptional,
@@ -21,8 +20,8 @@ export default class CodeList extends ConceptScheme {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'code-list';
   @attr declare uri?: string;
-  // @ts-expect-error It's not clear why TS thinks it should be 'variable'
-  @hasMany<Variable>('codelist-variable', {
+
+  @hasMany<CodelistVariable>('codelist-variable', {
     inverse: 'codeList',
     async: true,
   })
