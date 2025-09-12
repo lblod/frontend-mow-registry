@@ -356,4 +356,4 @@ shape-manager:
 variable-manager:
   no-data: Geen variabelen
   edit-modal-title: Variabele bewerken
-  delete: Remove variabele
+  delete: Verwijder variabele

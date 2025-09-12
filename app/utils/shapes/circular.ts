@@ -80,9 +80,15 @@ export default class Circular implements Shape {
     await this.radius.dimension.save();
   }
 
-  async save() {
-    await this.radius.dimension.save();
-    await this.shape.save();
+  async validateAndsave() {
+    const radiusValid = await this.radius.dimension.validate();
+    const shapeValid = await this.shape.validate();
+    if (radiusValid && shapeValid) {
+      await this.radius.dimension.save();
+      await this.shape.save();
+      return true;
+    }
+    return false;
   }
 
   async reset() {

@@ -25,7 +25,7 @@ import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { getPromiseState } from '@warp-drive/ember';
 import type VariablesService from 'mow-registry/services/variables-service';
 import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
-import { and, not } from 'ember-truth-helpers';
+import { and, not, or } from 'ember-truth-helpers';
 
 interface Signature {
   Args: {
@@ -45,6 +45,7 @@ export default class VariableManager extends Component<Signature> {
   @tracked sort?: string = 'created-on';
   @tracked variableToDelete?: Variable;
   @tracked isDeleteConfirmationOpen = false;
+  @tracked editedCodelist?: CodeList;
 
   get variableTypes() {
     return signVariableTypes;
@@ -91,20 +92,24 @@ export default class VariableManager extends Component<Signature> {
     this.variableToDelete = undefined;
   };
 
+  closeEditVariableModal = () => {
+    this.isEditVariableModalOpen = false;
+    this.variableToEdit?.rollbackAttributes();
+    this.editedCodelist = undefined;
+    this.variableToEdit = undefined;
+    this.variableToDelete = undefined;
+  };
+
   saveVariable = async () => {
+    if (this.variableToEdit && this.editedCodelist) {
+      this.variableToEdit.set('codeList', this.editedCodelist);
+    }
     const valid = await this.variableToEdit?.validate();
     if (!valid) return;
     await this.variableToEdit?.save();
     await this.variableToDelete?.destroyRecord();
     this.variables.retry();
     this.closeEditVariableModal();
-  };
-
-  closeEditVariableModal = () => {
-    this.isEditVariableModalOpen = false;
-    this.variableToEdit?.rollbackAttributes();
-    this.variableToEdit = undefined;
-    this.variableToDelete = undefined;
   };
 
   setVariableLabel = (event: InputEvent) => {
@@ -151,11 +156,8 @@ export default class VariableManager extends Component<Signature> {
     this.variableToEdit = newVar;
   };
 
-  setVariableCodelist = (codeList: CodeList) => {
-    if (!this.variableToEdit || !isCodelistVariable(this.variableToEdit)) {
-      return;
-    }
-    this.variableToEdit.set('codeList', codeList);
+  updateCodelist = (codeList: CodeList) => {
+    this.editedCodelist = codeList;
   };
 
   startDeleteVariableFlow = (variable: Variable) => {
@@ -315,15 +317,23 @@ export default class VariableManager extends Component<Signature> {
                     @allowClear={{false}}
                     @searchEnabled={{true}}
                     @options={{this.codelists.value}}
-                    @selected={{codelistPromise.value}}
-                    @onChange={{this.setVariableCodelist}}
+                    @selected={{or
+                      this.editedCodelist
+                      codelistPromise.value
+                    }}
+                    @onChange={{this.updateCodelist}}
                     as |codeList|
                   >
                     {{codeList.label}}
                   </PowerSelect>
-                  {{#if codelistPromise.value}}
+                  {{#if (or this.editedCodelist codelistPromise.value)}}
                     {{#let
-                      (getPromiseState codelistPromise.value.concepts)
+                      (getPromiseState
+                        (or
+                          this.editedCodelist.concepts
+                          codelistPromise.value.concepts
+                        )
+                      )
                       as |conceptsPromise|
                     }}
                       {{#if conceptsPromise.isSuccess}}

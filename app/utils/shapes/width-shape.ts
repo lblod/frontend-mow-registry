@@ -52,9 +52,15 @@ export default class WidthShape implements Shape {
     await this.width.dimension.save();
   }
 
-  async save() {
-    await this.width.dimension.save();
-    await this.shape.save();
+  async validateAndsave() {
+    const widthValid = await this.width.dimension.validate();
+    const shapeValid = await this.shape.validate();
+    if (widthValid && shapeValid) {
+      await this.width.dimension.save();
+      await this.shape.save();
+      return true;
+    }
+    return false;
   }
 
   async reset() {
