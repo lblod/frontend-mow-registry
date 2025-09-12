@@ -293,3 +293,13 @@ table.dataTable tbody th {
 #shapes {
   min-width: 24rem;
 }
+
+.checkerboard-background {
+  width: fit-content;
+  background: url('images/checkerboard.png') repeat;
+  background-size: 100px 100px;
+  padding: 10px;
+  .image-preview {
+    border: none;
+  }
+}

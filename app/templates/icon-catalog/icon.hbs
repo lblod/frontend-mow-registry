@@ -16,13 +16,15 @@
     <h2 class="au-u-hidden-visually">{{t "utility.properties"}}</h2>
     <div class="au-o-box">
       <div
-        class="au-u-margin-top au-u-margin-bottom-large au-u-text-center"
+        class="au-u-margin-top au-u-margin-bottom-large au-u-text-center "
       >
-        <img
-          class="au-c-thumbnail au-c-thumbnail--full"
-          alt=""
-          src={{@model.icon.image.file.downloadLink}}
-        />
+        <div class="checkerboard-background ">
+          <img
+            class="au-c-thumbnail au-c-thumbnail--full "
+            alt=""
+            src={{@model.icon.image.file.downloadLink}}
+          />
+        </div>
       </div>
 
       <dl class="au-o-flow">

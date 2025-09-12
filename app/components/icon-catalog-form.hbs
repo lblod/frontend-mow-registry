@@ -45,11 +45,12 @@
       <div class="au-o-grid__item au-u-2-3@medium">
         <form class="au-c-form" id="edit-icon-catalog-form" novalidate>
           {{#let @icon.error.image as |error|}}
-            <AuFormRow>
+            <AuFormRow >
               <ImageInput
                 @oldImage={{@icon.image.file.downloadLink}}
                 @error={{error}}
                 @setImage={{fn this.setImage @icon}}
+                @imageClass="checkerboard-background au-u-margin-bottom"
               />
             </AuFormRow>
           {{/let}}
