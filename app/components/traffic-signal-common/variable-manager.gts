@@ -116,7 +116,6 @@ export default class VariableManager extends Component<Signature> {
   };
 
   variables = trackedFunction(this, async () => {
-    console.log('running');
     await Promise.resolve();
     const variables = await this.store.query<Variable>('variable', {
       'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
