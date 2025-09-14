@@ -62,14 +62,16 @@ export default class VariableManager extends Component<Signature> {
   });
 
   variables = trackedFunction(this, async () => {
+    const { pageNumber, pageSize, sort } = this;
+    const trafficSignalId = this.args.trafficSignal.id;
     await Promise.resolve();
     const variables = await this.store.query<Variable>('variable', {
-      'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+      'filter[trafficSignalConcept][:id:]': trafficSignalId,
       page: {
-        number: this.pageNumber,
-        size: this.pageSize,
+        number: pageNumber,
+        size: pageSize,
       },
-      sort: this.sort,
+      sort: sort,
     });
     return variables;
   });
@@ -170,6 +172,7 @@ export default class VariableManager extends Component<Signature> {
 
   removeVariable = async () => {
     await this.variableToDelete?.destroyRecord();
+    this.variables.retry();
     this.closeDeleteConfirmation();
   };
 
@@ -180,12 +183,10 @@ export default class VariableManager extends Component<Signature> {
 
   onPageChange = (newPage: number) => {
     this.pageNumber = newPage;
-    this.variables.retry();
   };
 
   onSortChange = (newSort: string) => {
     this.sort = newSort;
-    this.variables.retry();
   };
 
   <template>
