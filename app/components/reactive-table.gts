@@ -21,7 +21,7 @@ type Signature<T> = {
     noDataMessage?: string;
     hidePagination?: boolean;
     fields?: string | string[];
-    content?: T[];
+    content?: T[] | null;
 
     onPageChange?: (newPage: number) => void;
     onSortChange?: (newSort: string) => void;

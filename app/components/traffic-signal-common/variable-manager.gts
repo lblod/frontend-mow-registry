@@ -71,13 +71,8 @@ export default class VariableManager extends Component<Signature> {
       },
       sort: this.sort,
     });
-
     return variables;
   });
-
-  get variablesNotDeleted() {
-    return this.variables.value?.filter((variable) => !variable.isDeleted);
-  }
 
   startAddVariable = () => {
     this.isEditVariableModalOpen = true;
@@ -196,7 +191,7 @@ export default class VariableManager extends Component<Signature> {
   <template>
     {{#if this.codelists.isResolved}}
       <ReactiveTable
-        @content={{this.variablesNotDeleted}}
+        @content={{this.variables.value}}
         @isLoading={{this.variables.isLoading}}
         @noDataMessage={{t 'variable-manager.no-data'}}
         @page={{this.pageNumber}}
