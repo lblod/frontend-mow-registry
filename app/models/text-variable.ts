@@ -22,5 +22,5 @@ export function isTextVariable(
   variable: Variable | undefined,
 ): // @ts-expect-error typescript gives an error due to the `defaultValue` attribute discrepancies
 variable is TextVariable {
-  return variable?.type === 'text';
+  return variable instanceof TextVariable;
 }

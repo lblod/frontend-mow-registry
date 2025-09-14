@@ -22,5 +22,5 @@ export function isNumberVariable(
   variable: Variable | undefined,
 ): // @ts-expect-error typescript gives an error due to the `defaultValue` attribute discrepancies
 variable is NumberVariable {
-  return variable?.type === 'number';
+  return variable instanceof NumberVariable;
 }

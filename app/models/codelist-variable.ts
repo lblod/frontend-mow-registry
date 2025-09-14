@@ -13,5 +13,5 @@ export function isCodelistVariable(
   variable: Variable | undefined,
 ): // @ts-expect-error typescript gives an error due to the `defaultValue` attribute discrepancies
 variable is CodelistVariable {
-  return variable?.type === 'codelist';
+  return variable instanceof CodelistVariable;
 }

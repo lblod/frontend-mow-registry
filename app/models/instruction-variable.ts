@@ -23,5 +23,5 @@ export function isInstructionVariable(
   variable: Variable | undefined,
 ): // @ts-expect-error typescript gives an error due to the `Type` brand discrepancies
 variable is InstructionVariable {
-  return variable?.type === 'instruction';
+  return variable instanceof InstructionVariable;
 }

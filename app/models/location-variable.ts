@@ -11,5 +11,5 @@ export default class LocationVariable extends Variable {
 export function isLocationVariable(
   variable: Variable | undefined,
 ): variable is LocationVariable {
-  return variable?.type === 'location';
+  return variable instanceof LocationVariable;
 }
