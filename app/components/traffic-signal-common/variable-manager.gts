@@ -26,6 +26,8 @@ import { getPromiseState } from '@warp-drive/ember';
 import type VariablesService from 'mow-registry/services/variables-service';
 import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
 import { and, not, or } from 'ember-truth-helpers';
+import { get } from '@ember/helper';
+import { isSome } from 'mow-registry/utils/option';
 
 interface Signature {
   Args: {
@@ -101,7 +103,11 @@ export default class VariableManager extends Component<Signature> {
   };
 
   saveVariable = async () => {
-    if (this.variableToEdit && this.editedCodelist) {
+    if (
+      this.variableToEdit &&
+      isCodelistVariable(this.variableToEdit) &&
+      this.editedCodelist
+    ) {
       this.variableToEdit.set('codeList', this.editedCodelist);
     }
     const valid = await this.variableToEdit?.validate();
@@ -112,7 +118,7 @@ export default class VariableManager extends Component<Signature> {
     this.closeEditVariableModal();
   };
 
-  setVariableLabel = (event: InputEvent) => {
+  setVariableLabel = (event: Event) => {
     if (!this.variableToEdit) {
       return;
     }
@@ -136,11 +142,13 @@ export default class VariableManager extends Component<Signature> {
       this.variableToDelete = this.variableToEdit;
     }
     const labelModified =
-      this.variableToEdit.type &&
-      this.variableToEdit.label !==
-        this.variablesService.defaultLabelForVariableType(
-          this.variableToEdit.type,
-        );
+      (this.variableToEdit.type &&
+        this.variableToEdit.label !==
+          this.variablesService.defaultLabelForVariableType(
+            this.variableToEdit.type,
+          )) ||
+      (!this.variableToEdit.type && this.variableToEdit.label);
+
     const newVar = (await this.variablesService.convertVariableType(
       this.variableToEdit,
       selectedType,
@@ -186,7 +194,6 @@ export default class VariableManager extends Component<Signature> {
   };
 
   <template>
-    {{! @glint-nocheck: not typesafe yet }}
     {{#if this.codelists.isResolved}}
       <ReactiveTable
         @content={{this.variablesNotDeleted}}
@@ -195,7 +202,6 @@ export default class VariableManager extends Component<Signature> {
         @page={{this.pageNumber}}
         @pageSize={{this.pageSize}}
         @onPageChange={{this.onPageChange}}
-        @hidePagination={{this.editMode}}
         @onSortChange={{this.onSortChange}}
         @sort={{this.sort}}
       >
@@ -237,7 +243,9 @@ export default class VariableManager extends Component<Signature> {
             {{/if}}
           </td>
           <td>
-            {{humanFriendlyDate variable.createdOn}}
+            {{#if variable.createdOn}}
+              {{humanFriendlyDate variable.createdOn}}
+            {{/if}}
           </td>
           <td>
             <AuButton
@@ -247,7 +255,7 @@ export default class VariableManager extends Component<Signature> {
             />
             <AuButton
               @skin='naked'
-              @alert='true'
+              @alert={{true}}
               @icon='trash'
               {{on 'click' (fn this.startDeleteVariableFlow variable)}}
             />
@@ -260,7 +268,7 @@ export default class VariableManager extends Component<Signature> {
         @closeModal={{this.closeEditVariableModal}}
       >
         <:title>
-          {{#if (and this.variableToEdit.isNew (not this.variableToRemove))}}
+          {{#if (and this.variableToEdit.isNew (not this.variableToDelete))}}
             {{t 'utility.add-variable'}}
           {{else}}
             {{t 'variable-manager.edit-modal-title'}}
@@ -269,7 +277,7 @@ export default class VariableManager extends Component<Signature> {
         <:body>
           <div>
             <AuLabel
-              @error={{this.variableToEdit.error.label}}
+              @error={{isSome (get this.variableToEdit.error 'label')}}
               @required={{true}}
               @requiredLabel={{t 'utility.required'}}
             >{{t 'utility.variable'}}
@@ -277,19 +285,19 @@ export default class VariableManager extends Component<Signature> {
 
             <AuInput
               value={{this.variableToEdit.label}}
-              @error={{this.variableToEdit.error.label}}
+              @error={{isSome (get this.variableToEdit.error 'label')}}
               {{on 'input' this.setVariableLabel}}
             />
-            <ErrorMessage @error={{this.variableToEdit.error.label}} />
+            <ErrorMessage @error={{get this.variableToEdit.error 'label'}} />
             <AuLabel
-              @error={{this.variableToEdit.error.type}}
+              @error={{isSome (get this.variableToEdit.error 'type')}}
               @required={{true}}
               @requiredLabel={{t 'utility.required'}}
             >{{t 'utility.type'}}
             </AuLabel>
             <div
               class={{if
-                this.variableToEdit.error.type
+                (get this.variableToEdit.error 'type')
                 'ember-power-select--error'
               }}
             >
@@ -304,7 +312,7 @@ export default class VariableManager extends Component<Signature> {
               >
                 {{this.labelForType type}}
               </PowerSelect>
-              <ErrorMessage @error={{this.variableToEdit.error.type}} />
+              <ErrorMessage @error={{get this.variableToEdit.error 'type'}} />
             </div>
             {{#if (isCodelistVariable this.variableToEdit)}}
               {{#let
@@ -316,51 +324,50 @@ export default class VariableManager extends Component<Signature> {
                     @triggerClass='au-u-margin-top-tiny'
                     @allowClear={{false}}
                     @searchEnabled={{true}}
+                    {{! @glint-expect-error codelists should be resolved here }}
                     @options={{this.codelists.value}}
-                    @selected={{or
-                      this.editedCodelist
-                      codelistPromise.value
-                    }}
+                    @selected={{or this.editedCodelist codelistPromise.value}}
                     @onChange={{this.updateCodelist}}
                     as |codeList|
                   >
                     {{codeList.label}}
                   </PowerSelect>
-                  {{#if (or this.editedCodelist codelistPromise.value)}}
-                    {{#let
-                      (getPromiseState
-                        (or
-                          this.editedCodelist.concepts
-                          codelistPromise.value.concepts
-                        )
-                      )
-                      as |conceptsPromise|
-                    }}
-                      {{#if conceptsPromise.isSuccess}}
-                        <ul
-                          class='au-c-list-help au-c-help-text au-c-help-text--secondary'
-                        >
-                          {{#each conceptsPromise.value as |option|}}
-                            <li
-                              class='au-c-list-help__item'
-                            >{{option.label}}</li>
-                          {{/each}}
-                        </ul>
-                      {{/if}}
-                    {{/let}}
-                  {{/if}}
+                  {{#let
+                    (or this.editedCodelist codelistPromise.value)
+                    as |selectedCodelist|
+                  }}
+                    {{#if selectedCodelist}}
+                      {{#let
+                        (getPromiseState selectedCodelist.concepts)
+                        as |conceptsPromise|
+                      }}
+                        {{#if conceptsPromise.isSuccess}}
+                          <ul
+                            class='au-c-list-help au-c-help-text au-c-help-text--secondary'
+                          >
+                            {{#each conceptsPromise.value as |option|}}
+                              <li
+                                class='au-c-list-help__item'
+                              >{{option.label}}</li>
+                            {{/each}}
+                          </ul>
+                        {{/if}}
+                      {{/let}}
+                    {{/if}}
+                  {{/let}}
                 {{/if}}
-                <ErrorMessage @error={{this.variableToEdit.error.codelist}} />
+                <ErrorMessage
+                  @error={{get this.variableToEdit.error 'codelist'}}
+                />
               {{/let}}
             {{/if}}
           </div>
           <AuLabel
-            @error={{this.variableToEdit.error.required}}
+            @error={{isSome (get this.variableToEdit.error 'required')}}
             @requiredLabel={{t 'utility.required'}}
           >{{t 'utility.required'}}
           </AuLabel>
           <AuCheckbox
-            @value={{this.variableToEdit.required}}
             @checked={{this.variableToEdit.required}}
             @onChange={{this.toggleVariableRequired}}
           >

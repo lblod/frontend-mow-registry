@@ -40,6 +40,7 @@ export default class VariablesService extends Service {
     const properties = {
       label: existing.label,
       required: existing.required,
+      createdOn: existing.createdOn,
       trafficSignalConcept,
     };
     switch (newType) {
