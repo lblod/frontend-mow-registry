@@ -355,5 +355,7 @@ shape-manager:
   edit-modal-title: Vormen bewerken
 variable-manager:
   no-data: Geen variabelen
-  edit-modal-title: Variabele bewerken
   delete: Verwijder variabele
+  edit-modal:
+    title: Variabele bewerken
+    codelist: Codelijst

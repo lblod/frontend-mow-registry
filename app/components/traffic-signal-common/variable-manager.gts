@@ -25,10 +25,11 @@ import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { getPromiseState } from '@warp-drive/ember';
 import type VariablesService from 'mow-registry/services/variables-service';
 import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
-import { and, not } from 'ember-truth-helpers';
+import { and, not, or } from 'ember-truth-helpers';
 import { get } from '@ember/helper';
 import { isSome } from 'mow-registry/utils/option';
 import { recordIdentifierFor } from '@ember-data/store';
+import AuFormRow from '@appuniversum/ember-appuniversum/components/au-form-row';
 
 interface Signature {
   Args: {
@@ -281,103 +282,115 @@ export default class VariableManager extends Component<Signature> {
           {{#if (and this.variableToEdit.isNew (not this.variableToDelete))}}
             {{t 'utility.add-variable'}}
           {{else}}
-            {{t 'variable-manager.edit-modal-title'}}
+            {{t 'variable-manager.edit-modal.title'}}
           {{/if}}
         </:title>
         <:body>
-          <div>
-            <AuLabel
-              @error={{isSome (get this.variableToEdit.error 'label')}}
-              @required={{true}}
-              @requiredLabel={{t 'utility.required'}}
-            >{{t 'utility.variable'}}
-            </AuLabel>
-
-            <AuInput
-              value={{this.variableToEdit.label}}
-              @error={{isSome (get this.variableToEdit.error 'label')}}
-              {{on 'input' this.setVariableLabel}}
-            />
-            <ErrorMessage @error={{get this.variableToEdit.error 'label'}} />
-            <AuLabel
-              @error={{isSome (get this.variableToEdit.error 'type')}}
-              @required={{true}}
-              @requiredLabel={{t 'utility.required'}}
-            >{{t 'utility.type'}}
-            </AuLabel>
-            <div
-              class={{if
-                (get this.variableToEdit.error 'type')
-                'ember-power-select--error'
-              }}
-            >
-              <PowerSelect
-                @allowClear={{false}}
-                @searchEnabled={{false}}
-                @options={{this.variableTypes}}
-                @loadingMessage={{t 'utility.loading'}}
-                @selected={{this.variableToEdit.type}}
-                @onChange={{this.setVariableType}}
-                as |type|
+          <div class='au-o-flow--small'>
+            <AuFormRow>
+              <AuLabel
+                @error={{isSome (get this.variableToEdit.error 'label')}}
+                @required={{true}}
+                @requiredLabel={{t 'utility.required'}}
+              >{{t 'utility.variable'}}
+              </AuLabel>
+              <AuInput
+                @width='block'
+                value={{this.variableToEdit.label}}
+                @error={{isSome (get this.variableToEdit.error 'label')}}
+                {{on 'input' this.setVariableLabel}}
+              />
+              <ErrorMessage @error={{get this.variableToEdit.error 'label'}} />
+            </AuFormRow>
+            <AuFormRow>
+              <AuLabel
+                @error={{isSome (get this.variableToEdit.error 'type')}}
+                @required={{true}}
+                @requiredLabel={{t 'utility.required'}}
+              >{{t 'utility.type'}}
+              </AuLabel>
+              <div
+                class='{{if
+                    (get this.variableToEdit.error "type")
+                    "ember-power-select--error"
+                  }}
+                  au-u-1-1'
               >
-                {{this.labelForType type}}
-              </PowerSelect>
-              <ErrorMessage @error={{get this.variableToEdit.error 'type'}} />
-            </div>
+                <PowerSelect
+                  @allowClear={{false}}
+                  @searchEnabled={{false}}
+                  @options={{this.variableTypes}}
+                  @loadingMessage={{t 'utility.loading'}}
+                  @selected={{this.variableToEdit.type}}
+                  @onChange={{this.setVariableType}}
+                  as |type|
+                >
+                  {{this.labelForType type}}
+                </PowerSelect>
+                <ErrorMessage @error={{get this.variableToEdit.error 'type'}} />
+              </div>
+            </AuFormRow>
             {{#if (isCodelistVariable this.variableToEdit)}}
               {{#let
                 (getPromiseState this.variableToEdit.codeList)
                 as |codelistPromise|
               }}
-                {{#if codelistPromise.isSuccess}}
-                  <PowerSelect
-                    @triggerClass='au-u-margin-top-tiny'
-                    @allowClear={{false}}
-                    @searchEnabled={{true}}
-                    {{! @glint-expect-error codelists should be resolved here }}
-                    @options={{this.codelists.value}}
-                    @selected={{codelistPromise.value}}
-                    @onChange={{this.updateCodelist}}
-                    as |codeList|
-                  >
-                    {{codeList.label}}
-                  </PowerSelect>
-                  {{#if codelistPromise.value}}
-                    {{#let
-                      (getPromiseState codelistPromise.value.concepts)
-                      as |conceptsPromise|
-                    }}
-                      {{#if conceptsPromise.isSuccess}}
-                        <ul
-                          class='au-c-list-help au-c-help-text au-c-help-text--secondary'
-                        >
-                          {{#each conceptsPromise.value as |option|}}
-                            <li
-                              class='au-c-list-help__item'
-                            >{{option.label}}</li>
-                          {{/each}}
-                        </ul>
-                      {{/if}}
-                    {{/let}}
+                <AuFormRow>
+                  {{#if codelistPromise.isSuccess}}
+                    <AuLabel>{{t
+                        'variable-manager.edit-modal.codelist'
+                      }}</AuLabel>
+                    <PowerSelect
+                      class='au-u-1-1'
+                      @triggerClass='au-u-margin-top-tiny'
+                      @allowClear={{false}}
+                      @searchEnabled={{true}}
+                      @options={{or this.codelists.value undefined}}
+                      @selected={{codelistPromise.value}}
+                      @onChange={{this.updateCodelist}}
+                      as |codeList|
+                    >
+                      {{codeList.label}}
+                    </PowerSelect>
+                    {{#if codelistPromise.value}}
+                      {{#let
+                        (getPromiseState codelistPromise.value.concepts)
+                        as |conceptsPromise|
+                      }}
+                        {{#if conceptsPromise.isSuccess}}
+                          <ul
+                            class='au-c-list-help au-c-help-text au-c-help-text--secondary au-u-1-1'
+                          >
+                            {{#each conceptsPromise.value as |option|}}
+                              <li
+                                class='au-c-list-help__item'
+                              >{{option.label}}</li>
+                            {{/each}}
+                          </ul>
+                        {{/if}}
+                      {{/let}}
+                    {{/if}}
                   {{/if}}
-                {{/if}}
-                <ErrorMessage
-                  @error={{get this.variableToEdit.error 'codelist'}}
-                />
+                  <ErrorMessage
+                    @error={{get this.variableToEdit.error 'codelist'}}
+                  />
+                </AuFormRow>
               {{/let}}
             {{/if}}
+            <AuFormRow>
+              <AuLabel
+                @error={{isSome (get this.variableToEdit.error 'required')}}
+                @requiredLabel={{t 'utility.required'}}
+              >{{t 'utility.required'}}
+              </AuLabel>
+              <AuCheckbox
+                @checked={{this.variableToEdit.required}}
+                @onChange={{this.toggleVariableRequired}}
+              >
+                {{t 'utility.required'}}
+              </AuCheckbox>
+            </AuFormRow>
           </div>
-          <AuLabel
-            @error={{isSome (get this.variableToEdit.error 'required')}}
-            @requiredLabel={{t 'utility.required'}}
-          >{{t 'utility.required'}}
-          </AuLabel>
-          <AuCheckbox
-            @checked={{this.variableToEdit.required}}
-            @onChange={{this.toggleVariableRequired}}
-          >
-            {{t 'utility.required'}}
-          </AuCheckbox>
         </:body>
         <:footer>
           <AuButton {{on 'click' this.saveVariable}}>

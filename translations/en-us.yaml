@@ -357,5 +357,7 @@ shape-manager:
   edit-modal-title: Edit shape
 variable-manager:
   no-data: No variables
-  edit-modal-title: Edit variable
   delete: Remove variable
+  edit-modal:
+    title: Edit variable
+    codelist: Codelist
