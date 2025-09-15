@@ -25,9 +25,10 @@ import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { getPromiseState } from '@warp-drive/ember';
 import type VariablesService from 'mow-registry/services/variables-service';
 import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
-import { and, not, or } from 'ember-truth-helpers';
+import { and, not } from 'ember-truth-helpers';
 import { get } from '@ember/helper';
 import { isSome } from 'mow-registry/utils/option';
+import { recordIdentifierFor } from '@ember-data/store';
 
 interface Signature {
   Args: {
@@ -47,7 +48,6 @@ export default class VariableManager extends Component<Signature> {
   @tracked sort?: string = 'created-on';
   @tracked variableToDelete?: Variable;
   @tracked isDeleteConfirmationOpen = false;
-  @tracked editedCodelist?: CodeList;
 
   get variableTypes() {
     return signVariableTypes;
@@ -91,28 +91,40 @@ export default class VariableManager extends Component<Signature> {
     this.variableToDelete = undefined;
   };
 
-  closeEditVariableModal = () => {
-    this.isEditVariableModalOpen = false;
-    this.variableToEdit?.rollbackAttributes();
-    this.editedCodelist = undefined;
-    this.variableToEdit = undefined;
-    this.variableToDelete = undefined;
-  };
-
   saveVariable = async () => {
-    if (
-      this.variableToEdit &&
-      isCodelistVariable(this.variableToEdit) &&
-      this.editedCodelist
-    ) {
-      this.variableToEdit.set('codeList', this.editedCodelist);
-    }
     const valid = await this.variableToEdit?.validate();
     if (!valid) return;
     await this.variableToEdit?.save();
     await this.variableToDelete?.destroyRecord();
     this.variables.retry();
     this.closeEditVariableModal();
+  };
+
+  cancelEditVariable = async () => {
+    if (this.variableToEdit) {
+      this.store.cache.rollbackRelationships(
+        recordIdentifierFor(this.variableToEdit),
+      );
+      this.store.cache.rollbackAttrs(recordIdentifierFor(this.variableToEdit));
+      if (this.variableToEdit.isNew) {
+        this.variableToEdit.unloadRecord();
+      }
+    }
+    if (this.variableToDelete) {
+      this.store.cache.rollbackRelationships(
+        recordIdentifierFor(this.variableToDelete),
+      );
+      this.store.cache.rollbackAttrs(
+        recordIdentifierFor(this.variableToDelete),
+      );
+    }
+    this.closeEditVariableModal();
+  };
+
+  closeEditVariableModal = () => {
+    this.variableToEdit = undefined;
+    this.variableToDelete = undefined;
+    this.isEditVariableModalOpen = false;
   };
 
   setVariableLabel = (event: Event) => {
@@ -162,7 +174,9 @@ export default class VariableManager extends Component<Signature> {
   };
 
   updateCodelist = (codeList: CodeList) => {
-    this.editedCodelist = codeList;
+    if (isCodelistVariable(this.variableToEdit)) {
+      this.variableToEdit.set('codeList', codeList);
+    }
   };
 
   startDeleteVariableFlow = (variable: Variable) => {
@@ -322,35 +336,30 @@ export default class VariableManager extends Component<Signature> {
                     @searchEnabled={{true}}
                     {{! @glint-expect-error codelists should be resolved here }}
                     @options={{this.codelists.value}}
-                    @selected={{or this.editedCodelist codelistPromise.value}}
+                    @selected={{codelistPromise.value}}
                     @onChange={{this.updateCodelist}}
                     as |codeList|
                   >
                     {{codeList.label}}
                   </PowerSelect>
-                  {{#let
-                    (or this.editedCodelist codelistPromise.value)
-                    as |selectedCodelist|
-                  }}
-                    {{#if selectedCodelist}}
-                      {{#let
-                        (getPromiseState selectedCodelist.concepts)
-                        as |conceptsPromise|
-                      }}
-                        {{#if conceptsPromise.isSuccess}}
-                          <ul
-                            class='au-c-list-help au-c-help-text au-c-help-text--secondary'
-                          >
-                            {{#each conceptsPromise.value as |option|}}
-                              <li
-                                class='au-c-list-help__item'
-                              >{{option.label}}</li>
-                            {{/each}}
-                          </ul>
-                        {{/if}}
-                      {{/let}}
-                    {{/if}}
-                  {{/let}}
+                  {{#if codelistPromise.value}}
+                    {{#let
+                      (getPromiseState codelistPromise.value.concepts)
+                      as |conceptsPromise|
+                    }}
+                      {{#if conceptsPromise.isSuccess}}
+                        <ul
+                          class='au-c-list-help au-c-help-text au-c-help-text--secondary'
+                        >
+                          {{#each conceptsPromise.value as |option|}}
+                            <li
+                              class='au-c-list-help__item'
+                            >{{option.label}}</li>
+                          {{/each}}
+                        </ul>
+                      {{/if}}
+                    {{/let}}
+                  {{/if}}
                 {{/if}}
                 <ErrorMessage
                   @error={{get this.variableToEdit.error 'codelist'}}
@@ -374,10 +383,7 @@ export default class VariableManager extends Component<Signature> {
           <AuButton {{on 'click' this.saveVariable}}>
             {{t 'utility.save'}}
           </AuButton>
-          <AuButton
-            @skin='secondary'
-            {{on 'click' this.closeEditVariableModal}}
-          >
+          <AuButton @skin='secondary' {{on 'click' this.cancelEditVariable}}>
             {{t 'utility.cancel'}}
           </AuButton>
         </:footer>
