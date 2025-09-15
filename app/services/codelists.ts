@@ -12,16 +12,18 @@ export default class CodelistsService extends Service {
 
   all = task(async () => {
     if (!this.codeLists) {
-      const codeLists = await this.store.query<CodeList>('code-list', {
-        'page[size]': 100,
-        // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-        // TODO: fix the query types
-        include: 'concepts',
-        sort: 'label',
-      });
-      await Promise.all(codeLists.map((codeList) => codeList.concepts));
+      try {
+        const codeLists = await this.store.query<CodeList>('code-list', {
+          'page[size]': 100,
+          include: ['concepts'],
+          sort: 'label',
+        });
 
-      this.codeLists = codeLists;
+        this.codeLists = codeLists;
+      } catch (err) {
+        console.error('Error querying codelists in codelists service', err);
+        throw err;
+      }
     }
     return this.codeLists;
   });

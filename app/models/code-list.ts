@@ -6,7 +6,6 @@ import {
   type AsyncBelongsTo,
 } from '@ember-data/model';
 import ConceptScheme from 'mow-registry/models/concept-scheme';
-import type Variable from 'mow-registry/models/variable';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 import {
   validateBelongsToOptional,
@@ -15,13 +14,18 @@ import {
   validateStringRequired,
 } from 'mow-registry/validators/schema';
 import type { Type } from '@warp-drive/core-types/symbols';
+import type CodelistVariable from './codelist-variable';
 
 export default class CodeList extends ConceptScheme {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'code-list';
   @attr declare uri?: string;
-  @hasMany<Variable>('variable', { inverse: 'codeList', async: true })
-  declare variables: AsyncHasMany<Variable>;
+
+  @hasMany<CodelistVariable>('codelist-variable', {
+    inverse: 'codeList',
+    async: true,
+  })
+  declare variables: AsyncHasMany<CodelistVariable>;
   @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
   declare type: AsyncBelongsTo<SkosConcept>;
 

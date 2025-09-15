@@ -6,7 +6,7 @@ import type Concept from 'mow-registry/models/concept';
 import type { Type } from '@warp-drive/core-types/symbols';
 
 export default class Resource extends AbstractValidationModel {
-  declare [Type]: 'resource';
+  declare [Type]: string;
 
   @hasMany<Concept>('concept', { inverse: null, async: true })
   declare used: AsyncHasMany<Concept>;
