@@ -359,3 +359,8 @@ variable-manager:
   edit-modal:
     title: Variabele bewerken
     codelist: Codelijst
+    default-value:
+      label: Standaardwaarde
+      placeholder:
+        free-text: Vul standaardwaarde in
+        select: Kies standaardwaarde

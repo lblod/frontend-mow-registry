@@ -1,4 +1,4 @@
-import { tracked } from '@glimmer/tracking';
+import { cached, tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import type CodeList from 'mow-registry/models/code-list';
 import Variable, {
@@ -6,7 +6,7 @@ import Variable, {
   type SignVariableType,
 } from 'mow-registry/models/variable';
 import type CodelistsService from 'mow-registry/services/codelists';
-import type Store from '@ember-data/store';
+import type Store from 'mow-registry/services/mow-store';
 import Component from '@glimmer/component';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import ReactiveTable from 'mow-registry/components/reactive-table';
@@ -24,12 +24,27 @@ import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { getPromiseState } from '@warp-drive/ember';
 import type VariablesService from 'mow-registry/services/variables-service';
-import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
+import AuFormRow from '@appuniversum/ember-appuniversum/components/au-form-row';
+import { recordIdentifierFor } from '@ember-data/store';
+import CodelistVariable, {
+  isCodelistVariable,
+} from 'mow-registry/models/codelist-variable';
 import { and, not, or } from 'ember-truth-helpers';
 import { get } from '@ember/helper';
 import { isSome } from 'mow-registry/utils/option';
-import { recordIdentifierFor } from '@ember-data/store';
-import AuFormRow from '@appuniversum/ember-appuniversum/components/au-form-row';
+import TextVariable, {
+  isTextVariable,
+} from 'mow-registry/models/text-variable';
+import DateVariable, {
+  isDateVariable,
+} from 'mow-registry/models/date-variable';
+import NumberVariable, {
+  isNumberVariable,
+} from 'mow-registry/models/number-variable';
+import { uniqueId } from '@ember/helper';
+import AuDatePicker from '@appuniversum/ember-appuniversum/components/au-date-picker';
+import SkosConcept from 'mow-registry/models/skos-concept';
+import type IntlService from 'ember-intl/services/intl';
 
 interface Signature {
   Args: {
@@ -79,7 +94,7 @@ export default class VariableManager extends Component<Signature> {
 
   startAddVariable = () => {
     this.isEditVariableModalOpen = true;
-    this.variableToEdit = this.store.createRecord<Variable>('variable', {
+    this.variableToEdit = this.store.createRecord<Variable>('text-variable', {
       trafficSignalConcept: this.args.trafficSignal,
       createdOn: new Date(),
     });
@@ -277,6 +292,7 @@ export default class VariableManager extends Component<Signature> {
       <AuModal
         @modalOpen={{this.isEditVariableModalOpen}}
         @closeModal={{this.closeEditVariableModal}}
+        @overflow={{true}}
       >
         <:title>
           {{#if (and this.variableToEdit.isNew (not this.variableToDelete))}}
@@ -378,6 +394,14 @@ export default class VariableManager extends Component<Signature> {
               {{/let}}
             {{/if}}
             <AuFormRow>
+              {{#if this.variableToEdit}}
+                <VariableDefaultValueSelector
+                  class='au-u-1-1'
+                  @variable={{this.variableToEdit}}
+                />
+              {{/if}}
+            </AuFormRow>
+            <AuFormRow>
               <AuLabel
                 @error={{isSome (get this.variableToEdit.error 'required')}}
                 @requiredLabel={{t 'utility.required'}}
@@ -425,6 +449,173 @@ export default class VariableManager extends Component<Signature> {
           </AuButton>
         </:footer>
       </AuModal>
+    {{/if}}
+  </template>
+}
+
+class VariableDefaultValueSelector extends Component<{
+  Args: { variable: Variable };
+  Element: HTMLDivElement;
+}> {
+  @service declare intl: IntlService;
+
+  get shouldShow() {
+    const variable = this.args.variable;
+    return (
+      isTextVariable(variable) ||
+      isNumberVariable(variable) ||
+      isDateVariable(variable) ||
+      isCodelistVariable(variable)
+    );
+  }
+
+  <template>
+    {{#if this.shouldShow}}
+      <div ...attributes>
+        {{#let (uniqueId) as |id|}}
+          <AuLabel for={{id}}>{{t
+              'variable-manager.edit-modal.default-value.label'
+            }}</AuLabel>
+          {{#if (isTextVariable @variable)}}
+            <TextVariableDefaultValueSelector @variable={{@variable}} />
+          {{else if (isNumberVariable @variable)}}
+            <NumberVariableDefaultValueSelector @variable={{@variable}} />
+          {{else if (isDateVariable @variable)}}
+            <DateVariableDefaultValueSelector @variable={{@variable}} />
+          {{else if (isCodelistVariable @variable)}}
+            <CodelistVariableDefaultValueSelector @variable={{@variable}} />
+          {{/if}}
+        {{/let}}
+      </div>
+    {{/if}}
+  </template>
+}
+
+class TextVariableDefaultValueSelector extends Component<{
+  variable: TextVariable;
+  placeholder?: string;
+}> {
+  setDefaultValue = (event: Event) => {
+    const defaultValue = (event.target as HTMLInputElement).value;
+    this.args.variable.defaultValue = defaultValue;
+  };
+
+  <template>
+    <AuInput
+      @width='block'
+      {{on 'input' this.setDefaultValue}}
+      value={{@variable.defaultValue}}
+      placeholder={{t
+        'variable-manager.edit-modal.default-value.placeholder.free-text'
+      }}
+    />
+  </template>
+}
+
+class NumberVariableDefaultValueSelector extends Component<{
+  variable: NumberVariable;
+  placeholder?: string;
+}> {
+  setDefaultValue = (event: Event) => {
+    const defaultValue = (event.target as HTMLInputElement).valueAsNumber;
+    this.args.variable.defaultValue = defaultValue;
+  };
+
+  <template>
+    <AuInput
+      @width='block'
+      type='number'
+      {{on 'input' this.setDefaultValue}}
+      value={{@variable.defaultValue}}
+      placeholder={{t
+        'variable-manager.edit-modal.default-value.placeholder.free-text'
+      }}
+    />
+  </template>
+}
+
+class DateVariableDefaultValueSelector extends Component<{
+  variable: DateVariable;
+}> {
+  setDefaultValue = (_isoDate: string | null, date: Date | null) => {
+    this.args.variable.defaultValue = date ?? undefined;
+  };
+
+  <template>
+    <AuDatePicker
+      @value={{@variable.defaultValue}}
+      @onChange={{this.setDefaultValue}}
+    />
+  </template>
+}
+
+class CodelistVariableDefaultValueSelector extends Component<{
+  variable: CodelistVariable;
+  placeholder?: string;
+}> {
+  @service declare store: Store;
+
+  @cached
+  get codelist() {
+    return getPromiseState(this.args.variable.codeList);
+  }
+
+  @cached
+  get defaultValue() {
+    return getPromiseState(this.args.variable.defaultValue);
+  }
+
+  @cached
+  get codelistOptionsPromise(): Promise<readonly SkosConcept[]> {
+    return (async () => {
+      if (!this.codelist.isSuccess || !this.codelist.value) {
+        return [] as SkosConcept[];
+      }
+      const codelistUri = this.codelist.value.uri!;
+      await Promise.resolve();
+      const concepts = await this.store.countAndFetchAll<SkosConcept>(
+        'skos-concept',
+        {
+          filter: {
+            inScheme: {
+              ':uri:': codelistUri,
+            },
+          },
+        },
+      );
+      return concepts.slice() as SkosConcept[];
+    })();
+  }
+
+  setDefaultValue = (codelistOption: SkosConcept) => {
+    this.args.variable.set('defaultValue', codelistOption);
+  };
+
+  get enabled() {
+    if (this.codelist.isPending || this.codelist.isError) {
+      return false;
+    }
+    return Boolean(this.codelist.value);
+  }
+
+  <template>
+    {{#if this.defaultValue.isSuccess}}
+      <PowerSelect
+        @searchEnabled={{true}}
+        @searchField="label"
+        @options={{this.codelistOptionsPromise}}
+        @selected={{this.defaultValue.value}}
+        @allowClear={{true}}
+        @onChange={{this.setDefaultValue}}
+        @disabled={{not this.enabled}}
+        @loadingMessage={{t 'utility.loading'}}
+        @placeholder={{t
+          'variable-manager.edit-modal.default-value.placeholder.select'
+        }}
+        as |option|
+      >
+        {{option.label}}
+      </PowerSelect>
     {{/if}}
   </template>
 }
