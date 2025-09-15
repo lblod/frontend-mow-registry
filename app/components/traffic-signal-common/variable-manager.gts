@@ -476,6 +476,8 @@ class VariableDefaultValueLabel extends Component<{
         defaultValuePromiseState.isSuccess &&
         defaultValuePromiseState.value?.label
       );
+    } else {
+      return;
     }
   }
 
