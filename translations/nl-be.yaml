@@ -92,6 +92,7 @@ utility:
   add-variable: Nieuwe variabele toevoegen
   properties: Eigenschappen
   modifying-validity-dates-warning: "Opmerking: het wijzigen van geldigheidsdata kan de geldigheid van de instructie beïnvloeden."
+  n/a: "N.v.t."
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden
   preview-alt: Een voorbeeld van het geüploade bestand
@@ -356,6 +357,9 @@ shape-manager:
 variable-manager:
   no-data: Geen variabelen
   delete: Verwijder variabele
+  table:
+    fields:
+      default-value: Standaardwaarde
   edit-modal:
     title: Variabele bewerken
     codelist: Codelijst

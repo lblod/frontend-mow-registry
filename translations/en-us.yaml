@@ -93,6 +93,7 @@ utility:
   type: Type
   add-variable: Add new variable
   properties: Properties
+  n/a: "N/A"
 image-input:
   helptext: Press the button to upload a new image
   preview-alt: A preview of the uploaded image
@@ -358,6 +359,9 @@ shape-manager:
 variable-manager:
   no-data: No variables
   delete: Remove variable
+  table:
+    fields:
+      default-value: Default value
   edit-modal:
     title: Edit variable
     codelist: Codelist

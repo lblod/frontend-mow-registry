@@ -45,6 +45,8 @@ import { uniqueId } from '@ember/helper';
 import AuDatePicker from '@appuniversum/ember-appuniversum/components/au-date-picker';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import type IntlService from 'ember-intl/services/intl';
+import { format } from 'date-fns';
+import * as locales from 'date-fns/locale';
 
 interface Signature {
   Args: {
@@ -248,6 +250,7 @@ export default class VariableManager extends Component<Signature> {
           <header.Sortable @field='label' @label={{t 'utility.variable'}} />
           <header.Sortable @field='type' @label={{t 'utility.type'}} />
           <header.Sortable @field='required' @label={{t 'utility.required'}} />
+          <th>{{t 'variable-manager.table.fields.default-value'}}</th>
           <header.Sortable
             @field='createdOn'
             @label={{t 'utility.created-on'}}
@@ -268,6 +271,7 @@ export default class VariableManager extends Component<Signature> {
               {{t 'utility.no'}}
             {{/if}}
           </td>
+          <td><VariableDefaultValueLabel @variable={{variable}} /></td>
           <td>
             {{#if variable.createdOn}}
               {{humanFriendlyDate variable.createdOn}}
@@ -453,6 +457,38 @@ export default class VariableManager extends Component<Signature> {
   </template>
 }
 
+class VariableDefaultValueLabel extends Component<{
+  Args: { variable: Variable };
+}> {
+  @cached
+  get defaultValueRepr() {
+    const variable = this.args.variable;
+    if (isTextVariable(variable) || isNumberVariable(variable)) {
+      return variable.defaultValue;
+    } else if (isDateVariable(variable)) {
+      return (
+        variable.defaultValue &&
+        format(variable.defaultValue, 'dd-MM-yyyy', { locale: locales.nlBE })
+      );
+    } else if (isCodelistVariable(variable)) {
+      const defaultValuePromiseState = getPromiseState(variable.defaultValue);
+      return (
+        defaultValuePromiseState.isSuccess &&
+        defaultValuePromiseState.value?.label
+      );
+    }
+  }
+
+  <template>
+    {{#if this.defaultValueRepr}}
+      {{!template-lint-disable no-bare-strings}}
+      <span>&quot;{{this.defaultValueRepr}}&quot;</span>
+    {{else}}
+      <span class='au-u-italic'>{{t 'utility.n/a'}}</span>
+    {{/if}}
+  </template>
+}
+
 class VariableDefaultValueSelector extends Component<{
   Args: { variable: Variable };
   Element: HTMLDivElement;
@@ -602,7 +638,7 @@ class CodelistVariableDefaultValueSelector extends Component<{
     {{#if this.defaultValue.isSuccess}}
       <PowerSelect
         @searchEnabled={{true}}
-        @searchField="label"
+        @searchField='label'
         @options={{this.codelistOptionsPromise}}
         @selected={{this.defaultValue.value}}
         @allowClear={{true}}
