@@ -20,6 +20,7 @@ import {
 } from 'mow-registry/validators/schema';
 import type TribontShape from './tribont-shape';
 import type Variable from './variable';
+import TrafficSignalListItem from './traffic-signal-list-item';
 
 export default class TrafficSignalConcept extends SkosConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
@@ -74,6 +75,20 @@ export default class TrafficSignalConcept extends SkosConcept {
   async destroyWithRelations() {
     // This doesn't delete the status or hasTrafficMeasureConcepts relations as it wasn't clear what
     // the expectation would be for these since they don't appear to be used
+    if (this.uri) {
+      const trafficListItems = await this.store.query<TrafficSignalListItem>(
+        'traffic-signal-list-item',
+        {
+          filter: {
+            item: {
+              ':uri:': this.uri,
+            },
+          },
+        },
+      );
+      await Promise.all(trafficListItems.map((item) => item.destroyRecord()));
+    }
+
     const [variables, image, instructions, shapes] = await Promise.all([
       this.variables,
       this.image,
