@@ -309,7 +309,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   // This terribly named method exists to prevent prettier from insisting on a newline which
   // prevents the glint-expect-error from functioning. An eslint-disable-next-line doesn't work
   // either as both have to be for the next line. :/
-  getCon = (codelist: CodeList) => codelist.concepts;
+  getCon = (codelist: CodeList) => codelist.get('concepts');
 
   <template>
     <div>
