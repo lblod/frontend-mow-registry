@@ -24,12 +24,12 @@
   </:header>
   <:body as |icon|>
     <td>
-        <img
-          src={{icon.image.file.downloadLink}}
-          alt={{icon.label}}
-          height="50"
-          class="checkerboard-background "
-        />
+      <img
+        src={{icon.image.file.downloadLink}}
+        alt={{icon.label}}
+        height="50"
+        class="checkerboard-background "
+      />
     </td>
     <td>
       <AuLink @route="icon-catalog.icon" @model={{icon.id}}>
