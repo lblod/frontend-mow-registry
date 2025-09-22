@@ -8,13 +8,11 @@
   {{t "image-input.image-upload"}}
 </AuLabel>
 {{#if this.source}}
-  <div class={{@imageClass}}>
     <img
       src={{this.source}}
       alt={{t "image-input.preview-alt"}}
-      class="image-preview au-u-margin-bottom-small "
+      class="image-preview au-u-margin-bottom-small {{@imageClass}}"
     />
-  </div>
 {{/if}}
 
 <div class="flex au-u-flex--wrap au-u-flex--no-wrap@medium full-width">

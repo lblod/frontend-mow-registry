@@ -299,7 +299,8 @@ table.dataTable tbody th {
   background: url('images/checkerboard.png') repeat;
   background-size: 100px 100px;
   padding: 10px;
-  .image-preview {
+
+  &.image-preview {
     border: none;
   }
 }
