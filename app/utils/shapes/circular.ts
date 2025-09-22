@@ -92,12 +92,12 @@ export default class Circular implements Shape {
   }
 
   async reset() {
-    this.radius.dimension.rollbackAttributes();
+    this.radius.dimension.reset();
     this.radius = await dimensionToShapeDimension(
       this.radius.dimension,
       'radius',
     );
-    this.shape.rollbackAttributes();
+    this.shape.reset();
   }
   async remove() {
     this.radius.dimension.deleteRecord();

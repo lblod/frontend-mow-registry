@@ -64,9 +64,9 @@ export default class WidthShape implements Shape {
   }
 
   async reset() {
-    this.width.dimension.rollbackAttributes();
+    this.width.dimension.reset();
     this.width = await dimensionToShapeDimension(this.width.dimension, 'width');
-    this.shape.rollbackAttributes();
+    this.shape.reset();
   }
   async remove() {
     this.width.dimension.deleteRecord();
