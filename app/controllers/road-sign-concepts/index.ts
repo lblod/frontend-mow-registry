@@ -88,7 +88,6 @@ export default class RoadsignConceptsIndexController extends Controller {
   );
 
   roadSigns = trackedFunction(this, async () => {
-    console.log('Fetch the road signs!');
     const query: LegacyResourceQuery<RoadSignConcept> = {
       include: ['image.file', 'classifications'],
       sort: this.sort,
