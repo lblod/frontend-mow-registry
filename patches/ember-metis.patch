@@ -1,0 +1,121 @@
+diff --git a/addon/routes/external.js b/addon/routes/external.js
+index e9fbb178d5f2e2171fc5f084e951cdc75a4ef18e..5e8ffc0393a7d569e3458c98947be1a6c35bfec6 100644
+--- a/addon/routes/external.js
++++ b/addon/routes/external.js
+@@ -24,7 +24,6 @@ export default class ExternalRoute extends Route {
+   };
+ 
+   @service router;
+-  @service fastboot;
+   @service intl;
+ 
+   constructor() {
+@@ -32,6 +31,10 @@ export default class ExternalRoute extends Route {
+     this.templateName = 'external';
+   }
+ 
++  get fastboot(){
++    return getOwner(this).lookup('service:fastboot');
++  }
++
+   async model({
+     directedPageNumber,
+     directedPageSize,
+diff --git a/addon/routes/fallback.js b/addon/routes/fallback.js
+index 0c3dff790eb0f61623c7bcd3a23f38479a0d5724..c34cee20c2de205a856cfdd36817f71f978e3f30 100644
+--- a/addon/routes/fallback.js
++++ b/addon/routes/fallback.js
+@@ -22,7 +22,6 @@ export default class FallbackRoute extends Route {
+   };
+ 
+   @service router;
+-  @service fastboot;
+   @service intl;
+ 
+   constructor() {
+@@ -32,6 +31,10 @@ export default class FallbackRoute extends Route {
+     this.templateName = this.env.metis.fallbackTemplate || 'fallback';
+   }
+ 
++  get fastboot(){
++    return getOwner(this).lookup('service:fastboot');
++  }
++
+   async model({
+     path,
+     directedPageNumber,
+diff --git a/addon/services/resource-label.js b/addon/services/resource-label.js
+index 2424bb62402a95f6745b5c7a4560f2326eacc022..946a12e58b714101778cc1f5f9914a463a47a562 100644
+--- a/addon/services/resource-label.js
++++ b/addon/services/resource-label.js
+@@ -1,26 +1,30 @@
++import { getOwner } from '@ember/owner';
+ import Service, { inject } from '@ember/service';
+ import buildUrl from 'build-url';
+ import fetch, { Headers } from 'fetch';
+ 
+ const SHOEBOX_KEY = 'resource-label-cache';
+ export default class ResourceLabelService extends Service {
+-  @inject fastboot;
+   backend = '/';
+   cache = {};
+ 
++  get fastboot(){
++    return getOwner(this).lookup('service:fastboot');
++  }
++
+   constructor() {
+     super(...arguments);
+ 
+-    if (this.fastboot.isFastBoot) {
++    if (this.fastboot?.isFastBoot) {
+       this.backend = window.BACKEND_URL;
+     } else {
+-      this.cache = this.fastboot.shoebox.retrieve(SHOEBOX_KEY) || {};
++      this.cache = this.fastboot?.shoebox.retrieve(SHOEBOX_KEY) || {};
+     }
+   }
+ 
+   async fetchPrefLabel(uri) {
+     const promise = this._fetchPrefLabel(uri);
+-    if (this.fastboot.isFastBoot) {
++    if (this.fastboot?.isFastBoot) {
+       this.fastboot.deferRendering(promise);
+     }
+ 
+@@ -53,7 +57,7 @@ export default class ResourceLabelService extends Service {
+         };
+       }
+ 
+-      if (this.fastboot.isFastBoot) {
++      if (this.fastboot?.isFastBoot) {
+         this.fastboot.shoebox.put(SHOEBOX_KEY, this.cache);
+       }
+     }
+diff --git a/addon/utils/fetch-uri-info.js b/addon/utils/fetch-uri-info.js
+index 3659b9981fcdce9ace4f9068a74ef0bcc87e2e35..2d86ee1003dbfe1dca1e5ec4a3b0139fb0b9a08c 100644
+--- a/addon/utils/fetch-uri-info.js
++++ b/addon/utils/fetch-uri-info.js
+@@ -1,4 +1,3 @@
+-import fetch, { Headers } from 'fetch';
+ import buildUrl from 'build-url';
+ 
+ export default async function fetchUriInfo(
+@@ -8,7 +7,7 @@ export default async function fetchUriInfo(
+   size,
+   direction = 'direct',
+ ) {
+-  const baseUrl = fastboot.isFastBoot ? window.BACKEND_URL : '/';
++  const baseUrl = fastboot?.isFastBoot ? window.BACKEND_URL : '/';
+ 
+   const url = buildUrl(baseUrl, {
+     path: `uri-info/${direction}`,
+@@ -23,7 +22,7 @@ export default async function fetchUriInfo(
+     await fetch(url, {
+       headers: new Headers({
+         accept: 'application/vnd.api+json',
+-        ...(fastboot.isFastBoot
++        ...(fastboot?.isFastBoot
+           ? {
+               Cookie: fastboot.request?.headers.get('Cookie'),
+             }
