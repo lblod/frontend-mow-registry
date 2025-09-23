@@ -144,7 +144,7 @@ export default class VariableManager extends Component<Signature> {
   };
   closeEditVariableModal = () => {
     this.isEditVariableModalOpen = false;
-    this.variableToEdit?.rollbackAttributes();
+    this.variableToEdit?.reset();
     this.editedCodelist = undefined;
     this.variableToEdit = undefined;
   };

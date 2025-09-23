@@ -12,6 +12,7 @@ import AbstractValidationModel from './abstract-validation-model';
 import {
   validateBelongsToOptional,
   validateBelongsToRequired,
+  validateDateOptional,
   validateHasManyRequired,
 } from 'mow-registry/validators/schema';
 import Joi from 'joi';
@@ -45,6 +46,7 @@ export default class TribontShape extends AbstractValidationModel {
       dimensions: validateHasManyRequired(),
       classification: validateBelongsToRequired(),
       trafficSignalConcept: validateBelongsToOptional(),
+      createdOn: validateDateOptional(),
     });
   }
 

@@ -84,14 +84,14 @@ export default class HeightAndWidhtShape implements Shape {
   }
 
   async reset() {
-    this.height.dimension.rollbackAttributes();
-    this.width.dimension.rollbackAttributes();
+    this.height.dimension.reset();
+    this.width.dimension.reset();
     this.height = await dimensionToShapeDimension(
       this.height.dimension,
       'height',
     );
     this.width = await dimensionToShapeDimension(this.width.dimension, 'width');
-    this.shape.rollbackAttributes();
+    this.shape.reset();
   }
   async remove() {
     this.height.dimension.deleteRecord();
