@@ -7,6 +7,8 @@ import {
 } from '.';
 import type Unit from 'mow-registry/models/unit';
 import type IntlService from 'ember-intl/services/intl';
+import type { Store } from '@warp-drive/core';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 export default class WidthShape implements Shape {
   width: shapeDimension;
@@ -46,18 +48,18 @@ export default class WidthShape implements Shape {
     return new this(shape, width);
   }
 
-  async convertToNewUnit(unit: Unit) {
+  async convertToNewUnit(unit: Unit, store: Store) {
     this.width.unit = unit;
     this.width.dimension.set('unit', unit);
-    await this.width.dimension.save();
+    await store.request(saveRecord(this.width.dimension));
   }
 
-  async validateAndsave() {
+  async validateAndsave(store: Store) {
     const widthValid = await this.width.dimension.validate();
     const shapeValid = await this.shape.validate();
     if (widthValid && shapeValid) {
-      await this.width.dimension.save();
-      await this.shape.save();
+      await store.request(saveRecord(this.width.dimension));
+      await store.request(saveRecord(this.shape));
       return true;
     }
     return false;
@@ -68,10 +70,10 @@ export default class WidthShape implements Shape {
     this.width = await dimensionToShapeDimension(this.width.dimension, 'width');
     this.shape.reset();
   }
-  async remove() {
+  async remove(store: Store) {
     this.width.dimension.deleteRecord();
-    await this.width.dimension.save();
+    await store.request(saveRecord(this.width.dimension));
     this.shape.deleteRecord();
-    await this.shape.save();
+    await store.request(saveRecord(this.shape));
   }
 }

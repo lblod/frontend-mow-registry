@@ -6,7 +6,7 @@ import type { InputType } from 'mow-registry/components/traffic-measure';
 import type CodeList from 'mow-registry/models/code-list';
 import Variable from 'mow-registry/models/variable';
 import type CodelistsService from 'mow-registry/services/codelists';
-import type Store from '@ember-data/store';
+import type { Store } from '@warp-drive/core';
 import Component from '@glimmer/component';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import ReactiveTable from 'mow-registry/components/reactive-table';
@@ -25,6 +25,7 @@ import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { getPromiseState } from '@warp-drive/ember';
+import { query, saveRecord } from '@warp-drive/legacy/compat/builders';
 
 interface Signature {
   Args: {
@@ -83,8 +84,10 @@ export default class VariableManager extends Component<Signature> {
   fetchCodeLists = () => {
     this.codeListService.all
       .perform()
-      .then((codelists) => (this.codeLists = codelists))
-      .catch((error) => console.error('Error fetching code lists:', error));
+      .then((codelists: CodeList[]) => (this.codeLists = codelists))
+      .catch((error: Error) =>
+        console.error('Error fetching code lists:', error),
+      );
   };
 
   setVariableLabel = (variable: Variable, event: InputEvent) => {
@@ -118,16 +121,18 @@ export default class VariableManager extends Component<Signature> {
 
   variables = trackedFunction(this, async () => {
     await Promise.resolve();
-    const variables = await this.store.query<Variable>('variable', {
-      'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
-      page: {
-        number: this.pageNumber,
-        size: this.pageSize,
-      },
-      sort: this.sort,
-    });
+    const variables = await this.store.request(
+      query<Variable>('variable', {
+        'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+        page: {
+          number: this.pageNumber,
+          size: this.pageSize,
+        },
+        sort: this.sort,
+      }),
+    );
 
-    return variables;
+    return await variables.content;
   });
 
   get variablesNotDeleted() {
@@ -165,7 +170,7 @@ export default class VariableManager extends Component<Signature> {
     }
     const valid = await this.variableToEdit?.validate();
     if (!valid) return;
-    await this.variableToEdit?.save();
+    await this.store.request(saveRecord(this.variableToEdit as Variable));
     this.variables.retry();
     this.closeEditVariableModal();
   };

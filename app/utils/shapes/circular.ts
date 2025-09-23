@@ -11,9 +11,10 @@ import {
   type ShapeStatic,
 } from '.';
 import type Unit from 'mow-registry/models/unit';
-import type Store from '@ember-data/store';
+import type { Store } from '@warp-drive/core';
 import type IntlService from 'ember-intl/services/intl';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 @staticImplements<ShapeStatic>()
 export default class Circular implements Shape {
@@ -74,18 +75,18 @@ export default class Circular implements Shape {
     const radius = await dimensionToShapeDimension(radiusDimension, 'radius');
     return new this(shape, radius);
   }
-  async convertToNewUnit(unit: Unit) {
+  async convertToNewUnit(unit: Unit, store: Store) {
     this.radius.unit = unit;
     this.radius.dimension.set('unit', unit);
-    await this.radius.dimension.save();
+    await store.request(saveRecord(this.radius.dimension));
   }
 
-  async validateAndsave() {
+  async validateAndsave(store: Store) {
     const radiusValid = await this.radius.dimension.validate();
     const shapeValid = await this.shape.validate();
     if (radiusValid && shapeValid) {
-      await this.radius.dimension.save();
-      await this.shape.save();
+      await store.request(saveRecord(this.radius.dimension));
+      await store.request(saveRecord(this.shape));
       return true;
     }
     return false;
@@ -99,10 +100,11 @@ export default class Circular implements Shape {
     );
     this.shape.reset();
   }
-  async remove() {
+  async remove(store: Store) {
     this.radius.dimension.deleteRecord();
-    await this.radius.dimension.save();
+    await store.request(saveRecord(this.radius.dimension));
+
     this.shape.deleteRecord();
-    await this.shape.save();
+    await store.request(saveRecord(this.shape));
   }
 }

@@ -3,7 +3,6 @@ import Octagon from './octagon';
 import Dimension from 'mow-registry/models/dimension';
 import Rectangle from './rectangle';
 import type Unit from 'mow-registry/models/unit';
-import type Store from '@ember-data/store';
 import SignpostWithPoint from './signpost-with-point';
 import InvertedTriangle from './inverted-triangle';
 import Triangle from './triangle';
@@ -13,6 +12,8 @@ import type QuantityKind from 'mow-registry/models/quantity-kind';
 import type TribontShapeClassificationCode from 'mow-registry/models/tribont-shape-classification-code';
 import type IntlService from 'ember-intl/services/intl';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
+import type { Store } from '@warp-drive/core';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export const DIMENSIONS = {
   length: 'http://qudt.org/vocab/quantitykind/Length',
@@ -100,11 +101,11 @@ export type Shape = {
   shape: TribontShape;
   toString(intln: IntlService): string;
   unitMeasure: Unit;
-  convertToNewUnit(unit: Unit): Promise<void>;
+  convertToNewUnit(unit: Unit, store: Store): Promise<void>;
   id: string;
-  validateAndsave(): Promise<boolean>;
+  validateAndsave(store: Store): Promise<boolean>;
   reset(): Promise<void>;
-  remove(): Promise<void>;
+  remove(store: Store): Promise<void>;
 };
 
 export async function convertToShape(shape: TribontShape) {
@@ -133,11 +134,15 @@ export async function createDimension(
   dimensionUri: string,
 ) {
   const kind = (
-    await store.query<QuantityKind>('quantity-kind', {
-      filter: {
-        ':uri:': dimensionUri,
-      },
-    })
+    await store
+      .request(
+        query<QuantityKind>('quantity-kind', {
+          filter: {
+            ':uri:': dimensionUri,
+          },
+        }),
+      )
+      .then((res) => res.content)
   )[0];
   const dimension = store.createRecord<Dimension>('dimension', {
     value: 0,
@@ -154,14 +159,18 @@ export async function createStoreShape(
   trafficSignalConcept: TrafficSignalConcept,
 ) {
   const classification = (
-    await store.query<TribontShapeClassificationCode>(
-      'tribont-shape-classification-code',
-      {
-        filter: {
-          ':uri:': shapeUri,
-        },
-      },
-    )
+    await store
+      .request(
+        query<TribontShapeClassificationCode>(
+          'tribont-shape-classification-code',
+          {
+            filter: {
+              ':uri:': shapeUri,
+            },
+          },
+        ),
+      )
+      .then((res) => res.content)
   )[0];
   const shape = store.createRecord<TribontShape>('tribont-shape', {
     dimensions,

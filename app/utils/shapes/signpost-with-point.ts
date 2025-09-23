@@ -8,7 +8,7 @@ import {
   createStoreShape,
   createDimension,
 } from '.';
-import type Store from '@ember-data/store';
+import type { Store } from '@warp-drive/core';
 import type Unit from 'mow-registry/models/unit';
 import HeightAndWidhtShape from './height-and-width-shape';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';

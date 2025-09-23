@@ -1,7 +1,7 @@
 import type Owner from '@ember/owner';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import type Store from '@ember-data/store';
+import type { Store } from '@warp-drive/core';
 import Component from '@glimmer/component';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import ReactiveTable from 'mow-registry/components/reactive-table';
@@ -32,6 +32,7 @@ import { sortOnDimension } from 'mow-registry/utils/shapes/sorting';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
+import { findAll, query, saveRecord } from '@warp-drive/legacy/compat/builders';
 
 interface Signature {
   Args: {
@@ -85,22 +86,27 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   async fetchShapeClassifications() {
-    const classifications = await this.store.findAll<ShapeClassification>(
-      'tribont-shape-classification-code',
-    );
+    const classifications = await this.store
+      .request(
+        findAll<ShapeClassification>('tribont-shape-classification-code'),
+      )
+      .then((res) => res.content);
 
     return classifications;
   }
 
   async fetchUnits() {
-    const units = await this.store.findAll<Unit>('unit');
+    const units = await this.store
+      .request(findAll<Unit>('unit'))
+      .then((res) => res.content);
 
     return units;
   }
 
   async fetchQuantityKind() {
-    const quantityKind =
-      await this.store.findAll<QuantityKind>('quantity-kind');
+    const quantityKind = await this.store
+      .request(findAll<QuantityKind>('quantity-kind'))
+      .then((res) => res.content);
 
     return quantityKind;
   }
@@ -126,14 +132,18 @@ export default class ShapeManager extends Component<Signature> {
     const shapesConverted: Shape[] = [];
     let shapes: TribontShape[] = [];
     if (this.sort === 'created-on' || this.sort === '-created-on') {
-      shapes = await this.store.query<TribontShape>('tribont-shape', {
-        'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
-        page: {
-          number: this.pageNumber,
-          size: this.pageSize,
-        },
-        sort: this.sort,
-      });
+      shapes = await this.store
+        .request(
+          query<TribontShape>('tribont-shape', {
+            'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+            page: {
+              number: this.pageNumber,
+              size: this.pageSize,
+            },
+            sort: this.sort,
+          }),
+        )
+        .then((res) => res.content);
     } else {
       const shapesSorted = await sortOnDimension(
         this.sort,
@@ -141,12 +151,13 @@ export default class ShapeManager extends Component<Signature> {
         this.pageSize,
         this.args.trafficSignal.id as string,
       );
-      const shapesQuery = await this.store.query<TribontShape>(
-        'tribont-shape',
-        {
-          'filter[:id:]': shapesSorted.ids.join(','),
-        },
-      );
+      const shapesQuery = await this.store
+        .request(
+          query<TribontShape>('tribont-shape', {
+            'filter[:id:]': shapesSorted.ids.join(','),
+          }),
+        )
+        .then((res) => res.content);
       shapes = [...shapesQuery];
       shapes.sort(
         (a, b) =>
@@ -201,7 +212,7 @@ export default class ShapeManager extends Component<Signature> {
       this.shapesConverted.value
     ) {
       for (const shape of this.shapesConverted.value) {
-        await shape?.convertToNewUnit(this.unitChange);
+        await shape?.convertToNewUnit(this.unitChange, this.store);
       }
     }
     await this.shapesConverted.retry();
@@ -224,10 +235,10 @@ export default class ShapeManager extends Component<Signature> {
       this.store,
       this.args.trafficSignal,
     );
-    await shape.validateAndsave();
+    await shape.validateAndsave(this.store);
     this.args.trafficSignal.set('defaultShape', undefined);
     this.args.trafficSignal.set('shapes', [shape.shape]);
-    await this.args.trafficSignal.save();
+    await this.store.request(saveRecord(this.args.trafficSignal));
     await this.shapesConverted.retry();
     await this.defaultShape.retry();
     this.closeShapeChangeConfirmation();
@@ -276,8 +287,8 @@ export default class ShapeManager extends Component<Signature> {
     if (!shape) return;
     const shapes = await this.args.trafficSignal.shapes;
     removeItem(shapes, shape.shape);
-    await this.args.trafficSignal.save();
-    await shape.remove();
+    await this.store.request(saveRecord(this.args.trafficSignal));
+    await shape.remove(this.store);
     await this.shapesConverted.retry();
     await this.defaultShape.retry();
     this.closeDeleteConfirmation();
@@ -294,9 +305,9 @@ export default class ShapeManager extends Component<Signature> {
     this.isEditShapeModalOpen = false;
   };
   saveShape = async () => {
-    const saved = await this.shapeToEdit?.validateAndsave();
+    const saved = await this.shapeToEdit?.validateAndsave(this.store);
     if (saved) {
-      await this.args.trafficSignal.save();
+      await this.store.request(saveRecord(this.args.trafficSignal));
       await this.closeEditShapeModal();
       await this.shapesConverted.retry();
       await this.defaultShape.retry();

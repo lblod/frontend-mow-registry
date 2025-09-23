@@ -7,6 +7,8 @@ import {
 } from '.';
 import type Unit from 'mow-registry/models/unit';
 import type IntlService from 'ember-intl/services/intl';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
+import type { Store } from '@warp-drive/core';
 
 export default class HeightAndWidhtShape implements Shape {
   height: shapeDimension;
@@ -61,23 +63,23 @@ export default class HeightAndWidhtShape implements Shape {
     return new this(shape, height, width);
   }
 
-  async convertToNewUnit(unit: Unit) {
+  async convertToNewUnit(unit: Unit, store: Store) {
     this.height.unit = unit;
     this.width.unit = unit;
     this.height.dimension.set('unit', unit);
-    await this.height.dimension.save();
+    await store.request(saveRecord(this.height.dimension));
     this.width.dimension.set('unit', unit);
-    await this.width.dimension.save();
+    await store.request(saveRecord(this.width.dimension));
   }
 
-  async validateAndsave() {
+  async validateAndsave(store: Store) {
     const heightValid = await this.height.dimension.validate();
     const widthValid = await this.width.dimension.validate();
     const shapeValid = await this.shape.validate();
     if (heightValid && widthValid && shapeValid) {
-      await this.height.dimension.save();
-      await this.width.dimension.save();
-      await this.shape.save();
+      await store.request(saveRecord(this.height.dimension));
+      await store.request(saveRecord(this.width.dimension));
+      await store.request(saveRecord(this.shape));
       return true;
     }
     return false;
@@ -93,12 +95,13 @@ export default class HeightAndWidhtShape implements Shape {
     this.width = await dimensionToShapeDimension(this.width.dimension, 'width');
     this.shape.reset();
   }
-  async remove() {
+  async remove(store: Store) {
     this.height.dimension.deleteRecord();
     this.width.dimension.deleteRecord();
-    await this.height.dimension.save();
-    await this.width.dimension.save();
+    await store.request(saveRecord(this.height.dimension));
+    await store.request(saveRecord(this.width.dimension));
+
     this.shape.deleteRecord();
-    await this.shape.save();
+    await store.request(saveRecord(this.shape));
   }
 }
