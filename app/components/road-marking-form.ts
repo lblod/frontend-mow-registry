@@ -17,6 +17,7 @@ import {
   validateShapes,
   validateVariables,
 } from 'mow-registry/utils/validate-relations';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Args = {
   roadMarkingConcept: RoadMarkingConcept;
@@ -116,10 +117,10 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
         ...(await this.args.roadMarkingConcept.shapes).map(async (shape) => {
           await Promise.all(
             (await shape.dimensions).map(async (dimension) => {
-              await dimension.save();
+              await this.store.request(saveRecord(dimension));
             }),
           );
-          await shape.save();
+          await this.store.request(saveRecord(shape));
         }),
       );
 
@@ -142,7 +143,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
       savePromises.push(
         ...(await this.args.roadMarkingConcept.variables).map(
           async (variable) => {
-            await variable.save();
+            await this.store.request(saveRecord(variable));
           },
         ),
       );
@@ -152,7 +153,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
       );
 
       await Promise.all(savePromises);
-      await this.args.roadMarkingConcept.save();
+      await this.store.request(saveRecord(this.args.roadMarkingConcept));
       this.router.transitionTo(
         'road-marking-concepts.road-marking-concept',
         this.args.roadMarkingConcept.id,

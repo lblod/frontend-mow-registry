@@ -1,14 +1,19 @@
 import Controller from '@ember/controller';
+import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { task } from 'ember-concurrency';
 import RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import MainSignsRoute from 'mow-registry/routes/road-sign-concepts/road-sign-concept/main-signs';
+import type Store from 'mow-registry/services/store';
 import { removeItem } from 'mow-registry/utils/array';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import { TrackedArray } from 'tracked-built-ins';
 
 export default class RoadSignConceptsRoadSignConceptMainSignsController extends Controller {
+  @service declare store: Store;
+
   declare model: ModelFrom<MainSignsRoute>;
   @tracked isAddingMainSigns = false;
   @tracked mainSignCodeFilter = '';
@@ -26,7 +31,7 @@ export default class RoadSignConceptsRoadSignConceptMainSignsController extends 
     if (this.classificationRoadSigns) {
       removeItem(this.classificationRoadSigns, mainSign);
     }
-    await this.model.roadSignConcept.save();
+    await this.store.request(saveRecord(this.model.roadSignConcept));
   });
 
   removeMainSign = task(async (mainSign) => {
@@ -37,8 +42,7 @@ export default class RoadSignConceptsRoadSignConceptMainSignsController extends 
     if (this.classificationRoadSigns) {
       this.classificationRoadSigns.push(mainSign);
     }
-
-    await this.model.roadSignConcept.save();
+    await this.store.request(saveRecord(this.model.roadSignConcept));
   });
 
   handleCategorySelection = task(async (classification: RoadSignCategory) => {

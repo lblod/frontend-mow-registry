@@ -9,6 +9,7 @@ import type TrafficLightConceptRoute from 'mow-registry/routes/traffic-light-con
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import { hash } from 'rsvp';
 import { TrackedArray } from 'tracked-built-ins';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class TrafficLightConceptRelatedRoute extends Route {
   @service declare store: Store;
@@ -20,22 +21,24 @@ export default class TrafficLightConceptRelatedRoute extends Route {
 
     const model = await hash({
       trafficLightConcept,
-      allRoadMarkings: this.store.query<RoadMarkingConcept>(
-        'road-marking-concept',
-        {
-          page: {
-            size: 10000,
-          },
-        },
-      ),
-      allTrafficLights: this.store.query<TrafficLightConceptModel>(
-        'traffic-light-concept',
-        {
-          page: {
-            size: 10000,
-          },
-        },
-      ),
+      allRoadMarkings: this.store
+        .request(
+          query<RoadMarkingConcept>('road-marking-concept', {
+            page: {
+              size: 10000,
+            },
+          }),
+        )
+        .then((response) => response.content),
+      allTrafficLights: this.store
+        .request(
+          query<TrafficLightConceptModel>('traffic-light-concept', {
+            page: {
+              size: 10000,
+            },
+          }),
+        )
+        .then((response) => response.content),
       classifications: this.store
         .findAll<RoadSignCategory>('road-sign-category')
         .then((classification) => {

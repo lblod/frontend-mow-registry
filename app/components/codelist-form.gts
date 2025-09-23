@@ -32,6 +32,7 @@ import { removeItem } from 'mow-registry/utils/array';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
 import CodeListValue from 'mow-registry/models/code-list-value';
 import { isSome } from 'mow-registry/utils/option';
+import { findRecord, saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Sig = {
   Args: {
@@ -129,10 +130,11 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   fetchCodelistTypes = task(async () => {
-    const typesScheme = await this.store.findRecord<ConceptScheme>(
-      'concept-scheme',
-      COD_CONCEPT_SCHEME_ID,
-    );
+    const typesScheme = await this.store
+      .request(
+        findRecord<ConceptScheme>('concept-scheme', COD_CONCEPT_SCHEME_ID),
+      )
+      .then((res) => res.content);
     const types = await typesScheme.concepts;
     this.codelistTypes = types;
     if (await this.args.codelist.type) {
@@ -213,8 +215,10 @@ export default class CodelistFormComponent extends Component<Sig> {
     if (!codelist.error) {
       this.setPositions();
       await Promise.all(this.toDelete.map((option) => option.destroyRecord()));
-      await Promise.all(this.options.map((option) => option.save()));
-      await codelist.save();
+      await Promise.all(
+        this.options.map((option) => this.store.request(saveRecord(option))),
+      );
+      await this.store.request(saveRecord(codelist));
       await this.router.transitionTo(
         'codelists-management.codelist',
         codelist.id,

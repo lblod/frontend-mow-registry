@@ -21,6 +21,7 @@ import {
 import type TribontShape from './tribont-shape';
 import type Variable from './variable';
 import TrafficSignalListItem from './traffic-signal-list-item';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class TrafficSignalConcept extends SkosConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
@@ -76,16 +77,17 @@ export default class TrafficSignalConcept extends SkosConcept {
     // This doesn't delete the status or hasTrafficMeasureConcepts relations as it wasn't clear what
     // the expectation would be for these since they don't appear to be used
     if (this.uri) {
-      const trafficListItems = await this.store.query<TrafficSignalListItem>(
-        'traffic-signal-list-item',
-        {
-          filter: {
-            item: {
-              ':uri:': this.uri,
+      const trafficListItems = await this.store
+        .request(
+          query<TrafficSignalListItem>('traffic-signal-list-item', {
+            filter: {
+              item: {
+                ':uri:': this.uri,
+              },
             },
-          },
-        },
-      );
+          }),
+        )
+        .then((res) => res.content);
       await Promise.all(trafficListItems.map((item) => item.destroyRecord()));
     }
 

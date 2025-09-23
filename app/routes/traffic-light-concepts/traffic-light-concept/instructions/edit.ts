@@ -4,6 +4,7 @@ import Store from 'mow-registry/services/store';
 import type Template from 'mow-registry/models/template';
 import type TrafficlightConceptRoute from 'mow-registry/routes/traffic-light-concepts/traffic-light-concept';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 
 type Params = {
   instructionId: string;
@@ -23,13 +24,13 @@ export default class TrafficLightConceptsTrafficLightConceptInstructionsEditRout
       };
     } else {
       return {
-        template: this.store.findRecord<Template>(
-          'template',
-          params.instructionId,
-          {
-            include: ['variables'],
-          },
-        ),
+        template: this.store
+          .request(
+            findRecord<Template>('template', params.instructionId, {
+              include: ['variables'],
+            }),
+          )
+          .then((res) => res.content),
         trafficLightConcept,
       };
     }
