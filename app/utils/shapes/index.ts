@@ -67,7 +67,7 @@ export const SHAPE_URIS = {
 
 export type shapeDimension = {
   dimension: Dimension;
-  value: number;
+  value?: number;
   kind: string;
   unit: Unit;
 };
@@ -79,7 +79,7 @@ export async function dimensionToShapeDimension(
   const unit = await dimension.unit;
   return {
     dimension: dimension,
-    value: dimension.value ?? 0,
+    value: dimension.value,
     kind: DIMENSIONS[kind],
     unit: unit as Unit,
   };
@@ -145,7 +145,6 @@ export async function createDimension(
       .then((res) => res.content)
   )[0];
   const dimension = store.createRecord<Dimension>('dimension', {
-    value: 0,
     kind: kind,
     unit,
   });
