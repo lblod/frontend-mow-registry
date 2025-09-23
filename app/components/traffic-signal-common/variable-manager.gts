@@ -324,7 +324,12 @@ export default class VariableManager extends Component<Signature> {
                 </PowerSelect>
                 {{#if (or this.editedCodelist codelistPromise.value)}}
                   {{#let
-                    (getPromiseState (or this.editedCodelist.concepts codelistPromise.value.concepts))
+                    (getPromiseState
+                      (or
+                        this.editedCodelist.concepts
+                        codelistPromise.value.concepts
+                      )
+                    )
                     as |conceptsPromise|
                   }}
                     {{#if conceptsPromise.isSuccess}}
