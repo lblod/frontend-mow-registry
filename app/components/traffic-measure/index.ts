@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type RouterService from '@ember/routing/router-service';
 import IntlService from 'ember-intl/services/intl';
 import CodelistsService from 'mow-registry/services/codelists';
@@ -19,6 +19,7 @@ import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
 import validateTrafficMeasureDates from 'mow-registry/utils/validate-traffic-measure-dates';
 import type SkosConcept from 'mow-registry/models/skos-concept';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import type TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
 
 export type InputType = {
@@ -425,9 +426,9 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     //if new save relationships
     if (this.new) {
-      await this.trafficMeasureConcept.save();
-      await template.save();
-      await this.trafficMeasureConcept.save();
+      await this.store.request(saveRecord(this.trafficMeasureConcept));
+      await this.store.request(saveRecord(template));
+      await this.store.request(saveRecord(this.trafficMeasureConcept));
     }
 
     //1-parse everything again
@@ -435,6 +436,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     //2-update roadsigns
     await this.saveRoadsigns.perform(this.trafficMeasureConcept);
+
     //3-update node shape
 
     let label = '';
@@ -445,7 +447,8 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //get rid of the last dash
     label = label.slice(0, -1);
     this.trafficMeasureConcept.label = label;
-    await this.trafficMeasureConcept.save();
+
+    await this.store.request(saveRecord(this.trafficMeasureConcept));
 
     //4-handle variable variables
     await this.saveVariables.perform(template);
@@ -471,11 +474,11 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
     for (const sign of deletedSigns) {
       sign.deleteRecord();
-      await sign.save();
+      await this.store.request(saveRecord(sign));
     }
 
     for (const sign of this.signs) {
-      await sign.save();
+      await this.store.request(saveRecord(sign));
     }
   });
 
@@ -488,10 +491,10 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //create new ones
     for (const variable of this.variables) {
       (await template.variables).push(variable);
-      await variable.save();
+      await this.store.request(saveRecord(variable));
     }
 
-    await template.save();
+    await this.store.request(saveRecord(template));
   });
 
   willDestroy() {

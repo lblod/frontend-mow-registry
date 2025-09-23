@@ -4,9 +4,10 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { trackedFunction } from 'reactiveweb/function';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type CodeList from 'mow-registry/models/code-list';
-import type { LegacyResourceQuery } from '@ember-data/store/types';
+import type { LegacyResourceQuery } from '@warp-drive/core/types';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class CodelistsManagementIndexController extends Controller {
   queryParams = ['page', 'size', 'label', 'sort'];
@@ -40,7 +41,7 @@ export default class CodelistsManagementIndexController extends Controller {
   }
 
   codelists = trackedFunction(this, async () => {
-    const query: LegacyResourceQuery<CodeList> = {
+    const queryParams: LegacyResourceQuery<CodeList> = {
       include: ['type'],
       sort: this.sort,
       page: {
@@ -50,13 +51,14 @@ export default class CodelistsManagementIndexController extends Controller {
     };
 
     if (this.label) {
-      query['filter'] = {
+      queryParams['filter'] = {
         label: this.label,
       };
     }
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
 
-    return await this.store.query<CodeList>('code-list', query);
+    return (await this.store.request(query<CodeList>('code-list', queryParams)))
+      .content;
   });
 }

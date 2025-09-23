@@ -1,5 +1,9 @@
-import Model, { type AsyncHasMany, attr, hasMany } from '@ember-data/model';
-import type { Type } from '@warp-drive/core-types/symbols';
+import Model, {
+  type AsyncHasMany,
+  attr,
+  hasMany,
+} from '@warp-drive/legacy/model';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 
 export default class TrafficLightConceptStatusCode extends Model {

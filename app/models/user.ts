@@ -1,13 +1,17 @@
 import { get } from '@ember/object';
-import Model, { type AsyncHasMany, attr, hasMany } from '@ember-data/model';
-import type { Type } from '@warp-drive/core-types/symbols';
+import Model, {
+  type AsyncHasMany,
+  attr,
+  hasMany,
+} from '@warp-drive/legacy/model';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type Account from 'mow-registry/models/account';
 import type Group from 'mow-registry/models/group';
 
 export default class User extends Model {
   declare [Type]: 'user';
-  @attr() declare firstName?: string;
-  @attr() declare familyName?: string;
+  @attr declare firstName?: string;
+  @attr declare familyName?: string;
 
   @hasMany<Account>('account', { inverse: null, async: true })
   declare accounts: AsyncHasMany<Account>;

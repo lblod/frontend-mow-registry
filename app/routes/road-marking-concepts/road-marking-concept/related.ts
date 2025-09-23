@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import Controller from 'mow-registry/controllers/road-marking-concepts/road-marking-concept/related';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type RoadSignCategory from 'mow-registry/models/road-sign-category';
@@ -9,6 +9,7 @@ import type RoadMarkingConceptRoute from 'mow-registry/routes/road-marking-conce
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import { hash } from 'rsvp';
 import { TrackedArray } from 'tracked-built-ins';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class RoadMarkingConceptsRoadMarkingConceptRelatedRoute extends Route {
   @service declare store: Store;
@@ -21,24 +22,28 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedRoute extends R
     const model = await hash({
       roadMarkingConcept,
       allRoadMarkings: this.store
-        .query<RoadMarkingConcept>('road-marking-concept', {
-          page: {
-            size: 10000,
-          },
-        })
+        .request(
+          query<RoadMarkingConcept>('road-marking-concept', {
+            page: {
+              size: 10000,
+            },
+          }),
+        )
+        .then((res) => res.content)
         .then((allRoadMarkings) => {
           return allRoadMarkings.filter(
             (roadMarking) => roadMarking.id !== roadMarkingConcept.id,
           );
         }),
-      allTrafficLights: this.store.query<TrafficLightConcept>(
-        'traffic-light-concept',
-        {
-          page: {
-            size: 10000,
-          },
-        },
-      ),
+      allTrafficLights: this.store
+        .request(
+          query<TrafficLightConcept>('traffic-light-concept', {
+            page: {
+              size: 10000,
+            },
+          }),
+        )
+        .then((res) => res.content),
       classifications: this.store
         .findAll<RoadSignCategory>('road-sign-category')
         .then((classification) => {

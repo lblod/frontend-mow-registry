@@ -2,11 +2,12 @@ import Route from '@ember/routing/route';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import type RoadSignConceptRoute from '../road-sign-concept';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import { service } from '@ember/service';
 import { TrackedArray } from 'tracked-built-ins';
 import type Transition from '@ember/routing/transition';
 import type SubSignsController from 'mow-registry/controllers/road-sign-concepts/road-sign-concept/sub-signs';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class RoadSignConceptsRoadSignConceptSubSignsRoute extends Route {
   @service declare store: Store;
@@ -16,19 +17,20 @@ export default class RoadSignConceptsRoadSignConceptSubSignsRoute extends Route 
       'road-sign-concepts.road-sign-concept',
     ) as ModelFrom<RoadSignConceptRoute>;
 
-    const allSubSigns = await this.store.query<RoadSignConcept>(
-      'road-sign-concept',
-      {
-        filter: {
-          classifications: {
-            label: 'Onderbord',
+    const allSubSigns = (
+      await this.store.request(
+        query<RoadSignConcept>('road-sign-concept', {
+          filter: {
+            classifications: {
+              label: 'Onderbord',
+            },
           },
-        },
-        page: {
-          size: 10000,
-        },
-      },
-    );
+          page: {
+            size: 10000,
+          },
+        }),
+      )
+    ).content;
 
     const relatedSubSigns = await roadSignConcept.subSigns;
 

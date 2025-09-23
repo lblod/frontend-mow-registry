@@ -1,6 +1,10 @@
-import Model, { type AsyncHasMany, attr, hasMany } from '@ember-data/model';
+import Model, {
+  type AsyncHasMany,
+  attr,
+  hasMany,
+} from '@warp-drive/legacy/model';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class RoadSignConceptStatusCode extends Model {
   declare [Type]: 'road-sign-concept-status-code';

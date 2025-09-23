@@ -1,20 +1,22 @@
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type RoadSignCategory from 'mow-registry/models/road-sign-category';
 import { hash } from 'rsvp';
+import { findAll } from '@warp-drive/legacy/compat/builders';
 
 export default class RoadsignConceptsIndexRoute extends Route {
   @service declare store: Store;
 
   async model() {
     return hash({
-      classifications: this.store.findAll<RoadSignCategory>(
-        'road-sign-category',
-        {
-          reload: true,
-        },
-      ),
+      classifications: this.store
+        .request(
+          findAll<RoadSignCategory>('road-sign-category', {
+            reload: true,
+          }),
+        )
+        .then((res) => res.content),
     });
   }
 }

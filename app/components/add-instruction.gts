@@ -4,7 +4,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type RouterService from '@ember/routing/router-service';
 import type { NamedRouteArgs } from '@ember/routing/lib/utils';
 import { get } from '@ember/helper';
@@ -37,6 +37,7 @@ import { isSome } from 'mow-registry/utils/option';
 import { removeItem } from 'mow-registry/utils/array';
 import validateTemplateDates from 'mow-registry/utils/validate-template-dates';
 import ErrorMessage from 'mow-registry/components/error-message';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { getPromiseState } from '@warp-drive/ember';
 
 export interface AddInstructionSig {
@@ -145,7 +146,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     removeItem(templates, template);
 
     await template.destroyRecord();
-    await this.args.concept.save();
+    await this.store.request(saveRecord(this.args.concept));
 
     this.router.replaceWith(this.args.from);
   });
@@ -286,17 +287,17 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
       const areVariablesValid = await validateVariables(this.variables);
 
       if (isValid && areVariablesValid && !this.templateSyntaxError) {
-        await this.template.save();
+        await this.store.request(saveRecord(this.template));
         (await this.concept.hasInstructions).push(this.template);
-        await this.concept.save();
+        await this.store.request(saveRecord(this.concept));
         for (let i = 0; i < this.variables.length; i++) {
           const variable = this.variables[i];
           if (variable) {
             (await this.template.variables).push(variable);
-            await variable.save();
+            await this.store.request(saveRecord(variable));
           }
         }
-        await this.template.save();
+        await this.store.request(saveRecord(this.template));
         await Promise.all(
           this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
         );
@@ -309,7 +310,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   // This terribly named method exists to prevent prettier from insisting on a newline which
   // prevents the glint-expect-error from functioning. An eslint-disable-next-line doesn't work
   // either as both have to be for the next line. :/
-  getCon = (codelist: CodeList) => codelist.concepts;
+  getCon = (codelist: CodeList) => codelist.get('concepts');
 
   <template>
     <div>

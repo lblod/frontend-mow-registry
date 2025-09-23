@@ -10,7 +10,7 @@ import RoadSignCategory from 'mow-registry/models/road-sign-category';
 import TribontShape from 'mow-registry/models/tribont-shape';
 import { tracked } from '@glimmer/tracking';
 import { removeItem } from 'mow-registry/utils/array';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type Variable from 'mow-registry/models/variable';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import BreadcrumbsItem from '@bagaar/ember-breadcrumbs/components/breadcrumbs-item';
@@ -42,6 +42,7 @@ import {
   validateShapes,
   validateVariables,
 } from 'mow-registry/utils/validate-relations';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { getPromiseState } from '@warp-drive/ember';
 
 type Args = {
@@ -171,10 +172,10 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
         ...(await this.args.roadSignConcept.shapes).map(async (shape) => {
           await Promise.all(
             (await shape.dimensions).map(async (dimension) => {
-              await dimension.save();
+              await this.store.request(saveRecord(dimension));
             }),
           );
-          await shape.save();
+          await this.store.request(saveRecord(shape));
         }),
       );
 
@@ -196,7 +197,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
 
       savePromises.push(
         ...(await this.args.roadSignConcept.variables).map(async (variable) => {
-          await variable.save();
+          await this.store.request(saveRecord(variable));
         }),
       );
 
@@ -205,7 +206,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       );
 
       await Promise.all(savePromises);
-      await this.args.roadSignConcept.save();
+      await this.store.request(saveRecord(this.args.roadSignConcept));
       void this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
         this.args.roadSignConcept.id,
