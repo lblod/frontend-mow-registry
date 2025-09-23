@@ -11,7 +11,7 @@ packageExtensionsChecksum: sha256-zMei20T4rPW0COvJVuosJJ3smXvs8TYc8lLAxNng4oU=
 
 patchedDependencies:
   ember-metis:
-    hash: 0cffd03b06e18efc784996088e480ac96832de99898b21606ec6f231136cc41e
+    hash: 7af778b80bbdfeffd7ac6285e541221f0593092965a3764f06c5719aa0759749
     path: patches/ember-metis.patch
 
 importers:
@@ -207,7 +207,7 @@ importers:
         version: 3.0.1(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))
       ember-metis:
         specifier: ^0.12.0
-        version: 0.12.0(patch_hash=0cffd03b06e18efc784996088e480ac96832de99898b21606ec6f231136cc41e)(@appuniversum/ember-appuniversum@3.12.0(68070c6d55d779884613925e525dd67a))(@ember/test-helpers@3.3.1(@babel/core@7.28.0)(@glint/template@1.5.2)(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))(webpack@5.99.9))(@glint/template@1.5.2)(ember-cli-fastboot@4.1.5(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9)))(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))(encoding@0.1.13)(typescript@5.8.3)(webpack@5.99.9)
+        version: 0.12.0(patch_hash=7af778b80bbdfeffd7ac6285e541221f0593092965a3764f06c5719aa0759749)(@appuniversum/ember-appuniversum@3.12.0(68070c6d55d779884613925e525dd67a))(@ember/test-helpers@3.3.1(@babel/core@7.28.0)(@glint/template@1.5.2)(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))(webpack@5.99.9))(@glint/template@1.5.2)(ember-cli-fastboot@4.1.5(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9)))(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))(encoding@0.1.13)(typescript@5.8.3)(webpack@5.99.9)
       ember-modifier:
         specifier: ^4.2.0
         version: 4.2.2(@babel/core@7.28.0)
@@ -14639,7 +14639,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-metis@0.12.0(patch_hash=0cffd03b06e18efc784996088e480ac96832de99898b21606ec6f231136cc41e)(@appuniversum/ember-appuniversum@3.12.0(68070c6d55d779884613925e525dd67a))(@ember/test-helpers@3.3.1(@babel/core@7.28.0)(@glint/template@1.5.2)(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))(webpack@5.99.9))(@glint/template@1.5.2)(ember-cli-fastboot@4.1.5(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9)))(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))(encoding@0.1.13)(typescript@5.8.3)(webpack@5.99.9):
+  ember-metis@0.12.0(patch_hash=7af778b80bbdfeffd7ac6285e541221f0593092965a3764f06c5719aa0759749)(@appuniversum/ember-appuniversum@3.12.0(68070c6d55d779884613925e525dd67a))(@ember/test-helpers@3.3.1(@babel/core@7.28.0)(@glint/template@1.5.2)(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))(webpack@5.99.9))(@glint/template@1.5.2)(ember-cli-fastboot@4.1.5(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9)))(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))(encoding@0.1.13)(typescript@5.8.3)(webpack@5.99.9):
     dependencies:
       '@appuniversum/ember-appuniversum': 3.12.0(68070c6d55d779884613925e525dd67a)
       '@babel/core': 7.28.0(supports-color@8.1.1)

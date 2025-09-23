@@ -45,14 +45,14 @@ index 0c3dff790eb0f61623c7bcd3a23f38479a0d5724..c34cee20c2de205a856cfdd36817f71f
      path,
      directedPageNumber,
 diff --git a/addon/services/resource-label.js b/addon/services/resource-label.js
-index 2424bb62402a95f6745b5c7a4560f2326eacc022..946a12e58b714101778cc1f5f9914a463a47a562 100644
+index 2424bb62402a95f6745b5c7a4560f2326eacc022..9b41045c86b721d7361da10fd21ca142bb7a4dbd 100644
 --- a/addon/services/resource-label.js
 +++ b/addon/services/resource-label.js
-@@ -1,26 +1,30 @@
+@@ -1,26 +1,29 @@
 +import { getOwner } from '@ember/owner';
  import Service, { inject } from '@ember/service';
  import buildUrl from 'build-url';
- import fetch, { Headers } from 'fetch';
+-import fetch, { Headers } from 'fetch';
  
  const SHOEBOX_KEY = 'resource-label-cache';
  export default class ResourceLabelService extends Service {
@@ -83,7 +83,7 @@ index 2424bb62402a95f6745b5c7a4560f2326eacc022..946a12e58b714101778cc1f5f9914a46
        this.fastboot.deferRendering(promise);
      }
  
-@@ -53,7 +57,7 @@ export default class ResourceLabelService extends Service {
+@@ -53,7 +56,7 @@ export default class ResourceLabelService extends Service {
          };
        }
  
