@@ -38,9 +38,7 @@ export default class ZonalitySelectorComponent extends Component<Args> {
     {{#let (get @model.error 'zonality') as |error|}}
       <div class={{if error 'ember-power-select--error'}}>
         {{#if this.zonalities.value}}
-          {{! @glint-expect-error need to move to PS 8 }}
           <PowerSelect
-            {{! @glint-expect-error need to move to PS 8 }}
             @allowClear={{false}}
             @searchEnabled={{false}}
             @loadingMessage={{t 'utility.loading'}}

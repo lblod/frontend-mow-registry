@@ -24,6 +24,7 @@ import { trackedFunction } from 'reactiveweb/function';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
+import { getPromiseState } from '@warp-drive/ember';
 
 interface Signature {
   Args: {
@@ -305,27 +306,46 @@ export default class VariableManager extends Component<Signature> {
             <ErrorMessage @error={{this.variableToEdit.error.type}} />
           </div>
           {{#if (eq this.variableToEdit.type 'codelist')}}
-            <PowerSelect
-              @triggerClass='au-u-margin-top-tiny'
-              @allowClear={{false}}
-              @searchEnabled={{true}}
-              @options={{this.codeLists}}
-              @selected={{or this.editedCodelist this.variableToEdit.codeList}}
-              @onChange={{this.updateCodelist}}
-              as |codeList|
-            >
-              {{codeList.label}}
-            </PowerSelect>
-            {{#if this.variableToEdit.codeList}}
-              <ul
-                class='au-c-list-help au-c-help-text au-c-help-text--secondary'
-              >
-                {{#each this.variableToEdit.codeList.concepts as |option|}}
-                  <li class='au-c-list-help__item'>{{option.label}}</li>
-                {{/each}}
-              </ul>
-            {{/if}}
-            <ErrorMessage @error={{this.variableToEdit.error.codelist}} />
+            {{#let
+              (getPromiseState this.variableToEdit.codeList)
+              as |codelistPromise|
+            }}
+              {{#if codelistPromise.isSuccess}}
+                <PowerSelect
+                  @triggerClass='au-u-margin-top-tiny'
+                  @allowClear={{false}}
+                  @searchEnabled={{true}}
+                  @options={{this.codeLists}}
+                  @selected={{or this.editedCodelist codelistPromise.value}}
+                  @onChange={{this.updateCodelist}}
+                  as |codeList|
+                >
+                  {{codeList.label}}
+                </PowerSelect>
+                {{#if (or this.editedCodelist codelistPromise.value)}}
+                  {{#let
+                    (getPromiseState
+                      (or
+                        this.editedCodelist.concepts
+                        codelistPromise.value.concepts
+                      )
+                    )
+                    as |conceptsPromise|
+                  }}
+                    {{#if conceptsPromise.isSuccess}}
+                      <ul
+                        class='au-c-list-help au-c-help-text au-c-help-text--secondary'
+                      >
+                        {{#each conceptsPromise.value as |option|}}
+                          <li class='au-c-list-help__item'>{{option.label}}</li>
+                        {{/each}}
+                      </ul>
+                    {{/if}}
+                  {{/let}}
+                {{/if}}
+              {{/if}}
+              <ErrorMessage @error={{this.variableToEdit.error.codelist}} />
+            {{/let}}
           {{/if}}
         </div>
         <AuLabel
