@@ -11,7 +11,11 @@ import type SkosConcept from './skos-concept';
 export default class ReferenceVariable extends Variable {
   declare [Type]: 'reference-variable' | string;
 
-  @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
+  @belongsTo<SkosConcept>('skos-concept', {
+    inverse: null,
+    async: true,
+    polymorphic: true,
+  })
   declare defaultValue: AsyncBelongsTo<SkosConcept>;
 
   @belongsTo<CodeList>('code-list', { inverse: 'variables', async: true })
