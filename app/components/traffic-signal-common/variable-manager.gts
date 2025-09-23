@@ -463,7 +463,9 @@ class VariableDefaultValueLabel extends Component<{
   @cached
   get defaultValueRepr() {
     const variable = this.args.variable;
-    if (isTextVariable(variable) || isNumberVariable(variable)) {
+    if (isTextVariable(variable)) {
+      return `"${variable.defaultValue}"`;
+    } else if (isNumberVariable(variable)) {
       return variable.defaultValue;
     } else if (isDateVariable(variable)) {
       return (
@@ -474,7 +476,7 @@ class VariableDefaultValueLabel extends Component<{
       const defaultValuePromiseState = getPromiseState(variable.defaultValue);
       return (
         defaultValuePromiseState.isSuccess &&
-        defaultValuePromiseState.value?.label
+        `"${defaultValuePromiseState.value?.label}"`
       );
     } else {
       return;
@@ -484,7 +486,7 @@ class VariableDefaultValueLabel extends Component<{
   <template>
     {{#if this.defaultValueRepr}}
       {{!template-lint-disable no-bare-strings}}
-      <span>&quot;{{this.defaultValueRepr}}&quot;</span>
+      <span>{{this.defaultValueRepr}}</span>
     {{else}}
       <span class='au-u-italic'>{{t 'utility.n/a'}}</span>
     {{/if}}
