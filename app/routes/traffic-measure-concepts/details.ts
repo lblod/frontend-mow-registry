@@ -17,10 +17,13 @@ export default class TrafficMeasureConceptsDetailsRoute extends Route {
         findRecord<TrafficMeasureConcept>('traffic-measure-concept', params.id),
       )
       .then((res) => res.content);
+    const signs = Array.from(
+      await trafficMeasureConcept.relatedTrafficSignalConceptsOrdered,
+    );
 
     return {
       trafficMeasureConcept,
-      signs: await trafficMeasureConcept.relatedTrafficSignalConcepts,
+      signs: signs.sort((a, b) => a.position - b.position),
     };
   }
 }

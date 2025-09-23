@@ -9,7 +9,6 @@ import type { Type } from '@warp-drive/core/types/symbols';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import type Image from 'mow-registry/models/image';
 import type Template from './template';
-import type TrafficMeasureConcept from './traffic-measure-concept';
 import {
   validateBelongsToOptional,
   validateBelongsToRequired,
@@ -21,6 +20,8 @@ import {
 } from 'mow-registry/validators/schema';
 import type TribontShape from './tribont-shape';
 import type Variable from './variable';
+import TrafficSignalListItem from './traffic-signal-list-item';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class TrafficSignalConcept extends SkosConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
@@ -56,13 +57,6 @@ export default class TrafficSignalConcept extends SkosConcept {
   @belongsTo<TribontShape>('tribont-shape', { inverse: null, async: true })
   declare defaultShape: AsyncBelongsTo<TribontShape>;
 
-  @hasMany<TrafficMeasureConcept>('traffic-measure-concept', {
-    async: true,
-    inverse: 'relatedTrafficSignalConcepts',
-    as: 'traffic-signal-concept',
-  })
-  declare hasTrafficMeasureConcepts: AsyncHasMany<TrafficMeasureConcept>;
-
   get validationSchema() {
     return super.validationSchema.keys({
       shapes: validateHasManyOptional(),
@@ -75,7 +69,6 @@ export default class TrafficSignalConcept extends SkosConcept {
       meaning: validateStringRequired(),
       status: validateBelongsToOptional(),
       hasInstructions: validateHasManyOptional(),
-      hasTrafficMeasureConcepts: validateHasManyOptional(),
       variables: validateHasManyOptional(),
     });
   }
@@ -83,6 +76,21 @@ export default class TrafficSignalConcept extends SkosConcept {
   async destroyWithRelations() {
     // This doesn't delete the status or hasTrafficMeasureConcepts relations as it wasn't clear what
     // the expectation would be for these since they don't appear to be used
+    if (this.uri) {
+      const trafficListItems = await this.store
+        .request(
+          query<TrafficSignalListItem>('traffic-signal-list-item', {
+            filter: {
+              item: {
+                ':uri:': this.uri,
+              },
+            },
+          }),
+        )
+        .then((res) => res.content);
+      await Promise.all(trafficListItems.map((item) => item.destroyRecord()));
+    }
+
     const [variables, image, instructions, shapes] = await Promise.all([
       this.variables,
       this.image,

@@ -12,13 +12,15 @@ export default class CodelistsManagementEditRoute extends Route {
 
   async model(params: Params) {
     const codelist = await this.store
-      .request(findRecord<CodeList>('code-list', params.id))
+      .request(
+        findRecord<CodeList>('code-list', params.id, {
+          include: ['type', 'concepts'],
+        }),
+      )
       .then((res) => res.content);
-    const concepts = await codelist.concepts;
 
     return {
       codelist,
-      concepts,
     };
   }
 }

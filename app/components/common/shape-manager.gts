@@ -5,14 +5,7 @@ import { on } from '@ember/modifier';
 import { fn, get } from '@ember/helper';
 import Store from 'mow-registry/services/store';
 import t from 'ember-intl/helpers/t';
-// @ts-expect-error need to move to truth-helpers v4
-import eq from 'ember-truth-helpers/helpers/eq';
-// @ts-expect-error need to move to truth-helpers v4
-import lte from 'ember-truth-helpers/helpers/lte';
-// @ts-expect-error need to move to truth-helpers v4
-import not from 'ember-truth-helpers/helpers/not';
-// @ts-expect-error need to move to truth-helpers v4
-import or from 'ember-truth-helpers/helpers/or';
+import { and, eq, lte, not, or } from 'ember-truth-helpers';
 // @ts-expect-error no types
 import promiseAwait from 'ember-promise-helpers/helpers/await';
 import PowerSelect from 'ember-power-select/components/power-select';
@@ -42,7 +35,7 @@ interface Signature {
     trafficSignalConcept: TrafficSignalConcept;
     shapes: TribontShape[];
     defaultShape?: TribontShape | AsyncBelongsTo<TribontShape>;
-    addShape: () => void;
+    addShape: () => Promise<TribontShape>;
     toggleDefaultShape: (shape: TribontShape) => Promise<void>;
     removeShape: (shapeToRemove: TribontShape) => void;
     removeDimension: (
@@ -64,32 +57,11 @@ export default class ShapeManager extends Component<Signature> {
     this.unitsPromise = this.fetchUnits();
     this.shapeClassificationsPromise = this.fetchShapeClassifications();
     this.quantityKindsPromise = this.fetchQuantityKinds();
-    void this.ensureShapeData();
   }
 
   plusOne = (value: number) => {
     return value + 1;
   };
-
-  get shouldPreventDeletion() {
-    return this.args.shapes.length <= 1;
-  }
-
-  async ensureShapeData() {
-    // Needed to work around the following error:
-    // You attempted to update <RelatedCollection:tribont-shape>.length, but it had already been used previously in the same computation...
-    await Promise.resolve();
-
-    const shapes = this.args.shapes;
-
-    if (shapes.length === 0) {
-      const shape = this.store.createRecord<TribontShape>('tribont-shape', {
-        dimensions: [this.store.createRecord<Dimension>('dimension', {})],
-      });
-
-      shapes.push(shape);
-    }
-  }
 
   async fetchUnits() {
     this.units = await this.store
@@ -145,12 +117,22 @@ export default class ShapeManager extends Component<Signature> {
     dimension.value = !Number.isNaN(newValue) ? newValue : undefined;
   };
 
+  removeShapeAndToggleIfNeeded = (shape: TribontShape) => {
+    if (shape.id === this.args.defaultShape?.id) {
+      this.args.toggleDefaultShape(shape);
+    }
+    this.args.removeShape(shape);
+  };
+
+  addShapeAndDimension = async () => {
+    const shape = await this.args.addShape();
+    this.addDimension(shape);
+  };
+
   <template>
     <AuFieldset as |f|>
       <f.legend
         @skin='6'
-        @required={{true}}
-        @requiredLabel={{t 'utility.required'}}
         @error={{isSome (get @trafficSignalConcept.error 'shapes')}}
       >
         {{t 'utility.shapes'}}
@@ -172,7 +154,6 @@ export default class ShapeManager extends Component<Signature> {
                   <Group>
                     <AuButton
                       @skin='naked'
-                      @disabled={{this.shouldPreventDeletion}}
                       @icon='bin'
                       @alert={{true}}
                       {{on 'click' (fn @removeShape shape)}}
@@ -209,7 +190,9 @@ export default class ShapeManager extends Component<Signature> {
                   </div>
                   <div class='au-u-1-2'>
                     <AuCheckbox
-                      @checked={{eq shape.id @defaultShape.id}}
+                      @checked={{isSome
+                        (and @defaultShape.id (eq shape.id @defaultShape.id))
+                      }}
                       @onChange={{fn @toggleDefaultShape shape}}
                     >
                       {{t 'road-sign-concept.attr.default-shape'}}
@@ -347,7 +330,7 @@ export default class ShapeManager extends Component<Signature> {
             @skin='secondary'
             @icon='add'
             @width='block'
-            {{on 'click' @addShape}}
+            {{on 'click' this.addShapeAndDimension}}
           >
             {{t 'road-sign-concept.add-shape'}}
           </AuButton>

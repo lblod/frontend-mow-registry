@@ -12,11 +12,13 @@ import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept'
 import { isSome } from 'mow-registry/utils/option';
 import { query } from '@warp-drive/legacy/compat/builders';
 import type { LegacyResourceQuery } from '@warp-drive/core/types';
+import TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
 
 type Args = {
   selectedType: SignType;
   selectedValidation?: string | null;
-  addSign: (sign: TrafficSignalConcept) => void;
+  addSign: (sign: TrafficSignalListItem) => void;
+  signs: TrafficSignalListItem[];
 };
 export default class TrafficMeasureAddSignComponent extends Component<Args> {
   @service declare store: Store;
@@ -60,8 +62,15 @@ export default class TrafficMeasureAddSignComponent extends Component<Args> {
 
   @action
   addSign(selected: TrafficSignalConcept) {
+    const signListItem = this.store.createRecord<TrafficSignalListItem>(
+      'traffic-signal-list-item',
+      {
+        position: this.args.signs.length,
+        item: selected,
+      },
+    );
     if (selected) {
-      this.args.addSign(selected);
+      this.args.addSign(signListItem);
       this.selected = null;
     }
   }

@@ -11,19 +11,16 @@ import CodelistsService from 'mow-registry/services/codelists';
 import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 import Template from 'mow-registry/models/template';
 import { unwrap } from 'mow-registry/utils/option';
-import RoadSignConcept from 'mow-registry/models/road-sign-concept';
-import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
-import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import CodeList from 'mow-registry/models/code-list';
 import ApplicationInstance from '@ember/application/instance';
 import type { SignType } from 'mow-registry/components/traffic-measure/select-type';
-import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
 import { TrackedArray } from 'tracked-built-ins';
 import validateTrafficMeasureDates from 'mow-registry/utils/validate-traffic-measure-dates';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
+import type TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
 
 export type InputType = {
   value: string;
@@ -41,7 +38,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @tracked codeLists?: CodeList[];
   @tracked declare trafficMeasureConcept: TrafficMeasureConcept;
-  @tracked signs: TrafficSignalConcept[] = [];
+  @tracked signs: TrafficSignalListItem[] = [];
   @tracked variables: Variable[] = [];
   @tracked template?: Template | null;
   @tracked searchString?: string;
@@ -130,25 +127,6 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     return this.preview ? htmlSafe(this.preview) : null;
   }
 
-  get label() {
-    let result = '';
-
-    this.signs.forEach((sign) => {
-      if (sign instanceof RoadSignConcept) {
-        result = `${result}${sign.label ?? ''}-`;
-      } else if (sign instanceof RoadMarkingConcept) {
-        result = `${result}${sign.label ?? ''}-`;
-      } else if (sign instanceof TrafficLightConcept) {
-        result = `${result}${sign.label ?? ''}-`;
-      }
-    });
-
-    //get rid of the last dash
-    result = result.slice(0, -1);
-
-    return result;
-  }
-
   get isSelectedTypeEmpty() {
     return !this.selectedType;
   }
@@ -156,7 +134,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   fetchData = task(async () => {
     // Wait for data loading
     const relatedTrafficSignals =
-      await this.trafficMeasureConcept.relatedTrafficSignalConcepts;
+      await this.trafficMeasureConcept.relatedTrafficSignalConceptsOrdered;
 
     this.codeLists = await this.codeListService.all.perform();
 
@@ -174,6 +152,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     }
 
     this.signs = new TrackedArray(relatedTrafficSignals);
+    this.signs.sort((a, b) => a.position - b.position);
 
     await this.fetchInstructions.perform();
 
@@ -184,7 +163,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //refresh instruction list from available signs
     const instructions: Template[] = [];
     for (let i = 0; i < this.signs.length; i++) {
-      const sign = this.signs[i];
+      const sign = await this.signs[i]?.item;
       if (sign) {
         const signInstructions = await sign.hasInstructions;
         signInstructions.forEach((instr) => instructions.push(instr));
@@ -228,16 +207,34 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   }
 
   @action
-  async addSign(sign: TrafficSignalConcept) {
+  async addSign(sign: TrafficSignalListItem) {
     this.signs.push(sign);
+    (await this.trafficMeasureConcept.relatedTrafficSignalConceptsOrdered).push(
+      sign,
+    );
     await this.fetchInstructions.perform();
     this.selectedType = null;
   }
 
   @action
-  async removeSign(sign: TrafficSignalConcept) {
+  async removeSign(sign: TrafficSignalListItem) {
     removeItem(this.signs, sign);
+    removeItem(
+      await this.trafficMeasureConcept.relatedTrafficSignalConceptsOrdered,
+      sign,
+    );
     await this.fetchInstructions.perform();
+  }
+
+  @action
+  sortSigns(signs: TrafficSignalListItem[]) {
+    for (let i = 0; i < signs.length; i++) {
+      const sign = signs[i];
+      if (sign && sign.position !== i) {
+        sign.position = i;
+      }
+    }
+    this.signs = new TrackedArray(signs);
   }
 
   @action
@@ -438,12 +435,21 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
     //1-parse everything again
     await this.parseTemplate();
 
-    //2-update node shape
-    this.trafficMeasureConcept.label = this.label;
-    await this.store.request(saveRecord(this.trafficMeasureConcept));
-
-    //3-update roadsigns
+    //2-update roadsigns
     await this.saveRoadsigns.perform(this.trafficMeasureConcept);
+
+    //3-update node shape
+
+    let label = '';
+    for (const signOrdered of this.signs) {
+      const sign = await signOrdered.item;
+      label = `${label}${sign?.label ?? ''}-`;
+    }
+    //get rid of the last dash
+    label = label.slice(0, -1);
+    this.trafficMeasureConcept.label = label;
+
+    await this.store.request(saveRecord(this.trafficMeasureConcept));
 
     //4-handle variable variables
     await this.saveVariables.perform(template);
@@ -460,23 +466,19 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
   saveRoadsigns = task(async (trafficMeasureConcept: TrafficMeasureConcept) => {
     // delete existing ones
     const existingRelatedSigns = (
-      await trafficMeasureConcept.relatedTrafficSignalConcepts
+      await trafficMeasureConcept.relatedTrafficSignalConceptsOrdered
     ).slice();
 
     const deletedSigns = existingRelatedSigns.filter(
       (sign) => !this.signs.includes(sign),
     );
-    const addedSigns = this.signs.filter(
-      (sign) => !existingRelatedSigns.includes(sign),
-    );
 
     for (const sign of deletedSigns) {
-      removeItem(await sign.hasTrafficMeasureConcepts, trafficMeasureConcept);
+      sign.deleteRecord();
       await this.store.request(saveRecord(sign));
     }
 
-    for (const sign of addedSigns) {
-      (await sign.hasTrafficMeasureConcepts).push(trafficMeasureConcept);
+    for (const sign of this.signs) {
       await this.store.request(saveRecord(sign));
     }
   });

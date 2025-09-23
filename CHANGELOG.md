@@ -1,5 +1,21 @@
 # frontend-mow-registry
 
+## 2.8.0
+
+### Minor Changes
+
+- [#345](https://github.com/lblod/frontend-mow-registry/pull/345) [`79671dba548e1b58ab18971d15ab32c4c8ee869d`](https://github.com/lblod/frontend-mow-registry/commit/79671dba548e1b58ab18971d15ab32c4c8ee869d) Thanks [@piemonkey](https://github.com/piemonkey)! - Move codelist values to new model with support for recording the position of the value in the codelist and sort values by this position in the UI
+
+## 2.7.0
+
+### Minor Changes
+
+- [#340](https://github.com/lblod/frontend-mow-registry/pull/340) [`9ec48a3a6f14cf51aacba06f34b4051ae0e5de0c`](https://github.com/lblod/frontend-mow-registry/commit/9ec48a3a6f14cf51aacba06f34b4051ae0e5de0c) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Make shapes not required anymore on signs
+
+### Patch Changes
+
+- [#343](https://github.com/lblod/frontend-mow-registry/pull/343) [`600aabacd645961f1e2724db689522847615dc19`](https://github.com/lblod/frontend-mow-registry/commit/600aabacd645961f1e2724db689522847615dc19) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Add variable signage to filters and details in measures
+
 ## 2.6.0
 
 ### Minor Changes

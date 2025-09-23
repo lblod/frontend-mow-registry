@@ -40,6 +40,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   @tracked templateValue = '';
   @tracked sort = ':no-case:label';
   @tracked validation?: string | null;
+  @tracked variableSignage?: string | null;
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
@@ -50,10 +51,22 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
       { value: 'false', label: this.intl.t('validation-status.draft') },
     ];
   }
+  get variableSignageOptions() {
+    return [
+      { value: 'true', label: this.intl.t('variable-signage-selector.yes') },
+      { value: 'false', label: this.intl.t('variable-signage-selector.no') },
+    ];
+  }
 
   get selectedValidationStatus() {
     return this.validationStatusOptions.find(
       (option) => option.value === this.validation,
+    );
+  }
+
+  get selectedVariableSignage() {
+    return this.variableSignageOptions.find(
+      (option) => option.value === this.variableSignage,
     );
   }
 
@@ -103,6 +116,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
         validityOption: this.validityOption,
         validityStartDate: this.validityStartDate,
         validityEndDate: this.validityEndDate,
+        variableSignage: this.variableSignage,
       },
     );
     queryParams['filter'] = {
@@ -143,6 +157,18 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   }
 
   @action
+  updateSignageFilter(
+    selectedOption: (typeof this.variableSignageOptions)[number],
+  ) {
+    if (selectedOption) {
+      this.variableSignage = selectedOption.value;
+      this.resetPagination();
+    } else {
+      this.variableSignage = null;
+    }
+  }
+
+  @action
   updateValidityFilter({
     validityOption,
     startDate,
@@ -173,6 +199,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
     this.label = '';
     this.templateValue = '';
     this.validation = null;
+    this.variableSignage = null;
     this.validityOption = null;
     this.validityStartDate = null;
     this.validityEndDate = null;
