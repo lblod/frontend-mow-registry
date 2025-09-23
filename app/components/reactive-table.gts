@@ -101,13 +101,13 @@ export default class ReactiveTableComponent<T> extends Component<Signature<T>> {
       as |table|
     >
       <span
+        {{! TODO: refactor did-insert and did-update }}
+        {{!template-lint-disable no-at-ember-render-modifiers}}
         {{didInsert this.initialize}}
         {{didUpdate this.onPageChange this._page}}
         {{didUpdate this.onSortChange this._sort}}
         {{didUpdate this.onExternalPageChange @page}}
         {{didUpdate this.onExternalSortChange @sort}}
-        {{! TODO: refactor did-insert and did-update }}
-        {{!template-lint-disable no-at-ember-render-modifiers}}
       ></span>
       <table.menu as |menu|>
         <menu.general>
