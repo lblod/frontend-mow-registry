@@ -13,12 +13,7 @@ import didInsert from '@ember/render-modifiers/modifiers/did-insert';
 import { task } from 'ember-concurrency';
 // @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
-// @ts-expect-error need to move to truth-helpers v4
-import not from 'ember-truth-helpers/helpers/not';
-// @ts-expect-error need to move to truth-helpers v4
-import eq from 'ember-truth-helpers/helpers/eq';
-// @ts-expect-error need to move to truth-helpers v4
-import or from 'ember-truth-helpers/helpers/or';
+import { eq, not } from 'ember-truth-helpers';
 import t from 'ember-intl/helpers/t';
 import type IntlService from 'ember-intl/services/intl';
 import PowerSelect from 'ember-power-select/components/power-select';
@@ -311,6 +306,11 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     }
   });
 
+  // This terribly named method exists to prevent prettier from insisting on a newline which
+  // prevents the glint-expect-error from functioning. An eslint-disable-next-line doesn't work
+  // either as both have to be for the next line. :/
+  getCon = (codelist: CodeList) => codelist.get('concepts');
+
   <template>
     <div>
       <AuToolbar @size='large' as |Group|>
@@ -483,10 +483,8 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                           {{codeList.label}}
                         </PowerSelect>
                         <ul>
-                          {{#each
-                            (or (get variable.codeList 'concepts'))
-                            as |option|
-                          }}
+                          {{! @glint-expect-error #each should probably take promises too }}
+                          {{#each (this.getCon variable.codeList) as |option|}}
                             <li> - {{option.label}}</li>
                           {{/each}}
                         </ul>

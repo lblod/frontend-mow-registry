@@ -15,7 +15,7 @@
         {{on "click" (perform this.save)}}
         @loading={{if this.save.isRunning true false}}
         @loadingMessage={{t "utility.save"}}
-        @disabled={{or @trafficMeasureConcept.error this.isSaving}}
+        @disabled={{or @trafficMeasureConcept.error this.save.isRunning}}
       >
         {{t "utility.save"}}
       </AuButton>
@@ -154,6 +154,7 @@
             @selectedValidation={{this.signValidation}}
             @addSign={{this.addSign}}
             @disabled={{this.isSelectedTypeEmpty}}
+            @signs={{this.signs}}
           />
         </div>
         <div class="au-o-grid__item">
@@ -161,6 +162,7 @@
             @removeSign={{this.removeSign}}
             @addInstructionToTemplate={{this.addInstructionToTemplate}}
             @signs={{this.signs}}
+            @onSort={{this.sortSigns}}
           />
         </div>
       </div>
