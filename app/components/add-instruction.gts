@@ -11,7 +11,6 @@ import { get } from '@ember/helper';
 // eslint-disable-next-line ember/no-at-ember-render-modifiers
 import didInsert from '@ember/render-modifiers/modifiers/did-insert';
 import { task } from 'ember-concurrency';
-// @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
 import { eq, not } from 'ember-truth-helpers';
 import t from 'ember-intl/helpers/t';
@@ -38,6 +37,7 @@ import { isSome } from 'mow-registry/utils/option';
 import { removeItem } from 'mow-registry/utils/array';
 import validateTemplateDates from 'mow-registry/utils/validate-template-dates';
 import ErrorMessage from 'mow-registry/components/error-message';
+import { getPromiseState } from '@warp-drive/ember';
 
 export interface AddInstructionSig {
   Args: {
@@ -457,9 +457,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                   <tr>
                     <td>{{variable.label}}</td>
                     <td>
-                      {{! @glint-expect-error need to move to PS 8 }}
                       <PowerSelect
-                        {{! @glint-expect-error need to move to PS 8 }}
                         @allowClear={{false}}
                         @searchEnabled={{false}}
                         @options={{this.inputTypes}}
@@ -470,24 +468,38 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                         {{type}}
                       </PowerSelect>
                       {{#if (eq variable.type 'codelist')}}
-                        {{! @glint-expect-error need to move to PS 8 }}
-                        <PowerSelect
-                          @allowClear={{false}}
-                          @searchEnabled={{false}}
-                          {{! @glint-expect-error need to move to PS 8 }}
-                          @options={{this.codeLists}}
-                          @selected={{variable.codeList}}
-                          @onChange={{fn this.updateCodeList variable}}
-                          as |codeList|
-                        >
-                          {{codeList.label}}
-                        </PowerSelect>
-                        <ul>
-                          {{! @glint-expect-error #each should probably take promises too }}
-                          {{#each (this.getCon variable.codeList) as |option|}}
-                            <li> - {{option.label}}</li>
-                          {{/each}}
-                        </ul>
+                        {{#let
+                          (getPromiseState variable.codeList)
+                          as |codelistPromise|
+                        }}
+                          {{#if codelistPromise.isSuccess}}
+                            <PowerSelect
+                              @allowClear={{false}}
+                              @searchEnabled={{false}}
+                              @options={{this.codeLists}}
+                              @selected={{codelistPromise.value}}
+                              @onChange={{fn this.updateCodeList variable}}
+                              as |codeList|
+                            >
+                              {{codeList.label}}
+                            </PowerSelect>
+                            {{#if codelistPromise.value}}
+                              {{#let
+                                (getPromiseState codelistPromise.value.concepts)
+                                as |conceptsPromise|
+                              }}
+                                {{#if conceptsPromise.isSuccess}}
+                                  <ul>
+                                    {{#each conceptsPromise.value as |option|}}
+                                      <li> - {{option.label}}</li>
+                                    {{/each}}
+                                  </ul>
+                                {{/if}}
+                              {{/let}}
+                            {{/if}}
+
+                          {{/if}}
+                        {{/let}}
                       {{/if}}
                     </td>
                   </tr>

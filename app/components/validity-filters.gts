@@ -93,9 +93,7 @@ export default class ValidityFilters extends Component<ValidityFiltersSig> {
     <AuLabel for='validity-filter'>
       {{t 'validity-filter.label'}}
     </AuLabel>
-    {{! @glint-expect-error need to move to PS 8 }}
     <PowerSelect
-      {{! @glint-expect-error need to move to PS 8 }}
       @allowClear={{true}}
       @options={{this.validityStatusOptions}}
       @selected={{this.selected}}

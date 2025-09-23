@@ -193,8 +193,7 @@ export default class TrafficMeasureIndexComponent extends Component<Args> {
 
   @action
   async updateCodelist(variable: Variable, codeList: CodeList) {
-    //@ts-expect-error currently the ts types don't allow direct assignment of relationships
-    variable.codeList = codeList;
+    variable.set('codeList', codeList);
     await this.generatePreview.perform();
   }
 
