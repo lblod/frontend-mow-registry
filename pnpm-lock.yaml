@@ -11,7 +11,7 @@ packageExtensionsChecksum: sha256-zMei20T4rPW0COvJVuosJJ3smXvs8TYc8lLAxNng4oU=
 
 patchedDependencies:
   ember-metis:
-    hash: 0cffd03b06e18efc784996088e480ac96832de99898b21606ec6f231136cc41e
+    hash: 7af778b80bbdfeffd7ac6285e541221f0593092965a3764f06c5719aa0759749
     path: patches/ember-metis.patch
 
 importers:
@@ -201,7 +201,7 @@ importers:
         version: 3.0.1(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))
       ember-metis:
         specifier: ^0.12.0
-        version: 0.12.0(patch_hash=0cffd03b06e18efc784996088e480ac96832de99898b21606ec6f231136cc41e)(3d707561dd18446382134ad6a2fca637)
+        version: 0.12.0(patch_hash=7af778b80bbdfeffd7ac6285e541221f0593092965a3764f06c5719aa0759749)(3d707561dd18446382134ad6a2fca637)
       ember-modifier:
         specifier: ^4.2.0
         version: 4.2.2(@babel/core@7.28.0)
@@ -14699,7 +14699,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-metis@0.12.0(patch_hash=0cffd03b06e18efc784996088e480ac96832de99898b21606ec6f231136cc41e)(3d707561dd18446382134ad6a2fca637):
+  ember-metis@0.12.0(patch_hash=7af778b80bbdfeffd7ac6285e541221f0593092965a3764f06c5719aa0759749)(3d707561dd18446382134ad6a2fca637):
     dependencies:
       '@appuniversum/ember-appuniversum': 3.12.0(@ember/test-helpers@3.3.1(@babel/core@7.28.0)(@glint/template@1.5.2)(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))(webpack@5.99.9))(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/environment-ember-loose@1.5.2(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(ember-cli-htmlbars@6.3.0)(ember-modifier@4.2.2(@babel/core@7.28.0)))(@glint/template@1.5.2)(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))(tracked-built-ins@3.4.0(@babel/core@7.28.0))(webpack@5.99.9)
       '@babel/core': 7.28.0(supports-color@8.1.1)
