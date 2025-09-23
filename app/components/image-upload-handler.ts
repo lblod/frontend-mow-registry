@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import FileService from 'mow-registry/services/file-service';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import Image from 'mow-registry/models/image';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type Icon from 'mow-registry/models/icon';

@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import type Template from 'mow-registry/models/template';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import type AncesterRoute from 'mow-registry/routes/road-marking-concepts/road-marking-concept';
 
 type Params = {

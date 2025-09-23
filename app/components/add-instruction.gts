@@ -4,7 +4,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type RouterService from '@ember/routing/router-service';
 import type { NamedRouteArgs } from '@ember/routing/lib/utils';
 import { get } from '@ember/helper';

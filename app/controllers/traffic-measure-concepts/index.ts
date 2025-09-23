@@ -7,10 +7,10 @@ import type Template from 'mow-registry/models/template';
 import type IntlService from 'ember-intl/services/intl';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 import { trackedFunction } from 'reactiveweb/function';
-import type { LegacyResourceQuery } from '@ember-data/store/types';
+import type { LegacyResourceQuery } from '@warp-drive/core/types';
 
 export default class TrafficMeasureConceptsIndexController extends Controller {
   queryParams = [

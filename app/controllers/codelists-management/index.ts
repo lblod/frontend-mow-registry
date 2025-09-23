@@ -4,9 +4,9 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { trackedFunction } from 'reactiveweb/function';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type CodeList from 'mow-registry/models/code-list';
-import type { LegacyResourceQuery } from '@ember-data/store/types';
+import type { LegacyResourceQuery } from '@warp-drive/core/types';
 
 export default class CodelistsManagementIndexController extends Controller {
   queryParams = ['page', 'size', 'label', 'sort'];

@@ -9,10 +9,10 @@ import type IntlService from 'ember-intl/services/intl';
 import { service } from '@ember/service';
 import fetchManualData from 'mow-registry/utils/fetch-manual-data';
 import generateMeta from 'mow-registry/utils/generate-meta';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import { trackedFunction } from 'reactiveweb/function';
-import type { LegacyResourceQuery } from '@ember-data/store/types';
+import type { LegacyResourceQuery } from '@warp-drive/core/types';
 
 export default class RoadsignConceptsIndexController extends Controller {
   queryParams = [
@@ -109,19 +109,28 @@ export default class RoadsignConceptsIndexController extends Controller {
         validityEndDate: this.validityEndDate,
       },
     );
+
     query['filter'] = {
       id: roadsignConceptUris.join(','),
     };
+
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
-    const roadSigns = roadsignConceptUris.length
-      ? await this.store.query<RoadSignConcept>('road-sign-concept', query)
-      : ([] as RoadSignConcept[] as Awaited<
-          ReturnType<typeof this.store.query<RoadSignConcept>>
-        >);
-    roadSigns.meta = generateMeta({ page: this.page, size: this.size }, count);
-    roadSigns.meta[count] = count;
-    return roadSigns;
+    try {
+      const roadSigns = roadsignConceptUris.length
+        ? await this.store.query<RoadSignConcept>('road-sign-concept', query)
+        : ([] as RoadSignConcept[] as Awaited<
+            ReturnType<typeof this.store.query<RoadSignConcept>>
+          >);
+      roadSigns.meta = generateMeta(
+        { page: this.page, size: this.size },
+        count,
+      );
+      roadSigns.meta[count] = count;
+      return roadSigns;
+    } catch (e) {
+      console.error(e);
+    }
   });
 
   get selectedClassification() {

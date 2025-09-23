@@ -25,7 +25,7 @@ import {
 } from 'mow-registry/utils/constants';
 import CodeList from 'mow-registry/models/code-list';
 import SkosConcept from 'mow-registry/models/skos-concept';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type RouterService from '@ember/routing/router-service';
 import Icon from 'mow-registry/models/icon';
 import { removeItem } from 'mow-registry/utils/array';

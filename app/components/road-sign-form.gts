@@ -10,7 +10,7 @@ import RoadSignCategory from 'mow-registry/models/road-sign-category';
 import TribontShape from 'mow-registry/models/tribont-shape';
 import { tracked } from '@glimmer/tracking';
 import { removeItem } from 'mow-registry/utils/array';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type Variable from 'mow-registry/models/variable';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import BreadcrumbsItem from '@bagaar/ember-breadcrumbs/components/breadcrumbs-item';

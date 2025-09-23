@@ -3,12 +3,12 @@ import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
 // @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import { tracked } from '@glimmer/tracking';
 import PowerSelect from 'ember-power-select/components/power-select';
 import t from 'ember-intl/helpers/t';
-import type { LegacyResourceQuery } from '@ember-data/store/types';
 import type Icon from 'mow-registry/models/icon';
+import type { LegacyResourceQuery } from '@warp-drive/core/types';
 
 interface Signature {
   Args: {
