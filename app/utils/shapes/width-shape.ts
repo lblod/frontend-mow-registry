@@ -39,7 +39,7 @@ export default class WidthShape implements Shape {
     if (!shape.id) return;
     const dimensions = await shape.dimensions;
     const widthDimension = dimensions.find(
-      (dimension) => dimension.kind.uri === DIMENSIONS.width,
+      (dimension) => dimension.kind?.uri === DIMENSIONS.width,
     );
     if (!widthDimension) return;
     const width = await dimensionToShapeDimension(widthDimension, 'width');

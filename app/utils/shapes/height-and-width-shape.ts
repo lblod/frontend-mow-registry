@@ -49,11 +49,11 @@ export default class HeightAndWidhtShape implements Shape {
     if (!shape.id) return;
     const dimensions = await shape.dimensions;
     const heightDimension = dimensions.find(
-      (dimension) => dimension.kind.uri === DIMENSIONS.height,
+      (dimension) => dimension.kind?.uri === DIMENSIONS.height,
     );
 
     const widthDimension = dimensions.find(
-      (dimension) => dimension.kind.uri === DIMENSIONS.width,
+      (dimension) => dimension.kind?.uri === DIMENSIONS.width,
     );
     if (!heightDimension || !widthDimension) return;
     const height = await dimensionToShapeDimension(heightDimension, 'height');

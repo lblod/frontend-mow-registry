@@ -47,7 +47,7 @@ export default class Circular implements Shape {
     if (!shape.id) return;
     const dimensions = await shape.dimensions;
     const radiusDimension = dimensions.find(
-      (dimension) => dimension.kind.uri === DIMENSIONS.radius,
+      (dimension) => dimension.kind?.uri === DIMENSIONS.radius,
     );
     if (!radiusDimension) return;
     const radius = await dimensionToShapeDimension(radiusDimension, 'radius');
