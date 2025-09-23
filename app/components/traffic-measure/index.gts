@@ -489,8 +489,9 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     //create new ones
     await Promise.all(this.variables.map((variable) => variable.save()));
     template.set('variables', this.variables);
-
     await template.save();
+    // HACK: Hacky workaround, as setting the `variables` hasMany relationship in the cache does not fully work as expected, so we reload it.
+    await template.variables.reload({});
   });
 
   willDestroy() {

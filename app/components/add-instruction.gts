@@ -314,16 +314,19 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
         await this.template.save();
         (await this.args.concept.hasInstructions).push(this.template);
         await this.args.concept.save();
-        //destroy old ones
+
+        //destroy old variables
         await Promise.all(
           this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
         );
-        //create new ones
+        //save new variables
         await Promise.all(this.variables.map((variable) => variable.save()));
-        this.template.set('variables', this.variables);
 
+        this.template.set('variables', this.variables);
         await this.template.save();
 
+        // HACK: Hacky workaround, as setting the `variables` hasMany relationship in the cache does not fully work as expected, so we reload it.
+        await this.template.variables.reload({});
         this.reset();
       }
     }
