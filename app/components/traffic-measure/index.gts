@@ -191,7 +191,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
       for (let i = 0; i < this.variables.length; i++) {
         const variable = this.variables[i];
         if (variable && isInstructionVariable(variable)) {
-          await this.updateVariableType(i, variable, 'text');
+          await this.updateVariableType(variable, 'text');
         }
       }
     }
@@ -267,19 +267,19 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   }
 
   @action
-  async updateVariableType(
-    varIndex: number,
-    existing: Variable,
-    selectedType: VariableType,
-  ) {
+  async updateVariableType(variable: Variable, selectedType: VariableType) {
+    const varIndex = this.variables.indexOf(variable);
+    if (varIndex === -1) {
+      return;
+    }
     const newVar = (await this.variablesService.convertVariableType(
-      existing,
+      variable,
       selectedType,
     )) as Variable;
     const newVars = [...this.variables];
     newVars[varIndex] = newVar;
     this.variables = newVars;
-    this.variablesToBeDeleted.push(existing);
+    this.variablesToBeDeleted.push(variable);
   }
 
   //parsing algo that keeps ui changes in tact
@@ -771,7 +771,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                       </tr>
                     </thead>
                     <tbody>
-                      {{#each this.variables as |variable varIndex|}}
+                      {{#each this.variables as |variable|}}
                         <tr>
                           <td>{{variable.label}}</td>
                           {{! template-lint-disable no-inline-styles }}
@@ -792,11 +792,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                               @searchEnabled={{false}}
                               @options={{this.variableTypes}}
                               @selected={{variable.type}}
-                              @onChange={{fn
-                                this.updateVariableType
-                                varIndex
-                                variable
-                              }}
+                              @onChange={{fn this.updateVariableType variable}}
                               as |type|
                             >
                               {{this.variablesService.defaultLabelForVariableType

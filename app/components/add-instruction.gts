@@ -95,13 +95,16 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   });
 
   @action
-  async updateVariableType(
-    varIndex: number,
-    existing: Variable,
-    selectedType: SignVariableType,
-  ) {
+  async updateVariableType(variable: Variable, selectedType: SignVariableType) {
+    if (!this.variables) {
+      return;
+    }
+    const varIndex = this.variables.indexOf(variable);
+    if (varIndex === -1) {
+      return;
+    }
     const newVar = (await this.variablesService.convertVariableType(
-      existing,
+      variable,
       selectedType,
     )) as Variable;
     if (this.variables) {
@@ -473,7 +476,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                 </tr>
               </:header>
               <:body>
-                {{#each this.variables as |variable varIndex|}}
+                {{#each this.variables as |variable|}}
                   <tr>
                     <td>{{variable.label}}</td>
                     <td>
@@ -482,11 +485,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                         @searchEnabled={{false}}
                         @options={{signVariableTypes}}
                         @selected={{variable.type}}
-                        @onChange={{fn
-                          this.updateVariableType
-                          varIndex
-                          variable
-                        }}
+                        @onChange={{fn this.updateVariableType variable}}
                         as |type|
                       >
                         {{type}}
