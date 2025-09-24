@@ -4,7 +4,6 @@ import { tracked } from '@glimmer/tracking';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { task } from 'ember-concurrency';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
-import type RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import type Route from 'mow-registry/routes/road-marking-concepts/road-marking-concept/related';
@@ -20,8 +19,6 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
   @tracked isAddingRelatedRoadMarkings = false;
   @tracked isAddingRelatedTrafficLights = false;
 
-  @tracked classification?: RoadSignCategory | null;
-  @tracked classificationRoadMarkings = null;
   @tracked classificationRoadSigns?: RoadSignConcept[] | null;
 
   get isSidebarOpen() {
@@ -127,7 +124,5 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
   reset() {
     this.isAddingRelatedRoadMarkings = false;
     this.isAddingRelatedRoadSigns = false;
-    this.classification = null;
-    this.classificationRoadMarkings = null;
   }
 }

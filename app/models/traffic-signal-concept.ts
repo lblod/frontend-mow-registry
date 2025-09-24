@@ -57,6 +57,22 @@ export default class TrafficSignalConcept extends SkosConcept {
   @belongsTo<TribontShape>('tribont-shape', { inverse: null, async: true })
   declare defaultShape: AsyncBelongsTo<TribontShape>;
 
+  @hasMany<TrafficSignalConcept>('traffic-signal-concept', {
+    inverse: 'canBeContainedInSignals',
+    async: true,
+    polymorphic: true,
+    as: 'traffic-signal-concept',
+  })
+  declare canBeContainedInSignals: AsyncHasMany<TrafficSignalConcept>;
+
+  @hasMany<TrafficSignalConcept>('traffic-signal-concept', {
+    inverse: 'canContainSignals',
+    async: true,
+    polymorphic: true,
+    as: 'traffic-signal-concept',
+  })
+  declare canContainSignals: AsyncHasMany<TrafficSignalConcept>;
+
   get validationSchema() {
     return super.validationSchema.keys({
       shapes: validateHasManyOptional(),

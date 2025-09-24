@@ -49,7 +49,8 @@ utility:
   instruction-details: Instruction details
   main-signs: Main signs
   sub-signs: Sub signs
-  related-traffic-signs: Related traffic signs
+  related-traffic-signals: Related traffic signals
+  can-contain-traffic-signals: Contains signals
   description: Description
   order: Order
   sign: Sign
@@ -92,10 +93,15 @@ utility:
   type: Type
   add-variable: Add new variable
   properties: Properties
+  search: Search
 image-input:
   helptext: Press the button to upload a new image
   preview-alt: A preview of the uploaded image
   image-upload: Image
+traffic-signal-concept:
+  attr:
+    can-contain: This signal can contain
+    can-be-contained-in: This signal can be contained in
 road-sign-concept:
   name: Road Signs
   details: Road sign {label}
@@ -155,6 +161,10 @@ related-road-sign:
     add: Add related road signs
     add-one: Add related road sign
     delete: Remove related road sign
+can-contain:
+  crud:
+    add-can-contain: Add signal this signal can contain
+    add-can-be-contained: Add signal which can contain this signal
 traffic-light-concept:
   name: Traffic Lights
   details: Traffic Light {label}

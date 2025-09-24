@@ -5,7 +5,6 @@ import { task } from 'ember-concurrency';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
-import type RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type TrafficlightConceptRelatedRoute from 'mow-registry/routes/traffic-light-concepts/traffic-light-concept/related';
 import { removeItem } from 'mow-registry/utils/array';
 import type Store from 'mow-registry/services/store';
@@ -19,9 +18,6 @@ export default class TrafficLightConceptsTrafficLightConceptRelatedController ex
   @tracked isAddingRelatedRoadMarkings = false;
   @tracked isAddingRelatedTrafficLights = false;
 
-  @tracked classification: RoadSignCategory | null = null;
-  @tracked classificationTrafficLights = null;
-  @tracked classificationRoadMarkings = null;
   @tracked classificationRoadSigns: RoadSignConcept[] | null = null;
 
   get isSidebarOpen() {

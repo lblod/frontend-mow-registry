@@ -20,7 +20,13 @@ const SidebarTrafficSignal: TOC<Sig> = <template>
   >
     {{! template-lint-disable no-inline-styles }}
     <div class='flex-shrink-0' style='width: 80px;'>
-      <img class='au-c-thumbnail' alt='' src={{@imageUrl}} />
+      <img
+        class='au-c-thumbnail'
+        alt=''
+        src={{@imageUrl}}
+        loading='lazy'
+        decoding='async'
+      />
     </div>
     <div class='flex-grow au-u-margin-left-small au-u-margin-right-small'>
       <p>

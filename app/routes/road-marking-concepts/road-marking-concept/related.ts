@@ -24,6 +24,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedRoute extends R
       allRoadMarkings: this.store
         .request(
           query<RoadMarkingConcept>('road-marking-concept', {
+            include: ['image.file'],
             page: {
               size: 10000,
             },
@@ -38,6 +39,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedRoute extends R
       allTrafficLights: this.store
         .request(
           query<TrafficLightConcept>('traffic-light-concept', {
+            include: ['image.file'],
             page: {
               size: 10000,
             },
@@ -47,6 +49,8 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedRoute extends R
       allRoadSigns: this.store
         .request(
           query<RoadSignConcept>('road-sign-concept', {
+            'filter[classifications][:not:label]': 'Onderbord',
+            include: ['image.file'],
             page: {
               size: 10000,
             },

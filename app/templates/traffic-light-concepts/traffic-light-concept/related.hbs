@@ -8,6 +8,8 @@
     <AuBodyContainer @scroll={{true}} class="au-c-body-container--tables">
       <div class="au-o-flow">
         <RelatedRoadsignsTable
+          @title={{t "road-marking-concept.attr.related-sign"}}
+          @addText={{t "related-road-sign.crud.add"}}
           @content={{sort-by-road-sign-code
             (await @model.trafficLightConcept.relatedRoadSignConcepts)
           }}
@@ -35,9 +37,7 @@
     {{#if this.isAddingRelatedRoadSigns}}
       <SidebarAddSignal
         @title={{t "related-road-sign.crud.add"}}
-        @placeholder={{t
-          "road-sign-concept.crud.classification-filter-placeholder"
-        }}
+        @filterPlaceholder={{t "utility.search"}}
         @addText={{t "related-road-sign.crud.add-one"}}
         @allSignals={{this.model.allRoadSigns}}
         @addSignal={{fn (perform this.addRelatedRoadSign)}}
@@ -48,7 +48,7 @@
     {{#if this.isAddingRelatedRoadMarkings}}
       <SidebarAddSignal
         @title={{t "related-road-marking.crud.add"}}
-        @placeholder={{t "related-road-marking.filter.label"}}
+        @filterPlaceholder={{t "utility.search"}}
         @addText={{t "related-road-marking.crud.add-one"}}
         @allSignals={{this.model.allRoadMarkings}}
         @addSignal={{fn (perform this.addRelatedRoadMarking)}}
@@ -58,9 +58,9 @@
 
     {{#if this.isAddingRelatedTrafficLights}}
       <SidebarAddSignal
-        @title={{t 'related-traffic-light.crud.add'}}
-        @filterPlaceholder={{t 'related-traffic-light.filter.label'}}
-        @addText={{t 'related-traffic-light.crud.add-one'}}
+        @title={{t "related-traffic-light.crud.add"}}
+        @filterPlaceholder={{t "utility.search"}}
+        @addText={{t "related-traffic-light.crud.add-one"}}
         @allSignals={{this.model.allTrafficLights}}
         @addSignal={{fn (perform this.addRelatedTrafficLight)}}
         @onClose={{this.toggleAddRelatedTrafficLights}}

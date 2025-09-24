@@ -10,6 +10,8 @@ import SidebarHeader from './sidebar-header';
 import SidebarTrafficSignal from './sidebar-traffic-signal';
 import sortByRoadSignCode from 'mow-registry/helpers/sort-by-road-sign-code';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
+import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 
 type Sig = {
   Args: {
@@ -17,7 +19,13 @@ type Sig = {
     filterPlaceholder: string;
     addText: string;
     allSignals: TrafficSignalConcept[];
-    addSignal: (signal: TrafficSignalConcept | RoadSignConcept) => void;
+    addSignal: (
+      signal:
+        | TrafficSignalConcept
+        | RoadSignConcept
+        | RoadMarkingConcept
+        | TrafficLightConcept,
+    ) => void;
     onClose: () => void;
   };
   Element: HTMLElement;
