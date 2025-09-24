@@ -330,7 +330,6 @@ export default class ShapeManager extends Component<Signature> {
     const numberValue = Number((event.target as HTMLInputElement).value);
     const shapeDimension = shape[dimension];
     if (shapeDimension) {
-      shapeDimension.dimension.set('value', numberValue);
       shapeDimension.value = numberValue;
     }
   };

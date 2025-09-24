@@ -65,24 +65,41 @@ export const SHAPE_URIS = {
     'http://data.lblod.info/concept-schemes/322852b4-ec7b-4ca2-b267-4fcc263fa0d7',
 };
 
-export type shapeDimension = {
+export class shapeDimension {
   dimension: Dimension;
-  value?: number;
   kind: string;
   unit: Unit;
-};
+  constructor({
+    dimension,
+    kind,
+    unit,
+  }: {
+    dimension: Dimension;
+    kind: string;
+    unit: Unit;
+  }) {
+    this.dimension = dimension;
+    this.kind = kind;
+    this.unit = unit;
+  }
+  set value(value: number) {
+    this.dimension.value = value;
+  }
+  get value(): number | undefined {
+    return this.dimension.value;
+  }
+}
 
 export async function dimensionToShapeDimension(
   dimension: Dimension,
   kind: keyof typeof DIMENSIONS,
 ): Promise<shapeDimension> {
   const unit = await dimension.unit;
-  return {
+  return new shapeDimension({
     dimension: dimension,
-    value: dimension.value,
     kind: DIMENSIONS[kind],
     unit: unit as Unit,
-  };
+  });
 }
 
 export interface ShapeStatic {
