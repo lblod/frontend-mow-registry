@@ -1,5 +1,4 @@
 import Controller from '@ember/controller';
-import type RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
@@ -15,7 +14,6 @@ import type { ModelFrom } from 'mow-registry/utils/type-utils';
 
 export default class RoadMarkingConceptsRoadMarkingConceptRelatedController extends Controller {
   @service declare store: Store;
-  @service declare router: RouterService;
   declare model: ModelFrom<Route>;
 
   @tracked isAddingRelatedRoadSigns = false;
@@ -26,40 +24,12 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
   @tracked classificationRoadMarkings = null;
   @tracked classificationRoadSigns?: RoadSignConcept[] | null;
 
-  @tracked relatedRoadMarkingCodeFilter = '';
-  @tracked newDescription = '';
-  @tracked relatedTrafficLightCodeFilter = '';
-
   get isSidebarOpen() {
     return (
       this.isAddingRelatedRoadSigns ||
       this.isAddingRelatedRoadMarkings ||
       this.isAddingRelatedTrafficLights
     );
-  }
-
-  get roadMarkings() {
-    if (!this.relatedRoadMarkingCodeFilter.trim()) {
-      return this.model.allRoadMarkings;
-    }
-
-    return this.model.allRoadMarkings.filter((roadMarking) => {
-      return roadMarking.meaning
-        ?.toLowerCase()
-        .includes(this.relatedRoadMarkingCodeFilter.toLowerCase().trim());
-    });
-  }
-
-  get trafficLights() {
-    if (!this.relatedTrafficLightCodeFilter.trim()) {
-      return this.model.allTrafficLights;
-    }
-
-    return this.model.allTrafficLights.filter((trafficLight) => {
-      return trafficLight.meaning
-        ?.toLowerCase()
-        .includes(this.relatedTrafficLightCodeFilter.toLowerCase().trim());
-    });
   }
 
   addRelatedRoadMarking = task(async (relatedRoadMarking) => {
@@ -116,20 +86,6 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
     await this.store.request(saveRecord(this.model.roadMarkingConcept));
   });
 
-  handleCategorySelection = task(
-    async (classification: RoadSignCategory | null) => {
-      if (classification) {
-        this.classification = classification;
-        const classificationRoadSigns = await classification.roadSignConcepts;
-
-        this.classificationRoadSigns = classificationRoadSigns;
-      } else {
-        this.classification = null;
-        this.classificationRoadSigns = null;
-      }
-    },
-  );
-
   addRelatedTrafficLight = task(
     async (relatedTrafficLight: TrafficLightConcept) => {
       const relatedTrafficLights =
@@ -149,18 +105,6 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
       await this.store.request(saveRecord(this.model.roadMarkingConcept));
     },
   );
-
-  setRelatedRoadMarkingCodeFilter = (event: InputEvent) => {
-    this.relatedRoadMarkingCodeFilter = (
-      event.target as HTMLInputElement
-    ).value.trim();
-  };
-
-  setRelatedTrafficLightCodeFilter = (event: InputEvent) => {
-    this.relatedTrafficLightCodeFilter = (
-      event.target as HTMLInputElement
-    ).value.trim();
-  };
 
   toggleAddRelatedRoadSigns = () => {
     this.isAddingRelatedRoadSigns = !this.isAddingRelatedRoadSigns;

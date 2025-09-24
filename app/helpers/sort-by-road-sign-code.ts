@@ -1,12 +1,13 @@
 import { helper } from '@ember/component/helper';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import { unwrap } from 'mow-registry/utils/option';
 
 /**
  * Sort an array of road-sign-concepts numerically based on their label
  */
 export default helper(function sortByRoadSignCode([roadSignConcepts]: [
-  RoadSignConcept[],
+  (RoadSignConcept | TrafficSignalConcept)[],
 ]) {
   if (!roadSignConcepts) {
     return [];

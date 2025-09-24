@@ -33,121 +33,37 @@
   </:content>
   <:sidebar>
     {{#if this.isAddingRelatedRoadSigns}}
-      <SidebarHeader @onClose={{this.toggleAddRelatedRoadSigns}}>
-        <:title>
-          {{t "related-road-sign.crud.add"}}
-        </:title>
-        <:content>
-          <AuContent @skin="small">
-            <AuLabel>
-              {{t "related-road-sign.attr.classification"}}
-            </AuLabel>
-            <PowerSelect
-              @allowClear={{true}}
-              @placeholder={{t
-                "road-sign-concept.crud.classification-filter-placeholder"
-              }}
-              @options={{@model.classifications}}
-              @selected={{this.classification}}
-              @onChange={{perform this.handleCategorySelection}}
-              as |classification|
-            >
-              {{classification.label}}
-            </PowerSelect>
-          </AuContent>
-        </:content>
-      </SidebarHeader>
-      <div class="au-c-body-container au-c-body-container--scroll">
-        {{#if this.classification}}
-          {{#each
-            (sort-by-road-sign-code this.classificationRoadSigns)
-            as |relatedRoadSignByCategory|
-          }}
-            <SidebarRoadSign
-              @imageUrl={{relatedRoadSignByCategory.image.file.downloadLink}}
-              @code={{relatedRoadSignByCategory.label}}
-              @meaning={{relatedRoadSignByCategory.meaning}}
-              @onAdd={{perform
-                this.addRelatedRoadSign
-                relatedRoadSignByCategory
-              }}
-              @addText={{t "related-road-sign.crud.add-one"}}
-              class="au-c-action-sidebar__item"
-            />
-          {{/each}}
-        {{/if}}
-      </div>
+      <SidebarAddSignal
+        @title={{t "related-road-sign.crud.add"}}
+        @placeholder={{t
+          "road-sign-concept.crud.classification-filter-placeholder"
+        }}
+        @addText={{t "related-road-sign.crud.add-one"}}
+        @allSignals={{this.model.allRoadSigns}}
+        @addSignal={{fn (perform this.addRelatedRoadSign)}}
+        @onClose={{this.toggleAddRelatedRoadSigns}}
+      />
     {{/if}}
     {{#if this.isAddingRelatedRoadMarkings}}
-      <SidebarHeader @onClose={{this.toggleAddRelatedRoadMarkings}}>
-        <:title>
-          {{t "related-road-marking.crud.add"}}
-        </:title>
-        <:content>
-          <div class="au-c-data-table__search">
-            <AuInput
-              value={{this.relatedRoadMarkingCodeFilter}}
-              placeholder={{t "related-road-marking.filter.label"}}
-              @icon="search"
-              @iconAlignment="right"
-              @width="block"
-              {{on "input" this.setRelatedRoadMarkingCodeFilter}}
-              {{auto-focus}}
-            />
-          </div>
-        </:content>
-      </SidebarHeader>
-      <div class="au-c-body-container au-c-body-container--scroll">
-        {{#each
-          (sort-by-road-marking-code this.roadMarkings)
-          as |relatedRoadMarking|
-        }}
-          <SidebarRoadSign
-            @imageUrl={{relatedRoadMarking.image.file.downloadLink}}
-            @code={{relatedRoadMarking.label}}
-            @meaning={{relatedRoadMarking.meaning}}
-            @onAdd={{perform this.addRelatedRoadMarking relatedRoadMarking}}
-            @addText={{t "related-road-marking.crud.add-one"}}
-            class="au-c-action-sidebar__item"
-          />
-        {{/each}}
-      </div>
+      <SidebarAddSignal
+        @title={{t "related-road-marking.crud.add"}}
+        @placeholder={{t "related-road-marking.filter.label"}}
+        @addText={{t "related-road-marking.crud.add-one"}}
+        @allSignals={{this.model.allRoadMarkings}}
+        @addSignal={{fn (perform this.addRelatedRoadMarking)}}
+        @onClose={{this.toggleAddRelatedRoadMarkings}}
+      />
     {{/if}}
 
     {{#if this.isAddingRelatedTrafficLights}}
-      <SidebarHeader @onClose={{this.toggleAddRelatedTrafficLights}}>
-        <:title>
-          {{t "related-traffic-light.crud.add"}}
-        </:title>
-        <:content>
-          <div class="au-c-data-table__search">
-            <AuInput
-              value={{this.relatedTrafficLightCodeFilter}}
-              placeholder={{t "related-traffic-light.filter.label"}}
-              @icon="search"
-              @iconAlignment="right"
-              @width="block"
-              {{on "input" this.setRelatedTrafficLightCodeFilter}}
-              {{auto-focus}}
-            />
-          </div>
-        </:content>
-      </SidebarHeader>
-      <div class="au-c-body-container au-c-body-container--scroll">
-        {{#each
-          (sort-by-traffic-light-code this.trafficLights)
-          as |relatedTrafficLight|
-        }}
-          <SidebarRoadSign
-            @imageUrl={{relatedTrafficLight.image.file.downloadLink}}
-            @code={{relatedTrafficLight.label}}
-            @meaning={{relatedTrafficLight.meaning}}
-            @onAdd={{perform this.addRelatedTrafficLight relatedTrafficLight}}
-            @addText={{t "related-traffic-light.crud.add-one"}}
-            class="au-c-action-sidebar__item"
-          />
-        {{/each}}
-      </div>
+      <SidebarAddSignal
+        @title={{t 'related-traffic-light.crud.add'}}
+        @filterPlaceholder={{t 'related-traffic-light.filter.label'}}
+        @addText={{t 'related-traffic-light.crud.add-one'}}
+        @allSignals={{this.model.allTrafficLights}}
+        @addSignal={{fn (perform this.addRelatedTrafficLight)}}
+        @onClose={{this.toggleAddRelatedTrafficLights}}
+      />
     {{/if}}
   </:sidebar>
 </SidebarOverlayContainer>

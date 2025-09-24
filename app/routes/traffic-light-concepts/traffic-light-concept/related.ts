@@ -4,12 +4,12 @@ import Store from 'mow-registry/services/store';
 import type TrafficLightConceptRelatedController from 'mow-registry/controllers/traffic-light-concepts/traffic-light-concept/related';
 import type TrafficLightConceptModel from 'mow-registry/models/traffic-light-concept';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
-import type RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type TrafficLightConceptRoute from 'mow-registry/routes/traffic-light-concepts/traffic-light-concept';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import { hash } from 'rsvp';
 import { TrackedArray } from 'tracked-built-ins';
 import { query } from '@warp-drive/legacy/compat/builders';
+import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 
 export default class TrafficLightConceptRelatedRoute extends Route {
   @service declare store: Store;
@@ -39,11 +39,15 @@ export default class TrafficLightConceptRelatedRoute extends Route {
           }),
         )
         .then((response) => response.content),
-      classifications: this.store
-        .findAll<RoadSignCategory>('road-sign-category')
-        .then((classification) => {
-          return classification.filter(({ label }) => label !== 'Onderbord');
-        }),
+      allRoadSigns: this.store
+        .request(
+          query<RoadSignConcept>('road-sign-concept', {
+            page: {
+              size: 10000,
+            },
+          }),
+        )
+        .then((response) => response.content),
     });
 
     model.trafficLightConcept.relatedTrafficLightConcepts = new TrackedArray([

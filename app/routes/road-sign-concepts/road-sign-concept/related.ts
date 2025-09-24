@@ -2,11 +2,11 @@ import Route from '@ember/routing/route';
 import Store from 'mow-registry/services/store';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import type RoadSignConcept from '../road-sign-concept';
+import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import { hash } from 'rsvp';
 import { service } from '@ember/service';
-import RoadSignCategory from 'mow-registry/models/road-sign-category';
 import type RelatedController from 'mow-registry/controllers/road-sign-concepts/road-sign-concept/related';
 import type Transition from '@ember/routing/transition';
 import { query } from '@warp-drive/legacy/compat/builders';
@@ -39,11 +39,15 @@ export default class RoadSignConceptsRoadSignConceptRelatedRoute extends Route {
           }),
         )
         .then((res) => res.content),
-      classifications: this.store
-        .findAll<RoadSignCategory>('road-sign-category')
-        .then((classification) => {
-          return classification.filter(({ label }) => label !== 'Onderbord');
-        }),
+      allRoadSigns: this.store
+        .request(
+          query<RoadSignConceptModel>('road-sign-concept', {
+            page: {
+              size: 10000,
+            },
+          }),
+        )
+        .then((res) => res.content),
     });
   }
 
