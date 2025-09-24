@@ -43,8 +43,12 @@ export default class SidebarAddSignal extends Component<Sig> {
       return this.args.allSignals;
     }
 
+    const lcFilter = this.filter.toLowerCase();
     return this.args.allSignals.filter((signal) => {
-      return signal.meaning?.toLowerCase().includes(this.filter.toLowerCase());
+      return (
+        signal.label?.toLowerCase().includes(lcFilter) ||
+        signal.meaning?.toLowerCase().includes(lcFilter)
+      );
     });
   }
 
