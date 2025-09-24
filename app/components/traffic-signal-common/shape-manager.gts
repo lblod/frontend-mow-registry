@@ -54,6 +54,7 @@ export default class ShapeManager extends Component<Signature> {
   @tracked isShapeChangeConfirmationOpen = false;
 
   @tracked shapeToEdit?: Shape;
+  @tracked convertToNewDefaultShape?: boolean;
   @tracked isEditShapeModalOpen = false;
   @tracked pageNumber = 0;
   pageSize = 20;
@@ -296,6 +297,7 @@ export default class ShapeManager extends Component<Signature> {
   startEditShapeFlow = (shape: Shape) => {
     this.shapeToEdit = shape;
     this.isEditShapeModalOpen = true;
+    this.convertToNewDefaultShape = shape.id === this.defaultShape.value?.id;
   };
 
   closeEditShapeModal = async () => {
@@ -306,7 +308,16 @@ export default class ShapeManager extends Component<Signature> {
   saveShape = async () => {
     const saved = await this.shapeToEdit?.validateAndsave(this.store);
     if (saved) {
-      await this.store.request(saveRecord(this.args.trafficSignal));
+      if (this.convertToNewDefaultShape) {
+        this.args.trafficSignal.set(
+          'defaultShape',
+          this.shapeToEdit?.shape as TribontShape,
+        );
+        await this.store.request(saveRecord(this.args.trafficSignal));
+      } else if (this.shapeToEdit?.id === this.defaultShape.value?.id) {
+        this.args.trafficSignal.set('defaultShape', undefined);
+        await this.store.request(saveRecord(this.args.trafficSignal));
+      }
       await this.closeEditShapeModal();
     }
   };
@@ -323,13 +334,8 @@ export default class ShapeManager extends Component<Signature> {
       shapeDimension.value = numberValue;
     }
   };
-  toggleDefaultShape = async (shape: Shape) => {
-    const currentDefault = await this.args.trafficSignal.defaultShape;
-    if (currentDefault && currentDefault.id === shape.id) {
-      this.args.trafficSignal.set('defaultShape', null);
-    } else {
-      this.args.trafficSignal.set('defaultShape', shape.shape);
-    }
+  toggleDefaultShape = () => {
+    this.convertToNewDefaultShape = !this.convertToNewDefaultShape;
   };
   addNewShape = async () => {
     const shape = await this.shapeClass?.createShape(
@@ -521,8 +527,8 @@ export default class ShapeManager extends Component<Signature> {
         <AuLabel>{{t 'road-sign-concept.attr.default-shape'}}
         </AuLabel>
         <AuCheckbox
-          @checked={{eq this.defaultShape.value.id this.shapeToEdit.shape.id}}
-          @onChange={{fn this.toggleDefaultShape this.shapeToEdit}}
+          @checked={{this.convertToNewDefaultShape}}
+          @onChange={{this.toggleDefaultShape}}
         >
           {{t 'road-sign-concept.attr.default-shape'}}
         </AuCheckbox>

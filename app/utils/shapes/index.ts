@@ -99,7 +99,7 @@ export type Shape = {
   [dimension in keyof typeof DIMENSIONS]?: shapeDimension;
 } & {
   shape: TribontShape;
-  toString(intln: IntlService): string;
+  toString(intl: IntlService): string;
   unitMeasure: Unit;
   convertToNewUnit(unit: Unit, store: Store): Promise<void>;
   id: string;
