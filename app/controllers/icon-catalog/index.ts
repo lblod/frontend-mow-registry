@@ -45,7 +45,7 @@ export default class IconCatalogIndexController extends Controller {
     const queryParams: LegacyResourceQuery<Icon> = {
       // TODO: The types expect an array, but the adapter doesn't convert that to the expected json:api include format
       // More info: https://github.com/emberjs/data/pull/9507#issuecomment-2219588690
-      include: ['image.file', 'in-scheme'],
+      include: ['image.file', 'inScheme'],
       sort: this.sort,
       page: {
         number: this.page,
