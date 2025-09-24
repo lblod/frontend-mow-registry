@@ -86,6 +86,8 @@ export default class TrafficSignalConcept extends SkosConcept {
       status: validateBelongsToOptional(),
       hasInstructions: validateHasManyOptional(),
       variables: validateHasManyOptional(),
+      canBeContainedInSignals: validateHasManyOptional(),
+      canContainSignals: validateHasManyOptional(),
     });
   }
 
