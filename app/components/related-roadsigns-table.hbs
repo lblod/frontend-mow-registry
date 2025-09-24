@@ -10,12 +10,12 @@
       <AuToolbar class="au-o-box" as |Group|>
         <Group>
           <AuHeading @level="2" @skin="4">
-            {{t "road-marking-concept.attr.related-sign"}}
+            {{@title}}
           </AuHeading>
         </Group>
         <Group>
           <AuButton @icon="add" {{on "click" @onClickAdd}}>
-            {{t "related-road-sign.crud.add"}}
+            {{@addText}}
           </AuButton>
         </Group>
       </AuToolbar>

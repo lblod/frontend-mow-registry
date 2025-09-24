@@ -3,7 +3,7 @@ import { service } from '@ember/service';
 import Store from 'mow-registry/services/store';
 import Controller from 'mow-registry/controllers/road-marking-concepts/road-marking-concept/related';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
-import type RoadSignCategory from 'mow-registry/models/road-sign-category';
+import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import type RoadMarkingConceptRoute from 'mow-registry/routes/road-marking-concepts/road-marking-concept';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
@@ -24,6 +24,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedRoute extends R
       allRoadMarkings: this.store
         .request(
           query<RoadMarkingConcept>('road-marking-concept', {
+            include: ['image.file'],
             page: {
               size: 10000,
             },
@@ -38,17 +39,24 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedRoute extends R
       allTrafficLights: this.store
         .request(
           query<TrafficLightConcept>('traffic-light-concept', {
+            include: ['image.file'],
             page: {
               size: 10000,
             },
           }),
         )
         .then((res) => res.content),
-      classifications: this.store
-        .findAll<RoadSignCategory>('road-sign-category')
-        .then((classification) => {
-          return classification.filter(({ label }) => label !== 'Onderbord');
-        }),
+      allRoadSigns: this.store
+        .request(
+          query<RoadSignConcept>('road-sign-concept', {
+            'filter[classifications][:not:label]': 'Onderbord',
+            include: ['image.file'],
+            page: {
+              size: 10000,
+            },
+          }),
+        )
+        .then((res) => res.content),
     });
 
     model.roadMarkingConcept.relatedRoadMarkingConcepts = new TrackedArray([

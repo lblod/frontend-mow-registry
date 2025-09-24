@@ -3,8 +3,6 @@ import Store from 'mow-registry/services/store';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import type RoadSignConcept from '../road-sign-concept';
 import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
-import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
-import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import { hash } from 'rsvp';
 import { service } from '@ember/service';
 import type RelatedController from 'mow-registry/controllers/road-sign-concepts/road-sign-concept/related';
@@ -21,26 +19,6 @@ export default class RoadSignConceptsRoadSignConceptRelatedRoute extends Route {
 
     return hash({
       roadSignConcept,
-      allRoadMarkings: this.store
-        .request(
-          query<RoadMarkingConcept>('road-marking-concept', {
-            include: ['image.file'],
-            page: {
-              size: 10000,
-            },
-          }),
-        )
-        .then((res) => res.content),
-      allTrafficLights: this.store
-        .request(
-          query<TrafficLightConcept>('traffic-light-concept', {
-            include: ['image.file'],
-            page: {
-              size: 10000,
-            },
-          }),
-        )
-        .then((res) => res.content),
       allRoadSigns: this.store
         .request(
           query<RoadSignConceptModel>('road-sign-concept', {

@@ -19,6 +19,7 @@ Router.map(function () {
       this.route('main-signs');
       this.route('sub-signs');
       this.route('related');
+      this.route('can-contain');
     });
     this.route('new');
     this.route('edit', { path: '/edit/:id' });

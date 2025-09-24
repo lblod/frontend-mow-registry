@@ -124,7 +124,7 @@
           (sort-by-road-sign-code this.classificationRoadSigns)
           as |mainSignByCategory|
         }}
-          <SidebarRoadSign
+          <SidebarTrafficSignal
             @imageUrl={{mainSignByCategory.image.file.downloadLink}}
             @code={{mainSignByCategory.label}}
             @meaning={{mainSignByCategory.meaning}}
