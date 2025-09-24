@@ -135,7 +135,7 @@ export default class ShapeManager extends Component<Signature> {
       shapes = await this.store
         .request(
           query<TribontShape>('tribont-shape', {
-            'filter[traffic-signal-concept][:id:]': this.args.trafficSignal.id,
+            'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
             page: {
               number: this.pageNumber,
               size: this.pageSize,

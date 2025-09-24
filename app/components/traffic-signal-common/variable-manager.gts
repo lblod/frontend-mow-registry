@@ -123,7 +123,7 @@ export default class VariableManager extends Component<Signature> {
     await Promise.resolve();
     const variables = await this.store.request(
       query<Variable>('variable', {
-        'filter[traffic-signal-concept][:id:]': this.args.trafficSignal.id,
+        'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
         page: {
           number: this.pageNumber,
           size: this.pageSize,
