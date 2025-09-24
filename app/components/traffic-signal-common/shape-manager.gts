@@ -115,11 +115,11 @@ export default class ShapeManager extends Component<Signature> {
     return this.firstShape.value?.get('classification').get('label');
   }
   defaultShape = trackedFunction(this, async () => {
+    const defaultShape = (await this.args.trafficSignal
+      .defaultShape) as TribontShape;
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
-    const shapeConverted = await convertToShape(
-      (await this.args.trafficSignal.defaultShape) as TribontShape,
-    );
+    const shapeConverted = await convertToShape(defaultShape);
     return shapeConverted;
   });
   firstShape = trackedFunction(this, async () => {
@@ -127,29 +127,34 @@ export default class ShapeManager extends Component<Signature> {
     return firstShape;
   });
   shapesConverted = trackedFunction(this, async () => {
+    const number = this.pageNumber;
+    const size = this.pageSize;
+    const sort = this.sort;
+    const trafficSignalId = this.args.trafficSignal.id;
+
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     const shapesConverted: Shape[] = [];
     let shapes: TribontShape[] = [];
-    if (this.sort === 'created-on' || this.sort === '-created-on') {
+    if (sort === 'created-on' || sort === '-created-on') {
       shapes = await this.store
         .request(
           query<TribontShape>('tribont-shape', {
             'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
             page: {
-              number: this.pageNumber,
-              size: this.pageSize,
+              number: number,
+              size: size,
             },
-            sort: this.sort,
+            sort: sort,
           }),
         )
         .then((res) => res.content);
     } else {
       const shapesSorted = await sortOnDimension(
-        this.sort,
-        this.pageNumber,
-        this.pageSize,
-        this.args.trafficSignal.id as string,
+        sort,
+        number,
+        size,
+        trafficSignalId as string,
       );
       const shapesQuery = await this.store
         .request(
@@ -166,7 +171,7 @@ export default class ShapeManager extends Component<Signature> {
       );
       // @ts-expect-error We know that an array don't have a meta property but we need it for the table to work
       shapesConverted.meta = generateMeta(
-        { page: this.pageNumber, size: this.pageSize },
+        { page: number, size: size },
         shapesSorted.count,
       );
     }
@@ -215,8 +220,6 @@ export default class ShapeManager extends Component<Signature> {
         await shape?.convertToNewUnit(this.unitChange, this.store);
       }
     }
-    await this.shapesConverted.retry();
-    await this.defaultShape.retry();
     this.cardEditing = false;
   };
 
@@ -239,8 +242,6 @@ export default class ShapeManager extends Component<Signature> {
     this.args.trafficSignal.set('defaultShape', undefined);
     this.args.trafficSignal.set('shapes', [shape.shape]);
     await this.store.request(saveRecord(this.args.trafficSignal));
-    await this.shapesConverted.retry();
-    await this.defaultShape.retry();
     this.closeShapeChangeConfirmation();
   };
 
@@ -289,8 +290,6 @@ export default class ShapeManager extends Component<Signature> {
     removeItem(shapes, shape.shape);
     await this.store.request(saveRecord(this.args.trafficSignal));
     await shape.remove(this.store);
-    await this.shapesConverted.retry();
-    await this.defaultShape.retry();
     this.closeDeleteConfirmation();
   };
 
@@ -309,8 +308,6 @@ export default class ShapeManager extends Component<Signature> {
     if (saved) {
       await this.store.request(saveRecord(this.args.trafficSignal));
       await this.closeEditShapeModal();
-      await this.shapesConverted.retry();
-      await this.defaultShape.retry();
     }
   };
 
@@ -346,11 +343,9 @@ export default class ShapeManager extends Component<Signature> {
   };
   onPageChange = (newPage: number) => {
     this.pageNumber = newPage;
-    this.shapesConverted.retry();
   };
   onSortChange = (newSort: string) => {
     this.sort = newSort;
-    this.shapesConverted.retry();
   };
   <template>
     {{! @glint-nocheck: not typesafe yet }}
