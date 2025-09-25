@@ -7,7 +7,7 @@ import type { Type } from '@warp-drive/core/types/symbols';
 export default class TextVariable extends LiteralVariable {
   declare [Type]: 'text-variable';
 
-  @attr declare readonly type: 'text';
+  @attr({ defaultValue: 'text' }) declare readonly type: 'text';
 
   @attr declare defaultValue?: string;
 

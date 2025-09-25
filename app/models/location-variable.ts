@@ -5,7 +5,7 @@ import { attr } from '@warp-drive/legacy/model';
 export default class LocationVariable extends Variable {
   declare [Type]: 'location-variable';
 
-  @attr declare readonly type: 'location';
+  @attr({ defaultValue: 'location' }) declare readonly type: 'location';
 }
 
 export function isLocationVariable(

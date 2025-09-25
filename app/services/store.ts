@@ -63,20 +63,6 @@ export default class extends Store {
   }
 
   instantiateRecord(id: ResourceKey, args: Record<string, unknown>) {
-    // TODO: remove these specific rules
-    if (id.type === 'text-variable') {
-      args['type'] = 'text';
-    } else if (id.type === 'number-variable') {
-      args['type'] = 'number';
-    } else if (id.type === 'date-variable') {
-      args['type'] = 'date';
-    } else if (id.type === 'location-variable') {
-      args['type'] = 'location';
-    } else if (id.type === 'codelist-variable') {
-      args['type'] = 'codelist';
-    } else if (id.type === 'instruction-variable') {
-      args['type'] = 'instruction';
-    }
     return instantiateRecord.call(this, id, args);
   }
 

@@ -7,7 +7,7 @@ import { attr, belongsTo, type AsyncBelongsTo } from '@warp-drive/legacy/model';
 export default class InstructionVariable extends Variable {
   declare [Type]: 'instruction-variable';
 
-  @attr declare readonly type: 'instruction';
+  @attr({ defaultValue: 'instruction' }) declare readonly type: 'instruction';
 
   @belongsTo<Template>('template', { inverse: null, async: true })
   declare template: AsyncBelongsTo<Template>;

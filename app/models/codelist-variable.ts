@@ -6,7 +6,7 @@ import { attr } from '@warp-drive/legacy/model';
 export default class CodelistVariable extends ReferenceVariable {
   declare [Type]: 'codelist-variable';
 
-  @attr declare readonly type: 'codelist';
+  @attr({ defaultValue: 'codelist' }) declare readonly type: 'codelist';
 }
 
 export function isCodelistVariable(

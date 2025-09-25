@@ -7,7 +7,7 @@ import { attr } from '@warp-drive/legacy/model';
 export default class NumberVariable extends LiteralVariable {
   declare [Type]: 'number-variable';
 
-  @attr declare readonly type: 'number';
+  @attr({ defaultValue: 'number' }) declare readonly type: 'number';
 
   @attr declare defaultValue?: number;
 

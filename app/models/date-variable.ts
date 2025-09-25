@@ -7,7 +7,7 @@ import { attr } from '@warp-drive/legacy/model';
 export default class DateVariable extends LiteralVariable {
   declare [Type]: 'date-variable';
 
-  @attr declare readonly type: 'date';
+  @attr({ defaultValue: 'date' }) declare readonly type: 'date';
 
   @attr('date') declare defaultValue?: Date;
 
