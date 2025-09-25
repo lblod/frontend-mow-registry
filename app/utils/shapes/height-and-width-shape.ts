@@ -14,7 +14,7 @@ export default class HeightAndWidhtShape implements Shape {
   height: shapeDimension;
   width: shapeDimension;
   shape: TribontShape;
-  constructor(
+  protected constructor(
     shape: TribontShape,
     height: shapeDimension,
     width: shapeDimension,

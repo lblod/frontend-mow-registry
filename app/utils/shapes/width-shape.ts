@@ -13,7 +13,7 @@ import { saveRecord } from '@warp-drive/legacy/compat/builders';
 export default class WidthShape implements Shape {
   width: shapeDimension;
   shape: TribontShape;
-  constructor(shape: TribontShape, width: shapeDimension) {
+  protected constructor(shape: TribontShape, width: shapeDimension) {
     this.width = width;
     this.shape = shape;
   }

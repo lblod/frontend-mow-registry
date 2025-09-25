@@ -20,7 +20,7 @@ import { saveRecord } from '@warp-drive/legacy/compat/builders';
 export default class Circular implements Shape {
   radius: shapeDimension;
   shape: TribontShape;
-  constructor(shape: TribontShape, radius: shapeDimension) {
+  private constructor(shape: TribontShape, radius: shapeDimension) {
     this.radius = radius;
     this.shape = shape;
   }
