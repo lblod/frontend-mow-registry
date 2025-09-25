@@ -24,7 +24,7 @@ interface Signature {
       value: string;
     }[];
     convertToNewDefaultShape: boolean;
-    toggleDefaultShape: () => {};
+    toggleDefaultShape: () => void;
     trafficSignal: TrafficSignalConcept;
     defaultShape: Shape | undefined;
   };
