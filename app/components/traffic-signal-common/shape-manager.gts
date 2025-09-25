@@ -149,6 +149,8 @@ export default class ShapeManager extends Component<Signature> {
           }),
         )
         .then((res) => res.content);
+      // @ts-expect-error We know that an array don't have a meta property but we need it for the table to work
+      shapesConverted.meta = shapes.meta;
     } else {
       const shapesSorted = await sortOnDimension(
         sort,
