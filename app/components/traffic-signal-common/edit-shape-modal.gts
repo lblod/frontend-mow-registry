@@ -7,8 +7,6 @@ import Component from '@glimmer/component';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import type { DIMENSIONS, Shape } from 'mow-registry/utils/shapes';
-import { saveRecord } from '@warp-drive/legacy/compat/builders';
-import type TribontShape from 'mow-registry/models/tribont-shape';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type { Store } from '@warp-drive/core';
 import { service } from '@ember/service';
@@ -25,8 +23,7 @@ interface Signature {
     }[];
     convertToNewDefaultShape: boolean;
     toggleDefaultShape: () => void;
-    trafficSignal: TrafficSignalConcept;
-    defaultShape: Shape | undefined;
+    saveShape: () => Promise<void>;
   };
 }
 
@@ -49,21 +46,7 @@ export default class EditShapeModal extends Component<Signature> {
       shapeDimension.value = numberValue;
     }
   };
-  saveShape = async () => {
-    const saved = await this.args.shapeToEdit?.validateAndsave(this.store);
-    if (saved) {
-      const shapes = await this.args.trafficSignal.shapes;
-      const shape = this.args.shapeToEdit?.shape as TribontShape;
-      this.args.trafficSignal.set('shapes', [...shapes, shape]);
-      if (this.args.convertToNewDefaultShape) {
-        this.args.trafficSignal.set('defaultShape', shape);
-      } else if (this.args.shapeToEdit?.id === this.args.defaultShape?.id) {
-        this.args.trafficSignal.set('defaultShape', undefined);
-      }
-      await this.store.request(saveRecord(this.args.trafficSignal));
-      await this.args.closeModal();
-    }
-  };
+
   <template>
     <AuModal @modalOpen={{@modalOpen}} @closeModal={{@closeModal}}>
       <:title>
@@ -98,7 +81,7 @@ export default class EditShapeModal extends Component<Signature> {
         </AuCheckbox>
       </:body>
       <:footer>
-        <AuButton {{on 'click' this.saveShape}}>
+        <AuButton {{on 'click' @saveShape}}>
           {{t 'utility.save'}}
         </AuButton>
         <AuButton @skin='secondary' {{on 'click' @closeModal}}>

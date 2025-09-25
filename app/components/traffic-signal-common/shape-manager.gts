@@ -132,9 +132,6 @@ export default class ShapeManager extends Component<Signature> {
     const sort = this.sort;
     const trafficSignalId = this.args.trafficSignal.id;
 
-    //Small hack so it depends on the length and reruns when adding a new shape
-    const trafficSignalShapes = this.args.trafficSignal.shapes.length;
-
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     const shapesConverted: Shape[] = [];
@@ -246,6 +243,22 @@ export default class ShapeManager extends Component<Signature> {
     this.args.trafficSignal.set('shapes', [shape.shape]);
     await this.store.request(saveRecord(this.args.trafficSignal));
     this.closeShapeChangeConfirmation();
+  };
+
+  saveShape = async () => {
+    const saved = await this.shapeToEdit?.validateAndsave(this.store);
+    if (saved) {
+      const shape = this.shapeToEdit?.shape as TribontShape;
+      console.log(this.convertToNewDefaultShape);
+      if (this.convertToNewDefaultShape) {
+        this.args.trafficSignal.set('defaultShape', shape);
+      } else if (this.shapeToEdit?.id === this.defaultShape.value?.id) {
+        this.args.trafficSignal.set('defaultShape', undefined);
+      }
+      await this.store.request(saveRecord(this.args.trafficSignal));
+      await this.shapesConverted.retry();
+      await this.closeEditShapeModal();
+    }
   };
 
   cancelCard = () => {
@@ -465,8 +478,7 @@ export default class ShapeManager extends Component<Signature> {
       @closeModal={{this.closeEditShapeModal}}
       @convertToNewDefaultShape={{this.convertToNewDefaultShape}}
       @toggleDefaultShape={{this.toggleDefaultShape}}
-      @trafficSignal={{@trafficSignal}}
-      @defaultShape={{this.defaultShape.value}}
+      @saveShape={{this.saveShape}}
       @dimensionsToShow={{this.dimensionsToShow}}
     />
 
