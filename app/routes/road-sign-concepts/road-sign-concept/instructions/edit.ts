@@ -1,9 +1,10 @@
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import type Template from 'mow-registry/models/template';
 import type RoadsignConcept from 'mow-registry/routes/road-sign-concepts/road-sign-concept';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 
 type Params = {
   instructionId: string;
@@ -23,13 +24,13 @@ export default class RoadSignConceptsRoadSignConceptInstructionsEditRoute extend
         concept,
       };
     } else {
-      const template = await this.store.findRecord<Template>(
-        'template',
-        params.instructionId,
-        {
-          include: ['variables'],
-        },
-      );
+      const template = await this.store
+        .request(
+          findRecord<Template>('template', params.instructionId, {
+            include: ['variables'],
+          }),
+        )
+        .then((res) => res.content);
       return {
         template,
         roadSignConcept,

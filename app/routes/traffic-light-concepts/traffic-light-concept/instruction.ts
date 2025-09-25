@@ -1,9 +1,10 @@
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import type Template from 'mow-registry/models/template';
 import TrafficlightConcept from 'mow-registry/routes/traffic-light-concepts/traffic-light-concept';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 const PARENT_ROUTE = 'traffic-light-concepts.traffic-light-concept.index';
 
 type Params = {
@@ -25,15 +26,13 @@ export default class TrafficLightConceptsTrafficLightConceptInstructionRoute ext
       };
     } else {
       return {
-        template: this.store.findRecord<Template>(
-          'template',
-          params.instruction_id,
-          {
-            // @ts-expect-error we're running into strange type errors with the query argument. Not sure how to fix this properly.
-            // TODO: fix the query types
-            include: 'variables',
-          },
-        ),
+        template: this.store
+          .request(
+            findRecord<Template>('template', params.instruction_id, {
+              include: ['variables'],
+            }),
+          )
+          .then((res) => res.content),
         concept,
         from: PARENT_ROUTE,
       };

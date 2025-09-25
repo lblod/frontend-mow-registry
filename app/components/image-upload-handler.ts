@@ -1,11 +1,12 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import FileService from 'mow-registry/services/file-service';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import Image from 'mow-registry/models/image';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type Icon from 'mow-registry/models/icon';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 /**
  * A helper for uploading images, used in conjunction with `image-input.js`
@@ -37,7 +38,7 @@ export default class ImageUploadHandlerComponent<
       const imageFileData = await this.fileService.upload(this.fileData);
       const imageRecord = this.store.createRecord<Image>('image', {});
       imageRecord.set('file', imageFileData);
-      await imageRecord.save();
+      await this.store.request(saveRecord(imageRecord));
       return imageRecord;
     }
     return null;

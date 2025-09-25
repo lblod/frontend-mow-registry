@@ -6,7 +6,7 @@ import Variable, {
   type SignVariableType,
 } from 'mow-registry/models/variable';
 import type CodelistsService from 'mow-registry/services/codelists';
-import type Store from 'mow-registry/services/mow-store';
+import type Store from 'mow-registry/services/store';
 import Component from '@glimmer/component';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import ReactiveTable from 'mow-registry/components/reactive-table';
@@ -25,7 +25,6 @@ import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { getPromiseState } from '@warp-drive/ember';
 import type VariablesService from 'mow-registry/services/variables-service';
 import AuFormRow from '@appuniversum/ember-appuniversum/components/au-form-row';
-import { recordIdentifierFor } from '@ember-data/store';
 import CodelistVariable, {
   isCodelistVariable,
 } from 'mow-registry/models/codelist-variable';
@@ -47,6 +46,8 @@ import SkosConcept from 'mow-registry/models/skos-concept';
 import type IntlService from 'ember-intl/services/intl';
 import { format } from 'date-fns';
 import * as locales from 'date-fns/locale';
+import { recordIdentifierFor } from '@warp-drive/core';
+import { query, saveRecord } from '@warp-drive/legacy/compat/builders';
 
 interface Signature {
   Args: {
@@ -83,14 +84,18 @@ export default class VariableManager extends Component<Signature> {
     const { pageNumber, pageSize, sort } = this;
     const trafficSignalId = this.args.trafficSignal.id;
     await Promise.resolve();
-    const variables = await this.store.query<Variable>('variable', {
-      'filter[trafficSignalConcept][:id:]': trafficSignalId,
-      page: {
-        number: pageNumber,
-        size: pageSize,
-      },
-      sort: sort,
-    });
+    const variables = await this.store
+      .request(
+        query<Variable>('variable', {
+          'filter[trafficSignalConcept][:id:]': trafficSignalId,
+          page: {
+            number: pageNumber,
+            size: pageSize,
+          },
+          sort: sort,
+        }),
+      )
+      .then((res) => res.content);
     return variables;
   });
 
@@ -112,7 +117,9 @@ export default class VariableManager extends Component<Signature> {
   saveVariable = async () => {
     const valid = await this.variableToEdit?.validate();
     if (!valid) return;
-    await this.variableToEdit?.save();
+    if (this.variableToEdit) {
+      await this.store.request(saveRecord(this.variableToEdit));
+    }
     await this.variableToDelete?.destroyRecord();
     this.variables.retry();
     this.closeEditVariableModal();

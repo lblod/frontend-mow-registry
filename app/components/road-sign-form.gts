@@ -6,7 +6,7 @@ import { dropTask } from 'ember-concurrency';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import RoadSignCategory from 'mow-registry/models/road-sign-category';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import BreadcrumbsItem from '@bagaar/ember-breadcrumbs/components/breadcrumbs-item';
 import t from 'ember-intl/helpers/t';
@@ -34,6 +34,7 @@ import { LinkTo } from '@ember/routing';
 import { load } from 'ember-async-data';
 import { isSome } from 'mow-registry/utils/option';
 import { getPromiseState } from '@warp-drive/ember';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -110,7 +111,8 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
 
-      await this.args.roadSignConcept.save();
+      await this.store.request(saveRecord(this.args.roadSignConcept));
+
       void this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
         this.args.roadSignConcept.id,

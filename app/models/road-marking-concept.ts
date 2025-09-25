@@ -3,7 +3,7 @@ import {
   belongsTo,
   type AsyncBelongsTo,
   type AsyncHasMany,
-} from '@ember-data/model';
+} from '@warp-drive/legacy/model';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import TrafficSignalConcept from './traffic-signal-concept';
@@ -13,7 +13,7 @@ import {
   validateHasManyOptional,
   validateStringRequired,
 } from 'mow-registry/validators/schema';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class RoadMarkingConcept extends TrafficSignalConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.

@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type RouterService from '@ember/routing/router-service';
 import { on } from '@ember/modifier';
 import { fn, get } from '@ember/helper';
@@ -65,6 +65,7 @@ import InstructionVariable, {
 import type TextVariable from 'mow-registry/models/text-variable';
 import { validateVariables } from 'mow-registry/utils/validate-relations';
 import { getPromiseState } from '@warp-drive/ember';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Sig = {
   Args: {
@@ -423,9 +424,9 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
 
     //if new save relationships
     if (this.new) {
-      await this.args.trafficMeasureConcept.save();
-      await template.save();
-      await this.args.trafficMeasureConcept.save();
+      await this.store.request(saveRecord(this.args.trafficMeasureConcept));
+      await this.store.request(saveRecord(template));
+      await this.store.request(saveRecord(this.args.trafficMeasureConcept));
     }
 
     //1-parse everything again
@@ -443,7 +444,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     //get rid of the last dash
     label = label.slice(0, -1);
     this.args.trafficMeasureConcept.label = label;
-    await this.args.trafficMeasureConcept.save();
+    await this.store.request(saveRecord(this.args.trafficMeasureConcept));
 
     //4-handle variable variables
     await this.saveVariables.perform(template);
@@ -472,11 +473,11 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
 
     for (const sign of deletedSigns) {
       sign.deleteRecord();
-      await sign.save();
+      await this.store.request(saveRecord(sign));
     }
 
     for (const sign of addedSigns) {
-      await sign.save();
+      await this.store.request(saveRecord(sign));
     }
   });
 
@@ -487,9 +488,13 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     );
 
     //create new ones
-    await Promise.all(this.variables.map((variable) => variable.save()));
+    await Promise.all(
+      this.variables.map((variable) =>
+        this.store.request(saveRecord(variable)),
+      ),
+    );
     template.set('variables', this.variables);
-    await template.save();
+    await this.store.request(saveRecord(template));
     // HACK: Hacky workaround, as setting the `variables` hasMany relationship in the cache does not fully work as expected, so we reload it.
     await template.variables.reload({});
   });

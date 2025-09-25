@@ -1,9 +1,10 @@
-import type Store from 'ember-data/store';
+import Store from 'mow-registry/services/store';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { hash } from 'rsvp';
 import { TrackedArray } from 'tracked-built-ins';
 import type RoadSignConceptModel from 'mow-registry/models/road-sign-concept';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 
 type Params = {
   id: string;
@@ -14,29 +15,29 @@ export default class RoadsignConcept extends Route {
 
   async model(params: Params) {
     const data = await hash({
-      roadSignConcept: this.store.findRecord<RoadSignConceptModel>(
-        'road-sign-concept',
-        params.id,
-        {
-          include: [
-            'shapes.dimensions.kind',
-            'shapes.dimensions.unit',
-            'shapes.classification',
-            'defaultShape.dimensions',
-            'defaultShape.classification',
-            'image.file',
-            'variables',
-            'classifications',
-            'zonality.inScheme.concepts',
-            'inScheme.concepts',
-            'relatedToRoadSignConcepts',
-            'relatedFromRoadSignConcepts',
-            'relatedRoadMarkingConcepts',
-            'relatedTrafficLightConcepts',
-            'hasInstructions',
-          ],
-        },
-      ),
+      roadSignConcept: this.store
+        .request(
+          findRecord<RoadSignConceptModel>('road-sign-concept', params.id, {
+            include: [
+              'shapes.dimensions.kind',
+              'shapes.dimensions.unit',
+              'shapes.classification',
+              'defaultShape.dimensions',
+              'defaultShape.classification',
+              'image.file',
+              'variables',
+              'classifications',
+              'zonality.inScheme.concepts',
+              'inScheme.concepts',
+              'relatedToRoadSignConcepts',
+              'relatedFromRoadSignConcepts',
+              'relatedRoadMarkingConcepts',
+              'relatedTrafficLightConcepts',
+              'hasInstructions',
+            ],
+          }),
+        )
+        .then((res) => res.content),
     });
 
     data.roadSignConcept.relatedRoadSignConcepts = new TrackedArray([

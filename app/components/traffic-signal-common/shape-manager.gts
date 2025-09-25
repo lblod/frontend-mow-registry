@@ -1,7 +1,7 @@
 import type Owner from '@ember/owner';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import type Store from '@ember-data/store';
+import type { Store } from '@warp-drive/core';
 import Component from '@glimmer/component';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import ReactiveTable from 'mow-registry/components/reactive-table';
@@ -32,6 +32,7 @@ import { sortOnDimension } from 'mow-registry/utils/shapes/sorting';
 import generateMeta from 'mow-registry/utils/generate-meta';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
+import { findAll, query, saveRecord } from '@warp-drive/legacy/compat/builders';
 
 interface Signature {
   Args: {
@@ -53,6 +54,7 @@ export default class ShapeManager extends Component<Signature> {
   @tracked isShapeChangeConfirmationOpen = false;
 
   @tracked shapeToEdit?: Shape;
+  @tracked convertToNewDefaultShape?: boolean;
   @tracked isEditShapeModalOpen = false;
   @tracked pageNumber = 0;
   pageSize = 20;
@@ -85,22 +87,27 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   async fetchShapeClassifications() {
-    const classifications = await this.store.findAll<ShapeClassification>(
-      'tribont-shape-classification-code',
-    );
+    const classifications = await this.store
+      .request(
+        findAll<ShapeClassification>('tribont-shape-classification-code'),
+      )
+      .then((res) => res.content);
 
     return classifications;
   }
 
   async fetchUnits() {
-    const units = await this.store.findAll<Unit>('unit');
+    const units = await this.store
+      .request(findAll<Unit>('unit'))
+      .then((res) => res.content);
 
     return units;
   }
 
   async fetchQuantityKind() {
-    const quantityKind =
-      await this.store.findAll<QuantityKind>('quantity-kind');
+    const quantityKind = await this.store
+      .request(findAll<QuantityKind>('quantity-kind'))
+      .then((res) => res.content);
 
     return quantityKind;
   }
@@ -109,11 +116,11 @@ export default class ShapeManager extends Component<Signature> {
     return this.firstShape.value?.get('classification').get('label');
   }
   defaultShape = trackedFunction(this, async () => {
+    const defaultShape = (await this.args.trafficSignal
+      .defaultShape) as TribontShape;
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
-    const shapeConverted = await convertToShape(
-      (await this.args.trafficSignal.defaultShape) as TribontShape,
-    );
+    const shapeConverted = await convertToShape(defaultShape);
     return shapeConverted;
   });
   firstShape = trackedFunction(this, async () => {
@@ -121,32 +128,42 @@ export default class ShapeManager extends Component<Signature> {
     return firstShape;
   });
   shapesConverted = trackedFunction(this, async () => {
+    const number = this.pageNumber;
+    const size = this.pageSize;
+    const sort = this.sort;
+    const trafficSignalId = this.args.trafficSignal.id;
+
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     const shapesConverted: Shape[] = [];
     let shapes: TribontShape[] = [];
-    if (this.sort === 'created-on' || this.sort === '-created-on') {
-      shapes = await this.store.query<TribontShape>('tribont-shape', {
-        'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
-        page: {
-          number: this.pageNumber,
-          size: this.pageSize,
-        },
-        sort: this.sort,
-      });
+    if (sort === 'created-on' || sort === '-created-on') {
+      shapes = await this.store
+        .request(
+          query<TribontShape>('tribont-shape', {
+            'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+            page: {
+              number: number,
+              size: size,
+            },
+            sort: sort,
+          }),
+        )
+        .then((res) => res.content);
     } else {
       const shapesSorted = await sortOnDimension(
-        this.sort,
-        this.pageNumber,
-        this.pageSize,
-        this.args.trafficSignal.id as string,
+        sort,
+        number,
+        size,
+        trafficSignalId as string,
       );
-      const shapesQuery = await this.store.query<TribontShape>(
-        'tribont-shape',
-        {
-          'filter[:id:]': shapesSorted.ids.join(','),
-        },
-      );
+      const shapesQuery = await this.store
+        .request(
+          query<TribontShape>('tribont-shape', {
+            'filter[:id:]': shapesSorted.ids.join(','),
+          }),
+        )
+        .then((res) => res.content);
       shapes = [...shapesQuery];
       shapes.sort(
         (a, b) =>
@@ -155,7 +172,7 @@ export default class ShapeManager extends Component<Signature> {
       );
       // @ts-expect-error We know that an array don't have a meta property but we need it for the table to work
       shapesConverted.meta = generateMeta(
-        { page: this.pageNumber, size: this.pageSize },
+        { page: number, size: size },
         shapesSorted.count,
       );
     }
@@ -201,11 +218,9 @@ export default class ShapeManager extends Component<Signature> {
       this.shapesConverted.value
     ) {
       for (const shape of this.shapesConverted.value) {
-        await shape?.convertToNewUnit(this.unitChange);
+        await shape?.convertToNewUnit(this.unitChange, this.store);
       }
     }
-    await this.shapesConverted.retry();
-    await this.defaultShape.retry();
     this.cardEditing = false;
   };
 
@@ -224,12 +239,10 @@ export default class ShapeManager extends Component<Signature> {
       this.store,
       this.args.trafficSignal,
     );
-    await shape.validateAndsave();
+    await shape.validateAndsave(this.store);
     this.args.trafficSignal.set('defaultShape', undefined);
     this.args.trafficSignal.set('shapes', [shape.shape]);
-    await this.args.trafficSignal.save();
-    await this.shapesConverted.retry();
-    await this.defaultShape.retry();
+    await this.store.request(saveRecord(this.args.trafficSignal));
     this.closeShapeChangeConfirmation();
   };
 
@@ -276,16 +289,15 @@ export default class ShapeManager extends Component<Signature> {
     if (!shape) return;
     const shapes = await this.args.trafficSignal.shapes;
     removeItem(shapes, shape.shape);
-    await this.args.trafficSignal.save();
-    await shape.remove();
-    await this.shapesConverted.retry();
-    await this.defaultShape.retry();
+    await this.store.request(saveRecord(this.args.trafficSignal));
+    await shape.remove(this.store);
     this.closeDeleteConfirmation();
   };
 
   startEditShapeFlow = (shape: Shape) => {
     this.shapeToEdit = shape;
     this.isEditShapeModalOpen = true;
+    this.convertToNewDefaultShape = shape.id === this.defaultShape.value?.id;
   };
 
   closeEditShapeModal = async () => {
@@ -294,12 +306,19 @@ export default class ShapeManager extends Component<Signature> {
     this.isEditShapeModalOpen = false;
   };
   saveShape = async () => {
-    const saved = await this.shapeToEdit?.validateAndsave();
+    const saved = await this.shapeToEdit?.validateAndsave(this.store);
     if (saved) {
-      await this.args.trafficSignal.save();
+      if (this.convertToNewDefaultShape) {
+        this.args.trafficSignal.set(
+          'defaultShape',
+          this.shapeToEdit?.shape as TribontShape,
+        );
+        await this.store.request(saveRecord(this.args.trafficSignal));
+      } else if (this.shapeToEdit?.id === this.defaultShape.value?.id) {
+        this.args.trafficSignal.set('defaultShape', undefined);
+        await this.store.request(saveRecord(this.args.trafficSignal));
+      }
       await this.closeEditShapeModal();
-      await this.shapesConverted.retry();
-      await this.defaultShape.retry();
     }
   };
 
@@ -311,17 +330,11 @@ export default class ShapeManager extends Component<Signature> {
     const numberValue = Number((event.target as HTMLInputElement).value);
     const shapeDimension = shape[dimension];
     if (shapeDimension) {
-      shapeDimension.dimension.set('value', numberValue);
       shapeDimension.value = numberValue;
     }
   };
-  toggleDefaultShape = async (shape: Shape) => {
-    const currentDefault = await this.args.trafficSignal.defaultShape;
-    if (currentDefault && currentDefault.id === shape.id) {
-      this.args.trafficSignal.set('defaultShape', null);
-    } else {
-      this.args.trafficSignal.set('defaultShape', shape.shape);
-    }
+  toggleDefaultShape = () => {
+    this.convertToNewDefaultShape = !this.convertToNewDefaultShape;
   };
   addNewShape = async () => {
     const shape = await this.shapeClass?.createShape(
@@ -335,11 +348,9 @@ export default class ShapeManager extends Component<Signature> {
   };
   onPageChange = (newPage: number) => {
     this.pageNumber = newPage;
-    this.shapesConverted.retry();
   };
   onSortChange = (newSort: string) => {
     this.sort = newSort;
-    this.shapesConverted.retry();
   };
   <template>
     {{! @glint-nocheck: not typesafe yet }}
@@ -515,8 +526,8 @@ export default class ShapeManager extends Component<Signature> {
         <AuLabel>{{t 'road-sign-concept.attr.default-shape'}}
         </AuLabel>
         <AuCheckbox
-          @checked={{eq this.defaultShape.value.id this.shapeToEdit.shape.id}}
-          @onChange={{fn this.toggleDefaultShape this.shapeToEdit}}
+          @checked={{this.convertToNewDefaultShape}}
+          @onChange={{this.toggleDefaultShape}}
         >
           {{t 'road-sign-concept.attr.default-shape'}}
         </AuCheckbox>

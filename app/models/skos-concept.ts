@@ -1,4 +1,4 @@
-import { type AsyncBelongsTo, attr, hasMany } from '@ember-data/model';
+import { type AsyncBelongsTo, attr, hasMany } from '@warp-drive/legacy/model';
 import Joi from 'joi';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
 import {
@@ -7,7 +7,7 @@ import {
   validateStringRequired,
 } from 'mow-registry/validators/schema';
 import AbstractValidationModel from './abstract-validation-model';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class SkosConcept extends AbstractValidationModel {
   declare [Type]: 'skos-concept';

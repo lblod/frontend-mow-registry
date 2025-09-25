@@ -4,14 +4,15 @@ import {
   attr,
   belongsTo,
   hasMany,
-} from '@ember-data/model';
-import type { Type } from '@warp-drive/core-types/symbols';
+} from '@warp-drive/legacy/model';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type Dimension from './dimension';
 import type TribontShapeClassificationCode from './tribont-shape-classification-code';
 import AbstractValidationModel from './abstract-validation-model';
 import {
   validateBelongsToOptional,
   validateBelongsToRequired,
+  validateDateOptional,
   validateHasManyRequired,
 } from 'mow-registry/validators/schema';
 import Joi from 'joi';
@@ -45,6 +46,7 @@ export default class TribontShape extends AbstractValidationModel {
       dimensions: validateHasManyRequired(),
       classification: validateBelongsToRequired(),
       trafficSignalConcept: validateBelongsToOptional(),
+      createdOn: validateDateOptional(),
     });
   }
 

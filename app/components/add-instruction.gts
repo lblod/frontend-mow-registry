@@ -4,7 +4,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type RouterService from '@ember/routing/router-service';
 import type { NamedRouteArgs } from '@ember/routing/lib/utils';
 import { get } from '@ember/helper';
@@ -46,6 +46,7 @@ import type TextVariable from 'mow-registry/models/text-variable';
 import { TrackedArray } from 'tracked-built-ins';
 import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
 import { getPromiseState } from '@warp-drive/ember';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 export interface AddInstructionSig {
   Args: {
@@ -161,7 +162,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     removeItem(templates, template);
 
     await template.destroyWithRelations();
-    await this.args.concept.save();
+    await this.store.request(saveRecord(this.args.concept));
 
     this.router.replaceWith(this.args.from);
   });
@@ -311,19 +312,24 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
       const areVariablesValid = await validateVariables(this.variables);
 
       if (isValid && areVariablesValid && !this.templateSyntaxError) {
-        await this.template.save();
+        await this.store.request(saveRecord(this.template));
+
         (await this.args.concept.hasInstructions).push(this.template);
-        await this.args.concept.save();
+        await this.store.request(saveRecord(this.args.concept));
 
         //destroy old variables
         await Promise.all(
           this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
         );
         //save new variables
-        await Promise.all(this.variables.map((variable) => variable.save()));
+        await Promise.all(
+          this.variables.map((variable) =>
+            this.store.request(saveRecord(variable)),
+          ),
+        );
 
         this.template.set('variables', this.variables);
-        await this.template.save();
+        await this.store.request(saveRecord(this.template));
 
         // HACK: Hacky workaround, as setting the `variables` hasMany relationship in the cache does not fully work as expected, so we reload it.
         await this.template.variables.reload({});

@@ -1,6 +1,6 @@
-import { attr } from '@ember-data/model';
+import type { Type } from '@warp-drive/core/types/symbols';
 import Variable from './variable';
-import type { Type } from '@warp-drive/core-types/symbols';
+import { attr } from '@warp-drive/legacy/model';
 
 export default class LocationVariable extends Variable {
   declare [Type]: 'location-variable';

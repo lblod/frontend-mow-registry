@@ -1,8 +1,8 @@
-import { attr } from '@ember-data/model';
 import Variable from './variable';
 import { validateDateOptional } from 'mow-registry/validators/schema';
 import LiteralVariable from './literal-variable';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
+import { attr } from '@warp-drive/legacy/model';
 
 export default class DateVariable extends LiteralVariable {
   declare [Type]: 'date-variable';

@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import type IntlService from 'ember-intl/services/intl';
 import type { VariableType } from 'mow-registry/models/variable';
 import { assertNever } from 'mow-registry/utils/type-utils';

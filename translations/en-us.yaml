@@ -354,7 +354,7 @@ shape-manager:
   width: Width
   radius: Radius
   delete-last-shape: Deleting your last shape will lose you information about shape type and unit
-  disabled-add-new-button-title: In order to insert a shape please select the type and measure unit
+  disabled-add-new-button-title: In order to insert a shape please select the type and a dimension unit
   edit-modal-title: Edit shape
 variable-manager:
   no-data: No variables

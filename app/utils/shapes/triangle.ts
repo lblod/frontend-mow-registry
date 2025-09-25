@@ -2,19 +2,18 @@ import {
   DIMENSIONS,
   dimensionToShapeDimension,
   type ShapeStatic,
-  type Shape,
   SHAPE_URIS,
   staticImplements,
   createStoreShape,
   createDimension,
 } from '.';
-import type Store from '@ember-data/store';
 import type Unit from 'mow-registry/models/unit';
 import HeightAndWidhtShape from './height-and-width-shape';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
+import type { Store } from '@warp-drive/core';
 
 @staticImplements<ShapeStatic>()
-export default class Triangle extends HeightAndWidhtShape implements Shape {
+export default class Triangle extends HeightAndWidhtShape {
   static async createShape(
     unit: Unit,
     store: Store,

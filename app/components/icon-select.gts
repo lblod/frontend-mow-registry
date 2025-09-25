@@ -2,12 +2,13 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
 import perform from 'ember-concurrency/helpers/perform';
-import Store from '@ember-data/store';
+import Store from 'mow-registry/services/store';
 import { tracked } from '@glimmer/tracking';
 import PowerSelect from 'ember-power-select/components/power-select';
 import t from 'ember-intl/helpers/t';
-import type { LegacyResourceQuery } from '@ember-data/store/types';
 import type Icon from 'mow-registry/models/icon';
+import type { LegacyResourceQuery } from '@warp-drive/core/types';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 interface Signature {
   Args: {
@@ -36,15 +37,17 @@ export default class IconSelectComponent extends Component<Signature> {
   loadIconCatalogTask = task({ restartable: true }, async (search?: string) => {
     await timeout(300); // debounce
 
-    const query: LegacyResourceQuery<Icon> = {
+    const queryParams: LegacyResourceQuery<Icon> = {
       sort: 'label',
     };
 
     if (search?.length) {
-      query['filter[label]'] = search;
+      queryParams['filter[label]'] = search;
     }
 
-    const result = await this.store.query<Icon>('icon', query);
+    const result = await this.store
+      .request(query<Icon>('icon', queryParams))
+      .then((res) => res.content);
 
     return result.slice();
   });

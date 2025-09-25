@@ -3,15 +3,17 @@ import {
   DIMENSIONS,
   dimensionToShapeDimension,
   type Shape,
-  type shapeDimension,
+  type ShapeDimension,
 } from '.';
 import type Unit from 'mow-registry/models/unit';
 import type IntlService from 'ember-intl/services/intl';
+import type { Store } from '@warp-drive/core';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 export default class WidthShape implements Shape {
-  width: shapeDimension;
+  width: ShapeDimension;
   shape: TribontShape;
-  constructor(shape: TribontShape, width: shapeDimension) {
+  protected constructor(shape: TribontShape, width: ShapeDimension) {
     this.width = width;
     this.shape = shape;
   }
@@ -39,39 +41,39 @@ export default class WidthShape implements Shape {
     if (!shape.id) return;
     const dimensions = await shape.dimensions;
     const widthDimension = dimensions.find(
-      (dimension) => dimension.kind.uri === DIMENSIONS.width,
+      (dimension) => dimension.kind?.uri === DIMENSIONS.width,
     );
     if (!widthDimension) return;
     const width = await dimensionToShapeDimension(widthDimension, 'width');
     return new this(shape, width);
   }
 
-  async convertToNewUnit(unit: Unit) {
+  async convertToNewUnit(unit: Unit, store: Store) {
     this.width.unit = unit;
     this.width.dimension.set('unit', unit);
-    await this.width.dimension.save();
+    await store.request(saveRecord(this.width.dimension));
   }
 
-  async validateAndsave() {
+  async validateAndsave(store: Store) {
     const widthValid = await this.width.dimension.validate();
     const shapeValid = await this.shape.validate();
     if (widthValid && shapeValid) {
-      await this.width.dimension.save();
-      await this.shape.save();
+      await store.request(saveRecord(this.width.dimension));
+      await store.request(saveRecord(this.shape));
       return true;
     }
     return false;
   }
 
   async reset() {
-    this.width.dimension.rollbackAttributes();
+    this.width.dimension.reset();
     this.width = await dimensionToShapeDimension(this.width.dimension, 'width');
-    this.shape.rollbackAttributes();
+    this.shape.reset();
   }
-  async remove() {
+  async remove(store: Store) {
     this.width.dimension.deleteRecord();
-    await this.width.dimension.save();
+    await store.request(saveRecord(this.width.dimension));
     this.shape.deleteRecord();
-    await this.shape.save();
+    await store.request(saveRecord(this.shape));
   }
 }
