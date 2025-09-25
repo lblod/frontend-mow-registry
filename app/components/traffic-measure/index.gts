@@ -217,9 +217,6 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   @action
   async addSign(sign: TrafficSignalListItem) {
     this.signs.push(sign);
-    (
-      await this.args.trafficMeasureConcept.relatedTrafficSignalConceptsOrdered
-    ).push(sign);
     await this.fetchInstructions.perform();
     this.selectedType = null;
   }
@@ -227,10 +224,6 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   @action
   async removeSign(sign: TrafficSignalListItem) {
     removeItem(this.signs, sign);
-    removeItem(
-      await this.args.trafficMeasureConcept.relatedTrafficSignalConceptsOrdered,
-      sign,
-    );
     await this.fetchInstructions.perform();
   }
 
@@ -467,18 +460,20 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     const deletedSigns = existingRelatedSigns.filter(
       (sign) => !this.signs.includes(sign),
     );
-    const addedSigns = this.signs.filter(
-      (sign) => !existingRelatedSigns.includes(sign),
-    );
 
     for (const sign of deletedSigns) {
       sign.deleteRecord();
       await this.store.request(saveRecord(sign));
     }
 
-    for (const sign of addedSigns) {
+    for (const sign of this.signs) {
       await this.store.request(saveRecord(sign));
     }
+    trafficMeasureConcept.set(
+      'relatedTrafficSignalConceptsOrdered',
+      this.signs,
+    );
+    await this.store.request(saveRecord(trafficMeasureConcept));
   });
 
   saveVariables = task(async (template: Template) => {
