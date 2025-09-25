@@ -1,7 +1,9 @@
 import {
   DIMENSIONS,
   dimensionToShapeDimension,
+  type ShapeStatic,
   SHAPE_URIS,
+  staticImplements,
   createStoreShape,
   createDimension,
 } from '.';
@@ -10,6 +12,7 @@ import HeightAndWidhtShape from './height-and-width-shape';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type { Store } from '@warp-drive/core';
 
+@staticImplements<ShapeStatic>()
 export default class Triangle extends HeightAndWidhtShape {
   static async createShape(
     unit: Unit,
