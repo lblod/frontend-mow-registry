@@ -13,14 +13,12 @@ export default class ApplicationAdapter extends JSONAPIAdapter {
     type: ModelSchema,
     query: Record<string, unknown>,
   ): Promise<AdapterPayload> {
-    if (query) {
-      const { include } = query;
-      const normalizedInclude = Array.isArray(include)
-        ? include.map(convertToKebabCase).join(',')
-        : include;
-      if (normalizedInclude) {
-        query['include'] = normalizedInclude;
-      }
+    const { include } = query;
+    const normalizedInclude = Array.isArray(include)
+      ? include.map(convertToKebabCase).join(',')
+      : include;
+    if (normalizedInclude) {
+      query['include'] = normalizedInclude;
     }
 
     return super.query(store, type, query);
