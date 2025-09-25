@@ -24,8 +24,8 @@ import { trackedFunction } from 'reactiveweb/function';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
-import { getPromiseState } from '@warp-drive/ember';
 import { query, saveRecord } from '@warp-drive/legacy/compat/builders';
+import { Await } from '@warp-drive/ember';
 
 interface Signature {
   Args: {
@@ -311,33 +311,27 @@ export default class VariableManager extends Component<Signature> {
             <ErrorMessage @error={{this.variableToEdit.error.type}} />
           </div>
           {{#if (eq this.variableToEdit.type 'codelist')}}
-            {{#let
-              (getPromiseState this.variableToEdit.codeList)
-              as |codelistPromise|
-            }}
-              {{#if codelistPromise.isSuccess}}
+            <Await @promise={{this.variableToEdit.codeList}}>
+              <:success as |codelistPromise|>
                 <PowerSelect
                   @triggerClass='au-u-margin-top-tiny'
                   @allowClear={{false}}
                   @searchEnabled={{true}}
                   @options={{this.codeLists}}
-                  @selected={{or this.editedCodelist codelistPromise.value}}
+                  @selected={{or this.editedCodelist codelistPromise}}
                   @onChange={{this.updateCodelist}}
                   as |codeList|
                 >
                   {{codeList.label}}
                 </PowerSelect>
-                {{#if (or this.editedCodelist codelistPromise.value)}}
-                  {{#let
-                    (getPromiseState
-                      (or
-                        this.editedCodelist.concepts
-                        codelistPromise.value.concepts
-                      )
-                    )
-                    as |conceptsPromise|
-                  }}
-                    {{#if conceptsPromise.isSuccess}}
+                {{#if (or this.editedCodelist codelistPromise)}}
+                  <Await
+                    @promise={{or
+                      this.editedCodelist.concepts
+                      codelistPromise.value.concepts
+                    }}
+                  >
+                    <:success as |conceptsPromise|>
                       <ul
                         class='au-c-list-help au-c-help-text au-c-help-text--secondary'
                       >
@@ -345,12 +339,12 @@ export default class VariableManager extends Component<Signature> {
                           <li class='au-c-list-help__item'>{{option.label}}</li>
                         {{/each}}
                       </ul>
-                    {{/if}}
-                  {{/let}}
+                    </:success>
+                  </Await>
                 {{/if}}
-              {{/if}}
-              <ErrorMessage @error={{this.variableToEdit.error.codelist}} />
-            {{/let}}
+              </:success>
+            </Await>
+            <ErrorMessage @error={{this.variableToEdit.error.codelist}} />
           {{/if}}
         </div>
         <AuLabel
