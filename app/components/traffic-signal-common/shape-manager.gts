@@ -7,7 +7,6 @@ import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concep
 import ReactiveTable from 'mow-registry/components/reactive-table';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
-import AuCheckbox from '@appuniversum/ember-appuniversum/components/au-checkbox';
 import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import t from 'ember-intl/helpers/t';
@@ -30,9 +29,9 @@ import { removeItem } from 'mow-registry/utils/array';
 import type IntlService from 'ember-intl/services/intl';
 import { sortOnDimension } from 'mow-registry/utils/shapes/sorting';
 import generateMeta from 'mow-registry/utils/generate-meta';
-import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { findAll, query, saveRecord } from '@warp-drive/legacy/compat/builders';
+import EditShapeModal from './edit-shape-modal';
 
 interface Signature {
   Args: {
@@ -132,6 +131,9 @@ export default class ShapeManager extends Component<Signature> {
     const size = this.pageSize;
     const sort = this.sort;
     const trafficSignalId = this.args.trafficSignal.id;
+
+    //Small hack so it depends on the length and reruns when adding a new shape
+    const trafficSignalShapes = this.args.trafficSignal.shapes.length;
 
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
@@ -257,16 +259,6 @@ export default class ShapeManager extends Component<Signature> {
     return shapeDimensionToText(shape[dimension]);
   }
 
-  getRawValue(shape: Shape, dimension: keyof typeof DIMENSIONS) {
-    if (!shape[dimension]) return '';
-    return shape[dimension].value;
-  }
-
-  getError(shape: Shape, dimension: keyof typeof DIMENSIONS) {
-    if (!shape[dimension]) return undefined;
-    return shape[dimension].dimension.error;
-  }
-
   setShapeClassifications = (classification: ShapeClassification) => {
     this.shapeChange = classification;
   };
@@ -305,34 +297,7 @@ export default class ShapeManager extends Component<Signature> {
     this.shapeToEdit = undefined;
     this.isEditShapeModalOpen = false;
   };
-  saveShape = async () => {
-    const saved = await this.shapeToEdit?.validateAndsave(this.store);
-    if (saved) {
-      if (this.convertToNewDefaultShape) {
-        this.args.trafficSignal.set(
-          'defaultShape',
-          this.shapeToEdit?.shape as TribontShape,
-        );
-        await this.store.request(saveRecord(this.args.trafficSignal));
-      } else if (this.shapeToEdit?.id === this.defaultShape.value?.id) {
-        this.args.trafficSignal.set('defaultShape', undefined);
-        await this.store.request(saveRecord(this.args.trafficSignal));
-      }
-      await this.closeEditShapeModal();
-    }
-  };
 
-  setShapeValue = (
-    shape: Shape,
-    dimension: keyof typeof DIMENSIONS,
-    event: Event,
-  ) => {
-    const numberValue = Number((event.target as HTMLInputElement).value);
-    const shapeDimension = shape[dimension];
-    if (shapeDimension) {
-      shapeDimension.value = numberValue;
-    }
-  };
   toggleDefaultShape = () => {
     this.convertToNewDefaultShape = !this.convertToNewDefaultShape;
   };
@@ -494,53 +459,17 @@ export default class ShapeManager extends Component<Signature> {
           /></td>
       </:body>
     </ReactiveTable>
-    <AuModal
+    <EditShapeModal
+      @shapeToEdit={{this.shapeToEdit}}
       @modalOpen={{this.isEditShapeModalOpen}}
       @closeModal={{this.closeEditShapeModal}}
-    >
-      <:title>
-        {{#if this.shapeToEdit.shape.isNew}}
-          {{t 'utility.add-shape'}}
-        {{else}}
-          {{t 'shape-manager.edit-modal-title'}}
-        {{/if}}
-      </:title>
-      <:body>
-        {{#each this.dimensionsToShow as |dimension|}}
-          <AuLabel
-            @required={{true}}
-            @requiredLabel={{t 'utility.required'}}
-            @error={{this.getError this.shapeToEdit dimension.value}}
-          >{{dimension.label}}
-          </AuLabel>
-          <AuInput
-            @width='block'
-            value={{this.getRawValue this.shapeToEdit dimension.value}}
-            @error={{this.getError this.shapeToEdit dimension.value}}
-            {{on
-              'input'
-              (fn this.setShapeValue this.shapeToEdit dimension.value)
-            }}
-          />
-        {{/each}}
-        <AuLabel>{{t 'road-sign-concept.attr.default-shape'}}
-        </AuLabel>
-        <AuCheckbox
-          @checked={{this.convertToNewDefaultShape}}
-          @onChange={{this.toggleDefaultShape}}
-        >
-          {{t 'road-sign-concept.attr.default-shape'}}
-        </AuCheckbox>
-      </:body>
-      <:footer>
-        <AuButton {{on 'click' this.saveShape}}>
-          {{t 'utility.save'}}
-        </AuButton>
-        <AuButton @skin='secondary' {{on 'click' this.closeEditShapeModal}}>
-          {{t 'utility.cancel'}}
-        </AuButton>
-      </:footer>
-    </AuModal>
+      @convertToNewDefaultShape={{this.convertToNewDefaultShape}}
+      @toggleDefaultShape={{this.toggleDefaultShape}}
+      @trafficSignal={{@trafficSignal}}
+      @defaultShape={{this.defaultShape.value}}
+      @dimensionsToShow={{this.dimensionsToShow}}
+    />
+
     <AuModal
       @modalOpen={{this.isDeleteConfirmationOpen}}
       @closeModal={{this.closeDeleteConfirmation}}
