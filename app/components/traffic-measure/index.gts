@@ -495,8 +495,6 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     );
     template.set('variables', this.variables);
     await this.store.request(saveRecord(template));
-    // HACK: Hacky workaround, as setting the `variables` hasMany relationship in the cache does not fully work as expected, so we reload it.
-    await template.variables.reload({});
   });
 
   willDestroy() {

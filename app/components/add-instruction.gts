@@ -330,9 +330,6 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
 
         this.template.set('variables', this.variables);
         await this.store.request(saveRecord(this.template));
-
-        // HACK: Hacky workaround, as setting the `variables` hasMany relationship in the cache does not fully work as expected, so we reload it.
-        await this.template.variables.reload({});
         this.reset();
       }
     }
