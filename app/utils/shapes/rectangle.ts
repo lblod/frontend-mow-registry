@@ -1,10 +1,7 @@
 import {
   DIMENSIONS,
   dimensionToShapeDimension,
-  type ShapeStatic,
-  type Shape,
   SHAPE_URIS,
-  staticImplements,
   createDimension,
   createStoreShape,
 } from '.';
@@ -13,8 +10,7 @@ import type Unit from 'mow-registry/models/unit';
 import HeightAndWidhtShape from './height-and-width-shape';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 
-@staticImplements<ShapeStatic>()
-export default class Rectangle extends HeightAndWidhtShape implements Shape {
+export default class Rectangle extends HeightAndWidhtShape {
   static async createShape(
     unit: Unit,
     store: Store,

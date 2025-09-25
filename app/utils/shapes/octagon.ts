@@ -4,17 +4,13 @@ import {
   DIMENSIONS,
   dimensionToShapeDimension,
   SHAPE_URIS,
-  staticImplements,
-  type Shape,
-  type ShapeStatic,
 } from '.';
 import type Unit from 'mow-registry/models/unit';
 import type { Store } from '@warp-drive/core';
 import WidthShape from './width-shape';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 
-@staticImplements<ShapeStatic>()
-export default class Octagon extends WidthShape implements Shape {
+export default class Octagon extends WidthShape {
   static async createShape(
     unit: Unit,
     store: Store,
