@@ -65,7 +65,7 @@ export const SHAPE_URIS = {
     'http://data.lblod.info/concept-schemes/322852b4-ec7b-4ca2-b267-4fcc263fa0d7',
 };
 
-export class shapeDimension {
+export class ShapeDimension {
   dimension: Dimension;
   kind: string;
   unit: Unit;
@@ -93,9 +93,9 @@ export class shapeDimension {
 export async function dimensionToShapeDimension(
   dimension: Dimension,
   kind: keyof typeof DIMENSIONS,
-): Promise<shapeDimension> {
+): Promise<ShapeDimension> {
   const unit = await dimension.unit;
-  return new shapeDimension({
+  return new ShapeDimension({
     dimension: dimension,
     kind: DIMENSIONS[kind],
     unit: unit as Unit,
@@ -113,7 +113,7 @@ export interface ShapeStatic {
 }
 
 export type Shape = {
-  [dimension in keyof typeof DIMENSIONS]?: shapeDimension;
+  [dimension in keyof typeof DIMENSIONS]?: ShapeDimension;
 } & {
   shape: TribontShape;
   toString(intl: IntlService): string;
@@ -134,7 +134,7 @@ export async function convertToShape(shape: TribontShape) {
   return shapeConverted;
 }
 
-export function shapeDimensionToText(dimension: shapeDimension) {
+export function shapeDimensionToText(dimension: ShapeDimension) {
   return `${dimension.value} ${dimension.unit.symbol}`;
 }
 

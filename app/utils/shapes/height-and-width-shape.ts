@@ -2,7 +2,7 @@ import type TribontShape from 'mow-registry/models/tribont-shape';
 import {
   DIMENSIONS,
   dimensionToShapeDimension,
-  type shapeDimension,
+  type ShapeDimension,
   type Shape,
 } from '.';
 import type Unit from 'mow-registry/models/unit';
@@ -11,13 +11,13 @@ import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import type { Store } from '@warp-drive/core';
 
 export default class HeightAndWidhtShape implements Shape {
-  height: shapeDimension;
-  width: shapeDimension;
+  height: ShapeDimension;
+  width: ShapeDimension;
   shape: TribontShape;
   protected constructor(
     shape: TribontShape,
-    height: shapeDimension,
-    width: shapeDimension,
+    height: ShapeDimension,
+    width: ShapeDimension,
   ) {
     this.height = height;
     this.width = width;

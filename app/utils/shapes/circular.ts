@@ -7,7 +7,7 @@ import {
   SHAPE_URIS,
   staticImplements,
   type Shape,
-  type shapeDimension,
+  type ShapeDimension,
   type ShapeStatic,
 } from '.';
 import type Unit from 'mow-registry/models/unit';
@@ -18,9 +18,9 @@ import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 @staticImplements<ShapeStatic>()
 export default class Circular implements Shape {
-  radius: shapeDimension;
+  radius: ShapeDimension;
   shape: TribontShape;
-  private constructor(shape: TribontShape, radius: shapeDimension) {
+  private constructor(shape: TribontShape, radius: ShapeDimension) {
     this.radius = radius;
     this.shape = shape;
   }

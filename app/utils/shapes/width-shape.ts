@@ -3,7 +3,7 @@ import {
   DIMENSIONS,
   dimensionToShapeDimension,
   type Shape,
-  type shapeDimension,
+  type ShapeDimension,
 } from '.';
 import type Unit from 'mow-registry/models/unit';
 import type IntlService from 'ember-intl/services/intl';
@@ -11,9 +11,9 @@ import type { Store } from '@warp-drive/core';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 export default class WidthShape implements Shape {
-  width: shapeDimension;
+  width: ShapeDimension;
   shape: TribontShape;
-  protected constructor(shape: TribontShape, width: shapeDimension) {
+  protected constructor(shape: TribontShape, width: ShapeDimension) {
     this.width = width;
     this.shape = shape;
   }
