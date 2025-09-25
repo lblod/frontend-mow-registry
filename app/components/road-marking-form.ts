@@ -12,7 +12,6 @@ import type TribontShape from 'mow-registry/models/tribont-shape';
 import Variable from 'mow-registry/models/variable';
 import type Dimension from 'mow-registry/models/dimension';
 import { removeItem } from 'mow-registry/utils/array';
-import type Shape from 'mow-registry/models/shape';
 import {
   validateShapes,
   validateVariables,
@@ -181,7 +180,7 @@ export default class RoadMarkingFormComponent extends ImageUploadHandlerComponen
   }
 
   @action
-  async toggleDefaultShape(shape: Shape) {
+  async toggleDefaultShape(shape: TribontShape) {
     const currentDefault = await this.args.roadMarkingConcept.defaultShape;
     if (currentDefault && currentDefault.id === shape.id) {
       this.args.roadMarkingConcept.set('defaultShape', null);
