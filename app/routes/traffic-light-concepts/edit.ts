@@ -26,7 +26,6 @@ export default class TrafficLightConceptsEditRoute extends Route {
               'image.file',
               'variables',
               'zonality.inScheme.concepts',
-              'inScheme.concepts',
             ],
           }),
         )
