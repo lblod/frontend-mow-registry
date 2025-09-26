@@ -6,6 +6,11 @@ const isProductionBuild = process.env.EMBER_ENV === 'production';
 module.exports = async function (defaults) {
   const { setConfig } = await import('@warp-drive/build-config');
   const app = new EmberApp(defaults, {
+    babel: {
+      plugins: [
+        require.resolve('ember-concurrency/async-arrow-task-transform'),
+      ],
+    },
     // Add options here
     'ember-cli-babel': {
       enableTypeScriptTransform: true,

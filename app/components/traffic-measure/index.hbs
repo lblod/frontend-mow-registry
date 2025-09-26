@@ -83,45 +83,45 @@
           <VariableSignageSelector @concept={{@trafficMeasureConcept}} />
         </div>
       </div>
-      {{#let @trafficMeasureConcept.error.startDate @trafficMeasureConcept.warning.startDate as |error warning|}}
-          <AuFormRow>
-            <AuLabel
-              @error={{error}}
-              @warning={{warning}}
-              for="startDate"
-            >
-              {{t "utility.start-date"}}&nbsp;
-            </AuLabel>
-            <AuDatePicker
-              @error={{error}}
-              @warning={{warning}}
-              id="startDate"
-              @value={{@trafficMeasureConcept.startDate}}
-              @onChange={{fn this.setTrafficMeasureDate 'startDate'}}
-            />
-            <ErrorMessage @error={{error}} @warning={{warning}} />
-          </AuFormRow>
-        {{/let}}
-        {{#let @trafficMeasureConcept.error.endDate @trafficMeasureConcept.warning.endDate as |error warning|}}
-          <AuFormRow>
-            <AuLabel
-              @error={{error}}
-              @warning={{warning}}
-              for="endDate"
-            >
-              {{t "utility.end-date"}}&nbsp;
-            </AuLabel>
-            <AuDatePicker
-              @error={{error}}
-              @warning={{warning}}
-              id="endDate"
-              @min={{@trafficMeasureConcept.startDate}}
-              @value={{@trafficMeasureConcept.endDate}}
-              @onChange={{fn this.setTrafficMeasureDate 'endDate'}}
-            />
-            <ErrorMessage @error={{error}} @warning={{warning}} />
-          </AuFormRow>
-        {{/let}}
+      {{#let
+        @trafficMeasureConcept.error.startDate
+        @trafficMeasureConcept.warning.startDate
+        as |error warning|
+      }}
+        <AuFormRow>
+          <AuLabel @error={{error}} @warning={{warning}} for="startDate">
+            {{t "utility.start-date"}}&nbsp;
+          </AuLabel>
+          <AuDatePicker
+            @error={{error}}
+            @warning={{warning}}
+            id="startDate"
+            @value={{@trafficMeasureConcept.startDate}}
+            @onChange={{fn this.setTrafficMeasureDate "startDate"}}
+          />
+          <ErrorMessage @error={{error}} @warning={{warning}} />
+        </AuFormRow>
+      {{/let}}
+      {{#let
+        @trafficMeasureConcept.error.endDate
+        @trafficMeasureConcept.warning.endDate
+        as |error warning|
+      }}
+        <AuFormRow>
+          <AuLabel @error={{error}} @warning={{warning}} for="endDate">
+            {{t "utility.end-date"}}&nbsp;
+          </AuLabel>
+          <AuDatePicker
+            @error={{error}}
+            @warning={{warning}}
+            id="endDate"
+            @min={{@trafficMeasureConcept.startDate}}
+            @value={{@trafficMeasureConcept.endDate}}
+            @onChange={{fn this.setTrafficMeasureDate "endDate"}}
+          />
+          <ErrorMessage @error={{error}} @warning={{warning}} />
+        </AuFormRow>
+      {{/let}}
       <AuHeading
         @level="4"
         @skin="4"
@@ -141,7 +141,9 @@
             @allowClear={{true}}
             @options={{this.validationStatusOptions}}
             @selected={{this.selectedValidationStatus}}
-            @placeholder={{t "traffic-measure-concept.crud.validation-filter-placeholder"}}
+            @placeholder={{t
+              "traffic-measure-concept.crud.validation-filter-placeholder"
+            }}
             @onChange={{this.updateValidationFilter}}
             as |validationType|
           >
@@ -166,35 +168,35 @@
           />
         </div>
       </div>
-      {{#let this.template.error.value as |error| }}
-      <div class="au-u-margin-bottom-small">
-        <AuHeading @level="4" @skin="4">
-          {{t "traffic-measure-concept.attr.template"}}
-        </AuHeading>
-        <AuHelpText
-          @skin="secondary"
-          class="au-u-margin-bottom-small au-u-flex-center"
-        >
-          <AuBadge
-            @icon="info-circle"
-            @size="small"
-            class="au-u-margin-right-tiny"
+      {{#let this.template.error.value as |error|}}
+        <div class="au-u-margin-bottom-small">
+          <AuHeading @level="4" @skin="4">
+            {{t "traffic-measure-concept.attr.template"}}
+          </AuHeading>
+          <AuHelpText
+            @skin="secondary"
+            class="au-u-margin-bottom-small au-u-flex-center"
+          >
+            <AuBadge
+              @icon="info-circle"
+              @size="small"
+              class="au-u-margin-right-tiny"
+            />
+            {{t "traffic-measure-concept.help"}}
+          </AuHelpText>
+          {{! template-lint-disable no-inline-styles }}
+          <AuTextarea
+            id="textarea"
+            @width="block"
+            {{on "input" this.updateTemplate}}
+            {{on "input" this.parseTemplate}}
+            value={{this.template.value}}
+            style="resize: none; height: 200px;"
+            class="au-u-margin-bottom-small"
+            @error={{error}}
           />
-          {{t "traffic-measure-concept.help"}}
-        </AuHelpText>
-        {{! template-lint-disable no-inline-styles }}
-        <AuTextarea
-          id="textarea"
-          @width="block"
-          {{on "input" this.updateTemplate}}
-          {{on "input" this.parseTemplate}}
-          value={{this.template.value}}
-          style="resize: none; height: 200px;"
-          class="au-u-margin-bottom-small"
-          @error={{error}}
-        />
-        <ErrorMessage @error={{error}}/>
-      </div>
+          <ErrorMessage @error={{error}} />
+        </div>
       {{/let}}
       {{#if this.variables.length}}
         <AuHeading @level="4" @skin="4" class="au-u-margin-bottom-small">
@@ -242,48 +244,78 @@
                           {{type.label}}
                         </PowerSelect>
                         {{#if (eq variable.type "codelist")}}
-                          <PowerSelect
-                            @triggerClass="au-u-margin-top-tiny"
-                            @allowClear={{false}}
-                            @searchEnabled={{false}}
-                            @options={{this.codeLists}}
-                            @selected={{variable.codeList}}
-                            @onChange={{fn this.updateCodelist variable}}
-                            as |codeList|
-                          >
-                            {{codeList.label}}
-                          </PowerSelect>
-                          <ul
-                            class="au-c-list-help au-c-help-text au-c-help-text--secondary"
-                          >
-                            {{#each variable.codeList.concepts as |option|}}
-                              <li
-                                class="au-c-list-help__item"
-                              >{{option.label}}</li>
-                            {{/each}}
-                          </ul>
+                          {{#let
+                            (get-promise-state variable.codeList)
+                            as |codelistPromise|
+                          }}
+                            {{#if codelistPromise.isSuccess}}
+                              <PowerSelect
+                                @triggerClass="au-u-margin-top-tiny"
+                                @allowClear={{false}}
+                                @searchEnabled={{false}}
+                                @options={{this.codeLists}}
+                                @selected={{codelistPromise.value}}
+                                @onChange={{fn this.updateCodelist variable}}
+                                as |codeList|
+                              >
+                                {{codeList.label}}
+                              </PowerSelect>
+                              {{#if codelistPromise.value}}
+                                {{#let
+                                  (get-promise-state
+                                    codelistPromise.value.concepts
+                                  )
+                                  as |conceptsPromise|
+                                }}
+                                  {{#if conceptsPromise.isSuccess}}
+                                    <ul
+                                      class="au-c-list-help au-c-help-text au-c-help-text--secondary"
+                                    >
+                                      {{#each
+                                        conceptsPromise.value
+                                        as |option|
+                                      }}
+                                        <li
+                                          class="au-c-list-help__item"
+                                        >{{option.label}}</li>
+                                      {{/each}}
+                                    </ul>
+                                  {{/if}}
+                                {{/let}}
+                              {{/if}}
+
+                            {{/if}}
+                          {{/let}}
+
                         {{/if}}
                         {{#if (eq variable.type "instruction")}}
-                          <PowerSelect
-                            @triggerClass="au-u-margin-top-tiny"
-                            @allowClear={{false}}
-                            @searchEnabled={{false}}
-                            @options={{this.instructions}}
-                            @selected={{variable.template}}
-                            @onChange={{fn this.updateInstruction variable}}
-                            as |instruction|
-                          >
-                            <div class="au-c-thumbnail-holder">
-                              <img
-                                class="au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny"
-                                src={{instruction.parentConcept.image.file.downloadLink}}
-                                alt=""
-                              />
-                              <span title={{instruction.value}}>{{truncate
-                                  instruction.value
-                                }}</span>
-                            </div>
-                          </PowerSelect>
+                          {{#let
+                            (get-promise-state variable.template)
+                            as |templatePromise|
+                          }}
+                            {{#if templatePromise.isSuccess}}
+                              <PowerSelect
+                                @triggerClass="au-u-margin-top-tiny"
+                                @allowClear={{false}}
+                                @searchEnabled={{false}}
+                                @options={{this.instructions}}
+                                @selected={{templatePromise.value}}
+                                @onChange={{fn this.updateInstruction variable}}
+                                as |instruction|
+                              >
+                                <div class="au-c-thumbnail-holder">
+                                  <img
+                                    class="au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny"
+                                    src={{instruction.parentConcept.image.file.downloadLink}}
+                                    alt=""
+                                  />
+                                  <span title={{instruction.value}}>{{truncate
+                                      instruction.value
+                                    }}</span>
+                                </div>
+                              </PowerSelect>
+                            {{/if}}
+                          {{/let}}
                         {{/if}}
                       </td>
                     </tr>

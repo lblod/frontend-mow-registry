@@ -7,6 +7,7 @@ export default class QuantityKind extends Model {
   declare [Type]: 'quantity-kind';
   @attr declare symbol?: string;
   @attr declare label?: string;
+  @attr declare uri?: string;
 
   @hasMany<Unit>('unit', { inverse: null, async: false })
   declare units: Unit[];

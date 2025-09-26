@@ -29,18 +29,13 @@ import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text
 import ErrorMessage from 'mow-registry/components/error-message';
 import PowerSelectMultiple from 'ember-power-select/components/power-select-multiple';
 import ZonalitySelector from 'mow-registry/components/zonality-selector';
-import VariableManager from 'mow-registry/components/traffic-signal-common/variable-manager';
-import ShapeManager from 'mow-registry/components/common/shape-manager';
 import ArPlichtigStatus from 'mow-registry/components/ar-plichtig-status';
 import ImageInput from 'mow-registry/components/image-input';
 import { on } from '@ember/modifier';
 import { fn, get } from '@ember/helper';
-// @ts-expect-error need EC v4 to get helper types...
 import perform from 'ember-concurrency/helpers/perform';
 import { or } from 'ember-truth-helpers';
 import { LinkTo } from '@ember/routing';
-// @ts-expect-error no types
-import awaitHelper from 'ember-promise-helpers/helpers/await';
 import { load } from 'ember-async-data';
 import { isSome } from 'mow-registry/utils/option';
 import {
@@ -48,6 +43,7 @@ import {
   validateVariables,
 } from 'mow-registry/utils/validate-relations';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
+import { Await } from '@warp-drive/ember';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -420,24 +416,26 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   {{t 'road-sign-concept.attr.classifications'}}&nbsp;
                 </AuLabel>
                 <div class={{if error 'ember-power-select--error'}}>
-                  {{! @glint-expect-error need to move to PS 8 }}
-                  <PowerSelectMultiple
-                    {{! @glint-expect-error need to move to PS 8 }}
-                    @allowClear={{true}}
-                    @placeholder={{t 'utility.search-placeholder'}}
-                    @searchEnabled={{true}}
-                    @searchMessage={{t 'utility.search-placeholder'}}
-                    @noMatchesMessage={{t 'road-sign-concept.crud.no-data'}}
-                    @searchField='label'
-                    @options={{@classifications}}
-                    @loadingMessage={{t 'utility.loading'}}
-                    @selected={{@roadSignConcept.classifications}}
-                    @onChange={{this.setRoadSignConceptClassification}}
-                    @triggerId='classifications'
-                    as |classification|
-                  >
-                    {{classification.label}}
-                  </PowerSelectMultiple>
+                  <Await @promise={{@roadSignConcept.classifications}}>
+                    <:success as |classificationsPromise|>
+                      <PowerSelectMultiple
+                        @allowClear={{true}}
+                        @placeholder={{t 'utility.search-placeholder'}}
+                        @searchEnabled={{true}}
+                        @searchMessage={{t 'utility.search-placeholder'}}
+                        @noMatchesMessage={{t 'road-sign-concept.crud.no-data'}}
+                        @searchField='label'
+                        @options={{@classifications}}
+                        @loadingMessage={{t 'utility.loading'}}
+                        @selected={{classificationsPromise}}
+                        @onChange={{this.setRoadSignConceptClassification}}
+                        @triggerId='classifications'
+                        as |classification|
+                      >
+                        {{classification.label}}
+                      </PowerSelectMultiple>
+                    </:success>
+                  </Await>
                 </div>
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
@@ -464,29 +462,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   {{/if}}
                 {{/let}}
               </AuFormRow>
-            {{/let}}
-            {{#let (awaitHelper @roadSignConcept.variables) as |variables|}}
-              <VariableManager
-                @variables={{variables}}
-                @removeVariable={{this.removeVariable}}
-                @addVariable={{this.addVariable}}
-              />
-            {{/let}}
-
-            {{! Shapes and dimensions }}
-            {{#let (awaitHelper @roadSignConcept.shapes) as |shapes|}}
-              {{#if (this.isArray shapes)}}
-                <ShapeManager
-                  {{! @glint-expect-error inheritence isnt working for us here for some reason }}
-                  @trafficSignalConcept={{@roadSignConcept}}
-                  @shapes={{shapes}}
-                  @addShape={{this.addShape}}
-                  @removeShape={{this.removeShape}}
-                  @removeDimension={{this.removeDimension}}
-                  @defaultShape={{@roadSignConcept.defaultShape}}
-                  @toggleDefaultShape={{this.toggleDefaultShape}}
-                />
-              {{/if}}
             {{/let}}
           </form>
         </div>

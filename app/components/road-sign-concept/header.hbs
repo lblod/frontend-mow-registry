@@ -57,6 +57,16 @@
         {{t "utility.instructions"}}
       </AuLink>
     </Tab>
+    <Tab>
+        <AuLink @route="road-sign-concepts.road-sign-concept.variables">
+          {{t "utility.variables"}}
+        </AuLink>
+    </Tab>
+    <Tab>
+        <AuLink @route="road-sign-concepts.road-sign-concept.shapes">
+          {{t "utility.shapes"}}
+        </AuLink>
+    </Tab>
     {{#if
       (and (not @roadSignConcept.isDeleted) (is-sub-sign @roadSignConcept))
     }}
