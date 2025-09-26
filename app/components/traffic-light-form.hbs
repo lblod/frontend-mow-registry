@@ -135,6 +135,28 @@
             <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
+        {{#let @trafficLightConcept.error.irgnName as |error|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              for="irgnName"
+              @required={{true}}
+              @requiredLabel={{t "utility.required"}}
+            >
+              {{t "traffic-light-concept.attr.irgnName"}}
+            </AuLabel>
+            <AuTextarea
+              @error={{error}}
+              @width="block"
+              class='u-min-h-5'
+              id="irgnName"
+              required="required"
+              value={{@trafficLightConcept.irgnName}}
+              {{on "input" (fn this.setTrafficLightConceptValue "irgnName")}}
+            />
+            <ErrorMessage @error={{error}} />
+          </AuFormRow>
+        {{/let}}
         {{#let @trafficLightConcept.error.startDate as |error|}}
           <AuFormRow>
             <AuLabel
