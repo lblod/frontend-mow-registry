@@ -1,0 +1,8 @@
+overrides:
+  "ember-metis>ember-fetch": "-"
+packageExtensions:
+  ember-metis:
+    peerDependenciesMeta:
+      ember-cli-fastboot:
+        optional: true
+
