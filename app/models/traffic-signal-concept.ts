@@ -17,6 +17,7 @@ import {
   validateStringRequired,
   validateDateOptional,
   validateEndDate,
+  validateStringOptional,
 } from 'mow-registry/validators/schema';
 import type TribontShape from './tribont-shape';
 import type Variable from './variable';
@@ -30,6 +31,7 @@ export default class TrafficSignalConcept extends SkosConcept {
   @attr declare meaning?: string;
   @attr declare valid?: boolean;
   @attr declare arPlichtig?: boolean;
+  @attr declare irgnName?: string;
   @attr('date') declare startDate?: Date;
   @attr('date') declare endDate?: Date;
 
@@ -63,6 +65,7 @@ export default class TrafficSignalConcept extends SkosConcept {
       defaultShape: validateBelongsToOptional(),
       valid: validateBooleanOptional(),
       arPlichtig: validateBooleanOptional(),
+      irgnName: validateStringOptional(),
       startDate: validateDateOptional(),
       endDate: validateEndDate(),
       image: validateBelongsToRequired(),

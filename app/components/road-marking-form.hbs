@@ -135,6 +135,28 @@
             <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
+        {{#let @roadMarkingConcept.error.irgnName as |error|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              for="irgnName"
+              @required={{true}}
+              @requiredLabel={{t "utility.required"}}
+            >
+              {{t "road-marking-concept.attr.irgnName"}}
+            </AuLabel>
+            <AuTextarea
+              @error={{error}}
+              @width="block"
+              class='u-min-h-5'
+              id="irgnName"
+              required="required"
+              value={{@roadMarkingConcept.irgnName}}
+              {{on "input" (fn this.setRoadMarkingConceptValue "irgnName")}}
+            />
+            <ErrorMessage @error={{error}} />
+          </AuFormRow>
+        {{/let}}
         {{#let @roadMarkingConcept.error.startDate as |error|}}
           <AuFormRow>
             <AuLabel @error={{error}} for="startDate">

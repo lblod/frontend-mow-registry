@@ -103,6 +103,7 @@ road-sign-concept:
     image-header: Image
     image-url: Image URL
     meaning: Meaning
+    irgnName: IRGN name
     label: Label
     classifications: Classifications
     sub-sign: Possible subsigns
@@ -161,6 +162,7 @@ traffic-light-concept:
   attr:
     image-header: Image
     meaning: Meaning
+    irgnName: IRGN name
     label: Label
     related-traffic-light: Related traffic lights
     related-sign: Related sign
@@ -195,6 +197,7 @@ road-marking-concept:
     image-header: Image
     image-url: Image URL
     meaning: Meaning
+    irgnName: IRGN name
     label: Label
     related-sign: Related road signs
     related-marking: Related road markings
