@@ -65,6 +65,7 @@ export default class EditShapeModal extends Component<Signature> {
           </AuLabel>
           <AuInput
             @width='block'
+            type='number'
             value={{this.getRawValue @shapeToEdit dimension.value}}
             @error={{this.getError @shapeToEdit dimension.value}}
             {{on 'input' (fn this.setShapeValue @shapeToEdit dimension.value)}}

@@ -71,7 +71,7 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   get selectedShape() {
-    return this.shapeChange ?? this.firstShape.value?.get('classification');
+    return this.shapeChange ?? this.firstShape?.get('classification');
   }
 
   get selectedUnit() {
@@ -79,7 +79,7 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   get shapeClass() {
-    const classificationUri = this.firstShape.value
+    const classificationUri = this.firstShape
       ?.get('classification')
       ?.get('uri');
     if (!classificationUri) return undefined;
@@ -113,7 +113,7 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   get defaultShapeClassification() {
-    return this.firstShape.value?.get('classification').get('label');
+    return this.firstShape?.get('classification').get('label');
   }
   defaultShape = trackedFunction(this, async () => {
     const defaultShape = (await this.args.trafficSignal
@@ -123,10 +123,10 @@ export default class ShapeManager extends Component<Signature> {
     const shapeConverted = await convertToShape(defaultShape);
     return shapeConverted;
   });
-  firstShape = trackedFunction(this, async () => {
-    const firstShape = (await this.args.trafficSignal.shapes)[0];
-    return firstShape;
-  });
+  get firstShape() {
+    const shapesConverted = this.shapesConverted.value;
+    return shapesConverted ? shapesConverted[0]?.shape : undefined;
+  }
   shapesConverted = trackedFunction(this, async () => {
     const number = this.pageNumber;
     const size = this.pageSize;
@@ -305,9 +305,6 @@ export default class ShapeManager extends Component<Signature> {
   removeShape = async () => {
     const shape = this.shapeToDelete;
     if (!shape) return;
-    const shapes = await this.args.trafficSignal.shapes;
-    removeItem(shapes, shape.shape);
-    await this.store.request(saveRecord(this.args.trafficSignal));
     await shape.remove(this.store);
     this.shapesConverted.retry();
     this.closeDeleteConfirmation();
@@ -384,7 +381,7 @@ export default class ShapeManager extends Component<Signature> {
                 {{shapeClassification.label}}
               </PowerSelect>
             {{else}}
-              {{this.firstShape.value.classification.label}}
+              {{this.firstShape.classification.label}}
             {{/if}}
           </dd>
         </div>
