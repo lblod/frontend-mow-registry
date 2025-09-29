@@ -317,6 +317,7 @@ export default class VariableManager extends Component<Signature> {
                   @triggerClass='au-u-margin-top-tiny'
                   @allowClear={{false}}
                   @searchEnabled={{true}}
+                  @searchField='label'
                   @options={{this.codeLists}}
                   @selected={{or this.editedCodelist codelistPromise}}
                   @onChange={{this.updateCodelist}}
@@ -335,7 +336,7 @@ export default class VariableManager extends Component<Signature> {
                       <ul
                         class='au-c-list-help au-c-help-text au-c-help-text--secondary'
                       >
-                        {{#each conceptsPromise.value as |option|}}
+                        {{#each conceptsPromise as |option|}}
                           <li class='au-c-list-help__item'>{{option.label}}</li>
                         {{/each}}
                       </ul>
