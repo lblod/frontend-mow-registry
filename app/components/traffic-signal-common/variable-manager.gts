@@ -216,7 +216,7 @@ export default class VariableManager extends Component<Signature> {
         <th></th>
       </:header>
       <:body as |variable|>
-        <td>
+        <td class='au-u-word-break'>
           {{variable.label}}
         </td>
         <td>
