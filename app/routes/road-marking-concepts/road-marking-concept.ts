@@ -17,11 +17,6 @@ export default class RoadmarkingConcept extends Route {
         .request(
           findRecord<RoadMarkingConcept>('road-marking-concept', params.id, {
             include: [
-              'shapes.dimensions.kind',
-              'shapes.dimensions.unit',
-              'shapes.classification',
-              'defaultShape.dimensions',
-              'defaultShape.classification',
               'image.file',
               'variables',
               'zonality.inScheme.concepts',

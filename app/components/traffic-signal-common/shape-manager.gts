@@ -1,7 +1,7 @@
 import type Owner from '@ember/owner';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import type { Store } from '@warp-drive/core';
+import Store from 'mow-registry/services/store';
 import Component from '@glimmer/component';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import ReactiveTable from 'mow-registry/components/reactive-table';
@@ -24,8 +24,7 @@ import {
   shapeDimensionToText,
   SHAPES,
 } from 'mow-registry/utils/shapes';
-import type TribontShape from 'mow-registry/models/tribont-shape';
-import { removeItem } from 'mow-registry/utils/array';
+import TribontShape from 'mow-registry/models/tribont-shape';
 import type IntlService from 'ember-intl/services/intl';
 import { sortOnDimension } from 'mow-registry/utils/shapes/sorting';
 import generateMeta from 'mow-registry/utils/generate-meta';
@@ -232,9 +231,14 @@ export default class ShapeManager extends Component<Signature> {
   };
 
   changeShape = async () => {
-    let shapes = [...(await this.args.trafficSignal.shapes)];
-    for (const shape of shapes) {
-      await shape.destroyWithRelations();
+    let shapes = await this.store
+      .countAndFetchAll<TribontShape>('tribont-shape', {
+        'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+      })
+      .then((res) => res.content);
+    console.log(shapes);
+    for (const shapeToDelete of Array.from(shapes)) {
+      await shapeToDelete.destroyWithRelations();
     }
     const shapeClass = SHAPES[this.shapeChange?.uri as keyof typeof SHAPES];
     const shape = (await shapeClass.createShape(
