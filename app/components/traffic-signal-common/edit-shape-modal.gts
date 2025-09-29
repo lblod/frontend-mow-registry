@@ -7,7 +7,6 @@ import Component from '@glimmer/component';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import type { DIMENSIONS, Shape } from 'mow-registry/utils/shapes';
-import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type { Store } from '@warp-drive/core';
 import { service } from '@ember/service';
 import t from 'ember-intl/helpers/t';
