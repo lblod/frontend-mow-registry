@@ -221,6 +221,7 @@ export default class ShapeManager extends Component<Signature> {
       for (const shape of this.shapesConverted.value) {
         await shape?.convertToNewUnit(this.unitChange, this.store);
       }
+      this.shapesConverted.retry();
       this.cardEditing = false;
     }
   };
