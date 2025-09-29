@@ -136,7 +136,7 @@ export default class ShapeManager extends Component<Signature> {
     await Promise.resolve();
     const shapesConverted: Shape[] = [];
     let shapes: TribontShape[] = [];
-    if (sort === 'created-on' || sort === '-created-on') {
+    if (!sort || sort === 'created-on' || sort === '-created-on') {
       shapes = await this.store
         .request(
           query<TribontShape>('tribont-shape', {
