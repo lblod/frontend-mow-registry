@@ -298,6 +298,7 @@ export default class ShapeManager extends Component<Signature> {
     removeItem(shapes, shape.shape);
     await this.store.request(saveRecord(this.args.trafficSignal));
     await shape.remove(this.store);
+    this.shapesConverted.retry();
     this.closeDeleteConfirmation();
   };
 
