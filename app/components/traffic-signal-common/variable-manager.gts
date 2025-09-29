@@ -127,11 +127,9 @@ export default class VariableManager extends Component<Signature> {
     return await variables.content;
   });
 
-  get variablesNotDeleted() {
-    return this.variables.value?.filter((variable) => !variable.isDeleted);
-  }
   removeVariable = async () => {
-    this.variableToDelete?.destroyRecord();
+    await this.variableToDelete?.destroyRecord();
+    this.variables.retry();
     this.closeDeleteConfirmation();
   };
 
@@ -185,7 +183,7 @@ export default class VariableManager extends Component<Signature> {
   <template>
     {{! @glint-nocheck: not typesafe yet }}
     <ReactiveTable
-      @content={{this.variablesNotDeleted}}
+      @content={{this.variables.value}}
       @isLoading={{this.variables.isLoading}}
       @noDataMessage={{t 'variable-manager.no-data'}}
       @page={{this.pageNumber}}
