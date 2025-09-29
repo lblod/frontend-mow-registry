@@ -32,6 +32,7 @@ import generateMeta from 'mow-registry/utils/generate-meta';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { findAll, query, saveRecord } from '@warp-drive/legacy/compat/builders';
 import EditShapeModal from './edit-shape-modal';
+import type { TemplateOnlyComponent } from '@ember/component/template-only';
 
 interface Signature {
   Args: {
@@ -517,7 +518,7 @@ interface DeleteConfirmationModalSignature {
   };
 }
 
-class DeleteConfirmationModal extends Component<DeleteConfirmationModalSignature> {
+const DeleteConfirmationModal: TemplateOnlyComponent<DeleteConfirmationModalSignature> =
   <template>
     <AuModal @modalOpen={{@isOpen}} @closeModal={{@closeModal}}>
       <:title>
@@ -540,8 +541,7 @@ class DeleteConfirmationModal extends Component<DeleteConfirmationModalSignature
         </AuButton>
       </:footer>
     </AuModal>
-  </template>
-}
+  </template>;
 
 interface ShapeChangeConfirmationModalSignature {
   Args: {
@@ -551,7 +551,7 @@ interface ShapeChangeConfirmationModalSignature {
   };
 }
 
-class ShapeChangeConfirmationModal extends Component<ShapeChangeConfirmationModalSignature> {
+const ShapeChangeConfirmationModal: TemplateOnlyComponent<ShapeChangeConfirmationModalSignature> =
   <template>
     <AuModal @modalOpen={{@isOpen}} @closeModal={{@closeModal}}>
       <:title>
@@ -571,5 +571,4 @@ class ShapeChangeConfirmationModal extends Component<ShapeChangeConfirmationModa
         </AuButton>
       </:footer>
     </AuModal>
-  </template>
-}
+  </template>;
