@@ -413,7 +413,7 @@ export default class ShapeManager extends Component<Signature> {
     </dl>
     <ReactiveTable
       @content={{this.shapesConverted.value}}
-      @isLoading={{this.isLoading}}
+      @isLoading={{this.shapesConverted.isLoading}}
       @noDataMessage={{t 'shape-manager.no-data'}}
       @page={{this.pageNumber}}
       @pageSize={{this.pageSize}}
