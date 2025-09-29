@@ -329,7 +329,7 @@ export default class VariableManager extends Component<Signature> {
                   <Await
                     @promise={{or
                       this.editedCodelist.concepts
-                      codelistPromise.value.concepts
+                      codelistPromise.concepts
                     }}
                   >
                     <:success as |conceptsPromise|>
