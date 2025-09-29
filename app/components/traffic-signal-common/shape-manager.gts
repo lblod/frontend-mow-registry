@@ -221,8 +221,8 @@ export default class ShapeManager extends Component<Signature> {
       for (const shape of this.shapesConverted.value) {
         await shape?.convertToNewUnit(this.unitChange, this.store);
       }
+      this.cardEditing = false;
     }
-    this.cardEditing = false;
   };
 
   closeShapeChangeConfirmation = () => {
@@ -235,15 +235,24 @@ export default class ShapeManager extends Component<Signature> {
       await shape.destroyWithRelations();
     }
     const shapeClass = SHAPES[this.shapeChange?.uri as keyof typeof SHAPES];
-    const shape = await shapeClass.createShape(
+    const shape = (await shapeClass.createShape(
       this.selectedUnit as Unit,
       this.store,
       this.args.trafficSignal,
-    );
+    )) as Shape;
+    for (const dimension of shapeClass.headers(this.intl)) {
+      const dimensionProperty =
+        shape[dimension.value as keyof typeof DIMENSIONS];
+      if (dimensionProperty) {
+        dimensionProperty.value = 0;
+      }
+    }
     await shape.validateAndsave(this.store);
     this.args.trafficSignal.set('defaultShape', undefined);
     this.args.trafficSignal.set('shapes', [shape.shape]);
     await this.store.request(saveRecord(this.args.trafficSignal));
+    this.shapesConverted.retry();
+    this.cardEditing = false;
     this.closeShapeChangeConfirmation();
   };
 
@@ -484,35 +493,66 @@ export default class ShapeManager extends Component<Signature> {
       @saveShape={{this.saveShape}}
       @dimensionsToShow={{this.dimensionsToShow}}
     />
-
-    <AuModal
-      @modalOpen={{this.isDeleteConfirmationOpen}}
+    <DeleteConfirmationModal
+      @isOpen={{this.isDeleteConfirmationOpen}}
       @closeModal={{this.closeDeleteConfirmation}}
-    >
+      @removeShape={{this.removeShape}}
+      @isLastShape={{eq this.shapesConverted.value.length 1}}
+    />
+    <ShapeChangeConfirmationModal
+      @isOpen={{this.isShapeChangeConfirmationOpen}}
+      @closeModal={{this.closeShapeChangeConfirmation}}
+      @changeShape={{this.changeShape}}
+    />
+  </template>
+}
+
+interface DeleteConfirmationModalSignature {
+  Args: {
+    isOpen: boolean;
+    closeModal: () => void;
+    removeShape: () => Promise<void>;
+    isLastShape: boolean;
+  };
+}
+
+class DeleteConfirmationModal extends Component<DeleteConfirmationModalSignature> {
+  <template>
+    <AuModal @modalOpen={{@isOpen}} @closeModal={{@closeModal}}>
       <:title>
         {{t 'utility.confirmation.title'}}
       </:title>
       <:body>
         <p>
           {{t 'utility.confirmation.body'}}
-          {{#if (eq this.shapesConverted.value.length 1)}}
+          {{#if @isLastShape}}
             {{t 'shape-manager.delete-last-shape'}}
           {{/if}}
         </p>
       </:body>
       <:footer>
-        <AuButton @alert={{true}} {{on 'click' this.removeShape}}>
+        <AuButton @alert={{true}} {{on 'click' @removeShape}}>
           {{t 'shape-manager.delete'}}
         </AuButton>
-        <AuButton @skin='secondary' {{on 'click' this.closeDeleteConfirmation}}>
+        <AuButton @skin='secondary' {{on 'click' @closeModal}}>
           {{t 'utility.cancel'}}
         </AuButton>
       </:footer>
     </AuModal>
-    <AuModal
-      @modalOpen={{this.isShapeChangeConfirmationOpen}}
-      @closeModal={{this.closeShapeChangeConfirmation}}
-    >
+  </template>
+}
+
+interface ShapeChangeConfirmationModalSignature {
+  Args: {
+    isOpen: boolean;
+    closeModal: () => void;
+    changeShape: () => Promise<void>;
+  };
+}
+
+class ShapeChangeConfirmationModal extends Component<ShapeChangeConfirmationModalSignature> {
+  <template>
+    <AuModal @modalOpen={{@isOpen}} @closeModal={{@closeModal}}>
       <:title>
         {{t 'utility.confirmation.title'}}
       </:title>
@@ -522,13 +562,10 @@ export default class ShapeManager extends Component<Signature> {
         </p>
       </:body>
       <:footer>
-        <AuButton @alert={{true}} {{on 'click' this.changeShape}}>
+        <AuButton @alert={{true}} {{on 'click' @changeShape}}>
           {{t 'shape-manager.shape-change.button'}}
         </AuButton>
-        <AuButton
-          @skin='secondary'
-          {{on 'click' this.closeShapeChangeConfirmation}}
-        >
+        <AuButton @skin='secondary' {{on 'click' @closeModal}}>
           {{t 'utility.cancel'}}
         </AuButton>
       </:footer>
