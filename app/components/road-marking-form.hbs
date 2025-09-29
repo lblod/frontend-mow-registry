@@ -135,24 +135,25 @@
             <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
-        {{#let @roadMarkingConcept.error.irgnName as |error|}}
+        {{#let @roadMarkingConcept.error.regulatoryNotation as |error|}}
           <AuFormRow>
             <AuLabel
               @error={{error}}
-              for="irgnName"
+              for="regulatoryNotation"
               @required={{true}}
               @requiredLabel={{t "utility.required"}}
             >
-              {{t "road-marking-concept.attr.irgnName"}}
+              {{t "road-marking-concept.attr.regulatoryNotation"}}
             </AuLabel>
             <AuTextarea
               @error={{error}}
               @width="block"
               class='u-min-h-5'
-              id="irgnName"
+              id="regulatoryNotation"
               required="required"
-              value={{@roadMarkingConcept.irgnName}}
-              {{on "input" (fn this.setRoadMarkingConceptValue "irgnName")}}
+              value={{@roadMarkingConcept.regulatoryNotation}}
+              {{on "input" (fn this.setRoadMarkingConceptValue "regulatoryNotation")}}
+              {{on "keypress" (limit-lines 1)}}
             />
             <ErrorMessage @error={{error}} />
           </AuFormRow>

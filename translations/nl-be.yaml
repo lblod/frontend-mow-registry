@@ -102,7 +102,7 @@ road-sign-concept:
     image-header: Afbeelding
     image-url: Afbeelding URL
     meaning: Betekenis
-    irgnName: IRGN naam
+    regulatoryNotation: Reglementopschrift
     label: Label
     classifications: Classificaties
     sub-sign: Mogelijke onderborden
@@ -154,7 +154,7 @@ traffic-light-concept:
   attr:
     image-header: Afbeelding
     meaning: Betekenis
-    irgnName: IRGN naam
+    regulatoryNotation: Reglementopschrift
     label: Label
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
@@ -189,7 +189,7 @@ road-marking-concept:
     image-header: Afbeelding
     image-url: Afbeelding URL
     meaning: Betekenis
-    irgnName: IRGN naam
+    regulatoryNotation: Reglementopschrift
     label: Label
     related-sign: Gerelateerde verkeersborden
     related-marking: Gerelateerde wegmarkeringen
