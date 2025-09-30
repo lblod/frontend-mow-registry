@@ -266,6 +266,8 @@ export default class ShapeManager extends Component<Signature> {
     await this.store.request(saveRecord(this.args.trafficSignal));
     this.shapesConverted.retry();
     this.cardEditing = false;
+    this.args.onPageChange(0);
+    this.args.onSortChange('created-on');
     this.closeShapeChangeConfirmation();
   });
 
