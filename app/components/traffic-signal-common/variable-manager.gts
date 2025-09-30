@@ -4,6 +4,7 @@ import type CodeList from 'mow-registry/models/code-list';
 import Variable, {
   signVariableTypes,
   type SignVariableType,
+  type VariableType,
 } from 'mow-registry/models/variable';
 import type CodelistsService from 'mow-registry/services/codelists';
 import type Store from 'mow-registry/services/store';
@@ -75,7 +76,7 @@ export default class VariableManager extends Component<Signature> {
     return signVariableTypes;
   }
 
-  labelForType = (variableType: SignVariableType) => {
+  labelForType = (variableType: VariableType) => {
     return this.variablesService.defaultLabelForVariableType(variableType);
   };
 
@@ -265,7 +266,9 @@ export default class VariableManager extends Component<Signature> {
             {{variable.label}}
           </td>
           <td>
-            {{variable.type}}
+            {{#if variable.type}}
+              {{this.labelForType variable.type}}
+            {{/if}}
           </td>
           <td>
             {{#if variable.required}}
