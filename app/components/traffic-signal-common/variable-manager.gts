@@ -462,7 +462,7 @@ class VariableDefaultValueLabel extends Component<{
   get defaultValueRepr() {
     const variable = this.args.variable;
     if (isTextVariable(variable)) {
-      return `"${variable.defaultValue}"`;
+      return variable.defaultValue && `"${variable.defaultValue}"`;
     } else if (isNumberVariable(variable)) {
       return variable.defaultValue;
     } else if (isDateVariable(variable)) {
