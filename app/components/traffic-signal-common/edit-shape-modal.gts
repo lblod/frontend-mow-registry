@@ -10,6 +10,7 @@ import type { DIMENSIONS, Shape } from 'mow-registry/utils/shapes';
 import type { Store } from '@warp-drive/core';
 import { service } from '@ember/service';
 import t from 'ember-intl/helpers/t';
+import type { Task } from 'ember-concurrency';
 
 interface Signature {
   Args: {
@@ -22,7 +23,7 @@ interface Signature {
     }[];
     convertToNewDefaultShape: boolean;
     toggleDefaultShape: () => void;
-    saveShape: () => Promise<void>;
+    saveShape: Task<void, []>;
   };
 }
 
@@ -81,10 +82,17 @@ export default class EditShapeModal extends Component<Signature> {
         </AuCheckbox>
       </:body>
       <:footer>
-        <AuButton {{on 'click' @saveShape}}>
+        <AuButton
+          {{on 'click' @saveShape.perform}}
+          @loading={{@saveShape.isRunning}}
+        >
           {{t 'utility.save'}}
         </AuButton>
-        <AuButton @skin='secondary' {{on 'click' @closeModal}}>
+        <AuButton
+          @skin='secondary'
+          {{on 'click' @closeModal}}
+          @loading={{@saveShape.isRunning}}
+        >
           {{t 'utility.cancel'}}
         </AuButton>
       </:footer>

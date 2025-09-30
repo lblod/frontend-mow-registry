@@ -32,6 +32,8 @@ import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { findAll, query, saveRecord } from '@warp-drive/legacy/compat/builders';
 import EditShapeModal from './edit-shape-modal';
 import type { TemplateOnlyComponent } from '@ember/component/template-only';
+import { task } from 'ember-concurrency';
+import type { Task } from 'ember-concurrency';
 
 interface Signature {
   Args: {
@@ -208,7 +210,7 @@ export default class ShapeManager extends Component<Signature> {
     this.cardEditing = true;
   };
 
-  saveCard = async () => {
+  saveCard = task(async () => {
     const defaultShape = await this.args.trafficSignal.defaultShape;
     if (
       this.shapeChange &&
@@ -233,13 +235,13 @@ export default class ShapeManager extends Component<Signature> {
       this.shapesConverted.retry();
       this.cardEditing = false;
     }
-  };
+  });
 
   closeShapeChangeConfirmation = () => {
     this.isShapeChangeConfirmationOpen = false;
   };
 
-  changeShape = async () => {
+  changeShape = task(async () => {
     let shapes = await this.store
       .countAndFetchAll<TribontShape>('tribont-shape', {
         'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
@@ -268,9 +270,9 @@ export default class ShapeManager extends Component<Signature> {
     this.shapesConverted.retry();
     this.cardEditing = false;
     this.closeShapeChangeConfirmation();
-  };
+  });
 
-  saveShape = async () => {
+  saveShape = task(async () => {
     const saved = await this.shapeToEdit?.validateAndsave(this.store);
     if (saved) {
       const shape = this.shapeToEdit?.shape as TribontShape;
@@ -283,7 +285,7 @@ export default class ShapeManager extends Component<Signature> {
       await this.shapesConverted.retry();
       await this.closeEditShapeModal();
     }
-  };
+  });
 
   cancelCard = () => {
     this.cardEditing = false;
@@ -313,13 +315,13 @@ export default class ShapeManager extends Component<Signature> {
     this.isDeleteConfirmationOpen = false;
   };
 
-  removeShape = async () => {
+  removeShape = task(async () => {
     const shape = this.shapeToDelete;
     if (!shape) return;
     await shape.remove(this.store);
     this.shapesConverted.retry();
     this.closeDeleteConfirmation();
-  };
+  });
 
   startEditShapeFlow = (shape: Shape) => {
     this.shapeToEdit = shape;
@@ -362,13 +364,16 @@ export default class ShapeManager extends Component<Signature> {
       <div class='shapes-buttons'>
         {{#if this.cardEditing}}
           <AuButton
-            {{on 'click' this.saveCard}}
+            {{on 'click' this.saveCard.perform}}
             @disabled={{not (and this.selectedUnit this.selectedShape)}}
+            @loading={{this.saveCard.isRunning}}
             @skin='link'
           >{{t 'utility.save'}}</AuButton>
-          <AuButton {{on 'click' this.cancelCard}} @skin='link-secondary'>{{t
-              'utility.cancel'
-            }}</AuButton>
+          <AuButton
+            {{on 'click' this.cancelCard}}
+            @skin='link-secondary'
+            @loading={{this.saveCard.isRunning}}
+          >{{t 'utility.cancel'}}</AuButton>
         {{else}}
           <AuButton @icon='pencil' @skin='naked' {{on 'click' this.editCard}} />
         {{/if}}
@@ -521,7 +526,7 @@ interface DeleteConfirmationModalSignature {
   Args: {
     isOpen: boolean;
     closeModal: () => void;
-    removeShape: () => Promise<void>;
+    removeShape: Task<void, []>;
     isLastShape: boolean;
   };
 }
@@ -541,10 +546,18 @@ const DeleteConfirmationModal: TemplateOnlyComponent<DeleteConfirmationModalSign
         </p>
       </:body>
       <:footer>
-        <AuButton @alert={{true}} {{on 'click' @removeShape}}>
+        <AuButton
+          @alert={{true}}
+          {{on 'click' @removeShape.perform}}
+          @loading={{@removeShape.isRunning}}
+        >
           {{t 'shape-manager.delete'}}
         </AuButton>
-        <AuButton @skin='secondary' {{on 'click' @closeModal}}>
+        <AuButton
+          @skin='secondary'
+          {{on 'click' @closeModal}}
+          @loading={{@removeShape.isRunning}}
+        >
           {{t 'utility.cancel'}}
         </AuButton>
       </:footer>
@@ -555,7 +568,7 @@ interface ShapeChangeConfirmationModalSignature {
   Args: {
     isOpen: boolean;
     closeModal: () => void;
-    changeShape: () => Promise<void>;
+    changeShape: Task<void, []>;
   };
 }
 
@@ -571,10 +584,18 @@ const ShapeChangeConfirmationModal: TemplateOnlyComponent<ShapeChangeConfirmatio
         </p>
       </:body>
       <:footer>
-        <AuButton @alert={{true}} {{on 'click' @changeShape}}>
+        <AuButton
+          @alert={{true}}
+          {{on 'click' @changeShape.perform}}
+          @loading={{@changeShape.isRunning}}
+        >
           {{t 'shape-manager.shape-change.button'}}
         </AuButton>
-        <AuButton @skin='secondary' {{on 'click' @closeModal}}>
+        <AuButton
+          @skin='secondary'
+          {{on 'click' @closeModal}}
+          @loading={{@changeShape.isRunning}}
+        >
           {{t 'utility.cancel'}}
         </AuButton>
       </:footer>
