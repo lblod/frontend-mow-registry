@@ -1,0 +1,385 @@
+import type Owner from '@ember/owner';
+import { tracked } from '@glimmer/tracking';
+import { service } from '@ember/service';
+import type IntlService from 'ember-intl/services/intl';
+import type { InputType } from 'mow-registry/components/traffic-measure';
+import type CodeList from 'mow-registry/models/code-list';
+import Variable from 'mow-registry/models/variable';
+import type CodelistsService from 'mow-registry/services/codelists';
+import type { Store } from '@warp-drive/core';
+import Component from '@glimmer/component';
+import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
+import ReactiveTable from 'mow-registry/components/reactive-table';
+import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
+import AuCheckbox from '@appuniversum/ember-appuniversum/components/au-checkbox';
+import t from 'ember-intl/helpers/t';
+import { on } from '@ember/modifier';
+import { fn } from '@ember/helper';
+import PowerSelect from 'ember-power-select/components/power-select';
+import ErrorMessage from 'mow-registry/components/error-message';
+import { eq, or } from 'ember-truth-helpers';
+import findByValue from 'mow-registry/helpers/find-by-value';
+import { trackedFunction } from 'reactiveweb/function';
+import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
+import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
+import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
+import { query, saveRecord } from '@warp-drive/legacy/compat/builders';
+import { Await } from '@warp-drive/ember';
+
+interface Signature {
+  Args: {
+    trafficSignal: TrafficSignalConcept;
+  };
+}
+
+export default class VariableManager extends Component<Signature> {
+  @service declare intl: IntlService;
+  variableTypes: Array<InputType>;
+  @service('codelists') declare codeListService: CodelistsService;
+  @service declare store: Store;
+  @tracked codeLists?: CodeList[];
+  @tracked variableToEdit?: Variable;
+  @tracked pageNumber = 0;
+  pageSize = 20;
+  @tracked isEditVariableModalOpen = false;
+  @tracked sort?: string = 'created-on';
+  variableToDelete?: Variable;
+  @tracked isDeleteConfirmationOpen = false;
+  @tracked editedCodelist?: CodeList;
+
+  constructor(
+    owner: Owner | undefined,
+    args: {
+      trafficSignal: TrafficSignalConcept;
+    },
+  ) {
+    super(owner, args);
+
+    this.variableTypes = [
+      {
+        value: 'text',
+        label: this.intl.t('utility.template-variables.text'),
+      },
+      {
+        value: 'number',
+        label: this.intl.t('utility.template-variables.number'),
+      },
+      {
+        value: 'date',
+        label: this.intl.t('utility.template-variables.date'),
+      },
+      {
+        value: 'location',
+        label: this.intl.t('utility.template-variables.location'),
+      },
+      {
+        value: 'codelist',
+        label: this.intl.t('utility.template-variables.codelist'),
+      },
+    ];
+    this.fetchCodeLists();
+  }
+
+  fetchCodeLists = () => {
+    this.codeListService.all
+      .perform()
+      .then((codelists: CodeList[]) => (this.codeLists = codelists))
+      .catch((error: Error) =>
+        console.error('Error fetching code lists:', error),
+      );
+  };
+
+  setVariableLabel = (variable: Variable, event: InputEvent) => {
+    const newLabel = (event.target as HTMLInputElement).value;
+    variable.set('label', newLabel);
+  };
+
+  setVariableRequired = (variable: Variable) => {
+    variable.set('required', !variable.required);
+  };
+
+  setVariableType = (variable: Variable, selectedType: InputType) => {
+    if (variable.type === 'codelist') {
+      //@ts-expect-error currently the ts types don't allow direct assignment of relationships
+      variable.codeList = this.codeLists[0];
+    }
+    variable.set('type', selectedType.value);
+  };
+
+  updateCodelist = (codeList: CodeList) => {
+    this.editedCodelist = codeList;
+  };
+
+  variables = trackedFunction(this, async () => {
+    await Promise.resolve();
+    const variables = await this.store.request(
+      query<Variable>('variable', {
+        'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+        page: {
+          number: this.pageNumber,
+          size: this.pageSize,
+        },
+        sort: this.sort,
+      }),
+    );
+
+    return await variables.content;
+  });
+
+  removeVariable = async () => {
+    await this.variableToDelete?.destroyRecord();
+    this.variables.retry();
+    this.closeDeleteConfirmation();
+  };
+
+  onPageChange = (newPage: number) => {
+    this.pageNumber = newPage;
+    this.variables.retry();
+  };
+  closeEditVariableModal = () => {
+    this.isEditVariableModalOpen = false;
+    this.variableToEdit?.reset();
+    this.editedCodelist = undefined;
+    this.variableToEdit = undefined;
+  };
+  startAddVariable = () => {
+    this.isEditVariableModalOpen = true;
+    this.variableToEdit = this.store.createRecord<Variable>('variable', {
+      trafficSignalConcept: this.args.trafficSignal,
+      createdOn: new Date(),
+    });
+  };
+  startEditVariable = (variable: Variable) => {
+    this.isEditVariableModalOpen = true;
+    this.variableToEdit = variable;
+  };
+  saveVariable = async () => {
+    if (this.variableToEdit && this.editedCodelist) {
+      this.variableToEdit.set('codeList', this.editedCodelist);
+    }
+    const valid = await this.variableToEdit?.validate();
+    if (!valid) return;
+    await this.store.request(saveRecord(this.variableToEdit as Variable));
+    this.variables.retry();
+    this.closeEditVariableModal();
+  };
+  onSortChange = (newSort: string) => {
+    this.sort = newSort;
+    this.variables.retry();
+  };
+  startDeleteVariableFlow = (variable: Variable) => {
+    this.variableToDelete = variable;
+    this.isDeleteConfirmationOpen = true;
+  };
+
+  closeDeleteConfirmation = () => {
+    this.variableToDelete = undefined;
+    this.isDeleteConfirmationOpen = false;
+  };
+  getTypeLabel = (type: InputType) => {
+    return type.label;
+  };
+  <template>
+    {{! @glint-nocheck: not typesafe yet }}
+    <ReactiveTable
+      @content={{this.variables.value}}
+      @isLoading={{this.variables.isLoading}}
+      @noDataMessage={{t 'variable-manager.no-data'}}
+      @page={{this.pageNumber}}
+      @pageSize={{this.pageSize}}
+      @onPageChange={{this.onPageChange}}
+      @hidePagination={{this.editMode}}
+      @onSortChange={{this.onSortChange}}
+      @sort={{this.sort}}
+    >
+      <:menu>
+        <div class='au-u-flex au-u-flex--end'>
+          <AuButton
+            @skin='secondary'
+            @icon='plus'
+            {{on 'click' this.startAddVariable}}
+            class='au-u-margin-small'
+          >
+            {{t 'utility.add-variable'}}
+          </AuButton>
+        </div>
+
+      </:menu>
+      <:header as |header|>
+        <header.Sortable @field='label' @label={{t 'utility.variable'}} />
+        <header.Sortable @field='type' @label={{t 'utility.type'}} />
+        <header.Sortable @field='required' @label={{t 'utility.required'}} />
+        <header.Sortable @field='createdOn' @label={{t 'utility.created-on'}} />
+        <th></th>
+      </:header>
+      <:body as |variable|>
+        <td class='au-u-word-break'>
+          {{variable.label}}
+        </td>
+        <td>
+          {{this.getTypeLabel (findByValue this.variableTypes variable.type)}}
+        </td>
+        <td>
+          {{#if variable.required}}
+            {{t 'utility.yes'}}
+          {{else}}
+            {{t 'utility.no'}}
+          {{/if}}
+        </td>
+        <td>
+          {{humanFriendlyDate variable.createdOn}}
+        </td>
+        <td>
+          <AuButton
+            @skin='naked'
+            @icon='pencil'
+            {{on 'click' (fn this.startEditVariable variable)}}
+          />
+          <AuButton
+            @skin='naked'
+            @alert='true'
+            @icon='trash'
+            {{on 'click' (fn this.startDeleteVariableFlow variable)}}
+          />
+        </td>
+
+      </:body>
+    </ReactiveTable>
+    <AuModal
+      @modalOpen={{this.isEditVariableModalOpen}}
+      @closeModal={{this.closeEditVariableModal}}
+    >
+      <:title>
+        {{#if this.variableToEdit.isNew}}
+          {{t 'utility.add-variable'}}
+        {{else}}
+          {{t 'variable-manager.edit-modal-title'}}
+        {{/if}}
+      </:title>
+      <:body>
+        <div>
+          <AuLabel
+            @error={{this.variableToEdit.error.label}}
+            @required={{true}}
+            @requiredLabel={{t 'utility.required'}}
+          >{{t 'utility.variable'}}
+          </AuLabel>
+
+          <AuInput
+            value={{this.variableToEdit.label}}
+            @error={{this.variableToEdit.error.label}}
+            {{on 'input' (fn this.setVariableLabel this.variableToEdit)}}
+          />
+          <ErrorMessage @error={{this.variableToEdit.error.label}} />
+          <AuLabel
+            @error={{this.variableToEdit.error.type}}
+            @required={{true}}
+            @requiredLabel={{t 'utility.required'}}
+          >{{t 'utility.type'}}
+          </AuLabel>
+          <div
+            class={{if
+              this.variableToEdit.error.type
+              'ember-power-select--error'
+            }}
+          >
+            <PowerSelect
+              @allowClear={{false}}
+              @searchEnabled={{false}}
+              @options={{this.variableTypes}}
+              @loadingMessage={{t 'utility.loading'}}
+              @selected={{findByValue
+                this.variableTypes
+                this.variableToEdit.type
+              }}
+              @onChange={{fn this.setVariableType this.variableToEdit}}
+              as |type|
+            >
+              {{type.label}}
+            </PowerSelect>
+            <ErrorMessage @error={{this.variableToEdit.error.type}} />
+          </div>
+          {{#if (eq this.variableToEdit.type 'codelist')}}
+            <Await @promise={{this.variableToEdit.codeList}}>
+              <:success as |codelistPromise|>
+                <PowerSelect
+                  @triggerClass='au-u-margin-top-tiny'
+                  @allowClear={{false}}
+                  @searchEnabled={{true}}
+                  @searchField='label'
+                  @options={{this.codeLists}}
+                  @selected={{or this.editedCodelist codelistPromise}}
+                  @onChange={{this.updateCodelist}}
+                  as |codeList|
+                >
+                  {{codeList.label}}
+                </PowerSelect>
+                {{#if (or this.editedCodelist codelistPromise)}}
+                  <Await
+                    @promise={{or
+                      this.editedCodelist.concepts
+                      codelistPromise.concepts
+                    }}
+                  >
+                    <:success as |conceptsPromise|>
+                      <ul
+                        class='au-c-list-help au-c-help-text au-c-help-text--secondary'
+                      >
+                        {{#each conceptsPromise as |option|}}
+                          <li class='au-c-list-help__item'>{{option.label}}</li>
+                        {{/each}}
+                      </ul>
+                    </:success>
+                  </Await>
+                {{/if}}
+              </:success>
+            </Await>
+            <ErrorMessage @error={{this.variableToEdit.error.codelist}} />
+          {{/if}}
+        </div>
+        <AuLabel
+          @error={{this.variableToEdit.error.required}}
+          @requiredLabel={{t 'utility.required'}}
+        >{{t 'utility.required'}}
+        </AuLabel>
+        <AuCheckbox
+          @value={{this.variableToEdit.required}}
+          @checked={{this.variableToEdit.required}}
+          @onChange={{fn this.setVariableRequired this.variableToEdit}}
+        >
+          {{t 'utility.required'}}
+        </AuCheckbox>
+      </:body>
+      <:footer>
+        <AuButton {{on 'click' this.saveVariable}}>
+          {{t 'utility.save'}}
+        </AuButton>
+        <AuButton @skin='secondary' {{on 'click' this.closeEditVariableModal}}>
+          {{t 'utility.cancel'}}
+        </AuButton>
+      </:footer>
+    </AuModal>
+    <AuModal
+      @modalOpen={{this.isDeleteConfirmationOpen}}
+      @closeModal={{this.closeDeleteConfirmation}}
+    >
+      <:title>
+        {{t 'utility.confirmation.title'}}
+      </:title>
+      <:body>
+        <p>
+          {{t 'utility.confirmation.body'}}
+        </p>
+      </:body>
+      <:footer>
+        <AuButton @alert={{true}} {{on 'click' this.removeVariable}}>
+          {{t 'variable-manager.delete'}}
+        </AuButton>
+        <AuButton @skin='secondary' {{on 'click' this.closeDeleteConfirmation}}>
+          {{t 'utility.cancel'}}
+        </AuButton>
+      </:footer>
+    </AuModal>
+  </template>
+}

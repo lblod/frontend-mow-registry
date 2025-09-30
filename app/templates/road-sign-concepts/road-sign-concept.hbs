@@ -96,51 +96,6 @@
             {{human-friendly-date @model.roadSignConcept.endDate locale=this.intl.primaryLocale}}
           </dd>
         </div>
-        <div>
-          <dt class="au-u-h5 au-u-medium">
-            {{t "road-sign-concept.attr.shape"}}
-          </dt>
-          <dd class="au-u-muted">
-            {{#if @model.roadSignConcept.shapes}}
-              <ul class="au-o-flow au-o-flow--small">
-                {{#each @model.roadSignConcept.shapes as |shape|}}
-                  <li>
-                    <p class="au-u-medium">{{shape.classification.label}}</p>
-                    <ul>
-                      {{#each shape.dimensions as |dimension|}}
-                        <li>
-                          {{dimension.kind.label}}:
-                          {{dimension.value}}{{dimension.unit.symbol}}
-                        </li>
-                      {{/each}}
-                    </ul>
-                  </li>
-                {{/each}}
-              </ul>
-            {{else}}
-              -
-            {{/if}}
-          </dd>
-        </div>
-
-        <div>
-          <dt class="au-u-h5 au-u-medium">
-            {{t "utility.variables"}}
-          </dt>
-          <dd class="au-u-muted">
-            {{#if @model.roadSignConcept.variables}}
-              <ul>
-                {{#each @model.roadSignConcept.variables as |variable|}}
-                  <li>
-                    {{variable.label}}
-                  </li>
-                {{/each}}
-              </ul>
-            {{else}}
-              -
-            {{/if}}
-          </dd>
-        </div>
       </dl>
     </div>
 
