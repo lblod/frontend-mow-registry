@@ -22,7 +22,7 @@ import { trackedFunction } from 'reactiveweb/function';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
-import { getPromiseState } from '@warp-drive/ember';
+import { Await, getPromiseState } from '@warp-drive/ember';
 import type VariablesService from 'mow-registry/services/variables-service';
 import AuFormRow from '@appuniversum/ember-appuniversum/components/au-form-row';
 import CodelistVariable, {
@@ -201,6 +201,7 @@ export default class VariableManager extends Component<Signature> {
   updateCodelist = (codeList: CodeList) => {
     if (isCodelistVariable(this.variableToEdit)) {
       this.variableToEdit.set('codeList', codeList);
+      this.variableToEdit.set('defaultValue', null);
     }
   };
 
@@ -358,12 +359,9 @@ export default class VariableManager extends Component<Signature> {
               </div>
             </AuFormRow>
             {{#if (isCodelistVariable this.variableToEdit)}}
-              {{#let
-                (getPromiseState this.variableToEdit.codeList)
-                as |codelistPromise|
-              }}
-                <AuFormRow>
-                  {{#if codelistPromise.isSuccess}}
+              <AuFormRow>
+                <Await @promise={{this.variableToEdit.codeList}}>
+                  <:success as |codelist|>
                     <AuLabel>{{t
                         'variable-manager.edit-modal.codelist'
                       }}</AuLabel>
@@ -373,36 +371,34 @@ export default class VariableManager extends Component<Signature> {
                       @allowClear={{false}}
                       @searchEnabled={{true}}
                       @options={{or this.codelists.value undefined}}
-                      @selected={{codelistPromise.value}}
+                      @selected={{codelist}}
                       @onChange={{this.updateCodelist}}
                       as |codeList|
                     >
                       {{codeList.label}}
                     </PowerSelect>
-                    {{#if codelistPromise.value}}
-                      {{#let
-                        (getPromiseState codelistPromise.value.concepts)
-                        as |conceptsPromise|
-                      }}
-                        {{#if conceptsPromise.isSuccess}}
+                    {{#if codelist}}
+                      <Await @promise={{codelist.concepts}}>
+                        <:success as |concepts|>
                           <ul
                             class='au-c-list-help au-c-help-text au-c-help-text--secondary au-u-1-1'
                           >
-                            {{#each conceptsPromise.value as |option|}}
+                            {{#each concepts as |option|}}
                               <li
                                 class='au-c-list-help__item'
                               >{{option.label}}</li>
                             {{/each}}
                           </ul>
-                        {{/if}}
-                      {{/let}}
+                        </:success>
+                      </Await>
                     {{/if}}
-                  {{/if}}
-                  <ErrorMessage
-                    @error={{get this.variableToEdit.error 'codelist'}}
-                  />
-                </AuFormRow>
-              {{/let}}
+                  </:success>
+                </Await>
+                <ErrorMessage
+                  @error={{get this.variableToEdit.error 'codelist'}}
+                />
+              </AuFormRow>
+
             {{/if}}
             <AuFormRow>
               {{#if this.variableToEdit}}
@@ -481,10 +477,14 @@ class VariableDefaultValueLabel extends Component<{
       );
     } else if (isCodelistVariable(variable)) {
       const defaultValuePromiseState = getPromiseState(variable.defaultValue);
-      return (
+      if (
         defaultValuePromiseState.isSuccess &&
-        `"${defaultValuePromiseState.value?.label}"`
-      );
+        defaultValuePromiseState.value
+      ) {
+        return `"${defaultValuePromiseState.value.label}"`;
+      } else {
+        return;
+      }
     } else {
       return;
     }

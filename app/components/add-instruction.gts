@@ -45,7 +45,7 @@ import type VariablesService from 'mow-registry/services/variables-service';
 import type TextVariable from 'mow-registry/models/text-variable';
 import { TrackedArray } from 'tracked-built-ins';
 import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
-import { getPromiseState } from '@warp-drive/ember';
+import { Await } from '@warp-drive/ember';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 export interface AddInstructionSig {
@@ -497,37 +497,31 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                         {{type}}
                       </PowerSelect>
                       {{#if (isCodelistVariable variable)}}
-                        {{#let
-                          (getPromiseState variable.codeList)
-                          as |codelistPromise|
-                        }}
-                          {{#if codelistPromise.isSuccess}}
+                        <Await @promise={{variable.codeList}}>
+                          <:success as |codelist|>
                             <PowerSelect
                               @allowClear={{false}}
                               @searchEnabled={{false}}
                               @options={{this.codeLists}}
-                              @selected={{codelistPromise.value}}
+                              @selected={{codelist}}
                               @onChange={{fn this.updateCodeList variable}}
                               as |codeList|
                             >
                               {{codeList.label}}
                             </PowerSelect>
-                            {{#if codelistPromise.value}}
-                              {{#let
-                                (getPromiseState codelistPromise.value.concepts)
-                                as |conceptsPromise|
-                              }}
-                                {{#if conceptsPromise.isSuccess}}
+                            {{#if codelist}}
+                              <Await @promise={{codelist.concepts}}>
+                                <:success as |concepts|>
                                   <ul>
-                                    {{#each conceptsPromise.value as |option|}}
+                                    {{#each concepts as |option|}}
                                       <li> - {{option.label}}</li>
                                     {{/each}}
                                   </ul>
-                                {{/if}}
-                              {{/let}}
+                                </:success>
+                              </Await>
                             {{/if}}
-                          {{/if}}
-                        {{/let}}
+                          </:success>
+                        </Await>
                         <ErrorMessage
                           @error={{get variable.error 'codeList'}}
                         />

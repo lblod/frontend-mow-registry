@@ -64,7 +64,7 @@ import InstructionVariable, {
 } from 'mow-registry/models/instruction-variable';
 import type TextVariable from 'mow-registry/models/text-variable';
 import { validateVariables } from 'mow-registry/utils/validate-relations';
-import { getPromiseState } from '@warp-drive/ember';
+import { Await } from '@warp-drive/ember';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Sig = {
@@ -799,17 +799,14 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                               }}
                             </PowerSelect>
                             {{#if (isCodelistVariable variable)}}
-                              {{#let
-                                (getPromiseState variable.codeList)
-                                as |codelistPromise|
-                              }}
-                                {{#if codelistPromise.isSuccess}}
+                              <Await @promise={{variable.codeList}}>
+                                <:success as |codelist|>
                                   <PowerSelect
                                     @triggerClass='au-u-margin-top-tiny'
                                     @allowClear={{false}}
                                     @searchEnabled={{false}}
                                     @options={{this.codeLists}}
-                                    @selected={{codelistPromise.value}}
+                                    @selected={{codelist}}
                                     @onChange={{fn
                                       this.updateCodelist
                                       variable
@@ -818,47 +815,36 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                                   >
                                     {{codeList.label}}
                                   </PowerSelect>
-                                  {{#if codelistPromise.value}}
-                                    {{#let
-                                      (getPromiseState
-                                        codelistPromise.value.concepts
-                                      )
-                                      as |conceptsPromise|
-                                    }}
-                                      {{#if conceptsPromise.isSuccess}}
+                                  {{#if codelist}}
+                                    <Await @promise={{codelist.concepts}}>
+                                      <:success as |concepts|>
                                         <ul
                                           class='au-c-list-help au-c-help-text au-c-help-text--secondary'
                                         >
-                                          {{#each
-                                            conceptsPromise.value
-                                            as |option|
-                                          }}
+                                          {{#each concepts as |option|}}
                                             <li
                                               class='au-c-list-help__item'
                                             >{{option.label}}</li>
                                           {{/each}}
                                         </ul>
-                                      {{/if}}
-                                    {{/let}}
+                                      </:success>
+                                    </Await>
                                   {{/if}}
-                                {{/if}}
-                              {{/let}}
+                                </:success>
+                              </Await>
                               <ErrorMessage
                                 @error={{get variable.error 'codeList'}}
                               />
                             {{/if}}
                             {{#if (isInstructionVariable variable)}}
-                              {{#let
-                                (getPromiseState variable.template)
-                                as |templatePromise|
-                              }}
-                                {{#if templatePromise.isSuccess}}
+                              <Await @promise={{variable.template}}>
+                                <:success as |template|>
                                   <PowerSelect
                                     @triggerClass='au-u-margin-top-tiny'
                                     @allowClear={{false}}
                                     @searchEnabled={{false}}
                                     @options={{this.instructions}}
-                                    @selected={{templatePromise.value}}
+                                    @selected={{template.value}}
                                     @onChange={{fn
                                       this.updateInstruction
                                       variable
@@ -871,13 +857,15 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                                         src={{instruction.parentConcept.image.file.downloadLink}}
                                         alt=''
                                       />
-                                      <span
-                                        title={{instruction.value}}
-                                      >{{truncate instruction.value}}</span>
+                                      {{#if instruction.value}}
+                                        <span
+                                          title={{instruction.value}}
+                                        >{{truncate instruction.value}}</span>
+                                      {{/if}}
                                     </div>
                                   </PowerSelect>
-                                {{/if}}
-                              {{/let}}
+                                </:success>
+                              </Await>
                             {{/if}}
                           </td>
                         </tr>
