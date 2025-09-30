@@ -38,6 +38,11 @@ import type { Task } from 'ember-concurrency';
 interface Signature {
   Args: {
     trafficSignal: TrafficSignalConcept;
+    pageNumber: number;
+    pageSize: number;
+    sort?: string;
+    onPageChange: (newPage: number) => unknown;
+    onSortChange: (newSort?: string) => unknown;
   };
 }
 
@@ -57,13 +62,15 @@ export default class ShapeManager extends Component<Signature> {
   @tracked shapeToEdit?: Shape;
   @tracked convertToNewDefaultShape?: boolean;
   @tracked isEditShapeModalOpen = false;
-  @tracked pageNumber = 0;
-  pageSize = 20;
-  @tracked sort?: string = 'created-on';
   constructor(
     owner: Owner | undefined,
     args: {
       trafficSignal: TrafficSignalConcept;
+      pageNumber: number;
+      pageSize: number;
+      sort?: string;
+      onPageChange: (newPage: number) => unknown;
+      onSortChange: (newSort?: string) => unknown;
     },
   ) {
     super(owner, args);
@@ -132,9 +139,9 @@ export default class ShapeManager extends Component<Signature> {
     return undefined;
   }
   shapesConverted = trackedFunction(this, async () => {
-    const number = this.pageNumber;
-    const size = this.pageSize;
-    const sort = this.sort;
+    const number = this.args.pageNumber;
+    const size = this.args.pageSize;
+    const sort = this.args.sort;
     const trafficSignalId = this.args.trafficSignal.id;
 
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
@@ -348,12 +355,6 @@ export default class ShapeManager extends Component<Signature> {
       this.startEditShapeFlow(shape);
     }
   };
-  onPageChange = (newPage: number) => {
-    this.pageNumber = newPage;
-  };
-  onSortChange = (newSort: string) => {
-    this.sort = newSort;
-  };
   <template>
     {{! @glint-nocheck: not typesafe yet }}
     <h2 class='shapes-title au-u-margin-left au-u-margin-top'>{{t
@@ -439,11 +440,11 @@ export default class ShapeManager extends Component<Signature> {
       @content={{this.shapesConverted.value}}
       @isLoading={{this.shapesConverted.isLoading}}
       @noDataMessage={{t 'shape-manager.no-data'}}
-      @page={{this.pageNumber}}
-      @pageSize={{this.pageSize}}
-      @onPageChange={{this.onPageChange}}
-      @onSortChange={{this.onSortChange}}
-      @sort={{this.sort}}
+      @page={{@pageNumber}}
+      @pageSize={{@pageSize}}
+      @onPageChange={{@onPageChange}}
+      @onSortChange={{@onSortChange}}
+      @sort={{@sort}}
     >
       <:menu>
         <div class='au-u-flex au-u-flex--end'>
