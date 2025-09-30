@@ -91,7 +91,7 @@ export default class EditShapeModal extends Component<Signature> {
         <AuButton
           @skin='secondary'
           {{on 'click' @closeModal}}
-          @loading={{@saveShape.isRunning}}
+          @disabled={{@saveShape.isRunning}}
         >
           {{t 'utility.cancel'}}
         </AuButton>

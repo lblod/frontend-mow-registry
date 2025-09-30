@@ -372,7 +372,7 @@ export default class ShapeManager extends Component<Signature> {
           <AuButton
             {{on 'click' this.cancelCard}}
             @skin='link-secondary'
-            @loading={{this.saveCard.isRunning}}
+            @disabled={{this.saveCard.isRunning}}
           >{{t 'utility.cancel'}}</AuButton>
         {{else}}
           <AuButton @icon='pencil' @skin='naked' {{on 'click' this.editCard}} />
@@ -556,7 +556,7 @@ const DeleteConfirmationModal: TemplateOnlyComponent<DeleteConfirmationModalSign
         <AuButton
           @skin='secondary'
           {{on 'click' @closeModal}}
-          @loading={{@removeShape.isRunning}}
+          @disabled={{@removeShape.isRunning}}
         >
           {{t 'utility.cancel'}}
         </AuButton>
@@ -594,7 +594,7 @@ const ShapeChangeConfirmationModal: TemplateOnlyComponent<ShapeChangeConfirmatio
         <AuButton
           @skin='secondary'
           {{on 'click' @closeModal}}
-          @loading={{@changeShape.isRunning}}
+          @disabled={{@changeShape.isRunning}}
         >
           {{t 'utility.cancel'}}
         </AuButton>
