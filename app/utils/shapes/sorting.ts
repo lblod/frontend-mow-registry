@@ -75,5 +75,5 @@ function getDimensionUri(sortParameter?: string) {
 
 function getSortDirection(sortParameter?: string) {
   if (!sortParameter) return 'ASC';
-  return sortParameter.charAt(0) === '-' ? 'ASC' : 'DESC';
+  return sortParameter.charAt(0) === '-' ? 'DESC' : 'ASC';
 }

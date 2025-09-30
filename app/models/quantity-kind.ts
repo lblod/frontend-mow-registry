@@ -1,4 +1,4 @@
-import Model, { hasMany } from '@warp-drive/legacy/model';
+import Model, { hasMany, type AsyncHasMany } from '@warp-drive/legacy/model';
 import { attr } from '@warp-drive/legacy/model';
 import type Unit from './unit';
 import type { Type } from '@warp-drive/core/types/symbols';
@@ -9,6 +9,6 @@ export default class QuantityKind extends Model {
   @attr declare label?: string;
   @attr declare uri?: string;
 
-  @hasMany<Unit>('unit', { inverse: null, async: false })
-  declare units: Unit[];
+  @hasMany<Unit>('unit', { inverse: null, async: true })
+  declare units: AsyncHasMany<Unit>;
 }

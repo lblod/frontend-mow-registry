@@ -33,8 +33,8 @@ import { or } from 'ember-truth-helpers';
 import { LinkTo } from '@ember/routing';
 import { load } from 'ember-async-data';
 import { isSome } from 'mow-registry/utils/option';
-import { getPromiseState } from '@warp-drive/ember';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
+import { Await } from '@warp-drive/ember';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -312,11 +312,8 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   {{t 'road-sign-concept.attr.classifications'}}&nbsp;
                 </AuLabel>
                 <div class={{if error 'ember-power-select--error'}}>
-                  {{#let
-                    (getPromiseState @roadSignConcept.classifications)
-                    as |classificationsPromise|
-                  }}
-                    {{#if classificationsPromise.isSuccess}}
+                  <Await @promise={{@roadSignConcept.classifications}}>
+                    <:success as |classificationsPromise|>
                       <PowerSelectMultiple
                         @allowClear={{true}}
                         @placeholder={{t 'utility.search-placeholder'}}
@@ -326,15 +323,15 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                         @searchField='label'
                         @options={{@classifications}}
                         @loadingMessage={{t 'utility.loading'}}
-                        @selected={{classificationsPromise.value}}
+                        @selected={{classificationsPromise}}
                         @onChange={{this.setRoadSignConceptClassification}}
                         @triggerId='classifications'
                         as |classification|
                       >
                         {{classification.label}}
                       </PowerSelectMultiple>
-                    {{/if}}
-                  {{/let}}
+                    </:success>
+                  </Await>
                 </div>
                 <ErrorMessage @error={{error}} />
               </AuFormRow>

@@ -104,7 +104,7 @@ export async function dimensionToShapeDimension(
 
 export interface ShapeStatic {
   headers(intln: IntlService): { label: string; value: string }[];
-  fromShape(shape: TribontShape): Promise<Shape | undefined>;
+  fromShape(shape: TribontShape): Promise<Shape | void>;
   createShape(
     unit: Unit,
     store: Store,
@@ -127,7 +127,8 @@ export type Shape = {
 
 export async function convertToShape(shape: TribontShape) {
   const classificationUri = (await shape.classification)?.get('uri');
-  if (!classificationUri) return;
+  if (!classificationUri)
+    return console.error('the shape must have a valid classification linked');
   const shapeClass: ShapeStatic =
     SHAPES[classificationUri as keyof typeof SHAPES];
   const shapeConverted = await shapeClass.fromShape(shape);

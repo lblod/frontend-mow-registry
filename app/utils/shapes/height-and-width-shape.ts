@@ -29,7 +29,6 @@ export default class HeightAndWidhtShape implements Shape {
   get unitMeasure() {
     return this.height.unit;
   }
-
   get id() {
     return this.shape.id as string;
   }
@@ -48,16 +47,22 @@ export default class HeightAndWidhtShape implements Shape {
   }
 
   static async fromShape(shape: TribontShape) {
-    if (!shape.id) return;
+    if (!shape.id) return console.error('the shape should have an id');
     const dimensions = await shape.dimensions;
-    const heightDimension = dimensions.find(
-      (dimension) => dimension.kind?.uri === DIMENSIONS.height,
-    );
-
-    const widthDimension = dimensions.find(
-      (dimension) => dimension.kind?.uri === DIMENSIONS.width,
-    );
-    if (!heightDimension || !widthDimension) return;
+    let heightDimension;
+    let widthDimension;
+    for (const dimension of dimensions) {
+      const kind = await dimension.kind;
+      if (kind?.uri === DIMENSIONS.height) {
+        heightDimension = dimension;
+      }
+      if (kind?.uri === DIMENSIONS.width) {
+        widthDimension = dimension;
+      }
+    }
+    if (!heightDimension || !widthDimension) {
+      return console.error('the shape should have the required dimensions');
+    }
     const height = await dimensionToShapeDimension(heightDimension, 'height');
     const width = await dimensionToShapeDimension(widthDimension, 'width');
     return new this(shape, height, width);

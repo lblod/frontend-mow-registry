@@ -45,12 +45,18 @@ export default class Circular implements Shape {
   }
 
   static async fromShape(shape: TribontShape) {
-    if (!shape.id) return;
+    if (!shape.id) return console.error('the shape should have an id');
     const dimensions = await shape.dimensions;
-    const radiusDimension = dimensions.find(
-      (dimension) => dimension.kind?.uri === DIMENSIONS.radius,
-    );
-    if (!radiusDimension) return;
+    let radiusDimension;
+    for (const dimension of dimensions) {
+      const kind = await dimension.kind;
+      if (kind?.uri === DIMENSIONS.radius) {
+        radiusDimension = dimension;
+      }
+    }
+    if (!radiusDimension) {
+      return console.error('the shape should have the required dimensions');
+    }
     const radius = await dimensionToShapeDimension(radiusDimension, 'radius');
     return new this(shape, radius);
   }

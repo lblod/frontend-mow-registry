@@ -1,13 +1,12 @@
 import type Owner from '@ember/owner';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import type { Store } from '@warp-drive/core';
+import Store from 'mow-registry/services/store';
 import Component from '@glimmer/component';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import ReactiveTable from 'mow-registry/components/reactive-table';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
-import AuCheckbox from '@appuniversum/ember-appuniversum/components/au-checkbox';
 import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import t from 'ember-intl/helpers/t';
@@ -25,14 +24,16 @@ import {
   shapeDimensionToText,
   SHAPES,
 } from 'mow-registry/utils/shapes';
-import type TribontShape from 'mow-registry/models/tribont-shape';
-import { removeItem } from 'mow-registry/utils/array';
+import TribontShape from 'mow-registry/models/tribont-shape';
 import type IntlService from 'ember-intl/services/intl';
 import { sortOnDimension } from 'mow-registry/utils/shapes/sorting';
 import generateMeta from 'mow-registry/utils/generate-meta';
-import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { findAll, query, saveRecord } from '@warp-drive/legacy/compat/builders';
+import EditShapeModal from './edit-shape-modal';
+import type { TemplateOnlyComponent } from '@ember/component/template-only';
+import { task } from 'ember-concurrency';
+import type { Task } from 'ember-concurrency';
 
 interface Signature {
   Args: {
@@ -71,7 +72,7 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   get selectedShape() {
-    return this.shapeChange ?? this.firstShape.value?.get('classification');
+    return this.shapeChange ?? this.firstShape?.get('classification');
   }
 
   get selectedUnit() {
@@ -79,7 +80,7 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   get shapeClass() {
-    const classificationUri = this.firstShape.value
+    const classificationUri = this.firstShape
       ?.get('classification')
       ?.get('uri');
     if (!classificationUri) return undefined;
@@ -113,7 +114,7 @@ export default class ShapeManager extends Component<Signature> {
   }
 
   get defaultShapeClassification() {
-    return this.firstShape.value?.get('classification').get('label');
+    return this.firstShape?.get('classification').get('label');
   }
   defaultShape = trackedFunction(this, async () => {
     const defaultShape = (await this.args.trafficSignal
@@ -123,10 +124,13 @@ export default class ShapeManager extends Component<Signature> {
     const shapeConverted = await convertToShape(defaultShape);
     return shapeConverted;
   });
-  firstShape = trackedFunction(this, async () => {
-    const firstShape = (await this.args.trafficSignal.shapes)[0];
-    return firstShape;
-  });
+  get firstShape() {
+    const shapesConverted = this.shapesConverted.value;
+    if (shapesConverted && !shapesConverted[0]?.shape.isDestroyed) {
+      return shapesConverted[0]?.shape;
+    }
+    return undefined;
+  }
   shapesConverted = trackedFunction(this, async () => {
     const number = this.pageNumber;
     const size = this.pageSize;
@@ -137,7 +141,7 @@ export default class ShapeManager extends Component<Signature> {
     await Promise.resolve();
     const shapesConverted: Shape[] = [];
     let shapes: TribontShape[] = [];
-    if (sort === 'created-on' || sort === '-created-on') {
+    if (!sort || sort === 'created-on' || sort === '-created-on') {
       shapes = await this.store
         .request(
           query<TribontShape>('tribont-shape', {
@@ -150,6 +154,8 @@ export default class ShapeManager extends Component<Signature> {
           }),
         )
         .then((res) => res.content);
+      // @ts-expect-error We know that an array don't have a meta property but we need it for the table to work
+      shapesConverted.meta = shapes.meta;
     } else {
       const shapesSorted = await sortOnDimension(
         sort,
@@ -204,7 +210,7 @@ export default class ShapeManager extends Component<Signature> {
     this.cardEditing = true;
   };
 
-  saveCard = async () => {
+  saveCard = task(async () => {
     const defaultShape = await this.args.trafficSignal.defaultShape;
     if (
       this.shapeChange &&
@@ -217,34 +223,69 @@ export default class ShapeManager extends Component<Signature> {
       this.unitChange.id !== this.defaultMeasureUnit?.id &&
       this.shapesConverted.value
     ) {
-      for (const shape of this.shapesConverted.value) {
-        await shape?.convertToNewUnit(this.unitChange, this.store);
+      let shapes = await this.store
+        .countAndFetchAll<TribontShape>('tribont-shape', {
+          'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+        })
+        .then((res) => res.content);
+      for (const shape of shapes) {
+        const shapeConverted = await this.shapeClass?.fromShape(shape);
+        await shapeConverted?.convertToNewUnit(this.unitChange, this.store);
       }
+      this.shapesConverted.retry();
+      this.cardEditing = false;
     }
-    this.cardEditing = false;
-  };
+  });
 
   closeShapeChangeConfirmation = () => {
     this.isShapeChangeConfirmationOpen = false;
   };
 
-  changeShape = async () => {
-    let shapes = [...(await this.args.trafficSignal.shapes)];
-    for (const shape of shapes) {
-      await shape.destroyWithRelations();
+  changeShape = task(async () => {
+    let shapes = await this.store
+      .countAndFetchAll<TribontShape>('tribont-shape', {
+        'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+      })
+      .then((res) => res.content);
+    for (const shapeToDelete of shapes) {
+      await shapeToDelete.destroyWithRelations();
     }
     const shapeClass = SHAPES[this.shapeChange?.uri as keyof typeof SHAPES];
-    const shape = await shapeClass.createShape(
+    const shape = (await shapeClass.createShape(
       this.selectedUnit as Unit,
       this.store,
       this.args.trafficSignal,
-    );
+    )) as Shape;
+    for (const dimension of shapeClass.headers(this.intl)) {
+      const dimensionProperty =
+        shape[dimension.value as keyof typeof DIMENSIONS];
+      if (dimensionProperty) {
+        dimensionProperty.value = 0;
+      }
+    }
     await shape.validateAndsave(this.store);
     this.args.trafficSignal.set('defaultShape', undefined);
     this.args.trafficSignal.set('shapes', [shape.shape]);
     await this.store.request(saveRecord(this.args.trafficSignal));
+    this.shapesConverted.retry();
+    this.cardEditing = false;
     this.closeShapeChangeConfirmation();
-  };
+  });
+
+  saveShape = task(async () => {
+    const saved = await this.shapeToEdit?.validateAndsave(this.store);
+    if (saved) {
+      const shape = this.shapeToEdit?.shape as TribontShape;
+      if (this.convertToNewDefaultShape) {
+        this.args.trafficSignal.set('defaultShape', shape);
+      } else if (this.shapeToEdit?.id === this.defaultShape.value?.id) {
+        this.args.trafficSignal.set('defaultShape', undefined);
+      }
+      await this.store.request(saveRecord(this.args.trafficSignal));
+      await this.shapesConverted.retry();
+      await this.closeEditShapeModal();
+    }
+  });
 
   cancelCard = () => {
     this.cardEditing = false;
@@ -255,16 +296,6 @@ export default class ShapeManager extends Component<Signature> {
   getStringValue(shape: Shape, dimension: keyof typeof DIMENSIONS) {
     if (!shape[dimension]) return '';
     return shapeDimensionToText(shape[dimension]);
-  }
-
-  getRawValue(shape: Shape, dimension: keyof typeof DIMENSIONS) {
-    if (!shape[dimension]) return '';
-    return shape[dimension].value;
-  }
-
-  getError(shape: Shape, dimension: keyof typeof DIMENSIONS) {
-    if (!shape[dimension]) return undefined;
-    return shape[dimension].dimension.error;
   }
 
   setShapeClassifications = (classification: ShapeClassification) => {
@@ -284,15 +315,13 @@ export default class ShapeManager extends Component<Signature> {
     this.isDeleteConfirmationOpen = false;
   };
 
-  removeShape = async () => {
+  removeShape = task(async () => {
     const shape = this.shapeToDelete;
     if (!shape) return;
-    const shapes = await this.args.trafficSignal.shapes;
-    removeItem(shapes, shape.shape);
-    await this.store.request(saveRecord(this.args.trafficSignal));
     await shape.remove(this.store);
+    this.shapesConverted.retry();
     this.closeDeleteConfirmation();
-  };
+  });
 
   startEditShapeFlow = (shape: Shape) => {
     this.shapeToEdit = shape;
@@ -305,34 +334,7 @@ export default class ShapeManager extends Component<Signature> {
     this.shapeToEdit = undefined;
     this.isEditShapeModalOpen = false;
   };
-  saveShape = async () => {
-    const saved = await this.shapeToEdit?.validateAndsave(this.store);
-    if (saved) {
-      if (this.convertToNewDefaultShape) {
-        this.args.trafficSignal.set(
-          'defaultShape',
-          this.shapeToEdit?.shape as TribontShape,
-        );
-        await this.store.request(saveRecord(this.args.trafficSignal));
-      } else if (this.shapeToEdit?.id === this.defaultShape.value?.id) {
-        this.args.trafficSignal.set('defaultShape', undefined);
-        await this.store.request(saveRecord(this.args.trafficSignal));
-      }
-      await this.closeEditShapeModal();
-    }
-  };
 
-  setShapeValue = (
-    shape: Shape,
-    dimension: keyof typeof DIMENSIONS,
-    event: Event,
-  ) => {
-    const numberValue = Number((event.target as HTMLInputElement).value);
-    const shapeDimension = shape[dimension];
-    if (shapeDimension) {
-      shapeDimension.value = numberValue;
-    }
-  };
   toggleDefaultShape = () => {
     this.convertToNewDefaultShape = !this.convertToNewDefaultShape;
   };
@@ -362,13 +364,16 @@ export default class ShapeManager extends Component<Signature> {
       <div class='shapes-buttons'>
         {{#if this.cardEditing}}
           <AuButton
-            {{on 'click' this.saveCard}}
+            {{on 'click' this.saveCard.perform}}
             @disabled={{not (and this.selectedUnit this.selectedShape)}}
+            @loading={{this.saveCard.isRunning}}
             @skin='link'
           >{{t 'utility.save'}}</AuButton>
-          <AuButton {{on 'click' this.cancelCard}} @skin='link-secondary'>{{t
-              'utility.cancel'
-            }}</AuButton>
+          <AuButton
+            {{on 'click' this.cancelCard}}
+            @skin='link-secondary'
+            @disabled={{this.saveCard.isRunning}}
+          >{{t 'utility.cancel'}}</AuButton>
         {{else}}
           <AuButton @icon='pencil' @skin='naked' {{on 'click' this.editCard}} />
         {{/if}}
@@ -392,7 +397,7 @@ export default class ShapeManager extends Component<Signature> {
                 {{shapeClassification.label}}
               </PowerSelect>
             {{else}}
-              {{this.firstShape.value.classification.label}}
+              {{this.firstShape.classification.label}}
             {{/if}}
           </dd>
         </div>
@@ -432,7 +437,7 @@ export default class ShapeManager extends Component<Signature> {
     </dl>
     <ReactiveTable
       @content={{this.shapesConverted.value}}
-      @isLoading={{this.isLoading}}
+      @isLoading={{this.shapesConverted.isLoading}}
       @noDataMessage={{t 'shape-manager.no-data'}}
       @page={{this.pageNumber}}
       @pageSize={{this.pageSize}}
@@ -494,81 +499,82 @@ export default class ShapeManager extends Component<Signature> {
           /></td>
       </:body>
     </ReactiveTable>
-    <AuModal
+    <EditShapeModal
+      @shapeToEdit={{this.shapeToEdit}}
       @modalOpen={{this.isEditShapeModalOpen}}
       @closeModal={{this.closeEditShapeModal}}
-    >
-      <:title>
-        {{#if this.shapeToEdit.shape.isNew}}
-          {{t 'utility.add-shape'}}
-        {{else}}
-          {{t 'shape-manager.edit-modal-title'}}
-        {{/if}}
-      </:title>
-      <:body>
-        {{#each this.dimensionsToShow as |dimension|}}
-          <AuLabel
-            @required={{true}}
-            @requiredLabel={{t 'utility.required'}}
-            @error={{this.getError this.shapeToEdit dimension.value}}
-          >{{dimension.label}}
-          </AuLabel>
-          <AuInput
-            @width='block'
-            value={{this.getRawValue this.shapeToEdit dimension.value}}
-            @error={{this.getError this.shapeToEdit dimension.value}}
-            {{on
-              'input'
-              (fn this.setShapeValue this.shapeToEdit dimension.value)
-            }}
-          />
-        {{/each}}
-        <AuLabel>{{t 'road-sign-concept.attr.default-shape'}}
-        </AuLabel>
-        <AuCheckbox
-          @checked={{this.convertToNewDefaultShape}}
-          @onChange={{this.toggleDefaultShape}}
-        >
-          {{t 'road-sign-concept.attr.default-shape'}}
-        </AuCheckbox>
-      </:body>
-      <:footer>
-        <AuButton {{on 'click' this.saveShape}}>
-          {{t 'utility.save'}}
-        </AuButton>
-        <AuButton @skin='secondary' {{on 'click' this.closeEditShapeModal}}>
-          {{t 'utility.cancel'}}
-        </AuButton>
-      </:footer>
-    </AuModal>
-    <AuModal
-      @modalOpen={{this.isDeleteConfirmationOpen}}
+      @convertToNewDefaultShape={{this.convertToNewDefaultShape}}
+      @toggleDefaultShape={{this.toggleDefaultShape}}
+      @saveShape={{this.saveShape}}
+      @dimensionsToShow={{this.dimensionsToShow}}
+    />
+    <DeleteConfirmationModal
+      @isOpen={{this.isDeleteConfirmationOpen}}
       @closeModal={{this.closeDeleteConfirmation}}
-    >
+      @removeShape={{this.removeShape}}
+      @isLastShape={{eq this.shapesConverted.value.length 1}}
+    />
+    <ShapeChangeConfirmationModal
+      @isOpen={{this.isShapeChangeConfirmationOpen}}
+      @closeModal={{this.closeShapeChangeConfirmation}}
+      @changeShape={{this.changeShape}}
+    />
+  </template>
+}
+
+interface DeleteConfirmationModalSignature {
+  Args: {
+    isOpen: boolean;
+    closeModal: () => void;
+    removeShape: Task<void, []>;
+    isLastShape: boolean;
+  };
+}
+
+const DeleteConfirmationModal: TemplateOnlyComponent<DeleteConfirmationModalSignature> =
+  <template>
+    <AuModal @modalOpen={{@isOpen}} @closeModal={{@closeModal}}>
       <:title>
         {{t 'utility.confirmation.title'}}
       </:title>
       <:body>
         <p>
           {{t 'utility.confirmation.body'}}
-          {{#if (eq this.shapesConverted.value.length 1)}}
+          {{#if @isLastShape}}
             {{t 'shape-manager.delete-last-shape'}}
           {{/if}}
         </p>
       </:body>
       <:footer>
-        <AuButton @alert={{true}} {{on 'click' this.removeShape}}>
+        <AuButton
+          @alert={{true}}
+          {{on 'click' @removeShape.perform}}
+          @loading={{@removeShape.isRunning}}
+        >
           {{t 'shape-manager.delete'}}
         </AuButton>
-        <AuButton @skin='secondary' {{on 'click' this.closeDeleteConfirmation}}>
+        <AuButton
+          @skin='secondary'
+          {{on 'click' @closeModal}}
+          @disabled={{@removeShape.isRunning}}
+        >
           {{t 'utility.cancel'}}
         </AuButton>
       </:footer>
     </AuModal>
-    <AuModal
-      @modalOpen={{this.isShapeChangeConfirmationOpen}}
-      @closeModal={{this.closeShapeChangeConfirmation}}
-    >
+  </template>;
+
+interface ShapeChangeConfirmationModalSignature {
+  Args: {
+    isOpen: boolean;
+    closeModal: () => void;
+    changeShape: Task<void, []>;
+  };
+}
+
+const ShapeChangeConfirmationModal: TemplateOnlyComponent<ShapeChangeConfirmationModalSignature> =
+  <template>
+    <AuModal @modalOpen={{@isOpen}} @closeModal={{@closeModal}}>
       <:title>
         {{t 'utility.confirmation.title'}}
       </:title>
@@ -578,16 +584,20 @@ export default class ShapeManager extends Component<Signature> {
         </p>
       </:body>
       <:footer>
-        <AuButton @alert={{true}} {{on 'click' this.changeShape}}>
+        <AuButton
+          @alert={{true}}
+          {{on 'click' @changeShape.perform}}
+          @loading={{@changeShape.isRunning}}
+        >
           {{t 'shape-manager.shape-change.button'}}
         </AuButton>
         <AuButton
           @skin='secondary'
-          {{on 'click' this.closeShapeChangeConfirmation}}
+          {{on 'click' @closeModal}}
+          @disabled={{@changeShape.isRunning}}
         >
           {{t 'utility.cancel'}}
         </AuButton>
       </:footer>
     </AuModal>
-  </template>
-}
+  </template>;
