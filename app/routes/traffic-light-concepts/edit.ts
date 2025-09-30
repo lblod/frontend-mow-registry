@@ -18,11 +18,6 @@ export default class TrafficLightConceptsEditRoute extends Route {
         .request(
           findRecord<TrafficLightConcept>('traffic-light-concept', params.id, {
             include: [
-              'shapes.dimensions.kind',
-              'shapes.dimensions.unit',
-              'shapes.classification',
-              'defaultShape.dimensions',
-              'defaultShape.classification',
               'image.file',
               'variables',
               'zonality.inScheme.concepts',

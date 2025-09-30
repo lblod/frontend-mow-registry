@@ -1,0 +1,596 @@
+import type Owner from '@ember/owner';
+import { tracked } from '@glimmer/tracking';
+import { service } from '@ember/service';
+import Store from 'mow-registry/services/store';
+import Component from '@glimmer/component';
+import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
+import ReactiveTable from 'mow-registry/components/reactive-table';
+import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
+import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
+import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
+import t from 'ember-intl/helpers/t';
+import { on } from '@ember/modifier';
+import { fn } from '@ember/helper';
+import PowerSelect from 'ember-power-select/components/power-select';
+import { eq, not, and } from 'ember-truth-helpers';
+import { trackedFunction } from 'reactiveweb/function';
+import type ShapeClassification from 'mow-registry/models/tribont-shape-classification-code';
+import type Unit from 'mow-registry/models/unit';
+import { DIMENSIONS, type Shape } from 'mow-registry/utils/shapes';
+import type QuantityKind from 'mow-registry/models/quantity-kind';
+import {
+  convertToShape,
+  shapeDimensionToText,
+  SHAPES,
+} from 'mow-registry/utils/shapes';
+import TribontShape from 'mow-registry/models/tribont-shape';
+import type IntlService from 'ember-intl/services/intl';
+import { sortOnDimension } from 'mow-registry/utils/shapes/sorting';
+import generateMeta from 'mow-registry/utils/generate-meta';
+import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
+import { findAll, query, saveRecord } from '@warp-drive/legacy/compat/builders';
+import EditShapeModal from './edit-shape-modal';
+import type { TemplateOnlyComponent } from '@ember/component/template-only';
+import { task } from 'ember-concurrency';
+import type { Task } from 'ember-concurrency';
+
+interface Signature {
+  Args: {
+    trafficSignal: TrafficSignalConcept;
+    pageNumber: number;
+    pageSize: number;
+    sort?: string;
+    onPageChange: (newPage: number) => unknown;
+    onSortChange: (newSort?: string) => unknown;
+  };
+}
+
+export default class ShapeManager extends Component<Signature> {
+  @service declare store: Store;
+  @service declare intl: IntlService;
+  @tracked cardEditing = false;
+  @tracked shapeChange?: ShapeClassification = undefined;
+  @tracked unitChange?: Unit = undefined;
+
+  shapeClassificationsPromise: Promise<ShapeClassification[]>;
+  unitsPromise: Promise<Unit[]>;
+  shapeToDelete?: Shape;
+  @tracked isDeleteConfirmationOpen = false;
+  @tracked isShapeChangeConfirmationOpen = false;
+
+  @tracked shapeToEdit?: Shape;
+  @tracked convertToNewDefaultShape?: boolean;
+  @tracked isEditShapeModalOpen = false;
+  constructor(owner: Owner | undefined, args: Signature['Args']) {
+    super(owner, args);
+    this.shapeClassificationsPromise = this.fetchShapeClassifications();
+    this.unitsPromise = this.fetchUnits();
+  }
+
+  get selectedShape() {
+    return this.shapeChange ?? this.firstShape?.get('classification');
+  }
+
+  get selectedUnit() {
+    return this.unitChange ?? this.defaultMeasureUnit;
+  }
+
+  get shapeClass() {
+    const classificationUri = this.firstShape
+      ?.get('classification')
+      ?.get('uri');
+    if (!classificationUri) return undefined;
+    return SHAPES[classificationUri as keyof typeof SHAPES];
+  }
+
+  async fetchShapeClassifications() {
+    const classifications = await this.store
+      .request(
+        findAll<ShapeClassification>('tribont-shape-classification-code'),
+      )
+      .then((res) => res.content);
+
+    return classifications;
+  }
+
+  async fetchUnits() {
+    const units = await this.store
+      .request(findAll<Unit>('unit'))
+      .then((res) => res.content);
+
+    return units;
+  }
+
+  async fetchQuantityKind() {
+    const quantityKind = await this.store
+      .request(findAll<QuantityKind>('quantity-kind'))
+      .then((res) => res.content);
+
+    return quantityKind;
+  }
+
+  get defaultShapeClassification() {
+    return this.firstShape?.get('classification').get('label');
+  }
+  defaultShape = trackedFunction(this, async () => {
+    const defaultShape = (await this.args.trafficSignal
+      .defaultShape) as TribontShape;
+    // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
+    await Promise.resolve();
+    const shapeConverted = await convertToShape(defaultShape);
+    return shapeConverted;
+  });
+  get firstShape() {
+    const shapesConverted = this.shapesConverted.value;
+    if (shapesConverted && !shapesConverted[0]?.shape.isDestroyed) {
+      return shapesConverted[0]?.shape;
+    }
+    return undefined;
+  }
+  shapesConverted = trackedFunction(this, async () => {
+    const number = this.args.pageNumber;
+    const size = this.args.pageSize;
+    const sort = this.args.sort;
+    const trafficSignalId = this.args.trafficSignal.id;
+
+    // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
+    await Promise.resolve();
+    const shapesConverted: Shape[] = [];
+    let shapes: TribontShape[] = [];
+    if (!sort || sort === 'created-on' || sort === '-created-on') {
+      shapes = await this.store
+        .request(
+          query<TribontShape>('tribont-shape', {
+            'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+            page: {
+              number: number,
+              size: size,
+            },
+            sort: sort,
+          }),
+        )
+        .then((res) => res.content);
+      // @ts-expect-error We know that an array don't have a meta property but we need it for the table to work
+      shapesConverted.meta = shapes.meta;
+    } else {
+      const shapesSorted = await sortOnDimension(
+        sort,
+        number,
+        size,
+        trafficSignalId as string,
+      );
+      const shapesQuery = await this.store
+        .request(
+          query<TribontShape>('tribont-shape', {
+            'filter[:id:]': shapesSorted.ids.join(','),
+          }),
+        )
+        .then((res) => res.content);
+      shapes = [...shapesQuery];
+      shapes.sort(
+        (a, b) =>
+          shapesSorted.ids.findIndex((id) => id === b.id) -
+          shapesSorted.ids.findIndex((id) => id === a.id),
+      );
+      // @ts-expect-error We know that an array don't have a meta property but we need it for the table to work
+      shapesConverted.meta = generateMeta(
+        { page: number, size: size },
+        shapesSorted.count,
+      );
+    }
+    for (const shape of shapes) {
+      const shapeConverted = await convertToShape(shape);
+      if (shapeConverted) {
+        shapesConverted.push(shapeConverted);
+      }
+    }
+
+    return shapesConverted;
+  });
+
+  get defaultShapeString() {
+    return this.defaultShape.value?.toString(this.intl);
+  }
+
+  get defaultMeasureUnit() {
+    const shapesConverted = this.shapesConverted.value;
+    if (!shapesConverted) return undefined;
+    return shapesConverted[0]?.unitMeasure;
+  }
+
+  get dimensionsToShow() {
+    return this.shapeClass?.headers(this.intl);
+  }
+
+  editCard = () => {
+    this.cardEditing = true;
+  };
+
+  saveCard = task(async () => {
+    const defaultShape = await this.args.trafficSignal.defaultShape;
+    if (
+      this.shapeChange &&
+      this.shapeChange.id !== defaultShape?.classification.id
+    ) {
+      //Show alert
+      this.isShapeChangeConfirmationOpen = true;
+    } else if (
+      this.unitChange &&
+      this.unitChange.id !== this.defaultMeasureUnit?.id &&
+      this.shapesConverted.value
+    ) {
+      let shapes = await this.store
+        .countAndFetchAll<TribontShape>('tribont-shape', {
+          'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+        })
+        .then((res) => res.content);
+      for (const shape of shapes) {
+        const shapeConverted = await this.shapeClass?.fromShape(shape);
+        await shapeConverted?.convertToNewUnit(this.unitChange, this.store);
+      }
+      this.shapesConverted.retry();
+      this.cardEditing = false;
+    }
+  });
+
+  closeShapeChangeConfirmation = () => {
+    this.isShapeChangeConfirmationOpen = false;
+  };
+
+  changeShape = task(async () => {
+    let shapes = await this.store
+      .countAndFetchAll<TribontShape>('tribont-shape', {
+        'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+      })
+      .then((res) => res.content);
+    for (const shapeToDelete of shapes) {
+      await shapeToDelete.destroyWithRelations();
+    }
+    const shapeClass = SHAPES[this.shapeChange?.uri as keyof typeof SHAPES];
+    const shape = (await shapeClass.createShape(
+      this.selectedUnit as Unit,
+      this.store,
+      this.args.trafficSignal,
+    )) as Shape;
+    for (const dimension of shapeClass.headers(this.intl)) {
+      const dimensionProperty =
+        shape[dimension.value as keyof typeof DIMENSIONS];
+      if (dimensionProperty) {
+        dimensionProperty.value = 0;
+      }
+    }
+    await shape.validateAndsave(this.store);
+    this.args.trafficSignal.set('defaultShape', undefined);
+    this.args.trafficSignal.set('shapes', [shape.shape]);
+    await this.store.request(saveRecord(this.args.trafficSignal));
+    this.shapesConverted.retry();
+    this.cardEditing = false;
+    this.args.onPageChange(0);
+    this.args.onSortChange('created-on');
+    this.closeShapeChangeConfirmation();
+  });
+
+  saveShape = task(async () => {
+    const saved = await this.shapeToEdit?.validateAndsave(this.store);
+    if (saved) {
+      const shape = this.shapeToEdit?.shape as TribontShape;
+      if (this.convertToNewDefaultShape) {
+        this.args.trafficSignal.set('defaultShape', shape);
+      } else if (this.shapeToEdit?.id === this.defaultShape.value?.id) {
+        this.args.trafficSignal.set('defaultShape', undefined);
+      }
+      await this.store.request(saveRecord(this.args.trafficSignal));
+      await this.shapesConverted.retry();
+      await this.closeEditShapeModal();
+    }
+  });
+
+  cancelCard = () => {
+    this.cardEditing = false;
+    this.unitChange = undefined;
+    this.shapeChange = undefined;
+  };
+
+  getStringValue(shape: Shape, dimension: keyof typeof DIMENSIONS) {
+    if (!shape[dimension]) return '';
+    return shapeDimensionToText(shape[dimension]);
+  }
+
+  setShapeClassifications = (classification: ShapeClassification) => {
+    this.shapeChange = classification;
+  };
+  setUnit = (unit: Unit) => {
+    this.unitChange = unit;
+  };
+
+  startDeleteShapeFlow = (shape: Shape) => {
+    this.shapeToDelete = shape;
+    this.isDeleteConfirmationOpen = true;
+  };
+
+  closeDeleteConfirmation = () => {
+    this.shapeToDelete = undefined;
+    this.isDeleteConfirmationOpen = false;
+  };
+
+  removeShape = task(async () => {
+    const shape = this.shapeToDelete;
+    if (!shape) return;
+    await shape.remove(this.store);
+    this.shapesConverted.retry();
+    this.closeDeleteConfirmation();
+  });
+
+  startEditShapeFlow = (shape: Shape) => {
+    this.shapeToEdit = shape;
+    this.isEditShapeModalOpen = true;
+    this.convertToNewDefaultShape = shape.id === this.defaultShape.value?.id;
+  };
+
+  closeEditShapeModal = async () => {
+    await this.shapeToEdit?.reset();
+    this.shapeToEdit = undefined;
+    this.isEditShapeModalOpen = false;
+  };
+
+  toggleDefaultShape = () => {
+    this.convertToNewDefaultShape = !this.convertToNewDefaultShape;
+  };
+  addNewShape = async () => {
+    const shape = await this.shapeClass?.createShape(
+      this.selectedUnit as Unit,
+      this.store,
+      this.args.trafficSignal,
+    );
+    if (shape) {
+      this.startEditShapeFlow(shape);
+    }
+  };
+  <template>
+    {{! @glint-nocheck: not typesafe yet }}
+    <h2 class='shapes-title au-u-margin-left au-u-margin-top'>{{t
+        'road-sign-concept.attr.shape'
+      }}</h2>
+
+    <dl class='shapes-card au-u-margin au-u-margin-top-none'>
+      <div class='shapes-buttons'>
+        {{#if this.cardEditing}}
+          <AuButton
+            {{on 'click' this.saveCard.perform}}
+            @disabled={{not (and this.selectedUnit this.selectedShape)}}
+            @loading={{this.saveCard.isRunning}}
+            @skin='link'
+          >{{t 'utility.save'}}</AuButton>
+          <AuButton
+            {{on 'click' this.cancelCard}}
+            @skin='link-secondary'
+            @disabled={{this.saveCard.isRunning}}
+          >{{t 'utility.cancel'}}</AuButton>
+        {{else}}
+          <AuButton @icon='pencil' @skin='naked' {{on 'click' this.editCard}} />
+        {{/if}}
+      </div>
+      <div class='au-u-flex au-u-margin-small'>
+        <div class='shape-datapoint'>
+          <dt>{{t 'road-sign-concept.attr.shape'}}</dt>
+          <dd>
+            {{#if this.cardEditing}}
+              <PowerSelect
+                @allowClear={{false}}
+                @searchEnabled={{false}}
+                @searchField='label'
+                @loadingMessage={{t 'utility.loading'}}
+                @options={{this.shapeClassificationsPromise}}
+                @selected={{this.selectedShape}}
+                @onChange={{this.setShapeClassifications}}
+                @triggerId='shapeConcepts'
+                as |shapeClassification|
+              >
+                {{shapeClassification.label}}
+              </PowerSelect>
+            {{else}}
+              {{this.firstShape.classification.label}}
+            {{/if}}
+          </dd>
+        </div>
+        <div class='shape-datapoint'>
+          <dt>{{t 'road-sign-concept.attr.dimension-unit'}}</dt>
+          <dd>
+            {{#if this.cardEditing}}
+              <PowerSelect
+                @allowClear={{false}}
+                @searchEnabled={{false}}
+                @searchField='label'
+                @loadingMessage={{t 'utility.loading'}}
+                @options={{this.unitsPromise}}
+                @selected={{this.selectedUnit}}
+                @onChange={{this.setUnit}}
+                @triggerId='shapeConcepts'
+                as |unit|
+              >
+                {{unit.symbol}}
+              </PowerSelect>
+            {{else}}
+              {{this.defaultMeasureUnit.symbol}}
+            {{/if}}
+          </dd>
+        </div>
+      </div>
+      <div class='au-u-margin-small'>
+        <dt>{{t 'road-sign-concept.attr.default-shape'}}</dt>
+        <dd>
+          {{#if this.cardEditing}}
+            <AuInput value={{this.defaultShapeString}} @disabled='true' />
+          {{else}}
+            {{this.defaultShapeString}}
+          {{/if}}
+        </dd>
+      </div>
+    </dl>
+    <ReactiveTable
+      @content={{this.shapesConverted.value}}
+      @isLoading={{this.shapesConverted.isLoading}}
+      @noDataMessage={{t 'shape-manager.no-data'}}
+      @page={{@pageNumber}}
+      @pageSize={{@pageSize}}
+      @onPageChange={{@onPageChange}}
+      @onSortChange={{@onSortChange}}
+      @sort={{@sort}}
+    >
+      <:menu>
+        <div class='au-u-flex au-u-flex--end'>
+          <AuButton
+            @skin='secondary'
+            @icon='plus'
+            @disabled={{not this.defaultShapeClassification}}
+            title={{if
+              this.defaultShapeClassification
+              ''
+              (t 'shape-manager.disabled-add-new-button-title')
+            }}
+            {{on 'click' this.addNewShape}}
+            class='au-u-margin-small'
+          >
+            {{t 'utility.add-shape'}}
+          </AuButton>
+        </div>
+      </:menu>
+      <:header as |header|>
+        {{#each this.dimensionsToShow as |dimension|}}
+          <header.Sortable
+            @field={{dimension.value}}
+            @label={{dimension.label}}
+          />
+        {{/each}}
+        <th>{{t 'road-sign-concept.attr.default-shape'}}</th>
+        <header.Sortable @field='createdOn' @label={{t 'utility.created-on'}} />
+        <th></th>
+      </:header>
+      <:body as |shape|>
+        {{#each this.dimensionsToShow as |dimension|}}
+          <td>{{this.getStringValue shape dimension.value}}</td>
+        {{/each}}
+        <td>
+          {{#if (eq this.defaultShape.value.id shape.shape.id)}}
+            <AuIcon @icon='check' @size='large' />
+          {{/if}}
+        </td>
+        <td>
+          {{humanFriendlyDate shape.shape.createdOn}}
+        </td>
+        <td>
+          <AuButton
+            @skin='naked'
+            @icon='pencil'
+            {{on 'click' (fn this.startEditShapeFlow shape)}}
+          />
+          <AuButton
+            @skin='naked'
+            @icon='trash'
+            {{on 'click' (fn this.startDeleteShapeFlow shape)}}
+          /></td>
+      </:body>
+    </ReactiveTable>
+    <EditShapeModal
+      @shapeToEdit={{this.shapeToEdit}}
+      @modalOpen={{this.isEditShapeModalOpen}}
+      @closeModal={{this.closeEditShapeModal}}
+      @convertToNewDefaultShape={{this.convertToNewDefaultShape}}
+      @toggleDefaultShape={{this.toggleDefaultShape}}
+      @saveShape={{this.saveShape}}
+      @dimensionsToShow={{this.dimensionsToShow}}
+    />
+    <DeleteConfirmationModal
+      @isOpen={{this.isDeleteConfirmationOpen}}
+      @closeModal={{this.closeDeleteConfirmation}}
+      @removeShape={{this.removeShape}}
+      @isLastShape={{eq this.shapesConverted.value.length 1}}
+    />
+    <ShapeChangeConfirmationModal
+      @isOpen={{this.isShapeChangeConfirmationOpen}}
+      @closeModal={{this.closeShapeChangeConfirmation}}
+      @changeShape={{this.changeShape}}
+    />
+  </template>
+}
+
+interface DeleteConfirmationModalSignature {
+  Args: {
+    isOpen: boolean;
+    closeModal: () => void;
+    removeShape: Task<void, []>;
+    isLastShape: boolean;
+  };
+}
+
+const DeleteConfirmationModal: TemplateOnlyComponent<DeleteConfirmationModalSignature> =
+  <template>
+    <AuModal @modalOpen={{@isOpen}} @closeModal={{@closeModal}}>
+      <:title>
+        {{t 'utility.confirmation.title'}}
+      </:title>
+      <:body>
+        <p>
+          {{t 'utility.confirmation.body'}}
+          {{#if @isLastShape}}
+            {{t 'shape-manager.delete-last-shape'}}
+          {{/if}}
+        </p>
+      </:body>
+      <:footer>
+        <AuButton
+          @alert={{true}}
+          {{on 'click' @removeShape.perform}}
+          @loading={{@removeShape.isRunning}}
+        >
+          {{t 'shape-manager.delete'}}
+        </AuButton>
+        <AuButton
+          @skin='secondary'
+          {{on 'click' @closeModal}}
+          @disabled={{@removeShape.isRunning}}
+        >
+          {{t 'utility.cancel'}}
+        </AuButton>
+      </:footer>
+    </AuModal>
+  </template>;
+
+interface ShapeChangeConfirmationModalSignature {
+  Args: {
+    isOpen: boolean;
+    closeModal: () => void;
+    changeShape: Task<void, []>;
+  };
+}
+
+const ShapeChangeConfirmationModal: TemplateOnlyComponent<ShapeChangeConfirmationModalSignature> =
+  <template>
+    <AuModal @modalOpen={{@isOpen}} @closeModal={{@closeModal}}>
+      <:title>
+        {{t 'utility.confirmation.title'}}
+      </:title>
+      <:body>
+        <p>
+          {{t 'shape-manager.shape-change.body'}}
+        </p>
+      </:body>
+      <:footer>
+        <AuButton
+          @alert={{true}}
+          {{on 'click' @changeShape.perform}}
+          @loading={{@changeShape.isRunning}}
+        >
+          {{t 'shape-manager.shape-change.button'}}
+        </AuButton>
+        <AuButton
+          @skin='secondary'
+          {{on 'click' @closeModal}}
+          @disabled={{@changeShape.isRunning}}
+        >
+          {{t 'utility.cancel'}}
+        </AuButton>
+      </:footer>
+    </AuModal>
+  </template>;

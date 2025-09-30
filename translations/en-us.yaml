@@ -52,6 +52,7 @@ utility:
   related-traffic-signals: Related traffic signals
   can-contain-traffic-signals: Contains signals
   description: Description
+  image-preview-alt: Preview of the uploaded or linked image
   order: Order
   sign: Sign
   add-instruction: Add instruction
@@ -62,12 +63,13 @@ utility:
   username: Username
   password: Password
   valid-content: Validated
+  validation-status: Validation status
   yes: Yes
   no: No
-  validation-status: Validation status
   start-date: Start date
   end-date: End date
   modifying-validity-dates-warning: "Note: modifying validity dates can affect the instruction validity"
+  created-on: Created on
   template-variables:
     text: text
     number: number
@@ -118,6 +120,7 @@ road-sign-concept:
     related-traffic-light: Related traffic light
     shape: Shape
     dimensions: Dimensions
+    dimension-unit: Dimension unit
     default-shape: Default shape
     height: Height
     width: Width
@@ -349,3 +352,19 @@ validity-filter:
   valid: Currently valid
   expired: Expired
   custom: Custom period
+shape-manager:
+  delete: Remove shape
+  shape-change:
+    body: Changing the shape type of a sign will delete all previous shapes you had
+    button: Reset my shapes
+  no-data: No shapes
+  height: Height
+  width: Width
+  radius: Radius
+  delete-last-shape: Deleting your last shape will lose you information about shape type and unit
+  disabled-add-new-button-title: In order to insert a shape please select the type and a dimension unit
+  edit-modal-title: Edit shape
+variable-manager:
+  no-data: No variables
+  edit-modal-title: Edit variable
+  delete: Remove variable
