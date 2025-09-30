@@ -48,9 +48,7 @@ export default class HeightAndWidhtShape implements Shape {
 
   static async fromShape(shape: TribontShape) {
     if (!shape.id) return console.error('the shape should have an id');
-    console.log(shape);
     const dimensions = await shape.dimensions;
-    console.log(dimensions);
     let heightDimension;
     let widthDimension;
     for (const dimension of dimensions) {

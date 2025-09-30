@@ -236,7 +236,6 @@ export default class ShapeManager extends Component<Signature> {
         'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
       })
       .then((res) => res.content);
-    console.log(shapes);
     for (const shapeToDelete of Array.from(shapes)) {
       await shapeToDelete.destroyWithRelations();
     }
@@ -266,7 +265,6 @@ export default class ShapeManager extends Component<Signature> {
     const saved = await this.shapeToEdit?.validateAndsave(this.store);
     if (saved) {
       const shape = this.shapeToEdit?.shape as TribontShape;
-      console.log(this.convertToNewDefaultShape);
       if (this.convertToNewDefaultShape) {
         this.args.trafficSignal.set('defaultShape', shape);
       } else if (this.shapeToEdit?.id === this.defaultShape.value?.id) {

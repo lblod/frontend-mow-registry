@@ -131,7 +131,6 @@ export async function convertToShape(shape: TribontShape) {
     return console.error('the shape must have a valid classification linked');
   const shapeClass: ShapeStatic =
     SHAPES[classificationUri as keyof typeof SHAPES];
-  console.log(shapeClass);
   const shapeConverted = await shapeClass.fromShape(shape);
   return shapeConverted;
 }
