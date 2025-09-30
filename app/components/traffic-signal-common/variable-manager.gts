@@ -52,6 +52,11 @@ import { query, saveRecord } from '@warp-drive/legacy/compat/builders';
 interface Signature {
   Args: {
     trafficSignal: TrafficSignalConcept;
+    pageNumber: number;
+    pageSize: number;
+    sort?: string;
+    onPageChange: (newPage: number) => unknown;
+    onSortChange: (newSort?: string) => unknown;
   };
 }
 
@@ -61,10 +66,8 @@ export default class VariableManager extends Component<Signature> {
   @service declare variablesService: VariablesService;
 
   @tracked variableToEdit?: Variable;
-  @tracked pageNumber = 0;
-  pageSize = 20;
   @tracked isEditVariableModalOpen = false;
-  @tracked sort?: string = 'created-on';
+
   @tracked variableToDelete?: Variable;
   @tracked isDeleteConfirmationOpen = false;
 
@@ -81,7 +84,7 @@ export default class VariableManager extends Component<Signature> {
   });
 
   variables = trackedFunction(this, async () => {
-    const { pageNumber, pageSize, sort } = this;
+    const { pageNumber, pageSize, sort } = this.args;
     const trafficSignalId = this.args.trafficSignal.id;
     await Promise.resolve();
     const variables = await this.store
@@ -221,25 +224,17 @@ export default class VariableManager extends Component<Signature> {
     this.isDeleteConfirmationOpen = false;
   };
 
-  onPageChange = (newPage: number) => {
-    this.pageNumber = newPage;
-  };
-
-  onSortChange = (newSort: string) => {
-    this.sort = newSort;
-  };
-
   <template>
     {{#if this.codelists.isResolved}}
       <ReactiveTable
         @content={{this.variables.value}}
         @isLoading={{this.variables.isLoading}}
         @noDataMessage={{t 'variable-manager.no-data'}}
-        @page={{this.pageNumber}}
-        @pageSize={{this.pageSize}}
-        @onPageChange={{this.onPageChange}}
-        @onSortChange={{this.onSortChange}}
-        @sort={{this.sort}}
+        @page={{@pageNumber}}
+        @pageSize={{@pageSize}}
+        @onPageChange={{@onPageChange}}
+        @onSortChange={{@onSortChange}}
+        @sort={{@sort}}
       >
         <:menu>
           <div class='au-u-flex au-u-flex--end'>
