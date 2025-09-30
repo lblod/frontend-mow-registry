@@ -127,6 +127,7 @@ export default class ShapeManager extends Component<Signature> {
     if (shapesConverted && !shapesConverted[0]?.shape.isDestroyed) {
       return shapesConverted[0]?.shape;
     }
+    return undefined;
   }
   shapesConverted = trackedFunction(this, async () => {
     const number = this.pageNumber;
