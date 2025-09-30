@@ -7,9 +7,11 @@ import {
   validateStringOptional,
   validateStringRequired,
   validateBooleanRequired,
+  validateDateOptional,
 } from 'mow-registry/validators/schema';
 import Joi from 'joi';
 import AbstractValidationModel from './abstract-validation-model';
+import type TrafficSignalConcept from './traffic-signal-concept';
 
 export default class Variable extends AbstractValidationModel {
   declare [Type]: 'variable';
@@ -19,6 +21,7 @@ export default class Variable extends AbstractValidationModel {
   @attr declare label?: string;
   @attr declare defaultValue?: string;
   @attr({ defaultValue: true }) declare required?: boolean;
+  @attr('date') declare createdOn?: Date;
 
   @belongsTo<CodeList>('code-list', { inverse: 'variables', async: true })
   declare codeList: AsyncBelongsTo<CodeList>;
@@ -26,15 +29,24 @@ export default class Variable extends AbstractValidationModel {
   @belongsTo<Template>('template', { inverse: null, async: true })
   declare template: AsyncBelongsTo<Template>;
 
+  @belongsTo<TrafficSignalConcept>('traffic-signal-concept', {
+    inverse: 'variables',
+    async: true,
+    polymorphic: true,
+  })
+  declare trafficSignalConcept: AsyncBelongsTo<TrafficSignalConcept>;
+
   get validationSchema() {
     return Joi.object({
       uri: validateStringOptional(),
       label: validateStringRequired(),
       type: validateStringRequired(),
       defaultValue: validateStringOptional(),
+      createdOn: validateDateOptional(),
       required: validateBooleanRequired(),
       codeList: validateBelongsToOptional(),
       template: validateBelongsToOptional(),
+      trafficSignalConcept: validateBelongsToOptional(),
     });
   }
 }
