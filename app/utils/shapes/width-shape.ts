@@ -38,12 +38,18 @@ export default class WidthShape implements Shape {
   }
 
   static async fromShape(shape: TribontShape) {
-    if (!shape.id) return;
+    if (!shape.id) return console.error('the shape should have an id');
     const dimensions = await shape.dimensions;
-    const widthDimension = dimensions.find(
-      (dimension) => dimension.kind?.uri === DIMENSIONS.width,
-    );
-    if (!widthDimension) return;
+    let widthDimension;
+    for (const dimension of dimensions) {
+      const kind = await dimension.kind;
+      if (kind?.uri === DIMENSIONS.width) {
+        widthDimension = dimension;
+      }
+    }
+    if (!widthDimension) {
+      return console.error('the shape should have the required dimensions');
+    }
     const width = await dimensionToShapeDimension(widthDimension, 'width');
     return new this(shape, width);
   }
