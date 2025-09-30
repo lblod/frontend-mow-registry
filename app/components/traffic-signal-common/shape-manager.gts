@@ -124,7 +124,9 @@ export default class ShapeManager extends Component<Signature> {
   });
   get firstShape() {
     const shapesConverted = this.shapesConverted.value;
-    return shapesConverted ? shapesConverted[0]?.shape : undefined;
+    if (shapesConverted && !shapesConverted[0]?.shape.isDestroyed) {
+      return shapesConverted[0]?.shape;
+    }
   }
   shapesConverted = trackedFunction(this, async () => {
     const number = this.pageNumber;
@@ -218,8 +220,14 @@ export default class ShapeManager extends Component<Signature> {
       this.unitChange.id !== this.defaultMeasureUnit?.id &&
       this.shapesConverted.value
     ) {
-      for (const shape of this.shapesConverted.value) {
-        await shape?.convertToNewUnit(this.unitChange, this.store);
+      let shapes = await this.store
+        .countAndFetchAll<TribontShape>('tribont-shape', {
+          'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+        })
+        .then((res) => res.content);
+      for (const shape of shapes) {
+        const shapeConverted = await this.shapeClass?.fromShape(shape);
+        await shapeConverted?.convertToNewUnit(this.unitChange, this.store);
       }
       this.shapesConverted.retry();
       this.cardEditing = false;
@@ -236,7 +244,7 @@ export default class ShapeManager extends Component<Signature> {
         'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
       })
       .then((res) => res.content);
-    for (const shapeToDelete of Array.from(shapes)) {
+    for (const shapeToDelete of shapes) {
       await shapeToDelete.destroyWithRelations();
     }
     const shapeClass = SHAPES[this.shapeChange?.uri as keyof typeof SHAPES];
