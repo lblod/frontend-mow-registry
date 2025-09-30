@@ -62,17 +62,7 @@ export default class ShapeManager extends Component<Signature> {
   @tracked shapeToEdit?: Shape;
   @tracked convertToNewDefaultShape?: boolean;
   @tracked isEditShapeModalOpen = false;
-  constructor(
-    owner: Owner | undefined,
-    args: {
-      trafficSignal: TrafficSignalConcept;
-      pageNumber: number;
-      pageSize: number;
-      sort?: string;
-      onPageChange: (newPage: number) => unknown;
-      onSortChange: (newSort?: string) => unknown;
-    },
-  ) {
+  constructor(owner: Owner | undefined, args: Signature['Args']) {
     super(owner, args);
     this.shapeClassificationsPromise = this.fetchShapeClassifications();
     this.unitsPromise = this.fetchUnits();
