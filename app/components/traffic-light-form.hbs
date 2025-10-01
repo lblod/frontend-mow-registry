@@ -143,14 +143,12 @@
             >
               {{t "traffic-light-concept.attr.regulatoryNotation"}}
             </AuLabel>
-            <AuTextarea
+            <AuInput
               @error={{error}}
               @width="block"
-              class='u-min-h-5'
               id="regulatoryNotation"
               value={{@trafficLightConcept.regulatoryNotation}}
               {{on "input" (fn this.setTrafficLightConceptValue "regulatoryNotation")}}
-              {{on "keypress" (limit-lines 1)}}
             />
             <ErrorMessage @error={{error}} />
           </AuFormRow>

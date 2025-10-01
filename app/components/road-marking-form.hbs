@@ -143,14 +143,12 @@
             >
               {{t "road-marking-concept.attr.regulatoryNotation"}}
             </AuLabel>
-            <AuTextarea
+            <AuInput
               @error={{error}}
               @width="block"
-              class='u-min-h-5'
               id="regulatoryNotation"
               value={{@roadMarkingConcept.regulatoryNotation}}
               {{on "input" (fn this.setRoadMarkingConceptValue "regulatoryNotation")}}
-              {{on "keypress" (limit-lines 1)}}
             />
             <ErrorMessage @error={{error}} />
           </AuFormRow>

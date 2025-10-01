@@ -48,7 +48,6 @@ import {
   validateVariables,
 } from 'mow-registry/utils/validate-relations';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
-import limitLines from 'mow-registry/helpers/limit-lines';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
@@ -377,17 +376,15 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 <AuLabel @error={{isSome error}} for='regulatoryNotation'>
                   {{t 'road-sign-concept.attr.regulatoryNotation'}}
                 </AuLabel>
-                <AuTextarea
+                <AuInput
                   @error={{isSome error}}
                   @width='block'
-                  class='u-min-h-5'
                   id='regulatoryNotation'
                   value={{@roadSignConcept.regulatoryNotation}}
                   {{on
                     'input'
                     (fn this.setRoadSignConceptValue 'regulatoryNotation')
                   }}
-                  {{on 'keypress' (limitLines 1)}}
                 />
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
