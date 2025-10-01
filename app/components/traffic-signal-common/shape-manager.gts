@@ -165,6 +165,7 @@ export default class ShapeManager extends Component<Signature> {
         .request(
           query<TribontShape>('tribont-shape', {
             'filter[:id:]': shapesSorted.ids.join(','),
+            include: ['dimensions.kind', 'dimensions.unit', 'classification'],
           }),
         )
         .then((res) => res.content);
