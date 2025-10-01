@@ -142,7 +142,8 @@ export default class ShapeManager extends Component<Signature> {
       shapes = await this.store
         .request(
           query<TribontShape>('tribont-shape', {
-            'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+            'filter[traffic-signal-concept][:id:]': this.args.trafficSignal.id,
+            include: ['dimensions.kind', 'dimensions.unit', 'classification'],
             page: {
               number: number,
               size: size,
@@ -222,7 +223,7 @@ export default class ShapeManager extends Component<Signature> {
     ) {
       let shapes = await this.store
         .countAndFetchAll<TribontShape>('tribont-shape', {
-          'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+          'filter[traffic-signal-concept][:id:]': this.args.trafficSignal.id,
         })
         .then((res) => res.content);
       for (const shape of shapes) {
@@ -241,7 +242,7 @@ export default class ShapeManager extends Component<Signature> {
   changeShape = task(async () => {
     let shapes = await this.store
       .countAndFetchAll<TribontShape>('tribont-shape', {
-        'filter[trafficSignalConcept][:id:]': this.args.trafficSignal.id,
+        'filter[traffic-signal-concept][:id:]': this.args.trafficSignal.id,
       })
       .then((res) => res.content);
     for (const shapeToDelete of shapes) {
