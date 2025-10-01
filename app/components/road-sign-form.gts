@@ -374,12 +374,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
               as |error|
             }}
               <AuFormRow>
-                <AuLabel
-                  @error={{isSome error}}
-                  for='regulatoryNotation'
-                  @required={{true}}
-                  @requiredLabel={{t 'utility.required'}}
-                >
+                <AuLabel @error={{isSome error}} for='regulatoryNotation'>
                   {{t 'road-sign-concept.attr.regulatoryNotation'}}
                 </AuLabel>
                 <AuTextarea
@@ -387,7 +382,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   @width='block'
                   class='u-min-h-5'
                   id='regulatoryNotation'
-                  required='required'
                   value={{@roadSignConcept.regulatoryNotation}}
                   {{on
                     'input'

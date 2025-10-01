@@ -140,8 +140,6 @@
             <AuLabel
               @error={{error}}
               for="regulatoryNotation"
-              @required={{true}}
-              @requiredLabel={{t "utility.required"}}
             >
               {{t "traffic-light-concept.attr.regulatoryNotation"}}
             </AuLabel>
@@ -150,7 +148,6 @@
               @width="block"
               class='u-min-h-5'
               id="regulatoryNotation"
-              required="required"
               value={{@trafficLightConcept.regulatoryNotation}}
               {{on "input" (fn this.setTrafficLightConceptValue "regulatoryNotation")}}
               {{on "keypress" (limit-lines 1)}}

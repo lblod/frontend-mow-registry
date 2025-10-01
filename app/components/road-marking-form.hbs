@@ -140,8 +140,6 @@
             <AuLabel
               @error={{error}}
               for="regulatoryNotation"
-              @required={{true}}
-              @requiredLabel={{t "utility.required"}}
             >
               {{t "road-marking-concept.attr.regulatoryNotation"}}
             </AuLabel>
@@ -150,7 +148,6 @@
               @width="block"
               class='u-min-h-5'
               id="regulatoryNotation"
-              required="required"
               value={{@roadMarkingConcept.regulatoryNotation}}
               {{on "input" (fn this.setRoadMarkingConceptValue "regulatoryNotation")}}
               {{on "keypress" (limit-lines 1)}}
