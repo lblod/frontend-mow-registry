@@ -1,0 +1,11 @@
+{{! @glint-nocheck: not typesafe yet }}
+<RoadSignConcept::Header @roadSignConcept={{@model.roadSignConcept}} />
+<TrafficSignalCommon::ShapeManager
+  @trafficSignal={{@model.roadSignConcept}}
+  @pageSize={{this.pageSize}}
+  @pageNumber={{this.pageNumber}}
+  @onPageChange={{this.onPageChange}}
+  @sort={{this.sort}}
+  @onSortChange={{this.onSortChange}}
+/>
+

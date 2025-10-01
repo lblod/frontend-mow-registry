@@ -189,29 +189,6 @@
         <AuHelpText>
           {{t "utility.modifying-validity-dates-warning"}}
         </AuHelpText>
-
-        {{#let (await @roadMarkingConcept.variables) as |variables|}}
-          <TrafficSignalCommon::VariableManager
-            @variables={{variables}}
-            @removeVariable={{this.removeVariable}}
-            @addVariable={{this.addVariable}}
-          />
-        {{/let}}
-
-        {{! Shapes and dimensions }}
-        {{#let (await @roadMarkingConcept.shapes) as |shapes|}}
-          {{#if (this.isArray shapes)}}
-            <Common::ShapeManager
-              @trafficSignalConcept={{@roadMarkingConcept}}
-              @shapes={{shapes}}
-              @addShape={{this.addShape}}
-              @removeShape={{this.removeShape}}
-              @removeDimension={{this.removeDimension}}
-              @defaultShape={{@roadMarkingConcept.defaultShape}}
-              @toggleDefaultShape={{this.toggleDefaultShape}}
-            />
-          {{/if}}
-        {{/let}}
       </form>
     </div>
   </div>

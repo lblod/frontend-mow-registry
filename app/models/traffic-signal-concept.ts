@@ -36,8 +36,9 @@ export default class TrafficSignalConcept extends SkosConcept {
   @attr('date') declare endDate?: Date;
 
   @hasMany<Variable>('variable', {
-    inverse: null,
     async: true,
+    inverse: 'trafficSignalConcept',
+    as: 'traffic-signal-concept',
   })
   declare variables: AsyncHasMany<Variable>;
 
@@ -53,7 +54,11 @@ export default class TrafficSignalConcept extends SkosConcept {
   })
   declare hasInstructions: AsyncHasMany<Template>;
 
-  @hasMany<TribontShape>('tribont-shape', { inverse: null, async: true })
+  @hasMany<TribontShape>('tribont-shape', {
+    inverse: 'trafficSignalConcept',
+    as: 'traffic-signal-concept',
+    async: true,
+  })
   declare shapes: AsyncHasMany<TribontShape>;
 
   @belongsTo<TribontShape>('tribont-shape', { inverse: null, async: true })
