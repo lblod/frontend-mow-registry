@@ -12,7 +12,13 @@ export default class TrafficMeasureConceptsEditRoute extends Route {
   async model(params: Params) {
     const trafficMeasureConcept = this.store
       .request(
-        findRecord<TrafficMeasureConcept>('traffic-measure-concept', params.id),
+        findRecord<TrafficMeasureConcept>(
+          'traffic-measure-concept',
+          params.id,
+          {
+            include: ['relatedTrafficSignalConceptsOrdered', 'template'],
+          },
+        ),
       )
       .then((res) => res.content);
     return trafficMeasureConcept;

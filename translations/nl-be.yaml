@@ -96,6 +96,7 @@ utility:
   add-variable: Nieuwe variabele toevoegen
   properties: Eigenschappen
   search: Zoek
+  n/a: "N.v.t."
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden
   preview-alt: Een voorbeeld van het geüploade bestand
@@ -341,6 +342,7 @@ variable-signage-selector:
 errors:
   field:
     required: Dit veld is verplicht
+    not-in-enum: Dit veld is geen geldige waarde
   number: Geef een getal in
   end-date-should-be-in-the-future: Einddatum moet in de toekomst liggen.
   end-date-greater-than-start-date: De einddatum moet groter zijn dan de begindatum.
@@ -366,5 +368,15 @@ shape-manager:
   edit-modal-title: Vormen bewerken
 variable-manager:
   no-data: Geen variabelen
-  edit-modal-title: Variabele bewerken
   delete: Verwijder variabele
+  table:
+    fields:
+      default-value: Standaardwaarde
+  edit-modal:
+    title: Variabele bewerken
+    codelist: Codelijst
+    default-value:
+      label: Standaardwaarde
+      placeholder:
+        free-text: Vul standaardwaarde in
+        select: Kies standaardwaarde

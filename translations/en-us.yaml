@@ -96,6 +96,7 @@ utility:
   add-variable: Add new variable
   properties: Properties
   search: Search
+  n/a: "N/A"
 image-input:
   helptext: Press the button to upload a new image
   preview-alt: A preview of the uploaded image
@@ -341,6 +342,7 @@ variable-signage-selector:
 errors:
   field:
     required: This field is required
+    not-in-enum: This field is not a valid value
   number: Enter a number
   end-date-should-be-in-the-future: End date should be in the future.
   end-date-greater-than-start-date: End date must be greater than the start date.
@@ -366,5 +368,15 @@ shape-manager:
   edit-modal-title: Edit shape
 variable-manager:
   no-data: No variables
-  edit-modal-title: Edit variable
   delete: Remove variable
+  table:
+    fields:
+      default-value: Default value
+  edit-modal:
+    title: Edit variable
+    codelist: Codelist
+    default-value:
+      label: Standaardwaarde
+      placeholder:
+        free-text: Vul standaardwaarde in
+        select: Kies standaardwaarde

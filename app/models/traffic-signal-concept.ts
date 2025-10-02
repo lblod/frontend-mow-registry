@@ -17,16 +17,20 @@ import {
   validateStringRequired,
   validateDateOptional,
   validateEndDate,
+  validateStringOptional,
 } from 'mow-registry/validators/schema';
 import type TribontShape from './tribont-shape';
 import type Variable from './variable';
 import TrafficSignalListItem from './traffic-signal-list-item';
 import { query } from '@warp-drive/legacy/compat/builders';
+import Joi from 'joi';
+import AbstractValidationModel from './abstract-validation-model';
 
-export default class TrafficSignalConcept extends SkosConcept {
-  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+export default class TrafficSignalConcept extends AbstractValidationModel {
   declare [Type]: 'traffic-signal-concept';
 
+  @attr declare uri?: string;
+  @attr declare label?: string;
   @attr declare meaning?: string;
   @attr declare valid?: boolean;
   @attr declare arPlichtig?: boolean;
@@ -35,6 +39,7 @@ export default class TrafficSignalConcept extends SkosConcept {
 
   @hasMany<Variable>('variable', {
     async: true,
+    polymorphic: true,
     inverse: 'trafficSignalConcept',
     as: 'traffic-signal-concept',
   })
@@ -79,7 +84,9 @@ export default class TrafficSignalConcept extends SkosConcept {
   declare canContainSignals: AsyncHasMany<TrafficSignalConcept>;
 
   get validationSchema() {
-    return super.validationSchema.keys({
+    return Joi.object({
+      uri: validateStringOptional(),
+      label: validateStringRequired(),
       shapes: validateHasManyOptional(),
       defaultShape: validateBelongsToOptional(),
       valid: validateBooleanOptional(),

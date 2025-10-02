@@ -23,7 +23,6 @@ export default class RoadsignConceptsEditRoute extends Route {
               'variables',
               'classifications',
               'zonality.inScheme.concepts',
-              'inScheme.concepts',
             ],
           }),
         )

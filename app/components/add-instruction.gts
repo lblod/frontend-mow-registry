@@ -12,7 +12,7 @@ import { get } from '@ember/helper';
 import didInsert from '@ember/render-modifiers/modifiers/did-insert';
 import { task } from 'ember-concurrency';
 import perform from 'ember-concurrency/helpers/perform';
-import { eq, not } from 'ember-truth-helpers';
+import { not } from 'ember-truth-helpers';
 import t from 'ember-intl/helpers/t';
 import type IntlService from 'ember-intl/services/intl';
 import PowerSelect from 'ember-power-select/components/power-select';
@@ -33,12 +33,20 @@ import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concep
 import type Variable from 'mow-registry/models/variable';
 import type CodeList from 'mow-registry/models/code-list';
 import { validateVariables } from 'mow-registry/utils/validate-relations';
-import { isSome } from 'mow-registry/utils/option';
+import { isSome, unwrap } from 'mow-registry/utils/option';
 import { removeItem } from 'mow-registry/utils/array';
 import validateTemplateDates from 'mow-registry/utils/validate-template-dates';
 import ErrorMessage from 'mow-registry/components/error-message';
+import {
+  signVariableTypes,
+  type SignVariableType,
+} from 'mow-registry/models/variable';
+import type VariablesService from 'mow-registry/services/variables-service';
+import type TextVariable from 'mow-registry/models/text-variable';
+import { TrackedArray } from 'tracked-built-ins';
+import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
+import { Await } from '@warp-drive/ember';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
-import { getPromiseState } from '@warp-drive/ember';
 
 export interface AddInstructionSig {
   Args: {
@@ -54,12 +62,11 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   @service declare router: RouterService;
   @service('codelists') declare codeListService: CodelistsService;
   @service declare intl: IntlService;
+  @service declare variablesService: VariablesService;
   @tracked template?: Template;
-  @tracked concept?: TrafficSignalConcept;
   @tracked variables?: Variable[];
   @tracked codeLists?: CodeList[];
   @tracked new?: boolean;
-  @tracked inputTypes = ['text', 'number', 'date', 'location', 'codelist'];
 
   variablesToBeDeleted: Variable[] = [];
 
@@ -69,33 +76,38 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   }
 
   fetchData = task(async () => {
-    this.concept = await this.args.concept;
     this.codeLists = await this.codeListService.all.perform();
 
     if (this.args.editedTemplate) {
       this.new = false;
-      this.template = await this.args.editedTemplate;
-      this.variables = await this.template.variables;
-      this.variables = this.variables
-        .slice()
-        .sort((a, b) => (a.id && b.id && a.id < b.id ? -1 : 1));
+      this.template = this.args.editedTemplate;
     } else {
       this.new = true;
       this.template = this.store.createRecord('template', {
         value: '',
       });
-      this.variables = await this.template.variables;
     }
+    this.variables = new TrackedArray(await this.template.variables);
     this.parseTemplate();
   });
 
   @action
-  async updateVariableType(variable: Variable, type: string) {
-    variable.type = type;
-    if (type === 'codelist' && !(await variable.codeList)) {
-      variable.set('codeList', this.codeLists?.[0]);
-    } else {
-      variable.set('codeList', null);
+  async updateVariableType(variable: Variable, selectedType: SignVariableType) {
+    if (!this.variables) {
+      return;
+    }
+    const varIndex = this.variables.indexOf(variable);
+    if (varIndex === -1) {
+      return;
+    }
+    const newVar = (await this.variablesService.convertVariableType(
+      variable,
+      selectedType,
+    )) as Variable;
+    if (this.variables) {
+      this.variablesToBeDeleted.push(
+        ...this.variables.splice(varIndex, 1, newVar),
+      );
     }
   }
 
@@ -145,7 +157,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
 
     removeItem(templates, template);
 
-    await template.destroyRecord();
+    await template.destroyWithRelations();
     await this.store.request(saveRecord(this.args.concept));
 
     this.router.replaceWith(this.args.from);
@@ -157,7 +169,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     _isoDate: string | null,
     date: Date | null,
   ) {
-    if (this.template && this.concept) {
+    if (this.template && this.args.concept) {
       if (date && attribute === 'endDate') {
         date.setHours(23);
         date.setMinutes(59);
@@ -174,7 +186,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
       await this.template.validateProperty('endDate', {
         warnings: true,
       });
-      validateTemplateDates(this.template, this.concept);
+      validateTemplateDates(this.template, this.args.concept);
     }
   }
 
@@ -184,8 +196,8 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     if (this.template?.hasDirtyAttributes || this.template?.isNew) {
       this.template.rollbackAttributes();
     }
-    if (this.concept?.hasDirtyAttributes || this.concept?.isNew) {
-      this.concept.rollbackAttributes();
+    if (this.args.concept?.hasDirtyAttributes || this.args.concept?.isNew) {
+      this.args.concept.rollbackAttributes();
     }
     if (this.args.closeInstructions) {
       this.args.closeInstructions();
@@ -228,11 +240,32 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     //add new variables
     filteredRegexResult.forEach((reg) => {
       if (!this.variables?.find((variable) => variable.label === reg[1])) {
-        const variable = this.store.createRecord<Variable>('variable', {
-          label: reg[1],
-          type: 'text',
-        });
-        this.variables?.push(variable);
+        let variableToAdd: Variable;
+
+        // Check if there is a variable to restore (copy-pasting/moving around)
+        // We search from end to start, as this array may contain multiple variables with the same label.
+        // We want to select the one who has been last removed.
+        const variableToRestoreIndex = this.variablesToBeDeleted.findLastIndex(
+          (variable) => variable.label === reg[1],
+        );
+
+        if (variableToRestoreIndex > -1) {
+          // In case a variable is copy-pasted/moved around:
+          // Remove variable from `variablesToBeDeleted`, and add it to the `variables` array
+          variableToAdd = unwrap(
+            this.variablesToBeDeleted[variableToRestoreIndex],
+          );
+          this.variablesToBeDeleted.splice(variableToRestoreIndex, 1);
+        } else {
+          // Variable did not exist before, just create a new one
+          variableToAdd = this.store.createRecord<TextVariable>(
+            'text-variable',
+            {
+              label: reg[1],
+            },
+          ) as unknown as Variable;
+        }
+        this.variables?.push(variableToAdd);
       }
     });
 
@@ -251,23 +284,11 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     });
 
     //sort variables in the same order as the regex result
-    const sortedVariables: Variable[] = [];
+    const sortedVariables: Variable[] = new TrackedArray([]);
     filteredRegexResult.forEach((reg) => {
       filteredVariables.forEach((variable) => {
         if (reg[1] == variable.label) {
           sortedVariables.push(variable);
-        }
-      });
-    });
-
-    //check existing default variables with deleted non-default variables and swap them
-    sortedVariables.forEach((sVariable, sI) => {
-      this.variablesToBeDeleted.forEach((dVariable, dI) => {
-        if (sVariable.label === dVariable.label) {
-          if (dVariable.type !== 'text' && sVariable.type === 'text') {
-            sortedVariables.splice(sI, 1, dVariable);
-            this.variablesToBeDeleted.splice(dI, 1, sVariable);
-          }
         }
       });
     });
@@ -282,26 +303,29 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   }
 
   save = task(async () => {
-    if (this.template && this.concept && this.variables) {
+    if (this.template && this.args.concept && this.variables) {
       const isValid = await this.template.validate();
       const areVariablesValid = await validateVariables(this.variables);
 
       if (isValid && areVariablesValid && !this.templateSyntaxError) {
         await this.store.request(saveRecord(this.template));
-        (await this.concept.hasInstructions).push(this.template);
-        await this.store.request(saveRecord(this.concept));
-        for (let i = 0; i < this.variables.length; i++) {
-          const variable = this.variables[i];
-          if (variable) {
-            (await this.template.variables).push(variable);
-            await this.store.request(saveRecord(variable));
-          }
-        }
-        await this.store.request(saveRecord(this.template));
+
+        (await this.args.concept.hasInstructions).push(this.template);
+        await this.store.request(saveRecord(this.args.concept));
+
+        //destroy old variables
         await Promise.all(
           this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
         );
+        //save new variables
+        await Promise.all(
+          this.variables.map((variable) =>
+            this.store.request(saveRecord(variable)),
+          ),
+        );
 
+        this.template.set('variables', this.variables);
+        await this.store.request(saveRecord(this.template));
         this.reset();
       }
     }
@@ -461,46 +485,42 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
                       <PowerSelect
                         @allowClear={{false}}
                         @searchEnabled={{false}}
-                        @options={{this.inputTypes}}
+                        @options={{signVariableTypes}}
                         @selected={{variable.type}}
                         @onChange={{fn this.updateVariableType variable}}
                         as |type|
                       >
                         {{type}}
                       </PowerSelect>
-                      {{#if (eq variable.type 'codelist')}}
-                        {{#let
-                          (getPromiseState variable.codeList)
-                          as |codelistPromise|
-                        }}
-                          {{#if codelistPromise.isSuccess}}
+                      {{#if (isCodelistVariable variable)}}
+                        <Await @promise={{variable.codeList}}>
+                          <:success as |codelist|>
                             <PowerSelect
                               @allowClear={{false}}
                               @searchEnabled={{false}}
                               @options={{this.codeLists}}
-                              @selected={{codelistPromise.value}}
+                              @selected={{codelist}}
                               @onChange={{fn this.updateCodeList variable}}
                               as |codeList|
                             >
                               {{codeList.label}}
                             </PowerSelect>
-                            {{#if codelistPromise.value}}
-                              {{#let
-                                (getPromiseState codelistPromise.value.concepts)
-                                as |conceptsPromise|
-                              }}
-                                {{#if conceptsPromise.isSuccess}}
+                            {{#if codelist}}
+                              <Await @promise={{codelist.concepts}}>
+                                <:success as |concepts|>
                                   <ul>
-                                    {{#each conceptsPromise.value as |option|}}
+                                    {{#each concepts as |option|}}
                                       <li> - {{option.label}}</li>
                                     {{/each}}
                                   </ul>
-                                {{/if}}
-                              {{/let}}
+                                </:success>
+                              </Await>
                             {{/if}}
-
-                          {{/if}}
-                        {{/let}}
+                          </:success>
+                        </Await>
+                        <ErrorMessage
+                          @error={{get variable.error 'codeList'}}
+                        />
                       {{/if}}
                     </td>
                   </tr>

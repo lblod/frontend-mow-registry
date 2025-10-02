@@ -3,15 +3,10 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import type Dimension from 'mow-registry/models/dimension';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import RoadSignCategory from 'mow-registry/models/road-sign-category';
-import TribontShape from 'mow-registry/models/tribont-shape';
-import { tracked } from '@glimmer/tracking';
-import { removeItem } from 'mow-registry/utils/array';
 import Store from 'mow-registry/services/store';
-import type Variable from 'mow-registry/models/variable';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import BreadcrumbsItem from '@bagaar/ember-breadcrumbs/components/breadcrumbs-item';
 import t from 'ember-intl/helpers/t';
@@ -38,10 +33,6 @@ import { or } from 'ember-truth-helpers';
 import { LinkTo } from '@ember/routing';
 import { load } from 'ember-async-data';
 import { isSome } from 'mow-registry/utils/option';
-import {
-  validateShapes,
-  validateVariables,
-} from 'mow-registry/utils/validate-relations';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { Await } from '@warp-drive/ember';
 
@@ -52,14 +43,6 @@ type Args = {
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: RouterService;
   @service declare store: Store;
-
-  isArray = function isArray(maybeArray: unknown) {
-    return Array.isArray(maybeArray);
-  };
-
-  @tracked shapesToRemove: TribontShape[] = [];
-  @tracked variablesToRemove: Variable[] = [];
-  dimensionsToRemove: Dimension[] = [];
 
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
@@ -93,7 +76,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   @action
   async setRoadsignDate(
     attribute: string,
-    isoDate: string | null,
+    _isoDate: string | null,
     date: Date | null,
   ) {
     if (date && attribute === 'endDate') {
@@ -115,39 +98,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   }
 
   @action
-  async addShape() {
-    const shape = this.store.createRecord<TribontShape>('tribont-shape', {});
-    (await this.args.roadSignConcept.shapes).push(shape);
-    return shape;
-  }
-
-  @action
-  async removeShape(shape: TribontShape) {
-    const shapes = await this.args.roadSignConcept.shapes;
-    removeItem(shapes, shape);
-    this.shapesToRemove.push(shape);
-  }
-
-  @action
-  async addVariable() {
-    const newVariable = this.store.createRecord<Variable>('variable', {});
-    (await this.args.roadSignConcept.variables).push(newVariable);
-  }
-
-  @action
-  async removeVariable(variable: Variable) {
-    const variables = await this.args.roadSignConcept.variables;
-    removeItem(variables, variable);
-    this.variablesToRemove.push(variable);
-  }
-
-  removeDimension = async (shape: TribontShape, dimension: Dimension) => {
-    removeItem(await shape.dimensions, dimension);
-
-    this.dimensionsToRemove.push(dimension);
-  };
-
-  @action
   setImage(model: RoadSignConcept, image: File) {
     super.setImage(model, image);
     void this.args.roadSignConcept.validateProperty('image');
@@ -157,72 +107,17 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     event.preventDefault();
 
     const isValid = await this.args.roadSignConcept.validate();
-    const areShapesValid = await validateShapes(
-      this.args.roadSignConcept.shapes,
-    );
-    const areVariablesValid = await validateVariables(
-      this.args.roadSignConcept.variables,
-    );
-    if (isValid && areShapesValid && areVariablesValid) {
+    if (isValid) {
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
-
-      const savePromises: Promise<unknown>[] = [];
-      savePromises.push(
-        ...(await this.args.roadSignConcept.shapes).map(async (shape) => {
-          await Promise.all(
-            (await shape.dimensions).map(async (dimension) => {
-              await this.store.request(saveRecord(dimension));
-            }),
-          );
-          await this.store.request(saveRecord(shape));
-        }),
-      );
-
-      savePromises.push(
-        ...this.shapesToRemove.map(async (shape) => {
-          await Promise.all(
-            (await shape.dimensions).map(async (dimension) => {
-              await dimension.destroyRecord();
-            }),
-          );
-          await shape.destroyRecord();
-        }),
-      );
-      savePromises.push(
-        ...this.dimensionsToRemove.map((dimension) =>
-          dimension.destroyRecord(),
-        ),
-      );
-
-      savePromises.push(
-        ...(await this.args.roadSignConcept.variables).map(async (variable) => {
-          await this.store.request(saveRecord(variable));
-        }),
-      );
-
-      savePromises.push(
-        ...this.variablesToRemove.map((variable) => variable.destroyRecord()),
-      );
-
-      await Promise.all(savePromises);
       await this.store.request(saveRecord(this.args.roadSignConcept));
+
       void this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
         this.args.roadSignConcept.id,
       );
     }
   });
-
-  @action
-  async toggleDefaultShape(shape: TribontShape) {
-    const currentDefault = await this.args.roadSignConcept.defaultShape;
-    if (currentDefault && currentDefault.id === shape.id) {
-      this.args.roadSignConcept.set('defaultShape', null);
-    } else {
-      this.args.roadSignConcept.set('defaultShape', shape);
-    }
-  }
 
   willDestroy() {
     super.willDestroy();
@@ -453,7 +348,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 {{#let (load @roadSignConcept.zonality) as |zonality|}}
                   {{#if zonality.isResolved}}
                     <ZonalitySelector
-                      {{! @glint-expect-error not sure how we should handle this }}
                       @zonality={{zonality.value}}
                       @onChange={{this.updateZonality}}
                       {{! @glint-expect-error not sure why this doesnt accept subtypes }}
