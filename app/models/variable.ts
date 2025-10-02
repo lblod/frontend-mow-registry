@@ -2,7 +2,6 @@ import { type AsyncBelongsTo, belongsTo, attr } from '@warp-drive/legacy/model';
 import type { Type } from '@warp-drive/core/types/symbols';
 import type CodeList from './code-list';
 import type Template from './template';
-import Resource from './resource';
 import {
   validateBelongsToOptional,
   validateStringOptional,
@@ -10,10 +9,11 @@ import {
   validateBooleanRequired,
   validateDateOptional,
 } from 'mow-registry/validators/schema';
+import Joi from 'joi';
+import AbstractValidationModel from './abstract-validation-model';
 import type TrafficSignalConcept from './traffic-signal-concept';
 
-export default class Variable extends Resource {
-  //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
+export default class Variable extends AbstractValidationModel {
   declare [Type]: 'variable';
 
   @attr declare uri: string;
@@ -37,7 +37,7 @@ export default class Variable extends Resource {
   declare trafficSignalConcept: AsyncBelongsTo<TrafficSignalConcept>;
 
   get validationSchema() {
-    return super.validationSchema.keys({
+    return Joi.object({
       uri: validateStringOptional(),
       label: validateStringRequired(),
       type: validateStringRequired(),
