@@ -81,17 +81,13 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
     if (this.args.editedTemplate) {
       this.new = false;
       this.template = this.args.editedTemplate;
-      const vars = await this.template.variables;
-      this.variables = new TrackedArray(
-        vars.slice().sort((a, b) => (a.id && b.id && a.id < b.id ? -1 : 1)),
-      );
     } else {
       this.new = true;
       this.template = this.store.createRecord('template', {
         value: '',
       });
-      this.variables = new TrackedArray(await this.template.variables);
     }
+    this.variables = new TrackedArray(await this.template.variables);
     this.parseTemplate();
   });
 
