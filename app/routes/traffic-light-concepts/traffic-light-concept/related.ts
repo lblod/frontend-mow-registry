@@ -8,7 +8,6 @@ import type TrafficLightConceptRoute from 'mow-registry/routes/traffic-light-con
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import { hash } from 'rsvp';
 import { TrackedArray } from 'tracked-built-ins';
-import { query } from '@warp-drive/legacy/compat/builders';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 
 export default class TrafficLightConceptRelatedRoute extends Route {
@@ -22,35 +21,29 @@ export default class TrafficLightConceptRelatedRoute extends Route {
     const model = await hash({
       trafficLightConcept,
       allRoadMarkings: this.store
-        .request(
-          query<RoadMarkingConcept>('road-marking-concept', {
-            include: ['image.file'],
-            page: {
-              size: 10000,
-            },
-          }),
-        )
+        .countAndFetchAll<RoadMarkingConcept>('road-marking-concept', {
+          include: ['image.file'],
+          page: {
+            size: 10000,
+          },
+        })
         .then((response) => response.content),
       allTrafficLights: this.store
-        .request(
-          query<TrafficLightConceptModel>('traffic-light-concept', {
-            include: ['image.file'],
-            page: {
-              size: 10000,
-            },
-          }),
-        )
+        .countAndFetchAll<TrafficLightConceptModel>('traffic-light-concept', {
+          include: ['image.file'],
+          page: {
+            size: 10000,
+          },
+        })
         .then((response) => response.content),
       allRoadSigns: this.store
-        .request(
-          query<RoadSignConcept>('road-sign-concept', {
-            include: ['image.file'],
-            'filter[classifications][:not:label]': 'Onderbord',
-            page: {
-              size: 10000,
-            },
-          }),
-        )
+        .countAndFetchAll<RoadSignConcept>('road-sign-concept', {
+          include: ['image.file'],
+          'filter[classifications][:not:label]': 'Onderbord',
+          page: {
+            size: 10000,
+          },
+        })
         .then((response) => response.content),
     });
 

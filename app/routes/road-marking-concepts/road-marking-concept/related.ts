@@ -9,7 +9,6 @@ import type RoadMarkingConceptRoute from 'mow-registry/routes/road-marking-conce
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
 import { hash } from 'rsvp';
 import { TrackedArray } from 'tracked-built-ins';
-import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class RoadMarkingConceptsRoadMarkingConceptRelatedRoute extends Route {
   @service declare store: Store;
@@ -22,40 +21,34 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedRoute extends R
     const model = await hash({
       roadMarkingConcept,
       allRoadMarkings: this.store
-        .request(
-          query<RoadMarkingConcept>('road-marking-concept', {
-            include: ['image.file'],
-            page: {
-              size: 10000,
-            },
-          }),
-        )
+        .countAndFetchAll<RoadMarkingConcept>('road-marking-concept', {
+          include: ['image.file'],
+          page: {
+            size: 10000,
+          },
+        })
         .then((res) => res.content)
-        .then((allRoadMarkings) => {
+        .then((allRoadMarkings: RoadMarkingConcept[]) => {
           return allRoadMarkings.filter(
             (roadMarking) => roadMarking.id !== roadMarkingConcept.id,
           );
         }),
       allTrafficLights: this.store
-        .request(
-          query<TrafficLightConcept>('traffic-light-concept', {
-            include: ['image.file'],
-            page: {
-              size: 10000,
-            },
-          }),
-        )
+        .countAndFetchAll<TrafficLightConcept>('traffic-light-concept', {
+          include: ['image.file'],
+          page: {
+            size: 10000,
+          },
+        })
         .then((res) => res.content),
       allRoadSigns: this.store
-        .request(
-          query<RoadSignConcept>('road-sign-concept', {
-            'filter[classifications][:not:label]': 'Onderbord',
-            include: ['image.file'],
-            page: {
-              size: 10000,
-            },
-          }),
-        )
+        .countAndFetchAll<RoadSignConcept>('road-sign-concept', {
+          'filter[classifications][:not:label]': 'Onderbord',
+          include: ['image.file'],
+          page: {
+            size: 10000,
+          },
+        })
         .then((res) => res.content),
     });
 

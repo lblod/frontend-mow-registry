@@ -9,7 +9,6 @@ import { hash } from 'rsvp';
 import { service } from '@ember/service';
 import type RelatedController from 'mow-registry/controllers/road-sign-concepts/road-sign-concept/related';
 import type Transition from '@ember/routing/transition';
-import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class RoadSignConceptsRoadSignConceptRelatedRoute extends Route {
   @service declare store: Store;
@@ -22,35 +21,29 @@ export default class RoadSignConceptsRoadSignConceptRelatedRoute extends Route {
     return hash({
       roadSignConcept,
       allRoadMarkings: this.store
-        .request(
-          query<RoadMarkingConcept>('road-marking-concept', {
-            include: ['image.file'],
-            page: {
-              size: 10000,
-            },
-          }),
-        )
+        .countAndFetchAll<RoadMarkingConcept>('road-marking-concept', {
+          include: ['image.file'],
+          page: {
+            size: 10000,
+          },
+        })
         .then((res) => res.content),
       allTrafficLights: this.store
-        .request(
-          query<TrafficLightConcept>('traffic-light-concept', {
-            include: ['image.file'],
-            page: {
-              size: 10000,
-            },
-          }),
-        )
+        .countAndFetchAll<TrafficLightConcept>('traffic-light-concept', {
+          include: ['image.file'],
+          page: {
+            size: 10000,
+          },
+        })
         .then((res) => res.content),
       allRoadSigns: this.store
-        .request(
-          query<RoadSignConceptModel>('road-sign-concept', {
-            'filter[classifications][:not:label]': 'Onderbord',
-            include: ['image.file'],
-            page: {
-              size: 10000,
-            },
-          }),
-        )
+        .countAndFetchAll<RoadSignConceptModel>('road-sign-concept', {
+          'filter[classifications][:not:label]': 'Onderbord',
+          include: ['image.file'],
+          page: {
+            size: 10000,
+          },
+        })
         .then((res) => res.content),
     });
   }
