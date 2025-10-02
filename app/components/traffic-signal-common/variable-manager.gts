@@ -49,6 +49,7 @@ import { format } from 'date-fns';
 import * as locales from 'date-fns/locale';
 import { recordIdentifierFor } from '@warp-drive/core';
 import { query, saveRecord } from '@warp-drive/legacy/compat/builders';
+import { task } from 'ember-concurrency';
 
 interface Signature {
   Args: {
@@ -118,7 +119,7 @@ export default class VariableManager extends Component<Signature> {
     this.variableToDelete = undefined;
   };
 
-  saveVariable = async () => {
+  saveVariable = task(async () => {
     const valid = await this.variableToEdit?.validate();
     if (!valid) return;
     if (this.variableToEdit) {
@@ -127,9 +128,12 @@ export default class VariableManager extends Component<Signature> {
     await this.variableToDelete?.destroyRecord();
     this.variables.retry();
     this.closeEditVariableModal();
-  };
+  });
 
-  cancelEditVariable = async () => {
+  cancelEditVariable = () => {
+    if (this.saveVariable.isRunning) {
+      return;
+    }
     if (this.variableToEdit) {
       this.store.cache.rollbackRelationships(
         recordIdentifierFor(this.variableToEdit),
@@ -214,11 +218,11 @@ export default class VariableManager extends Component<Signature> {
     this.isDeleteConfirmationOpen = true;
   };
 
-  removeVariable = async () => {
+  removeVariable = task(async () => {
     await this.variableToDelete?.destroyRecord();
     this.variables.retry();
     this.closeDeleteConfirmation();
-  };
+  });
 
   closeDeleteConfirmation = () => {
     this.variableToDelete = undefined;
@@ -301,7 +305,7 @@ export default class VariableManager extends Component<Signature> {
       </ReactiveTable>
       <AuModal
         @modalOpen={{this.isEditVariableModalOpen}}
-        @closeModal={{this.closeEditVariableModal}}
+        @closeModal={{this.cancelEditVariable}}
         @overflow={{true}}
       >
         <:title>
@@ -422,10 +426,17 @@ export default class VariableManager extends Component<Signature> {
           </div>
         </:body>
         <:footer>
-          <AuButton {{on 'click' this.saveVariable}}>
+          <AuButton
+            {{on 'click' this.saveVariable.perform}}
+            @loading={{this.saveVariable.isRunning}}
+          >
             {{t 'utility.save'}}
           </AuButton>
-          <AuButton @skin='secondary' {{on 'click' this.cancelEditVariable}}>
+          <AuButton
+            @skin='secondary'
+            {{on 'click' this.cancelEditVariable}}
+            @disabled={{this.saveVariable.isRunning}}
+          >
             {{t 'utility.cancel'}}
           </AuButton>
         </:footer>
@@ -443,12 +454,17 @@ export default class VariableManager extends Component<Signature> {
           </p>
         </:body>
         <:footer>
-          <AuButton @alert={{true}} {{on 'click' this.removeVariable}}>
+          <AuButton
+            @alert={{true}}
+            {{on 'click' this.removeVariable.perform}}
+            @loading={{this.removeVariable.isRunning}}
+          >
             {{t 'variable-manager.delete'}}
           </AuButton>
           <AuButton
             @skin='secondary'
             {{on 'click' this.closeDeleteConfirmation}}
+            @disabled={{this.removeVariable.isRunning}}
           >
             {{t 'utility.cancel'}}
           </AuButton>
