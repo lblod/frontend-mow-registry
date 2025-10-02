@@ -110,7 +110,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     if (isValid) {
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
-
       await this.store.request(saveRecord(this.args.roadSignConcept));
 
       void this.router.transitionTo(

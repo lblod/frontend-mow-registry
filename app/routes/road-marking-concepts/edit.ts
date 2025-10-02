@@ -18,12 +18,7 @@ export default class RoadmarkingConceptsEditRoute extends Route {
       roadMarkingConcept: this.store
         .request(
           findRecord<RoadMarkingConcept>('road-marking-concept', params.id, {
-            include: [
-              'image.file',
-              'variables',
-              'zonality.inScheme.concepts',
-              'inScheme.concepts',
-            ],
+            include: ['image.file', 'variables', 'zonality.inScheme.concepts'],
           }),
         )
         .then((res) => res.content),

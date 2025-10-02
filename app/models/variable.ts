@@ -1,6 +1,7 @@
 import { type AsyncBelongsTo, belongsTo, attr } from '@warp-drive/legacy/model';
 import type { Type } from '@warp-drive/core/types/symbols';
-import Resource from './resource';
+import Joi from 'joi';
+import AbstractValidationModel from './abstract-validation-model';
 import type TrafficSignalConcept from './traffic-signal-concept';
 import {
   validateBooleanRequired,
@@ -43,7 +44,7 @@ export type VariableSubtype =
   | CodelistVariable
   | InstructionVariable;
 
-export default class Variable extends Resource {
+export default class Variable extends AbstractValidationModel {
   declare [Type]: 'variable' | string;
 
   @attr declare uri: string;
@@ -61,7 +62,7 @@ export default class Variable extends Resource {
   declare trafficSignalConcept: AsyncBelongsTo<TrafficSignalConcept>;
 
   get validationSchema() {
-    return super.validationSchema.keys({
+    return Joi.object({
       uri: validateStringOptional(),
       label: validateStringRequired(),
       type: validateEnumRequired(allVariableTypesConst),

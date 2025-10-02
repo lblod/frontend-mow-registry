@@ -91,7 +91,7 @@ export default class VariableManager extends Component<Signature> {
     const variables = await this.store
       .request(
         query<Variable>('variable', {
-          'filter[trafficSignalConcept][:id:]': trafficSignalId,
+          'filter[traffic-signal-concept][:id:]': trafficSignalId,
           page: {
             number: pageNumber,
             size: pageSize,
@@ -622,7 +622,7 @@ class CodelistVariableDefaultValueSelector extends Component<{
         'skos-concept',
         {
           filter: {
-            inScheme: {
+            'in-scheme': {
               ':uri:': codelistUri,
             },
           },
