@@ -9,8 +9,7 @@ import Store from 'mow-registry/services/store';
 import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import type Variable from 'mow-registry/models/variable';
-import { removeItem } from 'mow-registry/utils/array';
-import { validateVariables } from 'mow-registry/utils/validate-relations';
+
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Args = {
@@ -70,24 +69,10 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
     event.preventDefault();
 
     const isValid = await this.args.trafficLightConcept.validate();
-    const areVariablesValid = await validateVariables(
-      this.args.trafficLightConcept.variables,
-    );
-    if (isValid && areVariablesValid) {
+    if (isValid) {
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.trafficLightConcept.set('image', imageRecord); // image gets uploaded but not replaced
 
-      await Promise.all(
-        (await this.args.trafficLightConcept.variables).map(
-          async (variable) => {
-            await this.store.request(saveRecord(variable));
-          },
-        ),
-      );
-
-      await Promise.all(
-        this.variablesToRemove.map((variable) => variable.destroyRecord()),
-      );
       await this.store.request(saveRecord(this.args.trafficLightConcept));
       this.router.transitionTo(
         'traffic-light-concepts.traffic-light-concept',
@@ -100,19 +85,6 @@ export default class TrafficLightFormComponent extends ImageUploadHandlerCompone
   setImage(model: TrafficSignalConcept, image: File) {
     super.setImage(model, image);
     void this.args.trafficLightConcept.validateProperty('image');
-  }
-
-  @action
-  async addVariable() {
-    const newVariable = this.store.createRecord<Variable>('variable', {});
-    (await this.args.trafficLightConcept.variables).push(newVariable);
-  }
-
-  @action
-  async removeVariable(variable: Variable) {
-    const variables = await this.args.trafficLightConcept.variables;
-    removeItem(variables, variable);
-    this.variablesToRemove.push(variable);
   }
 
   willDestroy() {
