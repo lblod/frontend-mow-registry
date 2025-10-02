@@ -11,15 +11,19 @@ import zonalityLabel from 'mow-registry/helpers/zonality-label';
 import t from 'ember-intl/helpers/t';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import { get } from '@ember/helper';
+import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 import { findRecord } from '@warp-drive/legacy/compat/builders';
+import type { PromiseBelongsTo } from '@warp-drive/legacy/model/-private/promise-belongs-to';
 
-type Args = {
-  model: TrafficSignalConcept;
-  zonality: SkosConcept;
-  onChange: (zonality: SkosConcept) => void;
+type Sig = {
+  Args: {
+    model: TrafficSignalConcept | TrafficMeasureConcept;
+    zonality: PromiseBelongsTo<SkosConcept> | SkosConcept;
+    onChange: (zonality: SkosConcept) => void;
+  };
 };
 
-export default class ZonalitySelectorComponent extends Component<Args> {
+export default class ZonalitySelectorComponent extends Component<Sig> {
   @service declare store: Store;
 
   zonalities = trackedFunction(this, async () => {

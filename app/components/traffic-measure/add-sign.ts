@@ -9,16 +9,17 @@ import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
-import { isSome } from 'mow-registry/utils/option';
+import { isSome, type Option } from 'mow-registry/utils/option';
 import { query } from '@warp-drive/legacy/compat/builders';
 import type { LegacyResourceQuery } from '@warp-drive/core/types';
 import TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
 
 type Args = {
-  selectedType: SignType;
+  selectedType: Option<SignType>;
   selectedValidation?: string | null;
   addSign: (sign: TrafficSignalListItem) => void;
   signs: TrafficSignalListItem[];
+  disabled?: boolean;
 };
 export default class TrafficMeasureAddSignComponent extends Component<Args> {
   @service declare store: Store;
@@ -26,6 +27,9 @@ export default class TrafficMeasureAddSignComponent extends Component<Args> {
   @tracked selected?: TrafficSignalConcept | null;
 
   search = restartableTask(async (searchData: string) => {
+    if (!this.args.selectedType) {
+      return [];
+    }
     await timeout(300);
 
     const queryParams: LegacyResourceQuery<

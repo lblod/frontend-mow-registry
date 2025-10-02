@@ -1,3 +1,10 @@
 {{! @glint-nocheck: not typesafe yet }}
 <TrafficLightConcept::Header @roadSignConcept={{@model.trafficLightConcept}} />
-<TrafficSignalCommon::VariableManager @trafficSignal={{@model.trafficLightConcept}} />
+<TrafficSignalCommon::VariableManager
+  @trafficSignal={{@model.trafficLightConcept}}
+  @pageSize={{this.pageSize}}
+  @pageNumber={{this.pageNumber}}
+  @onPageChange={{this.onPageChange}}
+  @sort={{this.sort}}
+  @onSortChange={{this.onSortChange}}
+/>
