@@ -90,9 +90,9 @@
     "ember-config-helper": "^0.1.4",
     "ember-drag-drop": "^1.0.0",
     "ember-eslint-parser": "^0.5.9",
-    "ember-fetch": "^8.1.2",
     "ember-intl": "^7.0.6",
     "ember-load-initializers": "^3.0.1",
+    "ember-metis": "^0.12.0",
     "ember-modifier": "^4.2.0",
     "ember-mu-login": "^2.0.2",
     "ember-page-title": "^8.2.3",
@@ -147,7 +147,10 @@
       "@fortawesome/free-solid-svg-icons",
       "@parcel/watcher",
       "core-js"
-    ]
+    ],
+    "patchedDependencies": {
+      "ember-metis": "patches/ember-metis.patch"
+    }
   },
   "packageManager": "pnpm@10.12.4+sha512.5ea8b0deed94ed68691c9bad4c955492705c5eeb8a87ef86bc62c74a26b037b08ff9570f108b2e4dbd1dd1a9186fea925e527f141c648e85af45631074680184"
 }

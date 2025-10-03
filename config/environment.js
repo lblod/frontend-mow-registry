@@ -38,6 +38,9 @@ module.exports = function (environment) {
         },
       },
     },
+    metis: {
+      baseUrl: 'http://register.mobiliteit.vlaanderen.be/',
+    },
     featureFlags: {},
     APP: {
       // Here you can pass flags/options to your application instance

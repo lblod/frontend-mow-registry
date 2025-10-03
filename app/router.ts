@@ -1,6 +1,9 @@
 import EmberRouter from '@embroider/router';
 import config from 'mow-registry/config/environment';
 
+// @ts-expect-error ember-metis does not have ts definitions yet
+import { fallbackRoute, externalRoute } from 'ember-metis';
+
 export default class Router extends EmberRouter {
   location = config.locationType;
   rootURL = config.rootURL;
@@ -72,4 +75,8 @@ Router.map(function () {
   this.route('authorization', function () {
     this.route('callback');
   });
+
+  // These ember-metis routes needs to be configured last
+  externalRoute(this);
+  fallbackRoute(this);
 });
