@@ -32,37 +32,37 @@ export const DIMENSION_LABELS = {
 };
 
 export const SHAPES = {
-  'http://data.lblod.info/concept-schemes/a5a1b947-1c34-40df-8842-707de418adb8':
+  'http://register.mobiliteit.vlaanderen.be/concepts/a5a1b947-1c34-40df-8842-707de418adb8':
     Rectangle,
-  'http://data.lblod.info/concept-schemes/4f445b8f-98ce-4621-b671-009a1acb13a6':
+  'http://register.mobiliteit.vlaanderen.be/concepts/4f445b8f-98ce-4621-b671-009a1acb13a6':
     SignpostWithPoint,
-  'http://data.lblod.info/concept-schemes/10b19729-8b4a-4ea5-8470-bc34fc204791':
+  'http://register.mobiliteit.vlaanderen.be/concepts/10b19729-8b4a-4ea5-8470-bc34fc204791':
     InvertedTriangle,
-  'http://lblod.data.gift/concept-schemes/1cddd186-6018-4d12-84d6-f1a5d01affde':
+  'http://register.mobiliteit.vlaanderen.be/concepts/1cddd186-6018-4d12-84d6-f1a5d01affde':
     Triangle,
-  'http://data.lblod.info/concept-schemes/0e0897d1-5c74-47ae-9868-adecbde6f2f3':
+  'http://register.mobiliteit.vlaanderen.be/concepts/0e0897d1-5c74-47ae-9868-adecbde6f2f3':
     Octagon,
-  'http://data.lblod.info/concept-schemes/2481e377-1a89-4e25-9c58-1b509e0f7d74':
+  'http://register.mobiliteit.vlaanderen.be/concepts/2481e377-1a89-4e25-9c58-1b509e0f7d74':
     Circular,
-  'http://data.lblod.info/concept-schemes/322852b4-ec7b-4ca2-b267-4fcc263fa0d7':
+  'http://register.mobiliteit.vlaanderen.be/concepts/322852b4-ec7b-4ca2-b267-4fcc263fa0d7':
     Diamond,
 };
 
 export const SHAPE_URIS = {
   rectangle:
-    'http://data.lblod.info/concept-schemes/a5a1b947-1c34-40df-8842-707de418adb8',
+    'http://register.mobiliteit.vlaanderen.be/concepts/a5a1b947-1c34-40df-8842-707de418adb8',
   signpostWithPoint:
-    'http://data.lblod.info/concept-schemes/4f445b8f-98ce-4621-b671-009a1acb13a6',
+    'http://register.mobiliteit.vlaanderen.be/concepts/4f445b8f-98ce-4621-b671-009a1acb13a6',
   invertedTriangle:
-    'http://data.lblod.info/concept-schemes/10b19729-8b4a-4ea5-8470-bc34fc204791',
+    'http://register.mobiliteit.vlaanderen.be/concepts/10b19729-8b4a-4ea5-8470-bc34fc204791',
   triangle:
-    'http://lblod.data.gift/concept-schemes/1cddd186-6018-4d12-84d6-f1a5d01affde',
+    'http://register.mobiliteit.vlaanderen.be/concepts/1cddd186-6018-4d12-84d6-f1a5d01affde',
   octagon:
-    'http://data.lblod.info/concept-schemes/0e0897d1-5c74-47ae-9868-adecbde6f2f3',
+    'http://register.mobiliteit.vlaanderen.be/concepts/0e0897d1-5c74-47ae-9868-adecbde6f2f3',
   circular:
-    'http://data.lblod.info/concept-schemes/2481e377-1a89-4e25-9c58-1b509e0f7d74',
+    'http://register.mobiliteit.vlaanderen.be/concepts/2481e377-1a89-4e25-9c58-1b509e0f7d74',
   diamond:
-    'http://data.lblod.info/concept-schemes/322852b4-ec7b-4ca2-b267-4fcc263fa0d7',
+    'http://register.mobiliteit.vlaanderen.be/concepts/322852b4-ec7b-4ca2-b267-4fcc263fa0d7',
 };
 
 export class ShapeDimension {
