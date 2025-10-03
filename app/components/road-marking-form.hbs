@@ -135,6 +135,24 @@
             <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
+        {{#let @roadMarkingConcept.error.regulatoryNotation as |error|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              for="regulatoryNotation"
+            >
+              {{t "road-marking-concept.attr.regulatoryNotation"}}
+            </AuLabel>
+            <AuInput
+              @error={{error}}
+              @width="block"
+              id="regulatoryNotation"
+              value={{@roadMarkingConcept.regulatoryNotation}}
+              {{on "input" (fn this.setRoadMarkingConceptValue "regulatoryNotation")}}
+            />
+            <ErrorMessage @error={{error}} />
+          </AuFormRow>
+        {{/let}}
         {{#let @roadMarkingConcept.error.startDate as |error|}}
           <AuFormRow>
             <AuLabel @error={{error}} for="startDate">
