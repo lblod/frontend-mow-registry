@@ -13,18 +13,22 @@ export default class CodelistsService extends Service {
 
   all = task(async () => {
     if (!this.codeLists) {
-      const codeLists = (
-        await this.store.request(
-          query<CodeList>('code-list', {
-            'page[size]': 100,
-            include: ['concepts'],
-            sort: 'label',
-          }),
-        )
-      ).content;
-      await Promise.all(codeLists.map((codeList) => codeList.concepts));
+      try {
+        const codeLists = await this.store
+          .request(
+            query<CodeList>('code-list', {
+              'page[size]': 100,
+              include: ['concepts'],
+              sort: 'label',
+            }),
+          )
+          .then((res) => res.content);
 
-      this.codeLists = codeLists;
+        this.codeLists = codeLists;
+      } catch (err) {
+        console.error('Error querying codelists in codelists service', err);
+        throw err;
+      }
     }
     return this.codeLists;
   });

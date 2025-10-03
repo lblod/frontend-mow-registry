@@ -65,11 +65,37 @@ export const validateStringRequired = (message = 'errors.field.required') => {
 };
 
 /**
+ * Rules for validating a string as a required field and as one of a list of values.
+ */
+export const validateEnumRequired = <T extends string>(
+  allowedValues: T[] | readonly T[],
+  requiredMessage = 'errors.field.required',
+  enumMessage = 'errors.field.not-in-enum',
+) => {
+  return Joi.string()
+    .valid(...allowedValues)
+    .required()
+    .messages({
+      'any.required': requiredMessage,
+      'any.only': enumMessage,
+    });
+};
+
+/**
  * Rules for validating a number as a required field.
  */
 export const validateNumberRequired = (message = 'errors.number') => {
   return Joi.number().required().messages({
     'any.required': message,
+  });
+};
+
+/**
+ * Rules for validating a number as an optional field.
+ */
+export const validateNumberOptional = (message = 'errors.number') => {
+  return Joi.number().messages({
+    'any.optional': message,
   });
 };
 

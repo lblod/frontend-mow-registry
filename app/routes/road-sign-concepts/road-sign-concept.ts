@@ -23,7 +23,6 @@ export default class RoadsignConcept extends Route {
               'variables',
               'classifications',
               'zonality.inScheme.concepts',
-              'inScheme.concepts',
               'relatedToRoadSignConcepts',
               'relatedFromRoadSignConcepts',
               'relatedRoadMarkingConcepts',

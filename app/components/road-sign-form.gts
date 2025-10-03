@@ -3,14 +3,10 @@ import ImageUploadHandlerComponent from './image-upload-handler';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import type Dimension from 'mow-registry/models/dimension';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import RoadSignCategory from 'mow-registry/models/road-sign-category';
-import TribontShape from 'mow-registry/models/tribont-shape';
-import { tracked } from '@glimmer/tracking';
 import Store from 'mow-registry/services/store';
-import type Variable from 'mow-registry/models/variable';
 import type { ModifiableKeysOfType } from 'mow-registry/utils/type-utils';
 import BreadcrumbsItem from '@bagaar/ember-breadcrumbs/components/breadcrumbs-item';
 import t from 'ember-intl/helpers/t';
@@ -48,14 +44,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   @service declare router: RouterService;
   @service declare store: Store;
 
-  isArray = function isArray(maybeArray: unknown) {
-    return Array.isArray(maybeArray);
-  };
-
-  @tracked shapesToRemove: TribontShape[] = [];
-  @tracked variablesToRemove: Variable[] = [];
-  dimensionsToRemove: Dimension[] = [];
-
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
   }
@@ -88,7 +76,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   @action
   async setRoadsignDate(
     attribute: string,
-    isoDate: string | null,
+    _isoDate: string | null,
     date: Date | null,
   ) {
     if (date && attribute === 'endDate') {
@@ -123,6 +111,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       const imageRecord = await this.saveImage();
       if (imageRecord) this.args.roadSignConcept.set('image', imageRecord); // image gets updated, but not overwritten
       await this.store.request(saveRecord(this.args.roadSignConcept));
+
       void this.router.transitionTo(
         'road-sign-concepts.road-sign-concept',
         this.args.roadSignConcept.id,
@@ -380,7 +369,6 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 {{#let (load @roadSignConcept.zonality) as |zonality|}}
                   {{#if zonality.isResolved}}
                     <ZonalitySelector
-                      {{! @glint-expect-error not sure how we should handle this }}
                       @zonality={{zonality.value}}
                       @onChange={{this.updateZonality}}
                       {{! @glint-expect-error not sure why this doesnt accept subtypes }}
