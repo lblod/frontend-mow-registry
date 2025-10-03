@@ -1,5 +1,51 @@
 # frontend-mow-registry
 
+## 2.9.0
+
+### Minor Changes
+
+- [#346](https://github.com/lblod/frontend-mow-registry/pull/346) [`c7a4dc6e29a5d79960c82b67dddac7ab722a98be`](https://github.com/lblod/frontend-mow-registry/commit/c7a4dc6e29a5d79960c82b67dddac7ab722a98be) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Variable and shape rework
+
+- [#349](https://github.com/lblod/frontend-mow-registry/pull/349) [`bf369fae88c3cd44ee80eb132ad029b86c5aa0b5`](https://github.com/lblod/frontend-mow-registry/commit/bf369fae88c3cd44ee80eb132ad029b86c5aa0b5) Thanks [@elpoelma](https://github.com/elpoelma)! - Add support for selecting default values for sign variables
+
+- [#355](https://github.com/lblod/frontend-mow-registry/pull/355) [`0d405e818a3050c99b0d531b97dfd2064a1ac965`](https://github.com/lblod/frontend-mow-registry/commit/0d405e818a3050c99b0d531b97dfd2064a1ac965) Thanks [@elpoelma](https://github.com/elpoelma)! - Removal of obsolete ember-data models:
+  - `resource` (`rdfs:Resource`)
+  - `concept` (`ext:Concept`)
+  - `shape` (`sh:Shape`)
+  - `property-shape` (`sh:PropertyShape`)
+  - `node-shape` (`sh:NodeShape`)
+
+- [#355](https://github.com/lblod/frontend-mow-registry/pull/355) [`25ff8df7bdfd2d7a6698fcebba128d816820e46d`](https://github.com/lblod/frontend-mow-registry/commit/25ff8df7bdfd2d7a6698fcebba128d816820e46d) Thanks [@elpoelma](https://github.com/elpoelma)! - Remove `skos-concept` superclass from `traffic-signal-concept` model
+
+- [#339](https://github.com/lblod/frontend-mow-registry/pull/339) [`e021df85709f9ee7c57b08c4885235018659560d`](https://github.com/lblod/frontend-mow-registry/commit/e021df85709f9ee7c57b08c4885235018659560d) Thanks [@elpoelma](https://github.com/elpoelma)! - Remove `ember-data` dependency and introduce warp-drive
+
+- [#352](https://github.com/lblod/frontend-mow-registry/pull/352) [`39058309e2fe54cd2ef50eb6cfa42e10aaf18d81`](https://github.com/lblod/frontend-mow-registry/commit/39058309e2fe54cd2ef50eb6cfa42e10aaf18d81) Thanks [@elpoelma](https://github.com/elpoelma)! - Set-up a patched version of `ember-metis` (https://github.com/redpencilio/ember-metis)
+  `ember-metis` allows this application to display information about public resources created using the application.
+
+- [#354](https://github.com/lblod/frontend-mow-registry/pull/354) [`c67c3b002ef70e3f135a9697767d3841cb5cbd43`](https://github.com/lblod/frontend-mow-registry/commit/c67c3b002ef70e3f135a9697767d3841cb5cbd43) Thanks [@piemonkey](https://github.com/piemonkey)! - Add page to road sign view to manage which signals can be contained within signs
+
+### Patch Changes
+
+- [#347](https://github.com/lblod/frontend-mow-registry/pull/347) [`abca19d3823b1f0a74b22618a40c1b7ef908a670`](https://github.com/lblod/frontend-mow-registry/commit/abca19d3823b1f0a74b22618a40c1b7ef908a670) Thanks [@elpoelma](https://github.com/elpoelma)! - Update `ember-concurrency` to version 4.0.6
+
+- [#347](https://github.com/lblod/frontend-mow-registry/pull/347) [`3643b53d6efaf6fe119152941f7c846d1eb34ff8`](https://github.com/lblod/frontend-mow-registry/commit/3643b53d6efaf6fe119152941f7c846d1eb34ff8) Thanks [@elpoelma](https://github.com/elpoelma)! - Introduce `@warp-drive/ember` dependency, containing support for the `getPromiseState` helper
+
+- [#351](https://github.com/lblod/frontend-mow-registry/pull/351) [`c35e69d2d3d7ca0f67ed9160d332ccef1399bbb3`](https://github.com/lblod/frontend-mow-registry/commit/c35e69d2d3d7ca0f67ed9160d332ccef1399bbb3) Thanks [@piemonkey](https://github.com/piemonkey)! - Fix bug with display of codelist instruction variables
+
+- [#348](https://github.com/lblod/frontend-mow-registry/pull/348) [`dd64ff78f6aca9ddaa308093ae23dbfcee3b602d`](https://github.com/lblod/frontend-mow-registry/commit/dd64ff78f6aca9ddaa308093ae23dbfcee3b602d) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Add checkerboard pattern to icons to improve visibility
+
+- [#353](https://github.com/lblod/frontend-mow-registry/pull/353) [`8cbfed5e65f8383d9de47eb3f7b4de2147bbaf3c`](https://github.com/lblod/frontend-mow-registry/commit/8cbfed5e65f8383d9de47eb3f7b4de2147bbaf3c) Thanks [@lagartoverde](https://github.com/lagartoverde)! - convert all relationships to kebab case
+
+- [#350](https://github.com/lblod/frontend-mow-registry/pull/350) [`ba73a6abde451a363b2889c12e2adea834aab48a`](https://github.com/lblod/frontend-mow-registry/commit/ba73a6abde451a363b2889c12e2adea834aab48a) Thanks [@elpoelma](https://github.com/elpoelma)! - Cascade delete traffic-signal-list-items when deleting connected traffic-signal-concept
+
+- [#352](https://github.com/lblod/frontend-mow-registry/pull/352) [`78b79b35e632216c5b580cecdcbc7f122b9f5d6c`](https://github.com/lblod/frontend-mow-registry/commit/78b79b35e632216c5b580cecdcbc7f122b9f5d6c) Thanks [@elpoelma](https://github.com/elpoelma)! - Drop `ember-fetch` dependency. `ember-fetch` has been marked as deprecated, and we can use native `fetch` without issues
+
+- [#347](https://github.com/lblod/frontend-mow-registry/pull/347) [`3643b53d6efaf6fe119152941f7c846d1eb34ff8`](https://github.com/lblod/frontend-mow-registry/commit/3643b53d6efaf6fe119152941f7c846d1eb34ff8) Thanks [@elpoelma](https://github.com/elpoelma)! - Update `ember-power-select` to version 8.8.0
+
+- [#357](https://github.com/lblod/frontend-mow-registry/pull/357) [`fcbf5c9d0435708bbe8d1fedcf49cf3be280e24c`](https://github.com/lblod/frontend-mow-registry/commit/fcbf5c9d0435708bbe8d1fedcf49cf3be280e24c) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Remove leftover code from traffic sign forms and improve shapes screen performance
+
+- [#341](https://github.com/lblod/frontend-mow-registry/pull/341) [`76d6d2aaa1e791875044e9b66a4b690eed528c1b`](https://github.com/lblod/frontend-mow-registry/commit/76d6d2aaa1e791875044e9b66a4b690eed528c1b) Thanks [@elpoelma](https://github.com/elpoelma)! - Introduce usage of new `store.request` Warpdrive API, and migrate instances of: `findAll`, `findRecord`, `query` and `.save()` to the new syntax.
+
 ## 2.8.0
 
 ### Minor Changes
