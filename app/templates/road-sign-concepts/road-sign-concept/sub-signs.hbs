@@ -116,7 +116,7 @@
     </div>
     <div class="au-c-body-container au-c-body-container--scroll">
       {{#each (sort-by-road-sign-code this.subSigns) as |subSign|}}
-        <SidebarRoadSign
+        <SidebarTrafficSignal
           @imageUrl={{subSign.image.file.downloadLink}}
           @code={{subSign.label}}
           @meaning={{subSign.meaning}}

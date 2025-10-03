@@ -50,6 +50,7 @@ utility:
   main-signs: Hoofdborden
   sub-signs: Onderborden
   related-traffic-signals: Gerelateerde verkeerstekens
+  can-contain-traffic-signals: Combineerbaar met
   description: Beschrijving
   image-preview-alt: Een voorbeeldweergave van de geüploade of de gelinkte afbeelding
   order: Volgorde
@@ -67,6 +68,7 @@ utility:
   no: Nee
   start-date: Startdatum
   end-date: Einddatum
+  modifying-validity-dates-warning: "Opmerking: het wijzigen van geldigheidsdata kan de geldigheid van de instructie beïnvloeden."
   created-on: Gemaakt op
   template-variables:
     text: tekst
@@ -83,20 +85,26 @@ utility:
   shape: Vorm
   shapes: Vormen
   dimensions: Afmetingen
-  height: Hoogte
   width: Breedte
+  height: Hoogte
+  diameter: Diameter
   add-shape: Vorm toevoegen
   filters: Filters
   reset-filters: Herstel alle filters
+  value: Waarde
   type: Type
   add-variable: Nieuwe variabele toevoegen
   properties: Eigenschappen
-  modifying-validity-dates-warning: "Opmerking: het wijzigen van geldigheidsdata kan de geldigheid van de instructie beïnvloeden."
+  search: Zoek
   n/a: "N.v.t."
 image-input:
   helptext: Druk op de upload knop om een nieuw bestand te uploaden
   preview-alt: Een voorbeeld van het geüploade bestand
   image-upload: Afbeelding
+traffic-signal-concept:
+  attr:
+    can-contain: Dit teken kan bevatten
+    can-be-contained-in: Dit teken kan vervat zijn in
 road-sign-concept:
   name: Verkeersborden
   details: Verkeersbord {label}
@@ -150,6 +158,17 @@ road-sign-concept:
   landing-page:
     content: Beheer verkeersborden, onderborden en instructies.
     button: Ga naar Verkeersborden
+related-road-sign:
+  attr:
+    classification: Zoek verkeersborden op classificatie
+  crud:
+    add: Gerelateerde verkeersborden toevoegen
+    add-one: Gerelateerd verkeersbord toevoegen
+    delete: Gerelateerd verkeersbord verwijderen
+can-contain:
+  crud:
+    add-can-contain: Voeg verkeersteken toe dat kan worden toegevoegd aan dit verkeersteken
+    add-can-be-contained: Voeg verkeersteken toe dat dit verkeersteken kan bevatten
 traffic-light-concept:
   name: Verkeerslichten
   details: Verkeerslicht {label}
@@ -265,13 +284,6 @@ main-sign:
     add-one: Hoofdbord toevoegen
     delete: Hoofdbord verwijderen
     edit: Hoofdbord bewerken
-related-road-sign:
-  attr:
-    classification: Zoek verkeersborden op classificatie
-  crud:
-    add: Gerelateerde verkeersborden toevoegen
-    add-one: Gerelateerd verkeersbord toevoegen
-    delete: Gerelateerd verkeersbord verwijderen
 sparql:
   name: "MOW Register: SPARQL"
 codelist:

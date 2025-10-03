@@ -27,6 +27,8 @@ export default class RoadsignConcept extends Route {
               'relatedFromRoadSignConcepts',
               'relatedRoadMarkingConcepts',
               'relatedTrafficLightConcepts',
+              'canContainSignals',
+              'canBeContainedInSignals',
               'hasInstructions',
             ],
           }),

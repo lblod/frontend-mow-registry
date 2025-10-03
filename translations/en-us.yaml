@@ -49,8 +49,10 @@ utility:
   instruction-details: Instruction details
   main-signs: Main signs
   sub-signs: Sub signs
-  related-traffic-signs: Related traffic signs
+  related-traffic-signals: Related traffic signals
+  can-contain-traffic-signals: Contains signals
   description: Description
+  image-preview-alt: Preview of the uploaded or linked image
   order: Order
   sign: Sign
   add-instruction: Add instruction
@@ -61,13 +63,13 @@ utility:
   username: Username
   password: Password
   valid-content: Validated
+  validation-status: Validation status
   yes: Yes
   no: No
-  validation-status: Validation status
   start-date: Start date
   end-date: End date
-  created-on: Created on
   modifying-validity-dates-warning: "Note: modifying validity dates can affect the instruction validity"
+  created-on: Created on
   template-variables:
     text: text
     number: number
@@ -93,11 +95,16 @@ utility:
   type: Type
   add-variable: Add new variable
   properties: Properties
+  search: Search
   n/a: "N/A"
 image-input:
   helptext: Press the button to upload a new image
   preview-alt: A preview of the uploaded image
   image-upload: Image
+traffic-signal-concept:
+  attr:
+    can-contain: This signal can contain
+    can-be-contained-in: This signal can be contained in
 road-sign-concept:
   name: Road Signs
   details: Road sign {label}
@@ -158,6 +165,10 @@ related-road-sign:
     add: Add related road signs
     add-one: Add related road sign
     delete: Remove related road sign
+can-contain:
+  crud:
+    add-can-contain: Add signal this signal can contain
+    add-can-be-contained: Add signal which can contain this signal
 traffic-light-concept:
   name: Traffic Lights
   details: Traffic Light {label}
@@ -343,7 +354,6 @@ validity-filter:
   valid: Currently valid
   expired: Expired
   custom: Custom period
-
 shape-manager:
   delete: Remove shape
   shape-change:

@@ -67,6 +67,22 @@ export default class TrafficSignalConcept extends AbstractValidationModel {
   @belongsTo<TribontShape>('tribont-shape', { inverse: null, async: true })
   declare defaultShape: AsyncBelongsTo<TribontShape>;
 
+  @hasMany<TrafficSignalConcept>('traffic-signal-concept', {
+    inverse: 'canBeContainedInSignals',
+    async: true,
+    polymorphic: true,
+    as: 'traffic-signal-concept',
+  })
+  declare canBeContainedInSignals: AsyncHasMany<TrafficSignalConcept>;
+
+  @hasMany<TrafficSignalConcept>('traffic-signal-concept', {
+    inverse: 'canContainSignals',
+    async: true,
+    polymorphic: true,
+    as: 'traffic-signal-concept',
+  })
+  declare canContainSignals: AsyncHasMany<TrafficSignalConcept>;
+
   get validationSchema() {
     return Joi.object({
       uri: validateStringOptional(),
@@ -82,6 +98,8 @@ export default class TrafficSignalConcept extends AbstractValidationModel {
       status: validateBelongsToOptional(),
       hasInstructions: validateHasManyOptional(),
       variables: validateHasManyOptional(),
+      canBeContainedInSignals: validateHasManyOptional(),
+      canContainSignals: validateHasManyOptional(),
     });
   }
 
