@@ -1,8 +1,55 @@
+diff --git a/addon/components/metis/display-uri.js b/addon/components/metis/display-uri.js
+index 28f2f1ca928204283940c70f5a7820a199643270..c181aa9e2b309e67a9cf2979a3f292c93dd10e39 100644
+--- a/addon/components/metis/display-uri.js
++++ b/addon/components/metis/display-uri.js
+@@ -1,7 +1,7 @@
+ import Component from '@glimmer/component';
+-import { getOwner } from '@ember/application';
+ import { tracked } from '@glimmer/tracking';
+ import { inject as service } from '@ember/service';
++import { getOwner } from '@ember/owner';
+ 
+ export default class MetisDisplayUriComponent extends Component {
+   @service('resource-label') labelService;
+diff --git a/addon/controllers/external.js b/addon/controllers/external.js
+index d2fbaf5793b2436fb4cc9511ae3c71810c29e31d..6c17d083c3fde8f411f31a0fd9303f1008826471 100644
+--- a/addon/controllers/external.js
++++ b/addon/controllers/external.js
+@@ -1,7 +1,7 @@
+ import Controller from '@ember/controller';
+-import { getOwner } from '@ember/application';
+ import { action } from '@ember/object';
+ import { tracked } from '@glimmer/tracking';
++import { getOwner } from '@ember/owner';
+ 
+ export default class ExternalController extends Controller {
+   queryParams = [
+diff --git a/addon/controllers/fallback.js b/addon/controllers/fallback.js
+index 479a16ba221018f6c8dc41a7dbc9e2f992a5d611..20d0acdbd849773b00034ae3f651c262bcabd002 100644
+--- a/addon/controllers/fallback.js
++++ b/addon/controllers/fallback.js
+@@ -1,7 +1,7 @@
+ import Controller from '@ember/controller';
+-import { getOwner } from '@ember/application';
+ import { action } from '@ember/object';
+ import { tracked } from '@glimmer/tracking';
++import { getOwner } from '@ember/owner';
+ 
+ export default class FallbackController extends Controller {
+   queryParams = [
 diff --git a/addon/routes/external.js b/addon/routes/external.js
-index e9fbb178d5f2e2171fc5f084e951cdc75a4ef18e..5e8ffc0393a7d569e3458c98947be1a6c35bfec6 100644
+index e9fbb178d5f2e2171fc5f084e951cdc75a4ef18e..06d16ae6135ccc1ea234bf0a57b34ceee3daf142 100644
 --- a/addon/routes/external.js
 +++ b/addon/routes/external.js
-@@ -24,7 +24,6 @@ export default class ExternalRoute extends Route {
+@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
+ import RSVP from 'rsvp';
+ import { findRouteByType } from '../utils/class-route';
+ import fetchUriInfo from '../utils/fetch-uri-info';
++import { getOwner } from '@ember/owner';
+ 
+ export default class ExternalRoute extends Route {
+   queryParams = {
+@@ -24,7 +25,6 @@ export default class ExternalRoute extends Route {
    };
  
    @service router;
@@ -10,7 +57,7 @@ index e9fbb178d5f2e2171fc5f084e951cdc75a4ef18e..5e8ffc0393a7d569e3458c98947be1a6
    @service intl;
  
    constructor() {
-@@ -32,6 +31,10 @@ export default class ExternalRoute extends Route {
+@@ -32,6 +32,10 @@ export default class ExternalRoute extends Route {
      this.templateName = 'external';
    }
  
@@ -22,9 +69,20 @@ index e9fbb178d5f2e2171fc5f084e951cdc75a4ef18e..5e8ffc0393a7d569e3458c98947be1a6
      directedPageNumber,
      directedPageSize,
 diff --git a/addon/routes/fallback.js b/addon/routes/fallback.js
-index 0c3dff790eb0f61623c7bcd3a23f38479a0d5724..c34cee20c2de205a856cfdd36817f71f978e3f30 100644
+index 0c3dff790eb0f61623c7bcd3a23f38479a0d5724..21a4c74a848d55d12d61bcf2037f98ae5dca894b 100644
 --- a/addon/routes/fallback.js
 +++ b/addon/routes/fallback.js
+@@ -1,9 +1,9 @@
+ import Route from '@ember/routing/route';
+-import { getOwner } from '@ember/application';
+ import { inject as service } from '@ember/service';
+ import RSVP from 'rsvp';
+ import { findRouteByType } from '../utils/class-route';
+ import fetchUriInfo from '../utils/fetch-uri-info';
++import { getOwner } from '@ember/owner';
+ 
+ export default class FallbackRoute extends Route {
+   queryParams = {
 @@ -22,7 +22,6 @@ export default class FallbackRoute extends Route {
    };
  
