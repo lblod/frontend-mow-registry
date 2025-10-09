@@ -259,6 +259,27 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
             {{/let}}
+            {{#let
+              (get @roadSignConcept.error 'regulatoryNotation')
+              as |error|
+            }}
+              <AuFormRow>
+                <AuLabel @error={{isSome error}} for='regulatoryNotation'>
+                  {{t 'road-sign-concept.attr.regulatoryNotation'}}
+                </AuLabel>
+                <AuInput
+                  @error={{isSome error}}
+                  @width='block'
+                  id='regulatoryNotation'
+                  value={{@roadSignConcept.regulatoryNotation}}
+                  {{on
+                    'input'
+                    (fn this.setRoadSignConceptValue 'regulatoryNotation')
+                  }}
+                />
+                <ErrorMessage @error={{error}} />
+              </AuFormRow>
+            {{/let}}
             {{#let (get @roadSignConcept.error 'startDate') as |error|}}
               <AuFormRow>
                 <AuLabel @error={{isSome error}} for='startDate'>

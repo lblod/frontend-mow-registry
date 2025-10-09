@@ -135,6 +135,24 @@
             <ErrorMessage @error={{error}} />
           </AuFormRow>
         {{/let}}
+        {{#let @trafficLightConcept.error.regulatoryNotation as |error|}}
+          <AuFormRow>
+            <AuLabel
+              @error={{error}}
+              for="regulatoryNotation"
+            >
+              {{t "traffic-light-concept.attr.regulatoryNotation"}}
+            </AuLabel>
+            <AuInput
+              @error={{error}}
+              @width="block"
+              id="regulatoryNotation"
+              value={{@trafficLightConcept.regulatoryNotation}}
+              {{on "input" (fn this.setTrafficLightConceptValue "regulatoryNotation")}}
+            />
+            <ErrorMessage @error={{error}} />
+          </AuFormRow>
+        {{/let}}
         {{#let @trafficLightConcept.error.startDate as |error|}}
           <AuFormRow>
             <AuLabel
