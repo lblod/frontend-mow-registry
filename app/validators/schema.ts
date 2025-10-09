@@ -94,7 +94,7 @@ export const validateNumberRequired = (message = 'errors.number') => {
  * Rules for validating a number as an optional field.
  */
 export const validateNumberOptional = (message = 'errors.number') => {
-  return Joi.number().messages({
+  return Joi.number().allow(null).messages({
     'any.optional': message,
   });
 };
@@ -103,7 +103,7 @@ export const validateNumberOptional = (message = 'errors.number') => {
  * Rules for validating a date as a optional field.
  */
 export const validateDateOptional = (message = 'errors.date') => {
-  return Joi.date().messages({
+  return Joi.date().allow(null).messages({
     'any.optional': message,
   });
 };
