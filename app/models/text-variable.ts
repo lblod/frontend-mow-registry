@@ -9,7 +9,7 @@ export default class TextVariable extends LiteralVariable {
 
   @attr({ defaultValue: 'text' }) declare readonly type: 'text';
 
-  @attr declare defaultValue?: string;
+  @attr declare defaultValue?: string | null;
 
   get validationSchema() {
     return super.validationSchema.keys({

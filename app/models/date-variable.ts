@@ -9,7 +9,7 @@ export default class DateVariable extends LiteralVariable {
 
   @attr({ defaultValue: 'date' }) declare readonly type: 'date';
 
-  @attr('date') declare defaultValue?: Date;
+  @attr('date') declare defaultValue?: Date | null;
 
   get validationSchema() {
     return super.validationSchema.keys({
