@@ -481,31 +481,28 @@ class VariableDefaultValueLabel extends Component<{
   get defaultValueRepr() {
     const variable = this.args.variable;
     if (isTextVariable(variable)) {
-      return variable.defaultValue && `"${variable.defaultValue}"`;
+      return isSome(variable.defaultValue)
+        ? `"${variable.defaultValue}"`
+        : null;
     } else if (isNumberVariable(variable)) {
       return variable.defaultValue;
     } else if (isDateVariable(variable)) {
-      return (
-        variable.defaultValue &&
-        format(variable.defaultValue, 'dd-MM-yyyy', { locale: locales.nlBE })
-      );
+      return isSome(variable.defaultValue)
+        ? format(variable.defaultValue, 'dd-MM-yyyy', { locale: locales.nlBE })
+        : null;
     } else if (isCodelistVariable(variable)) {
       const defaultValuePromiseState = getPromiseState(variable.defaultValue);
-      if (
-        defaultValuePromiseState.isSuccess &&
+      return defaultValuePromiseState.isSuccess &&
         defaultValuePromiseState.value
-      ) {
-        return `"${defaultValuePromiseState.value.label}"`;
-      } else {
-        return;
-      }
+        ? `"${defaultValuePromiseState.value.label}"`
+        : null;
     } else {
       return;
     }
   }
 
   <template>
-    {{#if this.defaultValueRepr}}
+    {{#if (isSome this.defaultValueRepr)}}
       {{!template-lint-disable no-bare-strings}}
       <span>{{this.defaultValueRepr}}</span>
     {{else}}
@@ -558,7 +555,8 @@ class TextVariableDefaultValueSelector extends Component<{
 }> {
   setDefaultValue = (event: Event) => {
     const defaultValue = (event.target as HTMLInputElement).value;
-    this.args.variable.defaultValue = defaultValue;
+    this.args.variable.defaultValue =
+      defaultValue.length > 0 ? defaultValue : null;
   };
 
   <template>
@@ -579,7 +577,9 @@ class NumberVariableDefaultValueSelector extends Component<{
 }> {
   setDefaultValue = (event: Event) => {
     const defaultValue = (event.target as HTMLInputElement).valueAsNumber;
-    this.args.variable.defaultValue = defaultValue;
+    this.args.variable.defaultValue = !isNaN(defaultValue)
+      ? defaultValue
+      : null;
   };
 
   <template>
@@ -598,13 +598,17 @@ class NumberVariableDefaultValueSelector extends Component<{
 class DateVariableDefaultValueSelector extends Component<{
   variable: DateVariable;
 }> {
+  get defaultValue() {
+    return this.args.variable.defaultValue ?? undefined;
+  }
+
   setDefaultValue = (_isoDate: string | null, date: Date | null) => {
-    this.args.variable.defaultValue = date ?? undefined;
+    this.args.variable.defaultValue = date;
   };
 
   <template>
     <AuDatePicker
-      @value={{@variable.defaultValue}}
+      @value={{this.defaultValue}}
       @onChange={{this.setDefaultValue}}
     />
   </template>
