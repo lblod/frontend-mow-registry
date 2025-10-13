@@ -1,5 +1,19 @@
 # frontend-mow-registry
 
+## 2.10.0
+
+### Minor Changes
+
+- [#356](https://github.com/lblod/frontend-mow-registry/pull/356) [`6285c0990109dba743d8ecb32afb1dd999674cd2`](https://github.com/lblod/frontend-mow-registry/commit/6285c0990109dba743d8ecb32afb1dd999674cd2) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Add Regulatory notation to all the traffic signs
+
+- [#356](https://github.com/lblod/frontend-mow-registry/pull/356) [`19b176835fccd13196072fa551a1846c3928c849`](https://github.com/lblod/frontend-mow-registry/commit/19b176835fccd13196072fa551a1846c3928c849) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Add Regulatory notation to all the traffic signs
+
+### Patch Changes
+
+- [#359](https://github.com/lblod/frontend-mow-registry/pull/359) [`f56751be26a95204b6f8510ea374407e698c257e`](https://github.com/lblod/frontend-mow-registry/commit/f56751be26a95204b6f8510ea374407e698c257e) Thanks [@elpoelma](https://github.com/elpoelma)! - Fix `ember-metis` `getOwner` import. This resolves the issue where showcasing information about external URIs was not possible.
+
+- [#360](https://github.com/lblod/frontend-mow-registry/pull/360) [`7a8ca13624f55e2df0d3f041fa25770b739f152f`](https://github.com/lblod/frontend-mow-registry/commit/7a8ca13624f55e2df0d3f041fa25770b739f152f) Thanks [@elpoelma](https://github.com/elpoelma)! - Fix issue where it was not possible to remove the default value of a number variable
+
 ## 2.9.0
 
 ### Minor Changes
