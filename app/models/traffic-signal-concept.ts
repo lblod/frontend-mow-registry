@@ -34,6 +34,7 @@ export default class TrafficSignalConcept extends AbstractValidationModel {
   @attr declare meaning?: string;
   @attr declare valid?: boolean;
   @attr declare arPlichtig?: boolean;
+  @attr declare regulatoryNotation?: string;
   @attr('date') declare startDate?: Date;
   @attr('date') declare endDate?: Date;
 
@@ -91,6 +92,7 @@ export default class TrafficSignalConcept extends AbstractValidationModel {
       defaultShape: validateBelongsToOptional(),
       valid: validateBooleanOptional(),
       arPlichtig: validateBooleanOptional(),
+      regulatoryNotation: validateStringOptional(),
       startDate: validateDateOptional(),
       endDate: validateEndDate(),
       image: validateBelongsToRequired(),
