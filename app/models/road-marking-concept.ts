@@ -1,15 +1,8 @@
-import {
-  hasMany,
-  belongsTo,
-  type AsyncBelongsTo,
-  type AsyncHasMany,
-} from '@warp-drive/legacy/model';
+import { hasMany, type AsyncHasMany } from '@warp-drive/legacy/model';
 import type RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import TrafficSignalConcept from './traffic-signal-concept';
-import type SkosConcept from './skos-concept';
 import {
-  validateBelongsToOptional,
   validateHasManyOptional,
   validateStringRequired,
 } from 'mow-registry/validators/schema';
@@ -18,9 +11,6 @@ import type { Type } from '@warp-drive/core/types/symbols';
 export default class RoadMarkingConcept extends TrafficSignalConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'road-marking-concept';
-
-  @belongsTo<SkosConcept>('skos-concept', { inverse: null, async: true })
-  declare zonality: AsyncBelongsTo<SkosConcept>;
 
   @hasMany<RoadMarkingConcept>('road-marking-concept', {
     inverse: 'relatedFromRoadMarkingConcepts',
@@ -55,7 +45,6 @@ export default class RoadMarkingConcept extends TrafficSignalConcept {
     return super.validationSchema.keys({
       shapes: validateHasManyOptional(),
       meaning: validateStringRequired(),
-      zonality: validateBelongsToOptional(),
       relatedToRoadMarkingConcepts: validateHasManyOptional(),
       relatedFromRoadMarkingConcepts: validateHasManyOptional(),
       relatedRoadSignConcepts: validateHasManyOptional(),
