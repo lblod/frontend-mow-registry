@@ -844,7 +844,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                                     @allowClear={{false}}
                                     @searchEnabled={{false}}
                                     @options={{this.instructions}}
-                                    @selected={{template.value}}
+                                    @selected={{template}}
                                     @onChange={{fn
                                       this.updateInstruction
                                       variable
