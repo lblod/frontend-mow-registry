@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.11.1
+
+### Patch Changes
+
+- [#358](https://github.com/lblod/frontend-mow-registry/pull/358) [`4f15978a04528bfd15b4b288c282540dd944b4d7`](https://github.com/lblod/frontend-mow-registry/commit/4f15978a04528bfd15b4b288c282540dd944b4d7) Thanks [@elpoelma](https://github.com/elpoelma)! - Move necessary URIs to new `http://register.mobiliteit.vlaanderen.be/` base
+
 ## 2.11.0
 
 ### Minor Changes
