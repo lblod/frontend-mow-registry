@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.10.1
+
+### Patch Changes
+
+- [#362](https://github.com/lblod/frontend-mow-registry/pull/362) [`8fa79314b776a45398c2d32a02b05b4e7d9a4bda`](https://github.com/lblod/frontend-mow-registry/commit/8fa79314b776a45398c2d32a02b05b4e7d9a4bda) Thanks [@elpoelma](https://github.com/elpoelma)! - Fix issue where instruction variable template was not shown in power-select
+
 ## 2.10.0
 
 ### Minor Changes
