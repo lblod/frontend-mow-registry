@@ -1,5 +1,13 @@
 # frontend-mow-registry
 
+## 2.11.0
+
+### Minor Changes
+
+- [#361](https://github.com/lblod/frontend-mow-registry/pull/361) [`9446852dbb62ebf753db300b225ebc07cfbf9f40`](https://github.com/lblod/frontend-mow-registry/commit/9446852dbb62ebf753db300b225ebc07cfbf9f40) Thanks [@piemonkey](https://github.com/piemonkey)! - Update traffic signal manual queries to use schema.org predicates for validity instead of ext.
+
+- [#361](https://github.com/lblod/frontend-mow-registry/pull/361) [`2c579dffedab53501c9dd1302e305dac2d0b171e`](https://github.com/lblod/frontend-mow-registry/commit/2c579dffedab53501c9dd1302e305dac2d0b171e) Thanks [@piemonkey](https://github.com/piemonkey)! - Remove zonality from road-marking-concepts and traffic-light-concepts
+
 ## 2.10.1
 
 ### Patch Changes
