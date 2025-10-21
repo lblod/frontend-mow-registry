@@ -1,0 +1,53 @@
+{{! @glint-nocheck: not typesafe yet }}
+{{page-title (t "utility.related-traffic-signals")}}
+
+<RoadSignConcept::Header @roadSignConcept={{@model.roadSignConcept}} />
+
+<SidebarOverlayContainer @isOpen={{this.isSidebarOpen}}>
+  <:content>
+    <AuBodyContainer @scroll={{true}} class="au-c-body-container--tables">
+      <div class="au-o-flow">
+        <RelatedRoadsignsTable
+          @title={{t "traffic-signal-concept.attr.can-contain"}}
+          @addText={{t "can-contain.crud.add-can-contain"}}
+          @content={{sort-by-road-sign-code
+            (await @model.roadSignConcept.canContainSignals)
+          }}
+          @onClickAdd={{this.toggleAddCanContainSignals}}
+          @onClickRemove={{perform this.removeCanContain}}
+        />
+        <RelatedRoadsignsTable
+          @title={{t "traffic-signal-concept.attr.can-be-contained-in"}}
+          @addText={{t "can-contain.crud.add-can-be-contained"}}
+          @content={{sort-by-road-sign-code
+            (await @model.roadSignConcept.canBeContainedInSignals)
+          }}
+          @onClickAdd={{this.toggleAddCanBeContainedInSignals}}
+          @onClickRemove={{perform this.removeCanBeContained}}
+        />
+      </div>
+    </AuBodyContainer>
+  </:content>
+  <:sidebar>
+    {{#if this.isAddingCanContainSignals}}
+      <SidebarAddSignal
+        @title={{t "can-contain.crud.add-can-contain"}}
+        @filterPlaceholder={{t "utility.search"}}
+        @addText={{t "can-contain.crud.add-can-contain"}}
+        @allSignals={{this.model.allRoadSigns}}
+        @addSignal={{fn (perform this.addContain)}}
+        @onClose={{this.toggleAddCanContainSignals}}
+      />
+    {{/if}}
+    {{#if this.isAddingCanBeContainedInSignals}}
+      <SidebarAddSignal
+        @title={{t "can-contain.crud.add-can-be-contained"}}
+        @filterPlaceholder={{t "utility.search"}}
+        @addText={{t "can-contain.crud.add-can-be-contained"}}
+        @allSignals={{this.model.allRoadSigns}}
+        @addSignal={{fn (perform this.addToBeContained)}}
+        @onClose={{this.toggleAddCanBeContainedInSignals}}
+      />
+    {{/if}}
+  </:sidebar>
+</SidebarOverlayContainer>

@@ -19,7 +19,6 @@ export default class RoadmarkingConcept extends Route {
             include: [
               'image.file',
               'variables',
-              'zonality.inScheme.concepts',
               'relatedRoadSignConcepts',
               'relatedToRoadMarkingConcepts',
               'relatedFromRoadMarkingConcepts',
