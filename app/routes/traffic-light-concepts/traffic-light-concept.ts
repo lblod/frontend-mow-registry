@@ -22,7 +22,6 @@ export default class TrafficlightConcept extends Route {
               include: [
                 'image.file',
                 'variables',
-                'zonality.inScheme.concepts',
                 'relatedRoadSignConcepts',
                 'relatedRoadMarkingConcepts',
                 'relatedToTrafficLightConcepts',

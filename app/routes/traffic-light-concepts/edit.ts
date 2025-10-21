@@ -17,7 +17,7 @@ export default class TrafficLightConceptsEditRoute extends Route {
       trafficLightConcept: this.store
         .request(
           findRecord<TrafficLightConcept>('traffic-light-concept', params.id, {
-            include: ['image.file', 'variables', 'zonality.inScheme.concepts'],
+            include: ['image.file', 'variables'],
           }),
         )
         .then((res) => res.content),

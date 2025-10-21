@@ -19,6 +19,7 @@ const PREFIXES = `
   PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
   PREFIX dct: <http://purl.org/dc/terms/>
   PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
+  PREFIX schema: <http://schema.org/>
 `;
 
 type dataType =
@@ -139,10 +140,10 @@ export default async function fetchManualData(
       ?uri ext:valid ?valid.
     }
     OPTIONAL {
-      ?uri ext:startDate ?startDate.
+      ?uri schema:validFrom ?startDate.
     }
     OPTIONAL {
-      ?uri ext:endDate ?endDate.
+      ?uri schema:validUntil ?endDate.
     }
     OPTIONAL {
       ?uri dct:type  ?classification.
