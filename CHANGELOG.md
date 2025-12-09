@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.12.0
+
+### Minor Changes
+
+- [#363](https://github.com/lblod/frontend-mow-registry/pull/363) [`60d742f3e1679ed849a6e72b1a5a27739e573132`](https://github.com/lblod/frontend-mow-registry/commit/60d742f3e1679ed849a6e72b1a5a27739e573132) Thanks [@elpoelma](https://github.com/elpoelma)! - Ensure road-signal labels in measure are clickable/resolvable
+
 ## 2.11.1
 
 ### Patch Changes
