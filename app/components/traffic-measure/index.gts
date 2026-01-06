@@ -35,7 +35,7 @@ import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 import Template from 'mow-registry/models/template';
 import { isSome, type Option, unwrap } from 'mow-registry/utils/option';
 import CodeList from 'mow-registry/models/code-list';
-import type { SignType } from 'mow-registry/components/traffic-measure/select-type';
+import type { SignalType } from 'mow-registry/components/traffic-measure/select-type';
 import Variable, {
   allVariableTypes,
   signVariableTypes,
@@ -52,7 +52,9 @@ import ErrorMessage from 'mow-registry/components/error-message';
 import ContentCheck from 'mow-registry/components/content-check';
 import ZonalitySelector from 'mow-registry/components/zonality-selector';
 import VariableSignageSelector from 'mow-registry/components/variable-signage-selector';
-import TrafficMeasureSelectType from 'mow-registry/components/traffic-measure/select-type';
+import TrafficMeasureSelectType, {
+  trafficSignalType,
+} from 'mow-registry/components/traffic-measure/select-type';
 import truncate from 'mow-registry/helpers/truncate';
 import TrafficMeasureAddSign from 'mow-registry/components/traffic-measure/add-sign';
 import TrafficMeasureSignList from 'mow-registry/components/traffic-measure/sign-list';
@@ -89,7 +91,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   @tracked template?: Template | null;
   @tracked searchString?: string;
   @tracked preview?: string;
-  @tracked selectedType?: SignType | null;
+  @tracked selectedType: SignalType = trafficSignalType;
   @tracked instructions: Template[] = [];
   @tracked signsError = false;
   @tracked signValidation?: string | null;
@@ -218,7 +220,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   async addSign(sign: TrafficSignalListItem) {
     this.signs.push(sign);
     await this.fetchInstructions.perform();
-    this.selectedType = null;
+    this.selectedType = trafficSignalType;
   }
 
   @action
@@ -247,11 +249,11 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   }
 
   @action
-  updateTypeFilter(selectedType: SignType) {
+  updateTypeFilter(selectedType: SignalType) {
     if (selectedType) {
       this.selectedType = selectedType;
     } else {
-      this.selectedType = null;
+      this.selectedType = trafficSignalType;
     }
   }
 
@@ -710,7 +712,6 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                 @selectedType={{this.selectedType}}
                 @selectedValidation={{this.signValidation}}
                 @addSign={{this.addSign}}
-                @disabled={{this.isSelectedTypeEmpty}}
                 @signs={{this.signs}}
               />
             </div>
