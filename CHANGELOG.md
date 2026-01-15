@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.13.0
+
+### Minor Changes
+
+- [#364](https://github.com/lblod/frontend-mow-registry/pull/364) [`ba792a3014652d16623dda78a395e0444bf9e005`](https://github.com/lblod/frontend-mow-registry/commit/ba792a3014652d16623dda78a395e0444bf9e005) Thanks [@piemonkey](https://github.com/piemonkey)! - When creating traffic-measures allow searching for traffic signals without first specifying the type
+
 ## 2.12.0
 
 ### Minor Changes
