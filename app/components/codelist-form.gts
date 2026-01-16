@@ -416,11 +416,22 @@ export default class CodelistFormComponent extends Component<Sig> {
                 {{#each this.valueOptions as |option|}}
                   <tr>
                     <td>
-                      <p class='max-w-prose'>
-                        {{option.label}}
-                      </p>
+                      <div
+                        class='au-u-flex au-u-flex--vertical-center au-u-flex--spaced-small'
+                      >
+                        {{#if (notEq this.isEditingLabelWithUri option.uri)}}
+                          <p class='max-w-prose'>
+                            {{option.label}}
+                          </p>
+                          <AuButton
+                            @icon='pencil'
+                            @skin='secondary'
+                            @hideText={{true}}
+                          >test</AuButton>
+                        {{/if}}
+                      </div>
                     </td>
-                    <td class='w-px au-u-padding-right-small'>
+                    <td>
                       <AuButton
                         @icon='bin'
                         @alert={{true}}
@@ -442,8 +453,10 @@ export default class CodelistFormComponent extends Component<Sig> {
               </:body>
               <:footer>
                 <tr>
-                  <td>
-                    <p>
+                  <td colspan='2'>
+                    <div
+                      class='au-u-flex au-u-flex--vertical-centered au-u-flex--spaced-small'
+                    >
                       <AuInput
                         id='values'
                         required='required'
@@ -451,15 +464,14 @@ export default class CodelistFormComponent extends Component<Sig> {
                         @width='block'
                         {{on 'input' this.updateNewValue}}
                       />
-                    </p>
-                  </td>
-                  <td class='w-px au-u-padding-right-small'>
-                    <AuButton
-                      @disabled={{not this.newValue.length}}
-                      {{on 'click' this.addNewValue}}
-                    >
-                      {{t 'codelist.crud.add-value'}}
-                    </AuButton>
+                      <AuButton
+                        class='no-flex-shrink'
+                        @disabled={{not this.newValue.length}}
+                        {{on 'click' this.addNewValue}}
+                      >
+                        {{t 'codelist.crud.add-value'}}
+                      </AuButton>
+                    </div>
                   </td>
                 </tr>
               </:footer>
