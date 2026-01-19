@@ -22,6 +22,11 @@ const PREFIXES = `
   PREFIX schema: <http://schema.org/>
 `;
 
+const ZONALITY_PER_TYPE = {
+  'road-sign-concept': 'mobiliteit:zonaliteit',
+  'traffic-measure-concept': 'ext:zonality',
+};
+
 type dataType =
   | 'road-sign-concept'
   | 'road-marking-concept'
@@ -42,6 +47,7 @@ type Params = {
   validityStartDate?: string | null;
   validityEndDate?: string | null;
   templateValue?: string | null;
+  zonality?: string | null;
 };
 
 type FetchManualDataReturn = {
@@ -125,6 +131,30 @@ export default async function fetchManualData(
     filters.push(`
       FILTER(CONTAINS(?templatePreview, ${sparqlEscapeString(params.templateValue)}))
     `);
+  }
+  if (
+    params.zonality &&
+    (type === 'traffic-measure-concept' || type === 'road-sign-concept')
+  ) {
+    if (params.zonality === 'zonal') {
+      filters.push(`
+        FILTER EXISTS {
+          ?uri ${ZONALITY_PER_TYPE[type]} <http://register.mobiliteit.vlaanderen.be/concepts/c81c6b96-736a-48cf-b003-6f5cc3dbc55d>
+        }
+      `);
+    } else if (params.zonality === 'non-zonal') {
+      filters.push(`
+        FILTER EXISTS {
+          ?uri ${ZONALITY_PER_TYPE[type]} <http://register.mobiliteit.vlaanderen.be/concepts/b651931b-923c-477c-8da9-fc7dd841fdcc>
+        }
+      `);
+    } else if (params.zonality === 'potentially-zonal') {
+      filters.push(`
+        FILTER EXISTS {
+          ?uri ${ZONALITY_PER_TYPE[type]} <http://register.mobiliteit.vlaanderen.be/concepts/8f9367b2-c717-4be7-8833-4c75bbb4ae1f>
+        }
+      `);
+    }
   }
   const sortFilter = params.sort ? generateSortFilter(params.sort) : '';
   const queryContent = `

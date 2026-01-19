@@ -59,6 +59,9 @@
       {{/each}}
     </td>
     <td>
+      {{zonality-label (await roadSignConcept.zonality)}}
+    </td>
+    <td>
       <ValidationStatus @valid={{roadSignConcept.valid}} />
     </td>
     <td>

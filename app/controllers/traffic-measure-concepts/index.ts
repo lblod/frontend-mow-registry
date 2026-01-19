@@ -44,6 +44,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
+  @tracked zonality?: string | null;
 
   get validationStatusOptions() {
     return [
@@ -57,6 +58,19 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
       { value: 'false', label: this.intl.t('variable-signage-selector.no') },
     ];
   }
+  get zonalityOptions() {
+    return [
+      { value: 'zonal', label: this.intl.t('utility.zonal') },
+      {
+        value: 'non-zonal',
+        label: this.intl.t('utility.nonZonal'),
+      },
+      {
+        value: 'potentially-zonal',
+        label: this.intl.t('utility.potentiallyZonal'),
+      },
+    ];
+  }
 
   get selectedValidationStatus() {
     return this.validationStatusOptions.find(
@@ -67,6 +81,12 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   get selectedVariableSignage() {
     return this.variableSignageOptions.find(
       (option) => option.value === this.variableSignage,
+    );
+  }
+
+  get selectedZonality() {
+    return this.zonalityOptions.find(
+      (option) => option.value === this.zonality,
     );
   }
 
@@ -117,6 +137,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
         validityStartDate: this.validityStartDate,
         validityEndDate: this.validityEndDate,
         variableSignage: this.variableSignage,
+        zonality: this.zonality,
       },
     );
     queryParams['filter'] = {
@@ -182,6 +203,16 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
     this.validityStartDate = startDate;
     this.validityEndDate = endDate;
     this.resetPagination();
+  }
+
+  @action
+  updateZonalityFilter(selectedOption: (typeof this.zonalityOptions)[number]) {
+    if (selectedOption) {
+      this.zonality = selectedOption.value;
+      this.resetPagination();
+    } else {
+      this.zonality = null;
+    }
   }
 
   @action onPageChange(newPage: number) {

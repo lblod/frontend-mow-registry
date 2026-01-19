@@ -48,6 +48,7 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
+  @tracked zonality?: string | null;
 
   get validationStatusOptions() {
     return [
@@ -63,6 +64,26 @@ export default class RoadsignConceptsIndexController extends Controller {
         label: this.intl.t('ar-plichtig-status.ar-not-required'),
       },
     ];
+  }
+
+  get zonalityOptions() {
+    return [
+      { value: 'zonal', label: this.intl.t('utility.zonal') },
+      {
+        value: 'non-zonal',
+        label: this.intl.t('utility.nonZonal'),
+      },
+      {
+        value: 'potentially-zonal',
+        label: this.intl.t('utility.potentiallyZonal'),
+      },
+    ];
+  }
+
+  get selectedZonality() {
+    return this.zonalityOptions.find(
+      (option) => option.value === this.zonality,
+    );
   }
 
   get hasActiveFilter() {
@@ -108,6 +129,7 @@ export default class RoadsignConceptsIndexController extends Controller {
         validityOption: this.validityOption,
         validityStartDate: this.validityStartDate,
         validityEndDate: this.validityEndDate,
+        zonality: this.zonality,
       },
     );
 
@@ -195,6 +217,16 @@ export default class RoadsignConceptsIndexController extends Controller {
     this.validityStartDate = startDate;
     this.validityEndDate = endDate;
     this.resetPagination();
+  }
+
+  @action
+  updateZonalityFilter(selectedOption: (typeof this.zonalityOptions)[number]) {
+    if (selectedOption) {
+      this.zonality = selectedOption.value;
+      this.resetPagination();
+    } else {
+      this.zonality = null;
+    }
   }
 
   @action onPageChange(newPage: number) {
