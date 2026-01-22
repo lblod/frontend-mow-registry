@@ -161,11 +161,6 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   @action
-  updateNewValue(event: Event) {
-    this.newValue = (event.target as HTMLInputElement).value;
-  }
-
-  @action
   addNewValue(event: Event) {
     event.preventDefault();
     if (this.newValue) {
@@ -462,7 +457,7 @@ export default class CodelistFormComponent extends Component<Sig> {
                         required='required'
                         value={{this.newValue}}
                         @width='block'
-                        {{on 'input' this.updateNewValue}}
+                        {{on 'input' (setWithValue this 'newValue')}}
                       />
                       <AuButton
                         class='no-flex-shrink'
