@@ -24,9 +24,7 @@
     <th>
       {{t "traffic-measure-concept.attr.template"}}
     </th>
-    <th>
-      {{t "utility.zonality"}}
-    </th>
+    <header.Sortable @field="zonality" @label={{t "utility.zonality"}} />
     <header.Sortable
       @field="variableSignage"
       @label={{t "traffic-measure-concept.attr.variable-signage"}}

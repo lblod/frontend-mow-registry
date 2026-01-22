@@ -44,7 +44,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
-  @tracked zonality?: string | null;
+  @tracked zonality?: [{ value: string; label: string }] | null;
 
   get validationStatusOptions() {
     return [
@@ -81,12 +81,6 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   get selectedVariableSignage() {
     return this.variableSignageOptions.find(
       (option) => option.value === this.variableSignage,
-    );
-  }
-
-  get selectedZonality() {
-    return this.zonalityOptions.find(
-      (option) => option.value === this.zonality,
     );
   }
 
@@ -137,7 +131,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
         validityStartDate: this.validityStartDate,
         validityEndDate: this.validityEndDate,
         variableSignage: this.variableSignage,
-        zonality: this.zonality,
+        zonality: this.zonality?.map((zonalityOption) => zonalityOption.value),
       },
     );
     queryParams['filter'] = {
@@ -206,12 +200,12 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   }
 
   @action
-  updateZonalityFilter(selectedOption: (typeof this.zonalityOptions)[number]) {
+  updateZonalityFilter(selectedOption: [{ value: string; label: string }]) {
     if (selectedOption) {
-      this.zonality = selectedOption.value;
+      this.zonality = selectedOption;
       this.resetPagination();
     } else {
-      this.zonality = null;
+      this.zonality = undefined;
     }
   }
 

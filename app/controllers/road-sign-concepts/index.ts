@@ -219,7 +219,7 @@ export default class RoadsignConceptsIndexController extends Controller {
       this.zonality = selectedOption;
       this.resetPagination();
     } else {
-      this.zonality = null;
+      this.zonality = undefined;
     }
   }
 
