@@ -47,7 +47,7 @@ type Params = {
   validityStartDate?: string | null;
   validityEndDate?: string | null;
   templateValue?: string | null;
-  zonality?: string | null;
+  zonality?: string[];
 };
 
 type FetchManualDataReturn = {
@@ -132,27 +132,30 @@ export default async function fetchManualData(
       FILTER(CONTAINS(?templatePreview, ${sparqlEscapeString(params.templateValue)}))
     `);
   }
-  if (
-    params.zonality &&
-    (type === 'traffic-measure-concept' || type === 'road-sign-concept')
-  ) {
-    if (params.zonality === 'zonal') {
+  let zonalityQuery = '';
+  if (type === 'traffic-measure-concept' || type === 'road-sign-concept') {
+    zonalityQuery = `
+        ?uri ${ZONALITY_PER_TYPE[type]} ?zonality
+      `;
+    if (params.zonality) {
+      const values = [];
+      if (params.zonality.includes('zonal')) {
+        values.push(
+          '<http://register.mobiliteit.vlaanderen.be/concepts/c81c6b96-736a-48cf-b003-6f5cc3dbc55d>',
+        );
+      }
+      if (params.zonality.includes('non-zonal')) {
+        values.push(
+          '<http://register.mobiliteit.vlaanderen.be/concepts/b651931b-923c-477c-8da9-fc7dd841fdcc>',
+        );
+      }
+      if (params.zonality.includes('potentially-zonal')) {
+        values.push(
+          '<http://register.mobiliteit.vlaanderen.be/concepts/8f9367b2-c717-4be7-8833-4c75bbb4ae1f>',
+        );
+      }
       filters.push(`
-        FILTER EXISTS {
-          ?uri ${ZONALITY_PER_TYPE[type]} <http://register.mobiliteit.vlaanderen.be/concepts/c81c6b96-736a-48cf-b003-6f5cc3dbc55d>
-        }
-      `);
-    } else if (params.zonality === 'non-zonal') {
-      filters.push(`
-        FILTER EXISTS {
-          ?uri ${ZONALITY_PER_TYPE[type]} <http://register.mobiliteit.vlaanderen.be/concepts/b651931b-923c-477c-8da9-fc7dd841fdcc>
-        }
-      `);
-    } else if (params.zonality === 'potentially-zonal') {
-      filters.push(`
-        FILTER EXISTS {
-          ?uri ${ZONALITY_PER_TYPE[type]} <http://register.mobiliteit.vlaanderen.be/concepts/8f9367b2-c717-4be7-8833-4c75bbb4ae1f>
-        }
+        VALUES ?zonality { ${values.join(' ')} }
       `);
     }
   }
@@ -189,6 +192,7 @@ export default async function fetchManualData(
     OPTIONAL {
       ?uri mobiliteit:variabeleSignalisatie ?variableSignage.
     }
+    ${zonalityQuery}
     ${filters.join(' ')}
   `;
   const queryCount = `
@@ -225,6 +229,7 @@ const SORTPARAMETERS = {
   'ar-plichtig': '?ARplichtig',
   ':no-case:label': 'lcase(?label)',
   'variable-signage': '?variableSignage',
+  zonality: '?zonality',
 };
 
 function generateSortFilter(sort: string): string {

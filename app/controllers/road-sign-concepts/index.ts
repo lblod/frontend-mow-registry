@@ -48,7 +48,7 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
-  @tracked zonality?: string | null;
+  @tracked zonality?: [{ value: string; label: string }] | null;
 
   get validationStatusOptions() {
     return [
@@ -78,12 +78,6 @@ export default class RoadsignConceptsIndexController extends Controller {
         label: this.intl.t('utility.potentiallyZonal'),
       },
     ];
-  }
-
-  get selectedZonality() {
-    return this.zonalityOptions.find(
-      (option) => option.value === this.zonality,
-    );
   }
 
   get hasActiveFilter() {
@@ -129,7 +123,7 @@ export default class RoadsignConceptsIndexController extends Controller {
         validityOption: this.validityOption,
         validityStartDate: this.validityStartDate,
         validityEndDate: this.validityEndDate,
-        zonality: this.zonality,
+        zonality: this.zonality?.map((zonalityOption) => zonalityOption.value),
       },
     );
 
@@ -220,9 +214,9 @@ export default class RoadsignConceptsIndexController extends Controller {
   }
 
   @action
-  updateZonalityFilter(selectedOption: (typeof this.zonalityOptions)[number]) {
+  updateZonalityFilter(selectedOption: [{ value: string; label: string }]) {
     if (selectedOption) {
-      this.zonality = selectedOption.value;
+      this.zonality = selectedOption;
       this.resetPagination();
     } else {
       this.zonality = null;

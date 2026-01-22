@@ -103,10 +103,10 @@
           <AuLabel for="zonality-filter">
             {{t "utility.zonality"}}
           </AuLabel>
-          <PowerSelect
+          <PowerSelectMultiple
             @allowClear={{true}}
             @options={{this.zonalityOptions}}
-            @selected={{this.selectedZonality}}
+            @selected={{this.zonality}}
             @placeholder={{t
               "utility.zonality-filter-placeholder"
             }}
@@ -116,7 +116,7 @@
             as |zonality|
           >
             {{zonality.label}}
-          </PowerSelect>
+          </PowerSelectMultiple>
         </div>
         <ResetFilters
           @canReset={{this.hasActiveFilter}}
