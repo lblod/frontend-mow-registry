@@ -4,13 +4,13 @@ import { tracked } from '@glimmer/tracking';
 import t from 'ember-intl/helpers/t';
 import AuAccordion from '@appuniversum/ember-appuniversum/components/au-accordion';
 import Store from 'mow-registry/services/store';
-import type ConceptHistoryNote from 'mow-registry/models/concept-history-note';
+import type ConceptLabelChangeNote from 'mow-registry/models/concept-label-change-note';
 import { query } from '@warp-drive/legacy/compat/builders';
 import { format } from 'date-fns';
 import ReactiveTable from 'mow-registry/components/reactive-table';
 import { cached } from '@glimmer/tracking';
 import { getPromiseState } from '@warp-drive/ember';
-import SkosConcept from 'mow-registry/models/skos-concept';
+import type SkosConcept from 'mow-registry/models/skos-concept';
 
 type Sig = {
   Args: {
@@ -36,7 +36,7 @@ export default class ConceptLabelHistory extends Component<Sig> {
         const pageNumber = this.page;
         await Promise.resolve();
         const queryRequest = await this.store.request(
-          query<ConceptHistoryNote>('concept-history-note', {
+          query<ConceptLabelChangeNote>('concept-label-change-note', {
             filter: {
               concept: {
                 ':uri:': conceptUri,
@@ -56,7 +56,7 @@ export default class ConceptLabelHistory extends Component<Sig> {
 
   <template>
     <AuAccordion
-      class='au-u-padding-bottom-none au-u-padding-top'
+      class='au-u-padding-bottom-none'
       @loading={{this.conceptHistory.isPending}}
       @buttonLabel={{t 'codelist.crud.previous-changes'}}
       @reverse={{true}}

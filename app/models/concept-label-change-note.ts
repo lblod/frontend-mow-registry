@@ -6,15 +6,15 @@ import Model, {
 import type { Type } from '@warp-drive/core/types/symbols';
 import type SkosConcept from './skos-concept';
 
-export default class ConceptHistoryNote extends Model {
-  declare [Type]: 'concept-history-note';
+export default class ConceptLabelChangeNote extends Model {
+  declare [Type]: 'concept-label-change-note';
   @attr declare value?: string;
   @attr declare previousConceptLabel?: string;
   @attr('date') declare createdOn?: Date;
 
   @belongsTo<SkosConcept>('skos-concept', {
     inverse: 'historyNotes',
-    as: 'concept-history-note',
+    as: 'concept-label-change-note',
     polymorphic: true,
     async: true,
   })

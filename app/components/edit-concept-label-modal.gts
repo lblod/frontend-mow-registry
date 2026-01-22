@@ -12,7 +12,7 @@ import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';
 import { localCopy } from 'tracked-toolbox';
 import ConceptLabelHistory from 'mow-registry/components/concept-label-history';
-import SkosConcept from 'mow-registry/models/skos-concept';
+import type SkosConcept from 'mow-registry/models/skos-concept';
 import { task } from 'ember-concurrency';
 import setWithValue from 'mow-registry/helpers/set-with-value';
 

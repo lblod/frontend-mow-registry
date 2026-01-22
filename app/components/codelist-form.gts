@@ -31,7 +31,7 @@ import Icon from 'mow-registry/models/icon';
 import { removeItem } from 'mow-registry/utils/array';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
 import CodeListValue from 'mow-registry/models/code-list-value';
-import ConceptHistoryNote from 'mow-registry/models/concept-history-note';
+import type ConceptLabelChangeNote from 'mow-registry/models/concept-label-change-note';
 import { isSome } from 'mow-registry/utils/option';
 import { findRecord, saveRecord } from '@warp-drive/legacy/compat/builders';
 import set from 'mow-registry/helpers/set';
@@ -254,8 +254,8 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   changeConceptLabel = async (concept, newLabel, explanation) => {
-    const historyNote = this.store.createRecord<ConceptHistoryNote>(
-      'concept-history-note',
+    const historyNote = this.store.createRecord<ConceptLabelChangeNote>(
+      'concept-label-change-note',
       {
         createdOn: new Date(),
         previousConceptLabel: concept.label,
@@ -263,13 +263,10 @@ export default class CodelistFormComponent extends Component<Sig> {
         concept,
       },
     );
+
+    await this.store.request(saveRecord(historyNote));
     concept.label = newLabel;
-
-    await Promise.all([
-      this.store.request(saveRecord(historyNote)),
-      this.store.request(saveRecord(concept)),
-    ]);
-
+    await this.store.request(saveRecord(concept));
     this.isEditingLabelWithUri = null;
   };
 

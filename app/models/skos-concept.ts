@@ -8,7 +8,7 @@ import {
 } from 'mow-registry/validators/schema';
 import AbstractValidationModel from './abstract-validation-model';
 import type { Type } from '@warp-drive/core/types/symbols';
-import type ConceptHistoryNote from './concept-history-note';
+import type ConceptLabelChangeNote from './concept-label-change-note';
 
 export default class SkosConcept extends AbstractValidationModel {
   declare [Type]: 'skos-concept';
@@ -23,12 +23,12 @@ export default class SkosConcept extends AbstractValidationModel {
   })
   declare inScheme: AsyncBelongsTo<ConceptScheme>;
 
-  @hasMany<ConceptHistoryNote>('concept-history-note', {
+  @hasMany<ConceptLabelChangeNote>('concept-label-change-note', {
     inverse: 'concept',
     as: 'skos-concept',
     async: true,
   })
-  declare historyNotes: AsyncBelongsTo<ConceptHistoryNote>;
+  declare historyNotes: AsyncBelongsTo<ConceptLabelChangeNote>;
 
   get validationSchema() {
     return Joi.object({
