@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import { not, or } from 'ember-truth-helpers';
+import { not, or, eq } from 'ember-truth-helpers';
 import perform from 'ember-concurrency/helpers/perform';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
@@ -18,6 +18,7 @@ import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
 import ErrorMessage from 'mow-registry/components/error-message';
 import IconSelect from 'mow-registry/components/icon-select';
+import EditConceptLabelModal from 'mow-registry/components/edit-concept-label-modal';
 import {
   COD_SINGLE_SELECT_ID,
   COD_CONCEPT_SCHEME_ID,
@@ -30,8 +31,11 @@ import Icon from 'mow-registry/models/icon';
 import { removeItem } from 'mow-registry/utils/array';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
 import CodeListValue from 'mow-registry/models/code-list-value';
+import ConceptHistoryNote from 'mow-registry/models/concept-history-note';
 import { isSome } from 'mow-registry/utils/option';
 import { findRecord, saveRecord } from '@warp-drive/legacy/compat/builders';
+import set from 'mow-registry/helpers/set';
+import setWithValue from 'mow-registry/helpers/set-with-value';
 
 type Sig = {
   Args: {
@@ -50,6 +54,7 @@ export default class CodelistFormComponent extends Component<Sig> {
   @tracked codelistTypes?: SkosConcept[];
   @tracked selectedType?: SkosConcept | null;
   @tracked selectedIcon: Icon | null = null;
+  @tracked isEditingLabelWithUri: string | null = null;
 
   constructor(owner: unknown, args: Sig['Args']) {
     super(owner, args);
@@ -248,6 +253,26 @@ export default class CodelistFormComponent extends Component<Sig> {
     }
   }
 
+  changeConceptLabel = async (concept, newLabel, explanation) => {
+    const historyNote = this.store.createRecord<ConceptHistoryNote>(
+      'concept-history-note',
+      {
+        createdOn: new Date(),
+        previousConceptLabel: concept.label,
+        value: explanation,
+        concept,
+      },
+    );
+    concept.label = newLabel;
+
+    await Promise.all([
+      this.store.request(saveRecord(historyNote)),
+      this.store.request(saveRecord(concept)),
+    ]);
+
+    this.isEditingLabelWithUri = null;
+  };
+
   willDestroy() {
     super.willDestroy();
     this.args.codelist.reset();
@@ -411,20 +436,27 @@ export default class CodelistFormComponent extends Component<Sig> {
                 {{#each this.valueOptions as |option|}}
                   <tr>
                     <td>
-                      <div
-                        class='au-u-flex au-u-flex--vertical-center au-u-flex--spaced-small'
-                      >
-                        {{#if (notEq this.isEditingLabelWithUri option.uri)}}
-                          <p class='max-w-prose'>
-                            {{option.label}}
-                          </p>
-                          <AuButton
-                            @icon='pencil'
-                            @skin='secondary'
-                            @hideText={{true}}
-                          >test</AuButton>
-                        {{/if}}
+                      <div class='au-u-flex au-u-flex--vertical-center'>
+                        <p class='max-w-prose'>
+                          {{option.label}}
+                        </p>
+                        <AuButton
+                          @icon='pencil'
+                          @skin='naked'
+                          @hideText={{true}}
+                          {{on
+                            'click'
+                            (set this 'isEditingLabelWithUri' option.uri)
+                          }}
+                        />
                       </div>
+                      {{#if (eq this.isEditingLabelWithUri option.uri)}}
+                        <EditConceptLabelModal
+                          @onCancel={{set this 'isEditingLabelWithUri' null}}
+                          @onSubmit={{this.changeConceptLabel}}
+                          @concept={{option}}
+                        />
+                      {{/if}}
                     </td>
                     <td>
                       <AuButton

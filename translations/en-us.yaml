@@ -24,6 +24,9 @@ utility:
   login: Login
   logout: Logout
   back-to-overview: Back to overview
+  uri: URI
+  label: Label
+  date: Date
   view: View
   save: Save
   cancel: Cancel
@@ -303,6 +306,11 @@ codelist:
     add-value: Add value
     add-icon: Add icon
     delete-value: Delete value
+    edit-label: Edit Label
+    reason-for-change: Reason for change
+    previous-value: Previous value
+    previous-changes: Previous changes
+    no-changes: No changes
   attr:
     label: Label
     type: Type

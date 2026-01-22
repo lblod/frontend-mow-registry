@@ -24,6 +24,9 @@ utility:
   login: Aanmelden
   logout: Afmelden
   back-to-overview: Naar het overzicht
+  uri: URI
+  label: Label
+  date: Datum
   view: Bekijk
   save: Bewaren
   cancel: Annuleren
@@ -303,6 +306,11 @@ codelist:
     add-value: Waarde toevoegen
     add-icon: Pictogram toevoegen
     delete-value: Waarde verwijderen
+    edit-label: Concept label wijzigen
+    reason-for-change: Reden van wijziging
+    previous-value: Vorige waarde
+    previous-changes: Vorige wijzigingen
+    no-changes: Geen wijzigingen
   attr:
     label: Label
     type: Type
