@@ -54,7 +54,11 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
     <AuModal @modalOpen={{true}} @closeModal={{@onCancel}}>
       <:title>{{t 'codelist.crud.edit-label'}}</:title>
       <:body>
-        <AuAlert @skin='warning' @icon='alert-triangle'>
+        <AuAlert
+          @title={{t 'codelist.change-label-modal.warning-title'}}
+          @skin='warning'
+          @icon='alert-triangle'
+        >
           <p>
             {{t 'codelist.change-label-modal.warning-phrase-1'}}
           </p>

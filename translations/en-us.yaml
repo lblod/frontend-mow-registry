@@ -313,6 +313,7 @@ codelist:
     no-changes: No changes
     new-label: New label
   change-label-modal:
+    warning-title: Are you sure you want to update the label?
     warning-phrase-1: "This label may only be changed if it does not change the underlying meaning. This includes: correcting a typo, changing the capitalization or using a synonym, …"
     warning-phrase-2: If the underlying meaning would change, you need to create a new concept.
   attr:
