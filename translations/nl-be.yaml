@@ -311,6 +311,7 @@ codelist:
     previous-value: Vorige waarde
     previous-changes: Vorige wijzigingen
     no-changes: Geen wijzigingen
+    new-label: Nieuw label
   attr:
     label: Label
     type: Type

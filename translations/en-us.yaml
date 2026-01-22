@@ -311,6 +311,7 @@ codelist:
     previous-value: Previous value
     previous-changes: Previous changes
     no-changes: No changes
+    new-label: New label
   attr:
     label: Label
     type: Type
