@@ -11,10 +11,11 @@ import ReactiveTable from 'mow-registry/components/reactive-table';
 import { cached } from '@glimmer/tracking';
 import { getPromiseState } from '@warp-drive/ember';
 import type SkosConcept from 'mow-registry/models/skos-concept';
+import type CodeListValue from 'mow-registry/models/code-list-value';
 
 type Sig = {
   Args: {
-    concept: SkosConcept;
+    concept: SkosConcept | CodeListValue;
   };
 };
 
@@ -24,7 +25,7 @@ export default class ConceptLabelHistory extends Component<Sig> {
   @tracked page = 0;
   pageSize = 5;
 
-  changePage = (newPage) => {
+  changePage = (newPage: number) => {
     this.page = newPage;
   };
 
@@ -39,7 +40,7 @@ export default class ConceptLabelHistory extends Component<Sig> {
           query<ConceptLabelChangeNote>('concept-label-change-note', {
             filter: {
               concept: {
-                ':uri:': conceptUri,
+                ':uri:': conceptUri ?? '',
               },
             },
             page: {
@@ -76,7 +77,9 @@ export default class ConceptLabelHistory extends Component<Sig> {
         </:header>
         <:body as |historyItem|>
           <td>
-            {{format historyItem.createdOn 'dd-MM-yyyy hh:mm'}}
+            {{#if historyItem.createdOn}}
+              {{format historyItem.createdOn 'dd-MM-yyyy hh:mm'}}
+            {{/if}}
           </td>
           <td>
             {{historyItem.value}}

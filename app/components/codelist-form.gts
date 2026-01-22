@@ -253,7 +253,11 @@ export default class CodelistFormComponent extends Component<Sig> {
     }
   }
 
-  changeConceptLabel = async (concept, newLabel, explanation) => {
+  changeConceptLabel = async (
+    concept: SkosConcept | CodeListValue,
+    newLabel: string,
+    explanation: string,
+  ) => {
     const historyNote = this.store.createRecord<ConceptLabelChangeNote>(
       'concept-label-change-note',
       {

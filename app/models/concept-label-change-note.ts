@@ -5,6 +5,7 @@ import Model, {
 } from '@warp-drive/legacy/model';
 import type { Type } from '@warp-drive/core/types/symbols';
 import type SkosConcept from './skos-concept';
+import type CodeListValue from './code-list-value';
 
 export default class ConceptLabelChangeNote extends Model {
   declare [Type]: 'concept-label-change-note';
@@ -18,5 +19,5 @@ export default class ConceptLabelChangeNote extends Model {
     polymorphic: true,
     async: true,
   })
-  declare concept: AsyncBelongsTo<SkosConcept>;
+  declare concept: AsyncBelongsTo<SkosConcept | CodeListValue>;
 }

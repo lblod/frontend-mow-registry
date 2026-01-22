@@ -15,31 +15,29 @@ import ConceptLabelHistory from 'mow-registry/components/concept-label-history';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 import { task } from 'ember-concurrency';
 import setWithValue from 'mow-registry/helpers/set-with-value';
+import type CodeListValue from 'mow-registry/models/code-list-value';
 
 type Sig = {
   Args: {
-    concept: SkosConcept;
+    concept: SkosConcept | CodeListValue;
     onCancel: () => void;
-    onSubmit: Promise<
-      (concept: SkosConcept, newLabel: string, explanation: string) => void
-    >;
+    onSubmit: (
+      concept: SkosConcept | CodeListValue,
+      newLabel: string,
+      explanation: string,
+    ) => Promise<void>;
   };
 };
 
 export default class EditConceptLabelModalComponent extends Component<Sig> {
-  @localCopy('args.concept.label') newConceptLabel;
+  @localCopy('args.concept.label') declare newConceptLabel: string;
 
-  @tracked explanation = null;
-
-  setNewValue = (event) => {
-    this.newConceptLabel = event.target.value;
-  };
-
-  setExplanation = (event) => {
-    this.explanation = event.target.value;
-  };
+  @tracked explanation: string | null = null;
 
   submitNewLabel = task(async (event: SubmitEvent) => {
+    if (!this.explanation) {
+      return;
+    }
     event.preventDefault();
     await this.args.onSubmit?.(
       this.args.concept,
@@ -49,7 +47,7 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
   });
 
   get isSubmitDisabled() {
-    return this.newConceptLabel.trim() === this.args.concept.label.trim();
+    return this.newConceptLabel.trim() === this.args.concept.label?.trim();
   }
 
   <template>
@@ -90,7 +88,7 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
               {{on 'input' (setWithValue this 'newConceptLabel')}}
             />
           </AuFormRow>
-          <AuFormRow @alignment={{this.alignment}}>
+          <AuFormRow>
             <AuLabel for='description'>
               {{t 'codelist.crud.reason-for-change'}}
             </AuLabel>
@@ -99,7 +97,7 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
               id='description'
               class='au-u-1-1'
               value={{this.explanation}}
-              {{on 'input' this.setExplanation}}
+              {{on 'input' (setWithValue this 'explanation')}}
             />
           </AuFormRow>
           <ConceptLabelHistory @concept={{@concept}} />
