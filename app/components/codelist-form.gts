@@ -66,7 +66,7 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   get valueOptions() {
-    return [...this.options]
+    return this.options
       .filter((model) => !(model instanceof Icon))
       .toSorted(
         (a, b) =>
@@ -76,7 +76,7 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   get iconOptions() {
-    return [...this.options]?.filter((model) => model instanceof Icon);
+    return this.options?.filter((model) => model instanceof Icon) ?? [];
   }
 
   get isSaving() {
