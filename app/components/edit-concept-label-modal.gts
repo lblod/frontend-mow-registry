@@ -54,12 +54,13 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
     <AuModal @modalOpen={{true}} @closeModal={{@onCancel}}>
       <:title>{{t 'codelist.crud.edit-label'}}</:title>
       <:body>
-        <AuAlert
-          @skin='warning'
-          @icon='alert-triangle'
-          @title='Belangrijke info'
-        >
-          Deze wijziging heeft effect op blablabla
+        <AuAlert @skin='warning' @icon='alert-triangle'>
+          <p>
+            {{t 'codelist.change-label-modal.warning-phrase-1'}}
+          </p>
+          <p>
+            {{t 'codelist.change-label-modal.warning-phrase-2'}}
+          </p>
         </AuAlert>
         <form
           id='change-concept-label-form'
@@ -77,19 +78,25 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
               id='concept-uri'
             />
           </AuFormRow>
-          <AuFormRow @alignment='inline'>
-            <AuLabel class='no-flex-shrink' for='label-value' required>
+          <AuFormRow>
+            <AuLabel
+              class='no-flex-shrink'
+              for='label-value'
+              required
+              @required={{true}}
+            >
               {{t 'codelist.crud.new-label'}}
             </AuLabel>
             <AuInput
               required
+              @width='block'
               value={{this.newConceptLabel}}
               id='label-value'
               {{on 'input' (setWithValue this 'newConceptLabel')}}
             />
           </AuFormRow>
           <AuFormRow>
-            <AuLabel for='description'>
+            <AuLabel @required={{true}} for='description'>
               {{t 'codelist.crud.reason-for-change'}}
             </AuLabel>
             <AuTextarea

@@ -307,11 +307,14 @@ codelist:
     add-icon: Add icon
     delete-value: Delete value
     edit-label: Edit Label
-    reason-for-change: Reason for change
+    reason-for-change: Reason for the change
     previous-value: Previous value
     previous-changes: Previous changes
     no-changes: No changes
     new-label: New label
+  change-label-modal:
+    warning-phrase-1: "This label may only be changed if it does not change the underlying meaning. This includes: correcting a typo, changing the capitalization or using a synonym, …"
+    warning-phrase-2: If the underlying meaning would change, you need to create a new concept.
   attr:
     label: Label
     type: Type

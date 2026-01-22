@@ -307,11 +307,14 @@ codelist:
     add-icon: Pictogram toevoegen
     delete-value: Waarde verwijderen
     edit-label: Concept label wijzigen
-    reason-for-change: Reden van wijziging
+    reason-for-change: Reden van de wijziging
     previous-value: Vorige waarde
     previous-changes: Vorige wijzigingen
     no-changes: Geen wijzigingen
     new-label: Nieuw label
+  change-label-modal:
+    warning-phrase-1: "Dit label mag enkel gewijzigd worden indien het de onderliggende betekenis niet verandert. Dit omvat wijzigingen zoals: een typfout verbeteren, een hoofdletter aanpassen of een synoniem gebruiken, …"
+    warning-phrase-2: Indien de onderliggende betekenis zou wijzigen, dient u een nieuw concept aan te maken.
   attr:
     label: Label
     type: Type
