@@ -89,7 +89,8 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
       this.label ||
         this.templateValue ||
         this.validityOption ||
-        this.validation,
+        this.validation ||
+        this.zonality,
     );
   }
 
@@ -228,6 +229,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
     this.validityOption = null;
     this.validityStartDate = null;
     this.validityEndDate = null;
+    this.zonality = null;
     this.resetPagination();
   };
 }

@@ -137,7 +137,7 @@ export default async function fetchManualData(
     zonalityQuery = `
         ?uri ${ZONALITY_PER_TYPE[type]} ?zonality
       `;
-    if (params.zonality) {
+    if (params.zonality && params.zonality.length) {
       const values = [];
       if (params.zonality.includes('zonal')) {
         values.push(

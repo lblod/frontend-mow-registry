@@ -87,7 +87,8 @@ export default class RoadsignConceptsIndexController extends Controller {
         this.classification ||
         this.validation ||
         this.validityOption ||
-        this.arPlichtig,
+        this.arPlichtig ||
+        this.zonality,
     );
   }
 
@@ -240,6 +241,7 @@ export default class RoadsignConceptsIndexController extends Controller {
     this.validityOption = null;
     this.validityStartDate = null;
     this.validityEndDate = null;
+    this.zonality = null;
     this.resetPagination();
   };
 
