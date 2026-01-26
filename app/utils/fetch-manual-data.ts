@@ -22,6 +22,11 @@ const PREFIXES = `
   PREFIX schema: <http://schema.org/>
 `;
 
+const ZONALITY_PER_TYPE = {
+  'road-sign-concept': 'mobiliteit:zonaliteit',
+  'traffic-measure-concept': 'ext:zonality',
+};
+
 type dataType =
   | 'road-sign-concept'
   | 'road-marking-concept'
@@ -42,6 +47,7 @@ type Params = {
   validityStartDate?: string | null;
   validityEndDate?: string | null;
   templateValue?: string | null;
+  zonality?: string[];
 };
 
 type FetchManualDataReturn = {
@@ -126,6 +132,33 @@ export default async function fetchManualData(
       FILTER(CONTAINS(?templatePreview, ${sparqlEscapeString(params.templateValue)}))
     `);
   }
+  let zonalityQuery = '';
+  if (type === 'traffic-measure-concept' || type === 'road-sign-concept') {
+    zonalityQuery = `
+        ?uri ${ZONALITY_PER_TYPE[type]} ?zonality
+      `;
+    if (params.zonality && params.zonality.length) {
+      const values = [];
+      if (params.zonality.includes('zonal')) {
+        values.push(
+          '<http://register.mobiliteit.vlaanderen.be/concepts/c81c6b96-736a-48cf-b003-6f5cc3dbc55d>',
+        );
+      }
+      if (params.zonality.includes('non-zonal')) {
+        values.push(
+          '<http://register.mobiliteit.vlaanderen.be/concepts/b651931b-923c-477c-8da9-fc7dd841fdcc>',
+        );
+      }
+      if (params.zonality.includes('potentially-zonal')) {
+        values.push(
+          '<http://register.mobiliteit.vlaanderen.be/concepts/8f9367b2-c717-4be7-8833-4c75bbb4ae1f>',
+        );
+      }
+      filters.push(`
+        VALUES ?zonality { ${values.join(' ')} }
+      `);
+    }
+  }
   const sortFilter = params.sort ? generateSortFilter(params.sort) : '';
   const queryContent = `
     ?uri a ${TYPES[type]}.
@@ -159,6 +192,7 @@ export default async function fetchManualData(
     OPTIONAL {
       ?uri mobiliteit:variabeleSignalisatie ?variableSignage.
     }
+    ${zonalityQuery}
     ${filters.join(' ')}
   `;
   const queryCount = `
@@ -195,6 +229,7 @@ const SORTPARAMETERS = {
   'ar-plichtig': '?ARplichtig',
   ':no-case:label': 'lcase(?label)',
   'variable-signage': '?variableSignage',
+  zonality: '?zonality',
 };
 
 function generateSortFilter(sort: string): string {

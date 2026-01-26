@@ -40,6 +40,7 @@ utility:
   zonal: Zonal
   nonZonal: Non-Zonal
   potentiallyZonal: Potentially Zonal
+  zonality-filter-placeholder: Filter by zonality
   upload: Upload
   or: Or
   field-required: This field is required

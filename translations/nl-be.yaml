@@ -40,6 +40,7 @@ utility:
   zonal: Zonaal
   nonZonal: Niet zonaal
   potentiallyZonal: Potentieel zonaal
+  zonality-filter-placeholder: Filteren op zonaal karakter
   upload: Uploaden
   or: Of
   field-required: Dit veld is verplicht

@@ -28,6 +28,7 @@
       @field="classifications"
       @label={{t "road-sign-concept.attr.classifications"}}
     />
+    <header.Sortable @field="zonality" @label={{t "utility.zonality"}} />
     <header.Sortable @field="valid" @label={{t "utility.validation-status"}} />
     <header.Sortable @field="arPlichtig" @label={{t "utility.ar-plichtig"}} />
   </:header>
@@ -57,6 +58,9 @@
         {{/if}}
         {{classification.label}}
       {{/each}}
+    </td>
+    <td>
+      {{zonality-label (await roadSignConcept.zonality)}}
     </td>
     <td>
       <ValidationStatus @valid={{roadSignConcept.valid}} />

@@ -99,6 +99,25 @@
           @startDate={{this.validityStartDate}}
           @endDate={{this.validityEndDate}}
         />
+         <div>
+          <AuLabel for="zonality-filter">
+            {{t "utility.zonality"}}
+          </AuLabel>
+          <PowerSelectMultiple
+            @allowClear={{true}}
+            @options={{this.zonalityOptions}}
+            @selected={{this.zonality}}
+            @placeholder={{t
+              "utility.zonality-filter-placeholder"
+            }}
+            @loadingMessage={{t "utility.loading"}}
+            @onChange={{this.updateZonalityFilter}}
+            @triggerId="zonality-filter"
+            as |zonality|
+          >
+            {{zonality.label}}
+          </PowerSelectMultiple>
+        </div>
         <ResetFilters
           @canReset={{this.hasActiveFilter}}
           @onReset={{this.resetFilters}}

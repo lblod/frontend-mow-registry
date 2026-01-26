@@ -48,6 +48,7 @@ export default class RoadsignConceptsIndexController extends Controller {
   @tracked validityOption?: string | null;
   @tracked validityStartDate?: string | null;
   @tracked validityEndDate?: string | null;
+  @tracked zonality?: [{ value: string; label: string }] | null;
 
   get validationStatusOptions() {
     return [
@@ -65,6 +66,20 @@ export default class RoadsignConceptsIndexController extends Controller {
     ];
   }
 
+  get zonalityOptions() {
+    return [
+      { value: 'zonal', label: this.intl.t('utility.zonal') },
+      {
+        value: 'non-zonal',
+        label: this.intl.t('utility.nonZonal'),
+      },
+      {
+        value: 'potentially-zonal',
+        label: this.intl.t('utility.potentiallyZonal'),
+      },
+    ];
+  }
+
   get hasActiveFilter() {
     return Boolean(
       this.label ||
@@ -72,7 +87,8 @@ export default class RoadsignConceptsIndexController extends Controller {
         this.classification ||
         this.validation ||
         this.validityOption ||
-        this.arPlichtig,
+        this.arPlichtig ||
+        this.zonality,
     );
   }
 
@@ -108,6 +124,7 @@ export default class RoadsignConceptsIndexController extends Controller {
         validityOption: this.validityOption,
         validityStartDate: this.validityStartDate,
         validityEndDate: this.validityEndDate,
+        zonality: this.zonality?.map((zonalityOption) => zonalityOption.value),
       },
     );
 
@@ -197,6 +214,16 @@ export default class RoadsignConceptsIndexController extends Controller {
     this.resetPagination();
   }
 
+  @action
+  updateZonalityFilter(selectedOption: [{ value: string; label: string }]) {
+    if (selectedOption) {
+      this.zonality = selectedOption;
+      this.resetPagination();
+    } else {
+      this.zonality = undefined;
+    }
+  }
+
   @action onPageChange(newPage: number) {
     this.page = newPage;
   }
@@ -214,6 +241,7 @@ export default class RoadsignConceptsIndexController extends Controller {
     this.validityOption = null;
     this.validityStartDate = null;
     this.validityEndDate = null;
+    this.zonality = null;
     this.resetPagination();
   };
 
