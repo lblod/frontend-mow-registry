@@ -27,6 +27,9 @@ importers:
       ember-data-table:
         specifier: ^2.1.0
         version: 2.1.0
+      tracked-toolbox:
+        specifier: ^2.2.0
+        version: 2.2.0(@babel/core@7.28.0)
     devDependencies:
       '@appuniversum/ember-appuniversum':
         specifier: ^3.6.0
@@ -8439,14 +8442,8 @@ packages:
   tracked-built-ins@3.4.0:
     resolution: {integrity: sha512-aRwWQXC3VkY50oYxS7wKZiavkjf3uaN+UYUH30D5gxUqbxDN2LnNsfWyDfckmxHUGw4gJDH5lpRS0jX/tim0vw==}
 
-  tracked-toolbox@2.0.0:
-    resolution: {integrity: sha512-adZtX+RGN6F+pWs/5JqVuDxLhuia4uhqmQp+UlUaxpykWjDFETtAdQR+LdDJiFPXFAXnS6FBqn/tnSLJQCm3Yw==}
-    engines: {node: 14.* || 16.* || >= 18}
-    peerDependencies:
-      ember-source: ~5.8.0
-    peerDependenciesMeta:
-      ember-source:
-        optional: true
+  tracked-toolbox@2.2.0:
+    resolution: {integrity: sha512-YknotXj74U0nCqBk9nh1Uv1IWTnVOgt8sXIecNkyEq4oFOU70niQUlozO4E3kMKx7ae/rNlOtoF+1ALcHYzCrQ==}
 
   tree-kill@1.2.2:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
@@ -8875,6 +8872,7 @@ packages:
   whatwg-encoding@2.0.0:
     resolution: {integrity: sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==}
     engines: {node: '>=12'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
@@ -9105,7 +9103,7 @@ snapshots:
       inputmask: 5.0.9
       merge-anything: 6.0.6
       tracked-built-ins: 3.4.0(@babel/core@7.28.0)
-      tracked-toolbox: 2.0.0(@babel/core@7.28.0)(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9))
+      tracked-toolbox: 2.2.0(@babel/core@7.28.0)
     optionalDependencies:
       ember-power-select: 8.8.0(93fe025b137e47356b743197553e3d14)
     transitivePeerDependencies:
@@ -20014,12 +20012,11 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  tracked-toolbox@2.0.0(@babel/core@7.28.0)(ember-source@5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9)):
+  tracked-toolbox@2.2.0(@babel/core@7.28.0):
     dependencies:
       '@embroider/addon-shim': 1.10.0
+      decorator-transforms: 2.3.0(@babel/core@7.28.0)
       ember-cache-primitive-polyfill: 1.0.1(@babel/core@7.28.0)
-    optionalDependencies:
-      ember-source: 5.8.0(@babel/core@7.28.0)(@glimmer/component@1.1.2(@babel/core@7.28.0))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.99.9)
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color

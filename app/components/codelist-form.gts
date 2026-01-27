@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import { not, or } from 'ember-truth-helpers';
+import { not, or, eq } from 'ember-truth-helpers';
 import perform from 'ember-concurrency/helpers/perform';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
@@ -18,6 +18,7 @@ import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
 import ErrorMessage from 'mow-registry/components/error-message';
 import IconSelect from 'mow-registry/components/icon-select';
+import EditConceptLabelModal from 'mow-registry/components/edit-concept-label-modal';
 import {
   COD_SINGLE_SELECT_ID,
   COD_CONCEPT_SCHEME_ID,
@@ -30,8 +31,11 @@ import Icon from 'mow-registry/models/icon';
 import { removeItem } from 'mow-registry/utils/array';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
 import CodeListValue from 'mow-registry/models/code-list-value';
+import type ConceptLabelChangeNote from 'mow-registry/models/concept-label-change-note';
 import { isSome } from 'mow-registry/utils/option';
 import { findRecord, saveRecord } from '@warp-drive/legacy/compat/builders';
+import set from 'mow-registry/helpers/set';
+import setWithValue from 'mow-registry/helpers/set-with-value';
 
 type Sig = {
   Args: {
@@ -50,6 +54,7 @@ export default class CodelistFormComponent extends Component<Sig> {
   @tracked codelistTypes?: SkosConcept[];
   @tracked selectedType?: SkosConcept | null;
   @tracked selectedIcon: Icon | null = null;
+  @tracked isEditingLabelWithUri: string | null = null;
 
   constructor(owner: unknown, args: Sig['Args']) {
     super(owner, args);
@@ -66,7 +71,7 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   get valueOptions() {
-    return [...this.options]
+    return this.options
       .filter((model) => !(model instanceof Icon))
       .toSorted(
         (a, b) =>
@@ -76,7 +81,7 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   get iconOptions() {
-    return [...this.options]?.filter((model) => model instanceof Icon);
+    return this.options?.filter((model) => model instanceof Icon) ?? [];
   }
 
   get isSaving() {
@@ -158,11 +163,6 @@ export default class CodelistFormComponent extends Component<Sig> {
   updateCodelistType(type: SkosConcept) {
     this.selectedType = type;
     this.args.codelist.set('type', type);
-  }
-
-  @action
-  updateNewValue(event: Event) {
-    this.newValue = (event.target as HTMLInputElement).value;
   }
 
   @action
@@ -252,6 +252,27 @@ export default class CodelistFormComponent extends Component<Sig> {
       );
     }
   }
+
+  changeConceptLabel = async (
+    concept: SkosConcept | CodeListValue,
+    newLabel: string,
+    explanation: string,
+  ) => {
+    const historyNote = this.store.createRecord<ConceptLabelChangeNote>(
+      'concept-label-change-note',
+      {
+        createdOn: new Date(),
+        previousConceptLabel: concept.label,
+        value: explanation,
+        concept,
+      },
+    );
+
+    await this.store.request(saveRecord(historyNote));
+    concept.label = newLabel;
+    await this.store.request(saveRecord(concept));
+    this.isEditingLabelWithUri = null;
+  };
 
   willDestroy() {
     super.willDestroy();
@@ -416,11 +437,29 @@ export default class CodelistFormComponent extends Component<Sig> {
                 {{#each this.valueOptions as |option|}}
                   <tr>
                     <td>
-                      <p class='max-w-prose'>
-                        {{option.label}}
-                      </p>
+                      <div class='au-u-flex au-u-flex--vertical-center'>
+                        <p class='max-w-prose'>
+                          {{option.label}}
+                        </p>
+                        <AuButton
+                          @icon='pencil'
+                          @skin='naked'
+                          @hideText={{true}}
+                          {{on
+                            'click'
+                            (set this 'isEditingLabelWithUri' option.uri)
+                          }}
+                        />
+                      </div>
+                      {{#if (eq this.isEditingLabelWithUri option.uri)}}
+                        <EditConceptLabelModal
+                          @onCancel={{set this 'isEditingLabelWithUri' null}}
+                          @onSubmit={{this.changeConceptLabel}}
+                          @concept={{option}}
+                        />
+                      {{/if}}
                     </td>
-                    <td class='w-px au-u-padding-right-small'>
+                    <td>
                       <AuButton
                         @icon='bin'
                         @alert={{true}}
@@ -442,24 +481,25 @@ export default class CodelistFormComponent extends Component<Sig> {
               </:body>
               <:footer>
                 <tr>
-                  <td>
-                    <p>
+                  <td colspan='2'>
+                    <div
+                      class='au-u-flex au-u-flex--vertical-centered au-u-flex--spaced-small'
+                    >
                       <AuInput
                         id='values'
                         required='required'
                         value={{this.newValue}}
                         @width='block'
-                        {{on 'input' this.updateNewValue}}
+                        {{on 'input' (setWithValue this 'newValue')}}
                       />
-                    </p>
-                  </td>
-                  <td class='w-px au-u-padding-right-small'>
-                    <AuButton
-                      @disabled={{not this.newValue.length}}
-                      {{on 'click' this.addNewValue}}
-                    >
-                      {{t 'codelist.crud.add-value'}}
-                    </AuButton>
+                      <AuButton
+                        class='no-flex-shrink'
+                        @disabled={{not this.newValue.length}}
+                        {{on 'click' this.addNewValue}}
+                      >
+                        {{t 'codelist.crud.add-value'}}
+                      </AuButton>
+                    </div>
                   </td>
                 </tr>
               </:footer>
