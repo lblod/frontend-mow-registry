@@ -58,6 +58,7 @@ export default class ConceptLabelHistory extends Component<Sig> {
   <template>
     <AuAccordion
       class='au-u-padding-bottom-none'
+      @disableAuContent={{true}}
       @loading={{this.conceptHistory.isPending}}
       @buttonLabel={{t 'codelist.crud.previous-changes'}}
       @reverse={{true}}
