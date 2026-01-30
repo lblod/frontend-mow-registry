@@ -314,8 +314,8 @@ codelist:
     new-label: Nieuw label
   change-label-modal:
     warning-title: Weet u zeker dat u het label wil wijzigen?
-    warning-phrase-1: "Dit label mag enkel gewijzigd worden indien het de onderliggende betekenis niet verandert. Dit omvat wijzigingen zoals: een typfout verbeteren, een hoofdletter aanpassen of een synoniem gebruiken, …"
-    warning-phrase-2: Indien de onderliggende betekenis zou wijzigen, dient u een nieuw concept aan te maken.
+    warning-phrase-1: "Dit label mag enkel gewijzigd worden indien het de onderliggende betekenis niet verandert. Toegestane wijzigingen zijn: een typfout verbeteren, een hoofdletter aanpassen of een synoniem gebruiken, …"
+    warning-phrase-2: Indien de onderliggende betekenis zou wijzigen, dient u een nieuwe codelijstwaarde te maken.
   attr:
     label: Label
     type: Type
