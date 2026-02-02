@@ -24,6 +24,9 @@ utility:
   login: Aanmelden
   logout: Afmelden
   back-to-overview: Naar het overzicht
+  uri: URI
+  label: Label
+  date: Datum
   view: Bekijk
   save: Bewaren
   cancel: Annuleren
@@ -304,6 +307,16 @@ codelist:
     add-value: Waarde toevoegen
     add-icon: Pictogram toevoegen
     delete-value: Waarde verwijderen
+    edit-label: Concept label wijzigen
+    reason-for-change: Reden van de wijziging
+    previous-value: Vorige waarde
+    previous-changes: Vorige wijzigingen
+    no-changes: Geen wijzigingen
+    new-label: Nieuw label
+  change-label-modal:
+    warning-title: Weet u zeker dat u het label wil wijzigen?
+    warning-phrase-1: "Dit label mag enkel gewijzigd worden indien het de onderliggende betekenis niet verandert. Toegestane wijzigingen zijn: een typfout verbeteren, een hoofdletter aanpassen of een synoniem gebruiken, …"
+    warning-phrase-2: Indien de onderliggende betekenis zou wijzigen, dient u een nieuwe codelijstwaarde te maken.
   attr:
     label: Label
     type: Type
