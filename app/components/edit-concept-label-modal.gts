@@ -47,7 +47,10 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
   });
 
   get isSubmitDisabled() {
-    return this.newConceptLabel.trim() === this.args.concept.label?.trim();
+    return (
+      this.newConceptLabel.trim() === this.args.concept.label?.trim() ||
+      !this.explanation
+    );
   }
 
   <template>
