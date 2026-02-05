@@ -1,5 +1,15 @@
 # frontend-mow-registry
 
+## 2.14.0
+
+### Minor Changes
+
+- [#365](https://github.com/lblod/frontend-mow-registry/pull/365) [`87385d85bb473ca583b8f28b849cc4b485d9b96d`](https://github.com/lblod/frontend-mow-registry/commit/87385d85bb473ca583b8f28b849cc4b485d9b96d) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Add zonality filter for measures and signs
+
+### Patch Changes
+
+- [#366](https://github.com/lblod/frontend-mow-registry/pull/366) [`4745ff9ea1044b4f0441705a8cf26e04e043b5c9`](https://github.com/lblod/frontend-mow-registry/commit/4745ff9ea1044b4f0441705a8cf26e04e043b5c9) Thanks [@kobemertens](https://github.com/kobemertens)! - Added possibility to change concept labels, keeping track of their change history
+
 ## 2.13.0
 
 ### Minor Changes
