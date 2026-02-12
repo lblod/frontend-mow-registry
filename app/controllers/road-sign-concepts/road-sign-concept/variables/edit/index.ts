@@ -12,7 +12,7 @@ export default class RoadSignConceptVariablesEditController extends Controller {
 
   goToEditCodelist = (codelist?: CodeList) => {
     this.router.transitionTo(
-      'road-sign-concepts.road-sign-concept.variables.edit',
+      'road-sign-concepts.road-sign-concept.variables.edit.edit-codelist',
       codelist?.id,
     );
   };
