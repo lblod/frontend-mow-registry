@@ -12,10 +12,16 @@ export default class RoadSignConceptsRoadSignConceptMainSignsRoute extends Route
   @service declare store: Store;
 
   async model(params: Params) {
-    return {
-      codelist: await this.store
+    let codelist;
+    if (params.codelistId !== 'new') {
+      codelist = await this.store
         .request(findRecord<CodeList>('code-list', params.codelistId, {}))
-        .then((res) => res.content),
+        .then((res) => res.content);
+    } else {
+      codelist = this.store.createRecord<CodeList>('code-list', {});
+    }
+    return {
+      codelist,
     };
   }
 }

@@ -35,6 +35,7 @@ import { findRecord, saveRecord } from '@warp-drive/legacy/compat/builders';
 import type { TOC } from '@ember/component/template-only';
 import { hash } from '@ember/helper';
 import type { ComponentLike, WithBoundArgs } from '@glint/template';
+import type CodelistsService from 'mow-registry/services/codelists';
 
 type Sig = {
   Args: {
@@ -79,6 +80,7 @@ type Sig = {
 export default class CodelistFormComponent extends Component<Sig> {
   @service declare router: RouterService;
   @service declare store: Store;
+  @service('codelists') declare codeListService: CodelistsService;
 
   @tracked newValue = '';
   @tracked toDelete: (SkosConcept | CodeListValue)[] = [];
@@ -251,6 +253,7 @@ export default class CodelistFormComponent extends Component<Sig> {
         this.options.map((option) => this.store.request(saveRecord(option))),
       );
       await this.store.request(saveRecord(codelist));
+      await this.codeListService.all.perform(true);
       if (this.args.customCallback) {
         this.args.customCallback(codelist);
       } else {
@@ -508,12 +511,14 @@ const FormBody: TOC<FormBodySig> = <template>
                 <p class='max-w-prose'>
                   {{option.label}}
                 </p>
-                <AuButton
-                  @icon='pencil'
-                  @skin='naked'
-                  @hideText={{true}}
-                  {{on 'click' (fn @setIsEditingLabelWithUri option)}}
-                />
+                {{#unless @codelist.isNew}}
+                  <AuButton
+                    @icon='pencil'
+                    @skin='naked'
+                    @hideText={{true}}
+                    {{on 'click' (fn @setIsEditingLabelWithUri option)}}
+                  />
+                {{/unless}}
               </div>
               {{#if (eq @isEditingLabelWithUri option.uri)}}
                 <EditConceptLabelModal
