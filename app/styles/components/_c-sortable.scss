@@ -1,0 +1,16 @@
+tr.sortable-item {
+  transition: all 0.125s;
+}
+
+tr.sortable-item.is-dragging {
+  transition-duration: 0s;
+  position: relative;
+  z-index: 10;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px 3px;
+}
+
+.drag-handle {
+  cursor: grab;
+  vertical-align: middle;
+  text-align: center;
+}

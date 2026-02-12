@@ -16,6 +16,7 @@ import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
+import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import ErrorMessage from 'mow-registry/components/error-message';
 import IconSelect from 'mow-registry/components/icon-select';
 import EditConceptLabelModal from 'mow-registry/components/edit-concept-label-modal';
@@ -36,6 +37,9 @@ import { isSome } from 'mow-registry/utils/option';
 import { findRecord, saveRecord } from '@warp-drive/legacy/compat/builders';
 import set from 'mow-registry/helpers/set';
 import setWithValue from 'mow-registry/helpers/set-with-value';
+import sortableHandle from 'ember-sortable/modifiers/sortable-handle';
+import sortableGroup from 'ember-sortable/modifiers/sortable-group';
+import sortableItem from 'ember-sortable/modifiers/sortable-item';
 
 type Sig = {
   Args: {
@@ -86,6 +90,15 @@ export default class CodelistFormComponent extends Component<Sig> {
 
   get isSaving() {
     return this.editCodelistTask.isRunning;
+  }
+
+  reorderItems(conceptValues?: CodeListValue[]) {
+    if (conceptValues) {
+      conceptValues.forEach(
+        (value: CodeListValue, index: number) => (value.position = index),
+      );
+      this.options = conceptValues;
+    }
   }
 
   setPositions(): void {
@@ -420,90 +433,99 @@ export default class CodelistFormComponent extends Component<Sig> {
               </:footer>
             </AuTable>
 
-            <AuTable>
-              <:header>
-                <tr>
-                  <th>
-                    {{t 'codelist.attr.values'}}
-                  </th>
-                  <th class='w-px'>
-                    <span class='au-u-hidden-visually'>
-                      {{t 'codelist.crud.delete-value'}}
-                    </span>
-                  </th>
-                </tr>
-              </:header>
-              <:body>
-                {{#each this.valueOptions as |option|}}
+            <div class='au-c-table-wrapper'>
+              <table class='au-c-table'>
+                <thead class='au-c-table__header'>
                   <tr>
-                    <td>
-                      <div class='au-u-flex au-u-flex--vertical-center'>
-                        <p class='max-w-prose'>
-                          {{option.label}}
-                        </p>
-                        <AuButton
-                          @icon='pencil'
-                          @skin='naked'
-                          @hideText={{true}}
-                          {{on
-                            'click'
-                            (set this 'isEditingLabelWithUri' option.uri)
-                          }}
-                        />
-                      </div>
-                      {{#if (eq this.isEditingLabelWithUri option.uri)}}
-                        <EditConceptLabelModal
-                          @onCancel={{set this 'isEditingLabelWithUri' null}}
-                          @onSubmit={{this.changeConceptLabel}}
-                          @concept={{option}}
-                        />
-                      {{/if}}
-                    </td>
-                    <td>
-                      <AuButton
-                        @icon='bin'
-                        @alert={{true}}
-                        @skin='secondary'
-                        @hideText={{true}}
-                        {{on 'click' (fn this.removeOption option)}}
-                      >
-                        {{t 'utility.delete'}}
-                      </AuButton>
-                    </td>
+                    <th class='data-table__header-title' />
+                    <th class='data-table__header-title'>
+                      {{t 'codelist.attr.values'}}
+                    </th>
+                    <th class='w-px data-table__header-title'>
+                      <span class='au-u-hidden-visually'>
+                        {{t 'codelist.crud.delete-value'}}
+                      </span>
+                    </th>
                   </tr>
-                {{else}}
+                </thead>
+                <tbody
+                  {{sortableGroup onChange=this.reorderItems}}
+                  class='au-c-table__body'
+                >
+                  {{#each this.valueOptions as |option|}}
+                    <tr {{sortableItem model=option}}>
+                      <td class='drag-handle' {{sortableHandle}}>
+                        <AuIcon @icon='drag-handle' @size='large' />
+                      </td>
+                      <td>
+                        <div class='au-u-flex au-u-flex--vertical-center'>
+                          <p class='max-w-prose'>
+                            {{option.label}}
+                          </p>
+                          <AuButton
+                            @icon='pencil'
+                            @skin='naked'
+                            @hideText={{true}}
+                            {{on
+                              'click'
+                              (set this 'isEditingLabelWithUri' option.uri)
+                            }}
+                          />
+                        </div>
+                        {{#if (eq this.isEditingLabelWithUri option.uri)}}
+                          <EditConceptLabelModal
+                            @onCancel={{set this 'isEditingLabelWithUri' null}}
+                            @onSubmit={{this.changeConceptLabel}}
+                            @concept={{option}}
+                          />
+                        {{/if}}
+                      </td>
+                      <td>
+                        <AuButton
+                          @icon='bin'
+                          @alert={{true}}
+                          @skin='secondary'
+                          @hideText={{true}}
+                          {{on 'click' (fn this.removeOption option)}}
+                        >
+                          {{t 'utility.delete'}}
+                        </AuButton>
+                      </td>
+                    </tr>
+                  {{else}}
+                    <tr>
+                      <td colspan='2'>
+                        {{t 'codelist.crud.no-value'}}
+                      </td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+                <tfoot class='au-c-table__footer'>
                   <tr>
                     <td colspan='2'>
-                      {{t 'codelist.crud.no-value'}}
+                      <div
+                        class='au-u-flex au-u-flex--vertical-centered au-u-flex--spaced-small'
+                      >
+                        <AuInput
+                          id='values'
+                          required='required'
+                          value={{this.newValue}}
+                          @width='block'
+                          {{on 'input' (setWithValue this 'newValue')}}
+                        />
+                        <AuButton
+                          class='no-flex-shrink'
+                          @disabled={{not this.newValue.length}}
+                          {{on 'click' this.addNewValue}}
+                        >
+                          {{t 'codelist.crud.add-value'}}
+                        </AuButton>
+                      </div>
                     </td>
                   </tr>
-                {{/each}}
-              </:body>
-              <:footer>
-                <tr>
-                  <td colspan='2'>
-                    <div
-                      class='au-u-flex au-u-flex--vertical-centered au-u-flex--spaced-small'
-                    >
-                      <AuInput
-                        id='values'
-                        required='required'
-                        value={{this.newValue}}
-                        @width='block'
-                        {{on 'input' (setWithValue this 'newValue')}}
-                      />
-                      <AuButton
-                        class='no-flex-shrink'
-                        @disabled={{not this.newValue.length}}
-                        {{on 'click' this.addNewValue}}
-                      >
-                        {{t 'codelist.crud.add-value'}}
-                      </AuButton>
-                    </div>
-                  </td>
-                </tr>
-              </:footer>
-            </AuTable>
+                </tfoot>
+              </table>
+            </div>
           </form>
         </div>
       </div>
