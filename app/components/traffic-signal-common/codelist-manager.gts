@@ -5,14 +5,16 @@ import CodelistForm from '../codelist-form';
 import type { TOC } from '@ember/component/template-only';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 import type CodeListValue from 'mow-registry/models/code-list-value';
+import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import { on } from '@ember/modifier';
 
 type Sig = {
   Args: {
     modalOpen: boolean;
     closeModal: () => void;
     codelist?: CodeList;
-    customCallback: (codelist?: CodeList) => void;
     goToEditConcept: (concept?: SkosConcept | CodeListValue) => void;
+    goBack: () => void;
   };
 };
 
@@ -24,7 +26,7 @@ const CodelistManager: TOC<Sig> = <template>
         @codelist={{@codelist}}
         @customHeading={{true}}
         @customBody={{true}}
-        @customCallback={{@customCallback}}
+        @customCallback={{@goBack}}
         @goToEditConcept={{@goToEditConcept}}
         as |form|
       >
@@ -33,6 +35,14 @@ const CodelistManager: TOC<Sig> = <template>
             {{t 'utility.confirmation.title'}}
           </:title>
           <:body>
+            <AuButton
+              {{on 'click' @goBack}}
+              @skin='link'
+              @icon='chevron-left'
+              class='au-u-margin-bottom'
+            >
+              {{t 'codelist-form.go-back'}}
+            </AuButton>
             <form.FormBody />
           </:body>
           <:footer>

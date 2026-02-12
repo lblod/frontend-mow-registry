@@ -400,3 +400,7 @@ variable-manager:
       placeholder:
         free-text: Vul standaardwaarde in
         select: Kies standaardwaarde
+codelist-form:
+  go-back: Terug naar variabele bewerken
+edit-concept-label:
+  go-back: Terug naar codelijst bewerken

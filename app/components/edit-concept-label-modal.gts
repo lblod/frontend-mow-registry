@@ -26,6 +26,7 @@ type Sig = {
     concept: SkosConcept | CodeListValue;
     onCancel: () => void;
     onSubmit: () => void;
+    showGoBack?: boolean;
   };
 };
 
@@ -67,6 +68,16 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
     <AuModal @modalOpen={{true}} @closeModal={{@onCancel}}>
       <:title>{{t 'codelist.crud.edit-label'}}</:title>
       <:body>
+        {{#if @showGoBack}}
+          <AuButton
+            {{on 'click' @onCancel}}
+            @skin='link'
+            @icon='chevron-left'
+            class='au-u-margin-bottom'
+          >
+            {{t 'edit-concept-label.go-back'}}
+          </AuButton>
+        {{/if}}
         <AuAlert
           @title={{t 'codelist.change-label-modal.warning-title'}}
           @skin='warning'

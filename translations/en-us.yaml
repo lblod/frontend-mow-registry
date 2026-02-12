@@ -400,3 +400,7 @@ variable-manager:
       placeholder:
         free-text: Enter default value
         select: Select default value
+codelist-form:
+  go-back: Back to edit variable
+edit-concept-label:
+  go-back: Back to edit codelist
