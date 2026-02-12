@@ -386,6 +386,9 @@ shape-manager:
 variable-manager:
   no-data: No variables
   delete: Remove variable
+  edit-codelist: Edit codelist
+  no-codelist-found-question: Codelist not found?
+  new-codelist: Create a new codelist
   table:
     fields:
       default-value: Default value
@@ -393,7 +396,7 @@ variable-manager:
     title: Edit variable
     codelist: Codelist
     default-value:
-      label: Standaardwaarde
+      label: Default value
       placeholder:
-        free-text: Vul standaardwaarde in
-        select: Kies standaardwaarde
+        free-text: Enter default value
+        select: Select default value

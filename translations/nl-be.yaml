@@ -386,6 +386,9 @@ shape-manager:
 variable-manager:
   no-data: Geen variabelen
   delete: Verwijder variabele
+  edit-codelist: Bewerk codelijst
+  no-codelist-found-question: Codelijst niet gevonden?
+  new-codelist: Maak een nieuwe codelijst aan
   table:
     fields:
       default-value: Standaardwaarde

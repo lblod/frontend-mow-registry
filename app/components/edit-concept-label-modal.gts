@@ -16,20 +16,21 @@ import type SkosConcept from 'mow-registry/models/skos-concept';
 import { task } from 'ember-concurrency';
 import setWithValue from 'mow-registry/helpers/set-with-value';
 import type CodeListValue from 'mow-registry/models/code-list-value';
+import Store from 'mow-registry/services/store';
+import { inject as service } from '@ember/service';
+import type ConceptLabelChangeNote from 'mow-registry/models/concept-label-change-note';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Sig = {
   Args: {
     concept: SkosConcept | CodeListValue;
     onCancel: () => void;
-    onSubmit: (
-      concept: SkosConcept | CodeListValue,
-      newLabel: string,
-      explanation: string,
-    ) => Promise<void>;
+    onSubmit: () => void;
   };
 };
 
 export default class EditConceptLabelModalComponent extends Component<Sig> {
+  @service declare store: Store;
   @localCopy('args.concept.label') declare newConceptLabel: string;
 
   @tracked explanation: string | null = null;
@@ -39,11 +40,20 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
       return;
     }
     event.preventDefault();
-    await this.args.onSubmit?.(
-      this.args.concept,
-      this.newConceptLabel,
-      this.explanation,
+    const historyNote = this.store.createRecord<ConceptLabelChangeNote>(
+      'concept-label-change-note',
+      {
+        createdOn: new Date(),
+        previousConceptLabel: this.args.concept.label,
+        value: this.explanation,
+        concept: this.args.concept,
+      },
     );
+
+    await this.store.request(saveRecord(historyNote));
+    this.args.concept.label = this.newConceptLabel;
+    await this.store.request(saveRecord(this.args.concept));
+    this.args.onSubmit();
   });
 
   get isSubmitDisabled() {

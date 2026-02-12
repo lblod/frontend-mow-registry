@@ -75,6 +75,8 @@ module.exports = function (environment) {
     ENV.baseUrl = '{{BASE_URL}}';
     // here you can enable a production-specific feature
   }
+  ENV.APP.LOG_VIEW_LOOKUPS = true;
+  ENV.APP.LOG_ACTIVE_GENERATION = true;
 
   return ENV;
 };

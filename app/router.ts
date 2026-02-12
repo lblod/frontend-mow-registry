@@ -19,7 +19,17 @@ Router.map(function () {
       this.route('instructions', function () {
         this.route('edit', { path: '/:instructionId' });
       });
-      this.route('variables');
+      this.route('variables', function () {
+        this.route('edit', { path: '/edit/:variableId' }, function () {
+          this.route(
+            'edit-codelist',
+            { path: '/edit-codelist/:codelistId' },
+            function () {
+              this.route('edit-concept', { path: '/edit-concept/:conceptId' });
+            },
+          );
+        });
+      });
       this.route('shapes');
       this.route('main-signs');
       this.route('sub-signs');
@@ -34,7 +44,17 @@ Router.map(function () {
       this.route('instructions', function () {
         this.route('edit', { path: '/:instructionId' });
       });
-      this.route('variables');
+      this.route('variables', function () {
+        this.route('edit', { path: '/edit/:variableId' }, function () {
+          this.route(
+            'edit-codelist',
+            { path: '/edit-codelist/:codelistId' },
+            function () {
+              this.route('edit-concept', { path: '/edit-concept/:conceptId' });
+            },
+          );
+        });
+      });
       this.route('shapes');
       this.route('related');
     });
@@ -46,7 +66,19 @@ Router.map(function () {
       this.route('instructions', function () {
         this.route('edit', { path: '/:instructionId' });
       });
-      this.route('variables');
+      this.route('variables', function () {
+        this.route(
+          'edit',
+          { path: '/edit/:variableId' }, //, function () {
+          //   this.route(
+          //     'edit-codelist',
+          //     { path: '/edit-codelist/:codelistId' },
+          //     function () {
+          //       this.route('edit-concept', { path: '/edit-concept/:conceptId' });
+          //     },
+          //   );
+        );
+      });
       this.route('shapes');
       this.route('related');
     });
