@@ -314,9 +314,9 @@ export default class CodelistFormComponent extends Component<Sig> {
   setIsEditingLabelWithUri(concept?: SkosConcept | CodeListValue | null) {
     if (this.args.goToEditConcept && concept) {
       this.args.goToEditConcept(concept);
-    }
-    if (concept !== undefined && concept && concept.uri !== undefined)
+    } else if (concept !== undefined && concept && concept.uri !== undefined) {
       this.isEditingLabelWithUri = concept && concept.uri;
+    }
   }
   @action
   updateNewValue(event: Event) {
