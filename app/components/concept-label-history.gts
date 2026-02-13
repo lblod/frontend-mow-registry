@@ -79,7 +79,7 @@ export default class ConceptLabelHistory extends Component<Sig> {
         <:body as |historyItem|>
           <td>
             {{#if historyItem.createdOn}}
-              {{format historyItem.createdOn 'dd-MM-yyyy hh:mm'}}
+              {{format historyItem.createdOn 'dd-MM-yyyy H:mm'}}
             {{/if}}
           </td>
           <td>
