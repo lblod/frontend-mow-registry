@@ -44,6 +44,8 @@ import { task } from 'ember-concurrency';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { recordIdentifierFor } from '@warp-drive/core';
 import { trackedFunction } from 'reactiveweb/function';
+import type CodeListValue from 'mow-registry/models/code-list-value';
+import type { RelatedCollection } from '@warp-drive/core/store/-private';
 
 interface Sig {
   Args: {
@@ -155,6 +157,19 @@ export default class EditVariableForm extends Component<Sig> {
   codelists = trackedFunction(this, async () => {
     return await this.codeListService.all.perform();
   });
+
+  orderConcepts = (concepts: RelatedCollection<SkosConcept>) => {
+    const codelistValues = Array.from(concepts) as unknown as CodeListValue[];
+    console.log(codelistValues);
+    return codelistValues.sort((a, b) => {
+      let positionA = a.position;
+      let positionB = b.position;
+      if (positionA === undefined) positionA = Number.MAX_VALUE;
+      if (positionB === undefined) positionB = Number.MAX_VALUE;
+      return positionA - positionB;
+    });
+  };
+
   <template>
     <AuModal @modalOpen={{true}} @closeModal={{@goBack}} @overflow={{true}}>
       <:title>
@@ -245,7 +260,7 @@ export default class EditVariableForm extends Component<Sig> {
                           </div>
                           <ul>
 
-                            {{#each concepts as |option|}}
+                            {{#each (this.orderConcepts concepts) as |option|}}
                               <li
                                 class='au-c-list-help__item'
                               >{{option.label}}</li>
