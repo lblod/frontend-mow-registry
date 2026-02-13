@@ -9,13 +9,13 @@ import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
 import { concat, fn, get } from '@ember/helper';
 import PowerSelect from 'ember-power-select/components/power-select';
-import AuTable from '@appuniversum/ember-appuniversum/components/au-table';
 import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
+import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import ErrorMessage from 'mow-registry/components/error-message';
 import EditConceptLabelModal from 'mow-registry/components/edit-concept-label-modal';
 import {
@@ -32,6 +32,9 @@ import type ConceptScheme from 'mow-registry/models/concept-scheme';
 import CodeListValue from 'mow-registry/models/code-list-value';
 import { isSome } from 'mow-registry/utils/option';
 import { findRecord, saveRecord } from '@warp-drive/legacy/compat/builders';
+import sortableHandle from 'ember-sortable/modifiers/sortable-handle';
+import sortableGroup from 'ember-sortable/modifiers/sortable-group';
+import sortableItem from 'ember-sortable/modifiers/sortable-item';
 import type { TOC } from '@ember/component/template-only';
 import { hash } from '@ember/helper';
 import type { ComponentLike, WithBoundArgs } from '@glint/template';
@@ -71,6 +74,7 @@ type Sig = {
           | 'addNewValue'
           | 'setIsEditingLabelWithUri'
           | 'updateNewValue'
+          | 'reorderItems'
         >;
       },
     ];
@@ -121,6 +125,15 @@ export default class CodelistFormComponent extends Component<Sig> {
 
   get isSaving() {
     return this.editCodelistTask.isRunning;
+  }
+
+  reorderItems(conceptValues?: CodeListValue[]) {
+    if (conceptValues) {
+      conceptValues.forEach(
+        (value: CodeListValue, index: number) => (value.position = index),
+      );
+      this.options = conceptValues;
+    }
   }
 
   setPositions(): void {
@@ -362,6 +375,7 @@ export default class CodelistFormComponent extends Component<Sig> {
               @setIsEditingLabelWithUri={{this.setIsEditingLabelWithUri}}
               @updateNewValue={{this.updateNewValue}}
               @addNewValue={{this.addNewValue}}
+              @reorderItems={{this.reorderItems}}
             />
           </div>
         </div>
@@ -388,6 +402,7 @@ export default class CodelistFormComponent extends Component<Sig> {
           addNewValue=this.addNewValue
           setIsEditingLabelWithUri=this.setIsEditingLabelWithUri
           updateNewValue=this.updateNewValue
+          reorderItems=this.reorderItems
         )
         FormControls=(component
           FormControls
@@ -445,6 +460,7 @@ type FormBodySig = {
     ) => void;
     addNewValue: (event: Event) => void;
     updateNewValue: (event: Event) => void;
+    reorderItems: (conceptValues?: CodeListValue[] | undefined) => void;
   };
 };
 
@@ -489,89 +505,97 @@ const FormBody: TOC<FormBodySig> = <template>
         </PowerSelect>
       {{/if}}
     </div>
-
-    <AuTable>
-      <:header>
-        <tr>
-          <th>
-            {{t 'codelist.attr.values'}}
-          </th>
-          <th class='w-px'>
-            <span class='au-u-hidden-visually'>
-              {{t 'codelist.crud.delete-value'}}
-            </span>
-          </th>
-        </tr>
-      </:header>
-      <:body>
-        {{#each @valueOptions as |option|}}
+    <div class='au-c-table-wrapper'>
+      <table class='au-c-table'>
+        <thead class='au-c-table__header'>
           <tr>
-            <td>
-              <div class='au-u-flex au-u-flex--vertical-center'>
-                <p class='max-w-prose'>
-                  {{option.label}}
-                </p>
-                {{#unless @codelist.isNew}}
-                  <AuButton
-                    @icon='pencil'
-                    @skin='naked'
-                    @hideText={{true}}
-                    {{on 'click' (fn @setIsEditingLabelWithUri option)}}
-                  />
-                {{/unless}}
-              </div>
-              {{#if (eq @isEditingLabelWithUri option.uri)}}
-                <EditConceptLabelModal
-                  @onCancel={{fn @setIsEditingLabelWithUri null}}
-                  @onSubmit={{fn @setIsEditingLabelWithUri null}}
-                  @concept={{option}}
-                />
-              {{/if}}
-            </td>
-            <td>
-              <AuButton
-                @icon='bin'
-                @alert={{true}}
-                @skin='secondary'
-                @hideText={{true}}
-                {{on 'click' (fn @removeOption option)}}
-              >
-                {{t 'utility.delete'}}
-              </AuButton>
-            </td>
+            <th class='data-table__header-title' />
+            <th class='data-table__header-title'>
+              {{t 'codelist.attr.values'}}
+            </th>
+            <th class='w-px data-table__header-title'>
+              <span class='au-u-hidden-visually'>
+                {{t 'codelist.crud.delete-value'}}
+              </span>
+            </th>
           </tr>
-        {{else}}
+        </thead>
+        <tbody
+          {{sortableGroup onChange=@reorderItems}}
+          class='au-c-table__body'
+        >
+          {{#each @valueOptions as |option|}}
+            <tr {{sortableItem model=option}}>
+              <td class='drag-handle' {{sortableHandle}}>
+                <AuIcon @icon='drag-handle' @size='large' />
+              </td>
+              <td>
+                <div class='au-u-flex au-u-flex--vertical-center'>
+                  <p class='max-w-prose'>
+                    {{option.label}}
+                  </p>
+                  {{#unless @codelist.isNew}}
+                    <AuButton
+                      @icon='pencil'
+                      @skin='naked'
+                      @hideText={{true}}
+                      {{on 'click' (fn @setIsEditingLabelWithUri option)}}
+                    />
+                  {{/unless}}
+                </div>
+                {{#if (eq @isEditingLabelWithUri option.uri)}}
+                  <EditConceptLabelModal
+                    @onCancel={{fn @setIsEditingLabelWithUri null}}
+                    @onSubmit={{fn @setIsEditingLabelWithUri null}}
+                    @concept={{option}}
+                  />
+                {{/if}}
+              </td>
+              <td>
+                <AuButton
+                  @icon='bin'
+                  @alert={{true}}
+                  @skin='secondary'
+                  @hideText={{true}}
+                  {{on 'click' (fn @removeOption option)}}
+                >
+                  {{t 'utility.delete'}}
+                </AuButton>
+              </td>
+            </tr>
+          {{else}}
+            <tr>
+              <td colspan='2'>
+                {{t 'codelist.crud.no-value'}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+        <tfoot class='au-c-table__footer'>
           <tr>
             <td colspan='2'>
-              {{t 'codelist.crud.no-value'}}
+              <div
+                class='au-u-flex au-u-flex--vertical-centered au-u-flex--spaced-small'
+              >
+                <AuInput
+                  id='values'
+                  required='required'
+                  value={{@newValue}}
+                  @width='block'
+                  {{on 'input' @updateNewValue}}
+                />
+                <AuButton
+                  class='no-flex-shrink'
+                  @disabled={{not @newValue.length}}
+                  {{on 'click' @addNewValue}}
+                >
+                  {{t 'codelist.crud.add-value'}}
+                </AuButton>
+              </div>
             </td>
           </tr>
-        {{/each}}
-      </:body>
-      <:footer>
-        <tr>
-          <td colspan='2'>
-            <div
-              class='au-u-flex au-u-flex--vertical-centered au-u-flex--spaced-small'
-            >
-              <AuInput
-                id='values'
-                required='required'
-                value={{@newValue}}
-                @width='block'
-                {{on 'input' @updateNewValue}}
-              />
-              <AuButton
-                class='no-flex-shrink'
-                @disabled={{not @newValue.length}}
-                {{on 'click' @addNewValue}}
-              >
-                {{t 'codelist.crud.add-value'}}
-              </AuButton>
-            </div>
-          </td>
-        </tr>
-      </:footer>
-    </AuTable>
+        </tfoot>
+      </table>
+    </div>
   </form>
 </template>;
