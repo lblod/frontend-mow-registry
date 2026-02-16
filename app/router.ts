@@ -67,17 +67,15 @@ Router.map(function () {
         this.route('edit', { path: '/:instructionId' });
       });
       this.route('variables', function () {
-        this.route(
-          'edit',
-          { path: '/edit/:variableId' }, //, function () {
-          //   this.route(
-          //     'edit-codelist',
-          //     { path: '/edit-codelist/:codelistId' },
-          //     function () {
-          //       this.route('edit-concept', { path: '/edit-concept/:conceptId' });
-          //     },
-          //   );
-        );
+        this.route('edit', { path: '/edit/:variableId' }, function () {
+          this.route(
+            'edit-codelist',
+            { path: '/edit-codelist/:codelistId' },
+            function () {
+              this.route('edit-concept', { path: '/edit-concept/:conceptId' });
+            },
+          );
+        });
       });
       this.route('shapes');
       this.route('related');

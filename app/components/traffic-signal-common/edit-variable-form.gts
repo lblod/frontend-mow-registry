@@ -110,7 +110,6 @@ export default class EditVariableForm extends Component<Sig> {
       this.variableToEdit.unloadRecord();
     }
     this.variableToEditReplaced = newVar;
-    console.log(this.variableToEdit);
   };
 
   updateCodelist = (codeList: CodeList) => {
@@ -161,7 +160,6 @@ export default class EditVariableForm extends Component<Sig> {
 
   orderConcepts = (concepts: RelatedCollection<SkosConcept>) => {
     const codelistValues = Array.from(concepts) as unknown as CodeListValue[];
-    console.log(codelistValues);
     return codelistValues.sort((a, b) => {
       let positionA = a.position;
       let positionB = b.position;
