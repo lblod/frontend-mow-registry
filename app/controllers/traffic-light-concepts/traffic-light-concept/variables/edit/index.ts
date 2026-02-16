@@ -4,7 +4,7 @@ import { service } from '@ember/service';
 import type { Store } from '@warp-drive/core';
 import CodeList from 'mow-registry/models/code-list';
 
-export default class RoadSignConceptVariablesEditController extends Controller {
+export default class TrafficLightConceptVariablesEditController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
 

@@ -9,7 +9,7 @@ type Params = {
   conceptId: string;
 };
 
-export default class RoadSignConceptsRoadSignConceptMainSignsRoute extends Route {
+export default class TrafficLightConceptsTrafficLightConceptVariablesEditEditCodelistEditConceptRoute extends Route {
   @service declare store: Store;
 
   async model(params: Params) {

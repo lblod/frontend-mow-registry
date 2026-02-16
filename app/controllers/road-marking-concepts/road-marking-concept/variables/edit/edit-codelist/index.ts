@@ -3,7 +3,7 @@ import type RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import type CodeList from 'mow-registry/models/code-list';
 
-export default class RoadSignConceptVariablesEditController extends Controller {
+export default class RoadSignConceptVariablesEditEditCodelistController extends Controller {
   @service declare router: RouterService;
 
   goBack = () => {

@@ -11,7 +11,7 @@ type Params = {
   variableId: string;
 };
 
-export default class RoadSignConceptsRoadSignConceptMainSignsRoute extends Route {
+export default class RoadMarkingConceptsRoadMarkingConceptVariablesEditRoute extends Route {
   @service declare store: Store;
 
   async model(params: Params) {

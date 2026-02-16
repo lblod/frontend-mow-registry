@@ -4,7 +4,7 @@ import type RoadSignConcept from '../road-sign-concept';
 import type { Store } from '@warp-drive/core';
 import { service } from '@ember/service';
 
-export default class RoadSignConceptsRoadSignConceptMainSignsRoute extends Route {
+export default class RoadSignConceptsRoadSignConceptVariablesRoute extends Route {
   @service declare store: Store;
 
   model() {
