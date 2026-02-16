@@ -1,9 +1,7 @@
 import { cached, tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import type CodeList from 'mow-registry/models/code-list';
 import Variable, {
   signVariableTypes,
-  type SignVariableType,
   type VariableType,
 } from 'mow-registry/models/variable';
 import type CodelistsService from 'mow-registry/services/codelists';
@@ -27,8 +25,7 @@ import { isDateVariable } from 'mow-registry/models/date-variable';
 import { isNumberVariable } from 'mow-registry/models/number-variable';
 import { format } from 'date-fns';
 import * as locales from 'date-fns/locale';
-import { recordIdentifierFor } from '@warp-drive/core';
-import { query, saveRecord } from '@warp-drive/legacy/compat/builders';
+import { query } from '@warp-drive/legacy/compat/builders';
 import { task } from 'ember-concurrency';
 
 interface Signature {
@@ -85,115 +82,6 @@ export default class VariableManager extends Component<Signature> {
     return variables;
   });
 
-  startAddVariable = () => {
-    this.isEditVariableModalOpen = true;
-    this.variableToEdit = this.store.createRecord<Variable>('text-variable', {
-      trafficSignalConcept: this.args.trafficSignal,
-      createdOn: new Date(),
-    });
-    this.variableToDelete = undefined;
-  };
-
-  startEditVariable = (variable: Variable) => {
-    this.isEditVariableModalOpen = true;
-    this.variableToEdit = variable;
-    this.variableToDelete = undefined;
-  };
-
-  saveVariable = task(async () => {
-    const valid = await this.variableToEdit?.validate();
-    if (!valid) return;
-    if (this.variableToEdit) {
-      await this.store.request(saveRecord(this.variableToEdit));
-    }
-    await this.variableToDelete?.destroyRecord();
-    this.variables.retry();
-    this.closeEditVariableModal();
-  });
-
-  cancelEditVariable = () => {
-    if (this.saveVariable.isRunning) {
-      return;
-    }
-    if (this.variableToEdit) {
-      this.store.cache.rollbackRelationships(
-        recordIdentifierFor(this.variableToEdit),
-      );
-      this.store.cache.rollbackAttrs(recordIdentifierFor(this.variableToEdit));
-      if (this.variableToEdit.isNew) {
-        this.variableToEdit.unloadRecord();
-      }
-    }
-    if (this.variableToDelete) {
-      this.store.cache.rollbackRelationships(
-        recordIdentifierFor(this.variableToDelete),
-      );
-      this.store.cache.rollbackAttrs(
-        recordIdentifierFor(this.variableToDelete),
-      );
-    }
-    this.closeEditVariableModal();
-  };
-
-  closeEditVariableModal = () => {
-    this.variableToEdit = undefined;
-    this.variableToDelete = undefined;
-    this.isEditVariableModalOpen = false;
-  };
-
-  setVariableLabel = (event: Event) => {
-    if (!this.variableToEdit) {
-      return;
-    }
-    const newLabel = (event.target as HTMLInputElement).value;
-    this.variableToEdit.label = newLabel;
-  };
-
-  toggleVariableRequired = () => {
-    if (!this.variableToEdit) {
-      return;
-    }
-    this.variableToEdit.required = !this.variableToEdit.required;
-  };
-
-  setVariableType = async (selectedType: SignVariableType) => {
-    if (!this.variableToEdit) {
-      return;
-    }
-    if (!this.variableToEdit.isNew) {
-      // If the variable that is being edited exists in the database, mark that one for deletion
-      this.variableToDelete = this.variableToEdit;
-    }
-    const labelModified =
-      (this.variableToEdit.type &&
-        this.variableToEdit.label !==
-          this.variablesService.defaultLabelForVariableType(
-            this.variableToEdit.type,
-          )) ||
-      (!this.variableToEdit.type && this.variableToEdit.label);
-
-    const newVar = (await this.variablesService.convertVariableType(
-      this.variableToEdit,
-      selectedType,
-    )) as Variable;
-    if (!labelModified) {
-      newVar.label =
-        this.variablesService.defaultLabelForVariableType(selectedType);
-    }
-    if (this.variableToEdit.isNew) {
-      // If the variable that is being edited does not exist in the database, simply unload it from the store
-      this.variableToEdit.unloadRecord();
-    }
-    this.variableToEdit = newVar;
-  };
-
-  updateCodelist = (codeList: CodeList) => {
-    if (isCodelistVariable(this.variableToEdit)) {
-      this.variableToEdit.set('codeList', codeList);
-      this.variableToEdit.set('defaultValue', null);
-    }
-  };
-
   startDeleteVariableFlow = (variable: Variable) => {
     this.variableToDelete = variable;
     this.isDeleteConfirmationOpen = true;
@@ -226,7 +114,7 @@ export default class VariableManager extends Component<Signature> {
             <AuButton
               @skin='secondary'
               @icon='plus'
-              {{on 'click' this.startAddVariable}}
+              {{on 'click' (fn @goToEditVariable undefined)}}
               class='au-u-margin-small'
             >
               {{t 'utility.add-variable'}}

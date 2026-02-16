@@ -3,9 +3,9 @@ import type { Store } from '@warp-drive/core';
 import { service } from '@ember/service';
 import { findRecord } from '@warp-drive/legacy/compat/builders';
 import type Variable from 'mow-registry/models/variable';
-import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
-import type RoadSignConceptRoute from '../../road-sign-concept';
+import type RoadMarkingConceptRoute from '../../road-marking-concept';
+import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 
 type Params = {
   variableId: string;
@@ -15,13 +15,13 @@ export default class RoadSignConceptsRoadSignConceptMainSignsRoute extends Route
   @service declare store: Store;
 
   async model(params: Params) {
-    const { roadSignConcept } = this.modelFor(
-      'road-sign-concepts.road-sign-concept',
-    ) as ModelFrom<RoadSignConceptRoute>;
+    const { roadMarkingConcept } = this.modelFor(
+      'road-marking-concepts.road-marking-concept',
+    ) as ModelFrom<RoadMarkingConceptRoute>;
     let variable;
     if (params.variableId === 'new') {
       variable = this.store.createRecord<Variable>('text-variable', {
-        trafficSignalConcept: roadSignConcept as TrafficSignalConcept,
+        trafficSignalConcept: roadMarkingConcept as TrafficSignalConcept,
         createdOn: new Date(),
       });
     } else {

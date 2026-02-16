@@ -57,7 +57,7 @@ interface Sig {
 
 export default class EditVariableForm extends Component<Sig> {
   @tracked variableToDelete?: Variable;
-  variableToEditReplaced?: Variable;
+  @tracked variableToEditReplaced?: Variable;
   @service('codelists') declare codeListService: CodelistsService;
   @service declare store: Store;
   @service declare variablesService: VariablesService;
@@ -110,6 +110,7 @@ export default class EditVariableForm extends Component<Sig> {
       this.variableToEdit.unloadRecord();
     }
     this.variableToEditReplaced = newVar;
+    console.log(this.variableToEdit);
   };
 
   updateCodelist = (codeList: CodeList) => {

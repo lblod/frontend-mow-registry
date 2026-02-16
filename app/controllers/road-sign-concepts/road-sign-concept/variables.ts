@@ -22,7 +22,7 @@ export default class RoadSignConceptVariablesController extends Controller {
   goToEditVariable = (variable?: Variable) => {
     this.router.transitionTo(
       'road-sign-concepts.road-sign-concept.variables.edit',
-      variable?.id,
+      variable?.id || 'new',
     );
   };
 }
