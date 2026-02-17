@@ -277,7 +277,11 @@ export default class CodelistFormComponent extends Component<Sig> {
   @action
   cancelEditingTask() {
     if (this.args.codelist.isNew) {
-      this.router.transitionTo('codelists-management');
+      if (this.args.customCallback) {
+        this.args.customCallback();
+      } else {
+        this.router.transitionTo('codelists-management');
+      }
     } else {
       for (let i = 0; i < this.options.length; i++) {
         const option = this.options[i];
