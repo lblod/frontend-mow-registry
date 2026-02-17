@@ -140,9 +140,6 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
       </:body>
       <:footer>
         <AuButtonGroup>
-          <AuButton @skin='secondary' {{on 'click' @onCancel}}>
-            {{t 'utility.cancel'}}
-          </AuButton>
           <AuButton
             type='submit'
             form='change-concept-label-form'
@@ -150,6 +147,9 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
             @disabled={{this.isSubmitDisabled}}
           >
             {{t 'utility.save'}}
+          </AuButton>
+          <AuButton @skin='secondary' {{on 'click' @onCancel}}>
+            {{t 'utility.cancel'}}
           </AuButton>
         </AuButtonGroup>
       </:footer>
