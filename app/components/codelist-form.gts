@@ -53,7 +53,7 @@ type Sig = {
       {
         FormControls: WithBoundArgs<
           ComponentLike<FormControlsSig>,
-          'codelist' | 'isSaving' | 'editCodelistTask' | 'cancelEditingTask'
+          'codelist' | 'editCodelistTask' | 'cancelEditingTask'
         >;
         FormBody: WithBoundArgs<
           ComponentLike<FormBodySig>,
@@ -121,10 +121,6 @@ export default class CodelistFormComponent extends Component<Sig> {
 
   get iconOptions() {
     return this.options?.filter((model) => model instanceof Icon) ?? [];
-  }
-
-  get isSaving() {
-    return this.editCodelistTask.isRunning;
   }
 
   reorderItems(conceptValues?: CodeListValue[]) {
@@ -344,7 +340,6 @@ export default class CodelistFormComponent extends Component<Sig> {
         <Group>
           <FormControls
             @codelist={{@codelist}}
-            @isSaving={{this.isSaving}}
             @editCodelistTask={{this.editCodelistTask}}
             @cancelEditingTask={{this.cancelEditingTask}}
           />
@@ -407,7 +402,6 @@ export default class CodelistFormComponent extends Component<Sig> {
         FormControls=(component
           FormControls
           codelist=@codelist
-          isSaving=this.isSaving
           editCodelistTask=this.editCodelistTask
           cancelEditingTask=this.cancelEditingTask
         )
@@ -419,7 +413,6 @@ export default class CodelistFormComponent extends Component<Sig> {
 type FormControlsSig = {
   Args: {
     codelist: CodeList;
-    isSaving: boolean;
     editCodelistTask: Task<void, [CodeList, Event]>;
     cancelEditingTask: () => void;
   };
@@ -428,7 +421,8 @@ type FormControlsSig = {
 const FormControls: TOC<FormControlsSig> = <template>
   <AuButtonGroup>
     <AuButton
-      @disabled={{or (isSome @codelist.error) @isSaving}}
+      @disabled={{or (isSome @codelist.error) @editCodelistTask.isRunning}}
+      @loading={{@editCodelistTask.isRunning}}
       {{on 'click' (perform @editCodelistTask @codelist)}}
     >
       {{t 'utility.save'}}
