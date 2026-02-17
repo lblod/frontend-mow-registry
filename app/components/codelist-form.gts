@@ -534,13 +534,16 @@ const FormBody: TOC<FormBodySig> = <template>
                   <p class='max-w-prose'>
                     {{option.label}}
                   </p>
+
                   {{#unless @codelist.isNew}}
-                    <AuButton
-                      @icon='pencil'
-                      @skin='naked'
-                      @hideText={{true}}
-                      {{on 'click' (fn @setIsEditingLabelWithUri option)}}
-                    />
+                    <div>
+                      <AuButton
+                        @icon='pencil'
+                        @skin='naked'
+                        @hideText={{true}}
+                        {{on 'click' (fn @setIsEditingLabelWithUri option)}}
+                      />
+                    </div>
                   {{/unless}}
                 </div>
                 {{#if (eq @isEditingLabelWithUri option.uri)}}
