@@ -11,10 +11,10 @@ import { on } from '@ember/modifier';
 type Sig = {
   Args: {
     modalOpen: boolean;
-    closeModal: () => void;
+    onCloseModal: () => void;
     codelist?: CodeList;
-    goToEditConcept: (concept?: SkosConcept | CodeListValue) => void;
-    goBack: () => void;
+    onGoToEditConcept: (concept?: SkosConcept | CodeListValue) => void;
+    onGoBack: () => void;
   };
 };
 
@@ -26,17 +26,17 @@ const CodelistManager: TOC<Sig> = <template>
         @codelist={{@codelist}}
         @customHeading={{true}}
         @customBody={{true}}
-        @customCallback={{@goBack}}
-        @goToEditConcept={{@goToEditConcept}}
+        @customCallback={{@onGoBack}}
+        @goToEditConcept={{@onGoToEditConcept}}
         as |form|
       >
-        <AuModal @modalOpen={{@modalOpen}} @closeModal={{@closeModal}}>
+        <AuModal @modalOpen={{@modalOpen}} @closeModal={{@onCloseModal}}>
           <:title>
             {{t 'utility.confirmation.title'}}
           </:title>
           <:body>
             <AuButton
-              {{on 'click' @goBack}}
+              {{on 'click' @onGoBack}}
               @skin='link'
               @icon='chevron-left'
               class='au-u-margin-bottom'

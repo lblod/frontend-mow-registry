@@ -50,8 +50,8 @@ import type { RelatedCollection } from '@warp-drive/core/store/-private';
 interface Sig {
   Args: {
     variable: Variable;
-    goBack: () => void;
-    goToEditCodelist: (codelist?: CodeList) => void;
+    onGoBack: () => void;
+    onGoToEditCodelist: (codelist?: CodeList) => void;
   };
 }
 
@@ -125,7 +125,7 @@ export default class EditVariableForm extends Component<Sig> {
       await this.store.request(saveRecord(this.variableToEdit));
     }
     await this.variableToDelete?.destroyRecord();
-    this.args.goBack();
+    this.args.onGoBack();
   });
 
   cancelEditVariable = () => {
@@ -149,7 +149,7 @@ export default class EditVariableForm extends Component<Sig> {
         recordIdentifierFor(this.variableToDelete),
       );
     }
-    this.args.goBack();
+    this.args.onGoBack();
   };
   labelForType = (variableType: VariableType) => {
     return this.variablesService.defaultLabelForVariableType(variableType);
@@ -170,7 +170,7 @@ export default class EditVariableForm extends Component<Sig> {
   };
 
   <template>
-    <AuModal @modalOpen={{true}} @closeModal={{@goBack}} @overflow={{true}}>
+    <AuModal @modalOpen={{true}} @closeModal={{@onGoBack}} @overflow={{true}}>
       <:title>
         {{#if (and this.variableToEdit.isNew (not this.variableToDelete))}}
           {{t 'utility.add-variable'}}
@@ -254,7 +254,7 @@ export default class EditVariableForm extends Component<Sig> {
                             <AuButton
                               @icon='pencil'
                               @skin='link'
-                              {{on 'click' (fn @goToEditCodelist codelist)}}
+                              {{on 'click' (fn @onGoToEditCodelist codelist)}}
                             >{{t 'variable-manager.edit-codelist'}}</AuButton>
                           </div>
                           <ul>
@@ -273,7 +273,7 @@ export default class EditVariableForm extends Component<Sig> {
                     {{t 'variable-manager.no-codelist-found-question'}}
                     <AuButton
                       @skin='link'
-                      {{on 'click' (fn @goToEditCodelist undefined)}}
+                      {{on 'click' (fn @onGoToEditCodelist undefined)}}
                     >{{t 'variable-manager.new-codelist'}}</AuButton>
                   </p>
                 </:success>
