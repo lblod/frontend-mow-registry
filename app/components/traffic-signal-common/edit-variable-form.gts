@@ -248,15 +248,17 @@ export default class EditVariableForm extends Component<Sig> {
                     <Await @promise={{codelist.concepts}}>
                       <:success as |concepts|>
                         <div
+                          class='au-u-flex au-u-flex--end au-u-1-1 au-u-margin-top-small'
+                        >
+                          <AuButton
+                            @icon='pencil'
+                            @skin='link'
+                            {{on 'click' (fn @onGoToEditCodelist codelist)}}
+                          >{{t 'variable-manager.edit-codelist'}}</AuButton>
+                        </div>
+                        <div
                           class='au-c-list-help au-c-help-text au-c-help-text--secondary au-u-1-1'
                         >
-                          <div class='au-u-flex au-u-flex--end'>
-                            <AuButton
-                              @icon='pencil'
-                              @skin='link'
-                              {{on 'click' (fn @onGoToEditCodelist codelist)}}
-                            >{{t 'variable-manager.edit-codelist'}}</AuButton>
-                          </div>
                           <ul class='edit-variable-form--codelist-container'>
 
                             {{#each (this.orderConcepts concepts) as |option|}}
