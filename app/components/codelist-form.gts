@@ -478,7 +478,6 @@ const FormBody: TOC<FormBodySig> = <template>
           @error={{isSome error}}
           @width='block'
           id='label'
-          required='required'
           value={{@codelist.label}}
           {{on 'input' (fn @setCodelistValue 'label')}}
         />
@@ -580,7 +579,6 @@ const FormBody: TOC<FormBodySig> = <template>
               >
                 <AuInput
                   id='values'
-                  required='required'
                   value={{@newValue}}
                   @width='block'
                   {{on 'input' @updateNewValue}}
