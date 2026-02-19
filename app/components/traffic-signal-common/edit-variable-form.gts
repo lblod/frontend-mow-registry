@@ -257,7 +257,7 @@ export default class EditVariableForm extends Component<Sig> {
                               {{on 'click' (fn @onGoToEditCodelist codelist)}}
                             >{{t 'variable-manager.edit-codelist'}}</AuButton>
                           </div>
-                          <ul>
+                          <ul class='edit-variable-form--codelist-container'>
 
                             {{#each (this.orderConcepts concepts) as |option|}}
                               <li
