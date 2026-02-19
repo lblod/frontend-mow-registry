@@ -402,5 +402,6 @@ variable-manager:
         select: Select default value
 codelist-form:
   go-back: Back to edit variable
+  modal-title: Edit codelist
 edit-concept-label:
   go-back: Back to edit codelist

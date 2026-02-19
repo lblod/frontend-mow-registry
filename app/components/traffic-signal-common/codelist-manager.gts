@@ -32,7 +32,7 @@ const CodelistManager: TOC<Sig> = <template>
       >
         <AuModal @modalOpen={{@modalOpen}} @closeModal={{@onCloseModal}}>
           <:title>
-            {{t 'utility.confirmation.title'}}
+            {{t 'codelist-form.modal-title'}}
           </:title>
           <:body>
             <AuButton
