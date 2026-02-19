@@ -24,8 +24,8 @@ const CodelistManager: TOC<Sig> = <template>
     {{#if @modalOpen}}
       <CodelistForm
         @codelist={{@codelist}}
-        @customHeading={{true}}
-        @customBody={{true}}
+        @hideHeading={{true}}
+        @hideBody={{true}}
         @customCallback={{@onGoBack}}
         @goToEditConcept={{@onGoToEditConcept}}
         as |form|

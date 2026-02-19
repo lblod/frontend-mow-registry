@@ -43,8 +43,8 @@ import type CodelistsService from 'mow-registry/services/codelists';
 type Sig = {
   Args: {
     codelist: CodeList;
-    customHeading: boolean;
-    customBody: boolean;
+    hideHeading: boolean;
+    hideBody: boolean;
     customCallback?: (codelist?: CodeList) => void;
     goToEditConcept?: (concept?: SkosConcept | CodeListValue) => void;
   };
@@ -329,7 +329,7 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   <template>
-    {{#unless @customHeading}}
+    {{#unless @hideHeading}}
       <AuToolbar @border='bottom' @size='large' as |Group|>
         <Group>
           <AuHeading @skin='2'>
@@ -351,7 +351,7 @@ export default class CodelistFormComponent extends Component<Sig> {
       </AuToolbar>
     {{/unless}}
 
-    {{#unless @customBody}}
+    {{#unless @hideBody}}
 
       <div class='au-c-body-container au-c-body-container--scroll'>
         <div class='au-u-max-width-small'>
