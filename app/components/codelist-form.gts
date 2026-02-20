@@ -45,8 +45,8 @@ type Sig = {
     codelist: CodeList;
     hideHeading: boolean;
     hideBody: boolean;
-    customCallback?: (codelist?: CodeList) => void;
-    goToEditConcept?: (concept?: SkosConcept | CodeListValue) => void;
+    onNavigateAway?: (codelist?: CodeList) => void;
+    onGoToEditConcept?: (concept?: SkosConcept | CodeListValue) => void;
   };
   Blocks: {
     default: [
@@ -263,8 +263,8 @@ export default class CodelistFormComponent extends Component<Sig> {
       );
       await this.store.request(saveRecord(codelist));
       await this.codeListService.all.perform(true);
-      if (this.args.customCallback) {
-        this.args.customCallback(codelist);
+      if (this.args.onNavigateAway) {
+        this.args.onNavigateAway(codelist);
       } else {
         await this.router.transitionTo(
           'codelists-management.codelist',
@@ -277,8 +277,8 @@ export default class CodelistFormComponent extends Component<Sig> {
   @action
   cancelEditingTask() {
     if (this.args.codelist.isNew) {
-      if (this.args.customCallback) {
-        this.args.customCallback();
+      if (this.args.onNavigateAway) {
+        this.args.onNavigateAway();
       } else {
         this.router.transitionTo('codelists-management');
       }
@@ -299,8 +299,8 @@ export default class CodelistFormComponent extends Component<Sig> {
         }
       }
 
-      if (this.args.customCallback) {
-        this.args.customCallback();
+      if (this.args.onNavigateAway) {
+        this.args.onNavigateAway();
       } else {
         this.router.transitionTo(
           'codelists-management.codelist',
@@ -312,8 +312,8 @@ export default class CodelistFormComponent extends Component<Sig> {
 
   @action
   setIsEditingLabelWithUri(concept?: SkosConcept | CodeListValue | null) {
-    if (this.args.goToEditConcept && concept) {
-      this.args.goToEditConcept(concept);
+    if (this.args.onGoToEditConcept && concept) {
+      this.args.onGoToEditConcept(concept);
     } else if (concept !== undefined && concept && concept.uri !== undefined) {
       this.isEditingLabelWithUri = concept && concept.uri;
     }

@@ -26,8 +26,8 @@ const CodelistManager: TOC<Sig> = <template>
         @codelist={{@codelist}}
         @hideHeading={{true}}
         @hideBody={{true}}
-        @customCallback={{@onGoBack}}
-        @goToEditConcept={{@onGoToEditConcept}}
+        @onNavigateAway={{@onGoBack}}
+        @onGoToEditConcept={{@onGoToEditConcept}}
         as |form|
       >
         <AuModal @modalOpen={{@modalOpen}} @closeModal={{@onCloseModal}}>
