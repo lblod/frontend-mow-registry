@@ -10,6 +10,7 @@ import Component from '@glimmer/component';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import ReactiveTable from 'mow-registry/components/reactive-table';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
@@ -158,15 +159,17 @@ export default class VariableManager extends Component<Signature> {
           <td>
             <AuButton
               @skin='naked'
-              @icon='pencil'
               {{on 'click' (fn @goToEditVariable variable)}}
-            />
+            >
+              <AuIcon @icon='pencil' @size='large' />
+            </AuButton>
             <AuButton
               @skin='naked'
               @alert={{true}}
-              @icon='trash'
               {{on 'click' (fn this.startDeleteVariableFlow variable)}}
-            />
+            >
+              <AuIcon @icon='trash' @size='large' />
+            </AuButton>
           </td>
 
         </:body>
