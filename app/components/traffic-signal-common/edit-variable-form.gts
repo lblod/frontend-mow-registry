@@ -47,6 +47,7 @@ import { recordIdentifierFor } from '@warp-drive/core';
 import { trackedFunction } from 'reactiveweb/function';
 import type CodeListValue from 'mow-registry/models/code-list-value';
 import type { RelatedCollection } from '@warp-drive/core/store/-private';
+import { ConfirmationModalFooter } from 'mow-registry/components/confirmation-modal-footer';
 
 interface Sig {
   Args: {
@@ -306,19 +307,25 @@ export default class EditVariableForm extends Component<Sig> {
         </div>
       </:body>
       <:footer>
-        <AuButton
-          {{on 'click' this.saveVariable.perform}}
-          @loading={{this.saveVariable.isRunning}}
-        >
-          {{t 'utility.save'}}
-        </AuButton>
-        <AuButton
-          @skin='secondary'
-          {{on 'click' this.cancelEditVariable}}
-          @disabled={{this.saveVariable.isRunning}}
-        >
-          {{t 'utility.cancel'}}
-        </AuButton>
+        <ConfirmationModalFooter>
+          <:cancelButton>
+            <AuButton
+              @skin='secondary'
+              {{on 'click' this.cancelEditVariable}}
+              @disabled={{this.saveVariable.isRunning}}
+            >
+              {{t 'utility.cancel'}}
+            </AuButton>
+          </:cancelButton>
+          <:confirmButton>
+            <AuButton
+              {{on 'click' this.saveVariable.perform}}
+              @loading={{this.saveVariable.isRunning}}
+            >
+              {{t 'utility.save'}}
+            </AuButton>
+          </:confirmButton>
+        </ConfirmationModalFooter>
       </:footer>
     </AuModal>
   </template>

@@ -2,7 +2,6 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
-import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import AuTextarea from '@appuniversum/ember-appuniversum/components/au-textarea';
@@ -20,6 +19,7 @@ import Store from 'mow-registry/services/store';
 import { inject as service } from '@ember/service';
 import type ConceptLabelChangeNote from 'mow-registry/models/concept-label-change-note';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
+import { ConfirmationModalFooter } from 'mow-registry/components/confirmation-modal-footer';
 
 type Sig = {
   Args: {
@@ -139,19 +139,23 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
         </form>
       </:body>
       <:footer>
-        <AuButtonGroup>
-          <AuButton
-            type='submit'
-            form='change-concept-label-form'
-            @loading={{this.submitNewLabel.isRunning}}
-            @disabled={{this.isSubmitDisabled}}
-          >
-            {{t 'utility.save'}}
-          </AuButton>
-          <AuButton @skin='secondary' {{on 'click' @onCancel}}>
-            {{t 'utility.cancel'}}
-          </AuButton>
-        </AuButtonGroup>
+        <ConfirmationModalFooter>
+          <:cancelButton>
+            <AuButton @skin='secondary' {{on 'click' @onCancel}}>
+              {{t 'utility.cancel'}}
+            </AuButton>
+          </:cancelButton>
+          <:confirmButton>
+            <AuButton
+              type='submit'
+              form='change-concept-label-form'
+              @loading={{this.submitNewLabel.isRunning}}
+              @disabled={{this.isSubmitDisabled}}
+            >
+              {{t 'utility.save'}}
+            </AuButton>
+          </:confirmButton>
+        </ConfirmationModalFooter>
       </:footer>
     </AuModal>
   </template>

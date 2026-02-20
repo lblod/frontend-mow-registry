@@ -11,13 +11,13 @@ import { concat, fn, get } from '@ember/helper';
 import PowerSelect from 'ember-power-select/components/power-select';
 import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
-import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
 import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import ErrorMessage from 'mow-registry/components/error-message';
 import EditConceptLabelModal from 'mow-registry/components/edit-concept-label-modal';
+import { ConfirmationModalFooter } from 'mow-registry/components/confirmation-modal-footer';
 import {
   COD_SINGLE_SELECT_ID,
   COD_CONCEPT_SCHEME_ID,
@@ -423,18 +423,22 @@ type FormControlsSig = {
 };
 
 const FormControls: TOC<FormControlsSig> = <template>
-  <AuButtonGroup>
-    <AuButton
-      @disabled={{or (isSome @codelist.error) @editCodelistTask.isRunning}}
-      @loading={{@editCodelistTask.isRunning}}
-      {{on 'click' (perform @editCodelistTask @codelist)}}
-    >
-      {{t 'utility.save'}}
-    </AuButton>
-    <AuButton @skin='secondary' {{on 'click' @cancelEditingTask}}>
-      {{t 'utility.cancel'}}
-    </AuButton>
-  </AuButtonGroup>
+  <ConfirmationModalFooter>
+    <:cancelButton>
+      <AuButton @skin='secondary' {{on 'click' @cancelEditingTask}}>
+        {{t 'utility.cancel'}}
+      </AuButton>
+    </:cancelButton>
+    <:confirmButton>
+      <AuButton
+        @disabled={{or (isSome @codelist.error) @editCodelistTask.isRunning}}
+        @loading={{@editCodelistTask.isRunning}}
+        {{on 'click' (perform @editCodelistTask @codelist)}}
+      >
+        {{t 'utility.save'}}
+      </AuButton>
+    </:confirmButton>
+  </ConfirmationModalFooter>
 </template>;
 
 type FormBodySig = {
