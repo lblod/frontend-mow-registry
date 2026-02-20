@@ -19,6 +19,7 @@ export default class TrafficLightConceptVariablesController extends Controller {
   onSortChange = (newSort: string) => {
     this.sort = newSort;
   };
+
   goToEditVariable = (variable?: Variable) => {
     this.router.transitionTo(
       'traffic-light-concepts.traffic-light-concept.variables.edit',

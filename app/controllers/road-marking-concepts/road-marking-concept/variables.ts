@@ -20,6 +20,7 @@ export default class RoadMarkingConceptVariablesController extends Controller {
   onSortChange = (newSort: string) => {
     this.sort = newSort;
   };
+
   goToEditVariable = (variable?: Variable) => {
     this.router.transitionTo(
       'road-marking-concepts.road-marking-concept.variables.edit',

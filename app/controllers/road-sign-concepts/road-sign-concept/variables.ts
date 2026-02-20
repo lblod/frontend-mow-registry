@@ -19,6 +19,7 @@ export default class RoadSignConceptVariablesController extends Controller {
   onSortChange = (newSort: string) => {
     this.sort = newSort;
   };
+
   goToEditVariable = (variable?: Variable) => {
     this.router.transitionTo(
       'road-sign-concepts.road-sign-concept.variables.edit',
