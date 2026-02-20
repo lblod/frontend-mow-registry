@@ -4,7 +4,7 @@ import type TrafficLightConcept from '../traffic-light-concept';
 import type { Store } from '@warp-drive/core';
 import { service } from '@ember/service';
 
-export default class TrafficLightConceptsTrafficLightConceptMainSignsRoute extends Route {
+export default class TrafficLightConceptsTrafficLightConceptVariablesRoute extends Route {
   @service declare store: Store;
 
   model() {

@@ -11,8 +11,8 @@ export default class CodelistsService extends Service {
 
   @service declare store: Store;
 
-  all = task(async () => {
-    if (!this.codeLists) {
+  all = task(async (refresh?: boolean) => {
+    if (!this.codeLists || refresh) {
       try {
         const codeLists = await this.store
           .request(
