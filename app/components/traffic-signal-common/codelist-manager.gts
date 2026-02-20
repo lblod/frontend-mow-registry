@@ -6,6 +6,7 @@ import type { TOC } from '@ember/component/template-only';
 import type SkosConcept from 'mow-registry/models/skos-concept';
 import type CodeListValue from 'mow-registry/models/code-list-value';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 import { on } from '@ember/modifier';
 
 type Sig = {
@@ -35,14 +36,18 @@ const CodelistManager: TOC<Sig> = <template>
             {{t 'codelist-form.modal-title'}}
           </:title>
           <:body>
-            <AuButton
-              {{on 'click' @onGoBack}}
-              @skin='link'
-              @icon='chevron-left'
-              class='au-u-margin-bottom'
-            >
-              {{t 'codelist-form.go-back'}}
-            </AuButton>
+            <AuToolbar class='au-u-margin-bottom' @skin='tint' as |Group|>
+              <Group>
+                <AuButton
+                  class='au-u-padding'
+                  {{on 'click' @onGoBack}}
+                  @skin='link'
+                  @icon='chevron-left'
+                >
+                  {{t 'codelist-form.go-back'}}
+                </AuButton>
+              </Group>
+            </AuToolbar>
             <form.FormBody />
           </:body>
           <:footer>
