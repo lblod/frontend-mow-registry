@@ -13,6 +13,7 @@ import CodelistVariable, {
 } from 'mow-registry/models/codelist-variable';
 import { Await, getPromiseState } from '@warp-drive/ember';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import AuList from '@appuniversum/ember-appuniversum/components/au-list';
 import { fn } from '@ember/helper';
 import { and, not, or } from 'ember-truth-helpers';
 import AuCheckbox from '@appuniversum/ember-appuniversum/components/au-checkbox';
@@ -256,17 +257,12 @@ export default class EditVariableForm extends Component<Sig> {
                             {{on 'click' (fn @onGoToEditCodelist codelist)}}
                           >{{t 'variable-manager.edit-codelist'}}</AuButton>
                         </div>
-                        <div
-                          class='au-c-list-help au-c-help-text au-c-help-text--secondary au-u-1-1'
-                        >
-                          <ul class='edit-variable-form--codelist-container'>
-
+                        <div class='au-o-box au-u-background-gray-100 au-u-1-1'>
+                          <AuList @divider={{true}} as |Item|>
                             {{#each (this.orderConcepts concepts) as |option|}}
-                              <li
-                                class='au-c-list-help__item'
-                              >{{option.label}}</li>
+                              <Item>{{option.label}}</Item>
                             {{/each}}
-                          </ul>
+                          </AuList>
                         </div>
                       </:success>
                     </Await>
