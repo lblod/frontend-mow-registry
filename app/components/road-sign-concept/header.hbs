@@ -11,12 +11,14 @@
         @skin="button-secondary"
         @route="road-sign-concepts.edit"
         @model={{@roadSignConcept.id}}
+        @icon="pencil"
       >
         {{t "road-sign-concept.crud.edit"}}
       </AuLink>
       <AuButton
         @skin="secondary"
         @alert={{true}}
+        @icon="trash"
         {{on "click" (fn (mut this.isDeleteConfirmationOpen) true)}}
       >
         {{t "road-sign-concept.crud.delete"}}
@@ -27,26 +29,42 @@
         @closeModal={{fn (mut this.isDeleteConfirmationOpen) false}}
       >
         <:title>
-          {{t "utility.confirmation.title"}}
+          {{t
+            "road-sign-concept.crud.delete-confirmation-title"
+            sign=@roadSignConcept.label
+          }}
         </:title>
         <:body>
           <p>
-            {{t "utility.confirmation.body"}}
+            {{t
+              "road-sign-concept.crud.delete-confirmation-content"
+              htmlSafe=true
+              sign=@roadSignConcept.label
+            }}
           </p>
         </:body>
         <:footer>
-          <AuButton
-            @alert={{true}}
-            {{on "click" (perform this.removeRoadSignConcept @roadSignConcept)}}
-          >
-            {{t "road-sign-concept.crud.delete"}}
-          </AuButton>
-          <AuButton
-            @skin="secondary"
-            {{on "click" (fn (mut this.isDeleteConfirmationOpen) false)}}
-          >
-            {{t "utility.cancel"}}
-          </AuButton>
+          <ConfirmationModalFooter>
+            <:cancelButton>
+              <AuButton
+                @skin="secondary"
+                {{on "click" (fn (mut this.isDeleteConfirmationOpen) false)}}
+              >
+                {{t "utility.cancel"}}
+              </AuButton>
+            </:cancelButton>
+            <:confirmButton>
+              <AuButton
+                @alert={{true}}
+                {{on
+                  "click"
+                  (perform this.removeRoadSignConcept @roadSignConcept)
+                }}
+              >
+                {{t "road-sign-concept.crud.delete"}}
+              </AuButton>
+            </:confirmButton>
+          </ConfirmationModalFooter>
         </:footer>
       </AuModal>
     </Group>
@@ -58,14 +76,14 @@
       </AuLink>
     </Tab>
     <Tab>
-        <AuLink @route="road-sign-concepts.road-sign-concept.variables">
-          {{t "utility.variables"}}
-        </AuLink>
+      <AuLink @route="road-sign-concepts.road-sign-concept.variables">
+        {{t "utility.variables"}}
+      </AuLink>
     </Tab>
     <Tab>
-        <AuLink @route="road-sign-concepts.road-sign-concept.shapes">
-          {{t "utility.shapes"}}
-        </AuLink>
+      <AuLink @route="road-sign-concepts.road-sign-concept.shapes">
+        {{t "utility.shapes"}}
+      </AuLink>
     </Tab>
     {{#if
       (and (not @roadSignConcept.isDeleted) (is-sub-sign @roadSignConcept))

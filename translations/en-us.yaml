@@ -150,6 +150,8 @@ road-sign-concept:
     no-shape: No shapes found
     edit: Edit properties
     delete: Delete Road Sign
+    delete-confirmation-title: Delete road sign {sign}?
+    delete-confirmation-content: The road sign <strong>{sign}</strong> will be <strong>unrecoverably</strong> deleted. Any measure using this sign <strong>will not</strong> work correctly anymore.
     label-filter: Label
     label-filter-placeholder: Search by label
     meaning-filter: Meaning
