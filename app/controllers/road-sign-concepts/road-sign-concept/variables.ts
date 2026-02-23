@@ -10,7 +10,7 @@ export default class RoadSignConceptVariablesController extends Controller {
 
   pageSize = 20;
   @tracked pageNumber = 0;
-  @tracked sort?: string = 'created-on';
+  @tracked sort?: string = '-created-on';
 
   onPageChange = (newPage: number) => {
     this.pageNumber = newPage;
