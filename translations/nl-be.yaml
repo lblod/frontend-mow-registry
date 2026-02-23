@@ -388,6 +388,8 @@ shape-manager:
 variable-manager:
   no-data: Geen variabelen
   delete: Verwijder variabele
+  delete-confirmation-title: Verwijder variabele "{variable}"?
+  delete-confirmation-content: Variabele <strong>{variable}</strong> zal <strong>permanent</strong> verwijderd worden. Documenten die deze variabele gebruiken, zullen <strong>niet meer</strong> correct werken.
   table:
     fields:
       default-value: Standaardwaarde

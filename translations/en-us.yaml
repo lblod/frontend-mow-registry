@@ -388,6 +388,8 @@ shape-manager:
 variable-manager:
   no-data: No variables
   delete: Remove variable
+  delete-confirmation-title: Delete variable "{variable}"?
+  delete-confirmation-content: The variable <strong>{variable}</strong> will be <strong>unrecoverably</strong> deleted. Any document using this variable <strong>will not</strong> work correctly anymore.
   table:
     fields:
       default-value: Default value

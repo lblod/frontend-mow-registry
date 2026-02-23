@@ -50,6 +50,7 @@ import * as locales from 'date-fns/locale';
 import { recordIdentifierFor } from '@warp-drive/core';
 import { query, saveRecord } from '@warp-drive/legacy/compat/builders';
 import { task } from 'ember-concurrency';
+import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
 
 interface Signature {
   Args: {
@@ -446,28 +447,41 @@ export default class VariableManager extends Component<Signature> {
         @closeModal={{this.closeDeleteConfirmation}}
       >
         <:title>
-          {{t 'utility.confirmation.title'}}
+          {{t
+            'variable-manager.delete-confirmation-title'
+            variable=this.variableToDelete.label
+          }}
         </:title>
         <:body>
           <p>
-            {{t 'utility.confirmation.body'}}
+            {{t
+              'variable-manager.delete-confirmation-content'
+              variable=this.variableToDelete.label
+              htmlSafe=true
+            }}
           </p>
         </:body>
         <:footer>
-          <AuButton
-            @alert={{true}}
-            {{on 'click' this.removeVariable.perform}}
-            @loading={{this.removeVariable.isRunning}}
-          >
-            {{t 'variable-manager.delete'}}
-          </AuButton>
-          <AuButton
-            @skin='secondary'
-            {{on 'click' this.closeDeleteConfirmation}}
-            @disabled={{this.removeVariable.isRunning}}
-          >
-            {{t 'utility.cancel'}}
-          </AuButton>
+          <ConfirmationModalFooter>
+            <:cancelButton>
+              <AuButton
+                @skin='secondary'
+                {{on 'click' this.closeDeleteConfirmation}}
+                @disabled={{this.removeVariable.isRunning}}
+              >
+                {{t 'utility.cancel'}}
+              </AuButton>
+            </:cancelButton>
+            <:confirmButton>
+              <AuButton
+                @alert={{true}}
+                {{on 'click' this.removeVariable.perform}}
+                @loading={{this.removeVariable.isRunning}}
+              >
+                {{t 'variable-manager.delete'}}
+              </AuButton>
+            </:confirmButton>
+          </ConfirmationModalFooter>
         </:footer>
       </AuModal>
     {{/if}}
