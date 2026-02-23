@@ -19,7 +19,7 @@ import Store from 'mow-registry/services/store';
 import { inject as service } from '@ember/service';
 import type ConceptLabelChangeNote from 'mow-registry/models/concept-label-change-note';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
-import { ConfirmationModalFooter } from 'mow-registry/components/confirmation-modal-footer';
+import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
 import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 
 type Sig = {

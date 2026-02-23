@@ -17,7 +17,7 @@ import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
 import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import ErrorMessage from 'mow-registry/components/error-message';
 import EditConceptLabelModal from 'mow-registry/components/edit-concept-label-modal';
-import { ConfirmationModalFooter } from 'mow-registry/components/confirmation-modal-footer';
+import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
 import {
   COD_SINGLE_SELECT_ID,
   COD_CONCEPT_SCHEME_ID,

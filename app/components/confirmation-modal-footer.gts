@@ -25,4 +25,4 @@ const ConfirmationModalFooter: TOC<Signature> = <template>
   </AuToolbar>
 </template>;
 
-export { ConfirmationModalFooter };
+export default ConfirmationModalFooter;

@@ -28,7 +28,7 @@ import { format } from 'date-fns';
 import * as locales from 'date-fns/locale';
 import { query } from '@warp-drive/legacy/compat/builders';
 import { task } from 'ember-concurrency';
-import { ConfirmationModalFooter } from 'mow-registry/components/confirmation-modal-footer';
+import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
 
 interface Signature {
   Args: {

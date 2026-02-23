@@ -47,7 +47,7 @@ import { recordIdentifierFor } from '@warp-drive/core';
 import { trackedFunction } from 'reactiveweb/function';
 import type CodeListValue from 'mow-registry/models/code-list-value';
 import type { RelatedCollection } from '@warp-drive/core/store/-private';
-import { ConfirmationModalFooter } from 'mow-registry/components/confirmation-modal-footer';
+import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
 
 interface Sig {
   Args: {
