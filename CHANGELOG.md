@@ -1,5 +1,13 @@
 # frontend-mow-registry
 
+## 2.14.1
+
+### Patch Changes
+
+- [#368](https://github.com/lblod/frontend-mow-registry/pull/368) [`3d2cc9a960c17437cc3d66d84db2fb0c7bb8a096`](https://github.com/lblod/frontend-mow-registry/commit/3d2cc9a960c17437cc3d66d84db2fb0c7bb8a096) Thanks [@kobemertens](https://github.com/kobemertens)! - use 24-hour formatting instead of 12-hour in edit codelist value
+
+- [#367](https://github.com/lblod/frontend-mow-registry/pull/367) [`e4f190174a387f7fd118acd677ea262d06c75fc8`](https://github.com/lblod/frontend-mow-registry/commit/e4f190174a387f7fd118acd677ea262d06c75fc8) Thanks [@kobemertens](https://github.com/kobemertens)! - Allow reordering of codelist values
+
 ## 2.14.0
 
 ### Minor Changes
