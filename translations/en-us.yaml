@@ -35,6 +35,7 @@ utility:
   confirmation:
     title: Confirm
     body: Are you sure?
+  attention: Attention
   required: Required
   optional: Optional
   loading: Loading...
@@ -149,6 +150,11 @@ road-sign-concept:
     no-instruction: No instructions found
     no-shape: No shapes found
     edit: Edit properties
+    edit-label-warning: Changing the sign code of a road sign can have <strong>major consequences</strong> for the correct operation of the application.
+    edit-label-warning-2: You have changed the sign code from <strong>{oldLabel}</strong> to <strong>{newLabel}</strong>.
+    edit-warning: Changing the sign code or the image of a road sign can have <strong>major consequences</strong> for the correct operation of the application.
+    edit-confirmation-modal-title: Save changes?
+    edit-image-warning: Changing the image of a road sign can have <strong>major consequences</strong> for the correct operation of the application.
     delete: Delete Road Sign
     delete-confirmation-title: Delete road sign {sign}?
     delete-confirmation-content: The road sign <strong>{sign}</strong> will be <strong>unrecoverably</strong> deleted. Any measure using this sign <strong>will not</strong> work correctly anymore.
@@ -302,6 +308,8 @@ codelist:
     new: New codelist
     edit: Edit codelist
     delete: Delete codelist
+    delete-confirmation-title: Delete codelist "{codelist}"?
+    delete-confirmation-content: The codelist <strong>{codelist}</strong> will be <strong>unrecoverably</strong> deleted. Any document using this codelist <strong>will not</strong> work correctly anymore.
     no-data: No codelist
     no-value: No value
     no-icon: No icon
