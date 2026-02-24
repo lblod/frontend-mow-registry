@@ -19,8 +19,7 @@ import Store from 'mow-registry/services/store';
 import { inject as service } from '@ember/service';
 import type ConceptLabelChangeNote from 'mow-registry/models/concept-label-change-note';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
-import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
-import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
+import { ConfirmationModalFooter } from 'mow-registry/components/confirmation-modal-footer';
 
 type Sig = {
   Args: {
@@ -70,18 +69,14 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
       <:title>{{t 'codelist.crud.edit-label'}}</:title>
       <:body>
         {{#if @showGoBack}}
-          <AuToolbar class='au-u-margin-bottom' @skin='tint' as |Group|>
-            <Group>
-              <AuButton
-                {{on 'click' @onCancel}}
-                @skin='link'
-                @icon='chevron-left'
-                class='au-u-padding'
-              >
-                {{t 'edit-concept-label.go-back'}}
-              </AuButton>
-            </Group>
-          </AuToolbar>
+          <AuButton
+            {{on 'click' @onCancel}}
+            @skin='link'
+            @icon='chevron-left'
+            class='au-u-margin-bottom'
+          >
+            {{t 'edit-concept-label.go-back'}}
+          </AuButton>
         {{/if}}
         <AuAlert
           @title={{t 'codelist.change-label-modal.warning-title'}}
