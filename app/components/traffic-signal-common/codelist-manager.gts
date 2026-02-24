@@ -12,45 +12,42 @@ type Sig = {
   Args: {
     modalOpen: boolean;
     onCloseModal: () => void;
-    codelist?: CodeList;
+    codelist: CodeList;
     onGoToEditConcept: (concept?: SkosConcept | CodeListValue) => void;
     onGoBack: () => void;
   };
 };
 
-// We need to check for codelist in order to solve a stupid typing problem if someone knows any other way pls fix :)
 const CodelistManager: TOC<Sig> = <template>
-  {{#if @codelist}}
-    {{#if @modalOpen}}
-      <CodelistForm
-        @codelist={{@codelist}}
-        @hideHeading={{true}}
-        @hideBody={{true}}
-        @onNavigateAway={{@onGoBack}}
-        @onGoToEditConcept={{@onGoToEditConcept}}
-        as |form|
-      >
-        <AuModal @modalOpen={{@modalOpen}} @closeModal={{@onCloseModal}}>
-          <:title>
-            {{t 'codelist-form.modal-title'}}
-          </:title>
-          <:body>
-            <AuButton
-              {{on 'click' @onGoBack}}
-              @skin='link'
-              @icon='chevron-left'
-              class='au-u-margin-bottom'
-            >
-              {{t 'codelist-form.go-back'}}
-            </AuButton>
-            <form.FormBody />
-          </:body>
-          <:footer>
-            <form.FormControls />
-          </:footer>
-        </AuModal>
-      </CodelistForm>
-    {{/if}}
+  {{#if @modalOpen}}
+    <CodelistForm
+      @codelist={{@codelist}}
+      @hideHeading={{true}}
+      @hideBody={{true}}
+      @onNavigateAway={{@onGoBack}}
+      @onGoToEditConcept={{@onGoToEditConcept}}
+      as |form|
+    >
+      <AuModal @modalOpen={{@modalOpen}} @closeModal={{@onCloseModal}}>
+        <:title>
+          {{t 'codelist-form.modal-title'}}
+        </:title>
+        <:body>
+          <AuButton
+            {{on 'click' @onGoBack}}
+            @skin='link'
+            @icon='chevron-left'
+            class='au-u-margin-bottom'
+          >
+            {{t 'codelist-form.go-back'}}
+          </AuButton>
+          <form.FormBody />
+        </:body>
+        <:footer>
+          <form.FormControls />
+        </:footer>
+      </AuModal>
+    </CodelistForm>
   {{/if}}
 </template>;
 
