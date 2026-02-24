@@ -461,10 +461,10 @@ class CodelistVariableDefaultValueSelector extends Component<{
   }
 
   @cached
-  get codelistOptionsPromise(): Promise<readonly SkosConcept[]> {
+  get codelistOptionsPromise(): Promise<readonly CodeListValue[]> {
     return (async () => {
       if (!this.codelist.isSuccess || !this.codelist.value) {
-        return [] as SkosConcept[];
+        return [] as CodeListValue[];
       }
       const codelistUri = this.codelist.value.uri!;
       await Promise.resolve();
@@ -478,7 +478,13 @@ class CodelistVariableDefaultValueSelector extends Component<{
           },
         },
       );
-      return concepts.slice() as SkosConcept[];
+      return (concepts.slice() as CodeListValue[]).sort((a, b) => {
+        let positionA = a.position;
+        let positionB = b.position;
+        if (positionA === undefined) positionA = Number.MAX_VALUE;
+        if (positionB === undefined) positionB = Number.MAX_VALUE;
+        return positionA - positionB;
+      });
     })();
   }
 
