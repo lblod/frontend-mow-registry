@@ -8,6 +8,7 @@
     </Group>
     <Group>
       <AuLink
+        @icon="pencil"
         @skin="button-secondary"
         @route="road-marking-concepts.edit"
         @model={{@roadMarkingConcept.id}}
@@ -15,6 +16,7 @@
         {{t "road-marking-concept.crud.edit"}}
       </AuLink>
       <AuButton
+        @icon="trash"
         @skin="secondary"
         @alert={{true}}
         {{on "click" (fn (mut this.isDeleteConfirmationOpen) true)}}
@@ -58,14 +60,14 @@
       </AuLink>
     </Tab>
     <Tab>
-        <AuLink @route="road-marking-concepts.road-marking-concept.variables">
-          {{t "utility.variables"}}
-        </AuLink>
+      <AuLink @route="road-marking-concepts.road-marking-concept.variables">
+        {{t "utility.variables"}}
+      </AuLink>
     </Tab>
     <Tab>
-        <AuLink @route="road-marking-concepts.road-marking-concept.shapes">
-          {{t "utility.shapes"}}
-        </AuLink>
+      <AuLink @route="road-marking-concepts.road-marking-concept.shapes">
+        {{t "utility.shapes"}}
+      </AuLink>
     </Tab>
     <Tab>
       <AuLink @route="road-marking-concepts.road-marking-concept.related">

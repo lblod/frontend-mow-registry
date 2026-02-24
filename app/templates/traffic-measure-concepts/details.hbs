@@ -34,7 +34,7 @@
         @model={{@model.trafficMeasureConcept.id}}
         @skin="button-secondary"
       >
-        {{t "utility.edit"}}
+        {{t "traffic-measure-concept.crud.edit-button-text"}}
       </AuLink>
       <AuButton
         @icon="trash"
@@ -44,7 +44,7 @@
         @loadingMessage={{t "utility.delete"}}
         {{on "click" (set this "showDeleteConfirmationModal" true)}}
       >
-        {{t "utility.delete"}}
+        {{t "traffic-measure-concept.crud.delete"}}
       </AuButton>
     </AuButtonGroup>
   </Group>

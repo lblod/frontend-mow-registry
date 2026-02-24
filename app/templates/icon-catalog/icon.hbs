@@ -15,9 +15,7 @@
   <:sidebar>
     <h2 class="au-u-hidden-visually">{{t "utility.properties"}}</h2>
     <div class="au-o-box">
-      <div
-        class="au-u-margin-top au-u-margin-bottom-large au-u-text-center"
-      >
+      <div class="au-u-margin-top au-u-margin-bottom-large au-u-text-center">
         <img
           class="au-c-thumbnail au-c-thumbnail--full checkerboard-background"
           alt=""
@@ -47,6 +45,7 @@
         </Group>
         <Group>
           <AuLink
+            @icon="pencil"
             @skin="button-secondary"
             @route="icon-catalog.edit"
             @model={{@model.icon.id}}
@@ -54,6 +53,7 @@
             {{t "icon-catalog.crud.edit"}}
           </AuLink>
           <AuButton
+            @icon="trash"
             @skin="secondary"
             @disabled={{@model.icon.inScheme.length}}
             @alert={{true}}

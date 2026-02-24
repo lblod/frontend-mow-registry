@@ -149,7 +149,7 @@ road-sign-concept:
     no-data: Geen verkeersborden gevonden
     no-instruction: Geen instructies gevonden
     no-shape: Geen vormen gevonden
-    edit: Eigenschappen bewerken
+    edit: Verkeersbord bewerken
     edit-label-warning: De bordcode van een verkeersbord wijzigen kan <strong>grote gevolgen</strong> hebben op de juiste werking van de applicatie.
     edit-label-warning-2: U heeft de bordcode gewijzigd van <strong>{oldLabel}</strong> naar <strong>{newLabel}</strong>.
     edit-warning: De bordcode of afbeelding van een verkeersbord wijzigen kan <strong>grote gevolgen</strong> hebben op de juiste werking van de applicatie.
@@ -271,6 +271,7 @@ traffic-measure-concept:
     new: Nieuwe mobiliteitsmaatregel
     no-data: Geen mobiliteitsmaatregelen
     edit: Maatregel {label} bewerken
+    edit-button-text: Maatregel bewerken
     delete: Verwijder maatregel 
     delete-confirm-modal-title: Maatregel verwijderen?
     delete-confirm-modal-content: Een verkeersmaatregel verwijderen kan <strong>onverwachte gevolgen</strong> hebben ... <TODO> 

@@ -149,13 +149,13 @@ road-sign-concept:
     no-data: No Road Signs
     no-instruction: No instructions found
     no-shape: No shapes found
-    edit: Edit properties
+    edit: Edit road sign
     edit-label-warning: Changing the sign code of a road sign can have <strong>major consequences</strong> for the correct operation of the application.
     edit-label-warning-2: You have changed the sign code from <strong>{oldLabel}</strong> to <strong>{newLabel}</strong>.
     edit-warning: Changing the sign code or the image of a road sign can have <strong>major consequences</strong> for the correct operation of the application.
     edit-confirmation-modal-title: Save changes?
     edit-image-warning: Changing the image of a road sign can have <strong>major consequences</strong> for the correct operation of the application.
-    delete: Delete Road Sign
+    delete: Delete road sign
     delete-confirmation-title: Delete road sign {sign}?
     delete-confirmation-content: The road sign <strong>{sign}</strong> will be <strong>unrecoverably</strong> deleted. Any measure using this sign <strong>will not</strong> work correctly anymore.
     label-filter: Label
@@ -231,10 +231,10 @@ road-marking-concept:
     valid: Is valid
   crud:
     create: Create road marking
-    new: New Road marking
-    no-data: No Road markings
-    edit: Edit Road marking
-    delete: Delete Road marking
+    new: New road marking
+    no-data: No road markings
+    edit: Edit road marking
+    delete: Delete road marking
     label-filter: Label
     label-filter-placeholder: Search by label
     meaning-filter: Meaning
@@ -271,6 +271,7 @@ traffic-measure-concept:
     new: New traffic measure
     no-data: No traffic measures
     edit: Edit measure {label}
+    edit-button-text: Edit measure
     delete: Delete measure
     delete-confirm-modal-title: Delete traffic measure?
     delete-confirm-modal-content: Removing a traffic measure can have <strong>blabla</strong>... <TODO> 
