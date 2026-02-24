@@ -39,6 +39,8 @@ import type { TOC } from '@ember/component/template-only';
 import { hash } from '@ember/helper';
 import type { ComponentLike, WithBoundArgs } from '@glint/template';
 import type CodelistsService from 'mow-registry/services/codelists';
+import AuTable from '@appuniversum/ember-appuniversum/components/au-table';
+import IconSelect from './icon-select';
 
 type Sig = {
   Args: {
@@ -506,6 +508,73 @@ const FormBody: TOC<FormBodySig> = <template>
         </PowerSelect>
       {{/if}}
     </div>
+    <AuTable>
+      <:header>
+        <tr>
+          <th>
+            {{t 'codelist.attr.icons'}}
+          </th>
+          <th class='w-px'>
+            <span class='au-u-hidden-visually'>
+              {{t 'utility.delete'}}
+            </span>
+          </th>
+        </tr>
+      </:header>
+      <:body>
+        {{#each @iconOptions as |icon|}}
+          <tr>
+            <td>
+              <div class='au-u-flex'>
+                <img
+                  src={{get (get icon.image 'file') 'downloadLink'}}
+                  alt=''
+                  height='50'
+                  class='au-u-margin-right'
+                />
+                <span class='au-u-flex-self-center'>{{icon.label}}</span>
+              </div>
+            </td>
+            <td class='w-px au-u-padding-right-small'>
+              <AuButton
+                @icon='bin'
+                @alert={{true}}
+                @skin='secondary'
+                @hideText={{true}}
+                {{on 'click' (fn @removeIcon icon)}}
+              >
+                {{t 'utility.delete'}}
+              </AuButton>
+            </td>
+          </tr>
+        {{else}}
+          <tr>
+            <td colspan='2'>
+
+              {{t 'codelist.crud.no-icon'}}
+            </td>
+          </tr>
+        {{/each}}
+      </:body>
+      <:footer>
+        <tr>
+          <td class='max-w-prose'>
+            <IconSelect
+              @onChange={{@updateIconSelector}}
+              @selected={{@selectedIcon}}
+            />
+          </td>
+          <td class='au-u-padding-right-small'>
+            <AuButton
+              @disabled={{not @selectedIcon}}
+              {{on 'click' @addNewIcon}}
+            >
+              {{t 'codelist.crud.add-icon'}}
+            </AuButton>
+          </td>
+        </tr>
+      </:footer>
+    </AuTable>
     <div class='au-c-table-wrapper'>
       <table class='au-c-table'>
         <thead class='au-c-table__header'>
