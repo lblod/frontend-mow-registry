@@ -171,7 +171,7 @@ export default class EditVariableForm extends Component<Sig> {
   };
 
   <template>
-    <AuModal @modalOpen={{true}} @closeModal={{@onGoBack}}>
+    <AuModal @modalOpen={{true}} @closeModal={{@onGoBack}} @overflow={{true}}>
       <:title>
         {{#if (and this.variableToEdit.isNew (not this.variableToDelete))}}
           {{t 'utility.add-variable'}}
@@ -180,7 +180,13 @@ export default class EditVariableForm extends Component<Sig> {
         {{/if}}
       </:title>
       <:body>
-        <div class='au-o-flow--small'>
+        <div
+          class='au-o-flow--small edit-variable-form--variable-modal
+            {{if
+              (isCodelistVariable this.variableToEdit)
+              "edit-variable-form--codelist-modal"
+            }}'
+        >
           <AuFormRow>
             <AuLabel
               @error={{isSome (get this.variableToEdit.error 'label')}}

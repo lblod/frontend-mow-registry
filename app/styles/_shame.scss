@@ -331,7 +331,14 @@ table.dataTable tbody th {
 
 
 .edit-variable-form--codelist-container {
-  max-height: 400px;
+  max-height: 300px;
   overflow: auto;
+}
+.edit-variable-form--variable-modal {
+  min-height: 300px;
+}
+
+.edit-variable-form--codelist-modal {
+  min-height: 770px;
 }
 
