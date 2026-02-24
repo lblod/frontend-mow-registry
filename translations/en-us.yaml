@@ -271,6 +271,9 @@ traffic-measure-concept:
     new: New traffic measure
     no-data: No traffic measures
     edit: Edit measure {label}
+    delete: Delete measure
+    delete-confirm-modal-title: Delete traffic measure?
+    delete-confirm-modal-content: Removing a traffic measure can have <strong>blabla</strong>... <TODO> 
     label-filter: Label
     label-filter-placeholder: Search by label
     text-filter: Text

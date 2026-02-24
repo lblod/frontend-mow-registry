@@ -60,17 +60,17 @@
         >
           {{t "codelist.crud.delete"}}
         </AuButton>
-        <AuModal
-          @modalTitle={{t "utility.confirmation.title"}}
+        <ConfirmationModal
+          @titleText={{t
+            "codelist.crud.delete-confirmation-title"
+            codelist=@model.codelist.label
+          }}
           @modalOpen={{this.isOpen}}
-          @closeModal={{fn (mut this.isOpen) false}}
+          @onCancel={{set this "isOpen" false}}
+          @onConfirm={{this.removeCodelist}}
+          @confirmButtonText={{t "codelist.crud.delete"}}
+          @isAlert={{true}}
         >
-          <:title>
-            {{t
-              "codelist.crud.delete-confirmation-title"
-              codelist=@model.codelist.label
-            }}
-          </:title>
           <:body>
             <p>
               {{t
@@ -80,24 +80,7 @@
               }}
             </p>
           </:body>
-          <:footer>
-            <ConfirmationModalFooter>
-              <:cancelButton>
-                <AuButton
-                  @skin="secondary"
-                  {{on "click" (fn (mut this.isOpen) false)}}
-                >
-                  {{t "utility.cancel"}}
-                </AuButton>
-              </:cancelButton>
-              <:confirmButton>
-                <AuButton @alert={{true}} {{on "click" this.removeCodelist}}>
-                  {{t "codelist.crud.delete"}}
-                </AuButton>
-              </:confirmButton>
-            </ConfirmationModalFooter>
-          </:footer>
-        </AuModal>
+        </ConfirmationModal>
       </Group>
     </AuToolbar>
     <AuBodyContainer @scroll={{true}}>

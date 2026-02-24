@@ -271,6 +271,9 @@ traffic-measure-concept:
     new: Nieuwe mobiliteitsmaatregel
     no-data: Geen mobiliteitsmaatregelen
     edit: Maatregel {label} bewerken
+    delete: Verwijder maatregel 
+    delete-confirm-modal-title: Maatregel verwijderen?
+    delete-confirm-modal-content: Een verkeersmaatregel verwijderen kan <strong>onverwachte gevolgen</strong> hebben ... <TODO> 
     label-filter: Label
     label-filter-placeholder: Zoeken op label
     text-filter: Tekst

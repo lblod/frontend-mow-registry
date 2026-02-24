@@ -23,7 +23,6 @@ import AuDatePicker from '@appuniversum/ember-appuniversum/components/au-date-pi
 import AuTextarea from '@appuniversum/ember-appuniversum/components/au-textarea';
 import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
 import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';
-import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import ErrorMessage from 'mow-registry/components/error-message';
 import PowerSelectMultiple from 'ember-power-select/components/power-select-multiple';
 import ZonalitySelector from 'mow-registry/components/zonality-selector';
@@ -38,7 +37,7 @@ import { load } from 'ember-async-data';
 import { isSome } from 'mow-registry/utils/option';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { Await } from '@warp-drive/ember';
-import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
+import ConfirmationModal from 'mow-registry/components/confirmation-modal';
 import set from 'mow-registry/helpers/set';
 import and from 'ember-truth-helpers/helpers/and';
 
@@ -233,13 +232,15 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
     </AuToolbar>
 
     {{#if this.showConfirmChangeModal}}
-      <AuModal
+      <ConfirmationModal
         @modalOpen={{true}}
-        @closeModal={{set this 'showConfirmChangeModal' false}}
+        @isAlert={{true}}
+        @isLoading={{this.editRoadSignConceptTask.isRunning}}
+        @onConfirm={{perform this.editRoadSignConceptTask}}
+        @onCancel={{set this 'showConfirmChangeModal' false}}
+        @confirmButtonText={{t 'utility.save'}}
+        @titleText={{t 'road-sign-concept.crud.edit-confirmation-modal-title'}}
       >
-        <:title>
-          {{t 'road-sign-concept.crud.edit-confirmation-modal-title'}}
-        </:title>
         <:body>
           <p>
             {{t 'road-sign-concept.crud.edit-warning' htmlSafe=true}}
@@ -255,29 +256,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
             </p>
           {{/if}}
         </:body>
-        <:footer>
-          <ConfirmationModalFooter>
-            <:cancelButton>
-              <AuButton
-                @skin='secondary'
-                {{on 'click' (set this 'showConfirmChangeModal' false)}}
-                @disabled={{this.isSaving}}
-              >
-                {{t 'utility.cancel'}}
-              </AuButton>
-            </:cancelButton>
-            <:confirmButton>
-              <AuButton
-                @alert={{true}}
-                {{on 'click' (perform this.editRoadSignConceptTask)}}
-                @loading={{this.isSaving}}
-              >
-                {{t 'utility.save'}}
-              </AuButton>
-            </:confirmButton>
-          </ConfirmationModalFooter>
-        </:footer>
-      </AuModal>
+      </ConfirmationModal>
     {{/if}}
 
     <div class='au-c-body-container au-c-body-container--scroll'>

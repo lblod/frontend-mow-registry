@@ -19,21 +19,23 @@
         @skin="secondary"
         @alert={{true}}
         @icon="trash"
-        {{on "click" (fn (mut this.isDeleteConfirmationOpen) true)}}
+        {{on "click" (set this "isDeleteConfirmationOpen" true)}}
       >
         {{t "road-sign-concept.crud.delete"}}
       </AuButton>
 
-      <AuModal
+      <ConfirmationModal
         @modalOpen={{this.isDeleteConfirmationOpen}}
-        @closeModal={{fn (mut this.isDeleteConfirmationOpen) false}}
+        @onCancel={{set this "isDeleteConfirmationOpen" false}}
+        @onConfirm={{perform this.removeRoadSignConcept @roadSignConcept}}
+        @isLoading={{this.removeRoadSignConcept.isRunning}}
+        @isAlert={{true}}
+        @confirmButtonText={{t "road-sign-concept.crud.delete"}}
+        @titleText={{t
+          "road-sign-concept.crud.delete-confirmation-title"
+          sign=@roadSignConcept.label
+        }}
       >
-        <:title>
-          {{t
-            "road-sign-concept.crud.delete-confirmation-title"
-            sign=@roadSignConcept.label
-          }}
-        </:title>
         <:body>
           <p>
             {{t
@@ -43,30 +45,7 @@
             }}
           </p>
         </:body>
-        <:footer>
-          <ConfirmationModalFooter>
-            <:cancelButton>
-              <AuButton
-                @skin="secondary"
-                {{on "click" (fn (mut this.isDeleteConfirmationOpen) false)}}
-              >
-                {{t "utility.cancel"}}
-              </AuButton>
-            </:cancelButton>
-            <:confirmButton>
-              <AuButton
-                @alert={{true}}
-                {{on
-                  "click"
-                  (perform this.removeRoadSignConcept @roadSignConcept)
-                }}
-              >
-                {{t "road-sign-concept.crud.delete"}}
-              </AuButton>
-            </:confirmButton>
-          </ConfirmationModalFooter>
-        </:footer>
-      </AuModal>
+      </ConfirmationModal>
     </Group>
   </AuToolbar>
   <AuTabs as |Tab|>
