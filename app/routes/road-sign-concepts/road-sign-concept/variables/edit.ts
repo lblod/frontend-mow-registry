@@ -23,8 +23,9 @@ export default class RoadSignConceptsRoadSignConceptVariablesEditRoute extends R
         ) as RouteParams<RoadSignConceptRoute>
       ).id;
       if (!conceptId) {
-        //
-        throw new Error('Should not happen');
+        throw new Error(
+          "Expected conceptId route param, but didn't get one. This should not happen.",
+        );
       }
 
       const trafficSignalConcept = await this.store
