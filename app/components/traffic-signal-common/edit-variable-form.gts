@@ -172,7 +172,11 @@ export default class EditVariableForm extends Component<Sig> {
   };
 
   <template>
-    <AuModal @modalOpen={{true}} @closeModal={{@onGoBack}} @overflow={{true}}>
+    <AuModal
+      @modalOpen={{true}}
+      @closeModal={{this.cancelEditVariable}}
+      @overflow={{true}}
+    >
       <:title>
         {{#if (and this.variableToEdit.isNew (not this.variableToDelete))}}
           {{t 'utility.add-variable'}}
