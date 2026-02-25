@@ -20,39 +20,43 @@ type Sig = {
 };
 
 const CodelistManager: TOC<Sig> = <template>
-    {{#if @modalOpen}}
-      <CodelistForm
-        @codelist={{@codelist}}
-        @hideHeading={{true}}
-        @hideBody={{true}}
-        @onNavigateAway={{@onGoBack}}
-        @onGoToEditConcept={{@onGoToEditConcept}}
-        as |form|
-      >
-        <AuModal @modalOpen={{@modalOpen}} @closeModal={{@onCloseModal}}>
-          <:title>
-            {{t 'codelist-form.modal-title'}}
-          </:title>
-          <:body>
-            <AuToolbar class='au-u-margin-bottom' @skin='tint' as |Group|>
-              <Group>
-                <AuButton
-                  class='au-u-padding'
-                  {{on 'click' @onGoBack}}
-                  @skin='link'
-                  @icon='chevron-left'
-                >
-                  {{t 'codelist-form.go-back'}}
-                </AuButton>
-              </Group>
-            </AuToolbar>
-            <form.FormBody />
-          </:body>
-          <:footer>
-            <form.FormControls />
-          </:footer>
-        </AuModal>
-      </CodelistForm>
+  {{#if @modalOpen}}
+    <CodelistForm
+      @codelist={{@codelist}}
+      @hideHeading={{true}}
+      @hideBody={{true}}
+      @onNavigateAway={{@onGoBack}}
+      @onGoToEditConcept={{@onGoToEditConcept}}
+      as |form|
+    >
+      <AuModal @modalOpen={{@modalOpen}} @closeModal={{@onCloseModal}}>
+        <:title>
+          {{t 'codelist-form.modal-title'}}
+        </:title>
+        <:body>
+          <AuToolbar
+            class='au-u-margin-bottom codelist-manager--toolbar'
+            @skin='tint'
+            as |Group|
+          >
+            <Group>
+              <AuButton
+                class='au-u-padding'
+                {{on 'click' @onGoBack}}
+                @skin='link'
+                @icon='chevron-left'
+              >
+                {{t 'codelist-form.go-back'}}
+              </AuButton>
+            </Group>
+          </AuToolbar>
+          <form.FormBody />
+        </:body>
+        <:footer>
+          <form.FormControls />
+        </:footer>
+      </AuModal>
+    </CodelistForm>
   {{/if}}
 </template>;
 

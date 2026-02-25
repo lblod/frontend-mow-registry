@@ -264,7 +264,9 @@ export default class EditVariableForm extends Component<Sig> {
                             {{on 'click' (fn @onGoToEditCodelist codelist)}}
                           >{{t 'variable-manager.edit-codelist'}}</AuButton>
                         </div>
-                        <div class='au-o-box au-u-background-gray-100 au-u-1-1'>
+                        <div
+                          class='au-o-box au-u-background-gray-100 au-u-1-1 edit-variable-form--codelist-container'
+                        >
                           <AuList @divider={{true}} as |Item|>
                             {{#each (this.orderConcepts concepts) as |option|}}
                               <Item>{{option.label}}</Item>
