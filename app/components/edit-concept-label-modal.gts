@@ -70,7 +70,11 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
       <:title>{{t 'codelist.crud.edit-label'}}</:title>
       <:body>
         {{#if @showGoBack}}
-          <AuToolbar class='au-u-margin-bottom' @skin='tint' as |Group|>
+          <AuToolbar
+            class='au-u-margin-bottom codelist-manager--toolbar'
+            @skin='tint'
+            as |Group|
+          >
             <Group>
               <AuButton
                 {{on 'click' @onCancel}}

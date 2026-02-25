@@ -307,7 +307,7 @@ codelist:
     add-value: Waarde toevoegen
     add-icon: Pictogram toevoegen
     delete-value: Waarde verwijderen
-    edit-label: Concept label wijzigen
+    edit-label: Label bewerken
     reason-for-change: Reden van de wijziging
     previous-value: Vorige waarde
     previous-changes: Vorige wijzigingen

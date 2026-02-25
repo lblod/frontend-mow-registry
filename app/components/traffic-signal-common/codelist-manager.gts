@@ -34,23 +34,25 @@ const CodelistManager: TOC<Sig> = <template>
           {{t 'codelist-form.modal-title'}}
         </:title>
         <:body>
-          <AuToolbar
-            class='au-u-margin-bottom codelist-manager--toolbar'
-            @skin='tint'
-            as |Group|
-          >
-            <Group>
-              <AuButton
-                class='au-u-padding'
-                {{on 'click' @onGoBack}}
-                @skin='link'
-                @icon='chevron-left'
-              >
-                {{t 'codelist-form.go-back'}}
-              </AuButton>
-            </Group>
-          </AuToolbar>
-          <form.FormBody />
+          <div class='edit-variable-form--codelist-modal'>
+            <AuToolbar
+              class='au-u-margin-bottom codelist-manager--toolbar'
+              @skin='tint'
+              as |Group|
+            >
+              <Group>
+                <AuButton
+                  class='au-u-padding'
+                  {{on 'click' @onGoBack}}
+                  @skin='link'
+                  @icon='chevron-left'
+                >
+                  {{t 'codelist-form.go-back'}}
+                </AuButton>
+              </Group>
+            </AuToolbar>
+            <form.FormBody />
+          </div>
         </:body>
         <:footer>
           <form.FormControls />

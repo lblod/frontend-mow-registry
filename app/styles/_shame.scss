@@ -345,3 +345,8 @@ table.dataTable tbody th {
 .codelist-manager--toolbar {
   margin: -2.4rem;
 }
+
+.codelist-form--table-body {
+  max-height: 300px;
+  overflow:auto
+}

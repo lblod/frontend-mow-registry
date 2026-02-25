@@ -16,7 +16,6 @@ import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuList from '@appuniversum/ember-appuniversum/components/au-list';
 import { fn } from '@ember/helper';
 import { and, not, or } from 'ember-truth-helpers';
-import AuCheckbox from '@appuniversum/ember-appuniversum/components/au-checkbox';
 import type DateVariable from 'mow-registry/models/date-variable';
 import AuDatePicker from '@appuniversum/ember-appuniversum/components/au-date-picker';
 import { service } from '@ember/service';

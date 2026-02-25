@@ -510,19 +510,10 @@ const FormBody: TOC<FormBodySig> = <template>
         </AuRadioGroup>
       {{/if}}
     </div>
+    <AuLabel>
+      {{t 'codelist.attr.icons'}}
+    </AuLabel>
     <AuTable>
-      <:header>
-        <tr>
-          <th>
-            {{t 'codelist.attr.icons'}}
-          </th>
-          <th class='w-px'>
-            <span class='au-u-hidden-visually'>
-              {{t 'utility.delete'}}
-            </span>
-          </th>
-        </tr>
-      </:header>
       <:body>
         {{#each @iconOptions as |icon|}}
           <tr>
@@ -541,7 +532,8 @@ const FormBody: TOC<FormBodySig> = <template>
               <AuButton
                 @icon='bin'
                 @alert={{true}}
-                @skin='secondary'
+                @skin='link-secondary'
+                @size='large'
                 @hideText={{true}}
                 {{on 'click' (fn @removeIcon icon)}}
               >
@@ -577,21 +569,11 @@ const FormBody: TOC<FormBodySig> = <template>
         </tr>
       </:footer>
     </AuTable>
-    <div class='au-c-table-wrapper'>
+    <AuLabel>
+      {{t 'codelist.attr.values'}}
+    </AuLabel>
+    <div class='au-c-table-wrapper codelist-form--table-body'>
       <table class='au-c-table'>
-        <thead class='au-c-table__header'>
-          <tr>
-            <th class='data-table__header-title' />
-            <th class='data-table__header-title'>
-              {{t 'codelist.attr.values'}}
-            </th>
-            <th class='w-px data-table__header-title'>
-              <span class='au-u-hidden-visually'>
-                {{t 'codelist.crud.delete-value'}}
-              </span>
-            </th>
-          </tr>
-        </thead>
         <tbody
           {{sortableGroup onChange=@reorderItems}}
           class='au-c-table__body'
@@ -611,10 +593,9 @@ const FormBody: TOC<FormBodySig> = <template>
                     <div>
                       <AuButton
                         @icon='pencil'
-                        @skin='naked'
-                        @hideText={{true}}
+                        @skin='link'
                         {{on 'click' (fn @setIsEditingLabelWithUri option)}}
-                      />
+                      >{{t 'codelist.crud.edit-label'}}</AuButton>
                     </div>
                   {{/unless}}
                 </div>
@@ -625,12 +606,13 @@ const FormBody: TOC<FormBodySig> = <template>
                     @concept={{option}}
                   />
                 {{/if}}
+
               </td>
               <td>
                 <AuButton
                   @icon='bin'
                   @alert={{true}}
-                  @skin='secondary'
+                  @skin='link-secondary'
                   @hideText={{true}}
                   {{on 'click' (fn @removeOption option)}}
                 >
