@@ -8,7 +8,6 @@ import perform from 'ember-concurrency/helpers/perform';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
 import { concat, fn, get } from '@ember/helper';
-import PowerSelect from 'ember-power-select/components/power-select';
 import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
@@ -41,6 +40,7 @@ import type { ComponentLike, WithBoundArgs } from '@glint/template';
 import type CodelistsService from 'mow-registry/services/codelists';
 import AuTable from '@appuniversum/ember-appuniversum/components/au-table';
 import IconSelect from './icon-select';
+import AuRadioGroup from '@appuniversum/ember-appuniversum/components/au-radio-group';
 
 type Sig = {
   Args: {
@@ -206,7 +206,8 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   @action
-  updateCodelistType(type: SkosConcept) {
+  updateCodelistType(typeLabel?: string) {
+    const type = this.codelistTypes?.find((type) => type.label === typeLabel);
     this.selectedType = type;
     this.args.codelist.set('type', type);
   }
@@ -449,7 +450,7 @@ type FormBodySig = {
     setCodelistValue: (attributeName: string, event: Event) => Promise<void>;
     codelistTypes: SkosConcept[] | undefined;
     selectedType: SkosConcept | null | undefined;
-    updateCodelistType: (type: SkosConcept) => void;
+    updateCodelistType: (typeLabel?: string) => void;
     iconOptions: Icon[];
     removeIcon: (icon: Icon) => void;
     updateIconSelector: (icon: Icon) => void;
@@ -496,16 +497,17 @@ const FormBody: TOC<FormBodySig> = <template>
         {{t 'codelist.attr.type'}}&nbsp;
       </AuLabel>
       {{#if @codelistTypes}}
-        <PowerSelect
-          @allowClear={{false}}
-          @searchEnabled={{false}}
-          @options={{@codelistTypes}}
-          @selected={{@selectedType}}
+        <AuRadioGroup
+          @selected={{@selectedType.label}}
           @onChange={{@updateCodelistType}}
-          as |type|
+          as |Group|
         >
-          {{t (concat 'codelist.attr.types.' type.label)}}
-        </PowerSelect>
+          {{#each @codelistTypes as |type|}}
+            <Group.Radio @value={{type.label}}>{{t
+                (concat 'codelist.attr.types.' type.label)
+              }}</Group.Radio>
+          {{/each}}
+        </AuRadioGroup>
       {{/if}}
     </div>
     <AuTable>
