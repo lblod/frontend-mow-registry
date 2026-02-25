@@ -48,6 +48,7 @@ import { trackedFunction } from 'reactiveweb/function';
 import type CodeListValue from 'mow-registry/models/code-list-value';
 import type { RelatedCollection } from '@warp-drive/core/store/-private';
 import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
+import AuToggleSwitch from '@appuniversum/ember-appuniversum/components/au-toggle-switch';
 
 interface Sig {
   Args: {
@@ -305,12 +306,10 @@ export default class EditVariableForm extends Component<Sig> {
               @requiredLabel={{t 'utility.required'}}
             >{{t 'utility.required'}}
             </AuLabel>
-            <AuCheckbox
+            <AuToggleSwitch
               @checked={{this.variableToEdit.required}}
               @onChange={{this.toggleVariableRequired}}
-            >
-              {{t 'utility.required'}}
-            </AuCheckbox>
+            > {{t 'utility.required'}}</AuToggleSwitch>
           </AuFormRow>
         </div>
       </:body>
