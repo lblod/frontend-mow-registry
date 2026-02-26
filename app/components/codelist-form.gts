@@ -640,6 +640,7 @@ const FormBody: TOC<FormBodySig> = <template>
                   value={{@newValue}}
                   @width='block'
                   {{on 'input' @updateNewValue}}
+                  {{on 'keypress' (fn checkEnterAndSubmit @addNewValue)}}
                 />
                 <AuButton
                   class='no-flex-shrink'
@@ -656,3 +657,12 @@ const FormBody: TOC<FormBodySig> = <template>
     </div>
   </form>
 </template>;
+
+function checkEnterAndSubmit(
+  callback: (event: Event) => void,
+  event: KeyboardEvent,
+) {
+  if (event.key === 'Enter') {
+    callback(event);
+  }
+}
