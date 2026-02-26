@@ -1,12 +1,5 @@
 {
   "extends": "@tsconfig/ember/tsconfig.json",
-  "glint": {
-    "environment": [
-      "ember-loose",
-      "ember-template-imports"
-    ],
-    "checkStandaloneTemplates": false
-  },
   "compilerOptions": {
     // The combination of `baseUrl` with `paths` allows Ember's classic package
     // layout, which is not resolvable with the Node resolution algorithm, to
@@ -15,6 +8,7 @@
     // TODO: this fixes the SessionService types, but ideally we would just follow the blueprint config
     "allowJs": true,
     "noPropertyAccessFromIndexSignature": true,
+    "declaration": false,
     "paths": {
       "mow-registry/tests/*": ["tests/*"],
       "mow-registry/*": ["app/*"],
