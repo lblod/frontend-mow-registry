@@ -35,6 +35,7 @@ utility:
   confirmation:
     title: Confirm
     body: Are you sure?
+  attention: Attention
   required: Required
   optional: Optional
   loading: Loading...
@@ -109,6 +110,9 @@ traffic-signal-concept:
   attr:
     can-contain: This signal can contain
     can-be-contained-in: This signal can be contained in
+  crud:
+    delete-confirmation-title: Remove traffic sign {sign}?
+    delete-confirmation-content: Removing traffic sign ... <strong>Test</strong>?
 road-sign-concept:
   name: Road Signs
   details: Road sign {label}
@@ -148,8 +152,16 @@ road-sign-concept:
     no-data: No Road Signs
     no-instruction: No instructions found
     no-shape: No shapes found
-    edit: Edit properties
-    delete: Delete Road Sign
+    edit: Edit road sign
+    edit-label-warning: Changing the sign code of a road sign can have <strong>major consequences</strong> for the correct operation of the application.
+    edit-label-warning-2: You have changed the sign code from <strong>{oldLabel}</strong> to <strong>{newLabel}</strong>.
+    edit-warning: Changing the sign code or the image of a road sign can have <strong>major consequences</strong> for the correct operation of the application.
+    edit-confirmation-modal-title: Save changes?
+    edit-image-warning: Changing the image of a road sign can have <strong>major consequences</strong> for the correct operation of the application.
+    delete: Delete road sign
+    delete-confirmation-title: Delete road sign {sign}?
+    delete-confirmation-content: The road sign <strong>{sign}</strong> will be <strong>unrecoverably</strong> deleted. Any traffic measure using this sign <strong>will not</strong> work correctly anymore.
+    delete-confirmation-content-2: Currently <strong>{count}</strong> traffic measures are using this sign.
     label-filter: Label
     label-filter-placeholder: Search by label
     meaning-filter: Meaning
@@ -223,10 +235,10 @@ road-marking-concept:
     valid: Is valid
   crud:
     create: Create road marking
-    new: New Road marking
-    no-data: No Road markings
-    edit: Edit Road marking
-    delete: Delete Road marking
+    new: New road marking
+    no-data: No road markings
+    edit: Edit road marking
+    delete: Delete road marking
     label-filter: Label
     label-filter-placeholder: Search by label
     meaning-filter: Meaning
@@ -263,6 +275,10 @@ traffic-measure-concept:
     new: New traffic measure
     no-data: No traffic measures
     edit: Edit measure {label}
+    edit-button-text: Edit measure
+    delete: Delete measure
+    delete-confirm-modal-title: Delete traffic measure?
+    delete-confirm-modal-content: Removing a traffic measure can have <strong>blabla</strong>... <TODO> 
     label-filter: Label
     label-filter-placeholder: Search by label
     text-filter: Text
@@ -300,6 +316,8 @@ codelist:
     new: New codelist
     edit: Edit codelist
     delete: Delete codelist
+    delete-confirmation-title: Delete codelist "{codelist}"?
+    delete-confirmation-content: The codelist <strong>{codelist}</strong> will be <strong>unrecoverably</strong> deleted. Any document using this codelist <strong>will not</strong> work correctly anymore.
     no-data: No codelist
     no-value: No value
     no-icon: No icon
@@ -386,6 +404,8 @@ shape-manager:
 variable-manager:
   no-data: No variables
   delete: Remove variable
+  delete-confirmation-title: Delete variable "{variable}"?
+  delete-confirmation-content: The variable <strong>{variable}</strong> will be <strong>unrecoverably</strong> deleted. Any document using this variable <strong>will not</strong> work correctly anymore.
   table:
     fields:
       default-value: Default value

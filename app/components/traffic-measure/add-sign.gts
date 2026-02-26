@@ -117,6 +117,7 @@ export default class TrafficMeasureAddSignComponent extends Component<Sig> {
       </div>
       <div class='au-o-grid__item au-u-1-2@medium'>
         <AuButton
+          @icon='plus'
           @width='block'
           {{on 'click' (fn this.addSign this.selected)}}
           class='au-u-margin-bottom-small'

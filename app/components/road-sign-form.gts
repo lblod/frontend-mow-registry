@@ -1,7 +1,8 @@
 import type RouterService from '@ember/routing/router-service';
 import ImageUploadHandlerComponent from './image-upload-handler';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import SkosConcept from 'mow-registry/models/skos-concept';
@@ -21,6 +22,7 @@ import AuToggleSwitch from '@appuniversum/ember-appuniversum/components/au-toggl
 import AuDatePicker from '@appuniversum/ember-appuniversum/components/au-date-picker';
 import AuTextarea from '@appuniversum/ember-appuniversum/components/au-textarea';
 import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
+import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';
 import ErrorMessage from 'mow-registry/components/error-message';
 import PowerSelectMultiple from 'ember-power-select/components/power-select-multiple';
 import ZonalitySelector from 'mow-registry/components/zonality-selector';
@@ -35,14 +37,49 @@ import { load } from 'ember-async-data';
 import { isSome } from 'mow-registry/utils/option';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { Await } from '@warp-drive/ember';
+import ConfirmationModal from 'mow-registry/components/confirmation-modal';
+import set from 'mow-registry/helpers/set';
+import and from 'ember-truth-helpers/helpers/and';
 
 type Args = {
   roadSignConcept: RoadSignConcept;
   classifications: RoadSignCategory[];
+  isEdit?: boolean;
 };
 export default class RoadSignFormComponent extends ImageUploadHandlerComponent<Args> {
   @service declare router: RouterService;
   @service declare store: Store;
+
+  @tracked showConfirmChangeModal = false;
+  @tracked imageChanged = false;
+
+  get labelChange() {
+    // Should not be needed because .changedAttributes() should trigger reactivity but it doesn't
+    const _triggerReactivity = this.args.roadSignConcept.label;
+    const changes = this.args.roadSignConcept.changedAttributes();
+    const labelChange = changes['label'];
+    if (labelChange) {
+      const [oldValue, newValue] = labelChange;
+      // This should never be the case but changedAttributes does not take attribute type into account
+      if (
+        (oldValue !== undefined && typeof oldValue !== 'string') ||
+        typeof newValue !== 'string'
+      ) {
+        throw new TypeError('Unexpected type for RoadSignConcept label');
+      }
+      return {
+        oldValue,
+        newValue,
+      };
+    }
+
+    return null;
+  }
+
+  get shouldShowSaveConfirmationModalOnSave() {
+    const labelChange = this.labelChange;
+    return this.args.isEdit && (labelChange || this.imageChanged);
+  }
 
   get isSaving() {
     return this.editRoadSignConceptTask.isRunning;
@@ -101,6 +138,7 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
   setImage(model: RoadSignConcept, image: File) {
     super.setImage(model, image);
     void this.args.roadSignConcept.validateProperty('image');
+    this.imageChanged = true;
   }
 
   editRoadSignConceptTask = dropTask(async (event: InputEvent) => {
@@ -158,12 +196,18 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       </Group>
       <Group>
         <AuButtonGroup>
-
           <AuButton
             @disabled={{or (isSome @roadSignConcept.error) this.isSaving}}
             @loading={{this.isSaving}}
             @loadingMessage={{t 'utility.save'}}
-            {{on 'click' (perform this.editRoadSignConceptTask)}}
+            {{on
+              'click'
+              (if
+                this.shouldShowSaveConfirmationModalOnSave
+                (set this 'showConfirmChangeModal' true)
+                (perform this.editRoadSignConceptTask)
+              )
+            }}
           >
             {{t 'utility.save'}}
           </AuButton>
@@ -187,12 +231,39 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
       </Group>
     </AuToolbar>
 
+    {{#if this.showConfirmChangeModal}}
+      <ConfirmationModal
+        @modalOpen={{true}}
+        @isAlert={{true}}
+        @isLoading={{this.editRoadSignConceptTask.isRunning}}
+        @onConfirm={{perform this.editRoadSignConceptTask}}
+        @onCancel={{set this 'showConfirmChangeModal' false}}
+        @confirmButtonText={{t 'utility.save'}}
+        @titleText={{t 'road-sign-concept.crud.edit-confirmation-modal-title'}}
+      >
+        <:body>
+          <p>
+            {{t 'road-sign-concept.crud.edit-warning' htmlSafe=true}}
+          </p>
+          {{#if this.labelChange}}
+            <p>
+              {{t
+                'road-sign-concept.crud.edit-label-warning-2'
+                oldLabel=this.labelChange.oldValue
+                newLabel=this.labelChange.newValue
+                htmlSafe=true
+              }}
+            </p>
+          {{/if}}
+        </:body>
+      </ConfirmationModal>
+    {{/if}}
+
     <div class='au-c-body-container au-c-body-container--scroll'>
       <div class='au-o-box'>
         <div class='au-u-max-width-small'>
           <form class='au-c-form' id='edit-road-sign-concept-form' novalidate>
             <AuFormRow>
-
               {{#let (get @roadSignConcept.error 'arPlichtig') as |error|}}
                 <AuLabel @error={{isSome error}} for='ar-plichtig'>
                   {{t 'utility.ar-plichtig'}}
@@ -215,6 +286,21 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   {{! @glint-expect-error setImage should also accept a string }}
                   @setImage={{fn this.setImage @roadSignConcept}}
                 />
+                {{#if (and this.imageChanged @isEdit)}}
+                  <AuAlert
+                    class='au-u-margin-top au-u-margin-bottom-none'
+                    @icon='alert-triangle'
+                    @skin='warning'
+                    @title={{t 'utility.attention'}}
+                  >
+                    <p>
+                      {{t
+                        'road-sign-concept.crud.edit-image-warning'
+                        htmlSafe=true
+                      }}
+                    </p>
+                  </AuAlert>
+                {{/if}}
               </AuFormRow>
             {{/let}}
             {{#let (get @roadSignConcept.error 'label') as |error|}}
@@ -234,6 +320,29 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                   value={{@roadSignConcept.label}}
                   {{on 'input' (fn this.setRoadSignConceptValue 'label')}}
                 />
+                {{#if this.labelChange.oldValue}}
+                  <AuAlert
+                    class='au-u-margin-top au-u-margin-bottom-none'
+                    @icon='alert-triangle'
+                    @skin='warning'
+                    @title={{t 'utility.attention'}}
+                  >
+                    <p>
+                      {{t
+                        'road-sign-concept.crud.edit-label-warning'
+                        htmlSafe=true
+                      }}
+                    </p>
+                    <p>
+                      {{t
+                        'road-sign-concept.crud.edit-label-warning-2'
+                        oldLabel=this.labelChange.oldValue
+                        newLabel=this.labelChange.newValue
+                        htmlSafe=true
+                      }}
+                    </p>
+                  </AuAlert>
+                {{/if}}
                 <ErrorMessage @error={{error}} />
               </AuFormRow>
             {{/let}}

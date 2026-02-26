@@ -35,6 +35,7 @@ utility:
   confirmation:
     title: Bevestig
     body: Ben je zeker?
+  attention: Opgelet
   required: Verplicht
   optional: Optioneel
   loading: Aan het laden...
@@ -109,6 +110,9 @@ traffic-signal-concept:
   attr:
     can-contain: Dit teken kan bevatten
     can-be-contained-in: Dit teken kan vervat zijn in
+  crud:
+    delete-confirmation-title: Verkeersteken {sign} verwijderen?
+    delete-confirmation-content: Verkeersteken verwijderen<strong>Test</strong>?
 road-sign-concept:
   name: Verkeersborden
   details: Verkeersbord {label}
@@ -148,8 +152,16 @@ road-sign-concept:
     no-data: Geen verkeersborden gevonden
     no-instruction: Geen instructies gevonden
     no-shape: Geen vormen gevonden
-    edit: Eigenschappen bewerken
+    edit: Verkeersbord bewerken
+    edit-label-warning: De bordcode van een verkeersbord wijzigen kan <strong>grote gevolgen</strong> hebben op de juiste werking van de applicatie.
+    edit-label-warning-2: U heeft de bordcode gewijzigd van <strong>{oldLabel}</strong> naar <strong>{newLabel}</strong>.
+    edit-warning: De bordcode of afbeelding van een verkeersbord wijzigen kan <strong>grote gevolgen</strong> hebben op de juiste werking van de applicatie.
+    edit-confirmation-modal-title: Wijziging bewaren?
+    edit-image-warning: De afbeelding van een verkeersbord wijzigen kan <strong>grote gevolgen</strong> hebben op de juiste werking van de applicatie.
     delete: Verkeersbord verwijderen
+    delete-confirmation-title: Verwijder verkeersbord {sign}?
+    delete-confirmation-content: Het verkeersbord <strong>{sign}</strong> wordt <strong>permanent</strong> verwijderd. Mobiliteitsmaatregelen die dit verkeersbord gebruiken zullen <strong>niet meer</strong> juist werken.
+    delete-confirmation-content-2: Momenteel gebruiken <strong>{count}</strong> verkeersmaatregelen dit verkeersbord.
     label-filter: Label
     label-filter-placeholder: Zoeken op label
     meaning-filter: Betekenis
@@ -263,6 +275,10 @@ traffic-measure-concept:
     new: Nieuwe mobiliteitsmaatregel
     no-data: Geen mobiliteitsmaatregelen
     edit: Maatregel {label} bewerken
+    edit-button-text: Maatregel bewerken
+    delete: Verwijder maatregel
+    delete-confirm-modal-title: Maatregel verwijderen?
+    delete-confirm-modal-content: Een verkeersmaatregel verwijderen kan <strong>onverwachte gevolgen</strong> hebben ... <TODO>
     label-filter: Label
     label-filter-placeholder: Zoeken op label
     text-filter: Tekst
@@ -300,6 +316,8 @@ codelist:
     new: Nieuwe codelijst
     edit: Codelijst bewerken
     delete: Codelijst verwijderen
+    delete-confirmation-title: Codelijst "{codelist}" verwijderen?
+    delete-confirmation-content: Codelijst <strong>{codelist}</strong> zal <strong>permanent</strong> verwijderd worden. Documenten die deze codelijst gebruiken zullen <strong>niet meer</strong> correct werken.
     no-data: Geen codelijst
     no-value: Geen waarde
     no-icon: Geen pictogram
@@ -386,6 +404,8 @@ shape-manager:
 variable-manager:
   no-data: Geen variabelen
   delete: Verwijder variabele
+  delete-confirmation-title: Verwijder variabele "{variable}"?
+  delete-confirmation-content: Variabele <strong>{variable}</strong> zal <strong>permanent</strong> verwijderd worden. Documenten die deze variabele gebruiken, zullen <strong>niet meer</strong> correct werken.
   table:
     fields:
       default-value: Standaardwaarde

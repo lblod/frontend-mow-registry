@@ -47,6 +47,7 @@
         <AuLink
           @skin="button-secondary"
           @route="codelists-management.edit"
+          @icon="pencil"
           @model={{@model.codelist.id}}
         >
           {{t "codelist.crud.edit"}}
@@ -54,33 +55,33 @@
         <AuButton
           @skin="secondary"
           @alert={{true}}
+          @icon="trash"
           {{on "click" (fn (mut this.isOpen) true)}}
         >
           {{t "codelist.crud.delete"}}
         </AuButton>
-        <AuModal
-          @modalTitle={{t "utility.confirmation.title"}}
+        <ConfirmationModal
+          @titleText={{t
+            "codelist.crud.delete-confirmation-title"
+            codelist=@model.codelist.label
+          }}
           @modalOpen={{this.isOpen}}
-          @closeModal={{fn (mut this.isOpen) false}}
-          as |Modal|
+          @onCancel={{set this "isOpen" false}}
+          @onConfirm={{this.removeCodelist}}
+          @confirmButtonText={{t "codelist.crud.delete"}}
+          @isAlert={{true}}
+          @isLoading={{this.isRemovingCodelist}}
         >
-          <Modal.Body>
+          <:body>
             <p>
-              {{t "utility.confirmation.body"}}
+              {{t
+                "codelist.crud.delete-confirmation-content"
+                codelist=@model.codelist.label
+                htmlSafe=true
+              }}
             </p>
-          </Modal.Body>
-          <Modal.Footer>
-            <AuButton @alert={{true}} {{on "click" this.removeCodelist}}>
-              {{t "codelist.crud.delete"}}
-            </AuButton>
-            <AuButton
-              @skin="secondary"
-              {{on "click" (fn (mut this.isOpen) false)}}
-            >
-              {{t "utility.cancel"}}
-            </AuButton>
-          </Modal.Footer>
-        </AuModal>
+          </:body>
+        </ConfirmationModal>
       </Group>
     </AuToolbar>
     <AuBodyContainer @scroll={{true}}>
