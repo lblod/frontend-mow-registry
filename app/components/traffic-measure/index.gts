@@ -68,6 +68,8 @@ import type TextVariable from 'mow-registry/models/text-variable';
 import { validateVariables } from 'mow-registry/utils/validate-relations';
 import { Await } from '@warp-drive/ember';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
+import set from 'mow-registry/helpers/set';
+import ConfirmationModal from 'mow-registry/components/confirmation-modal';
 
 type Sig = {
   Args: {
@@ -95,6 +97,9 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   @tracked instructions: Template[] = [];
   @tracked signsError = false;
   @tracked signValidation?: string | null;
+  @tracked
+  showRemoveTrafficSignalConfirmationModalForSign: TrafficSignalListItem | null =
+    null;
 
   variablesToBeDeleted: Variable[] = [];
 
@@ -136,6 +141,10 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   async didInsert() {
     await this.fetchData.perform();
   }
+
+  openConfirmationModalForSign = async (sign: TrafficSignalListItem) => {
+    this.showRemoveTrafficSignalConfirmationModalForSign = sign;
+  };
 
   get new() {
     return this.args.trafficMeasureConcept?.isNew;
@@ -717,12 +726,42 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
             </div>
             <div class='au-o-grid__item'>
               <TrafficMeasureSignList
-                @removeSign={{this.removeSign}}
+                @removeSign={{this.openConfirmationModalForSign}}
                 @signs={{this.signs}}
                 @onSort={{this.sortSigns}}
               />
             </div>
           </div>
+          {{#if this.showRemoveTrafficSignalConfirmationModalForSign.item}}
+            <Await
+              @promise={{this.showRemoveTrafficSignalConfirmationModalForSign.item}}
+            >
+              <:success as |item|>
+                <ConfirmationModal
+                  @isAlert={{true}}
+                  @confirmButtonText={{t 'utility.delete'}}
+                  @onCancel={{set
+                    this
+                    'showRemoveTrafficSignalConfirmationModalForSign'
+                    null
+                  }}
+                  @modalOpen={{true}}
+                  @titleText={{t
+                    'traffic-signal-concept.crud.delete-confirmation-title'
+                    sign=item.label
+                  }}
+                  @bodyText={{t
+                    'traffic-signal-concept.crud.delete-confirmation-content'
+                    htmlSafe=true
+                  }}
+                  @onConfirm={{fn
+                    this.removeSign
+                    this.showRemoveTrafficSignalConfirmationModalForSign
+                  }}
+                />
+              </:success>
+            </Await>
+          {{/if}}
           {{#let (this.getError 'error' this.template 'value') as |error|}}
             <div class='au-u-margin-bottom-small'>
               <AuHeading @level='4' @skin='4'>

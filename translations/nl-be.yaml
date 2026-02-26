@@ -110,6 +110,9 @@ traffic-signal-concept:
   attr:
     can-contain: Dit teken kan bevatten
     can-be-contained-in: Dit teken kan vervat zijn in
+  crud:
+    delete-confirmation-title: Verkeersteken {sign} verwijderen?
+    delete-confirmation-content: Verkeersteken verwijderen<strong>Test</strong>?
 road-sign-concept:
   name: Verkeersborden
   details: Verkeersbord {label}
@@ -272,9 +275,9 @@ traffic-measure-concept:
     no-data: Geen mobiliteitsmaatregelen
     edit: Maatregel {label} bewerken
     edit-button-text: Maatregel bewerken
-    delete: Verwijder maatregel 
+    delete: Verwijder maatregel
     delete-confirm-modal-title: Maatregel verwijderen?
-    delete-confirm-modal-content: Een verkeersmaatregel verwijderen kan <strong>onverwachte gevolgen</strong> hebben ... <TODO> 
+    delete-confirm-modal-content: Een verkeersmaatregel verwijderen kan <strong>onverwachte gevolgen</strong> hebben ... <TODO>
     label-filter: Label
     label-filter-placeholder: Zoeken op label
     text-filter: Tekst

@@ -110,6 +110,9 @@ traffic-signal-concept:
   attr:
     can-contain: This signal can contain
     can-be-contained-in: This signal can be contained in
+  crud:
+    delete-confirmation-title: Remove traffic sign {sign}?
+    delete-confirmation-content: Removing traffic sign ... <strong>Test</strong>?
 road-sign-concept:
   name: Road Signs
   details: Road sign {label}
