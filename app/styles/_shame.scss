@@ -338,9 +338,13 @@ table.dataTable tbody th {
   min-height: 300px;
 }
 
-.edit-variable-form--codelist-modal {
-  min-height: 770px;
+@media screen  and ( min-height: 1024px )
+{
+  .edit-variable-form--codelist-modal {
+    min-height: 770px;
+  }
 }
+
 
 .codelist-manager--toolbar {
   margin: -2.4rem;
