@@ -63,6 +63,19 @@ export default class EditVariableForm extends Component<Sig> {
   @service('codelists') declare codeListService: CodelistsService;
   @service declare store: Store;
   @service declare variablesService: VariablesService;
+  constructor(owner: unknown, args: Sig['Args']) {
+    super(owner, args);
+    this.checkForVariableDestroyed();
+  }
+  async checkForVariableDestroyed() {
+    if (this.args.variable.isDestroyed) {
+      this.variableToEditReplaced =
+        (await this.variablesService.convertVariableType(
+          this.args.variable,
+          'codelist',
+        )) as Variable;
+    }
+  }
   get variableToEdit() {
     return this.variableToEditReplaced || this.args.variable;
   }
