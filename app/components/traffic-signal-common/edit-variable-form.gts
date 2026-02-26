@@ -340,6 +340,7 @@ export default class EditVariableForm extends Component<Sig> {
             <AuButton
               {{on 'click' this.saveVariable.perform}}
               @loading={{this.saveVariable.isRunning}}
+              @loadingMessage={{t 'utility.loading'}}
             >
               {{t 'utility.save'}}
             </AuButton>

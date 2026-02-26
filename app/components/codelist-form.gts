@@ -436,6 +436,7 @@ const FormControls: TOC<FormControlsSig> = <template>
       <AuButton
         @disabled={{or (isSome @codelist.error) @editCodelistTask.isRunning}}
         @loading={{@editCodelistTask.isRunning}}
+        @loadingMessage={{t 'utility.loading'}}
         {{on 'click' (perform @editCodelistTask @codelist)}}
       >
         {{t 'utility.save'}}

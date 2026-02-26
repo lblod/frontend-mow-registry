@@ -204,6 +204,7 @@ export default class VariableManager extends Component<Signature> {
                 @alert={{true}}
                 {{on 'click' this.removeVariable.perform}}
                 @loading={{this.removeVariable.isRunning}}
+                @loadingMessage={{t 'utility.loading'}}
               >
                 {{t 'variable-manager.delete'}}
               </AuButton>

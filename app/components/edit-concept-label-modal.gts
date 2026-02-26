@@ -159,6 +159,7 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
               type='submit'
               form='change-concept-label-form'
               @loading={{this.submitNewLabel.isRunning}}
+              @loadingMessage={{t 'utility.loading'}}
               @disabled={{this.isSubmitDisabled}}
             >
               {{t 'utility.save'}}
