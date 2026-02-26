@@ -362,6 +362,7 @@ export default class ShapeManager extends Component<Signature> {
             {{on 'click' this.saveCard.perform}}
             @disabled={{not (and this.selectedUnit this.selectedShape)}}
             @loading={{this.saveCard.isRunning}}
+            @loadingMessage={{t 'utility.loading'}}
             @skin='link'
           >{{t 'utility.save'}}</AuButton>
           <AuButton
@@ -545,6 +546,7 @@ const DeleteConfirmationModal: TemplateOnlyComponent<DeleteConfirmationModalSign
           @alert={{true}}
           {{on 'click' @removeShape.perform}}
           @loading={{@removeShape.isRunning}}
+          @loadingMessage={{t 'utility.loading'}}
         >
           {{t 'shape-manager.delete'}}
         </AuButton>
@@ -583,6 +585,7 @@ const ShapeChangeConfirmationModal: TemplateOnlyComponent<ShapeChangeConfirmatio
           @alert={{true}}
           {{on 'click' @changeShape.perform}}
           @loading={{@changeShape.isRunning}}
+          @loadingMessage={{t 'utility.loading'}}
         >
           {{t 'shape-manager.shape-change.button'}}
         </AuButton>

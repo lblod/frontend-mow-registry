@@ -1,25 +1,22 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { dropTask, task } from 'ember-concurrency';
+import { dropTask, task, type Task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { not, or, eq } from 'ember-truth-helpers';
 import perform from 'ember-concurrency/helpers/perform';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
 import { concat, fn, get } from '@ember/helper';
-import PowerSelect from 'ember-power-select/components/power-select';
-import AuTable from '@appuniversum/ember-appuniversum/components/au-table';
 import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
-import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
 import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import ErrorMessage from 'mow-registry/components/error-message';
-import IconSelect from 'mow-registry/components/icon-select';
 import EditConceptLabelModal from 'mow-registry/components/edit-concept-label-modal';
+import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
 import {
   COD_SINGLE_SELECT_ID,
   COD_CONCEPT_SCHEME_ID,
@@ -32,24 +29,64 @@ import Icon from 'mow-registry/models/icon';
 import { removeItem } from 'mow-registry/utils/array';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
 import CodeListValue from 'mow-registry/models/code-list-value';
-import type ConceptLabelChangeNote from 'mow-registry/models/concept-label-change-note';
 import { isSome } from 'mow-registry/utils/option';
 import { findRecord, saveRecord } from '@warp-drive/legacy/compat/builders';
-import set from 'mow-registry/helpers/set';
-import setWithValue from 'mow-registry/helpers/set-with-value';
 import sortableHandle from 'ember-sortable/modifiers/sortable-handle';
 import sortableGroup from 'ember-sortable/modifiers/sortable-group';
 import sortableItem from 'ember-sortable/modifiers/sortable-item';
+import type { TOC } from '@ember/component/template-only';
+import { hash } from '@ember/helper';
+import type { ComponentLike, WithBoundArgs } from '@glint/template';
+import type CodelistsService from 'mow-registry/services/codelists';
+import AuTable from '@appuniversum/ember-appuniversum/components/au-table';
+import IconSelect from './icon-select';
+import AuRadioGroup from '@appuniversum/ember-appuniversum/components/au-radio-group';
 
 type Sig = {
   Args: {
     codelist: CodeList;
+    hideHeading: boolean;
+    hideBody: boolean;
+    onNavigateAway?: (codelist?: CodeList) => void;
+    onGoToEditConcept?: (concept?: SkosConcept | CodeListValue) => void;
+  };
+  Blocks: {
+    default: [
+      {
+        FormControls: WithBoundArgs<
+          ComponentLike<FormControlsSig>,
+          'codelist' | 'editCodelistTask' | 'cancelEditingTask'
+        >;
+        FormBody: WithBoundArgs<
+          ComponentLike<FormBodySig>,
+          | 'codelist'
+          | 'setCodelistValue'
+          | 'codelistTypes'
+          | 'selectedType'
+          | 'updateCodelistType'
+          | 'iconOptions'
+          | 'removeIcon'
+          | 'updateIconSelector'
+          | 'selectedIcon'
+          | 'addNewIcon'
+          | 'valueOptions'
+          | 'removeOption'
+          | 'newValue'
+          | 'isEditingLabelWithUri'
+          | 'addNewValue'
+          | 'setIsEditingLabelWithUri'
+          | 'updateNewValue'
+          | 'reorderItems'
+        >;
+      },
+    ];
   };
 };
 
 export default class CodelistFormComponent extends Component<Sig> {
   @service declare router: RouterService;
   @service declare store: Store;
+  @service('codelists') declare codeListService: CodelistsService;
 
   @tracked newValue = '';
   @tracked toDelete: (SkosConcept | CodeListValue)[] = [];
@@ -86,10 +123,6 @@ export default class CodelistFormComponent extends Component<Sig> {
 
   get iconOptions() {
     return this.options?.filter((model) => model instanceof Icon) ?? [];
-  }
-
-  get isSaving() {
-    return this.editCodelistTask.isRunning;
   }
 
   reorderItems(conceptValues?: CodeListValue[]) {
@@ -173,7 +206,8 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   @action
-  updateCodelistType(type: SkosConcept) {
+  updateCodelistType(typeLabel?: string) {
+    const type = this.codelistTypes?.find((type) => type.label === typeLabel);
     this.selectedType = type;
     this.args.codelist.set('type', type);
   }
@@ -231,17 +265,26 @@ export default class CodelistFormComponent extends Component<Sig> {
         this.options.map((option) => this.store.request(saveRecord(option))),
       );
       await this.store.request(saveRecord(codelist));
-      await this.router.transitionTo(
-        'codelists-management.codelist',
-        codelist.id,
-      );
+      await this.codeListService.all.perform(true);
+      if (this.args.onNavigateAway) {
+        this.args.onNavigateAway(codelist);
+      } else {
+        await this.router.transitionTo(
+          'codelists-management.codelist',
+          codelist.id,
+        );
+      }
     }
   });
 
   @action
   cancelEditingTask() {
     if (this.args.codelist.isNew) {
-      this.router.transitionTo('codelists-management');
+      if (this.args.onNavigateAway) {
+        this.args.onNavigateAway();
+      } else {
+        this.router.transitionTo('codelists-management');
+      }
     } else {
       for (let i = 0; i < this.options.length; i++) {
         const option = this.options[i];
@@ -259,33 +302,29 @@ export default class CodelistFormComponent extends Component<Sig> {
         }
       }
 
-      this.router.transitionTo(
-        'codelists-management.codelist',
-        this.args.codelist.id,
-      );
+      if (this.args.onNavigateAway) {
+        this.args.onNavigateAway();
+      } else {
+        this.router.transitionTo(
+          'codelists-management.codelist',
+          this.args.codelist.id,
+        );
+      }
     }
   }
 
-  changeConceptLabel = async (
-    concept: SkosConcept | CodeListValue,
-    newLabel: string,
-    explanation: string,
-  ) => {
-    const historyNote = this.store.createRecord<ConceptLabelChangeNote>(
-      'concept-label-change-note',
-      {
-        createdOn: new Date(),
-        previousConceptLabel: concept.label,
-        value: explanation,
-        concept,
-      },
-    );
-
-    await this.store.request(saveRecord(historyNote));
-    concept.label = newLabel;
-    await this.store.request(saveRecord(concept));
-    this.isEditingLabelWithUri = null;
-  };
+  @action
+  setIsEditingLabelWithUri(concept?: SkosConcept | CodeListValue | null) {
+    if (this.args.onGoToEditConcept && concept) {
+      this.args.onGoToEditConcept(concept);
+    } else if (concept !== undefined && concept && concept.uri !== undefined) {
+      this.isEditingLabelWithUri = concept && concept.uri;
+    }
+  }
+  @action
+  updateNewValue(event: Event) {
+    this.newValue = (event.target as HTMLInputElement).value;
+  }
 
   willDestroy() {
     super.willDestroy();
@@ -293,242 +332,337 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   <template>
-    <AuToolbar @border='bottom' @size='large' as |Group|>
-      <Group>
-        <AuHeading @skin='2'>
-          {{#if @codelist.isNew}}
-            {{t 'codelist.crud.new'}}
-          {{else}}
-            {{t 'codelist.crud.edit'}}
-          {{/if}}
-        </AuHeading>
-      </Group>
+    {{#unless @hideHeading}}
+      <AuToolbar @border='bottom' @size='large' as |Group|>
+        <Group>
+          <AuHeading @skin='2'>
+            {{#if @codelist.isNew}}
+              {{t 'codelist.crud.new'}}
+            {{else}}
+              {{t 'codelist.crud.edit'}}
+            {{/if}}
+          </AuHeading>
+        </Group>
 
-      <Group>
-        <AuButtonGroup>
-          <AuButton
-            @disabled={{or (isSome @codelist.error) this.isSaving}}
-            {{on 'click' (perform this.editCodelistTask @codelist)}}
-          >
-            {{t 'utility.save'}}
-          </AuButton>
-          <AuButton @skin='secondary' {{on 'click' this.cancelEditingTask}}>
-            {{t 'utility.cancel'}}
-          </AuButton>
-        </AuButtonGroup>
-      </Group>
-    </AuToolbar>
+        <Group>
+          <FormControls
+            @codelist={{@codelist}}
+            @editCodelistTask={{this.editCodelistTask}}
+            @cancelEditingTask={{this.cancelEditingTask}}
+          />
+        </Group>
+      </AuToolbar>
+    {{/unless}}
 
-    <div class='au-c-body-container au-c-body-container--scroll'>
-      <div class='au-u-max-width-small'>
-        <div class='au-o-box'>
-          <form class='au-c-form' novalidate>
-            {{#let (get @codelist.error 'label') as |error|}}
-              <div>
-                <AuLabel
-                  @error={{isSome error}}
-                  for='label'
-                  @required={{true}}
-                  @requiredLabel={{t 'utility.required'}}
-                >
-                  {{t 'codelist.attr.label'}}&nbsp;
-                </AuLabel>
-                <AuInput
-                  @error={{isSome error}}
-                  @width='block'
-                  id='label'
-                  required='required'
-                  value={{@codelist.label}}
-                  {{on 'input' (fn this.setCodelistValue 'label')}}
-                />
-                <ErrorMessage @error={{error}} />
-              </div>
-            {{/let}}
+    {{#unless @hideBody}}
 
-            <div>
-              <AuLabel for='label'>
-                {{t 'codelist.attr.type'}}&nbsp;
-              </AuLabel>
-              {{#if this.codelistTypes}}
-                <PowerSelect
-                  @allowClear={{false}}
-                  @searchEnabled={{false}}
-                  @options={{this.codelistTypes}}
-                  @selected={{this.selectedType}}
-                  @onChange={{this.updateCodelistType}}
-                  as |type|
-                >
-                  {{t (concat 'codelist.attr.types.' type.label)}}
-                </PowerSelect>
-              {{/if}}
-            </div>
-
-            <AuTable>
-              <:header>
-                <tr>
-                  <th>
-                    {{t 'codelist.attr.icons'}}
-                  </th>
-                  <th class='w-px'>
-                    <span class='au-u-hidden-visually'>
-                      {{t 'utility.delete'}}
-                    </span>
-                  </th>
-                </tr>
-              </:header>
-              <:body>
-                {{#each this.iconOptions as |icon|}}
-                  <tr>
-                    <td>
-                      <div class='au-u-flex'>
-                        <img
-                          src={{get (get icon.image 'file') 'downloadLink'}}
-                          alt=''
-                          height='50'
-                          class='au-u-margin-right'
-                        />
-                        <span
-                          class='au-u-flex-self-center'
-                        >{{icon.label}}</span>
-                      </div>
-                    </td>
-                    <td class='w-px au-u-padding-right-small'>
-                      <AuButton
-                        @icon='bin'
-                        @alert={{true}}
-                        @skin='secondary'
-                        @hideText={{true}}
-                        {{on 'click' (fn this.removeIcon icon)}}
-                      >
-                        {{t 'utility.delete'}}
-                      </AuButton>
-                    </td>
-                  </tr>
-                {{else}}
-                  <tr>
-                    <td colspan='2'>
-
-                      {{t 'codelist.crud.no-icon'}}
-                    </td>
-                  </tr>
-                {{/each}}
-              </:body>
-              <:footer>
-                <tr>
-                  <td class='max-w-prose'>
-                    <IconSelect
-                      @onChange={{this.updateIconSelector}}
-                      @selected={{this.selectedIcon}}
-                    />
-                  </td>
-                  <td class='au-u-padding-right-small'>
-                    <AuButton
-                      @disabled={{not this.selectedIcon}}
-                      {{on 'click' this.addNewIcon}}
-                    >
-                      {{t 'codelist.crud.add-icon'}}
-                    </AuButton>
-                  </td>
-                </tr>
-              </:footer>
-            </AuTable>
-
-            <div class='au-c-table-wrapper'>
-              <table class='au-c-table'>
-                <thead class='au-c-table__header'>
-                  <tr>
-                    <th class='data-table__header-title' />
-                    <th class='data-table__header-title'>
-                      {{t 'codelist.attr.values'}}
-                    </th>
-                    <th class='w-px data-table__header-title'>
-                      <span class='au-u-hidden-visually'>
-                        {{t 'codelist.crud.delete-value'}}
-                      </span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody
-                  {{sortableGroup onChange=this.reorderItems}}
-                  class='au-c-table__body'
-                >
-                  {{#each this.valueOptions as |option|}}
-                    <tr {{sortableItem model=option}}>
-                      <td class='drag-handle' {{sortableHandle}}>
-                        <AuIcon @icon='drag-handle' @size='large' />
-                      </td>
-                      <td>
-                        <div class='au-u-flex au-u-flex--vertical-center'>
-                          <p class='max-w-prose'>
-                            {{option.label}}
-                          </p>
-                          <AuButton
-                            @icon='pencil'
-                            @skin='naked'
-                            @hideText={{true}}
-                            {{on
-                              'click'
-                              (set this 'isEditingLabelWithUri' option.uri)
-                            }}
-                          />
-                        </div>
-                        {{#if (eq this.isEditingLabelWithUri option.uri)}}
-                          <EditConceptLabelModal
-                            @onCancel={{set this 'isEditingLabelWithUri' null}}
-                            @onSubmit={{this.changeConceptLabel}}
-                            @concept={{option}}
-                          />
-                        {{/if}}
-                      </td>
-                      <td>
-                        <AuButton
-                          @icon='bin'
-                          @alert={{true}}
-                          @skin='secondary'
-                          @hideText={{true}}
-                          {{on 'click' (fn this.removeOption option)}}
-                        >
-                          {{t 'utility.delete'}}
-                        </AuButton>
-                      </td>
-                    </tr>
-                  {{else}}
-                    <tr>
-                      <td colspan='2'>
-                        {{t 'codelist.crud.no-value'}}
-                      </td>
-                    </tr>
-                  {{/each}}
-                </tbody>
-                <tfoot class='au-c-table__footer'>
-                  <tr>
-                    <td colspan='2'>
-                      <div
-                        class='au-u-flex au-u-flex--vertical-centered au-u-flex--spaced-small'
-                      >
-                        <AuInput
-                          id='values'
-                          required='required'
-                          value={{this.newValue}}
-                          @width='block'
-                          {{on 'input' (setWithValue this 'newValue')}}
-                        />
-                        <AuButton
-                          class='no-flex-shrink'
-                          @disabled={{not this.newValue.length}}
-                          {{on 'click' this.addNewValue}}
-                        >
-                          {{t 'codelist.crud.add-value'}}
-                        </AuButton>
-                      </div>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-          </form>
+      <div class='au-c-body-container au-c-body-container--scroll'>
+        <div class='au-u-max-width-small'>
+          <div class='au-o-box'>
+            <FormBody
+              @codelist={{@codelist}}
+              @setCodelistValue={{this.setCodelistValue}}
+              @codelistTypes={{this.codelistTypes}}
+              @selectedType={{this.selectedType}}
+              @updateCodelistType={{this.updateCodelistType}}
+              @iconOptions={{this.iconOptions}}
+              @removeIcon={{this.removeIcon}}
+              @updateIconSelector={{this.updateIconSelector}}
+              @selectedIcon={{this.selectedIcon}}
+              @addNewIcon={{this.addNewIcon}}
+              @valueOptions={{this.valueOptions}}
+              @removeOption={{this.removeOption}}
+              @newValue={{this.newValue}}
+              @isEditingLabelWithUri={{this.isEditingLabelWithUri}}
+              @setIsEditingLabelWithUri={{this.setIsEditingLabelWithUri}}
+              @updateNewValue={{this.updateNewValue}}
+              @addNewValue={{this.addNewValue}}
+              @reorderItems={{this.reorderItems}}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    {{/unless}}
+    {{yield
+      (hash
+        FormBody=(component
+          FormBody
+          codelist=@codelist
+          setCodelistValue=this.setCodelistValue
+          codelistTypes=this.codelistTypes
+          selectedType=this.selectedType
+          updateCodelistType=this.updateCodelistType
+          iconOptions=this.iconOptions
+          removeIcon=this.removeIcon
+          updateIconSelector=this.updateIconSelector
+          selectedIcon=this.selectedIcon
+          addNewIcon=this.addNewIcon
+          valueOptions=this.valueOptions
+          removeOption=this.removeOption
+          newValue=this.newValue
+          isEditingLabelWithUri=this.isEditingLabelWithUri
+          addNewValue=this.addNewValue
+          setIsEditingLabelWithUri=this.setIsEditingLabelWithUri
+          updateNewValue=this.updateNewValue
+          reorderItems=this.reorderItems
+        )
+        FormControls=(component
+          FormControls
+          codelist=@codelist
+          editCodelistTask=this.editCodelistTask
+          cancelEditingTask=this.cancelEditingTask
+        )
+      )
+    }}
   </template>
+}
+
+type FormControlsSig = {
+  Args: {
+    codelist: CodeList;
+    editCodelistTask: Task<void, [CodeList, Event]>;
+    cancelEditingTask: () => void;
+  };
+};
+
+const FormControls: TOC<FormControlsSig> = <template>
+  <ConfirmationModalFooter>
+    <:cancelButton>
+      <AuButton @skin='secondary' {{on 'click' @cancelEditingTask}}>
+        {{t 'utility.cancel'}}
+      </AuButton>
+    </:cancelButton>
+    <:confirmButton>
+      <AuButton
+        @disabled={{or (isSome @codelist.error) @editCodelistTask.isRunning}}
+        @loading={{@editCodelistTask.isRunning}}
+        @loadingMessage={{t 'utility.loading'}}
+        {{on 'click' (perform @editCodelistTask @codelist)}}
+      >
+        {{t 'utility.save'}}
+      </AuButton>
+    </:confirmButton>
+  </ConfirmationModalFooter>
+</template>;
+
+type FormBodySig = {
+  Args: {
+    codelist: CodeList;
+    setCodelistValue: (attributeName: string, event: Event) => Promise<void>;
+    codelistTypes: SkosConcept[] | undefined;
+    selectedType: SkosConcept | null | undefined;
+    updateCodelistType: (typeLabel?: string) => void;
+    iconOptions: Icon[];
+    removeIcon: (icon: Icon) => void;
+    updateIconSelector: (icon: Icon) => void;
+    selectedIcon: Icon | null;
+    addNewIcon: (event: MouseEvent) => void;
+    valueOptions: (SkosConcept | CodeListValue)[];
+    removeOption: (option: SkosConcept | CodeListValue) => void;
+    newValue: string;
+    isEditingLabelWithUri: string | null;
+    setIsEditingLabelWithUri: (
+      concept?: SkosConcept | CodeListValue | null,
+    ) => void;
+    addNewValue: (event: Event) => void;
+    updateNewValue: (event: Event) => void;
+    reorderItems: (conceptValues?: CodeListValue[] | undefined) => void;
+  };
+};
+
+const FormBody: TOC<FormBodySig> = <template>
+  <form class='au-c-form' novalidate>
+    {{#let (get @codelist.error 'label') as |error|}}
+      <div>
+        <AuLabel
+          @error={{isSome error}}
+          for='label'
+          @required={{true}}
+          @requiredLabel={{t 'utility.required'}}
+        >
+          {{t 'codelist.attr.label'}}&nbsp;
+        </AuLabel>
+        <AuInput
+          @error={{isSome error}}
+          @width='block'
+          id='label'
+          value={{@codelist.label}}
+          {{on 'input' (fn @setCodelistValue 'label')}}
+        />
+        <ErrorMessage @error={{error}} />
+      </div>
+    {{/let}}
+
+    <div>
+      <AuLabel for='label'>
+        {{t 'codelist.attr.type'}}&nbsp;
+      </AuLabel>
+      {{#if @codelistTypes}}
+        <AuRadioGroup
+          @selected={{@selectedType.label}}
+          @onChange={{@updateCodelistType}}
+          as |Group|
+        >
+          {{#each @codelistTypes as |type|}}
+            <Group.Radio @value={{type.label}}>{{t
+                (concat 'codelist.attr.types.' type.label)
+              }}</Group.Radio>
+          {{/each}}
+        </AuRadioGroup>
+      {{/if}}
+    </div>
+    <AuLabel>
+      {{t 'codelist.attr.icons'}}
+    </AuLabel>
+    <AuTable>
+      <:body>
+        {{#each @iconOptions as |icon|}}
+          <tr>
+            <td>
+              <div class='au-u-flex'>
+                <img
+                  src={{get (get icon.image 'file') 'downloadLink'}}
+                  alt=''
+                  height='50'
+                  class='au-u-margin-right'
+                />
+                <span class='au-u-flex-self-center'>{{icon.label}}</span>
+              </div>
+            </td>
+            <td class='w-px au-u-padding-right-small'>
+              <AuButton
+                @icon='bin'
+                @alert={{true}}
+                @skin='link-secondary'
+                @size='large'
+                @hideText={{true}}
+                {{on 'click' (fn @removeIcon icon)}}
+              >
+                {{t 'utility.delete'}}
+              </AuButton>
+            </td>
+          </tr>
+        {{else}}
+          <tr>
+            <td colspan='2'>
+
+              {{t 'codelist.crud.no-icon'}}
+            </td>
+          </tr>
+        {{/each}}
+      </:body>
+      <:footer>
+        <tr>
+          <td class='max-w-prose'>
+            <IconSelect
+              @onChange={{@updateIconSelector}}
+              @selected={{@selectedIcon}}
+            />
+          </td>
+          <td class='au-u-padding-right-small'>
+            <AuButton
+              @disabled={{not @selectedIcon}}
+              {{on 'click' @addNewIcon}}
+            >
+              {{t 'codelist.crud.add-icon'}}
+            </AuButton>
+          </td>
+        </tr>
+      </:footer>
+    </AuTable>
+    <AuLabel>
+      {{t 'codelist.attr.values'}}
+    </AuLabel>
+    <div class='au-c-table-wrapper codelist-form--table-body'>
+      <table class='au-c-table'>
+        <tbody
+          {{sortableGroup onChange=@reorderItems}}
+          class='au-c-table__body'
+        >
+          {{#each @valueOptions as |option|}}
+            <tr {{sortableItem model=option}}>
+              <td class='drag-handle' {{sortableHandle}}>
+                <AuIcon @icon='drag-handle' @size='large' />
+              </td>
+              <td>
+                <div class='au-u-flex au-u-flex--vertical-center'>
+                  <p class='max-w-prose'>
+                    {{option.label}}
+                  </p>
+
+                  {{#unless @codelist.isNew}}
+                    <div>
+                      <AuButton
+                        @icon='pencil'
+                        @skin='link'
+                        {{on 'click' (fn @setIsEditingLabelWithUri option)}}
+                      >{{t 'codelist.crud.edit-label'}}</AuButton>
+                    </div>
+                  {{/unless}}
+                </div>
+                {{#if (eq @isEditingLabelWithUri option.uri)}}
+                  <EditConceptLabelModal
+                    @onCancel={{fn @setIsEditingLabelWithUri null}}
+                    @onSubmit={{fn @setIsEditingLabelWithUri null}}
+                    @concept={{option}}
+                  />
+                {{/if}}
+
+              </td>
+              <td>
+                <AuButton
+                  @icon='bin'
+                  @alert={{true}}
+                  @skin='link-secondary'
+                  @hideText={{true}}
+                  {{on 'click' (fn @removeOption option)}}
+                >
+                  {{t 'utility.delete'}}
+                </AuButton>
+              </td>
+            </tr>
+          {{else}}
+            <tr>
+              <td colspan='2'>
+                {{t 'codelist.crud.no-value'}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+        <tfoot class='au-c-table__footer'>
+          <tr>
+            <td colspan='2'>
+              <div
+                class='au-u-flex au-u-flex--vertical-centered au-u-flex--spaced-small'
+              >
+                <AuInput
+                  id='values'
+                  value={{@newValue}}
+                  @width='block'
+                  {{on 'input' @updateNewValue}}
+                  {{on 'keypress' (fn checkEnterAndSubmit @addNewValue)}}
+                />
+                <AuButton
+                  class='no-flex-shrink'
+                  @disabled={{not @newValue.length}}
+                  {{on 'click' @addNewValue}}
+                >
+                  {{t 'codelist.crud.add-value'}}
+                </AuButton>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </form>
+</template>;
+
+function checkEnterAndSubmit(
+  callback: (event: Event) => void,
+  event: KeyboardEvent,
+) {
+  if (event.key === 'Enter') {
+    callback(event);
+  }
 }

@@ -2,7 +2,6 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
-import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import AuTextarea from '@appuniversum/ember-appuniversum/components/au-textarea';
@@ -16,20 +15,24 @@ import type SkosConcept from 'mow-registry/models/skos-concept';
 import { task } from 'ember-concurrency';
 import setWithValue from 'mow-registry/helpers/set-with-value';
 import type CodeListValue from 'mow-registry/models/code-list-value';
+import Store from 'mow-registry/services/store';
+import { inject as service } from '@ember/service';
+import type ConceptLabelChangeNote from 'mow-registry/models/concept-label-change-note';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
+import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
+import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 
 type Sig = {
   Args: {
     concept: SkosConcept | CodeListValue;
     onCancel: () => void;
-    onSubmit: (
-      concept: SkosConcept | CodeListValue,
-      newLabel: string,
-      explanation: string,
-    ) => Promise<void>;
+    onSubmit: () => void;
+    showGoBack?: boolean;
   };
 };
 
 export default class EditConceptLabelModalComponent extends Component<Sig> {
+  @service declare store: Store;
   @localCopy('args.concept.label') declare newConceptLabel: string;
 
   @tracked explanation: string | null = null;
@@ -39,11 +42,20 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
       return;
     }
     event.preventDefault();
-    await this.args.onSubmit?.(
-      this.args.concept,
-      this.newConceptLabel,
-      this.explanation,
+    const historyNote = this.store.createRecord<ConceptLabelChangeNote>(
+      'concept-label-change-note',
+      {
+        createdOn: new Date(),
+        previousConceptLabel: this.args.concept.label,
+        value: this.explanation,
+        concept: this.args.concept,
+      },
     );
+
+    await this.store.request(saveRecord(historyNote));
+    this.args.concept.label = this.newConceptLabel;
+    await this.store.request(saveRecord(this.args.concept));
+    this.args.onSubmit();
   });
 
   get isSubmitDisabled() {
@@ -57,6 +69,24 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
     <AuModal @modalOpen={{true}} @closeModal={{@onCancel}}>
       <:title>{{t 'codelist.crud.edit-label'}}</:title>
       <:body>
+        {{#if @showGoBack}}
+          <AuToolbar
+            class='au-u-margin-bottom codelist-manager--toolbar'
+            @skin='tint'
+            as |Group|
+          >
+            <Group>
+              <AuButton
+                {{on 'click' @onCancel}}
+                @skin='link'
+                @icon='chevron-left'
+                class='au-u-padding'
+              >
+                {{t 'edit-concept-label.go-back'}}
+              </AuButton>
+            </Group>
+          </AuToolbar>
+        {{/if}}
         <AuAlert
           @title={{t 'codelist.change-label-modal.warning-title'}}
           @skin='warning'
@@ -117,19 +147,24 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
         </form>
       </:body>
       <:footer>
-        <AuButtonGroup>
-          <AuButton @skin='secondary' {{on 'click' @onCancel}}>
-            {{t 'utility.cancel'}}
-          </AuButton>
-          <AuButton
-            type='submit'
-            form='change-concept-label-form'
-            @loading={{this.submitNewLabel.isRunning}}
-            @disabled={{this.isSubmitDisabled}}
-          >
-            {{t 'utility.save'}}
-          </AuButton>
-        </AuButtonGroup>
+        <ConfirmationModalFooter>
+          <:cancelButton>
+            <AuButton @skin='secondary' {{on 'click' @onCancel}}>
+              {{t 'utility.cancel'}}
+            </AuButton>
+          </:cancelButton>
+          <:confirmButton>
+            <AuButton
+              type='submit'
+              form='change-concept-label-form'
+              @loading={{this.submitNewLabel.isRunning}}
+              @loadingMessage={{t 'utility.loading'}}
+              @disabled={{this.isSubmitDisabled}}
+            >
+              {{t 'utility.save'}}
+            </AuButton>
+          </:confirmButton>
+        </ConfirmationModalFooter>
       </:footer>
     </AuModal>
   </template>
