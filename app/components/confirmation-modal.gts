@@ -21,7 +21,7 @@ type Signature = {
   };
 };
 const ConfirmationModal: TOC<Signature> = <template>
-  <AuModal @modalOpen={{@modalOpen}}>
+  <AuModal @modalOpen={{@modalOpen}} @closeModal={{@onCancel}}>
     <:title>
       {{#if (has-block 'title')}}
         {{yield to='title'}}
