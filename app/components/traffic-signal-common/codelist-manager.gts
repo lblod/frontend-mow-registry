@@ -29,7 +29,7 @@ const CodelistManager: TOC<Sig> = <template>
       @onGoToEditConcept={{@onGoToEditConcept}}
       as |form|
     >
-      <AuModal @modalOpen={{@modalOpen}} @closeModal={{@onCloseModal}}>
+      <AuModal @modalOpen={{@modalOpen}} @closeModal={{@onGoBack}}>
         <:title>
           {{t 'codelist-form.modal-title'}}
         </:title>
