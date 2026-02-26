@@ -161,6 +161,7 @@ road-sign-concept:
     delete: Verkeersbord verwijderen
     delete-confirmation-title: Verwijder verkeersbord {sign}?
     delete-confirmation-content: Het verkeersbord <strong>{sign}</strong> wordt <strong>permanent</strong> verwijderd. Mobiliteitsmaatregelen die dit verkeersbord gebruiken zullen <strong>niet meer</strong> juist werken.
+    delete-confirmation-content-2: Momenteel gebruiken <strong>{count}</strong> verkeersmaatregelen dit verkeersbord.
     label-filter: Label
     label-filter-placeholder: Zoeken op label
     meaning-filter: Betekenis

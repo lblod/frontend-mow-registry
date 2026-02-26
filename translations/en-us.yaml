@@ -160,7 +160,8 @@ road-sign-concept:
     edit-image-warning: Changing the image of a road sign can have <strong>major consequences</strong> for the correct operation of the application.
     delete: Delete road sign
     delete-confirmation-title: Delete road sign {sign}?
-    delete-confirmation-content: The road sign <strong>{sign}</strong> will be <strong>unrecoverably</strong> deleted. Any measure using this sign <strong>will not</strong> work correctly anymore.
+    delete-confirmation-content: The road sign <strong>{sign}</strong> will be <strong>unrecoverably</strong> deleted. Any traffic measure using this sign <strong>will not</strong> work correctly anymore.
+    delete-confirmation-content-2: Currently <strong>{count}</strong> traffic measures are using this sign.
     label-filter: Label
     label-filter-placeholder: Search by label
     meaning-filter: Meaning
