@@ -112,7 +112,7 @@ traffic-signal-concept:
     can-be-contained-in: Dit teken kan vervat zijn in
   crud:
     delete-confirmation-title: Verkeersteken {sign} verwijderen?
-    delete-confirmation-content: Verkeersteken verwijderen<strong>Test</strong>?
+    delete-confirmation-content: Indien de maatregel <strong>reeds in gebruik is</strong>, kan het verwijderen van een verkeersbord <strong>onverwachte gevolgen</strong> hebben voor de VKS tekentool.
 road-sign-concept:
   name: Verkeersborden
   details: Verkeersbord {label}
@@ -278,7 +278,7 @@ traffic-measure-concept:
     edit-button-text: Maatregel bewerken
     delete: Verwijder maatregel
     delete-confirm-modal-title: Maatregel verwijderen?
-    delete-confirm-modal-content: Een verkeersmaatregel verwijderen kan <strong>onverwachte gevolgen</strong> hebben ... <TODO>
+    delete-confirm-modal-content: Een verkeersmaatregel verwijderen die reeds gebruikt is in een ontwerp in de <strong>VKS tekentool</strong> kan <strong>overwachte gevolgen</strong> hebben.
     label-filter: Label
     label-filter-placeholder: Zoeken op label
     text-filter: Tekst
@@ -317,7 +317,7 @@ codelist:
     edit: Codelijst bewerken
     delete: Codelijst verwijderen
     delete-confirmation-title: Codelijst "{codelist}" verwijderen?
-    delete-confirmation-content: Codelijst <strong>{codelist}</strong> zal <strong>permanent</strong> verwijderd worden. Documenten die deze codelijst gebruiken zullen <strong>niet meer</strong> correct werken.
+    delete-confirmation-content: Codelijst <strong>{codelist}</strong> zal <strong>permanent</strong> verwijderd worden. Documenten, instructies, maatregelen en variabelen die deze codelijst gebruiken zullen <strong>niet meer</strong> correct werken.
     no-data: Geen codelijst
     no-value: Geen waarde
     no-icon: Geen pictogram
@@ -405,7 +405,7 @@ variable-manager:
   no-data: Geen variabelen
   delete: Verwijder variabele
   delete-confirmation-title: Verwijder variabele "{variable}"?
-  delete-confirmation-content: Variabele <strong>{variable}</strong> zal <strong>permanent</strong> verwijderd worden. Documenten die deze variabele gebruiken, zullen <strong>niet meer</strong> correct werken.
+  delete-confirmation-content: Variabele <strong>{variable}</strong> zal <strong>permanent</strong> verwijderd worden. Dit kan <strong>problemen</strong> veroorzaken in de <strong>VKS tekentool</strong>. Neem contact op met de collega's van AWV om dit af te stemmen.
   table:
     fields:
       default-value: Standaardwaarde

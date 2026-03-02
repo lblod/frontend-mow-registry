@@ -112,7 +112,7 @@ traffic-signal-concept:
     can-be-contained-in: This signal can be contained in
   crud:
     delete-confirmation-title: Remove traffic sign {sign}?
-    delete-confirmation-content: Removing traffic sign ... <strong>Test</strong>?
+    delete-confirmation-content: If the traffic measure is <strong>already being used</strong>, removing a traffic signal could have <strong>unexpected consequences</strong> for the VKS design tool.
 road-sign-concept:
   name: Road Signs
   details: Road sign {label}
@@ -278,7 +278,7 @@ traffic-measure-concept:
     edit-button-text: Edit measure
     delete: Delete measure
     delete-confirm-modal-title: Delete traffic measure?
-    delete-confirm-modal-content: Removing a traffic measure can have <strong>blabla</strong>... <TODO> 
+    delete-confirm-modal-content: Removing a traffic measure that is already being used in a design of the VKS design tool can have <strong>unexpected consequences</strong>.
     label-filter: Label
     label-filter-placeholder: Search by label
     text-filter: Text
@@ -317,7 +317,7 @@ codelist:
     edit: Edit codelist
     delete: Delete codelist
     delete-confirmation-title: Delete codelist "{codelist}"?
-    delete-confirmation-content: The codelist <strong>{codelist}</strong> will be <strong>unrecoverably</strong> deleted. Any document using this codelist <strong>will not</strong> work correctly anymore.
+    delete-confirmation-content: The codelist <strong>{codelist}</strong> will be <strong>unrecoverably</strong> deleted. Any document, instruction, measure and variables using this codelist <strong>will not</strong> work correctly anymore.
     no-data: No codelist
     no-value: No value
     no-icon: No icon
@@ -405,7 +405,7 @@ variable-manager:
   no-data: No variables
   delete: Remove variable
   delete-confirmation-title: Delete variable "{variable}"?
-  delete-confirmation-content: The variable <strong>{variable}</strong> will be <strong>unrecoverably</strong> deleted. Any document using this variable <strong>will not</strong> work correctly anymore.
+  delete-confirmation-content: The variable <strong>{variable}</strong> will be <strong>unrecoverably</strong> deleted. This can cause <strong>problems</strong> for the <strong>VKS design tool</strong>. Please contact your colleagues at AWV to confirm before removing.
   table:
     fields:
       default-value: Default value
