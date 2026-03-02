@@ -5,11 +5,14 @@ import { task } from 'ember-concurrency';
 import Store from 'mow-registry/services/store';
 import type TrafficMeasureConceptsDetailsRoute from 'mow-registry/routes/traffic-measure-concepts/details';
 import type { ModelFrom } from 'mow-registry/utils/type-utils';
+import { tracked } from '@glimmer/tracking';
 
 export default class TrafficMeasureConceptsDetailsController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
   declare model: ModelFrom<TrafficMeasureConceptsDetailsRoute>;
+
+  @tracked showDeleteConfirmationModal = false;
 
   delete = task(async () => {
     // We assume a measure only has one template

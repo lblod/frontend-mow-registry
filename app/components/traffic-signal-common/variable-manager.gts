@@ -50,6 +50,8 @@ import * as locales from 'date-fns/locale';
 import { recordIdentifierFor } from '@warp-drive/core';
 import { query, saveRecord } from '@warp-drive/legacy/compat/builders';
 import { task } from 'ember-concurrency';
+import ConfirmationModal from 'mow-registry/components/confirmation-modal';
+import perform from 'ember-concurrency/helpers/perform';
 
 interface Signature {
   Args: {
@@ -441,35 +443,28 @@ export default class VariableManager extends Component<Signature> {
           </AuButton>
         </:footer>
       </AuModal>
-      <AuModal
+      <ConfirmationModal
         @modalOpen={{this.isDeleteConfirmationOpen}}
-        @closeModal={{this.closeDeleteConfirmation}}
+        @onCancel={{this.closeDeleteConfirmation}}
+        @onConfirm={{perform this.removeVariable}}
+        @isAlert={{true}}
+        @isLoading={{this.removeVariable.isRunning}}
+        @confirmButtonText={{t 'variable-manager.delete'}}
+        @titleText={{t
+          'variable-manager.delete-confirmation-title'
+          variable=this.variableToDelete.label
+        }}
       >
-        <:title>
-          {{t 'utility.confirmation.title'}}
-        </:title>
         <:body>
           <p>
-            {{t 'utility.confirmation.body'}}
+            {{t
+              'variable-manager.delete-confirmation-content'
+              variable=this.variableToDelete.label
+              htmlSafe=true
+            }}
           </p>
         </:body>
-        <:footer>
-          <AuButton
-            @alert={{true}}
-            {{on 'click' this.removeVariable.perform}}
-            @loading={{this.removeVariable.isRunning}}
-          >
-            {{t 'variable-manager.delete'}}
-          </AuButton>
-          <AuButton
-            @skin='secondary'
-            {{on 'click' this.closeDeleteConfirmation}}
-            @disabled={{this.removeVariable.isRunning}}
-          >
-            {{t 'utility.cancel'}}
-          </AuButton>
-        </:footer>
-      </AuModal>
+      </ConfirmationModal>
     {{/if}}
   </template>
 }
