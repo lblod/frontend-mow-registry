@@ -590,7 +590,7 @@ const FormBody: TOC<FormBodySig> = <template>
                     {{option.label}}
                   </p>
 
-                  {{#unless @codelist.isNew}}
+                  {{#unless (or @codelist.isNew option.isNew)}}
                     <div>
                       <AuButton
                         @icon='pencil'
