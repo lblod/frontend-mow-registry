@@ -1,3 +1,5 @@
+/* eslint-disable ember/routes-segments-snake-case */
+//TODO fix the route segments
 import EmberRouter from '@embroider/router';
 import config from 'mow-registry/config/environment';
 
@@ -108,6 +110,8 @@ Router.map(function () {
   });
 
   // These ember-metis routes needs to be configured last
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   externalRoute(this);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   fallbackRoute(this);
 });
