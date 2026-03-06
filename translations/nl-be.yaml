@@ -307,7 +307,7 @@ codelist:
     add-value: Waarde toevoegen
     add-icon: Pictogram toevoegen
     delete-value: Waarde verwijderen
-    edit-label: Concept label wijzigen
+    edit-label: Label bewerken
     reason-for-change: Reden van de wijziging
     previous-value: Vorige waarde
     previous-changes: Vorige wijzigingen
@@ -386,6 +386,9 @@ shape-manager:
 variable-manager:
   no-data: Geen variabelen
   delete: Verwijder variabele
+  edit-codelist: Bewerk codelijst
+  no-codelist-found-question: Codelijst niet gevonden?
+  new-codelist: Maak een nieuwe codelijst aan
   table:
     fields:
       default-value: Standaardwaarde
@@ -397,3 +400,8 @@ variable-manager:
       placeholder:
         free-text: Vul standaardwaarde in
         select: Kies standaardwaarde
+codelist-form:
+  go-back: Terug naar variabele bewerken
+  modal-title: Codelijst bewerken
+edit-concept-label:
+  go-back: Terug naar codelijst bewerken

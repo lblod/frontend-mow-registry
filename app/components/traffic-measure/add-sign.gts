@@ -39,9 +39,7 @@ export default class TrafficMeasureAddSignComponent extends Component<Sig> {
   search = restartableTask(async (searchData: string) => {
     await timeout(300);
 
-    const queryParams: LegacyResourceQuery<
-      RoadSignConcept | RoadMarkingConcept | TrafficLightConcept
-    > = {};
+    const queryParams: LegacyResourceQuery = {};
     queryParams[this.args.selectedType.searchFilter] = searchData;
     queryParams['sort'] = this.args.selectedType.sortingField;
     queryParams['include'] = ['hasInstructions'];

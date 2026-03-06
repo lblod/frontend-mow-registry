@@ -37,7 +37,7 @@ export default class IconSelectComponent extends Component<Signature> {
   loadIconCatalogTask = task({ restartable: true }, async (search?: string) => {
     await timeout(300); // debounce
 
-    const queryParams: LegacyResourceQuery<Icon> = {
+    const queryParams: LegacyResourceQuery = {
       sort: 'label',
     };
 

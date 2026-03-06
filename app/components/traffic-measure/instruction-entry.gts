@@ -23,7 +23,7 @@ export default class InstructionEntry extends Component<Sig> {
   get signalRoute() {
     const signalPromise = getPromiseState(this.args.sign.item);
     if (!signalPromise.isSuccess || !signalPromise.value) {
-      return;
+      return undefined;
     }
     const signal = signalPromise.value;
     if (signal instanceof RoadSignConcept) {
@@ -35,7 +35,7 @@ export default class InstructionEntry extends Component<Sig> {
     if (signal instanceof TrafficLightConcept) {
       return 'traffic-light-concepts.traffic-light-concept';
     }
-    return;
+    return undefined;
   }
 
   <template>

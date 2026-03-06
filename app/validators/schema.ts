@@ -118,7 +118,7 @@ export const validateEndDate = () => {
     })
     .greater(
       Joi.ref('startDate', {
-        adjust: (date) => {
+        adjust: (date: Date) => {
           return date ?? new Date(0);
         },
       }),

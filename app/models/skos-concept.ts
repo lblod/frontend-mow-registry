@@ -2,6 +2,7 @@ import { type AsyncBelongsTo, attr, hasMany } from '@warp-drive/legacy/model';
 import Joi from 'joi';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
 import {
+  validateBelongsToOptional,
   validateHasManyOptional,
   validateStringOptional,
   validateStringRequired,
@@ -35,6 +36,7 @@ export default class SkosConcept extends AbstractValidationModel {
       uri: validateStringOptional(),
       label: validateStringRequired(),
       inScheme: validateHasManyOptional(),
+      historyNotes: validateBelongsToOptional(),
     });
   }
 }
