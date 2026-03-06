@@ -57,6 +57,7 @@
     "@glimmer/tracking": "^1.1.2",
     "@glint/ember-tsc": "^1.1.1",
     "@glint/template": "^1.7.4",
+    "@glint/tsserver-plugin": "catalog:",
     "@lblod/ember-acmidm-login": "^2.1.0",
     "@lblod/ember-environment-banner": "^0.5.0",
     "@lblod/ember-mock-login": "^0.10.0",
