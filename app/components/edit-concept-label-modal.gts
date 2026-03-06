@@ -105,7 +105,7 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
           {{on 'submit' this.submitNewLabel.perform}}
         >
           <AuFormRow @alignment='inline'>
-            <AuLabel for='concept-uri' required>
+            <AuLabel for='concept-uri' @required={{true}}>
               {{t 'utility.uri'}}
             </AuLabel>
             <AuInput
@@ -119,7 +119,6 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
             <AuLabel
               class='no-flex-shrink'
               for='label-value'
-              required
               @required={{true}}
             >
               {{t 'codelist.crud.new-label'}}
