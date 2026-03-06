@@ -24,7 +24,7 @@ type Sig = {
 
 export default class CodelistManager extends Component<Sig> {
   @service declare store: Store;
-  onCloseModal = async () => {
+  onCloseModal = () => {
     this.store.cache.rollbackRelationships(
       recordIdentifierFor(this.args.codelist),
     );

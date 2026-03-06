@@ -45,7 +45,7 @@ export type VariableSubtype =
   | InstructionVariable;
 
 export default class Variable extends AbstractValidationModel {
-  declare [Type]: 'variable' | string;
+  declare [Type]: string;
 
   @attr declare uri: string;
   @attr declare type?: VariableType;

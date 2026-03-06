@@ -137,7 +137,7 @@ export default class ShapeManager extends Component<Signature> {
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
     const shapesConverted: Shape[] = [];
-    let shapes: TribontShape[] = [];
+    let shapes: TribontShape[];
     if (!sort || sort === 'created-on' || sort === '-created-on') {
       shapes = await this.store
         .request(
@@ -153,6 +153,7 @@ export default class ShapeManager extends Component<Signature> {
         )
         .then((res) => res.content);
       // @ts-expect-error We know that an array don't have a meta property but we need it for the table to work
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       shapesConverted.meta = shapes.meta;
     } else {
       const shapesSorted = await sortOnDimension(
@@ -231,7 +232,7 @@ export default class ShapeManager extends Component<Signature> {
         const shapeConverted = await this.shapeClass?.fromShape(shape);
         await shapeConverted?.convertToNewUnit(this.unitChange, this.store);
       }
-      this.shapesConverted.retry();
+      await this.shapesConverted.retry();
       this.cardEditing = false;
     }
   });
@@ -266,7 +267,7 @@ export default class ShapeManager extends Component<Signature> {
     this.args.trafficSignal.set('defaultShape', undefined);
     this.args.trafficSignal.set('shapes', [shape.shape]);
     await this.store.request(saveRecord(this.args.trafficSignal));
-    this.shapesConverted.retry();
+    await this.shapesConverted.retry();
     this.cardEditing = false;
     this.args.onPageChange(0);
     this.args.onSortChange('created-on');
@@ -320,7 +321,7 @@ export default class ShapeManager extends Component<Signature> {
     const shape = this.shapeToDelete;
     if (!shape) return;
     await shape.remove(this.store);
-    this.shapesConverted.retry();
+    await this.shapesConverted.retry();
     this.closeDeleteConfirmation();
   });
 

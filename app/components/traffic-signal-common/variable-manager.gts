@@ -14,7 +14,6 @@ import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
-import { trackedFunction } from 'reactiveweb/function';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { getPromiseState } from '@warp-drive/ember';
@@ -53,24 +52,15 @@ export default class VariableManager extends Component<Signature> {
   @tracked variableToDelete?: Variable;
   @tracked isDeleteConfirmationOpen = false;
 
-  get variableTypes() {
-    return signVariableTypes;
-  }
-
-  labelForType = (variableType: VariableType) => {
-    return this.variablesService.defaultLabelForVariableType(variableType);
-  };
-
-  codelists = trackedFunction(this, async () => {
-    return await this.codeListService.all.perform();
-  });
-
-  variables = trackedFunction(this, async () => {
-    const { pageNumber, pageSize, sort } = this.args;
-    const trafficSignalId = this.args.trafficSignal.id;
-    await Promise.resolve();
-    const variables = await this.store
-      .request(
+  fetchVariables = task(
+    async (
+      store: Store,
+      pageNumber: number,
+      pageSize: number,
+      sort: string | undefined,
+      trafficSignalId: string | null,
+    ) => {
+      const promise = await store.request(
         query<Variable>('variable', {
           'filter[traffic-signal-concept][:id:]': trafficSignalId,
           page: {
@@ -79,11 +69,49 @@ export default class VariableManager extends Component<Signature> {
           },
           sort: sort,
         }),
-      )
-      .then((res) => res.content);
-    return variables;
-  });
+      );
+      return promise.content;
+    },
+  );
+  get variableTypes() {
+    return signVariableTypes;
+  }
 
+  labelForType = (variableType: VariableType) => {
+    return this.variablesService.defaultLabelForVariableType(variableType);
+  };
+
+  @cached
+  get codelists() {
+    return getPromiseState(this.codeListService.all.perform());
+  }
+
+  @cached
+  get variables() {
+    const state = getPromiseState(
+      this.fetchVariables.perform(
+        this.store,
+        // 0,20,'','d6fa3d560d0655cd0db5644293a44357f235b1932cfd1b64ea6dd122326bd24b'
+        this.args.pageNumber,
+        this.args.pageSize,
+        this.args.sort,
+        this.args.trafficSignal.id,
+      ),
+    );
+    return state;
+  }
+
+  get vars() {
+    if (this.variables.isPending) {
+      return this.fetchVariables.lastSuccessful?.value;
+    }
+    return this.variables.value;
+  }
+  get varsPending() {
+    return (
+      !this.fetchVariables.lastSuccessful?.value && this.variables.isPending
+    );
+  }
   startDeleteVariableFlow = (variable: Variable) => {
     this.variableToDelete = variable;
     this.isDeleteConfirmationOpen = true;
@@ -91,7 +119,7 @@ export default class VariableManager extends Component<Signature> {
 
   removeVariable = task(async () => {
     await this.variableToDelete?.destroyRecord();
-    this.variables.retry();
+    // this.variables.retry();
     this.closeDeleteConfirmation();
   });
 
@@ -100,10 +128,10 @@ export default class VariableManager extends Component<Signature> {
     this.isDeleteConfirmationOpen = false;
   };
   <template>
-    {{#if this.codelists.isResolved}}
+    {{#if this.codelists.isSuccess}}
       <ReactiveTable
-        @content={{this.variables.value}}
-        @isLoading={{this.variables.isLoading}}
+        @content={{this.vars}}
+        @isLoading={{this.varsPending}}
         @noDataMessage={{t 'variable-manager.no-data'}}
         @page={{@pageNumber}}
         @pageSize={{@pageSize}}
@@ -239,7 +267,7 @@ class VariableDefaultValueLabel extends Component<{
         ? `"${defaultValuePromiseState.value.label}"`
         : null;
     } else {
-      return;
+      return undefined;
     }
   }
 

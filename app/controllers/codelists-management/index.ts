@@ -41,7 +41,7 @@ export default class CodelistsManagementIndexController extends Controller {
   }
 
   codelists = trackedFunction(this, async () => {
-    const queryParams: LegacyResourceQuery<CodeList> = {
+    const queryParams: LegacyResourceQuery = {
       include: ['type'],
       sort: this.sort,
       page: {

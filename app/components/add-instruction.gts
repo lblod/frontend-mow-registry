@@ -72,7 +72,7 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
 
   @action
   async didInsert() {
-    this.fetchData.perform();
+    await this.fetchData.perform();
   }
 
   fetchData = task(async () => {
@@ -117,10 +117,10 @@ export default class AddInstructionComponent extends Component<AddInstructionSig
   }
 
   @action
-  updateTemplate(event: Event) {
+  async updateTemplate(event: Event) {
     if (this.template && event.target && 'value' in event.target) {
       this.template.value = event.target?.value as string;
-      this.template.validateProperty('value');
+      await this.template.validateProperty('value');
       this.parseTemplate();
     }
   }
