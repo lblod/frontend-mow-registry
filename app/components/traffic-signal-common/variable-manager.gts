@@ -35,6 +35,7 @@ import { isSome } from 'mow-registry/utils/option';
 import TextVariable, {
   isTextVariable,
 } from 'mow-registry/models/text-variable';
+//@ts-expect-warning 'no types'
 import DateVariable, {
   isDateVariable,
 } from 'mow-registry/models/date-variable';
