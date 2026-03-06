@@ -39,7 +39,7 @@ export default class RoadSignConceptsRoadSignConceptSubSignsController extends C
     await this.store.request(saveRecord(this.model.roadSignConcept));
   });
 
-  removeSubSign = task(async (subSign) => {
+  removeSubSign = task(async (subSign: RoadSignConcept) => {
     const subSigns = await this.model.roadSignConcept.subSigns;
     removeItem(subSigns, subSign);
     this.model.allSubSigns.push(subSign);
