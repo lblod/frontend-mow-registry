@@ -14,10 +14,9 @@ import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
-import { trackedFunction } from 'reactiveweb/function';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
-import { getPromiseState, getRequestState } from '@warp-drive/ember';
+import { getPromiseState } from '@warp-drive/ember';
 import type VariablesService from 'mow-registry/services/variables-service';
 import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
 import { isSome } from 'mow-registry/utils/option';
@@ -54,7 +53,13 @@ export default class VariableManager extends Component<Signature> {
   @tracked isDeleteConfirmationOpen = false;
 
   fetchVariables = task(
-    async (store, pageNumber, pageSize, sort, trafficSignalId) => {
+    async (
+      store: Store,
+      pageNumber: number,
+      pageSize: number,
+      sort: string | undefined,
+      trafficSignalId: string | null,
+    ) => {
       const promise = await store.request(
         query<Variable>('variable', {
           'filter[traffic-signal-concept][:id:]': trafficSignalId,
@@ -100,7 +105,7 @@ export default class VariableManager extends Component<Signature> {
     if (this.variables.isPending) {
       return this.fetchVariables.lastSuccessful?.value;
     }
-    return this.variables.result;
+    return this.variables.value;
   }
   get varsPending() {
     return (
@@ -262,7 +267,7 @@ class VariableDefaultValueLabel extends Component<{
         ? `"${defaultValuePromiseState.value.label}"`
         : null;
     } else {
-      return;
+      return undefined;
     }
   }
 
