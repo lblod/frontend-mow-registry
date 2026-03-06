@@ -85,7 +85,7 @@ export default class extends Store {
   // TODO: rework this method into a request builder
   async count<T extends TypedRecordInstance>(
     modelName: TypeFromInstance<T>,
-    queryParams: LegacyResourceQuery<T>,
+    queryParams: LegacyResourceQuery,
     options?: QueryOptions,
   ) {
     queryParams = {
@@ -104,7 +104,7 @@ export default class extends Store {
   // TODO: rework this method into a request builder
   async countAndFetchAll<T extends TypedRecordInstance>(
     modelName: TypeFromInstance<T>,
-    queryParams: LegacyResourceQuery<T>,
+    queryParams: LegacyResourceQuery,
     options?: QueryOptions,
     batchSize = 100,
   ) {

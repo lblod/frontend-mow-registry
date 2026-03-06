@@ -116,8 +116,8 @@ export default class CodelistFormComponent extends Component<Sig> {
       .filter((model) => !(model instanceof Icon))
       .toSorted(
         (a, b) =>
-          ('position' in a ? a.position ?? 0 : -1) -
-          ('position' in b ? b.position ?? 0 : -1),
+          ('position' in a ? (a.position ?? 0) : -1) -
+          ('position' in b ? (b.position ?? 0) : -1),
       ) as (SkosConcept | CodeListValue)[];
   }
 
@@ -466,7 +466,7 @@ type FormBodySig = {
     ) => void;
     addNewValue: (event: Event) => void;
     updateNewValue: (event: Event) => void;
-    reorderItems: (conceptValues?: CodeListValue[] | undefined) => void;
+    reorderItems: (conceptValues?: CodeListValue[]) => void;
   };
 };
 

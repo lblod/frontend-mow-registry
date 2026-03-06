@@ -65,7 +65,8 @@ export default class EditVariableForm extends Component<Sig> {
   @service declare variablesService: VariablesService;
   constructor(owner: unknown, args: Sig['Args']) {
     super(owner, args);
-    this.checkForVariableDestroyed();
+    // TODO never launch promises from constructors
+    void this.checkForVariableDestroyed();
   }
   async checkForVariableDestroyed() {
     if (this.args.variable.isDestroyed) {

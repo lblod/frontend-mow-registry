@@ -32,9 +32,7 @@ const config = defineConfig(
   emberEslint.configs.gjs,
   emberEslint.configs.gts,
   eslintPluginPrettierRecommended,
-  // /* eslintPluginQunitRecommended */ nodePlugin.configs[
-  //   "flat/recommended-script"
-  // ],
+  eslintPluginQunitRecommended,
   {
     files: ["**/*.js"],
     languageOptions: {
@@ -104,7 +102,9 @@ const config = defineConfig(
       "./lib/*/index.js",
       "./server/**/*.js",
     ],
+    plugins: { node: nodePlugin },
 
+    rules: { "@typescript-eslint/no-require-imports": "off" },
     languageOptions: {
       globals: {
         ...Object.fromEntries(

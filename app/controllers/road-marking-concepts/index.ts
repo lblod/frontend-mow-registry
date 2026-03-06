@@ -77,7 +77,7 @@ export default class RoadmarkingConceptsIndexController extends Controller {
   );
 
   roadMarkings = trackedFunction(this, async () => {
-    const queryParams: LegacyResourceQuery<RoadMarkingConcept> = {
+    const queryParams: LegacyResourceQuery = {
       sort: this.sort,
       filter: {},
     };

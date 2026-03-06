@@ -42,7 +42,7 @@ export default class IconCatalogIndexController extends Controller {
     this.page = 0;
   }
   icons = trackedFunction(this, async () => {
-    const queryParams: LegacyResourceQuery<Icon> = {
+    const queryParams: LegacyResourceQuery = {
       include: ['image.file', 'inScheme'],
       sort: this.sort,
       page: {
