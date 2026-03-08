@@ -29,17 +29,19 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
     );
   }
 
-  addRelatedRoadMarking = task(async (relatedRoadMarking) => {
-    const relatedToRoadMarkingConcepts =
-      await this.model.roadMarkingConcept.relatedToRoadMarkingConcepts;
-    const relatedRoadMarkingConcepts =
-      this.model.roadMarkingConcept.relatedRoadMarkingConcepts;
+  addRelatedRoadMarking = task(
+    async (relatedRoadMarking: RoadMarkingConcept) => {
+      const relatedToRoadMarkingConcepts =
+        await this.model.roadMarkingConcept.relatedToRoadMarkingConcepts;
+      const relatedRoadMarkingConcepts =
+        this.model.roadMarkingConcept.relatedRoadMarkingConcepts;
 
-    relatedToRoadMarkingConcepts.push(relatedRoadMarking);
-    relatedRoadMarkingConcepts.push(relatedRoadMarking);
+      relatedToRoadMarkingConcepts.push(relatedRoadMarking);
+      relatedRoadMarkingConcepts.push(relatedRoadMarking);
 
-    await this.store.request(saveRecord(this.model.roadMarkingConcept));
-  });
+      await this.store.request(saveRecord(this.model.roadMarkingConcept));
+    },
+  );
 
   removeRelatedRoadMarking = task(
     async (relatedRoadMarking: RoadMarkingConcept) => {
@@ -59,7 +61,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptRelatedController exte
     },
   );
 
-  addRelatedRoadSign = task(async (relatedRoadSign) => {
+  addRelatedRoadSign = task(async (relatedRoadSign: RoadSignConcept) => {
     const relatedRoadSigns =
       await this.model.roadMarkingConcept.relatedRoadSignConcepts;
 

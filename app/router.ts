@@ -1,3 +1,5 @@
+/* eslint-disable ember/routes-segments-snake-case */
+//TODO fix the route segments
 import EmberRouter from '@embroider/router';
 import config from 'mow-registry/config/environment';
 
@@ -19,7 +21,17 @@ Router.map(function () {
       this.route('instructions', function () {
         this.route('edit', { path: '/:instructionId' });
       });
-      this.route('variables');
+      this.route('variables', function () {
+        this.route('edit', { path: '/edit/:variableId' }, function () {
+          this.route(
+            'edit-codelist',
+            { path: '/edit-codelist/:codelistId' },
+            function () {
+              this.route('edit-concept', { path: '/edit-concept/:conceptId' });
+            },
+          );
+        });
+      });
       this.route('shapes');
       this.route('main-signs');
       this.route('sub-signs');
@@ -34,7 +46,17 @@ Router.map(function () {
       this.route('instructions', function () {
         this.route('edit', { path: '/:instructionId' });
       });
-      this.route('variables');
+      this.route('variables', function () {
+        this.route('edit', { path: '/edit/:variableId' }, function () {
+          this.route(
+            'edit-codelist',
+            { path: '/edit-codelist/:codelistId' },
+            function () {
+              this.route('edit-concept', { path: '/edit-concept/:conceptId' });
+            },
+          );
+        });
+      });
       this.route('shapes');
       this.route('related');
     });
@@ -46,7 +68,17 @@ Router.map(function () {
       this.route('instructions', function () {
         this.route('edit', { path: '/:instructionId' });
       });
-      this.route('variables');
+      this.route('variables', function () {
+        this.route('edit', { path: '/edit/:variableId' }, function () {
+          this.route(
+            'edit-codelist',
+            { path: '/edit-codelist/:codelistId' },
+            function () {
+              this.route('edit-concept', { path: '/edit-concept/:conceptId' });
+            },
+          );
+        });
+      });
       this.route('shapes');
       this.route('related');
     });
@@ -78,6 +110,8 @@ Router.map(function () {
   });
 
   // These ember-metis routes needs to be configured last
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   externalRoute(this);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   fallbackRoute(this);
 });

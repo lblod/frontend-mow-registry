@@ -391,7 +391,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
           "<span style='background-color: #ffffff'>" +
           (instruction?.value ?? '') +
           '</span>';
-        this.preview = this.preview!.replaceAll(
+        this.preview = this.preview.replaceAll(
           '${' + (label ?? '') + '}',
           replaceString,
         );

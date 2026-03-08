@@ -9,7 +9,7 @@ import type { Type } from '@warp-drive/core/types/symbols';
 import { belongsTo, type AsyncBelongsTo } from '@warp-drive/legacy/model';
 
 export default class ReferenceVariable extends Variable {
-  declare [Type]: 'reference-variable' | string;
+  declare [Type]: string;
 
   @belongsTo<SkosConcept>('skos-concept', {
     inverse: null,

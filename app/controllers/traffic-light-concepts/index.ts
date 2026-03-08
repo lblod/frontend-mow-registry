@@ -80,7 +80,7 @@ export default class TrafficlightConceptsIndexController extends Controller {
   );
 
   trafficLights = trackedFunction(this, async () => {
-    const queryParams: LegacyResourceQuery<TrafficLightConcept> = {
+    const queryParams: LegacyResourceQuery = {
       sort: this.sort,
       filter: {},
     };

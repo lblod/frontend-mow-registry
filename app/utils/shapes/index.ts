@@ -142,6 +142,7 @@ export function shapeDimensionToText(dimension: ShapeDimension) {
 /* class decorator to allow define a type to include all the static methods of the class */
 export function staticImplements<T>() {
   return <U extends T>(constructor: U) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     constructor;
   };
 }

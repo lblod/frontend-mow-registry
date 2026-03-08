@@ -34,7 +34,7 @@ export default class RoadSignConceptsRoadSignConceptMainSignsController extends 
     await this.store.request(saveRecord(this.model.roadSignConcept));
   });
 
-  removeMainSign = task(async (mainSign) => {
+  removeMainSign = task(async (mainSign: RoadSignConcept) => {
     const mainSigns = await this.model.roadSignConcept.mainSigns;
 
     removeItem(mainSigns, mainSign);

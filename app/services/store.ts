@@ -85,7 +85,7 @@ export default class extends Store {
   // TODO: rework this method into a request builder
   async count<T extends TypedRecordInstance>(
     modelName: TypeFromInstance<T>,
-    queryParams: LegacyResourceQuery<T>,
+    queryParams: LegacyResourceQuery,
     options?: QueryOptions,
   ) {
     queryParams = {
@@ -104,7 +104,7 @@ export default class extends Store {
   // TODO: rework this method into a request builder
   async countAndFetchAll<T extends TypedRecordInstance>(
     modelName: TypeFromInstance<T>,
-    queryParams: LegacyResourceQuery<T>,
+    queryParams: LegacyResourceQuery,
     options?: QueryOptions,
     batchSize = 100,
   ) {
@@ -133,6 +133,9 @@ export default class extends Store {
       ).then((res) => res.content);
       batches.push(batch);
     }
+    // TODO: this looks indeed useless, but at the time of visiting
+    // no time to investigate
+    // eslint-disable-next-line no-useless-assignment
     queryParams = {
       ...queryParams,
       page: {
