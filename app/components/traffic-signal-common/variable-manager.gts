@@ -91,7 +91,6 @@ export default class VariableManager extends Component<Signature> {
     const state = getPromiseState(
       this.fetchVariables.perform(
         this.store,
-        // 0,20,'','d6fa3d560d0655cd0db5644293a44357f235b1932cfd1b64ea6dd122326bd24b'
         this.args.pageNumber,
         this.args.pageSize,
         this.args.sort,
