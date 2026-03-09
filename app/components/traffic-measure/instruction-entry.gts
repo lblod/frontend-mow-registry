@@ -32,7 +32,7 @@ export default class InstructionEntry extends Component<Sig> {
 
   get signalRoute() {
     if (!this.signalPromise.isSuccess || !this.signalPromise.value) {
-      return;
+      return undefined;
     }
     const signal = this.signalPromise.value;
     if (signal instanceof RoadSignConcept) {
