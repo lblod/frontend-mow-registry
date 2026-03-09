@@ -85,6 +85,7 @@ export default class EditShapeModal extends Component<Signature> {
         <AuButton
           {{on 'click' @saveShape.perform}}
           @loading={{@saveShape.isRunning}}
+          @loadingMessage={{t 'utility.loading'}}
         >
           {{t 'utility.save'}}
         </AuButton>

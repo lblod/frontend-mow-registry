@@ -13,6 +13,7 @@ type Signature = {
     isLoading?: boolean;
     cancelButtonText?: string;
     confirmButtonText?: string;
+    confirmButtonDisabled?: boolean;
   };
   Blocks: {
     cancelButton: [];
@@ -40,6 +41,7 @@ const ConfirmationModalFooter: TOC<Signature> = <template>
           @alert={{@isAlert}}
           {{on 'click' @onConfirm}}
           @loading={{@isLoading}}
+          @disabled={{@confirmButtonDisabled}}
         >
           {{#if @confirmButtonText}}
             {{@confirmButtonText}}

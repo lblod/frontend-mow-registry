@@ -87,10 +87,10 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   get hasActiveFilter() {
     return Boolean(
       this.label ||
-        this.templateValue ||
-        this.validityOption ||
-        this.validation ||
-        this.zonality,
+      this.templateValue ||
+      this.validityOption ||
+      this.validation ||
+      this.zonality,
     );
   }
 
@@ -115,7 +115,7 @@ export default class TrafficMeasureConceptsIndexController extends Controller {
   );
 
   trafficMeasures = trackedFunction(this, async () => {
-    const queryParams: LegacyResourceQuery<TrafficMeasureConcept> = {
+    const queryParams: LegacyResourceQuery = {
       sort: this.sort,
       filter: {},
     };

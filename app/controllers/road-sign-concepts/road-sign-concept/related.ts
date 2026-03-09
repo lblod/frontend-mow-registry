@@ -27,7 +27,7 @@ export default class RoadSignConceptsRoadSignConceptRelatedController extends Co
     );
   }
 
-  addRelatedRoadSign = task(async (relatedRoadSign) => {
+  addRelatedRoadSign = task(async (relatedRoadSign: RoadSignConcept) => {
     const relatedToRoadSignConcepts =
       await this.model.roadSignConcept.relatedToRoadSignConcepts;
     const relatedRoadSignConcepts =
@@ -85,14 +85,16 @@ export default class RoadSignConceptsRoadSignConceptRelatedController extends Co
     },
   );
 
-  removeRelatedTrafficLight = task(async (relatedTrafficLight) => {
-    const relatedTrafficLights =
-      await this.model.roadSignConcept.relatedTrafficLightConcepts;
+  removeRelatedTrafficLight = task(
+    async (relatedTrafficLight: TrafficLightConcept) => {
+      const relatedTrafficLights =
+        await this.model.roadSignConcept.relatedTrafficLightConcepts;
 
-    removeItem(relatedTrafficLights, relatedTrafficLight);
+      removeItem(relatedTrafficLights, relatedTrafficLight);
 
-    await this.store.request(saveRecord(this.model.roadSignConcept));
-  });
+      await this.store.request(saveRecord(this.model.roadSignConcept));
+    },
+  );
 
   toggleAddRelatedRoadSigns = () => {
     this.isAddingRelatedRoadSigns = !this.isAddingRelatedRoadSigns;

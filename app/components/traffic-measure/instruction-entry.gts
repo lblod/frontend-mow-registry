@@ -44,7 +44,7 @@ export default class InstructionEntry extends Component<Sig> {
     if (signal instanceof TrafficLightConcept) {
       return 'traffic-light-concepts.traffic-light-concept';
     }
-    return;
+    return undefined;
   }
 
   <template>
