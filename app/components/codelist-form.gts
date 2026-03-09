@@ -321,6 +321,7 @@ export default class CodelistFormComponent extends Component<Sig> {
       this.isEditingLabelWithUri = concept && concept.uri;
     }
   }
+
   @action
   updateNewValue(event: Event) {
     this.newValue = (event.target as HTMLInputElement).value;
@@ -426,23 +427,13 @@ type FormControlsSig = {
 };
 
 const FormControls: TOC<FormControlsSig> = <template>
-  <ConfirmationModalFooter>
-    <:cancelButton>
-      <AuButton @skin='secondary' {{on 'click' @cancelEditingTask}}>
-        {{t 'utility.cancel'}}
-      </AuButton>
-    </:cancelButton>
-    <:confirmButton>
-      <AuButton
-        @disabled={{or (isSome @codelist.error) @editCodelistTask.isRunning}}
-        @loading={{@editCodelistTask.isRunning}}
-        @loadingMessage={{t 'utility.loading'}}
-        {{on 'click' (perform @editCodelistTask @codelist)}}
-      >
-        {{t 'utility.save'}}
-      </AuButton>
-    </:confirmButton>
-  </ConfirmationModalFooter>
+  <ConfirmationModalFooter
+    @onCancel={{@cancelEditingTask}}
+    @onConfirm={{perform @editCodelistTask @codelist}}
+    @confirmButtonText={{t 'utility.save'}}
+    @isLoading={{@editCodelistTask.isRunning}}
+    @confirmButtonDisabled={{isSome @codelist.error}}
+    />
 </template>;
 
 type FormBodySig = {
