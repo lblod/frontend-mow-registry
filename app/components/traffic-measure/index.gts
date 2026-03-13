@@ -502,9 +502,9 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     for (const variable of this.variables) {
       variable.rollbackAttributes();
     }
-    this.args.trafficMeasureConcept.rollbackAttributes();
+    this.args.trafficMeasureConcept?.rollbackAttributes();
     if (!wasNew) {
-      void this.args.trafficMeasureConcept.belongsTo('zonality').reload();
+      void this.args.trafficMeasureConcept?.belongsTo('zonality').reload();
     }
   }
 
