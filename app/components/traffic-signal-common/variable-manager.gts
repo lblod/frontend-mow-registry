@@ -28,6 +28,7 @@ import * as locales from 'date-fns/locale';
 import { query } from '@warp-drive/legacy/compat/builders';
 import { task } from 'ember-concurrency';
 import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
+import perform from 'ember-concurrency/helpers/perform';
 
 interface Signature {
   Args: {
@@ -216,27 +217,13 @@ export default class VariableManager extends Component<Signature> {
           </p>
         </:body>
         <:footer>
-          <ConfirmationModalFooter>
-            <:cancelButton>
-              <AuButton
-                @skin='secondary'
-                {{on 'click' this.closeDeleteConfirmation}}
-                @disabled={{this.removeVariable.isRunning}}
-              >
-                {{t 'utility.cancel'}}
-              </AuButton>
-            </:cancelButton>
-            <:confirmButton>
-              <AuButton
-                @alert={{true}}
-                {{on 'click' this.removeVariable.perform}}
-                @loading={{this.removeVariable.isRunning}}
-                @loadingMessage={{t 'utility.loading'}}
-              >
-                {{t 'variable-manager.delete'}}
-              </AuButton>
-            </:confirmButton>
-          </ConfirmationModalFooter>
+          <ConfirmationModalFooter
+            @cancelButtonText={{t 'utility.cancel'}}
+            @confirmButtonText={{t 'variable-manager.delete'}}
+            @isAlert={{true}}
+            @onCancel={{this.closeDeleteConfirmation}}
+            @onConfirm={{perform this.removeVariable}}
+          />
         </:footer>
       </AuModal>
     {{/if}}

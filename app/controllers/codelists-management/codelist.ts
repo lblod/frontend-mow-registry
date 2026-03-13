@@ -11,9 +11,11 @@ export default class CodelistController extends Controller {
   declare model: ModelFrom<CodelistsManagementCodelistRoute>;
   @service declare router: RouterService;
   @tracked isOpen = false;
+  @tracked isRemovingCodelist = false;
 
   @action
   async removeCodelist(event: InputEvent) {
+    this.isRemovingCodelist = true;
     event.preventDefault();
 
     await Promise.all(
@@ -23,6 +25,7 @@ export default class CodelistController extends Controller {
     );
 
     await this.model.codelist.destroyRecord();
+    this.isRemovingCodelist = false;
     this.router.transitionTo('codelists-management');
   }
 

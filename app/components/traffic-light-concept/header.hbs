@@ -8,6 +8,7 @@
     </Group>
     <Group>
       <AuLink
+        @icon="pencil"
         @skin="button-secondary"
         @route="traffic-light-concepts.edit"
         @model={{@trafficLightConcept.id}}
@@ -15,6 +16,7 @@
         {{t "traffic-light-concept.crud.edit"}}
       </AuLink>
       <AuButton
+        @icon="trash"
         @skin="secondary"
         @alert={{true}}
         {{on "click" (fn (mut this.isDeleteConfirmationOpen) true)}}

@@ -11,6 +11,9 @@ import RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import type TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
+import ConfirmationModal from 'mow-registry/components/confirmation-modal';
+import { cached, tracked } from '@glimmer/tracking';
+import set from 'mow-registry/helpers/set';
 
 type Sig = {
   Args: {
@@ -20,12 +23,18 @@ type Sig = {
 };
 
 export default class InstructionEntry extends Component<Sig> {
+  @tracked showDeleteConfirmationModal = false;
+
+  @cached
+  get signalPromise() {
+    return getPromiseState(this.args.sign.item);
+  }
+
   get signalRoute() {
-    const signalPromise = getPromiseState(this.args.sign.item);
-    if (!signalPromise.isSuccess || !signalPromise.value) {
+    if (!this.signalPromise.isSuccess || !this.signalPromise.value) {
       return undefined;
     }
-    const signal = signalPromise.value;
+    const signal = this.signalPromise.value;
     if (signal instanceof RoadSignConcept) {
       return 'road-sign-concepts.road-sign-concept';
     }
@@ -39,6 +48,21 @@ export default class InstructionEntry extends Component<Sig> {
   }
 
   <template>
+    <ConfirmationModal
+      @isAlert={{true}}
+      @confirmButtonText={{t 'utility.delete'}}
+      @onCancel={{set this 'showDeleteConfirmationModal' false}}
+      @modalOpen={{this.showDeleteConfirmationModal}}
+      @titleText={{t
+        'traffic-signal-concept.crud.delete-confirmation-title'
+        sign=this.signalPromise.value.label
+      }}
+      @bodyText={{t
+        'traffic-signal-concept.crud.delete-confirmation-content'
+        htmlSafe=true
+      }}
+      @onConfirm={{fn @removeSign @sign}}
+    />
     <tr
       class='au-c-table__row--centered'
       {{sortableItem groupName='signs' model=@sign}}
@@ -79,7 +103,7 @@ export default class InstructionEntry extends Component<Sig> {
           @alert={{true}}
           @skin='secondary'
           @hideText={{true}}
-          {{on 'click' (fn @removeSign @sign)}}
+          {{on 'click' (set this 'showDeleteConfirmationModal' true)}}
         >
           {{t 'utility.delete'}}
         </AuButton>

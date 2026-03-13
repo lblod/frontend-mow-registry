@@ -8,6 +8,7 @@
     </Group>
     <Group>
       <AuLink
+        @icon="pencil"
         @skin="button-secondary"
         @route="road-marking-concepts.edit"
         @model={{@roadMarkingConcept.id}}
@@ -15,6 +16,7 @@
         {{t "road-marking-concept.crud.edit"}}
       </AuLink>
       <AuButton
+        @icon="trash"
         @skin="secondary"
         @alert={{true}}
         {{on "click" (fn (mut this.isDeleteConfirmationOpen) true)}}
@@ -22,33 +24,22 @@
         {{t "road-marking-concept.crud.delete"}}
       </AuButton>
 
-      <AuModal
+      <ConfirmationModal
         @modalOpen={{this.isDeleteConfirmationOpen}}
         @closeModal={{fn (mut this.isDeleteConfirmationOpen) false}}
+        @onConfirm={{perform this.removeRoadMarkingConcept}}
+        @onCancel={{set this "isDeleteConfirmationOpen" false}}
+        @confirmButtonText={{t "road-marking-concept.crud.delete"}}
+        @titleText={{t "utility.confirmation.title"}}
+        @isAlert={{true}}
+        @isLoading={{this.removeRoadMarkingConcept.isRunning}}
       >
-        <:title>
-          {{t "utility.confirmation.title"}}
-        </:title>
         <:body>
           <p>
             {{t "utility.confirmation.body"}}
           </p>
         </:body>
-        <:footer>
-          <AuButton
-            @alert={{true}}
-            {{on "click" (perform this.removeRoadMarkingConcept)}}
-          >
-            {{t "road-marking-concept.crud.delete"}}
-          </AuButton>
-          <AuButton
-            @skin="secondary"
-            {{on "click" (fn (mut this.isDeleteConfirmationOpen) false)}}
-          >
-            {{t "utility.cancel"}}
-          </AuButton>
-        </:footer>
-      </AuModal>
+      </ConfirmationModal>
     </Group>
   </AuToolbar>
   <AuTabs as |Tab|>
@@ -58,14 +49,14 @@
       </AuLink>
     </Tab>
     <Tab>
-        <AuLink @route="road-marking-concepts.road-marking-concept.variables">
-          {{t "utility.variables"}}
-        </AuLink>
+      <AuLink @route="road-marking-concepts.road-marking-concept.variables">
+        {{t "utility.variables"}}
+      </AuLink>
     </Tab>
     <Tab>
-        <AuLink @route="road-marking-concepts.road-marking-concept.shapes">
-          {{t "utility.shapes"}}
-        </AuLink>
+      <AuLink @route="road-marking-concepts.road-marking-concept.shapes">
+        {{t "utility.shapes"}}
+      </AuLink>
     </Tab>
     <Tab>
       <AuLink @route="road-marking-concepts.road-marking-concept.related">
