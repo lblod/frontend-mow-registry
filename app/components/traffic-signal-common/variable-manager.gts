@@ -14,7 +14,6 @@ import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
-import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { getPromiseState } from '@warp-drive/ember';
 import type VariablesService from 'mow-registry/services/variables-service';
@@ -27,7 +26,7 @@ import { format } from 'date-fns';
 import * as locales from 'date-fns/locale';
 import { query } from '@warp-drive/legacy/compat/builders';
 import { task } from 'ember-concurrency';
-import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
+import ConfirmationModal from 'mow-registry/components/confirmation-modal';
 import perform from 'ember-concurrency/helpers/perform';
 
 interface Signature {
@@ -204,28 +203,23 @@ export default class VariableManager extends Component<Signature> {
         </:body>
       </ReactiveTable>
 
-      <AuModal
+      <ConfirmationModal
         @modalOpen={{this.isDeleteConfirmationOpen}}
-        @closeModal={{this.closeDeleteConfirmation}}
-      >
-        <:title>
-          {{t 'utility.confirmation.title'}}
-        </:title>
-        <:body>
-          <p>
-            {{t 'utility.confirmation.body'}}
-          </p>
-        </:body>
-        <:footer>
-          <ConfirmationModalFooter
-            @cancelButtonText={{t 'utility.cancel'}}
-            @confirmButtonText={{t 'variable-manager.delete'}}
-            @isAlert={{true}}
-            @onCancel={{this.closeDeleteConfirmation}}
-            @onConfirm={{perform this.removeVariable}}
-          />
-        </:footer>
-      </AuModal>
+        @onCancel={{this.closeDeleteConfirmation}}
+        @onConfirm={{perform this.removeVariable}}
+        @isAlert={{true}}
+        @isLoading={{this.removeVariable.isRunning}}
+        @confirmButtonText={{t 'variable-manager.delete'}}
+        @titleText={{t
+          'variable-manager.delete-confirmation-title'
+          variable=this.variableToDelete.label
+        }}
+        @bodyText={{t
+          'variable-manager.delete-confirmation-content'
+          variable=this.variableToDelete.label
+          htmlSafe=true
+        }}
+      />
     {{/if}}
   </template>
 }
