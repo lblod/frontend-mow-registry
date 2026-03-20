@@ -21,6 +21,7 @@ import type ConceptLabelChangeNote from 'mow-registry/models/concept-label-chang
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
 import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
+import perform from 'ember-concurrency/helpers/perform';
 
 type Sig = {
   Args: {
@@ -37,11 +38,11 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
 
   @tracked explanation: string | null = null;
 
-  submitNewLabel = task(async (event: SubmitEvent) => {
+  submitNewLabel = task(async () => {
     if (!this.explanation) {
       return;
     }
-    event.preventDefault();
+
     const historyNote = this.store.createRecord<ConceptLabelChangeNote>(
       'concept-label-change-note',
       {
@@ -102,7 +103,6 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
         <form
           id='change-concept-label-form'
           class='au-c-form'
-          {{on 'submit' this.submitNewLabel.perform}}
         >
           <AuFormRow @alignment='inline'>
             <AuLabel for='concept-uri' @required={{true}}>
@@ -147,24 +147,13 @@ export default class EditConceptLabelModalComponent extends Component<Sig> {
         </form>
       </:body>
       <:footer>
-        <ConfirmationModalFooter>
-          <:cancelButton>
-            <AuButton @skin='secondary' {{on 'click' @onCancel}}>
-              {{t 'utility.cancel'}}
-            </AuButton>
-          </:cancelButton>
-          <:confirmButton>
-            <AuButton
-              type='submit'
-              form='change-concept-label-form'
-              @loading={{this.submitNewLabel.isRunning}}
-              @loadingMessage={{t 'utility.loading'}}
-              @disabled={{this.isSubmitDisabled}}
-            >
-              {{t 'utility.save'}}
-            </AuButton>
-          </:confirmButton>
-        </ConfirmationModalFooter>
+        <ConfirmationModalFooter
+          @onCancel={{@onCancel}}
+          @onConfirm={{perform this.submitNewLabel}}
+          @isLoading={{this.submitNewLabel.isRunning}}
+          @confirmButtonText={{t 'utility.save'}}
+          @confirmButtonDisabled={{this.isSubmitDisabled}}
+        />
       </:footer>
     </AuModal>
   </template>

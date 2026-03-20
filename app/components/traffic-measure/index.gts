@@ -497,14 +497,14 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   willDestroy() {
     super.willDestroy();
 
-    const wasNew = this.args.trafficMeasureConcept.isNew;
+    const wasNew = this.args.trafficMeasureConcept?.isNew;
     this.template?.rollbackAttributes();
     for (const variable of this.variables) {
       variable.rollbackAttributes();
     }
-    this.args.trafficMeasureConcept.rollbackAttributes();
+    this.args.trafficMeasureConcept?.rollbackAttributes();
     if (!wasNew) {
-      void this.args.trafficMeasureConcept.belongsTo('zonality').reload();
+      void this.args.trafficMeasureConcept?.belongsTo('zonality').reload();
     }
   }
 

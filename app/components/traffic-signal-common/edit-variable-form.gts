@@ -48,6 +48,7 @@ import type CodeListValue from 'mow-registry/models/code-list-value';
 import type { RelatedCollection } from '@warp-drive/core/store/-private';
 import ConfirmationModalFooter from 'mow-registry/components/confirmation-modal-footer';
 import AuToggleSwitch from '@appuniversum/ember-appuniversum/components/au-toggle-switch';
+import perform from 'ember-concurrency/helpers/perform';
 
 interface Sig {
   Args: {
@@ -327,26 +328,12 @@ export default class EditVariableForm extends Component<Sig> {
         </div>
       </:body>
       <:footer>
-        <ConfirmationModalFooter>
-          <:cancelButton>
-            <AuButton
-              @skin='secondary'
-              {{on 'click' this.cancelEditVariable}}
-              @disabled={{this.saveVariable.isRunning}}
-            >
-              {{t 'utility.cancel'}}
-            </AuButton>
-          </:cancelButton>
-          <:confirmButton>
-            <AuButton
-              {{on 'click' this.saveVariable.perform}}
-              @loading={{this.saveVariable.isRunning}}
-              @loadingMessage={{t 'utility.loading'}}
-            >
-              {{t 'utility.save'}}
-            </AuButton>
-          </:confirmButton>
-        </ConfirmationModalFooter>
+        <ConfirmationModalFooter
+          @isLoading={{this.saveVariable.isRunning}}
+          @onCancel={{this.cancelEditVariable}}
+          @onConfirm={{perform this.saveVariable}}
+          @confirmButtonText={{t 'utility.save'}}
+        />
       </:footer>
     </AuModal>
   </template>

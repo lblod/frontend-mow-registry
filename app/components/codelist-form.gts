@@ -314,13 +314,14 @@ export default class CodelistFormComponent extends Component<Sig> {
   }
 
   @action
-  setIsEditingLabelWithUri(concept?: SkosConcept | CodeListValue | null) {
-    if (this.args.onGoToEditConcept && concept) {
+  setIsEditingLabelWithUri(concept: SkosConcept | CodeListValue | null) {
+    if (concept && this.args.onGoToEditConcept) {
       this.args.onGoToEditConcept(concept);
-    } else if (concept !== undefined && concept && concept.uri !== undefined) {
-      this.isEditingLabelWithUri = concept && concept.uri;
     }
+
+    this.isEditingLabelWithUri = concept?.uri ?? null;
   }
+
   @action
   updateNewValue(event: Event) {
     this.newValue = (event.target as HTMLInputElement).value;
@@ -426,23 +427,13 @@ type FormControlsSig = {
 };
 
 const FormControls: TOC<FormControlsSig> = <template>
-  <ConfirmationModalFooter>
-    <:cancelButton>
-      <AuButton @skin='secondary' {{on 'click' @cancelEditingTask}}>
-        {{t 'utility.cancel'}}
-      </AuButton>
-    </:cancelButton>
-    <:confirmButton>
-      <AuButton
-        @disabled={{or (isSome @codelist.error) @editCodelistTask.isRunning}}
-        @loading={{@editCodelistTask.isRunning}}
-        @loadingMessage={{t 'utility.loading'}}
-        {{on 'click' (perform @editCodelistTask @codelist)}}
-      >
-        {{t 'utility.save'}}
-      </AuButton>
-    </:confirmButton>
-  </ConfirmationModalFooter>
+  <ConfirmationModalFooter
+    @onCancel={{@cancelEditingTask}}
+    @onConfirm={{perform @editCodelistTask @codelist}}
+    @confirmButtonText={{t 'utility.save'}}
+    @isLoading={{@editCodelistTask.isRunning}}
+    @confirmButtonDisabled={{isSome @codelist.error}}
+  />
 </template>;
 
 type FormBodySig = {
@@ -462,7 +453,7 @@ type FormBodySig = {
     newValue: string;
     isEditingLabelWithUri: string | null;
     setIsEditingLabelWithUri: (
-      concept?: SkosConcept | CodeListValue | null,
+      concept: SkosConcept | CodeListValue | null,
     ) => void;
     addNewValue: (event: Event) => void;
     updateNewValue: (event: Event) => void;
@@ -553,19 +544,24 @@ const FormBody: TOC<FormBodySig> = <template>
       </:body>
       <:footer>
         <tr>
-          <td class='max-w-prose'>
-            <IconSelect
-              @onChange={{@updateIconSelector}}
-              @selected={{@selectedIcon}}
-            />
-          </td>
-          <td class='au-u-padding-right-small'>
-            <AuButton
-              @disabled={{not @selectedIcon}}
-              {{on 'click' @addNewIcon}}
+          <td colspan='2'>
+            <div
+              class='au-u-flex au-u-flex--vertical-centered au-u-flex--spaced-small'
             >
-              {{t 'codelist.crud.add-icon'}}
-            </AuButton>
+              <div class='au-u-1-1'>
+                <IconSelect
+                  @onChange={{@updateIconSelector}}
+                  @selected={{@selectedIcon}}
+                />
+              </div>
+              <AuButton
+                class='no-flex-shrink'
+                @disabled={{not @selectedIcon}}
+                {{on 'click' @addNewIcon}}
+              >
+                {{t 'codelist.crud.add-icon'}}
+              </AuButton>
+            </div>
           </td>
         </tr>
       </:footer>
@@ -631,7 +627,7 @@ const FormBody: TOC<FormBodySig> = <template>
         </tbody>
         <tfoot class='au-c-table__footer'>
           <tr>
-            <td colspan='2'>
+            <td colspan='3'>
               <div
                 class='au-u-flex au-u-flex--vertical-centered au-u-flex--spaced-small'
               >

@@ -33,10 +33,13 @@
             }}
             @icon="search"
             @iconAlignment="right"
-            {{on "input" (perform this.updateSearchFilterTask "templateFilter")}}
+            {{on
+              "input"
+              (perform this.updateSearchFilterTask "templateFilter")
+            }}
           />
         </AuFormRow>
-         <div>
+        <div>
           <AuLabel for="validation-filter">
             {{t "traffic-measure-concept.crud.validation-filter"}}
           </AuLabel>
@@ -88,9 +91,7 @@
             @allowClear={{true}}
             @options={{this.zonalityOptions}}
             @selected={{this.zonality}}
-            @placeholder={{t
-              "utility.zonality-filter-placeholder"
-            }}
+            @placeholder={{t "utility.zonality-filter-placeholder"}}
             @loadingMessage={{t "utility.loading"}}
             @onChange={{this.updateZonalityFilter}}
             @triggerId="zonality-filter"
@@ -124,7 +125,11 @@
             </AuHeading>
           </Group>
           <Group class="au-c-toolbar__group--center">
-            <AuLink @route="traffic-measure-concepts.new" @skin="button">
+            <AuLink
+              @icon="plus"
+              @route="traffic-measure-concepts.new"
+              @skin="button"
+            >
               {{t "traffic-measure-concept.crud.new"}}
             </AuLink>
           </Group>
