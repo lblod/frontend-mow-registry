@@ -1,5 +1,17 @@
 # frontend-mow-registry
 
+## 2.15.0
+
+### Minor Changes
+
+- [#369](https://github.com/lblod/frontend-mow-registry/pull/369) [`94fe7da0d6b9cd0f04ab0915a531c9518527b56b`](https://github.com/lblod/frontend-mow-registry/commit/94fe7da0d6b9cd0f04ab0915a531c9518527b56b) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Rework of the add/edit variable flow
+
+### Patch Changes
+
+- [#371](https://github.com/lblod/frontend-mow-registry/pull/371) [`cbd1ab68ad58378e24c64078da7ebac0ea98c676`](https://github.com/lblod/frontend-mow-registry/commit/cbd1ab68ad58378e24c64078da7ebac0ea98c676) Thanks [@kobemertens](https://github.com/kobemertens)! - Add confirmation modals to important edits
+
+- [#370](https://github.com/lblod/frontend-mow-registry/pull/370) [`a87672eaa5ef5c2954c265419c3527c416935fb9`](https://github.com/lblod/frontend-mow-registry/commit/a87672eaa5ef5c2954c265419c3527c416935fb9) Thanks [@elpoelma](https://github.com/elpoelma)! - Use glint v2 instead of glint v1
+
 ## 2.14.1
 
 ### Patch Changes
