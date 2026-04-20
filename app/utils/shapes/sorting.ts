@@ -51,10 +51,12 @@ export async function sortOnDimension(
   const response = await executeQuery({
     query: sortQuery,
     endpoint: '/raw-sparql',
+    useGet: true,
   });
   const countQuery = await executeCountQuery({
     query: queryCount,
     endpoint: '/raw-sparql',
+    useGet: true,
   });
   const ids = response.results.bindings.map((binding) =>
     binding['id'] ? binding['id'].value : '',

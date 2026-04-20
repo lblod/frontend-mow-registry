@@ -42,19 +42,33 @@ export async function executeQuery<Binding = Record<string, RDF.Term>>({
   query,
   endpoint,
   abortSignal,
-}: QueryConfig): Promise<QueryResult<Binding>> {
+  useGet,
+}: QueryConfig) {
   const encodedQuery = encodeURIComponent(query.trim());
 
-  const response = await fetch(endpoint, {
-    method: 'POST',
+  const params = new URLSearchParams();
+  params.append('query', query);
+
+  const fetchOptions: RequestInit = {
     mode: 'cors',
     headers: {
       Accept: 'application/sparql-results+json',
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
-    body: `query=${encodedQuery}`,
     signal: abortSignal,
-  });
+  };
+
+  let finalUrl = endpoint;
+
+  if (useGet) {
+    finalUrl = `${endpoint}?${params.toString()}`;
+  } else {
+    fetchOptions.method = 'POST';
+    (fetchOptions.headers as { [key: string]: string })['Content-Type'] =
+      'application/x-www-form-urlencoded; charset=UTF-8';
+    fetchOptions.body = `query=${encodedQuery}`;
+  }
+
+  const response = await fetch(finalUrl, fetchOptions);
 
   if (response.ok) {
     return response.json() as Promise<QueryResult<Binding>>;
