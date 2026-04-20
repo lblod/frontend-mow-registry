@@ -15,6 +15,7 @@ interface QueryConfig {
   query: string;
   endpoint: string;
   abortSignal?: AbortSignal;
+  useGet?: boolean;
 }
 
 export const sparqlEscapeString = (value: string) =>
