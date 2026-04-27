@@ -19,7 +19,7 @@ export default class CodelistsService extends Service {
             query<CodeList>('code-list', {
               'page[size]': 100,
               include: ['concepts'],
-              sort: ':no-case:label',
+              sort: 'label',
             }),
           )
           .then((res) => res.content);
