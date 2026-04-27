@@ -17,6 +17,7 @@ import { fn } from '@ember/helper';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
 import { Await, getPromiseState } from '@warp-drive/ember';
 import type VariablesService from 'mow-registry/services/variables-service';
+import type CodelistVariable from 'mow-registry/models/codelist-variable';
 import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
 import { isSome } from 'mow-registry/utils/option';
 import { isTextVariable } from 'mow-registry/models/text-variable';
@@ -128,6 +129,9 @@ export default class VariableManager extends Component<Signature> {
     this.variableToDelete = undefined;
     this.isDeleteConfirmationOpen = false;
   };
+  asCodelistVariable = (variable: Variable) => {
+    return variable as CodelistVariable;
+  };
 
   <template>
     {{#if this.codelists.isSuccess}}
@@ -172,17 +176,22 @@ export default class VariableManager extends Component<Signature> {
           <td>
             {{#if variable.type}}
               {{#if (eq variable.type 'codelist')}}
-                <Await @promise={{variable.codeList}}>
-                  <:success as |codelist|>
-                    <AuLink
-                      @route='codelists-management.codelist'
-                      @model={{codelist.id}}
-                    >
-                      {{this.labelForType variable.type}}
-                      ({{codelist.label}})
-                    </AuLink>
-                  </:success>
-                </Await>
+                {{#let
+                  (this.asCodelistVariable variable)
+                  as |codelistVariable|
+                }}
+                  <Await @promise={{codelistVariable.codeList}}>
+                    <:success as |codelist|>
+                      <AuLink
+                        @route='codelists-management.codelist'
+                        @model={{codelist.id}}
+                      >
+                        {{this.labelForType codelistVariable.type}}
+                        ({{codelist.label}})
+                      </AuLink>
+                    </:success>
+                  </Await>
+                {{/let}}
               {{else}}
                 {{this.labelForType variable.type}}
               {{/if}}
