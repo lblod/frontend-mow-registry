@@ -15,8 +15,9 @@ import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
 import humanFriendlyDate from 'mow-registry/helpers/human-friendly-date';
-import { getPromiseState } from '@warp-drive/ember';
+import { Await, getPromiseState } from '@warp-drive/ember';
 import type VariablesService from 'mow-registry/services/variables-service';
+import type CodelistVariable from 'mow-registry/models/codelist-variable';
 import { isCodelistVariable } from 'mow-registry/models/codelist-variable';
 import { isSome } from 'mow-registry/utils/option';
 import { isTextVariable } from 'mow-registry/models/text-variable';
@@ -28,6 +29,8 @@ import { query } from '@warp-drive/legacy/compat/builders';
 import { task } from 'ember-concurrency';
 import ConfirmationModal from 'mow-registry/components/confirmation-modal';
 import perform from 'ember-concurrency/helpers/perform';
+import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
+import { eq } from 'ember-truth-helpers';
 
 interface Signature {
   Args: {
@@ -126,6 +129,10 @@ export default class VariableManager extends Component<Signature> {
     this.variableToDelete = undefined;
     this.isDeleteConfirmationOpen = false;
   };
+  asCodelistVariable = (variable: Variable) => {
+    return variable as CodelistVariable;
+  };
+
   <template>
     {{#if this.codelists.isSuccess}}
       <ReactiveTable
@@ -168,7 +175,26 @@ export default class VariableManager extends Component<Signature> {
           </td>
           <td>
             {{#if variable.type}}
-              {{this.labelForType variable.type}}
+              {{#if (eq variable.type 'codelist')}}
+                {{#let
+                  (this.asCodelistVariable variable)
+                  as |codelistVariable|
+                }}
+                  <Await @promise={{codelistVariable.codeList}}>
+                    <:success as |codelist|>
+                      <AuLink
+                        @route='codelists-management.codelist'
+                        @model={{codelist.id}}
+                      >
+                        {{this.labelForType codelistVariable.type}}
+                        ({{codelist.label}})
+                      </AuLink>
+                    </:success>
+                  </Await>
+                {{/let}}
+              {{else}}
+                {{this.labelForType variable.type}}
+              {{/if}}
             {{/if}}
           </td>
           <td>
