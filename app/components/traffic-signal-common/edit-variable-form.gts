@@ -250,23 +250,33 @@ export default class EditVariableForm extends Component<Sig> {
             <AuFormRow>
               <Await @promise={{this.variableToEdit.codeList}}>
                 <:success as |codelist|>
-                  <AuLabel
-                    @required={{true}}
-                    @requiredLabel={{t 'utility.required'}}
-                  >{{t 'variable-manager.edit-modal.codelist'}}</AuLabel>
-                  <PowerSelect
-                    class='au-u-1-1'
-                    @triggerClass='au-u-margin-top-tiny'
-                    @allowClear={{false}}
-                    @searchEnabled={{true}}
-                    @searchField='label'
-                    @options={{or this.codelists.value undefined}}
-                    @selected={{codelist}}
-                    @onChange={{this.updateCodelist}}
-                    as |codeList|
-                  >
-                    {{codeList.label}}
-                  </PowerSelect>
+                  {{#let (get this.variableToEdit.error 'codeList') as |error|}}
+                    <AuLabel
+                      @required={{true}}
+                      @requiredLabel={{t 'utility.required'}}
+                      @error={{isSome error}}
+                    >{{t 'variable-manager.edit-modal.codelist'}}</AuLabel>
+                    <div
+                      class={{if
+                        error
+                        'au-u-1-1 ember-power-select--error'
+                        'au-u-1-1'
+                      }}
+                    >
+                      <PowerSelect
+                        @triggerClass='au-u-margin-top-tiny'
+                        @allowClear={{false}}
+                        @searchEnabled={{true}}
+                        @searchField='label'
+                        @options={{or this.codelists.value undefined}}
+                        @selected={{codelist}}
+                        @onChange={{this.updateCodelist}}
+                        as |codeList|
+                      >
+                        {{codeList.label}}
+                      </PowerSelect>
+                    </div>
+                  {{/let}}
                   {{#if codelist}}
                     <Await @promise={{codelist.concepts}}>
                       <:success as |concepts|>
