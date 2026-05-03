@@ -1,5 +1,15 @@
 # frontend-mow-registry
 
+## 2.15.1
+
+### Patch Changes
+
+- [#375](https://github.com/lblod/frontend-mow-registry/pull/375) [`1a7f7c297d1b9f3d4275ae2d9917936a187a6cb4`](https://github.com/lblod/frontend-mow-registry/commit/1a7f7c297d1b9f3d4275ae2d9917936a187a6cb4) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Unify sorting of codelists by making the codelist service sort on no-case label
+
+- [#376](https://github.com/lblod/frontend-mow-registry/pull/376) [`43e9b6e6ca551fee93dd30449c721716904e0715`](https://github.com/lblod/frontend-mow-registry/commit/43e9b6e6ca551fee93dd30449c721716904e0715) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Fix codelist in edit variable form didn't had the correct error state
+
+- [#374](https://github.com/lblod/frontend-mow-registry/pull/374) [`984c994731c1a50ee309efac830e6cc8064e3ace`](https://github.com/lblod/frontend-mow-registry/commit/984c994731c1a50ee309efac830e6cc8064e3ace) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Variable type now links to codelist when relevant
+
 ## 2.15.0
 
 ### Minor Changes
