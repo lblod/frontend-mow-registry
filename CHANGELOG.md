@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.16.0
+
+### Minor Changes
+
+- [#377](https://github.com/lblod/frontend-mow-registry/pull/377) [`df2074d8a04ee7bde1affc378ab744cbd61fa4f3`](https://github.com/lblod/frontend-mow-registry/commit/df2074d8a04ee7bde1affc378ab744cbd61fa4f3) Thanks [@abeforgit](https://github.com/abeforgit)! - Add new linethickness shape
+
 ## 2.15.1
 
 ### Patch Changes
