@@ -14,6 +14,7 @@ import type IntlService from 'ember-intl/services/intl';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type { Store } from '@warp-drive/core';
 import { query } from '@warp-drive/legacy/compat/builders';
+import LineThickness from './line-thickness';
 
 export const DIMENSIONS = {
   length: 'http://qudt.org/vocab/quantitykind/Length',
@@ -46,6 +47,8 @@ export const SHAPES = {
     Circular,
   'http://register.mobiliteit.vlaanderen.be/concepts/322852b4-ec7b-4ca2-b267-4fcc263fa0d7':
     Diamond,
+  'http://register.mobiliteit.vlaanderen.be/concepts/20d37efe-7086-49a0-a062-901d425191a1':
+    LineThickness,
 };
 
 export const SHAPE_URIS = {
@@ -63,6 +66,8 @@ export const SHAPE_URIS = {
     'http://register.mobiliteit.vlaanderen.be/concepts/2481e377-1a89-4e25-9c58-1b509e0f7d74',
   diamond:
     'http://register.mobiliteit.vlaanderen.be/concepts/322852b4-ec7b-4ca2-b267-4fcc263fa0d7',
+  lineThickness:
+    'http://register.mobiliteit.vlaanderen.be/concepts/20d37efe-7086-49a0-a062-901d425191a1',
 };
 
 export class ShapeDimension {
