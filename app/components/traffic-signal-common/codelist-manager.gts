@@ -36,6 +36,7 @@ export default class CodelistManager extends Component<Sig> {
     {{#if @modalOpen}}
       <CodelistForm
         @codelist={{@codelist}}
+        @variable={{@variable}}
         @hideHeading={{true}}
         @hideBody={{true}}
         @onNavigateAway={{@onGoBack}}
