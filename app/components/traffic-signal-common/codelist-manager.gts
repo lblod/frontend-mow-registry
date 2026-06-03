@@ -11,12 +11,14 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import type Store from 'mow-registry/services/store';
 import { recordIdentifierFor } from '@warp-drive/core';
+import type CodelistVariable from 'mow-registry/models/codelist-variable';
 
 type Sig = {
   Args: {
     modalOpen: boolean;
     onCloseModal: () => void;
     codelist: CodeList;
+    variable?: CodelistVariable;
     onGoToEditConcept: (concept?: SkosConcept | CodeListValue) => void;
     onGoBack: () => void;
   };
