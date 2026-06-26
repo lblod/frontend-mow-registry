@@ -31,7 +31,7 @@ export default class CodelistManager extends Component<Sig> {
       recordIdentifierFor(this.args.codelist),
     );
     this.store.cache.rollbackAttrs(recordIdentifierFor(this.args.codelist));
-    this.args.variable.set('codeList', this.args.codelist);
+    this.args.variable?.set('codeList', this.args.codelist);
     this.args.onGoBack();
   };
   <template>
