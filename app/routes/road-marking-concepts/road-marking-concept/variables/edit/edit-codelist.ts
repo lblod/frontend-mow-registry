@@ -3,6 +3,8 @@ import type { Store } from '@warp-drive/core';
 import { service } from '@ember/service';
 import { findRecord } from '@warp-drive/legacy/compat/builders';
 import type CodeList from 'mow-registry/models/code-list';
+import RoadMarkingConceptsRoadMarkingConceptVariablesEditRoute from '../edit';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
 
 type Params = {
   codelistId: string;
@@ -12,6 +14,9 @@ export default class RoadMarkingConceptsRoadMarkingConceptVariablesEditEditCodel
   @service declare store: Store;
 
   async model(params: Params) {
+    const { variable } = this.modelFor(
+      'road-marking-concepts.road-marking-concept.variables.edit',
+    ) as ModelFrom<RoadMarkingConceptsRoadMarkingConceptVariablesEditRoute>;
     let codelist;
     if (params.codelistId !== 'new') {
       codelist = await this.store
@@ -22,6 +27,7 @@ export default class RoadMarkingConceptsRoadMarkingConceptVariablesEditEditCodel
     }
     return {
       codelist,
+      variable,
     };
   }
 }

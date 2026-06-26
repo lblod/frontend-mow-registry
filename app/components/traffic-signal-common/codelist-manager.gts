@@ -11,12 +11,14 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import type Store from 'mow-registry/services/store';
 import { recordIdentifierFor } from '@warp-drive/core';
+import type CodelistVariable from 'mow-registry/models/codelist-variable';
 
 type Sig = {
   Args: {
     modalOpen: boolean;
     onCloseModal: () => void;
     codelist: CodeList;
+    variable?: CodelistVariable;
     onGoToEditConcept: (concept?: SkosConcept | CodeListValue) => void;
     onGoBack: () => void;
   };
@@ -28,14 +30,15 @@ export default class CodelistManager extends Component<Sig> {
     this.store.cache.rollbackRelationships(
       recordIdentifierFor(this.args.codelist),
     );
-    this.args.onGoBack();
     this.store.cache.rollbackAttrs(recordIdentifierFor(this.args.codelist));
+    this.args.variable?.set('codeList', this.args.codelist);
     this.args.onGoBack();
   };
   <template>
     {{#if @modalOpen}}
       <CodelistForm
         @codelist={{@codelist}}
+        @variable={{@variable}}
         @hideHeading={{true}}
         @hideBody={{true}}
         @onNavigateAway={{@onGoBack}}

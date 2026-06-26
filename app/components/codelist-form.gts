@@ -41,12 +41,15 @@ import type CodelistsService from 'mow-registry/services/codelists';
 import AuTable from '@appuniversum/ember-appuniversum/components/au-table';
 import IconSelect from './icon-select';
 import AuRadioGroup from '@appuniversum/ember-appuniversum/components/au-radio-group';
+import type CodelistVariable from 'mow-registry/models/codelist-variable';
 
 type Sig = {
   Args: {
     codelist: CodeList;
     hideHeading: boolean;
     hideBody: boolean;
+    variable?: CodelistVariable;
+
     onNavigateAway?: (codelist?: CodeList) => void;
     onGoToEditConcept?: (concept?: SkosConcept | CodeListValue) => void;
   };
@@ -266,6 +269,9 @@ export default class CodelistFormComponent extends Component<Sig> {
       );
       await this.store.request(saveRecord(codelist));
       await this.codeListService.all.perform(true);
+      if (this.args.variable) {
+        this.args.variable.set('codeList', codelist);
+      }
       if (this.args.onNavigateAway) {
         this.args.onNavigateAway(codelist);
       } else {

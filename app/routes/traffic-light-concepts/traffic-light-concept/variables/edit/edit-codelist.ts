@@ -3,6 +3,8 @@ import type { Store } from '@warp-drive/core';
 import { service } from '@ember/service';
 import { findRecord } from '@warp-drive/legacy/compat/builders';
 import type CodeList from 'mow-registry/models/code-list';
+import TrafficLightConceptsTrafficLightConceptVariablesEditRoute from '../edit';
+import type { ModelFrom } from 'mow-registry/utils/type-utils';
 
 type Params = {
   codelistId: string;
@@ -12,6 +14,9 @@ export default class TrafficLightConceptsTrafficLightConceptVariablesEditEditCod
   @service declare store: Store;
 
   async model(params: Params) {
+    const { variable } = this.modelFor(
+      'traffic-light-concepts.traffic-light-concept.variables.edit',
+    ) as ModelFrom<TrafficLightConceptsTrafficLightConceptVariablesEditRoute>;
     let codelist;
     if (params.codelistId !== 'new') {
       codelist = await this.store
@@ -22,6 +27,7 @@ export default class TrafficLightConceptsTrafficLightConceptVariablesEditEditCod
     }
     return {
       codelist,
+      variable,
     };
   }
 }
