@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.16.1
+
+### Patch Changes
+
+- [#378](https://github.com/lblod/frontend-mow-registry/pull/378) [`60661db08f407c0754e5aa08707491af3a117ab7`](https://github.com/lblod/frontend-mow-registry/commit/60661db08f407c0754e5aa08707491af3a117ab7) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Auomatic select newly created codelist
+
 ## 2.16.0
 
 ### Minor Changes
