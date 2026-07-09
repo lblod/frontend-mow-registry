@@ -21,6 +21,7 @@ import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
 import AuFormRow from '@appuniversum/ember-appuniversum/components/au-form-row';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
+import AuPill from '@appuniversum/ember-appuniversum/components/au-pill';
 import AuTextarea from '@appuniversum/ember-appuniversum/components/au-textarea';
 import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
@@ -613,7 +614,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
           <div class='au-o-grid'>
             <div class='au-o-grid__item au-u-1-2'>
               <AuHeading @level='4' @skin='4' class='au-u-margin-bottom-small'>
-                {{t 'utility.zonality'}}
+                {{t 'utility.zonality'}} <AuPill> {{t 'utility.required'}}</AuPill>
               </AuHeading>
               {{#let (load @trafficMeasureConcept.zonality) as |zonality|}}
                 {{#if zonality.isResolved}}
@@ -726,7 +727,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
           {{#let (this.getError 'error' this.template 'value') as |error|}}
             <div class='au-u-margin-bottom-small'>
               <AuHeading @level='4' @skin='4'>
-                {{t 'traffic-measure-concept.attr.template'}}
+                {{t 'traffic-measure-concept.attr.template'}} <AuPill> {{t 'utility.required'}}</AuPill>
               </AuHeading>
               <AuHelpText
                 @skin='secondary'
