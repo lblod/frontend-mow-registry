@@ -1,5 +1,11 @@
 # frontend-mow-registry
 
+## 2.16.2
+
+### Patch Changes
+
+- [#379](https://github.com/lblod/frontend-mow-registry/pull/379) [`46103870fc09ffaa6ce6334a469dd73978234b6a`](https://github.com/lblod/frontend-mow-registry/commit/46103870fc09ffaa6ce6334a469dd73978234b6a) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Add required pills to mobility measure labels
+
 ## 2.16.1
 
 ### Patch Changes
