@@ -5,10 +5,9 @@ import type Store from 'mow-registry/services/store';
 import SkosConcept from 'mow-registry/models/skos-concept';
 import { trackedFunction } from 'reactiveweb/function';
 import type ConceptScheme from 'mow-registry/models/concept-scheme';
-import PowerSelect from 'ember-power-select/components/power-select';
+import AuRadioGroup from '@appuniversum/ember-appuniversum/components/au-radio-group';
 import ErrorMessage from 'mow-registry/components/error-message';
 import zonalityLabel from 'mow-registry/helpers/zonality-label';
-import t from 'ember-intl/helpers/t';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import { get } from '@ember/helper';
 import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
@@ -44,18 +43,16 @@ export default class ZonalitySelectorComponent extends Component<Sig> {
     {{#let (get @model.error 'zonality') as |error|}}
       <div class={{if error 'ember-power-select--error'}}>
         {{#if this.zonalities.value}}
-          <PowerSelect
-            @allowClear={{false}}
-            @searchEnabled={{false}}
-            @loadingMessage={{t 'utility.loading'}}
-            @options={{this.zonalities.value}}
+          <AuRadioGroup
             @selected={{@zonality}}
             @onChange={{@onChange}}
-            as |zonality|
+            as |Group|
           >
-            {{! @glint-expect-error should convert this to a function }}
-            {{zonalityLabel zonality}}
-          </PowerSelect>
+            {{#each this.zonalities.value as |zonality|}}
+              {{! @glint-expect-error should convert this to a function }}
+              <Group.Radio @value={{zonality}}>{{zonalityLabel zonality}}</Group.Radio>
+            {{/each}}
+          </AuRadioGroup>
         {{/if}}
         <ErrorMessage @error={{error}} />
       </div>

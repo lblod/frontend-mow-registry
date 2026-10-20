@@ -90,7 +90,7 @@
     height: 100%;
     overflow: hidden;
 
-    > .au-o-grid__item {
+    >.au-o-grid__item {
       height: 100%;
     }
   }
@@ -141,7 +141,7 @@
     flex: none;
   }
 
-  > * + * {
+  >*+* {
     margin-left: $au-unit-tiny;
   }
 }
@@ -182,6 +182,7 @@
 
 // Override small data table when used in cards
 .au-c-data-table__table--small {
+
   .au-c-card & th:first-child,
   .au-c-card & td:first-child {
     padding-left: $au-unit-tiny;
@@ -278,6 +279,7 @@ table.dataTable tbody th {
 
 // Fix app with environment banner @TODO: rework app component
 .au-c-app--environment {
+
   // Fix main container height
   .au-c-main-container {
     height: calc(100vh - 92px);
@@ -312,7 +314,7 @@ table.dataTable tbody th {
   .shapes-buttons {
     position: absolute;
     right: 10px;
-    top:10px;
+    top: 10px;
   }
 
   .shape-datapoint {
@@ -334,12 +336,12 @@ table.dataTable tbody th {
   max-height: 300px;
   overflow: auto;
 }
+
 .edit-variable-form--variable-modal {
   min-height: 300px;
 }
 
-@media screen  and ( min-height: 1024px )
-{
+@media screen and (min-height: 1024px) {
   .edit-variable-form--codelist-modal {
     min-height: 770px;
   }
@@ -352,5 +354,33 @@ table.dataTable tbody th {
 
 .codelist-form--table-body {
   max-height: 300px;
-  overflow:auto
+  overflow: auto
+}
+
+
+.traffic-measure--properties-box {
+  background-color: #F4F7FB;
+  border-radius: 6px;
+}
+
+
+
+// Appuniversum puts ...attributes on the inner `duet-date-picker` element, so we have to target the parent of that element
+.appuniversum-datepicker-full-width {
+  display: block;
+  width: 100%;
+}
+
+.au-c-datepicker:has(> .appuniversum-datepicker-full-width) {
+  width: 100%;
+}
+
+.stripped-table tr:nth-child(odd) {
+  background-color: #F4F7FB;
+}
+
+.au-u-underline {
+  text-decoration: underline;
+
+
 }

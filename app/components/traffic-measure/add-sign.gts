@@ -19,6 +19,7 @@ import type RoadMarkingConcept from 'mow-registry/models/road-marking-concept';
 import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept';
 import { isSome, type Option } from 'mow-registry/utils/option';
 import TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
+import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 
 type Sig = {
   Args: {
@@ -87,12 +88,16 @@ export default class TrafficMeasureAddSignComponent extends Component<Sig> {
   }
 
   <template>
-    <div class='au-o-grid au-o-grid--tiny'>
+    <div class='au-o-grid au-o-grid--tiny au-o-grid--bottom'>
       <div class='au-o-grid__item au-u-1-2@medium'>
+        <AuLabel id='add-sign-search-label'>
+          {{t 'traffic-measure-concept.attr.search-by-text'}}
+        </AuLabel>
         <PowerSelect
+          @triggerClass='add-sign__trigger'
+          @ariaLabelledBy='add-sign-search-label'
           @loadingMessage={{t 'utility.loading'}}
           @noMatchesMessage={{t 'traffic-measure-concept.crud.no-matches'}}
-          @placeholder={{t 'utility.search-placeholder'}}
           @searchEnabled={{true}}
           @searchMessage={{t 'utility.search-placeholder'}}
           @allowClear={{@allowClear}}
@@ -113,12 +118,10 @@ export default class TrafficMeasureAddSignComponent extends Component<Sig> {
           </div>
         </PowerSelect>
       </div>
-      <div class='au-o-grid__item au-u-1-2@medium'>
+      <div class='au-o-grid__item au-u-1-2@medium '>
         <AuButton
-          @icon='plus'
           @width='block'
           {{on 'click' (fn this.addSign this.selected)}}
-          class='au-u-margin-bottom-small'
         >
           {{t 'traffic-measure-concept.attr.add-sign'}}
         </AuButton>

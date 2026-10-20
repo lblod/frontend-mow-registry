@@ -262,7 +262,7 @@ traffic-measure-concept:
   attr:
     name: Naam
     variable-signage: Variabele signalisatie
-    traffic-sign: Verkeersteken
+    traffic-sign: Verkeerstekens
     label: Label
     sign: Verkeersbord
     add-sign: Verkeersteken toevoegen
@@ -271,6 +271,9 @@ traffic-measure-concept:
     variables: Variabelen
     type: Type
     preview: Voorvertoning
+    select-type: Type teken
+    select-validation-status: Validatie
+    search-by-text: Zoek op tekst
   crud:
     new: Nieuwe mobiliteitsmaatregel
     no-data: Geen mobiliteitsmaatregelen

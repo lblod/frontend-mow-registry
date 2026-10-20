@@ -271,6 +271,9 @@ traffic-measure-concept:
     variables: Variables
     type: Type
     preview: Preview
+    select-type: Sign type
+    select-validation-status: Validation
+    search-by-text: Search by text
   crud:
     new: New traffic measure
     no-data: No traffic measures

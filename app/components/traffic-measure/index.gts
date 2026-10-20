@@ -7,7 +7,7 @@ import { htmlSafe } from '@ember/template';
 import Store from 'mow-registry/services/store';
 import type RouterService from '@ember/routing/router-service';
 import { on } from '@ember/modifier';
-import { fn, get } from '@ember/helper';
+import { fn } from '@ember/helper';
 // eslint-disable-next-line ember/no-at-ember-render-modifiers
 import didInsert from '@ember/render-modifiers/modifiers/did-insert';
 import perform from 'ember-concurrency/helpers/perform';
@@ -22,15 +22,11 @@ import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
 import AuFormRow from '@appuniversum/ember-appuniversum/components/au-form-row';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
 import AuPill from '@appuniversum/ember-appuniversum/components/au-pill';
-import AuTextarea from '@appuniversum/ember-appuniversum/components/au-textarea';
 import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuDatePicker from '@appuniversum/ember-appuniversum/components/au-date-picker';
-import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
-import AuCheckbox from '@appuniversum/ember-appuniversum/components/au-checkbox';
-import AuBadge from '@appuniversum/ember-appuniversum/components/au-badge';
 import CodelistsService from 'mow-registry/services/codelists';
 import TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 import Template from 'mow-registry/models/template';
@@ -56,7 +52,6 @@ import VariableSignageSelector from 'mow-registry/components/variable-signage-se
 import TrafficMeasureSelectType, {
   trafficSignalType,
 } from 'mow-registry/components/traffic-measure/select-type';
-import truncate from 'mow-registry/helpers/truncate';
 import TrafficMeasureAddSign from 'mow-registry/components/traffic-measure/add-sign';
 import TrafficMeasureSignList from 'mow-registry/components/traffic-measure/sign-list';
 import TrafficMeasurePreview from 'mow-registry/components/traffic-measure/preview';
@@ -67,7 +62,6 @@ import InstructionVariable, {
 } from 'mow-registry/models/instruction-variable';
 import type TextVariable from 'mow-registry/models/text-variable';
 import { validateVariables } from 'mow-registry/utils/validate-relations';
-import { Await } from '@warp-drive/ember';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Sig = {
@@ -611,75 +605,81 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
               </Group>
             {{/unless}}
           </AuToolbar>
-          <div class='au-o-grid'>
-            <div class='au-o-grid__item au-u-1-2'>
-              <AuHeading @level='4' @skin='4' class='au-u-margin-bottom-small'>
-                {{t 'utility.zonality'}} <AuPill> {{t 'utility.required'}}</AuPill>
-              </AuHeading>
-              {{#let (load @trafficMeasureConcept.zonality) as |zonality|}}
-                {{#if zonality.isResolved}}
-                  <ZonalitySelector
-                    @zonality={{zonality.value}}
-                    @onChange={{this.updateZonality}}
-                    @model={{@trafficMeasureConcept}}
+          <div class='traffic-measure--properties-box au-u-padding au-u-margin-bottom'>
+            <div class='au-o-grid '>
+              <div class='au-o-grid__item au-u-1-2'>
+                <AuHeading @level='6' @skin='6' class='au-u-margin-bottom-small'>
+                  {{t 'utility.zonality'}} <AuPill> {{t 'utility.required'}}</AuPill>
+                </AuHeading>
+                {{#let (load @trafficMeasureConcept.zonality) as |zonality|}}
+                  {{#if zonality.isResolved}}
+                    <ZonalitySelector
+                      @zonality={{zonality.value}}
+                      @onChange={{this.updateZonality}}
+                      @model={{@trafficMeasureConcept}}
+                    />
+                  {{/if}}
+                {{/let}}
+              </div>
+              <div class='au-o-grid__item au-u-1-2'>
+                <AuHeading @level='6' @skin='6' class='au-u-margin-bottom-small'>
+                  {{t 'traffic-measure-concept.attr.variable-signage'}}
+                </AuHeading>
+                <VariableSignageSelector @concept={{@trafficMeasureConcept}} />
+              </div>
+            </div>
+            <div class='au-u-flex au-u-flex--between'>
+              {{#let
+                (this.getError 'error' @trafficMeasureConcept 'startDate')
+                (this.getError 'warning' @trafficMeasureConcept 'startDate')
+                as |error warning|
+              }}
+                <AuFormRow class='au-u-1-2 au-u-padding-right-huge'>
+                  <AuLabel
+                    @error={{isSome error}}
+                    @warning={{isSome warning}}
+                    for='startDate'
+                  >
+                    {{t 'utility.start-date'}}&nbsp;
+                  </AuLabel>
+                <AuDatePicker
+                  @error={{isSome error}}
+                  @warning={{isSome warning}}
+                  class='appuniversum-datepicker-full-width'
+                  id='startDate'
+                  @value={{@trafficMeasureConcept.startDate}}
+                  @onChange={{fn this.setTrafficMeasureDate 'startDate'}}
+                />
+                  <ErrorMessage @error={{error}} @warning={{warning}} />
+                </AuFormRow>
+              {{/let}}
+              {{#let
+                (this.getError 'error' @trafficMeasureConcept 'endDate')
+                (this.getError 'warning' @trafficMeasureConcept 'endDate')
+                as |error warning|
+              }}
+                <AuFormRow class='au-u-1-2 au-u-padding-left au-u-padding-right'>
+                  <AuLabel
+                    @error={{isSome error}}
+                    @warning={{isSome warning}}
+                    for='endDate'
+                  >
+                    {{t 'utility.end-date'}}&nbsp;
+                  </AuLabel>
+                  <AuDatePicker
+                    @error={{isSome error}}
+                    @warning={{isSome warning}}
+                    class='appuniversum-datepicker-full-width'
+                    id='endDate'
+                    @min={{@trafficMeasureConcept.startDate}}
+                    @value={{@trafficMeasureConcept.endDate}}
+                    @onChange={{fn this.setTrafficMeasureDate 'endDate'}}
                   />
-                {{/if}}
+                  <ErrorMessage @error={{error}} @warning={{warning}} />
+                </AuFormRow>
               {{/let}}
             </div>
-            <div class='au-o-grid__item au-u-1-2'>
-              <AuHeading @level='4' @skin='4' class='au-u-margin-bottom-small'>
-                {{t 'traffic-measure-concept.attr.variable-signage'}}
-              </AuHeading>
-              <VariableSignageSelector @concept={{@trafficMeasureConcept}} />
-            </div>
           </div>
-          {{#let
-            (this.getError 'error' @trafficMeasureConcept 'startDate')
-            (this.getError 'warning' @trafficMeasureConcept 'startDate')
-            as |error warning|
-          }}
-            <AuFormRow>
-              <AuLabel
-                @error={{isSome error}}
-                @warning={{isSome warning}}
-                for='startDate'
-              >
-                {{t 'utility.start-date'}}&nbsp;
-              </AuLabel>
-              <AuDatePicker
-                @error={{isSome error}}
-                @warning={{isSome warning}}
-                id='startDate'
-                @value={{@trafficMeasureConcept.startDate}}
-                @onChange={{fn this.setTrafficMeasureDate 'startDate'}}
-              />
-              <ErrorMessage @error={{error}} @warning={{warning}} />
-            </AuFormRow>
-          {{/let}}
-          {{#let
-            (this.getError 'error' @trafficMeasureConcept 'endDate')
-            (this.getError 'warning' @trafficMeasureConcept 'endDate')
-            as |error warning|
-          }}
-            <AuFormRow>
-              <AuLabel
-                @error={{isSome error}}
-                @warning={{isSome warning}}
-                for='endDate'
-              >
-                {{t 'utility.end-date'}}&nbsp;
-              </AuLabel>
-              <AuDatePicker
-                @error={{isSome error}}
-                @warning={{isSome warning}}
-                id='endDate'
-                @min={{@trafficMeasureConcept.startDate}}
-                @value={{@trafficMeasureConcept.endDate}}
-                @onChange={{fn this.setTrafficMeasureDate 'endDate'}}
-              />
-              <ErrorMessage @error={{error}} @warning={{warning}} />
-            </AuFormRow>
-          {{/let}}
           <AuHeading
             @level='4'
             @skin='4'
@@ -689,19 +689,22 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
           </AuHeading>
           <div class='au-o-grid au-o-grid--tiny'>
             <div class='au-o-grid__item au-u-1-4@medium'>
+              <AuLabel>
+                {{t 'traffic-measure-concept.attr.select-type'}}
+              </AuLabel>
               <TrafficMeasureSelectType
                 @selectedType={{this.selectedType}}
                 @updateTypeFilter={{this.updateTypeFilter}}
               />
             </div>
             <div class='au-o-grid__item au-u-1-4@medium'>
+              <AuLabel>
+                {{t 'traffic-measure-concept.attr.select-validation-status'}}
+              </AuLabel>
               <PowerSelect
                 @allowClear={{true}}
                 @options={{this.validationStatusOptions}}
                 @selected={{this.selectedValidationStatus}}
-                @placeholder={{t
-                  'traffic-measure-concept.crud.validation-filter-placeholder'
-                }}
                 @onChange={{this.updateValidationFilter}}
                 as |validationType|
               >
@@ -724,160 +727,6 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
               />
             </div>
           </div>
-          {{#let (this.getError 'error' this.template 'value') as |error|}}
-            <div class='au-u-margin-bottom-small'>
-              <AuHeading @level='4' @skin='4'>
-                {{t 'traffic-measure-concept.attr.template'}} <AuPill> {{t 'utility.required'}}</AuPill>
-              </AuHeading>
-              <AuHelpText
-                @skin='secondary'
-                class='au-u-margin-bottom-small au-u-flex-center'
-              >
-                <AuBadge
-                  @icon='info-circle'
-                  @size='small'
-                  class='au-u-margin-right-tiny'
-                />
-                {{t 'traffic-measure-concept.help'}}
-              </AuHelpText>
-              {{! template-lint-disable no-inline-styles }}
-              <AuTextarea
-                id='textarea'
-                @width='block'
-                {{on 'input' this.updateTemplate}}
-                {{on 'input' this.parseTemplate}}
-                value={{this.template.value}}
-                style='resize: none; height: 200px;'
-                class='au-u-margin-bottom-small'
-                @error={{isSome error}}
-              />
-              <ErrorMessage @error={{error}} />
-            </div>
-          {{/let}}
-          {{#if this.variables.length}}
-            <AuHeading @level='4' @skin='4' class='au-u-margin-bottom-small'>
-              {{t 'traffic-measure-concept.attr.variables'}}
-            </AuHeading>
-            <div class='au-c-card'>
-              <div class='au-data-table'>
-                <div class='au-c-data-table__wrapper'>
-                  <table
-                    class='au-c-data-table__table au-c-data-table__table--small'
-                  >
-                    <thead class='au-c-data-table__header'>
-                      <tr>
-                        <th>{{t 'traffic-measure-concept.attr.variable'}}</th>
-                        <th>{{t 'utility.required'}}</th>
-                        <th>{{t 'traffic-measure-concept.attr.type'}}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {{#each this.variables as |variable|}}
-                        <tr>
-                          <td>{{variable.label}}</td>
-                          {{! template-lint-disable no-inline-styles }}
-                          <td style='width: 33%;'>
-                            <AuCheckbox
-                              @checked={{variable.required}}
-                              @onChange={{fn
-                                this.updateVariableRequired
-                                variable
-                              }}
-                            >
-                              {{t 'utility.required'}}
-                            </AuCheckbox>
-                          </td>
-                          <td style='width: 33%;'>
-                            <PowerSelect
-                              @allowClear={{false}}
-                              @searchEnabled={{false}}
-                              @options={{this.variableTypes}}
-                              @selected={{variable.type}}
-                              @onChange={{fn this.updateVariableType variable}}
-                              as |type|
-                            >
-                              {{this.variablesService.defaultLabelForVariableType
-                                type
-                              }}
-                            </PowerSelect>
-                            {{#if (isCodelistVariable variable)}}
-                              <Await @promise={{variable.codeList}}>
-                                <:success as |codelist|>
-                                  <PowerSelect
-                                    @triggerClass='au-u-margin-top-tiny'
-                                    @allowClear={{false}}
-                                    @searchEnabled={{false}}
-                                    @options={{this.codeLists}}
-                                    @selected={{codelist}}
-                                    @onChange={{fn
-                                      this.updateCodelist
-                                      variable
-                                    }}
-                                    as |codeList|
-                                  >
-                                    {{codeList.label}}
-                                  </PowerSelect>
-                                  {{#if codelist}}
-                                    <Await @promise={{codelist.concepts}}>
-                                      <:success as |concepts|>
-                                        <ul
-                                          class='au-c-list-help au-c-help-text au-c-help-text--secondary'
-                                        >
-                                          {{#each concepts as |option|}}
-                                            <li
-                                              class='au-c-list-help__item'
-                                            >{{option.label}}</li>
-                                          {{/each}}
-                                        </ul>
-                                      </:success>
-                                    </Await>
-                                  {{/if}}
-                                </:success>
-                              </Await>
-                              <ErrorMessage
-                                @error={{get variable.error 'codeList'}}
-                              />
-                            {{/if}}
-                            {{#if (isInstructionVariable variable)}}
-                              <Await @promise={{variable.template}}>
-                                <:success as |template|>
-                                  <PowerSelect
-                                    @triggerClass='au-u-margin-top-tiny'
-                                    @allowClear={{false}}
-                                    @searchEnabled={{false}}
-                                    @options={{this.instructions}}
-                                    @selected={{template}}
-                                    @onChange={{fn
-                                      this.updateInstruction
-                                      variable
-                                    }}
-                                    as |instruction|
-                                  >
-                                    <div class='au-c-thumbnail-holder'>
-                                      <img
-                                        class='au-c-thumbnail au-c-thumbnail--small au-u-margin-right-tiny'
-                                        src={{instruction.parentConcept.image.file.downloadLink}}
-                                        alt=''
-                                      />
-                                      {{#if instruction.value}}
-                                        <span
-                                          title={{instruction.value}}
-                                        >{{truncate instruction.value}}</span>
-                                      {{/if}}
-                                    </div>
-                                  </PowerSelect>
-                                </:success>
-                              </Await>
-                            {{/if}}
-                          </td>
-                        </tr>
-                      {{/each}}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          {{/if}}
         </div>
       </div>
 

@@ -22,13 +22,13 @@ const SignList: TOC<Sig> = <template>
     <table class='au-c-table'>
       <thead class='au-c-table__header'>
         <tr>
-          <th>{{t 'utility.order'}}</th>
-          <th>{{t 'utility.sign'}}</th>
+          <th class='au-u-medium au-u-muted au-u-underline'>{{t 'utility.order'}}</th>
+          <th class='au-u-medium au-u-muted au-u-underline'>{{t 'utility.sign'}}</th>
           <th></th>
         </tr>
       </thead>
       <tbody
-        class='au-c-table__body'
+        class='au-c-table__body stripped-table'
         {{sortableGroup groupName='signs' onChange=@onSort}}
       >
         {{#each @signs as |sign|}}

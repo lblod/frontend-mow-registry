@@ -101,7 +101,7 @@ export default class InstructionEntry extends Component<Sig> {
         <AuButton
           @icon='bin'
           @alert={{true}}
-          @skin='secondary'
+          @skin='link-secondary'
           @hideText={{true}}
           {{on 'click' (set this 'showDeleteConfirmationModal' true)}}
         >
