@@ -381,6 +381,13 @@ table.dataTable tbody th {
 
 .au-u-underline {
   text-decoration: underline;
+}
 
-
+.add-sign__trigger .add-sign__trigger-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.6rem;
+  transform: translateY(-50%);
+  width: $au-unit-small;
+  height: $au-unit-small;
 }
