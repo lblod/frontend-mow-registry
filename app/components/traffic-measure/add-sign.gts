@@ -45,6 +45,7 @@ export default class TrafficMeasureAddSignComponent extends Component<Sig> {
     queryParams[this.args.selectedType.searchFilter] = searchData;
     queryParams['sort'] = this.args.selectedType.sortingField;
     queryParams['include'] = ['hasInstructions'];
+    //queryParams['filter[:has-no:main-signs]'] = 'yes';
 
     if (isSome(this.args.selectedValidation)) {
       if (this.args.selectedValidation === 'true') {
@@ -120,11 +121,8 @@ export default class TrafficMeasureAddSignComponent extends Component<Sig> {
           </div>
         </PowerSelect>
       </div>
-      <div class='au-o-grid__item au-u-1-2@medium '>
-        <AuButton
-          @width='block'
-          {{on 'click' (fn this.addSign this.selected)}}
-        >
+      <div class='au-o-grid__item au-u-1-2@medium'>
+        <AuButton @width='block' {{on 'click' (fn this.addSign this.selected)}}>
           {{t 'traffic-measure-concept.attr.add-sign'}}
         </AuButton>
       </div>

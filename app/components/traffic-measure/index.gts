@@ -148,6 +148,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     // Wait for data loading
     const relatedTrafficSignals =
       await this.args.trafficMeasureConcept.relatedTrafficSignalConceptsOrdered;
+    console.log(relatedTrafficSignals);
 
     this.codeLists = await this.codeListService.all.perform();
 
@@ -605,11 +606,18 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
               </Group>
             {{/unless}}
           </AuToolbar>
-          <div class='traffic-measure--properties-box au-u-padding au-u-margin-bottom'>
-            <div class='au-o-grid '>
+          <div
+            class='traffic-measure--properties-box au-u-padding au-u-margin-bottom'
+          >
+            <div class='au-o-grid'>
               <div class='au-o-grid__item au-u-1-2'>
-                <AuHeading @level='6' @skin='6' class='au-u-margin-bottom-small'>
-                  {{t 'utility.zonality'}} <AuPill> {{t 'utility.required'}}</AuPill>
+                <AuHeading
+                  @level='6'
+                  @skin='6'
+                  class='au-u-margin-bottom-small'
+                >
+                  {{t 'utility.zonality'}}
+                  <AuPill> {{t 'utility.required'}}</AuPill>
                 </AuHeading>
                 {{#let (load @trafficMeasureConcept.zonality) as |zonality|}}
                   {{#if zonality.isResolved}}
@@ -622,7 +630,11 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                 {{/let}}
               </div>
               <div class='au-o-grid__item au-u-1-2'>
-                <AuHeading @level='6' @skin='6' class='au-u-margin-bottom-small'>
+                <AuHeading
+                  @level='6'
+                  @skin='6'
+                  class='au-u-margin-bottom-small'
+                >
                   {{t 'traffic-measure-concept.attr.variable-signage'}}
                 </AuHeading>
                 <VariableSignageSelector @concept={{@trafficMeasureConcept}} />
@@ -642,14 +654,14 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                   >
                     {{t 'utility.start-date'}}&nbsp;
                   </AuLabel>
-                <AuDatePicker
-                  @error={{isSome error}}
-                  @warning={{isSome warning}}
-                  class='appuniversum-datepicker-full-width'
-                  id='startDate'
-                  @value={{@trafficMeasureConcept.startDate}}
-                  @onChange={{fn this.setTrafficMeasureDate 'startDate'}}
-                />
+                  <AuDatePicker
+                    @error={{isSome error}}
+                    @warning={{isSome warning}}
+                    class='appuniversum-datepicker-full-width'
+                    id='startDate'
+                    @value={{@trafficMeasureConcept.startDate}}
+                    @onChange={{fn this.setTrafficMeasureDate 'startDate'}}
+                  />
                   <ErrorMessage @error={{error}} @warning={{warning}} />
                 </AuFormRow>
               {{/let}}
@@ -658,7 +670,9 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                 (this.getError 'warning' @trafficMeasureConcept 'endDate')
                 as |error warning|
               }}
-                <AuFormRow class='au-u-1-2 au-u-padding-left au-u-padding-right'>
+                <AuFormRow
+                  class='au-u-1-2 au-u-padding-left au-u-padding-right'
+                >
                   <AuLabel
                     @error={{isSome error}}
                     @warning={{isSome warning}}
@@ -734,11 +748,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
         class='au-o-grid__item au-u-1-2@medium u-border-solid u-border-l u-border-divider'
       >
         <div class='au-o-box au-c-body-container au-c-body-container--scroll'>
-          <TrafficMeasurePreview @signs={{this.signs}}>
-            <:template>
-              {{this.previewHtml}}
-            </:template>
-          </TrafficMeasurePreview>
+          <TrafficMeasurePreview @signs={{this.signs}} />
         </div>
       </div>
     </div>

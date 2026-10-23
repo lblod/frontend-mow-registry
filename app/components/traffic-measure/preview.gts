@@ -3,13 +3,11 @@ import type { TOC } from '@ember/component/template-only';
 import { get } from '@ember/helper';
 import t from 'ember-intl/helpers/t';
 import type TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
+import { Await } from '@warp-drive/ember';
 
 type Sig = {
   Args: {
     signs: TrafficSignalListItem[];
-  };
-  Blocks: {
-    template: [];
   };
 };
 
@@ -25,13 +23,15 @@ const Preview: TOC<Sig> = <template>
           alt=''
           class='au-c-thumbnail'
         />
+        {{#each sign.item.subSigns as |subSign|}}
+          <img
+            src={{get (get (get subSign 'image') 'file') 'downloadLink'}}
+            alt=''
+            class='au-c-thumbnail'
+          />
+        {{/each}}
+        <br />
       {{/each}}
-    </div>
-    <AuHeading @level='4' @skin='4' class='au-u-margin-bottom-small'>
-      {{t 'traffic-measure-concept.attr.template'}}
-    </AuHeading>
-    <div class='au-o-box au-o-box--small au-c-theme-gray-200 u-rounded'>
-      {{yield to='template'}}
     </div>
   </div>
 </template>;
