@@ -3,7 +3,6 @@ import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { htmlSafe } from '@ember/template';
 import Store from 'mow-registry/services/store';
 import type RouterService from '@ember/routing/router-service';
 import { on } from '@ember/modifier';
@@ -32,17 +31,10 @@ import Template from 'mow-registry/models/template';
 import { isSome, type Option, unwrap } from 'mow-registry/utils/option';
 import CodeList from 'mow-registry/models/code-list';
 import type { SignalType } from 'mow-registry/components/traffic-measure/select-type';
-import Variable, {
-  allVariableTypes,
-  signVariableTypes,
-  type VariableType,
-} from 'mow-registry/models/variable';
+import Variable from 'mow-registry/models/variable';
 import { removeItem } from 'mow-registry/utils/array';
 import validateTrafficMeasureDates from 'mow-registry/utils/validate-traffic-measure-dates';
 import type SkosConcept from 'mow-registry/models/skos-concept';
-import CodelistVariable, {
-  isCodelistVariable,
-} from 'mow-registry/models/codelist-variable';
 import ValidationStatus from 'mow-registry/components/validation-status';
 import ErrorMessage from 'mow-registry/components/error-message';
 import ContentCheck from 'mow-registry/components/content-check';
@@ -56,11 +48,6 @@ import TrafficMeasureSignList from 'mow-registry/components/traffic-measure/sign
 import TrafficMeasurePreview from 'mow-registry/components/traffic-measure/preview';
 import type VariablesService from 'mow-registry/services/variables-service';
 import type TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
-import InstructionVariable, {
-  isInstructionVariable,
-} from 'mow-registry/models/instruction-variable';
-import type TextVariable from 'mow-registry/models/text-variable';
-import { validateVariables } from 'mow-registry/utils/validate-relations';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 type Sig = {
@@ -81,21 +68,12 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
 
   @tracked codeLists: CodeList[] = [];
   @tracked signs: TrafficSignalListItem[] = [];
-  @tracked variables: Variable[] = [];
-  @tracked template?: Template | null;
   @tracked searchString?: string;
-  @tracked preview?: string;
   @tracked selectedType: SignalType = trafficSignalType;
-  @tracked instructions: Template[] = [];
   @tracked signsError = false;
   @tracked signValidation?: string | null;
 
   variablesToBeDeleted: Variable[] = [];
-
-  get variableTypes(): VariableType[] {
-    return this.instructions.length > 0 ? allVariableTypes : signVariableTypes;
-  }
-
   get validationStatusOptions() {
     return [
       { value: 'true', label: this.intl.t('validation-status.valid') },
@@ -135,10 +113,6 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     return this.args.trafficMeasureConcept?.isNew;
   }
 
-  get previewHtml() {
-    return this.preview ? htmlSafe(this.preview) : null;
-  }
-
   get isSelectedTypeEmpty() {
     return !this.selectedType;
   }
@@ -147,81 +121,23 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     // Wait for data loading
     const relatedTrafficSignals =
       await this.args.trafficMeasureConcept.relatedTrafficSignalConceptsOrdered;
-    console.log(relatedTrafficSignals);
-
-    this.codeLists = await this.codeListService.all.perform();
-
-    // We assume that a measure has only one template
-    this.template = await this.args.trafficMeasureConcept.template;
-    if (this.template) {
-      this.variables = (await this.template.variables).slice().sort((a, b) => {
-        if (a.id && b.id) {
-          return a.id < b.id ? -1 : 1;
-        } else {
-          return 0;
-        }
-      });
-    }
 
     this.signs = new TrackedArray(relatedTrafficSignals);
     this.signs.sort((a, b) => (a.position ?? -1) - (b.position ?? -1));
 
-    await this.fetchInstructions.perform();
-
-    await this.parseTemplate();
   });
 
-  fetchInstructions = task(async () => {
-    //refresh instruction list from available signs
-    const instructions: Template[] = [];
-    for (let i = 0; i < this.signs.length; i++) {
-      const sign = await this.signs[i]?.item;
-      if (sign) {
-        const signInstructions = await sign.hasInstructions;
-        signInstructions.forEach((instr) => instructions.push(instr));
-      }
-    }
 
-    this.instructions = instructions;
-
-    //remove input type instruction if there are none available and reset variables with instructions
-    if (instructions.length == 0) {
-      for (let i = 0; i < this.variables.length; i++) {
-        const variable = this.variables[i];
-        if (variable && isInstructionVariable(variable)) {
-          await this.updateVariableType(variable, 'text');
-        }
-      }
-    }
-  });
 
   @action
-  async updateCodelist(variable: Variable, codeList: CodeList) {
-    if (isCodelistVariable(variable)) {
-      (variable as CodelistVariable).set('codeList', codeList);
-      await this.generatePreview.perform();
-    }
-  }
-
-  @action
-  async updateInstruction(variable: Variable, template: Template) {
-    if (isInstructionVariable(variable)) {
-      (variable as InstructionVariable).set('template', template);
-      await this.generatePreview.perform();
-    }
-  }
-
-  @action
-  async addSign(sign: TrafficSignalListItem) {
+  addSign(sign: TrafficSignalListItem) {
     this.signs.push(sign);
-    await this.fetchInstructions.perform();
     this.selectedType = trafficSignalType;
   }
 
   @action
-  async removeSign(sign: TrafficSignalListItem) {
+  removeSign(sign: TrafficSignalListItem) {
     removeItem(this.signs, sign);
-    await this.fetchInstructions.perform();
   }
 
   @action
@@ -236,14 +152,6 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   }
 
   @action
-  async updateTemplate(event: Event) {
-    if (this.template) {
-      this.template.value = (event.target as HTMLInputElement).value;
-      await this.template.validate();
-    }
-  }
-
-  @action
   updateTypeFilter(selectedType: SignalType) {
     if (selectedType) {
       this.selectedType = selectedType;
@@ -251,148 +159,6 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
       this.selectedType = trafficSignalType;
     }
   }
-
-  @action
-  updateVariableRequired(variable: Variable) {
-    variable.set('required', !variable.required);
-  }
-
-  @action
-  async updateVariableType(variable: Variable, selectedType: VariableType) {
-    const varIndex = this.variables.indexOf(variable);
-    if (varIndex === -1) {
-      return;
-    }
-    const newVar = (await this.variablesService.convertVariableType(
-      variable,
-      selectedType,
-    )) as Variable;
-    const newVars = [...this.variables];
-    newVars[varIndex] = newVar;
-    this.variables = newVars;
-    this.variablesToBeDeleted.push(variable);
-  }
-
-  //parsing algo that keeps ui changes in tact
-  @action
-  async parseTemplate() {
-    if (!this.template) {
-      return;
-    }
-    //match "a-z", "A-Z", "-", "_", "." and "any digit characters" between ${ and } lazily
-    const regex = new RegExp(/\${([a-zA-Z\-_.\d]+?)}/g);
-    const regexResult = [...(this.template.value ?? '').matchAll(regex)];
-
-    //remove duplicates from regex result
-    const filteredRegexResult: RegExpMatchArray[] = [];
-    regexResult.forEach((reg) => {
-      if (!filteredRegexResult.find((fReg) => fReg[0] === reg[0])) {
-        filteredRegexResult.push(reg);
-      }
-    });
-
-    //remove non-existing variable variables from current array
-    //turns variables into a non ember data thing
-    this.variables = this.variables.filter((variable) => {
-      //search regex results if they contain this variable
-      if (
-        filteredRegexResult.find((fReg) => {
-          if (fReg[1] === variable.label) {
-            return true;
-          } else {
-            return false;
-          }
-        })
-      ) {
-        return true;
-      } else {
-        this.variablesToBeDeleted.push(variable);
-        return false;
-      }
-    });
-
-    //add new variables
-    filteredRegexResult.forEach((reg) => {
-      if (!this.variables?.find((variable) => variable.label === reg[1])) {
-        let variableToAdd: Variable;
-
-        // Check if there is a variable to restore (copy-pasting/moving around)
-        // We search from end to start, as this array may contain multiple variables with the same label.
-        // We want to select the one who has been last removed.
-        const variableToRestoreIndex = this.variablesToBeDeleted.findLastIndex(
-          (variable) => variable.label === reg[1],
-        );
-
-        if (variableToRestoreIndex > -1) {
-          // In case a variable is copy-pasted/moved around:
-          // Remove variable from `variablesToBeDeleted`, and add it to the `variables` array
-          variableToAdd = unwrap(
-            this.variablesToBeDeleted[variableToRestoreIndex],
-          );
-          this.variablesToBeDeleted.splice(variableToRestoreIndex, 1);
-        } else {
-          // Variable did not exist before, just create a new one
-          variableToAdd = this.store.createRecord<TextVariable>(
-            'text-variable',
-            {
-              label: reg[1],
-            },
-          ) as unknown as Variable;
-        }
-        this.variables?.push(variableToAdd);
-      }
-    });
-
-    //remove duplicates in case something went wrong
-    const filteredVariables: Variable[] = [];
-    this.variables.forEach((variable) => {
-      if (
-        !filteredVariables.find(
-          (fVariable) => fVariable.label === variable.label,
-        )
-      ) {
-        filteredVariables.push(variable);
-      } else {
-        this.variablesToBeDeleted.push(variable);
-      }
-    });
-
-    //sort variables in the same order as the regex result
-    const sortedVariables: Variable[] = [];
-    filteredRegexResult.forEach((reg) => {
-      filteredVariables.forEach((variable) => {
-        if (reg[1] == variable.label) {
-          sortedVariables.push(variable);
-        }
-      });
-    });
-
-    this.variables = sortedVariables;
-    await this.generatePreview.perform();
-  }
-
-  generatePreview = task(async () => {
-    if (!this.template) {
-      return;
-    }
-    this.preview = this.template.value ?? '';
-
-    for (const variable of this.variables) {
-      let replaceString;
-      if (isInstructionVariable(variable)) {
-        const instruction = await (variable as InstructionVariable).template;
-        const label = (variable as InstructionVariable).label;
-        replaceString =
-          "<span style='background-color: #ffffff'>" +
-          (instruction?.value ?? '') +
-          '</span>';
-        this.preview = this.preview.replaceAll(
-          '${' + (label ?? '') + '}',
-          replaceString,
-        );
-      }
-    }
-  });
 
   save = task(async () => {
     // We assume a measure only has one template
@@ -404,8 +170,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     // Validate measure fields
     const isValid = await this.args.trafficMeasureConcept.validate();
     const isTemplateValid = await template.validate();
-    const areVariablesValid = await validateVariables(this.variables);
-    if (!isValid || !isTemplateValid || !areVariablesValid) {
+    if (!isValid || !isTemplateValid ) {
       return;
     }
 
@@ -419,12 +184,9 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
       await this.store.request(saveRecord(this.args.trafficMeasureConcept));
     }
 
-    //1-parse everything again
-    await this.parseTemplate();
-
-    //2-update roadsigns
+    //1-update roadsigns
     await this.saveRoadsigns.perform(this.args.trafficMeasureConcept);
-    //3-update node shape
+    //2-update node shape
 
     let label = '';
     for (const signOrdered of this.signs) {
@@ -436,11 +198,11 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     this.args.trafficMeasureConcept.label = label;
     await this.store.request(saveRecord(this.args.trafficMeasureConcept));
 
-    //4-handle variable variables
-    await this.saveVariables.perform(template);
-
-    // //5-annotate rdfa
-    // await this.annotateRdfa.perform(template);
+    //3- generate template to conform old shape
+    const dummyTemplateValue = `Template will be generated automatically in the frontend based on the signs ${label}`
+    template.value = dummyTemplateValue
+    template.preview = dummyTemplateValue
+    await this.store.request(saveRecord(template));
 
     this.router.transitionTo(
       'traffic-measure-concepts.details',
@@ -473,30 +235,10 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     await this.store.request(saveRecord(trafficMeasureConcept));
   });
 
-  saveVariables = task(async (template: Template) => {
-    //destroy old ones
-    await Promise.all(
-      this.variablesToBeDeleted.map((variable) => variable.destroyRecord()),
-    );
-
-    //create new ones
-    await Promise.all(
-      this.variables.map((variable) =>
-        this.store.request(saveRecord(variable)),
-      ),
-    );
-    template.set('variables', this.variables);
-    await this.store.request(saveRecord(template));
-  });
-
   willDestroy() {
     super.willDestroy();
 
     const wasNew = this.args.trafficMeasureConcept?.isNew;
-    this.template?.rollbackAttributes();
-    for (const variable of this.variables) {
-      variable.rollbackAttributes();
-    }
     this.args.trafficMeasureConcept?.rollbackAttributes();
     if (!wasNew) {
       void this.args.trafficMeasureConcept?.belongsTo('zonality').reload();
