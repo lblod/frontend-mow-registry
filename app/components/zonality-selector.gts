@@ -15,7 +15,6 @@ import zonalityLabel from 'mow-registry/helpers/zonality-label';
 import type TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
 import type TrafficMeasureConcept from 'mow-registry/models/traffic-measure-concept';
 import type { PromiseBelongsTo } from '@warp-drive/legacy/model/-private/promise-belongs-to';
-import type { Option } from 'mow-registry/utils/option';
 
 type Sig = {
   Args: {
@@ -27,7 +26,7 @@ type Sig = {
 
 export default class ZonalitySelectorComponent extends Component<Sig> {
   @service declare store: Store;
-  @tracked zonalitySelected?: SkosConcept;
+  @tracked zonalitySelected: SkosConcept | null = null;
 
   zonalities = trackedFunction(this, async () => {
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
@@ -53,8 +52,10 @@ export default class ZonalitySelectorComponent extends Component<Sig> {
   }
 
   @action
-  onChange(zonality: Option<SkosConcept>) {
-    if (zonality) {
+  onChange(zonalityUri: string | undefined) {
+    if (zonalityUri) {
+      const zonality = this.zonalities.value?.find(zonality => zonality.uri === zonalityUri);
+      if(!zonality) return
       this.zonalitySelected = zonality;
       void this.args.onChange(zonality);
     }
@@ -65,13 +66,13 @@ export default class ZonalitySelectorComponent extends Component<Sig> {
       <div class={{if error 'ember-power-select--error'}}>
         {{#if this.zonalities.value}}
           <AuRadioGroup
-            @selected={{this.selected}}
+            @selected={{this.selected.uri}}
             @onChange={{this.onChange}}
             as |Group|
           >
             {{#each this.zonalities.value as |zonality|}}
               {{! @glint-expect-error should convert this to a function }}
-              <Group.Radio @value={{zonality}}>{{zonalityLabel zonality}}</Group.Radio>
+              <Group.Radio @value={{zonality.uri}}>{{zonalityLabel zonality}}</Group.Radio>
             {{/each}}
           </AuRadioGroup>
         {{/if}}
