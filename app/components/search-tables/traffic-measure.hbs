@@ -1,39 +1,58 @@
 {{! @glint-nocheck: not typesafe yet }}
-<ReactiveTable @content={{@content}} @isLoading={{@isLoading}} @noDataMessage={{t "traffic-measure-concept.crud.no-data"
-  }} @page={{@page}} @sort={{@sort}} @pageSize={{@pageSize}} @onPageChange={{@onPageChange}}
-  @onSortChange={{@onSortChange}}>
+<ReactiveTable
+  @content={{@content}}
+  @isLoading={{@isLoading}}
+  @noDataMessage={{t "traffic-measure-concept.crud.no-data"}}
+  @page={{@page}}
+  @sort={{@sort}}
+  @pageSize={{@pageSize}}
+  @onPageChange={{@onPageChange}}
+  @onSortChange={{@onSortChange}}
+>
   <:menu>
     {{yield to="menu"}}
   </:menu>
   <:header as |header|>
-    <header.Sortable @field=":no-case:label" @currentSorting={{@sort}} @label={{t "traffic-measure-concept.attr.label"
-      }} />
+    <header.Sortable
+      @field=":no-case:label"
+      @currentSorting={{@sort}}
+      @label={{t "traffic-measure-concept.attr.label"}}
+    />
     <th>
       {{t "traffic-measure-concept.attr.sign"}}
     </th>
-    <header.Sortable @field="zonality" @label={{t "utility.zonality" }} />
-    <header.Sortable @field="variableSignage" @label={{t "traffic-measure-concept.attr.variable-signage" }} />
-    <header.Sortable @field="valid" @label={{t "utility.validation-status" }} />
+    <header.Sortable @field="zonality" @label={{t "utility.zonality"}} />
+    <header.Sortable
+      @field="variableSignage"
+      @label={{t "traffic-measure-concept.attr.variable-signage"}}
+    />
+    <header.Sortable
+      @field="valid"
+      @label={{t "utility.validation-status"}}
+    />
   </:header>
   <:body as |trafficMeasureConcept|>
     <td>
-      <AuLink @route="traffic-measure-concepts.details" @model={{trafficMeasureConcept.id}}>
+      <AuLink
+        @route="traffic-measure-concepts.details"
+        @model={{trafficMeasureConcept.id}}
+      >
         {{trafficMeasureConcept.label}}
       </AuLink>
     </td>
     <td>
-      {{#each (sort-by-position (await trafficMeasureConcept.relatedTrafficSignalConceptsOrdered)) as |sign|}}
-      <img src={{sign.item.image.file.downloadLink}} alt="" height="50" />
-      {{/each}}
+        {{#each (sort-by-position (await trafficMeasureConcept.relatedTrafficSignalConceptsOrdered)) as |sign|}}
+          <img src={{sign.item.image.file.downloadLink}} alt="" height="50" />
+        {{/each}}
     </td>
     <td>
       {{zonality-label (await trafficMeasureConcept.zonality)}}
     </td>
     <td>
       {{#if (await trafficMeasureConcept.variableSignage)}}
-      {{t "variable-signage-selector.yes"}}
+        {{t "variable-signage-selector.yes"}}
       {{else}}
-      {{t "variable-signage-selector.no"}}
+        {{t "variable-signage-selector.no"}}
       {{/if}}
     </td>
     <td>
