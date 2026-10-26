@@ -1,17 +1,13 @@
 {{! @glint-nocheck: not typesafe yet }}
 {{page-title
-  (t "traffic-measure-concept.details" label=@model.trafficMeasureConcept.label)
+(t "traffic-measure-concept.details" label=@model.trafficMeasureConcept.label)
 }}
 
 <BreadcrumbsItem as |linkClass|>
-  <LinkTo
-    @route="traffic-measure-concepts.details"
-    @model={{@model.id}}
-    class={{linkClass}}
-  >
+  <LinkTo @route="traffic-measure-concepts.details" @model={{@model.id}} class={{linkClass}}>
     {{t
-      "traffic-measure-concept.details"
-      label=@model.trafficMeasureConcept.label
+    "traffic-measure-concept.details"
+    label=@model.trafficMeasureConcept.label
     }}
   </LinkTo>
 </BreadcrumbsItem>
@@ -20,50 +16,35 @@
   <Group class="au-u-flex--vertical-center">
     <AuHeading @skin="2">
       {{t
-        "traffic-measure-concept.details"
-        label=@model.trafficMeasureConcept.label
+      "traffic-measure-concept.details"
+      label=@model.trafficMeasureConcept.label
       }}
     </AuHeading>
     <ValidationStatus @valid={{@model.trafficMeasureConcept.valid}} />
   </Group>
   <Group>
     <AuButtonGroup>
-      <AuLink
-        @icon="pencil"
-        @route="traffic-measure-concepts.edit"
-        @model={{@model.trafficMeasureConcept.id}}
-        @skin="button-secondary"
-      >
+      <AuLink @icon="pencil" @route="traffic-measure-concepts.edit" @model={{@model.trafficMeasureConcept.id}}
+        @skin="button-secondary">
         {{t "traffic-measure-concept.crud.edit-button-text"}}
       </AuLink>
-      <AuButton
-        @icon="trash"
-        @skin="secondary"
-        @alert={{true}}
-        @loading={{this.delete.isRunning}}
-        @loadingMessage={{t "utility.delete"}}
-        {{on "click" (set this "showDeleteConfirmationModal" true)}}
-      >
+      <AuButton @icon="trash" @skin="secondary" @alert={{true}} @loading={{this.delete.isRunning}}
+        @loadingMessage={{t "utility.delete" }} {{on "click" (set this "showDeleteConfirmationModal" true)}}>
         {{t "traffic-measure-concept.crud.delete"}}
       </AuButton>
     </AuButtonGroup>
   </Group>
 </AuToolbar>
-<ConfirmationModal
-  @modalOpen={{this.showDeleteConfirmationModal}}
-  @onCancel={{set this "showDeleteConfirmationModal" false}}
-  @onConfirm={{perform this.delete}}
-  @isLoading={{this.delete.isRunning}}
-  @confirmButtonText={{t "traffic-measure-concept.crud.delete"}}
-  @isAlert={{true}}
->
+<ConfirmationModal @modalOpen={{this.showDeleteConfirmationModal}} @onCancel={{set this "showDeleteConfirmationModal"
+  false}} @onConfirm={{perform this.delete}} @isLoading={{this.delete.isRunning}}
+  @confirmButtonText={{t "traffic-measure-concept.crud.delete" }} @isAlert={{true}}>
   <:title>
     {{t "traffic-measure-concept.crud.delete-confirm-modal-title"}}
   </:title>
   <:body>
     {{t
-      "traffic-measure-concept.crud.delete-confirm-modal-content"
-      htmlSafe=true
+    "traffic-measure-concept.crud.delete-confirm-modal-content"
+    htmlSafe=true
     }}
   </:body>
 </ConfirmationModal>
@@ -83,15 +64,11 @@
     </AuHeading>
     <p class="au-u-muted">
       {{#if (await @model.trafficMeasureConcept.variableSignage)}}
-        {{t "variable-signage-selector.yes"}}
+      {{t "variable-signage-selector.yes"}}
       {{else}}
-        {{t "variable-signage-selector.no"}}
+      {{t "variable-signage-selector.no"}}
       {{/if}}
     </p>
   </div>
-  <TrafficMeasure::Preview @signs={{@model.signs}}>
-    <:template>
-      <TrafficMeasureTemplate @concept={{@model.trafficMeasureConcept}} />
-    </:template>
-  </TrafficMeasure::Preview>
+  <TrafficMeasure::Preview @signs={{@model.signs}} class='au-u-max-width-small' />
 </AuBodyContainer>
