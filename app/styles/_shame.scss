@@ -383,13 +383,14 @@ table.dataTable tbody th {
   text-decoration: underline;
 }
 
-.add-sign__trigger .add-sign__trigger-icon {
-  position: absolute;
-  top: 50%;
-  right: 0.6rem;
-  transform: translateY(-50%);
-  width: $au-unit-small;
-  height: $au-unit-small;
+// add-sign powerselect: use the appuniversum search icon instead of the default chevron
+.add-sign__trigger .ember-power-select-status-icon {
+  background-image: url('/assets/icons/search.svg');
+  transform: none !important;
+
+  .ember-basic-dropdown-trigger[aria-expanded='true'] & {
+    transform: none !important;
+  }
 }
 
 .traffic-measure-preview--main-sign-container {

@@ -20,7 +20,6 @@ import type TrafficLightConcept from 'mow-registry/models/traffic-light-concept'
 import { isSome, type Option } from 'mow-registry/utils/option';
 import TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
-import AddSignTrigger from 'mow-registry/components/traffic-measure/add-sign-trigger';
 
 type Sig = {
   Args: {
@@ -97,7 +96,6 @@ export default class TrafficMeasureAddSignComponent extends Component<Sig> {
         </AuLabel>
         <PowerSelect
           @triggerClass='add-sign__trigger'
-          @triggerComponent={{AddSignTrigger}}
           @ariaLabelledBy='add-sign-search-label'
           @loadingMessage={{t 'utility.loading'}}
           @noMatchesMessage={{t 'traffic-measure-concept.crud.no-matches'}}
