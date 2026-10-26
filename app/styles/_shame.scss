@@ -391,3 +391,13 @@ table.dataTable tbody th {
   width: $au-unit-small;
   height: $au-unit-small;
 }
+
+.traffic-measure-preview--main-sign-container {
+  background-color: #F4F7FB;
+  border: 1px solid #CFD5DD;
+}
+
+.traffic-measure-preview--sign-image {
+  max-width: 3.6rem;
+  max-height: 3.6rem;
+}

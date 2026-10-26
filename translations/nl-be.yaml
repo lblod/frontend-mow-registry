@@ -259,6 +259,7 @@ traffic-measure-concept:
   name: Mobiliteitsmaatregelen
   details: Maatregel {label}
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
+  main-sign: Hoofdbord
   attr:
     name: Naam
     variable-signage: Variabele signalisatie

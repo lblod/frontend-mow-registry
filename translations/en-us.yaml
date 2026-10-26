@@ -259,6 +259,7 @@ traffic-measure-concept:
   name: Traffic measures
   details: Measure {label}
   help: Add $'{variableName} to add a variable/instruction
+  main-sign: Main sign
   attr:
     name: Name
     variable-signage: Variable signage

@@ -15,7 +15,6 @@ import { or } from 'ember-truth-helpers';
 import t from 'ember-intl/helpers/t';
 import { TrackedArray } from 'tracked-built-ins';
 import type IntlService from 'ember-intl/services/intl';
-import load from 'ember-async-data/helpers/load';
 import PowerSelect from 'ember-power-select/components/power-select';
 import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
@@ -589,7 +588,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
       {{!template-lint-disable no-at-ember-render-modifiers}}
     >
       {{! template-lint-disable no-inline-styles }}
-      <div class='au-o-grid__item au-u-1-2@medium'>
+      <div class='au-o-grid__item au-u-2-3@medium'>
         <div
           class='au-o-box au-c-body-container au-c-body-container--scroll au-c-body-container--table'
         >
@@ -619,15 +618,11 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                   {{t 'utility.zonality'}}
                   <AuPill> {{t 'utility.required'}}</AuPill>
                 </AuHeading>
-                {{#let (load @trafficMeasureConcept.zonality) as |zonality|}}
-                  {{#if zonality.isResolved}}
-                    <ZonalitySelector
-                      @zonality={{zonality.value}}
-                      @onChange={{this.updateZonality}}
-                      @model={{@trafficMeasureConcept}}
-                    />
-                  {{/if}}
-                {{/let}}
+                <ZonalitySelector
+                  @zonality={{@trafficMeasureConcept.zonality}}
+                  @onChange={{this.updateZonality}}
+                  @model={{@trafficMeasureConcept}}
+                />
               </div>
               <div class='au-o-grid__item au-u-1-2'>
                 <AuHeading
@@ -745,7 +740,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
       </div>
 
       <div
-        class='au-o-grid__item au-u-1-2@medium u-border-solid u-border-l u-border-divider'
+        class='au-o-grid__item au-u-1-3@medium u-border-solid u-border-l u-border-divider'
       >
         <div class='au-o-box au-c-body-container au-c-body-container--scroll'>
           <TrafficMeasurePreview @signs={{this.signs}} />

@@ -3,7 +3,6 @@ import type { TOC } from '@ember/component/template-only';
 import { get } from '@ember/helper';
 import t from 'ember-intl/helpers/t';
 import type TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
-import { Await } from '@warp-drive/ember';
 
 type Sig = {
   Args: {
@@ -15,25 +14,30 @@ const Preview: TOC<Sig> = <template>
   <AuHeading @level='3' @skin='3' class='au-u-margin-bottom'>
     {{t 'traffic-measure-concept.attr.preview'}}
   </AuHeading>
-  <div class='au-o-box au-c-theme-gray-100 u-rounded au-u-max-width-small'>
-    <div class='au-u-margin-bottom'>
-      {{#each @signs as |sign|}}
+  {{#each @signs as |sign|}}
+    <div class='traffic-measure-preview--main-sign-container au-u-margin-small au-u-padding-small'>
+      <AuHeading @level='6' @skin='6' class='au-u-flex au-u-flex--vertical-center'>
         <img
           src={{get (get (get sign.item 'image') 'file') 'downloadLink'}}
           alt=''
-          class='au-c-thumbnail'
+          class='traffic-measure-preview--sign-image au-u-margin-right-small'
         />
+        {{t 'traffic-measure-concept.main-sign'}} {{get sign.item 'label'}}
+      </AuHeading>
+      <div class='au-u-flex au-u-flex--column au-u-margin-left-large'>
         {{#each sign.item.subSigns as |subSign|}}
-          <img
-            src={{get (get (get subSign 'image') 'file') 'downloadLink'}}
-            alt=''
-            class='au-c-thumbnail'
-          />
+          <div class='au-u-margin-top-small au-u-flex au-u-flex--vertical-center'>
+            <img
+              src={{get (get (get subSign 'image') 'file') 'downloadLink'}}
+              alt=''
+              class='traffic-measure-preview--sign-image au-u-margin-right-small'
+            />
+            {{subSign.label}}
+          </div>
         {{/each}}
-        <br />
-      {{/each}}
+      </div>
     </div>
-  </div>
+  {{/each}}
 </template>;
 
 export default Preview;

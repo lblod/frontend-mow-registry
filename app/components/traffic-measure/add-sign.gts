@@ -45,7 +45,7 @@ export default class TrafficMeasureAddSignComponent extends Component<Sig> {
     queryParams[this.args.selectedType.searchFilter] = searchData;
     queryParams['sort'] = this.args.selectedType.sortingField;
     queryParams['include'] = ['hasInstructions'];
-    //queryParams['filter[:has-no:main-signs]'] = 'yes';
+    queryParams['filter[:has-no:main-signs]'] = 'yes';
 
     if (isSome(this.args.selectedValidation)) {
       if (this.args.selectedValidation === 'true') {
