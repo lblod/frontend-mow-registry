@@ -19,7 +19,6 @@ import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
 import AuFormRow from '@appuniversum/ember-appuniversum/components/au-form-row';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
-import AuPill from '@appuniversum/ember-appuniversum/components/au-pill';
 import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
@@ -185,8 +184,8 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
 
     //1-update roadsigns
     await this.saveRoadsigns.perform(this.args.trafficMeasureConcept);
-    //2-update node shape
 
+    //2-update node shape
     let label = '';
     for (const signOrdered of this.signs) {
       const sign = await signOrdered.item;
@@ -357,7 +356,6 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
                   class='au-u-margin-bottom-small'
                 >
                   {{t 'utility.zonality'}}
-                  <AuPill> {{t 'utility.required'}}</AuPill>
                 </AuHeading>
                 <ZonalitySelector
                   @zonality={{@trafficMeasureConcept.zonality}}
