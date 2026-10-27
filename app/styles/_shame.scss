@@ -387,11 +387,11 @@ table.dataTable tbody th {
 // add-sign powerselect: use the appuniversum search icon instead of the default chevron
 .add-sign__trigger .ember-power-select-status-icon {
   background-image: url('/assets/icons/search.svg');
-  transform: none !important;
+  transform: none !important
+}
 
-  .ember-basic-dropdown-trigger[aria-expanded='true'] & {
-    transform: none !important;
-  }
+.ember-basic-dropdown-trigger[aria-expanded='true'] .ember-power-select-status-icon {
+  transform: none !important;
 }
 
 .traffic-measure-preview--main-sign-container {
