@@ -197,7 +197,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     await this.store.request(saveRecord(this.args.trafficMeasureConcept));
 
     //3- generate template to conform old shape
-    const dummyTemplateValue = `Template will be generated automatically in the frontend based on the signs ${label}`
+    const dummyTemplateValue = `Templates worden niet meer gegenereerd door het MOW register`
     template.value = dummyTemplateValue
     template.preview = dummyTemplateValue
     await this.store.request(saveRecord(template));
