@@ -64,7 +64,7 @@ export default class InstructionEntry extends Component<Sig> {
       @onConfirm={{fn @removeSign @sign}}
     />
     <tr
-      class='au-c-table__row--centered'
+      class='au-c-table__row--centered traffic-measure--sign-table-row'
       {{sortableItem groupName='signs' model=@sign}}
     >
       <td class='w-px au-u-padding-right-small'>
