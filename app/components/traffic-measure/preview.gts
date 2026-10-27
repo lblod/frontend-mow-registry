@@ -13,7 +13,7 @@ type Sig = {
 
 const Preview: TOC<Sig> = <template>
   <div ...attributes>
-    <AuHeading @level='3' @skin='3' class='au-u-margin-bottom'>
+    <AuHeading @level='3' @skin='3' class='au-u-margin-bottom au-u-margin-left-small'>
       {{t 'traffic-measure-concept.attr.preview'}}
     </AuHeading>
     {{#each @signs as |sign|}}
