@@ -45,7 +45,9 @@ export default class AddSignTriggerComponent extends Component<{
 
   <template>
     {{#if (isSelectedPresent @select.selected)}}
-      {{#if (or (notEq @searchFieldPosition 'trigger') (not @select.searchText))}}
+      {{#if
+        (or (notEq @searchFieldPosition 'trigger') (not @select.searchText))
+      }}
         {{#if @selectedItemComponent}}
           <@selectedItemComponent
             @extra={{@extra}}
@@ -80,6 +82,8 @@ export default class AddSignTriggerComponent extends Component<{
         <span
           class='ember-power-select-clear-btn'
           role='button'
+          {{! linting issue from the powerselect repo}}
+          {{!template-lint-disable no-pointer-down-event-binding }}
           {{on 'mousedown' this.clear}}
           {{on 'touchstart' this.clear}}
         >&times;</span>
@@ -90,8 +94,10 @@ export default class AddSignTriggerComponent extends Component<{
           @select={{@select}}
           @placeholder={{@placeholder}}
           @isMultipleWithSearch={{true}}
-          @inputComponent={{(
-            component PowerSelectInput
+          {{! linting issue from the powerselect repo}}
+          {{!template-lint-disable no-autofocus-attribute}}
+          @inputComponent={{component
+            PowerSelectInput
             select=@select
             ariaActiveDescendant=@ariaActiveDescendant
             ariaLabelledBy=@ariaLabelledBy
@@ -106,8 +112,11 @@ export default class AddSignTriggerComponent extends Component<{
             onInput=@onInput
             searchFieldPosition=@searchFieldPosition
             autofocus=false
-          )}}
-          @displayPlaceholder={{and (not @select.searchText) (not @select.selected)}}
+          }}
+          @displayPlaceholder={{and
+            (not @select.searchText)
+            (not @select.selected)
+          }}
         />
       {{else}}
         <PowerSelectPlaceholder @placeholder={{@placeholder}} />
