@@ -17,7 +17,7 @@ type Sig = {
 };
 
 const SignList: TOC<Sig> = <template>
-  <div class='au-c-table-wrapper au-u-margin-bottom'>
+  <div class='au-c-table-wrapper au-u-margin-bottom traffic-measure--sign-list'>
     {{! template-lint-disable table-groups }}
     <table class='au-c-table'>
       <thead class='au-c-table__header'>

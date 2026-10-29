@@ -406,3 +406,8 @@ table.dataTable tbody th {
 .traffic-measure--sign-table-row {
   height: 6.5rem;
 }
+
+// Hide overflow because of the way firefox calculates heights
+.traffic-measure--sign-list {
+  overflow-y: hidden;
+}
