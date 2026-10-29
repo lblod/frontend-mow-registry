@@ -72,7 +72,7 @@ export default class InstructionEntry extends Component<Sig> {
           @icon='drag'
           @skin='link'
           @hideText={{true}}
-          class='au-c-button--drag au-u-flex au-u-flex--center au-u-flex--vertical-center'
+          class='au-c-button--drag au-u-flex au-u-flex--center'
         >
           {{t 'utility.drag'}}
         </AuButton>
@@ -104,7 +104,6 @@ export default class InstructionEntry extends Component<Sig> {
           @skin='link-secondary'
           @hideText={{true}}
           {{on 'click' (set this 'showDeleteConfirmationModal' true)}}
-          class='au-u-flex au-u-flex--center au-u-flex--vertical-center'
         >
           {{t 'utility.delete'}}
         </AuButton>
