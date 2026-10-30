@@ -26,6 +26,8 @@ interface SignPreviewItemDict {
 export default class Preview extends Component<Sig> {
   signs = trackedFunction(this, async () => {
     const signItems = this.args.signs;
+    const length = this.args.signs.length;
+    if (!length) return;
     await Promise.resolve();
     const signs: SignPreviewItemDict = {};
     for (let signItem of signItems) {
