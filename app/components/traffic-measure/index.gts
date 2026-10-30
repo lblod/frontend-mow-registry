@@ -49,7 +49,7 @@ import type VariablesService from 'mow-registry/services/variables-service';
 import type TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
-import type ToasterService from '@appuniversum/ember-appuniversum/services/toaster';
+import type { ToasterService } from '@appuniversum/ember-appuniversum';
 
 type Sig = {
   Args: {
@@ -174,6 +174,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     }
 
     const hasOrphanSubsigns = await this.hasOrphanSubsigns();
+    console.log(hasOrphanSubsigns);
     if (hasOrphanSubsigns) {
       //show a error message and prevent from saving
       return this.toaster.error(
@@ -222,9 +223,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   });
 
   async hasOrphanSubsigns() {
-    const trafficMeasureConcept = this.args.trafficMeasureConcept;
-    const trafficSignalConceptsListItems =
-      await trafficMeasureConcept.relatedTrafficSignalConceptsOrdered;
+    const trafficSignalConceptsListItems = this.signs;
     const trafficSignalConcepts = await Promise.all(
       trafficSignalConceptsListItems.map((listItem) => listItem.item),
     );
