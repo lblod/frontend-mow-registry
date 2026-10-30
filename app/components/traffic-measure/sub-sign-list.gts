@@ -1,10 +1,10 @@
 import type { TOC } from '@ember/component/template-only';
 import { get } from '@ember/helper';
-import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
+import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 
 type Sig = {
   Args: {
-    subSigns: TrafficSignalConcept[];
+    subSigns: RoadSignConcept[];
   };
 };
 

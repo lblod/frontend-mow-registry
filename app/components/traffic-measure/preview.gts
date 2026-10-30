@@ -16,7 +16,7 @@ type Sig = {
 
 type SignPreviewItem = {
   mainSign: TrafficSignalConcept;
-  subSigns: TrafficSignalConcept[];
+  subSigns: RoadSignConcept[];
   fakeMainSign?: boolean;
 };
 interface SignPreviewItemDict {
@@ -32,7 +32,10 @@ export default class Preview extends Component<Sig> {
       const sign = (await signItem.item) as TrafficSignalConcept;
       if (!sign.id) continue;
       if (!(sign instanceof RoadSignConcept)) {
-        signs[sign.id] = { mainSign: sign, subSigns: [] };
+        signs[sign.id] = {
+          mainSign: sign as unknown as TrafficSignalConcept,
+          subSigns: [],
+        };
       } else {
         const mainSigns = await sign.mainSigns;
         if (mainSigns && mainSigns.length) {
@@ -46,13 +49,16 @@ export default class Preview extends Component<Sig> {
           }
           if (!added) {
             signs[sign.id] = {
-              mainSign: sign,
+              mainSign: sign as unknown as TrafficSignalConcept,
               subSigns: [],
               fakeMainSign: true,
             };
           }
         } else {
-          signs[sign.id] = { mainSign: sign, subSigns: [] };
+          signs[sign.id] = {
+            mainSign: sign as unknown as TrafficSignalConcept,
+            subSigns: [],
+          };
         }
       }
     }

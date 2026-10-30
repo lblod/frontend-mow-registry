@@ -173,8 +173,8 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
       return;
     }
 
-    const hasOrfanSubsigns = await this.hasOrfanSubsigns();
-    if (hasOrfanSubsigns) {
+    const hasOrphanSubsigns = await this.hasOrphanSubsigns();
+    if (hasOrphanSubsigns) {
       //show a error message and prevent from saving
       return this.toaster.error(
         this.intl.t('traffic-measure-concept.error-orfan-subsigns-text'),
@@ -221,7 +221,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     );
   });
 
-  async hasOrfanSubsigns() {
+  async hasOrphanSubsigns() {
     const trafficMeasureConcept = this.args.trafficMeasureConcept;
     const trafficSignalConceptsListItems =
       await trafficMeasureConcept.relatedTrafficSignalConceptsOrdered;
@@ -230,7 +230,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     );
     const roadSigns = trafficSignalConcepts.filter(
       (sign) => sign instanceof RoadSignConcept,
-    ) as RoadSignConcept[];
+    ) as unknown as RoadSignConcept[];
     const mainSignIds = [];
     const subSigns: RoadSignConcept[] = [];
     for (let sign of roadSigns) {
@@ -243,17 +243,17 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     }
     for (let subSign of subSigns) {
       const mainSigns = await subSign.mainSigns;
-      let orfan = true;
+      let orphan = true;
       for (let mainSign of mainSigns) {
         const idFound = mainSignIds.find(
           (mainSignIds) => mainSignIds === mainSign.id,
         );
         if (idFound) {
-          orfan = false;
+          orphan = false;
           break;
         }
       }
-      if (orfan) return true;
+      if (orphan) return true;
     }
     return false;
   }
