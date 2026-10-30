@@ -174,7 +174,6 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     }
 
     const hasOrphanSubsigns = await this.hasOrphanSubsigns();
-    console.log(hasOrphanSubsigns);
     if (hasOrphanSubsigns) {
       //show a error message and prevent from saving
       return this.toaster.error(
@@ -229,7 +228,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     );
     const roadSigns = trafficSignalConcepts.filter(
       (sign) => sign instanceof RoadSignConcept,
-    ) as unknown as RoadSignConcept[];
+    ) as unknown as RoadSignConcept[]; // Convert to unkown first because TS doesn't allow subclasses to redefine concrete types
     const mainSignIds = [];
     const subSigns: RoadSignConcept[] = [];
     for (let sign of roadSigns) {

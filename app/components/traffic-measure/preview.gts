@@ -30,38 +30,44 @@ export default class Preview extends Component<Sig> {
     if (!length) return;
     await Promise.resolve();
     const signs: SignPreviewItemDict = {};
+    const subSigns = [];
     for (let signItem of signItems) {
       const sign = (await signItem.item) as TrafficSignalConcept;
       if (!sign.id) continue;
       if (!(sign instanceof RoadSignConcept)) {
         signs[sign.id] = {
-          mainSign: sign as unknown as TrafficSignalConcept,
+          mainSign: sign as unknown as TrafficSignalConcept, // Convert to unkown first because TS doesn't allow subclasses to redefine concrete types
           subSigns: [],
         };
       } else {
         const mainSigns = await sign.mainSigns;
         if (mainSigns && mainSigns.length) {
-          let added = false;
-          for (let mainSign of mainSigns) {
-            if (mainSign.id && signs[mainSign.id]) {
-              const previewItem = signs[mainSign.id] as SignPreviewItem;
-              previewItem.subSigns.push(sign);
-              added = true;
-            }
-          }
-          if (!added) {
-            signs[sign.id] = {
-              mainSign: sign as unknown as TrafficSignalConcept,
-              subSigns: [],
-              fakeMainSign: true,
-            };
-          }
+          subSigns.push(sign);
         } else {
           signs[sign.id] = {
-            mainSign: sign as unknown as TrafficSignalConcept,
+            mainSign: sign as unknown as TrafficSignalConcept, // Convert to unkown first because TS doesn't allow subclasses to redefine concrete types
             subSigns: [],
           };
         }
+      }
+    }
+    for (let subSign of subSigns) {
+      if (!subSign.id) continue;
+      const mainSigns = await subSign.mainSigns;
+      let added = false;
+      for (let mainSign of mainSigns) {
+        if (mainSign.id && signs[mainSign.id]) {
+          const previewItem = signs[mainSign.id] as SignPreviewItem;
+          previewItem.subSigns.push(subSign);
+          added = true;
+        }
+      }
+      if (!added) {
+        signs[subSign.id] = {
+          mainSign: subSign as unknown as TrafficSignalConcept, // Convert to unkown first because TS doesn't allow subclasses to redefine concrete types
+          subSigns: [],
+          fakeMainSign: true,
+        };
       }
     }
     return Object.values(signs);
