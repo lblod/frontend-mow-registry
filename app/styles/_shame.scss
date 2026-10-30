@@ -90,7 +90,7 @@
     height: 100%;
     overflow: hidden;
 
-    > .au-o-grid__item {
+    >.au-o-grid__item {
       height: 100%;
     }
   }
@@ -98,7 +98,7 @@
 
 .au-c-table__row--centered {
   td {
-    vertical-align: center;
+    vertical-align: middle;
   }
 }
 
@@ -110,6 +110,7 @@
 
 // Drag button
 .au-c-button--drag {
+  width: 100%;
   cursor: grab;
   padding: $au-unit-small + 0.4rem 0;
 
@@ -141,7 +142,7 @@
     flex: none;
   }
 
-  > * + * {
+  >*+* {
     margin-left: $au-unit-tiny;
   }
 }
@@ -182,6 +183,7 @@
 
 // Override small data table when used in cards
 .au-c-data-table__table--small {
+
   .au-c-card & th:first-child,
   .au-c-card & td:first-child {
     padding-left: $au-unit-tiny;
@@ -278,6 +280,7 @@ table.dataTable tbody th {
 
 // Fix app with environment banner @TODO: rework app component
 .au-c-app--environment {
+
   // Fix main container height
   .au-c-main-container {
     height: calc(100vh - 92px);
@@ -312,7 +315,7 @@ table.dataTable tbody th {
   .shapes-buttons {
     position: absolute;
     right: 10px;
-    top:10px;
+    top: 10px;
   }
 
   .shape-datapoint {
@@ -334,12 +337,12 @@ table.dataTable tbody th {
   max-height: 300px;
   overflow: auto;
 }
+
 .edit-variable-form--variable-modal {
   min-height: 300px;
 }
 
-@media screen  and ( min-height: 1024px )
-{
+@media screen and (min-height: 1024px) {
   .edit-variable-form--codelist-modal {
     min-height: 770px;
   }
@@ -352,5 +355,54 @@ table.dataTable tbody th {
 
 .codelist-form--table-body {
   max-height: 300px;
-  overflow:auto
+  overflow: auto
+}
+
+
+.traffic-measure--properties-box {
+  background-color: #F4F7FB;
+  border-radius: 6px;
+}
+
+
+
+// Appuniversum puts ...attributes on the inner `duet-date-picker` element, so we have to target the parent of that element
+.appuniversum-datepicker-full-width {
+  display: block;
+  width: 100%;
+}
+
+.au-c-datepicker:has(> .appuniversum-datepicker-full-width) {
+  width: 100%;
+}
+
+.stripped-table tr:nth-child(odd) {
+  background-color: #F4F7FB;
+}
+
+.au-u-underline {
+  text-decoration: underline;
+}
+
+.traffic-measure-preview--main-sign-container {
+  background-color: #F4F7FB;
+  border: 1px solid #CFD5DD;
+}
+
+.traffic-measure-preview--sign-image {
+  max-width: 3.6rem;
+  max-height: 3.6rem;
+}
+
+.traffic-measure--sign-table-row {
+  height: 6.5rem;
+}
+
+// Hide overflow because of the way firefox calculates heights
+.traffic-measure--sign-list {
+  overflow-y: hidden;
+}
+
+.traffic-measure-preview--main-sign-container-warning {
+  background-color: var(--au-orange-400);
 }

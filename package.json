@@ -34,7 +34,7 @@
     "tracked-toolbox": "^2.2.0"
   },
   "devDependencies": {
-    "@appuniversum/ember-appuniversum": "^3.6.0",
+    "@appuniversum/ember-appuniversum": "^3.19.0",
     "@babel/core": "^7.24.4",
     "@babel/eslint-parser": "catalog:",
     "@babel/preset-env": "catalog:",

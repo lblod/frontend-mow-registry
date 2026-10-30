@@ -259,6 +259,12 @@ traffic-measure-concept:
   name: Traffic measures
   details: Measure {label}
   help: Add $'{variableName} to add a variable/instruction
+  main-sign: Main sign
+  fake-main-sign-warning:
+    This is a subsign with no main sign to be attached, please add a
+    main sign which contains this subsign or delete it
+  error-orfan-subsigns-title: Orfan sub-signs
+  error-orfan-subsigns-text: There are sub-signs that don't have a main sign to be attached, remove them or add a new main sign for them
   attr:
     name: Name
     variable-signage: Variable signage
@@ -271,6 +277,9 @@ traffic-measure-concept:
     variables: Variables
     type: Type
     preview: Preview
+    select-type: Sign type
+    select-validation-status: Validation
+    search-by-text: Search by text
   crud:
     new: New traffic measure
     no-data: No traffic measures
