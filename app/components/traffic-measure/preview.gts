@@ -17,6 +17,7 @@ type Sig = {
 type SignPreviewItem = {
   mainSign: TrafficSignalConcept;
   subSigns: TrafficSignalConcept[];
+  fakeMainSign?: boolean;
 };
 interface SignPreviewItemDict {
   [key: string]: SignPreviewItem;
@@ -29,6 +30,7 @@ export default class Preview extends Component<Sig> {
     const signs: SignPreviewItemDict = {};
     for (let signItem of signItems) {
       const sign = (await signItem.item) as TrafficSignalConcept;
+      if (!sign.id) continue;
       if (!(sign instanceof RoadSignConcept)) {
         signs[sign.id] = { mainSign: sign, subSigns: [] };
       } else {
@@ -36,7 +38,7 @@ export default class Preview extends Component<Sig> {
         if (mainSigns && mainSigns.length) {
           let added = false;
           for (let mainSign of mainSigns) {
-            if (signs[mainSign.id]) {
+            if (mainSign.id && signs[mainSign.id]) {
               const previewItem = signs[mainSign.id] as SignPreviewItem;
               previewItem.subSigns.push(sign);
               added = true;

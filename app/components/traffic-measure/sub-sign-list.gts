@@ -1,11 +1,10 @@
 import type { TOC } from '@ember/component/template-only';
 import { get } from '@ember/helper';
 import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
-import type { PromiseBelongsTo } from '@warp-drive/legacy/model/-private/promise-belongs-to';
 
 type Sig = {
   Args: {
-    mainSign: PromiseBelongsTo<TrafficSignalConcept> | TrafficSignalConcept;
+    subSigns: TrafficSignalConcept[];
   };
 };
 
