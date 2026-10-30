@@ -9,6 +9,9 @@ export default class TrafficLightConcept extends TrafficSignalConcept {
   //@ts-expect-error TS doesn't allow subclasses to redefine concrete types. We should try to remove the inheritance chain.
   declare [Type]: 'traffic-light-concept';
 
+  get signalType(): 'traffic-light' {
+    return 'traffic-light';
+  }
   @hasMany<TrafficLightConcept>('traffic-light-concept', {
     inverse: 'relatedFromTrafficLightConcepts',
     async: true,

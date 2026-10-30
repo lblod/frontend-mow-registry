@@ -260,6 +260,8 @@ traffic-measure-concept:
   details: Measure {label}
   help: Add $'{variableName} to add a variable/instruction
   main-sign: Main sign
+  road-marking: Road marking
+  traffic-light: Traffic light
   fake-main-sign-warning:
     This is a subsign with no main sign to be attached, please add a
     main sign which contains this subsign or delete it
