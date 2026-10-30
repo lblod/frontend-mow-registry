@@ -48,6 +48,8 @@ import TrafficMeasurePreview from 'mow-registry/components/traffic-measure/previ
 import type VariablesService from 'mow-registry/services/variables-service';
 import type TrafficSignalListItem from 'mow-registry/models/traffic-signal-list-item';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
+import RoadSignConcept from 'mow-registry/models/road-sign-concept';
+import type ToasterService from '@appuniversum/ember-appuniversum/services/toaster';
 
 type Sig = {
   Args: {
@@ -64,9 +66,10 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
   @service declare intl: IntlService;
   @service('codelists') declare codeListService: CodelistsService;
   @service declare variablesService: VariablesService;
+  @service declare toaster: ToasterService;
 
   @tracked codeLists: CodeList[] = [];
-  @tracked signs: TrafficSignalListItem[] = [];
+  @tracked signs: TrafficSignalListItem[] = new TrackedArray([]);
   @tracked searchString?: string;
   @tracked selectedType: SignalType = trafficSignalType;
   @tracked signsError = false;
@@ -123,10 +126,7 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
 
     this.signs = new TrackedArray(relatedTrafficSignals);
     this.signs.sort((a, b) => (a.position ?? -1) - (b.position ?? -1));
-
   });
-
-
 
   @action
   addSign(sign: TrafficSignalListItem) {
@@ -168,8 +168,21 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
 
     // Validate measure fields
     const isValid = await this.args.trafficMeasureConcept.validate();
+
     if (!isValid) {
       return;
+    }
+
+    const hasOrfanSubsigns = await this.hasOrfanSubsigns();
+    if (hasOrfanSubsigns) {
+      //show a error message and prevent from saving
+      return this.toaster.error(
+        this.intl.t('traffic-measure-concept.error-orfan-subsigns-text'),
+        this.intl.t('traffic-measure-concept.error-orfan-subsigns-title'),
+        {
+          closable: true,
+        },
+      );
     }
 
     // If there’s an error with the signs, return early to prevent the save from occurring
@@ -197,9 +210,9 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     await this.store.request(saveRecord(this.args.trafficMeasureConcept));
 
     //3- generate template to conform old shape
-    const dummyTemplateValue = `Templates worden niet meer gegenereerd door het MOW register`
-    template.value = dummyTemplateValue
-    template.preview = dummyTemplateValue
+    const dummyTemplateValue = `Templates worden niet meer gegenereerd door het MOW register`;
+    template.value = dummyTemplateValue;
+    template.preview = dummyTemplateValue;
     await this.store.request(saveRecord(template));
 
     this.router.transitionTo(
@@ -207,6 +220,43 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
       this.args.trafficMeasureConcept.id,
     );
   });
+
+  async hasOrfanSubsigns() {
+    const trafficMeasureConcept = this.args.trafficMeasureConcept;
+    const trafficSignalConceptsListItems =
+      await trafficMeasureConcept.relatedTrafficSignalConceptsOrdered;
+    const trafficSignalConcepts = await Promise.all(
+      trafficSignalConceptsListItems.map((listItem) => listItem.item),
+    );
+    const roadSigns = trafficSignalConcepts.filter(
+      (sign) => sign instanceof RoadSignConcept,
+    ) as RoadSignConcept[];
+    const mainSignIds = [];
+    const subSigns: RoadSignConcept[] = [];
+    for (let sign of roadSigns) {
+      const mainSigns = await sign.mainSigns;
+      if (mainSigns && mainSigns.length) {
+        subSigns.push(sign);
+      } else {
+        mainSignIds.push(sign.id);
+      }
+    }
+    for (let subSign of subSigns) {
+      const mainSigns = await subSign.mainSigns;
+      let orfan = true;
+      for (let mainSign of mainSigns) {
+        const idFound = mainSignIds.find(
+          (mainSignIds) => mainSignIds === mainSign.id,
+        );
+        if (idFound) {
+          orfan = false;
+          break;
+        }
+      }
+      if (orfan) return true;
+    }
+    return false;
+  }
 
   saveRoadsigns = task(async (trafficMeasureConcept: TrafficMeasureConcept) => {
     // delete existing ones

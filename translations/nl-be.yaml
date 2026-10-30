@@ -260,6 +260,11 @@ traffic-measure-concept:
   details: Maatregel {label}
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   main-sign: Hoofdbord
+  fake-main-sign-warning:
+    Dit is een subbord zonder hoofdbord waaraan het moet worden bevestigd. Voeg alstublieft een
+    hoofdbord toe waarin dit subbord is opgenomen, of verwijder het
+  error-orfan-subsigns-title: Orfan-subhoofdborden
+  error-orfan-subsigns-text: Er zijn subborden die geen hoofdbord hebben waaraan ze kunnen worden bevestigd; verwijder deze of voeg een nieuw hoofdbord voor deze borden toe
   attr:
     name: Naam
     variable-signage: Variabele signalisatie
