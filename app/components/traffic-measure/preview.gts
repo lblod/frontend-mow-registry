@@ -122,7 +122,11 @@ export default class Preview extends Component<Sig> {
               alt=''
               class='traffic-measure-preview--sign-image au-u-margin-right-small'
             />
-            {{signalLabel sign.mainSign this.intl}}
+            {{#if sign.fakeMainSign}}
+              {{t 'traffic-measure-concept.sub-sign'}}
+            {{else}}
+              {{signalLabel sign.mainSign this.intl}}
+            {{/if}}
             {{get sign.mainSign 'label'}}
           </AuHeading>
           {{#if sign.fakeMainSign}}

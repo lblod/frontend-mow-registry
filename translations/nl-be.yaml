@@ -260,6 +260,7 @@ traffic-measure-concept:
   details: Maatregel {label}
   help: Voeg in $'{variableName} toe om een variabele/instructie toe te voegen
   main-sign: Hoofdbord
+  sub-sign: Onderbord
   road-marking: Wegmarkering
   traffic-light: Verkeerslicht
   fake-main-sign-warning:
