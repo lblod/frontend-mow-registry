@@ -35,6 +35,13 @@ function signalLabel(signal: TrafficSignalConcept, intl: IntlService) {
       return intl.t('traffic-measure-concept.traffic-light');
   }
 }
+async function isSubSign(signal: unknown) {
+  if (signal instanceof RoadSignConcept && signal.signalType === 'road-sign') {
+    const classifications = await (signal as unknown as RoadSignConcept)
+      .classifications;
+    return classifications.some((category) => category.label === 'Onderbord');
+  }
+}
 export default class Preview extends Component<Sig> {
   @service declare intl: IntlService;
   signs = trackedFunction(this, async () => {
@@ -53,8 +60,7 @@ export default class Preview extends Component<Sig> {
           subSigns: [],
         };
       } else {
-        const mainSigns = await sign.mainSigns;
-        if (mainSigns && mainSigns.length) {
+        if (await isSubSign(sign)) {
           subSigns.push(sign);
         } else {
           signs[sign.id] = {
