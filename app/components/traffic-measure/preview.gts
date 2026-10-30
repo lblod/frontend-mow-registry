@@ -14,11 +14,19 @@ type Sig = {
   };
 };
 
+type SignPreviewItem = {
+  mainSign: TrafficSignalConcept;
+  subSigns: TrafficSignalConcept[];
+};
+interface SignPreviewItemDict {
+  [key: string]: SignPreviewItem;
+}
+
 export default class Preview extends Component<Sig> {
   signs = trackedFunction(this, async () => {
     const signItems = this.args.signs;
     await Promise.resolve();
-    const signs = {};
+    const signs: SignPreviewItemDict = {};
     for (let signItem of signItems) {
       const sign = (await signItem.item) as TrafficSignalConcept;
       if (!(sign instanceof RoadSignConcept)) {
@@ -29,7 +37,8 @@ export default class Preview extends Component<Sig> {
           let added = false;
           for (let mainSign of mainSigns) {
             if (signs[mainSign.id]) {
-              signs[mainSign.id].subSigns.push(sign);
+              const previewItem = signs[mainSign.id] as SignPreviewItem;
+              previewItem.subSigns.push(sign);
               added = true;
             }
           }
