@@ -7,6 +7,8 @@ import TrafficMeasureSubSignList from 'mow-registry/components/traffic-measure/s
 import { trackedFunction } from 'reactiveweb/function';
 import RoadSignConcept from 'mow-registry/models/road-sign-concept';
 import TrafficSignalConcept from 'mow-registry/models/traffic-signal-concept';
+import type IntlService from 'ember-intl/services/intl';
+import { service } from '@ember/service';
 
 type Sig = {
   Args: {
@@ -23,7 +25,25 @@ interface SignPreviewItemDict {
   [key: string]: SignPreviewItem;
 }
 
+function signalLabel(signal: TrafficSignalConcept, intl: IntlService) {
+  switch (signal.signalType) {
+    case 'road-sign':
+      return intl.t('traffic-measure-concept.main-sign');
+    case 'road-marking':
+      return intl.t('traffic-measure-concept.road-marking');
+    case 'traffic-light':
+      return intl.t('traffic-measure-concept.traffic-light');
+  }
+}
+async function isSubSign(signal: unknown) {
+  if (signal instanceof RoadSignConcept && signal.signalType === 'road-sign') {
+    const classifications = await (signal as unknown as RoadSignConcept)
+      .classifications;
+    return classifications.some((category) => category.label === 'Onderbord');
+  }
+}
 export default class Preview extends Component<Sig> {
+  @service declare intl: IntlService;
   signs = trackedFunction(this, async () => {
     const signItems = this.args.signs;
     const length = this.args.signs.length;
@@ -40,8 +60,7 @@ export default class Preview extends Component<Sig> {
           subSigns: [],
         };
       } else {
-        const mainSigns = await sign.mainSigns;
-        if (mainSigns && mainSigns.length) {
+        if (await isSubSign(sign)) {
           subSigns.push(sign);
         } else {
           signs[sign.id] = {
@@ -103,7 +122,11 @@ export default class Preview extends Component<Sig> {
               alt=''
               class='traffic-measure-preview--sign-image au-u-margin-right-small'
             />
-            {{t 'traffic-measure-concept.main-sign'}}
+            {{#if sign.fakeMainSign}}
+              {{t 'traffic-measure-concept.sub-sign'}}
+            {{else}}
+              {{signalLabel sign.mainSign this.intl}}
+            {{/if}}
             {{get sign.mainSign 'label'}}
           </AuHeading>
           {{#if sign.fakeMainSign}}

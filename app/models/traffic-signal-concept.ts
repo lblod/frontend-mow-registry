@@ -105,6 +105,12 @@ export default class TrafficSignalConcept extends AbstractValidationModel {
     });
   }
 
+  get signalType(): 'road-sign' | 'road-marking' | 'traffic-light' {
+    throw new Error(
+      'Must be overridden, it is unexpected to find an instance of the superclass',
+    );
+  }
+
   async destroyWithRelations() {
     // This doesn't delete the status or hasTrafficMeasureConcepts relations as it wasn't clear what
     // the expectation would be for these since they don't appear to be used
