@@ -45,10 +45,10 @@ export default class Preview extends Component<Sig> {
     await Promise.resolve();
     const signsMap: Map<string, SignPreviewItem> = new Map()
     const subSigns: RoadSignConcept[] = [];
-    for(const signItem of signItems) {
+    for (const signItem of signItems) {
       const sign = (await signItem.item) as TrafficSignalConcept;
-      if(!sign.id) continue;
-      if(sign instanceof RoadSignConcept && (await isSubSign(sign))) {
+      if (!sign.id) continue;
+      if (sign instanceof RoadSignConcept && (await isSubSign(sign))) {
          subSigns.push(sign);
       } else {
         signsMap.set(sign.id, {
@@ -58,18 +58,18 @@ export default class Preview extends Component<Sig> {
       }
     }
     const orphanSigns: RoadSignConcept[] = [];
-    for(const subSign of subSigns) {
+    for (const subSign of subSigns) {
       const mainSigns = await subSign.mainSigns;
       let added = false;
-      for(const mainSign of mainSigns) {
-        if(!mainSign.id) continue;
+      for (const mainSign of mainSigns) {
+        if (!mainSign.id) continue;
         const previewItem = signsMap.get(mainSign.id);
         if (previewItem) {
           previewItem.subSigns.push(subSign);
           added = true;
         }
       }
-      if(!added) {
+      if (!added) {
         orphanSigns.push(subSign)
       }
     }
