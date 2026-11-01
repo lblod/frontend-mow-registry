@@ -19,7 +19,6 @@ type Sig = {
 type SignPreviewItem = {
   mainSign: TrafficSignalConcept;
   subSigns: RoadSignConcept[];
-  fakeMainSign?: boolean;
 };
 interface SignPreviewItemDict {
   [key: string]: SignPreviewItem;
@@ -70,6 +69,7 @@ export default class Preview extends Component<Sig> {
         }
       }
     }
+    const orphanSigns = [];
     for (let subSign of subSigns) {
       if (!subSign.id) continue;
       const mainSigns = await subSign.mainSigns;
@@ -82,14 +82,10 @@ export default class Preview extends Component<Sig> {
         }
       }
       if (!added) {
-        signs[subSign.id] = {
-          mainSign: subSign as unknown as TrafficSignalConcept, // Convert to unkown first because TS doesn't allow subclasses to redefine concrete types
-          subSigns: [],
-          fakeMainSign: true,
-        };
+        orphanSigns.push(subSign)
       }
     }
-    return Object.values(signs);
+    return { signs: Object.values(signs), orphanSigns }
   });
 
   <template>
@@ -101,42 +97,56 @@ export default class Preview extends Component<Sig> {
       >
         {{t 'traffic-measure-concept.attr.preview'}}
       </AuHeading>
-      {{#each this.signs.value as |sign|}}
-        <div
-          class='traffic-measure-preview--main-sign-container au-u-margin-small au-u-padding-small
-            {{if
-              sign.fakeMainSign
-              "traffic-measure-preview--main-sign-container-warning"
-            }}'
-        >
-          <AuHeading
-            @level='6'
-            @skin='6'
-            class='au-u-flex au-u-flex--vertical-center'
+      {{#if this.signs.value}}
+        {{#each this.signs.value.signs as |sign|}}
+          <div
+            class='traffic-measure-preview--main-sign-container au-u-margin-small au-u-padding-small'
           >
-            <img
-              src={{get
-                (get (get sign.mainSign 'image') 'file')
-                'downloadLink'
-              }}
-              alt=''
-              class='traffic-measure-preview--sign-image au-u-margin-right-small'
-            />
-            {{#if sign.fakeMainSign}}
-              {{t 'traffic-measure-concept.sub-sign'}}
-            {{else}}
+            <AuHeading
+              @level='6'
+              @skin='6'
+              class='au-u-flex au-u-flex--vertical-center'
+            >
+              <img
+                src={{get
+                  (get (get sign.mainSign 'image') 'file')
+                  'downloadLink'
+                }}
+                alt=''
+                class='traffic-measure-preview--sign-image au-u-margin-right-small'
+              />
               {{signalLabel sign.mainSign this.intl}}
+              {{get sign.mainSign 'label'}}
+            </AuHeading>
+            {{#if sign.subSigns.length}}
+              <TrafficMeasureSubSignList @subSigns={{sign.subSigns}} />
             {{/if}}
-            {{get sign.mainSign 'label'}}
-          </AuHeading>
-          {{#if sign.fakeMainSign}}
+          </div>
+        {{/each}}
+        {{#each this.signs.value.orphanSigns as |orphanSign|}}
+          <div
+            class='traffic-measure-preview--main-sign-container au-u-margin-small au-u-padding-small traffic-measure-preview--main-sign-container-warning'
+          >
+          <AuHeading
+              @level='6'
+              @skin='6'
+              class='au-u-flex au-u-flex--vertical-center'
+            >
+              <img
+                src={{get
+                  (get (get orphanSign 'image') 'file')
+                  'downloadLink'
+                }}
+                alt=''
+                class='traffic-measure-preview--sign-image au-u-margin-right-small'
+              />
+                {{t 'traffic-measure-concept.sub-sign'}}
+                {{get orphanSign 'label'}}
+            </AuHeading>
             <p>{{t 'traffic-measure-concept.fake-main-sign-warning'}}</p>
-          {{/if}}
-          {{#if sign.subSigns.length}}
-            <TrafficMeasureSubSignList @subSigns={{sign.subSigns}} />
-          {{/if}}
-        </div>
-      {{/each}}
+          </div>
+        {{/each}}
+      {{/if}}
     </div>
   </template>
 }
