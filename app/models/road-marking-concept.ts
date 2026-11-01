@@ -41,6 +41,9 @@ export default class RoadMarkingConcept extends TrafficSignalConcept {
   })
   declare relatedTrafficLightConcepts: AsyncHasMany<TrafficLightConcept>;
 
+  get signalType(): 'road-marking' {
+    return 'road-marking';
+  }
   get validationSchema() {
     return super.validationSchema.keys({
       shapes: validateHasManyOptional(),

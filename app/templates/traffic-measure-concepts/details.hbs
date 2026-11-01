@@ -89,9 +89,5 @@
       {{/if}}
     </p>
   </div>
-  <TrafficMeasure::Preview @signs={{@model.signs}}>
-    <:template>
-      <TrafficMeasureTemplate @concept={{@model.trafficMeasureConcept}} />
-    </:template>
-  </TrafficMeasure::Preview>
+  <TrafficMeasure::Preview @signs={{@model.signs}} class='au-u-max-width-small' />
 </AuBodyContainer>

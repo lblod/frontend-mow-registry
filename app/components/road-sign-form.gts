@@ -33,7 +33,6 @@ import { fn, get } from '@ember/helper';
 import perform from 'ember-concurrency/helpers/perform';
 import { or } from 'ember-truth-helpers';
 import { LinkTo } from '@ember/routing';
-import { load } from 'ember-async-data';
 import { isSome } from 'mow-registry/utils/option';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { Await } from '@warp-drive/ember';
@@ -475,16 +474,12 @@ export default class RoadSignFormComponent extends ImageUploadHandlerComponent<A
                 >
                   {{t 'utility.zonality'}}&nbsp;
                 </AuLabel>
-                {{#let (load @roadSignConcept.zonality) as |zonality|}}
-                  {{#if zonality.isResolved}}
-                    <ZonalitySelector
-                      @zonality={{zonality.value}}
-                      @onChange={{this.updateZonality}}
-                      {{! @glint-expect-error not sure why this doesnt accept subtypes }}
-                      @model={{@roadSignConcept}}
-                    />
-                  {{/if}}
-                {{/let}}
+                <ZonalitySelector
+                  @zonality={{@roadSignConcept.zonality}}
+                  @onChange={{this.updateZonality}}
+                  {{! @glint-expect-error not sure why this doesnt accept subtypes }}
+                  @model={{@roadSignConcept}}
+                />
               </AuFormRow>
             {{/let}}
           </form>

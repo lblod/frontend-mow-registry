@@ -64,7 +64,7 @@ export default class InstructionEntry extends Component<Sig> {
       @onConfirm={{fn @removeSign @sign}}
     />
     <tr
-      class='au-c-table__row--centered'
+      class='au-c-table__row--centered traffic-measure--sign-table-row'
       {{sortableItem groupName='signs' model=@sign}}
     >
       <td class='w-px au-u-padding-right-small'>
@@ -72,7 +72,7 @@ export default class InstructionEntry extends Component<Sig> {
           @icon='drag'
           @skin='link'
           @hideText={{true}}
-          class='au-c-button--drag'
+          class='au-c-button--drag au-u-flex au-u-flex--center'
         >
           {{t 'utility.drag'}}
         </AuButton>
@@ -97,11 +97,11 @@ export default class InstructionEntry extends Component<Sig> {
           </span>
         </div>
       </td>
-      <td class='w-px au-u-padding-right-small'>
+      <td class='w-px au-u-padding-right-small '>
         <AuButton
           @icon='bin'
           @alert={{true}}
-          @skin='secondary'
+          @skin='link-secondary'
           @hideText={{true}}
           {{on 'click' (set this 'showDeleteConfirmationModal' true)}}
         >

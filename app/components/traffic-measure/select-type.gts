@@ -2,7 +2,6 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import IntlService from 'ember-intl/services/intl';
 import PowerSelect from 'ember-power-select/components/power-select';
-import t from 'ember-intl/helpers/t';
 
 export type SignalType = {
   label?: string;
@@ -63,7 +62,6 @@ export default class TrafficMeasureSelectTypeComponent extends Component<Sig> {
     <PowerSelect
       @options={{this.types}}
       @selected={{this.selectedType}}
-      @placeholder={{t 'traffic-measure-concept.crud.type-filter'}}
       @onChange={{@updateTypeFilter}}
       @triggerClass='measure-classification-select'
       as |type|
