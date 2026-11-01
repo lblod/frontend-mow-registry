@@ -31,14 +31,11 @@ function signalLabel(signal: TrafficSignalConcept, intl: IntlService) {
       return intl.t('traffic-measure-concept.traffic-light');
   }
 }
-async function isSubSign(signal: unknown) {
-  if (signal instanceof RoadSignConcept && signal.signalType === 'road-sign') {
-    const classifications = await signal.classifications;
-    return classifications.some((category) => category.label === 'Onderbord');
-  } else {
-    return false;
-  }
+async function isSubSign(signal: RoadSignConcept) {
+  const classifications = await signal.classifications;
+  return classifications.some((category) => category.label === 'Onderbord');
 }
+
 export default class Preview extends Component<Sig> {
   @service declare intl: IntlService;
   signs = trackedFunction(this, async () => {
@@ -50,7 +47,7 @@ export default class Preview extends Component<Sig> {
     const subSigns: RoadSignConcept[] = [];
     for(const signItem of signItems) {
       const sign = (await signItem.item) as TrafficSignalConcept;
-      if (!sign.id) continue;
+      if(!sign.id) continue;
       if(sign instanceof RoadSignConcept && (await isSubSign(sign))) {
          subSigns.push(sign);
       } else {
@@ -61,18 +58,18 @@ export default class Preview extends Component<Sig> {
       }
     }
     const orphanSigns: RoadSignConcept[] = [];
-    for (const subSign of subSigns) {
+    for(const subSign of subSigns) {
       const mainSigns = await subSign.mainSigns;
       let added = false;
       for(const mainSign of mainSigns) {
-        if (!mainSign.id) continue;
+        if(!mainSign.id) continue;
         const previewItem = signsMap.get(mainSign.id);
         if (previewItem) {
           previewItem.subSigns.push(subSign);
           added = true;
         }
       }
-      if (!added) {
+      if(!added) {
         orphanSigns.push(subSign)
       }
     }
