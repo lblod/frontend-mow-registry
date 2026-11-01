@@ -20,9 +20,6 @@ type SignPreviewItem = {
   mainSign: TrafficSignalConcept;
   subSigns: RoadSignConcept[];
 };
-interface SignPreviewItemDict {
-  [key: string]: SignPreviewItem;
-}
 
 function signalLabel(signal: TrafficSignalConcept, intl: IntlService) {
   switch (signal.signalType) {
@@ -36,47 +33,41 @@ function signalLabel(signal: TrafficSignalConcept, intl: IntlService) {
 }
 async function isSubSign(signal: unknown) {
   if (signal instanceof RoadSignConcept && signal.signalType === 'road-sign') {
-    const classifications = await (signal as unknown as RoadSignConcept)
-      .classifications;
+    const classifications = await signal.classifications;
     return classifications.some((category) => category.label === 'Onderbord');
+  } else {
+    return false;
   }
 }
 export default class Preview extends Component<Sig> {
   @service declare intl: IntlService;
   signs = trackedFunction(this, async () => {
     const signItems = this.args.signs;
-    const length = this.args.signs.length;
-    if (!length) return;
+    if (!signItems.length) return { signs: [], orphanSigns: [] };
+    // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
-    const signs: SignPreviewItemDict = {};
-    const subSigns = [];
-    for (let signItem of signItems) {
+    const signsMap: Map<string, SignPreviewItem> = new Map()
+    const subSigns: RoadSignConcept[] = [];
+    for(const signItem of signItems) {
       const sign = (await signItem.item) as TrafficSignalConcept;
       if (!sign.id) continue;
-      if (!(sign instanceof RoadSignConcept)) {
-        signs[sign.id] = {
+      if(sign instanceof RoadSignConcept && (await isSubSign(sign))) {
+         subSigns.push(sign);
+      } else {
+        signsMap.set(sign.id, {
           mainSign: sign as unknown as TrafficSignalConcept, // Convert to unkown first because TS doesn't allow subclasses to redefine concrete types
           subSigns: [],
-        };
-      } else {
-        if (await isSubSign(sign)) {
-          subSigns.push(sign);
-        } else {
-          signs[sign.id] = {
-            mainSign: sign as unknown as TrafficSignalConcept, // Convert to unkown first because TS doesn't allow subclasses to redefine concrete types
-            subSigns: [],
-          };
-        }
+        })
       }
     }
-    const orphanSigns = [];
-    for (let subSign of subSigns) {
-      if (!subSign.id) continue;
+    const orphanSigns: RoadSignConcept[] = [];
+    for (const subSign of subSigns) {
       const mainSigns = await subSign.mainSigns;
       let added = false;
-      for (let mainSign of mainSigns) {
-        if (mainSign.id && signs[mainSign.id]) {
-          const previewItem = signs[mainSign.id] as SignPreviewItem;
+      for(const mainSign of mainSigns) {
+        if (!mainSign.id) continue;
+        const previewItem = signsMap.get(mainSign.id);
+        if (previewItem) {
           previewItem.subSigns.push(subSign);
           added = true;
         }
@@ -85,7 +76,7 @@ export default class Preview extends Component<Sig> {
         orphanSigns.push(subSign)
       }
     }
-    return { signs: Object.values(signs), orphanSigns }
+    return { signs: [...signsMap.values()], orphanSigns }
   });
 
   <template>
