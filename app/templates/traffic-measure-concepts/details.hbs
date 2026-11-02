@@ -1,93 +1,113 @@
-{{! @glint-nocheck: not typesafe yet }}
-{{page-title
-  (t "traffic-measure-concept.details" label=@model.trafficMeasureConcept.label)
-}}
+{{! @glint-nocheck: not typesafe yet }} 
+{{page-title (t "traffic-measure-concept.details" label=@model.trafficMeasureConcept.label) }}
 
 <BreadcrumbsItem as |linkClass|>
-  <LinkTo
-    @route="traffic-measure-concepts.details"
-    @model={{@model.id}}
-    class={{linkClass}}
-  >
-    {{t
-      "traffic-measure-concept.details"
-      label=@model.trafficMeasureConcept.label
-    }}
-  </LinkTo>
+    <LinkTo @route="traffic-measure-concepts.details" @model={{@model.id}} class={{linkClass}}>
+        {{t "traffic-measure-concept.details" label=@model.trafficMeasureConcept.label }}
+    </LinkTo>
 </BreadcrumbsItem>
 
 <AuToolbar @border="bottom" @size="large" as |Group|>
-  <Group class="au-u-flex--vertical-center">
-    <AuHeading @skin="2">
-      {{t
-        "traffic-measure-concept.details"
-        label=@model.trafficMeasureConcept.label
-      }}
-    </AuHeading>
-    <ValidationStatus @valid={{@model.trafficMeasureConcept.valid}} />
-  </Group>
-  <Group>
-    <AuButtonGroup>
-      <AuLink
-        @icon="pencil"
-        @route="traffic-measure-concepts.edit"
-        @model={{@model.trafficMeasureConcept.id}}
-        @skin="button-secondary"
-      >
-        {{t "traffic-measure-concept.crud.edit-button-text"}}
-      </AuLink>
-      <AuButton
-        @icon="trash"
-        @skin="secondary"
-        @alert={{true}}
-        @loading={{this.delete.isRunning}}
-        @loadingMessage={{t "utility.delete"}}
-        {{on "click" (set this "showDeleteConfirmationModal" true)}}
-      >
-        {{t "traffic-measure-concept.crud.delete"}}
-      </AuButton>
-    </AuButtonGroup>
-  </Group>
+    <Group class="au-u-flex--vertical-center">
+        <AuHeading @skin="2">
+            {{t "traffic-measure-concept.details" label=@model.trafficMeasureConcept.label }}
+        </AuHeading>
+        <ValidationStatus @valid={{@model.trafficMeasureConcept.valid}} />
+    </Group>
+    <Group>
+        <AuButtonGroup>
+            <AuLink @icon="pencil" @route="traffic-measure-concepts.edit" @model={{@model.trafficMeasureConcept.id}} @skin="button-secondary">
+                {{t "traffic-measure-concept.crud.edit-button-text"}}
+            </AuLink>
+            <AuButton 
+              @icon="trash"
+              @skin="secondary"
+              @alert={{true}} 
+              @loading={{this.delete.isRunning}} 
+              @loadingMessage={{t "utility.delete"}} 
+              {{on "click" (set this "showDeleteConfirmationModal" true)}}
+            >
+                {{t "traffic-measure-concept.crud.delete"}}
+            </AuButton>
+        </AuButtonGroup>
+    </Group>
 </AuToolbar>
-<ConfirmationModal
-  @modalOpen={{this.showDeleteConfirmationModal}}
-  @onCancel={{set this "showDeleteConfirmationModal" false}}
-  @onConfirm={{perform this.delete}}
-  @isLoading={{this.delete.isRunning}}
-  @confirmButtonText={{t "traffic-measure-concept.crud.delete"}}
+<ConfirmationModal 
+  @modalOpen={{this.showDeleteConfirmationModal}} 
+  @onCancel={{set this "showDeleteConfirmationModal" false}} 
+  @onConfirm={{perform this.delete}} 
+  @isLoading={{this.delete.isRunning}} 
+  @confirmButtonText={{t "traffic-measure-concept.crud.delete"}} 
   @isAlert={{true}}
 >
-  <:title>
-    {{t "traffic-measure-concept.crud.delete-confirm-modal-title"}}
-  </:title>
-  <:body>
-    {{t
-      "traffic-measure-concept.crud.delete-confirm-modal-content"
-      htmlSafe=true
-    }}
-  </:body>
+    <:title>
+        {{t "traffic-measure-concept.crud.delete-confirm-modal-title"}}
+    </:title>
+    <:body>
+        {{t "traffic-measure-concept.crud.delete-confirm-modal-content" htmlSafe=true }}
+    </:body>
 </ConfirmationModal>
-<AuBodyContainer @scroll={{true}} class="au-o-box">
-  <div class="au-u-margin-bottom">
-    <AuHeading @level="3" @skin="3" class="au-u-margin-bottom">
-      {{t "utility.properties"}}
-    </AuHeading>
-    <AuHeading @level="5" @skin="5">
-      {{t "utility.zonality"}}
-    </AuHeading>
-    <p class="au-u-muted">
-      {{zonality-label (await @model.trafficMeasureConcept.zonality)}}
-    </p>
-    <AuHeading @level="5" @skin="5">
-      {{t "traffic-measure-concept.attr.variable-signage"}}
-    </AuHeading>
-    <p class="au-u-muted">
-      {{#if (await @model.trafficMeasureConcept.variableSignage)}}
-        {{t "variable-signage-selector.yes"}}
-      {{else}}
-        {{t "variable-signage-selector.no"}}
-      {{/if}}
-    </p>
-  </div>
-  <TrafficMeasure::Preview @signs={{@model.signs}} class='au-u-max-width-small' />
-</AuBodyContainer>
+<div class='au-o-grid au-o-grid--flush au-o-grid--split'>
+    <div class='au-o-grid__item au-u-2-3@medium'>
+        <div class='au-o-box au-c-body-container au-c-body-container--scroll au-c-body-container--table'>
+            <AuHeading @level='3' @skin='3' class="au-u-margin-bottom">
+                {{t 'utility.properties'}}
+            </AuHeading>
+            <div class='traffic-measure--properties-box au-u-padding au-u-margin-bottom'>
+                <div class='au-o-grid au-u-margin-bottom'>
+                    <div class='au-o-grid__item au-u-1-2'>
+                        <AuHeading @level='6' @skin='6' class='au-u-margin-bottom-small'>
+                            {{t 'utility.zonality'}}
+                        </AuHeading>
+                        <p>
+                            {{zonality-label (await @model.trafficMeasureConcept.zonality)}}
+                        </p>
+                    </div>
+                    <div class='au-o-grid__item au-u-1-2'>
+                        <AuHeading @level='6' @skin='6' class='au-u-margin-bottom-small'>
+                            {{t 'traffic-measure-concept.attr.variable-signage'}}
+                        </AuHeading>
+                        <p>
+                            {{#if (await @model.trafficMeasureConcept.variableSignage)}}
+                              {{t "variable-signage-selector.yes"}} 
+                            {{else}} 
+                              {{t "variable-signage-selector.no"}} 
+                            {{/if}}
+                        </p>
+                    </div>
+                </div>
+                <div class='au-u-flex au-u-flex--between'>
+                    <AuFormRow class='au-u-1-2 au-u-padding-right-huge'>
+                        <AuLabel for='startDate'>
+                            {{t 'utility.start-date'}}&nbsp;
+                        </AuLabel>
+                        <p>
+                            {{#if (await @model.trafficMeasureConcept.startDate)}}
+                              {{human-friendly-date @model.trafficMeasureConcept.startDate}} 
+                            {{else}} 
+                              {{t "utility.n/a"}}
+                            {{/if}}
+                        </p>
+                    </AuFormRow>
+                    <div class='au-u-1-2 au-u-padding-left au-u-padding-right'>
+                        <AuLabel for='endDate'>
+                            {{t 'utility.end-date'}}&nbsp;
+                        </AuLabel>
+                        <p>
+                            {{#if (await @model.trafficMeasureConcept.endDate)}} 
+                              {{human-friendly-date @model.trafficMeasureConcept.endDate}} 
+                            {{else}} 
+                              {{t "utility.n/a"}} 
+                            {{/if}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='au-o-grid__item au-u-1-3@medium u-border-solid u-border-l u-border-divider'>
+        <div class='au-o-box au-c-body-container au-c-body-container--scroll'>
+            <TrafficMeasure::Preview @signs={{@model.signs}} class='au-u-max-width-small' />
+        </div>
+    </div>
+</div>
