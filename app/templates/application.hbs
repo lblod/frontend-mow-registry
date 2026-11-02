@@ -2,6 +2,7 @@
 {{page-title (concat (t "utility.app-name") (if this.showEnvironment (concat ' - ' this.environmentName)))}}
 <AuModalContainer/>
 <BasicDropdownWormhole />
+<AuToaster @position='top' />
 <AuApp class='{{if this.showEnvironment "au-c-app--environment"}}'>
   {{#if this.showEnvironment}}
     <EnvironmentBanner

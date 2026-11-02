@@ -98,7 +98,7 @@
 
 .au-c-table__row--centered {
   td {
-    vertical-align: center;
+    vertical-align: middle;
   }
 }
 
@@ -384,15 +384,6 @@ table.dataTable tbody th {
   text-decoration: underline;
 }
 
-.add-sign__trigger .add-sign__trigger-icon {
-  position: absolute;
-  top: 50%;
-  right: 0.6rem;
-  transform: translateY(-50%);
-  width: $au-unit-small;
-  height: $au-unit-small;
-}
-
 .traffic-measure-preview--main-sign-container {
   background-color: #F4F7FB;
   border: 1px solid #CFD5DD;
@@ -405,4 +396,13 @@ table.dataTable tbody th {
 
 .traffic-measure--sign-table-row {
   height: 6.5rem;
+}
+
+// Hide overflow because of the way firefox calculates heights
+.traffic-measure--sign-list {
+  overflow-y: hidden;
+}
+
+.traffic-measure-preview--main-sign-container-warning {
+  background-color: var(--au-orange-400);
 }
