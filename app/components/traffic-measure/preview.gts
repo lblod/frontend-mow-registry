@@ -43,18 +43,18 @@ export default class Preview extends Component<Sig> {
     if (!signItems.length) return { signs: [], orphanSigns: [] };
     // Detach from the auto-tracking prelude, to prevent infinite loop/call issues, see https://github.com/universal-ember/reactiveweb/issues/129
     await Promise.resolve();
-    const signsMap: Map<string, SignPreviewItem> = new Map()
+    const signsMap: Map<string, SignPreviewItem> = new Map();
     const subSigns: RoadSignConcept[] = [];
     for (const signItem of signItems) {
       const sign = (await signItem.item) as TrafficSignalConcept;
       if (!sign.id) continue;
       if (sign instanceof RoadSignConcept && (await isSubSign(sign))) {
-         subSigns.push(sign);
+        subSigns.push(sign);
       } else {
         signsMap.set(sign.id, {
           mainSign: sign as unknown as TrafficSignalConcept, // Convert to unkown first because TS doesn't allow subclasses to redefine concrete types
           subSigns: [],
-        })
+        });
       }
     }
     const orphanSigns: RoadSignConcept[] = [];
@@ -70,10 +70,10 @@ export default class Preview extends Component<Sig> {
         }
       }
       if (!added) {
-        orphanSigns.push(subSign)
+        orphanSigns.push(subSign);
       }
     }
-    return { signs: [...signsMap.values()], orphanSigns }
+    return { signs: [...signsMap.values()], orphanSigns };
   });
 
   <template>
@@ -104,7 +104,7 @@ export default class Preview extends Component<Sig> {
                 class='traffic-measure-preview--sign-image au-u-margin-right-small'
               />
               {{signalLabel sign.mainSign this.intl}}
-              {{get sign.mainSign 'label'}}
+              {{sign.mainSign.label}}
             </AuHeading>
             {{#if sign.subSigns.length}}
               <TrafficMeasureSubSignList @subSigns={{sign.subSigns}} />
@@ -115,21 +115,18 @@ export default class Preview extends Component<Sig> {
           <div
             class='traffic-measure-preview--main-sign-container au-u-margin-small au-u-padding-small traffic-measure-preview--main-sign-container-warning'
           >
-          <AuHeading
+            <AuHeading
               @level='6'
               @skin='6'
               class='au-u-flex au-u-flex--vertical-center'
             >
               <img
-                src={{get
-                  (get (get orphanSign 'image') 'file')
-                  'downloadLink'
-                }}
+                src={{get (get (get orphanSign 'image') 'file') 'downloadLink'}}
                 alt=''
                 class='traffic-measure-preview--sign-image au-u-margin-right-small'
               />
-                {{t 'traffic-measure-concept.sub-sign'}}
-                {{get orphanSign 'label'}}
+              {{t 'traffic-measure-concept.sub-sign'}}
+              {{get orphanSign 'label'}}
             </AuHeading>
             <p>{{t 'traffic-measure-concept.fake-main-sign-warning'}}</p>
           </div>
