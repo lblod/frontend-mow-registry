@@ -266,8 +266,8 @@ traffic-measure-concept:
   fake-main-sign-warning:
     This is a subsign with no main sign to be attached, please add a
     main sign which contains this subsign or delete it
-  error-orfan-subsigns-title: Orfan sub-signs
-  error-orfan-subsigns-text: There are sub-signs that don't have a main sign to be attached, remove them or add a new main sign for them
+  error-orphan-subsigns-title: Orphan sub-signs
+  error-orphan-subsigns-text: There are sub-signs that don't have a main sign to which they can be attached, remove them or add a new main sign for them
   attr:
     name: Name
     variable-signage: Variable signage

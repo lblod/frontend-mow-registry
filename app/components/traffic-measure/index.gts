@@ -177,8 +177,8 @@ export default class TrafficMeasureIndexComponent extends Component<Sig> {
     if (hasOrphanSubsigns) {
       //show a error message and prevent from saving
       return this.toaster.error(
-        this.intl.t('traffic-measure-concept.error-orfan-subsigns-text'),
-        this.intl.t('traffic-measure-concept.error-orfan-subsigns-title'),
+        this.intl.t('traffic-measure-concept.error-orphan-subsigns-text'),
+        this.intl.t('traffic-measure-concept.error-orphan-subsigns-title'),
         {
           closable: true,
         },
