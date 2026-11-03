@@ -1,5 +1,17 @@
 # frontend-mow-registry
 
+## 3.0.0
+
+### Major Changes
+
+- [#380](https://github.com/lblod/frontend-mow-registry/pull/380) [`34697327b17e339b07a160c01bb82e0422f311ef`](https://github.com/lblod/frontend-mow-registry/commit/34697327b17e339b07a160c01bb82e0422f311ef) Thanks [@lagartoverde](https://github.com/lagartoverde)! - New design for the traffic measure edit screen
+
+### Patch Changes
+
+- [#383](https://github.com/lblod/frontend-mow-registry/pull/383) [`1a421d2948007554d6b0ee23a73b9e7aa3f9031c`](https://github.com/lblod/frontend-mow-registry/commit/1a421d2948007554d6b0ee23a73b9e7aa3f9031c) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Refactor of the measure preview code to improve maintanability
+
+- [#381](https://github.com/lblod/frontend-mow-registry/pull/381) [`4cb3c1124cc5a3c44a33ba8399c07eaadb090bd8`](https://github.com/lblod/frontend-mow-registry/commit/4cb3c1124cc5a3c44a33ba8399c07eaadb090bd8) Thanks [@lagartoverde](https://github.com/lagartoverde)! - Improve styling of the measure concept details page to match the edit page
+
 ## 2.16.2
 
 ### Patch Changes
