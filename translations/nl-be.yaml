@@ -266,8 +266,8 @@ traffic-measure-concept:
   fake-main-sign-warning:
     Dit is een onderbord zonder hoofdbord waaraan het kan worden bevestigd. Voeg een
     hoofdbord toe waarvan dit een geldig onderbord is, of verwijder het
-  error-orfan-subsigns-title: Wees-onderborden
-  error-orfan-subsigns-text: Er zijn onderborden die geen hoofdbord hebben waaraan ze kunnen worden bevestigd; verwijder deze of voeg een nieuw hoofdbord voor deze borden toe
+  error-orphan-subsigns-title: Ongeldige onderborden
+  error-orphan-subsigns-text: Er zijn onderborden die geen hoofdbord hebben waaraan ze kunnen worden bevestigd; verwijder deze of voeg een nieuw hoofdbord voor deze borden toe
   attr:
     name: Naam
     variable-signage: Variabele signalisatie
